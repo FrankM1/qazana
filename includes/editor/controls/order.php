@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Order extends Control_Base_Multiple {
+class Control_Order extends Base_Control_Multiple {
 
 	public function get_type() {
 		return 'order';

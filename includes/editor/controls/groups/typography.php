@@ -3,7 +3,7 @@ namespace Builder;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Group_Control_Typography extends Group_Control_Base {
+class Group_Control_Typography extends Group_Base_Control {
 
 	protected static $fields;
 

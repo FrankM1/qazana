@@ -53,12 +53,12 @@ class Controls_Manager {
 	const ORDER = 'order';
 
 	/**
-	 * @var Control_Base[]
+	 * @var Base_Control[]
 	 */
 	private $_controls = [];
 
 	/**
-	 * @var Group_Control_Base[]
+	 * @var Group_Base_Control[]
 	 */
 	private $_control_groups = [];
 
@@ -176,7 +176,7 @@ class Controls_Manager {
 		}
 		$instance_control = new $class_name();
 
-		if ( ! $instance_control instanceof Control_Base ) {
+		if ( ! $instance_control instanceof Base_Control ) {
 			return new \WP_Error( 'wrong_instance_control' );
 		}
 		$this->_controls[ $control_id ] = $instance_control;
@@ -200,7 +200,7 @@ class Controls_Manager {
 
 	/**
 	 * @since 1.0.0
-	 * @return Control_Base[]
+	 * @return Base_Control[]
 	 */
 	public function get_controls() {
 		return $this->_controls;
@@ -210,7 +210,7 @@ class Controls_Manager {
 	 * @since 1.0.0
 	 * @param $control_id
 	 *
-	 * @return bool|\Builder\Control_Base
+	 * @return bool|\Builder\Base_Control
 	 */
 	public function get_control( $control_id ) {
 		$controls = $this->get_controls();
@@ -248,7 +248,7 @@ class Controls_Manager {
 	 *
 	 * @param string $id
 	 *
-	 * @return Group_Control_Base|Group_Control_Base[]
+	 * @return Group_Base_Control|Group_Base_Control[]
 	 */
 	public function get_control_groups( $id = null ) {
 		if ( $id ) {
@@ -264,7 +264,7 @@ class Controls_Manager {
 	 * @param $id
 	 * @param $instance
 	 *
-	 * @return Group_Control_Base[]
+	 * @return Group_Base_Control[]
 	 */
 	public function add_group_control( $id, $instance ) {
 		$this->_control_groups[ $id ] = $instance;

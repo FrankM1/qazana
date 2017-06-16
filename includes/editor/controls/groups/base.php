@@ -3,7 +3,7 @@ namespace Builder;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-abstract class Group_Control_Base implements Group_Control_Interface {
+abstract class Group_Base_Control implements Group_Control_Interface {
 
 	private $args = [];
 

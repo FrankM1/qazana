@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since                         1.0.0
  */
-class Control_Dimensions extends Control_Base_Units {
+class Control_Dimensions extends Base_Control_Units {
 
 	public function get_type() {
 		return 'dimensions';

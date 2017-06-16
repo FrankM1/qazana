@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Divider extends Control_Base {
+class Control_Divider extends Base_Control {
 
 	public function get_type() {
 		return 'divider';

@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-abstract class Control_Base {
+abstract class Base_Control {
 
 	private $_base_settings = [
 		'label' => '',

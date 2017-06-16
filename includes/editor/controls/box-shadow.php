@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Box_Shadow extends Control_Base_Multiple {
+class Control_Box_Shadow extends Base_Control_Multiple {
 
 	public function get_type() {
 		return 'box_shadow';
