@@ -262,9 +262,9 @@ module.exports = function( grunt ) {
             github: {
                 options: {
                     wordpressPluginSlug: 'builder',
-                    travisUrlRepo: 'https://travis-ci.org/pojome/builder',
-                    gruntDependencyStatusUrl: 'https://david-dm.org/pojome/builder',
-                    coverallsRepo: 'pojome/builder',
+                    travisUrlRepo: 'https://travis-ci.org/FrankM1/builder',
+                    gruntDependencyStatusUrl: 'https://david-dm.org/FrankM1/builder',
+                    coverallsRepo: 'FrankM1/builder',
                     screenshot_url: 'assets/{screenshot}.png'
                 },
                 files: {

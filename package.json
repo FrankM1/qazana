@@ -1,9 +1,9 @@
 {
 	"name": "builder",
 	"slug": "builder",
-	"version": "0.9.3",
-	"author": "Pojo Team",
-	"homepage": "http://pojo.me/",
+	"version": "1.0.0",
+	"author": "RadiumThemes",
+	"homepage": "http://radiumthemes.com/",
 	"devDependencies": {
 		"browserify": "^13.1.0",
 		"browserify-shim": "^3.8.12",
