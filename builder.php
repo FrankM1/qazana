@@ -4,7 +4,7 @@
  * Description: The most advanced frontend drag & drop page builder. Create high-end, pixel perfect websites at record speeds. Any theme, any page, any design.
  * Plugin URI: https://radiumthemes.com/
  * Author: RadiumThemes.com
- * Version: 1.0.2
+ * Version: 1.0.0
  * Author URI: https://radiumthemes.com/
  *
  * Text Domain: builder
