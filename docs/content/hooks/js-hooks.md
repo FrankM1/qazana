@@ -15,7 +15,7 @@ Argument     | Type        | Description
 
 ```javascript
 jQuery( function( $ ) {
-	// Add space for Elementor Menu Anchor link
+	// Add space for Builder Menu Anchor link
 	if ( undefined !== window.builderFrontend ) {
 		builderFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
 			return scrollTop - 30;
@@ -32,7 +32,7 @@ add_action( 'wp_footer', function() {
 	?>
 	<script>
 		jQuery( function( $ ) {
-			// Add space for Elementor Menu Anchor link
+			// Add space for Builder Menu Anchor link
 			if ( undefined !== window.builderFrontend ) {
 				builderFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
 					return scrollTop - 30;
@@ -47,7 +47,7 @@ add_action( 'wp_footer', function() {
 ## Frontend Actions
 
 ### `init`
-Elementor frontend is loaded
+Builder frontend is loaded
 
 #### Arguments
 None

@@ -1,5 +1,5 @@
 # Controls Sheet
-Elementor includes a wide array of settings controls. Let's get to know them.
+Builder includes a wide array of settings controls. Let's get to know them.
 
 
 #### Content controls

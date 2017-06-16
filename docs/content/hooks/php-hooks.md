@@ -35,13 +35,13 @@
 ## Frontend Filters
 
 ### `builder/frontend/the_content`
-Applied to frontend HTML content (the entire Elementor content in page).
+Applied to frontend HTML content (the entire Builder content in page).
 
 #### Arguments
 
 Argument          | Type         | Description
 ------------      | :------:     | ---------------------------------------------
-`content`         | *`string`*   | The entire Elementor HTML output of current page/post
+`content`         | *`string`*   | The entire Builder HTML output of current page/post
  
 #### Example
 
@@ -82,7 +82,7 @@ add_action( 'builder/widget/render_content', function( $content, $widget ) {
  ```
  
  ### `builder/frontend/print_google_fonts`
- Used to prevent loading of Google Fonts by Elementor
+ Used to prevent loading of Google Fonts by Builder
  
  #### Arguments
  None
@@ -123,7 +123,7 @@ add_action( 'builder/element/print_template', function( $template, $widget ) {
 ## Init Actions
 
 ### `builder/loaded`
-Elementor plugin is loaded, before load all components
+Builder plugin is loaded, before load all components
 
 #### Arguments
 None
@@ -135,7 +135,7 @@ add_action( 'builder/loaded', 'load_my_plugin' );
  ```
 
 ### `builder/init`
-Elementor is fully loaded
+Builder is fully loaded
 
 #### Arguments
 None
@@ -145,7 +145,7 @@ None
  ```php
 // Add a custom category for panel widgets
 add_action( 'builder/init', function() {
-	\Elementor\Plugin::$instance->elements_manager->add_category( 
+	\Builder\Plugin::$instance->elements_manager->add_category( 
 		'theme-elements',
 		[
 			'title' => __( 'Theme Elements', 'theme-domain' ),
@@ -200,7 +200,7 @@ add_action( 'builder/frontend/before_enqueue_scripts', function() {
 ```
 
 ### `builder/frontend/after_register_styles`
-After Elementor registers all styles.
+After Builder registers all styles.
 
 #### Arguments
 None
@@ -228,8 +228,8 @@ Argument          | Type              | Description
 add_action(	'builder/element/parse_css', function( $post_css, $element ) {
 	$item_width = some_get_theme_config_function( 'item_width' );
 	/**
-	 * @var \Elementor\Post_CSS_File $post_css
-	 * @var \Elementor\Element_Base  $element
+	 * @var \Builder\Post_CSS_File $post_css
+	 * @var \Builder\Element_Base  $element
 	 */
 	$post_css->get_stylesheet()->add_rules( $element->get_unique_selector(), [
 		'width' => $item_width . 'px',
@@ -250,7 +250,7 @@ Argument          | Type              | Description
 #### Example
 
 ```php
-add_action( 'builder/frontend/element/before_render', function ( \Elementor\Element_Base $element ) {
+add_action( 'builder/frontend/element/before_render', function ( \Builder\Element_Base $element ) {
 	if ( ! $element->get_settings( 'my-custom-settings' ) ) {
 		return;
 	}
@@ -283,14 +283,14 @@ add_action( 'builder/widgets/widgets_registered', function( $widgets_manager ) {
 
 ## Editor Actions
 ### `builder/editor/after_save`
-Runs after saving Elementor data.
+Runs after saving Builder data.
 
 #### Arguments
 
 Argument          | Type              | Description
 ------------      | :------:          | ----------------------
 `post_id`         | *`integer`*       | The post ID
-`editor_data`     | *`array`*         | Array of Elementor elements
+`editor_data`     | *`array`*         | Array of Builder elements
 
 #### Example
 
@@ -300,7 +300,7 @@ add_action( 'builder/editor/after_save', function( $post_id, $editor_data ) {
     aal_insert_log(
 		[
 			'action' => 'saved',
-			'object_type' => 'Elementor Data',
+			'object_type' => 'Builder Data',
 			'object_id' => $post_id,
 			'object_name' => get_the_title( $post_id ),
 		]
@@ -350,13 +350,13 @@ Argument          | Type              | Description
  ```php
 
 add_action( 'builder/element/before_section_start', function( $element, $section_id, $args ) {
-	/** @var \Elementor\Element_Base $element */
+	/** @var \Builder\Element_Base $element */
 	if ( 'section' === $element->get_name() && 'section_background' === $section_id ) {
 
 		$element->start_controls_section(
 			'custom_section',
 			[
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+				'tab' => \Builder\Controls_Manager::TAB_STYLE,
 				'label' => __( 'Custom Section', 'plugin-name' ),
 			]
 		);
@@ -364,7 +364,7 @@ add_action( 'builder/element/before_section_start', function( $element, $section
 		$element->add_control(
 			'custom_control',
 			[
-			'type' => \Elementor\Controls_Manager::NUMBER,
+			'type' => \Builder\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 			]
 		);
@@ -389,11 +389,11 @@ Argument          | Type              | Description
 
 ```php
 add_action( 'builder/element/heading/section_title/before_section_start', function( $element, $args ) {
-	/** @var \Elementor\Element_Base $element */
+	/** @var \Builder\Element_Base $element */
 	$element->start_controls_section(
 		'custom_section',
 		[
-			'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			'tab' => \Builder\Controls_Manager::TAB_STYLE,
 			'label' => __( 'Custom Section', 'plugin-name' ),
 		]
 	);
@@ -401,7 +401,7 @@ add_action( 'builder/element/heading/section_title/before_section_start', functi
 	$element->add_control(
 		'custom_control',
 		[
-			'type' => \Elementor\Controls_Manager::NUMBER,
+			'type' => \Builder\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 		]
 	);
@@ -428,12 +428,12 @@ Argument          | Type              | Description
 
 ```php
 add_action( 'builder/element/after_section_start', function( $element, $section_id, $args ) {
-	/** @var \Elementor\Element_Base $element */
+	/** @var \Builder\Element_Base $element */
 	if ( 'section' === $element->get_name() && 'section_background' === $section_id ) {
 		$element->add_control(
 			'custom_control',
 			[
-				'type' => \Elementor\Controls_Manager::NUMBER,
+				'type' => \Builder\Controls_Manager::NUMBER,
 				'label' => __( 'Custom Control', 'plugin-name' ),
 			]
 		);
@@ -458,11 +458,11 @@ Argument          | Type              | Description
 
 ```php
 add_action( 'builder/element/heading/section_title/before_section_start', function( $element, $args ) {
-	/** @var \Elementor\Element_Base $element */
+	/** @var \Builder\Element_Base $element */
 	$element->add_control(
 		'custom_control',
 		[
-			'type' => \Elementor\Controls_Manager::NUMBER,
+			'type' => \Builder\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 		]
 	);

@@ -41,7 +41,7 @@ Argument        | Required   | Type         | Default                      | Des
 ------------    | :--------: | :------:     | ---------------------------- | ---------------------------------------------
 `label`         | yes        | *`string`*   |                              | The label of the control - displayed next to it
 `type`          | yes        | *`string`*   | `Controls_Manager::MEDIA`    | The type of the control
-`default`       | no         | *`array`*    |                              | You may set the `url` property of the default array to: `Utils::get_placeholder_image_src()` to show Elementor's placeholder image.
+`default`       | no         | *`array`*    |                              | You may set the `url` property of the default array to: `Utils::get_placeholder_image_src()` to show Builder's placeholder image.
 `show_external` | no         | *`bool`*     |                              | Shows a toggle button that allows user to set it to open the link in a new tab
 `label_block`   | no         | *`bool`*     | `true`                       | Display the label above the control by setting to true
 `description`   | no         | *`string`*   |                              | A description text to display below the control

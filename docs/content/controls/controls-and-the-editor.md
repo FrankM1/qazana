@@ -19,7 +19,7 @@
   * [Adding a class to the element template wrapper](#adding-a-class-to-the-element-template-wrapper)
 
 ### The Editor
-The Elementor editor panel is where you set all the settings for every element, including  sections, columns and widgets settings. Each element setting is represented in the editor panel by a control ([What's a control?](README.md#what-is-a-control))
+The Builder editor panel is where you set all the settings for every element, including  sections, columns and widgets settings. Each element setting is represented in the editor panel by a control ([What's a control?](README.md#what-is-a-control))
 
 #### The editor panel layout
 
@@ -200,7 +200,7 @@ $this->add_control(
 As we can see, we've added a default value to the 'url'. This value is saved as a property in an array that holds the returned value of the control.
 
 ### Proper use of a returned value from a control
-Elementor offers a number of ways to use the returned value of a control. These include:
+Builder offers a number of ways to use the returned value of a control. These include:
 * Printing the value in the Element template.
 * Adding the value to the element stylesheet file.
 * Adding a class to the element template wrapper.
