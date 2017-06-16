@@ -106,7 +106,7 @@ For more information about extending the Page Settings features, please follow [
 
 ### Icons
 
-You can use the [Builder Icons](https://github.com/pojome/builder-icons), as well as [Font Awesome](http://fontawesome.io/).
+You can use the [Builder Icons](https://github.com/FrankM1/builder-icons), as well as [Font Awesome](http://fontawesome.io/).
 
 ### Menus
 
