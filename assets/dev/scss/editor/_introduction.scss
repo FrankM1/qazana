@@ -1,0 +1,31 @@
+#builder-introduction {
+
+	.dialog-widget-header {
+		padding: 40px 0 0;
+	}
+
+	.dialog-widget-content {
+		width: 700px;
+		max-width: 100%;
+	}
+
+	.builder-video-wrapper {
+		padding-bottom: 62.4%;
+	}
+
+	.dialog-message {
+		margin-top: 40px;
+	}
+}
+
+#builder-introduction-title {
+	color: $editor-accent;
+	font-size: 27px;
+	font-weight: bold;
+}
+
+#builder-introduction-subtitle {
+	margin-top: 12px;
+	font-size: 16px;
+	color: $editor-light;
+}

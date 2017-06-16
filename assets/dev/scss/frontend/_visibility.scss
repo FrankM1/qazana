@@ -1,0 +1,25 @@
+//
+// Visibility by Devices (based on breakpoints)
+//
+
+@media (max-width: $screen-sm-max) {
+	.builder-hidden-phone {
+		display: none;
+	}
+}
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+	.builder-hidden-tablet {
+		display: none;
+	}
+}
+
+@media (min-width: $screen-lg-min) {
+	.builder-hidden-desktop {
+		display: none;
+	}
+}
+
+.builder-hidden {
+	display: none;
+}

@@ -1,0 +1,118 @@
+//
+// testimonial
+//
+.builder-testimonial-wrapper {
+    overflow: hidden;
+    text-align: center;
+    margin: 1em;
+
+    &.builder-element-style- {
+        &1 {}
+
+        &2 {
+            .builder-testimonial-content {
+                background-color: #f7f7f7;
+                padding: 1.5em;
+            }
+        }
+
+        &3 {
+            .builder-testimonial-content {
+                background-color: #f7f7f7;
+                padding: 1.5em;
+
+                &:after {
+                    border-top: 8px solid #f7f7f7;
+                }
+
+            }
+        }
+    }
+
+    &.builder-testimonial-text-align- {
+        &left {
+            text-align: left;
+
+            .builder-testimonial-content {
+                &:after {
+                    left: 42px;
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &right {
+            text-align: right;
+
+            .builder-testimonial-content {
+                &:after {
+                    left: auto;
+                    right: 42px;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    .builder-testimonial-image-position-aside {
+        .builder-testimonial-details,
+        .builder-testimonial-image {
+            display: table-cell;
+            vertical-align: middle;
+        }
+    }
+
+    .builder-testimonial-image-position-top.builder-testimonial-meta {
+        .builder-testimonial-details,
+        .builder-testimonial-image {
+            display: block;
+        }
+    }
+
+    .builder-testimonial-content {
+        font-size: 1em;
+        margin-bottom: 1em;
+        position: relative;
+
+        &:after {
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #f7f7f7;
+            border-bottom-width: 0;
+            left: 50%;
+            margin-left: -4px;
+            bottom: -8px;
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+    }
+
+    .builder-testimonial-name {
+        line-height: 1.5;
+    }
+
+    .builder-testimonial-job {
+        font-size: 0.85em;
+        margin-top: 0.3em;
+    }
+
+    .builder-testimonial-meta {
+        width: 100%;
+        line-height: 1;
+
+        &-inner {
+            display: inline-block;
+        }
+
+        .builder-testimonial-image {
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+        }
+
+    }
+}

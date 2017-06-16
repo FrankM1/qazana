@@ -1,0 +1,34 @@
+//
+// Icon List
+//
+.builder-widget-icon-list {
+
+	.builder-icon-list-items {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+
+	}
+
+	.builder-icon-list-item {
+		margin: 0;
+		padding: 0;
+
+		a {
+			display: inline;
+		}
+	}
+
+	.builder-icon-list-text {
+		display: inline;
+		vertical-align: middle;
+	}
+
+	.builder-icon-list-icon {
+		width: 1em;
+		line-height: 1;
+		vertical-align: middle;
+		display: inline-block; // fix issue #620
+		text-align: center; // fix issue #620
+	}
+}

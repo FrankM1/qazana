@@ -1,0 +1,102 @@
+//
+// Panel Elements
+//
+#builder-panel-elements-navigation {
+	.builder-panel-navigation-tab {
+		text-align: center;
+		padding: 10px 0;
+		font-size: 12px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+}
+
+#builder-panel-elements {
+	overflow: hidden;
+	padding: 0 5px;
+
+}
+
+.builder-element-wrapper {
+	float: $start;
+	width: 50%;
+	padding: 5px;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.builder-element {
+	border-radius: 4px;
+	background-color: #fff;
+	cursor: move;
+	box-shadow: 2px 3px 5px 0 rgba(0,0,0,.12);
+	transition: all 0.2s ease-in-out;
+	background-clip: padding-box;
+
+	&:hover {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+		.icon,
+		.title {
+			color: #9208ff;
+		}
+	}
+
+	.icon {
+		font-size: 28px;
+		line-height: 28px;
+		padding-top: 15px;
+		color: $editor-darker;
+	}
+
+	i {
+		line-height: 26px;
+		display: inline-block;
+	}
+
+	.builder-element-title-wrapper {
+		display: table;
+		width: 100%;
+	}
+
+	.title {
+		font-size: 12px;
+		color: $editor-darker;
+		display: table-cell;
+		vertical-align: middle;
+		height: 40px;
+	}
+}
+
+#builder-panel-elements-search-wrapper {
+	position: relative;
+	margin: 10px 10px 5px;
+
+	i {
+		position: absolute;
+		@include end(0);
+		top: 50%;
+		color: $editor-light;
+		transform: translateY(-50%);
+		transition: $end 1s;
+	}
+}
+
+#builder-panel-elements-search-input {
+	font-size: 11px;
+	border-radius: 0;
+	@include padding(10px, 27px, 10px, 0);
+	color: $editor-light;
+	border: none;
+	transition: all 1s;
+
+	&:focus {
+		background-color: rgba(255,255,255,.7);
+		padding-left: 15px;
+
+		+ i {
+			@include end(15px);
+		}
+	}
+}

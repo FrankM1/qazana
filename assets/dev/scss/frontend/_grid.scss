@@ -1,0 +1,233 @@
+//
+// Grid
+//
+
+// Section
+.builder-section {
+	position: relative;
+
+	// Container
+	.builder-container {
+		display: flex;
+		margin-right: auto;
+		margin-left: auto;
+		position: relative;
+	}
+
+	// Max-width of container depending on section settings
+	&.builder-section-boxed {
+		& > .builder-container {
+			max-width: 1140px;
+		}
+	}
+
+	// Stretched section settings
+	&.builder-section-stretched {
+		position: relative;
+		width: 100%;
+	}
+
+	// In section min-height / fit to screen mode
+	&.builder-section-items- {
+		&top {
+			> .builder-container {
+				align-items: flex-start;
+			}
+		}
+
+		&middle {
+			> .builder-container {
+				align-items: center;
+			}
+		}
+
+		&bottom {
+			> .builder-container {
+				align-items: flex-end;
+			}
+		}
+	}
+	@media (min-width: $screen-md-min) {
+
+		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
+		&.builder-section-height-full {
+			height: 100vh;
+
+			> .builder-container {
+				height: 100%;
+			}
+		}
+	}
+}
+
+// In columns stretch mode
+
+.builder-container {
+	> .builder-row {
+		> .builder-column {
+			> .builder-column-wrap {
+				.builder-section-content-top > & {
+					align-items: flex-start;
+				}
+
+				.builder-section-content-middle > & {
+					align-items: center;
+				}
+
+				.builder-section-content-bottom > & {
+					align-items: flex-end;
+				}
+			}
+		}
+	}
+}
+
+// Row
+.builder-row {
+	width: 100%;
+	display: flex;
+
+	/* In dragging mode it's causing a columns fall */
+	@media (max-width: $screen-sm-max) {
+		flex-wrap: wrap;
+	}
+}
+
+@media (max-width: 1024px) {
+  .builder-row {
+    flex-wrap: wrap;
+  }
+}
+
+
+// Widget
+.builder-column-wrap {
+	width: 100%;
+	display: flex;
+}
+
+.builder-widget-wrap {
+	width: 100%;
+}
+
+.builder-widget {
+	&:not(:last-child) {
+		margin-bottom: 20px;
+	}
+}
+
+// Columns
+.builder-column {
+	position: relative;
+	min-height: 1px;
+	display: flex;
+
+}
+@mixin builder-grid-classes {
+	 @each $sizeKey, $size in $column-sizes{
+		&.builder-col-#{$sizeKey},
+		&[data-col="#{$sizeKey}"] {
+			width: $size;
+		}
+	}
+}
+@mixin builder-responsive($breakpoint-name) {
+	 @each $size-name, $size in $column-sizes{
+		&.builder-#{$breakpoint-name}-#{$size-name} {
+			width: $size;
+		}
+	}
+
+}
+
+// Columns Gap
+.builder-row {
+	> .builder-column {
+		> .builder-element-populated {
+			.builder-column-gap-narrow > & {
+				padding: 5px;
+			}
+
+			.builder-column-gap-default > & {
+				padding: 10px;
+			}
+
+			.builder-column-gap-extended > & {
+				padding: 15px;
+			}
+
+			.builder-column-gap-wide > & {
+				padding: 20px;
+			}
+
+			.builder-column-gap-wider > & {
+				padding: 30px;
+			}
+		}
+	}
+}
+
+// Columns Gap for Inner section
+.builder-inner-section {
+	.builder-column-gap-no {
+		.builder-element-populated {
+			padding: 0;
+		}
+	}
+}
+
+.builder-column-gap-no .builder-widget {
+	margin-bottom: 0px;
+}
+
+// Responsive Grid
+@media (min-width: $screen-md-min) {
+	.builder-column {
+		@include builder-grid-classes;
+	}
+}
+
+.builder-column {
+	@media (max-width: $screen-xs-max) {
+		 @include builder-responsive(xs);
+	}
+	@media (max-width: $screen-sm-max) {
+		 @include builder-responsive(sm);
+	}
+	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+		 @include builder-responsive(md);
+	}
+}
+@media (max-width: $screen-sm-max) {
+	.builder-column {
+		width: 100%;
+	}
+
+	.builder-reverse-mobile > .builder-container > .builder-row {
+		flex-direction: column-reverse;
+	}
+}
+
+#grid {
+	position: fixed;
+	top: -20px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow-y: hidden;
+	pointer-events: none;
+	display: none;
+	z-index: 999;
+
+	.vc_col-lg-1 {
+		height: 2000px;
+		padding: 0.5rem 40px;
+		min-height: 0.125rem;
+	}
+
+	.shadow {
+		background: rgba(0,0,0,0.05);
+		width: 100%;
+		height: 100%;
+	}
+}

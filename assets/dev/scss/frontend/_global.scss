@@ -1,0 +1,222 @@
+//
+// Global selectors for Builder Front-End
+//
+
+// Admin Bar - Icon (Front-End)
+#wpadminbar #wp-admin-bar-builder_edit_page > .ab-item::before {
+	content: "\e800";
+	font-family: eicon;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.builder {
+	* {
+		&,
+		&:after,
+		&:before {
+			box-sizing: border-box;
+		}
+	}
+
+	// Reset Style for some themes and browsers
+	hyphens: manual;
+
+	a {
+		box-shadow: none;
+		text-decoration: none;
+	}
+
+	hr {
+		margin: 0;
+		background-color: transparent;
+	}
+
+	img {
+		height: auto;
+		max-width: 100%;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+	}
+
+	figure {
+		margin: 0;
+	}
+
+	// Responsive Embed
+	embed,
+	iframe,
+	object,
+	video {
+		max-width: 100%;
+		width: 100%;
+		margin: 0;
+		line-height: 1;
+	}
+
+	.builder-custom-embed {
+		line-height: 0; //for google maps margin bottom
+	}
+
+	// Background Video
+	.builder-background-video-container {
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		position: absolute;
+		overflow: hidden;
+		z-index: $ground-layer;
+	}
+
+	.builder-background-video {
+		position: absolute;
+		max-width: none;
+		top: 50%;
+		left: 50%;
+		transform: translateY(-50%) translateX(-50%);
+	}
+
+	.builder-html5-video {
+		object-fit: cover; // For HTML5 portrait video
+	}
+	// End Background Video
+
+	.builder-background-overlay {
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		position: absolute;
+	}
+
+	.builder-invisible {
+		visibility: hidden;
+	}
+}
+
+// Alignment Classes
+.builder-align- {
+	&center {
+		text-align: center;
+		margin: 0 auto;
+
+		.builder-wrapper {
+			margin: 0 auto;
+		}
+
+		.builder-button {
+			width: auto;
+		}
+	}
+
+	&right {
+		text-align: right;
+
+		.builder-wrapper {
+			margin-left: auto;
+		}
+
+		.builder-button {
+			width: auto;
+		}
+	}
+
+	&left {
+		text-align: left;
+
+		.builder-wrapper {
+			margin-right: auto;
+		}
+
+		.builder-button {
+			width: auto;
+		}
+	}
+
+	&justify {
+		.builder-button {
+			width: 100%;
+		}
+	}
+}
+
+// Alignment for Tablet
+@media (max-width: $screen-md-max) {
+	.builder-tablet-align- {
+		&center {
+			text-align: center;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&right {
+			text-align: right;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&left {
+			text-align: left;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&justify {
+			.builder-button {
+				width: 100%;
+			}
+		}
+	}
+}
+
+// Alignment for Mobile
+@media (max-width: $screen-sm-max) {
+	.builder-mobile-align- {
+		&center {
+			text-align: center;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&right {
+			text-align: right;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&left {
+			text-align: left;
+
+			.builder-button {
+				width: auto;
+			}
+		}
+
+		&justify {
+			.builder-button {
+				width: 100%;
+			}
+		}
+	}
+}
+
+// TEMP CODE
+#builder-select-preset {
+	display: none;
+}
+
+.builder-widget-container {
+	width: 100%;
+}

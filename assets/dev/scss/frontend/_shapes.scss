@@ -1,0 +1,45 @@
+//
+// Shape Divider
+//
+
+.builder-shape {
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	line-height: 0;
+	direction: ltr; // Fix for RTL pages
+
+	&-top {
+		top: -1px;
+	}
+
+	&-bottom {
+		bottom: -1px;
+	}
+
+	&[data-negative="false"] {
+		&.builder-shape-bottom {
+			transform: rotate(180deg);
+		}
+	}
+
+	&[data-negative="true"] {
+		&.builder-shape-top {
+			transform: rotate(180deg);
+		}
+	}
+
+	svg {
+		display: block;
+		width: calc(100% + 1px);
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.builder-shape-fill {
+		fill: #fff;
+		transform-origin: center;
+	}
+}

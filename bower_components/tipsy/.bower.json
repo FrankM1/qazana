@@ -1,0 +1,12 @@
+{
+  "name": "master",
+  "_cacheHeaders": {
+    "ETag": "\"3545aa6ae2cfdf10f3636d2754b792524ee2bc7a\"",
+    "Content-Type": "application/zip",
+    "Content-Disposition": "attachment; filename=tipsy-master.zip"
+  },
+  "_release": "e-tag:3545aa6ae",
+  "_source": "https://github.com/jaz303/tipsy/archive/master.zip",
+  "_target": "*",
+  "_originalSource": "https://github.com/jaz303/tipsy/archive/master.zip"
+}

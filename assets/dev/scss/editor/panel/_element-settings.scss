@@ -1,0 +1,71 @@
+//
+// Element Edit
+//
+
+.builder-panel-navigation {
+	background-color: $white;
+	box-shadow: $panel-bottom-shadow;
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+
+	.builder-panel-navigation-tab {
+		display: table-cell;
+
+		&.builder-tab-control-content {
+			a:before {
+				content: '\f040';
+			}
+		}
+
+		&.builder-tab-control-style {
+			a:before {
+				content: '\f042';
+			}
+		}
+
+		&.builder-tab-control-advanced {
+			a:before {
+				content: '\f013';
+			}
+		}
+
+		&.builder-tab-control-responsive {
+			a:before {
+				content: '\f10a';
+			}
+		}
+
+		&.builder-tab-control-layout {
+			a:before {
+				content: '\f0db';
+			}
+		}
+
+		&.builder-tab-control-column {
+			a:before {
+				content: '\f0db';
+			}
+		}
+
+		&.active {
+			background-image: linear-gradient(to bottom, #f3f3f3, #fff);
+			border-bottom: 3px solid $editor-accent;
+		}
+
+		a {
+			display: block;
+			text-align: center;
+			padding: 12px 0 8px;
+			font-size: 10px;
+			color: $editor-dark;
+
+			&:before {
+				font-family: FontAwesome;
+				font-size: 16px;
+				display: block;
+				margin-bottom: 6px;
+			}
+		}
+	}
+}

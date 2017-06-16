@@ -1,0 +1,125 @@
+//
+// Button
+//
+
+.builder-button {
+	display: inline-block;
+	line-height: 1;
+	background-color: $gray;
+	color: #fff;
+	text-align: center;
+	transition: $transition-hover;
+	border: none;
+
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #fff;
+		opacity: 0.9;
+	}
+
+	&.builder-size- {
+		&xs {
+			font-size: 13px;
+			padding: 10px 20px;
+		}
+
+		&sm {
+			font-size: 15px;
+			padding: 12px 24px;
+		}
+
+		&md {
+			font-size: 16px;
+			padding: 15px 30px;
+		}
+
+		&lg {
+			font-size: 18px;
+			padding: 20px 40px;
+		}
+
+		&xl {
+			font-size: 20px;
+			padding: 25px 50px;
+		}
+	}
+
+	.builder-align-icon- {
+		&right {
+			float: right;
+			margin-left: 5px;
+		}
+
+		&left {
+			float: left;
+			margin-right: 5px;
+		}
+	}
+
+	.builder-button-text {
+		display: inline-block;
+	}
+}
+
+.builder-widget-button {
+	.builder-button {
+		&.builder-button- {
+			&info {
+				background-color: $info;
+			}
+
+			&success {
+				background-color: $success;
+			}
+
+			&warning {
+				background-color: $warning;
+			}
+
+			&danger {
+				background-color: $danger;
+			}
+
+			&clear {
+				background-color: transparent;
+				color: inherit;
+				padding: 0;
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.builder-icon-hover-reveal-yes {
+	.builder-button {
+		transition: all 0.5s cubic-bezier(.3,.95,.3,.95);
+	}
+
+	.builder-button-icon {
+		max-width: 0;
+		transition: all 0.5s cubic-bezier(.3,.95,.3,.95);
+		overflow: hidden;
+
+		&.builder-align-icon-right {
+			margin-left: 0;
+		}
+
+		&.builder-align-icon-left {
+			margin-right: 0;
+		}
+	}
+
+	.builder-button:hover .builder-button-icon,
+	button:hover .builder-button-icon {
+		max-width: 100px;
+
+		&.builder-align-icon-right {
+			margin-left: 10px;
+		}
+
+		&.builder-align-icon-left {
+			margin-right: 10px;
+		}
+	}
+}

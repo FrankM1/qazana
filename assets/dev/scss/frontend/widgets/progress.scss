@@ -1,0 +1,86 @@
+//
+// Progress Bar
+//
+
+.builder-widget-progress {
+	text-align: $start;
+}
+
+.builder-progress-wrapper {
+	position: relative;
+	background-color: $progress-bg;
+	color: $progress-text;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 2px;
+
+}
+
+.builder-progress-bar {
+	position: absolute;
+	display: inline-block;
+	background-color: $gray;
+	height: 100%;
+	width: 0;
+	border-radius: 2px;
+	transition: width 1s ease-in-out;
+}
+
+.builder-progress-inner-text {
+	display: inline-block;
+	position: absolute;
+	@include start(0);
+	padding: 0 15px;
+	font-size: 11px;
+	width: 0;
+	transition: width 1s ease-in-out;
+
+	.builder-progress-percentage {
+		position: relative;
+		float: $end;
+	}
+}
+
+.builder-widget-progress {
+	.builder-progress-wrapper {
+		&.progress-info {
+			.builder-progress-bar {
+				background-color: $info;
+			}
+		}
+
+		&.progress-success {
+			.builder-progress-bar {
+				background-color: $success;
+			}
+		}
+
+		&.progress-warning {
+			.builder-progress-bar {
+				background-color: $warning;
+			}
+		}
+
+		&.progress-danger {
+			.builder-progress-bar {
+				background-color: $danger;
+			}
+		}
+	}
+}
+
+.builder-progress .builder-title {
+	display: block;
+}
+
+// Responsive mode
+@media (max-width: $screen-sm-max) {
+	.builder-progress-wrapper {
+		height: 25px;
+		line-height: 25px;
+
+		.builder-progress-inner-text {
+			padding: 0 10px;
+		}
+	}
+}

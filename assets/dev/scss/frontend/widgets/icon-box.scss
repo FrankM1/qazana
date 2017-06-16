@@ -1,0 +1,193 @@
+//
+// Icon Box
+//
+.builder-widget-icon-box {
+    position: relative;
+    @media (min-width: $screen-md-min) {
+        &.builder-position- {
+            &left,
+            &right {
+                .builder-icon-box-wrapper {
+                    display: flex;
+                }
+
+                .builder-icon-box-icon {
+                    flex: 0 0 auto; // Hack for Safari
+                }
+            }
+
+            &right {
+                .builder-icon-box-wrapper {
+                    text-align: $end;
+                    flex-direction: getValueByDirection(row-reverse, row);
+                }
+            }
+
+            &left {
+                .builder-icon-box-wrapper {
+                    text-align: $start;
+                    flex-direction: getValueByDirection(row, row-reverse);
+                }
+            }
+
+            &top {
+                .builder-icon-box-img {
+                    margin: auto;
+                }
+            }
+        }
+
+        &.builder-vertical-align- {
+            &top {
+                .builder-icon-box-wrapper {
+                    align-items: flex-start;
+                }
+            }
+
+            &middle {
+                .builder-icon-box-wrapper {
+                    align-items: center;
+                }
+            }
+
+            &bottom {
+                .builder-icon-box-wrapper {
+                    align-items: flex-end;
+                }
+            }
+        }
+
+        &.builder-view-animated-1 {
+            max-width: 100%;
+            width: 100%;
+            position: relative;
+
+            .builder-icon-box-wrapper {
+                text-align: center;
+                width: 100%;
+                display: inline-block;
+                border-radius: 4px;
+                padding: 0;
+                position: relative;
+                z-index: 2;
+
+                &:hover .front {
+                    transform: translateY(-75%);
+                    border-radius: 0;
+                }
+
+                &:hover .back {
+                    transform: translateY(0);
+                }
+            }
+
+            .height-adjust {
+                margin-top: 100%;
+            }
+
+            .builder-icon-box-inner {
+                position: absolute;
+                overflow: hidden;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 4px;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                -webkit-transform: translateZ(0);
+                -moz-transform: translateZ(0);
+                transform: translateZ(0);
+            }
+
+            .back,
+            .front {
+                transition: all 500ms cubic-bezier(1.000,0.000,0.600,1.000);
+                backface-visibility: hidden;
+
+                &::before {
+                    content: '';
+                    height: 100%;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+
+            .front {
+                background: #f7f7f7;
+                z-index: 2;
+                border-radius: 4px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+
+                .front-inner-wrap {
+                    width: 100%;
+                    display: inline-block;
+                    display: table;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+
+            }
+
+            .back {
+                background: #ccc;
+                z-index: 3;
+                border-radius: 0 0 4px 4px;
+                position: absolute;
+                top: 25%;
+                left: 0;
+                height: 75%;
+                width: 100%;
+                transform: translateY(100%);
+            }
+
+            .builder-icon-box-title {
+                margin-top: 25px;
+            }
+
+            .builder-icon-box-icon {}
+
+            .builder-icon-box-content {}
+        }
+
+        &.builder-view-align-left {
+            .builder-icon {
+                position: absolute;
+                left: 0;
+            }
+
+            .builder-icon-box-content {
+                margin-left: 90px;
+            }
+        }
+
+    }
+    @media (max-width: $screen-sm-max) {
+
+        // TEMP code to override the icon spacing
+        .builder-icon-box-icon {
+            margin-left: auto !important;
+            margin-right: auto;
+            margin-bottom: 15px !important;
+        }
+    }
+
+    .builder-icon-box-wrapper {
+        text-align: center;
+    }
+
+    .builder-icon-box-title {
+        a {
+            color: inherit;
+        }
+    }
+
+    .builder-icon-box-description {
+        margin: 0;
+    }
+}

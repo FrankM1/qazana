@@ -1,0 +1,195 @@
+//
+// Admin CSS for Builder
+//
+
+// Core variables and mixins
+@import "../helpers/variables";
+@import "../helpers/mixins";
+@import "../editor/dialog";
+
+body {
+	&.builder-editor-active {
+		.builder-switch-mode-off {
+			display: none;
+		}
+
+		#builder-switch-mode-button {
+			background-color: #f7f7f7;
+			color: #555;
+			border-color: #ccc;
+			box-shadow: 0 1px 0 #ccc !important;
+			text-shadow: unset;
+
+			&:hover {
+				background-color: #e9e9e9;
+			}
+
+			&:active {
+				box-shadow: inset 0 1px 0 #ccc;
+				transform: translateY(1px);
+			}
+		}
+
+		#builder-editor {
+			display: table;
+		}
+
+		#postdivrich {
+			display: none !important;
+		}
+	}
+
+	&.builder-editor-inactive {
+		.builder-switch-mode-on {
+			display: none;
+		}
+
+		#builder-editor {
+			display: none;
+		}
+	}
+}
+
+#builder-editor-button,
+.builder-editor-inactive #builder-switch-mode-button {
+	background: #0085ba;
+	border-color: #0073aa #006799 #006799;
+	box-shadow: 0 1px 0 #006799;
+	color: #fff;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+
+	&:active {
+		background: #0073aa;
+		border-color: #006799;
+		box-shadow: inset 0 2px 0 #006799;
+		vertical-align: top;
+	}
+
+	&:hover {
+		box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
+	}
+
+	&:focus {
+		box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
+	}
+}
+
+// Dashboard Icon
+#adminmenu #toplevel_page_builder div.wp-menu-image:before {
+	background-image: url('../images/builder-logo-small-light.png');
+	background-repeat: no-repeat;
+	content: " ";
+	background-size: 15px;
+	background-position: 4px 4px;
+}
+
+// Switcher Editor
+#builder-switch-mode {
+	margin: 15px 0;
+}
+
+.builder-button {
+	padding: 12.5px 25px;
+	display: inline-block;
+	line-height: 1;
+	border: 1px solid;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+
+	.eicon-builder {
+		@include margin-end(5px);
+	}
+}
+
+#builder-editor {
+	background-color: #F7F7F7;
+	border: 1px solid #DDD;
+	height: 300px;
+	width: 100%;
+	transition: all 0.5s ease;
+
+	&:hover {
+		background-color: #ffffff;
+	}
+	@import "../editor/loader";
+
+	.builder-loader-box {
+		background-color: $editor-light;
+	}
+
+}
+
+#builder-go-to-edit-page-link {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	text-decoration: none;
+
+	&.builder-animate {
+		#builder-editor-button {
+			display: none;
+		}
+	}
+
+	&:not(.builder-animate) {
+		.builder-loader-wrapper {
+			display: none;
+		}
+	}
+}
+
+.builder-loader-wrapper {
+	margin: auto;
+	width: 80px;
+}
+
+.builder-loader {
+	height: 80px;
+	position: relative;
+}
+
+.builder-loading-title {
+	color: $editor-light;
+	text-transform: uppercase;
+	margin-top: 15px;
+	font-size: 11px;
+	letter-spacing: 5px;
+}
+
+button.builder-button-spinner {
+	&:before {
+		font: normal 20px/.5 dashicons;
+		speak: none;
+		display: inline-block;
+		padding: 0;
+		top: 8px;
+		@include start(-4px);
+		position: relative;
+		vertical-align: top;
+		content: "\f463";
+	}
+
+	&.loading:before {
+		-webkit-animation: rotation 1s infinite linear;
+		animation: rotation 1s infinite linear;
+	}
+
+	&.success:before {
+		content: "\f147";
+		color: #46b450;
+	}
+}
+
+// Customizer widget icon
+#available-widgets [class*="builder-template"] .widget-title:before {
+	content: "\e801";
+	font-family: eicon;
+	font-size: 17px;
+}
+@import "message";
+@import "system_info";
+@import "feedback";
+@import "import-template";
+@import "widget-template";

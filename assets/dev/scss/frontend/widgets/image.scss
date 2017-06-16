@@ -1,0 +1,25 @@
+//
+// Image
+//
+
+.builder-widget-image {
+
+	.builder-image {
+
+		> a,
+		figure > a {
+			display: block; // For alignment image with link
+		}
+
+		img {
+			vertical-align: middle;
+		}
+
+		&.builder-image-shape- {
+
+			&circle {
+				border-radius: 50%;
+			}
+		}
+	}
+}

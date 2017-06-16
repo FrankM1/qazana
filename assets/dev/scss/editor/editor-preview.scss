@@ -1,0 +1,728 @@
+//
+// Editor
+//
+@import '../helpers/variables';
+@import '../helpers/mixins';
+@import '_compatibility';
+
+// Hidden WP Admin Bar
+html.builder-html {
+    margin-top: 0 !important;
+}
+
+#builder {
+    position: relative;
+}
+
+.builder-editor-active {
+    .builder.builder-edit-mode {
+        .builder-element-empty {
+            .builder-sortable-placeholder {
+                display: none;
+            }
+        }
+
+        .builder-empty-view {
+            display: table;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: $first-layer;
+        }
+
+        .builder-first-add {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            border: 1px dashed #d5dadf;
+
+            .builder-icon {
+                font-size: 19px;
+                color: $editor-light;
+                cursor: pointer;
+            }
+        }
+
+        .builder-element {
+            > .builder-element-overlay {
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                letter-spacing: 0; // Hack for front-end style themes
+                z-index: $element-overlay;
+                pointer-events: none;
+            }
+
+            &.builder-widget-empty {
+                height: 50px;
+                background: $white;
+
+                &:after {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    background-color: fade-out($editor-background, .2);
+                }
+
+                .builder-widget-empty-icon {
+                    position: absolute;
+                    height: 25px;
+                    width: 25px;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    margin: auto;
+                    color: $gray;
+                    font-size: 22px;
+                }
+            }
+
+            > .builder-element-overlay {
+                .builder-editor-element-settings-list,
+                .column-title {
+                    display: none;
+                }
+            }
+
+            &.builder-section-tools-active {
+                 > .builder-element-overlay .builder-editor-element-settings-list,
+                > .builder-element-overlay .column-title {
+                    display: block;
+                }
+
+                &:not(.builder-element-editable) {
+                    > .builder-element-overlay {
+                        .builder-editor-element-settings-list {
+                            display: block;
+                        }
+                    }
+                }
+
+                &:not(.ui-resizable-resizing) {
+                    > .builder-element-overlay {
+                        .column-title {
+                            display: block;
+                        }
+                    }
+                }
+                @media (max-width: $screen-md-max) {
+                    > .builder-element-overlay {
+                        .column-title {}
+                    }
+                }
+            }
+
+            /* &:not(:hover) {
+                &:not(.builder-element-editable) {
+                    > .builder-element-overlay {
+                        .builder-editor-element-settings-list {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:not(.ui-resizable-resizing) {
+                    > .builder-element-overlay {
+                        .column-title {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            @media (max-width: $screen-md-max) {
+                > .builder-element-overlay {
+                    .column-title {
+                        display: none;
+                    }
+                }
+            } */
+
+            &[data-side] {
+                animation: increase-border 0.6s;
+                animation-timing-function: ease-out;
+            }
+
+            &[data-side="bottom"] + .builder-element,
+            &[data-side="top"] {
+                border-top: 4px solid $editor-info;
+            }
+
+            &[data-side="bottom"]:last-child {
+                border-bottom: 4px solid $editor-info;
+            }
+        }
+
+        // Section
+        .builder-section {
+            &:not(.builder-section-height-full) {
+                .builder-column-wrap {
+                    &.builder-element-empty {
+                        @media (min-width: $screen-md-min) {
+                            &,
+                            .builder-widget-wrap {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                top: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Inner Section
+        .builder-top-column {
+            .builder-widget-wrap {
+                .builder-inner-section {
+                }
+            }
+        }
+
+        // General - Overlay Settings
+        .builder-editor-element-settings {
+            position: absolute;
+            overflow: hidden;
+
+            .builder-editor-element-settings-list {
+                display: table;
+                table-layout: fixed;
+                height: 30px;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 13px;
+                font-weight: normal;
+                font-style: normal;
+                line-height: 1;
+
+                &.builder-editor-section-settings-list {
+                    background-color: $editor-light;
+
+                    .builder-editor-element-setting {
+                        @media (min-width: $screen-lg-min) {
+                            &:not(:last-child) {
+                                @include border-end(1px solid $editor-lighter);
+                            }
+                        }
+
+                        &.builder-editor-element-trigger {
+                            &:not(.builder-active) {
+                                border: none;
+                            }
+                        }
+
+                        > a {
+                            &:hover {
+                                background-color: $editor-lighter;
+                            }
+                        }
+                    }
+                }
+
+                .fa {
+                    color: $white;
+                }
+            }
+
+            .builder-editor-element-setting {
+                display: table-cell;
+                vertical-align: middle;
+                width: 35px;
+                text-align: center;
+                padding: 0;
+                margin: 0;
+
+                > a {
+                    padding: 8.5px 0;
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 11px;
+                    line-height: 1;
+                    color: #fff;
+                }
+            }
+
+            .builder-editor-element-remove {
+                .fa {
+                    color: $editor-danger;
+                }
+            }
+        }
+
+        // Column - Overlay Settings
+        .builder-editor-column-settings {
+            @include start(-1px);
+            z-index: $first-layer;
+            bottom: 100%;
+            margin-bottom: 1px;
+            transform: translateY(1px);
+            border-radius: 3px 3px 0 0;
+            pointer-events: all;
+
+            .builder-editor-element-settings-list {
+                float: $start;
+                background-color: $editor-darkest;
+
+                .builder-editor-element-setting {
+                    @media (min-width: $screen-lg-min) {
+                        &:not(:last-child) {
+                            @include border-end(1px solid $editor-darker);
+                        }
+                    }
+
+                    > a {
+                        &:hover {
+                            background-color: $editor-darker;
+                        }
+                    }
+                }
+            }
+
+            .builder-editor-element-trigger {
+                &:not(.builder-active) {
+                    ~ .builder-editor-element-setting {
+                        display: none;
+                    }
+                }
+
+                > a {
+                    padding: 8.5px;
+                }
+                @media(min-width: $screen-lg-min) {
+                    > a {
+                        cursor: move;
+
+                        &:hover {
+                            &:after {
+                                content: getValueByDirection('\f105', '\f104');
+                                font-family: 'FontAwesome';
+                                @include margin-start(5px);
+                            }
+                        }
+                    }
+
+                    &.builder-active {
+                        > a {
+                            &:after {
+                                content: getValueByDirection('\f105', '\f104');
+                                font-family: 'FontAwesome';
+                                @include margin-start(5px);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Widget - Overlay Settings
+        .builder-editor-widget-settings {
+            z-index: $second-layer;
+            top: 2px;
+            @include end(2px);
+
+            .builder-editor-element-setting {
+                width: 24px;
+
+                &:not(:last-child) {
+                    @include padding-end(2px);
+                }
+
+                > a {
+                    background-color: $editor-info;
+                    font-size: 10px;
+                    padding: 6px 8px;
+
+                    &:hover {
+                        background-color: darken( $editor-info, 10% );
+                    }
+                }
+            }
+
+            .builder-editor-element-remove {
+                .fa {
+                    color: #ffffff;
+                }
+
+                &:hover {
+                    .fa {
+                        color: $editor-danger;
+                    }
+                }
+            }
+
+            .builder-editor-element-edit {
+                a {
+                    cursor: move;
+                }
+            }
+        }
+
+        .builder-editor-element-setting {
+            &:not(.builder-editor-element-edit):not(.builder-editor-element-trigger) {
+                @media (max-width: $screen-md-max) {
+                    display: none;
+                }
+            }
+        }
+
+        // Section Full (No more columns) - Overlay
+        .builder-section-filled {
+            .builder-editor-column-settings {
+                .builder-editor-element-add,
+                .builder-editor-element-duplicate {
+                    display: none;
+                }
+            }
+
+            .builder-sortable-placeholder {
+                &.builder-column {
+                    display: none;
+                }
+            }
+
+            .builder-row {
+                &.builder-draggable-over {
+                    border: 1px solid $editor-danger;
+                }
+            }
+        }
+
+        // Row
+        .builder-row {
+            min-height: 100px; // Min Height for Section
+        }
+
+        // Column
+        .builder-column {
+            &.builder-element-editable,
+            &.builder-section-tools-active {
+                > .builder-element-overlay {
+                    border: 1px solid $white;
+
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 100%;
+                        outline: 1px dashed $gray-darker;
+                    }
+                }
+            }
+
+            &.builder-dragging-on-child {
+                > .builder-element-overlay {
+                    border: 1px solid $editor-info;
+
+                    &:after {
+                        display: none;
+                    }
+                }
+            }
+
+            .column-title {
+                position: absolute;
+                bottom: 100%;
+                @include end(0);
+                margin-bottom: 5px;
+                color: #999;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: normal;
+                line-height: 1;
+                font-size: 12px;
+                font-style: italic;
+            }
+
+             > .ui-resizable-w,
+            > .ui-resizable-e {
+                cursor: ew-resize;
+                width: 7px;
+                position: absolute;
+                @include end(-5px);
+                top: 0;
+                height: 100%;
+            }
+
+            &:last-of-type {
+                 > .ui-resizable-w,
+                > .ui-resizable-e {
+                    display: none !important;
+                }
+            }
+            @media (max-width: $screen-md-max) {
+                 > .ui-resizable-w,
+                > .ui-resizable-e {
+                    display: none !important;
+                }
+            }
+        }
+    }
+
+    .builder-inner {
+
+        // Force keeping in top for blank page detection
+        &:before {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    }
+
+    .builder-column-wrap {
+        &.builder-element-empty {
+            .builder-widget-wrap {
+                @media (min-width: $screen-md-min) {
+                    padding: 10px;
+                }
+            }
+        }
+    }
+
+    .builder-widget {
+        position: relative;
+
+        &.builder-loading {
+            opacity: 0.3;
+        }
+
+        &:not(.builder-loading):not(.builder-widget-menu-anchor) {
+            // Don't apply transition on anchor widget - Safari hack
+            transition: all 0.1s;
+        }
+
+        &.builder-element-editable,
+        &.builder-widget-can-edit:hover {
+            outline: 1px solid $editor-info;
+        }
+
+        &:not(.builder-element-editable):not(.builder-widget-settings-active) {
+            .builder-editor-element-settings {
+                display: none;
+            }
+        }
+    }
+
+    .builder-column.builder-dragging {
+        div.builder-column-wrap {
+            min-height: 50px; //FOR EMPTY COLUMN - DON'T REMOVE!
+        }
+    }
+
+    .handle {
+        display: none; //TEMP
+    }
+
+    .builder-sortable-placeholder {
+        background: $editor-info;
+        transition-timing-function: ease-out;
+
+        &:not(.builder-column) {
+            height: 5px;
+        }
+
+        &.builder-column {
+            width: 5px;
+        }
+    }
+
+    .builder-sortable-helper {
+        position: absolute;
+        border-radius: 3px;
+        background-color: #fff;
+        text-align: center;
+        color: $editor-darker;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+        .icon {
+            font-size: 28px;
+            padding-top: 15px;
+            line-height: 1;
+        }
+
+        .builder-element-title-wrapper {
+            display: table;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 11px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            display: table-cell;
+            vertical-align: middle;
+            height: 40px;
+        }
+    }
+
+    .builder-draggable-over:not([data-dragged-element="section"]):not([data-dragged-is-inner="true"]) > .builder-empty-view > .builder-first-add,
+    .builder-first-add[data-side] {
+        &:after {
+            content: '';
+            height: 4px;
+            display: block;
+            background-color: $editor-info;
+        }
+
+        .builder-icon {
+            display: none;
+        }
+    }
+
+    .builder-draggable-over[data-dragged-element="section"][data-dragged-is-inner="true"] {
+        .builder-inner-column {
+            .builder-sortable-placeholder {
+                display: none;
+            }
+        }
+    }
+
+    // Add new Section
+    #builder-add-section {
+        background-color: rgba(255, 255, 255, .5);
+        margin: 60px auto;
+        max-width: 1140px;
+        position: relative;
+
+        &:not([data-side]) {
+            border: 2px dashed $editor-lightest;
+        }
+
+        &[data-side] {
+            border: 3px dashed $editor-info;
+        }
+        @media (max-width: $screen-xs-max) {
+            display: none;
+        }
+    }
+
+    #builder-add-section-inner {
+        text-align: center;
+        margin-top: 10px;
+        padding: 40px 0;
+    }
+
+    #builder-add-new-section {
+        display: inline-block; // For smooth dragging above
+
+        .builder-button {
+            color: #fff;
+            background-image: none; // Reset for some themes
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            text-transform: uppercase;
+            height: 40px;
+            width: 170px;
+            padding: 0;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.85;
+                box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 2px rgba(0, 0, 0, .2);
+            }
+
+            &:active {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, .19), 0 6px 6px rgba(0, 0, 0, .1);
+            }
+        }
+    }
+
+    #builder-add-section-button {
+        background-color: $editor-accent;
+    }
+
+    #builder-add-template-button {
+        background-color: $editor-dark;
+        @include margin-start(25px);
+    }
+
+    #builder-add-section-drag-title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: normal;
+        font-style: italic;
+        line-height: 1;
+        color: $editor-darker;
+        margin-top: 15px;
+    }
+
+    #builder-select-preset-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 20px;
+        cursor: pointer;
+        line-height: 1;
+        color: $editor-lightest;
+    }
+
+    #builder-select-preset-title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        font-style: normal;
+        text-transform: uppercase;
+        color: $editor-darker;
+    }
+
+    #builder-select-preset-list {
+        list-style: none;
+        padding: 0 25px;
+        margin: 20px auto 0;
+        overflow: hidden;
+        max-width: 700px;
+
+        .builder-preset {
+            cursor: pointer;
+            margin: 0;
+            padding: 10px;
+            float: $start;
+
+            &:hover {
+                path {
+                    fill: $editor-dark;
+                }
+            }
+
+            &:not(:hover) {
+                path {
+                    fill: $editor-lightest;
+                }
+            }
+
+            svg {
+                height: 50px;
+            }
+        }
+    }
+}
+
+// Preview Mode
+.builder-editor-preview {
+    #builder-add-section,
+    .builder-editor-widget-settings,
+    .builder-element-empty,
+    .builder-element-overlay,
+    .builder-empty,
+    .builder-widget-empty,
+    .column-title {
+        display: none;
+    }
+}

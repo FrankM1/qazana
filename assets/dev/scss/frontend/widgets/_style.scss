@@ -1,0 +1,46 @@
+.builder-widget-grid-type-masonry .builder-portfolio-item {
+    float: left;
+    transform: translateZ(0px);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+
+    > .post-link {
+        pointer-events: none;
+        will-change: transform;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        transition-duration: 0.23s;
+        transition-timing-function: linear;
+        transition-property: transform;
+        background-color: transparent;
+        display: block;
+        height: 100%;
+        position: relative;
+    }
+
+    > .post-link * {
+        pointer-events: none;
+    }
+
+    > .post-link .entry-thumb {
+        will-change: transform;
+        transform-style: preserve-3d;
+        transform: translateZ(0px);
+        backface-visibility: hidden;
+    }
+
+    > .post-link .entry-thumb {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .entry-thumb {
+        position: relative;
+    }
+
+    .entry-thumb img {
+        display: block;
+        min-width: 100%;
+    }
+
+}

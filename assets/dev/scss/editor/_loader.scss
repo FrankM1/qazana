@@ -1,0 +1,85 @@
+
+$loader-size: 5rem;
+$animation-duration: 1.5s;
+
+.builder-loader .cubes {
+	position: relative;
+	display: flex;
+	flex-flow: row wrap;
+	width: $loader-size;
+	height: $loader-size;
+	transition: all 300ms ease-in-out 0s;
+	z-index: 1;
+
+	.cube {
+		width: 33.3333%;
+		height: 33.3333%;
+		background-color: white;
+		animation: cubes $animation-duration infinite ease-in-out;
+
+		&-1 {
+			animation-delay: 0.2s;
+		}
+
+		&-2 {
+			animation-delay: 0.3s;
+		}
+
+		&-3 {
+			animation-delay: 0.4s;
+		}
+
+		&-4 {
+			animation-delay: 0.1s;
+		}
+
+		&-5 {
+			animation-delay: 0.2s;
+		}
+
+		&-6 {
+			animation-delay: 0.3s;
+		}
+
+		&-7 {
+			animation-delay: 0s;
+		}
+
+		&-8 {
+			animation-delay: 0.1s;
+		}
+
+		&-9 {
+			animation-delay: 0.2s;
+		}
+	}
+}
+@keyframes cubes {
+	0%,
+	100%,
+	70% {
+		transform: scale3d(1, 1, 1);
+	}
+
+	35% {
+		transform: scale3d(0, 0, 1);
+	}
+}
+
+.builder-loading-title {
+	animation: load-title $animation-duration linear infinite;
+	@keyframes load-title {
+		0% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: 0.6;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+
+}

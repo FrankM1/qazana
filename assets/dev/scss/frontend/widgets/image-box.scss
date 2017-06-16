@@ -1,0 +1,98 @@
+//
+// Image Box
+//
+.builder-widget-image-box {
+
+	.builder-image-box-content {
+		width: 100%; // Hack for Chrome in flex mode
+	}
+
+	@media (min-width: $screen-md-min) {
+
+		&.builder-position- {
+
+			&left, &right {
+
+				.builder-image-box-wrapper {
+					display: flex;
+				}
+			}
+
+			&right {
+
+				.builder-image-box-wrapper {
+					text-align: $end;
+					flex-direction: getValueByDirection(row-reverse, row);
+				}
+			}
+
+			&left {
+
+				.builder-image-box-wrapper {
+					text-align: $start;
+					flex-direction: getValueByDirection(row, row-reverse);
+				}
+			}
+
+			&top {
+
+				.builder-image-box-img {
+					margin: auto;
+				}
+			}
+		}
+
+		&.builder-vertical-align- {
+
+			&top {
+
+				.builder-image-box-wrapper {
+					align-items: flex-start;
+				}
+			}
+
+			&middle {
+
+				.builder-image-box-wrapper {
+					align-items: center;
+				}
+			}
+
+			&bottom {
+
+				.builder-image-box-wrapper {
+					align-items: flex-end;
+				}
+			}
+		}
+	}
+
+	@media (max-width: $screen-sm-max) {
+
+		// TEMP code to override the image spacing
+		.builder-image-box-img {
+			margin-left: auto !important;
+			margin-right: auto !important;
+			margin-bottom: 15px;
+		}
+	}
+
+	.builder-image-box-img {
+		display: inline-block; // For alignment content
+	}
+
+	.builder-image-box-title {
+
+		a {
+			color: inherit;
+		}
+	}
+
+	.builder-image-box-wrapper {
+		text-align: center;
+	}
+
+	.builder-image-box-description {
+		margin: 0;
+	}
+}

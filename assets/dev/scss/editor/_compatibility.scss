@@ -1,0 +1,36 @@
+// Compatibility builder editor for themes and plugins
+
+body.builder-editor-active {
+
+	// Hack for pojo.me themes
+	&.layout-section {
+		.entry-content {
+			overflow: visible;
+		}
+	}
+
+	// Hack for bluchic.com themes
+	.article {
+		overflow: visible;
+	}
+
+	// Hack for Zerif Pro theme
+	.builder-element-overlay {
+		.builder-editor-element-settings-list {
+			clear: unset;
+		}
+	}
+}
+
+#builder {
+
+	// Fixes Make theme issue
+	.builder-editor-element-settings-list {
+		word-break: normal;
+	}
+
+	// Hack for jQuery Masonry Image Gallery plugin
+	.gallery {
+		opacity: 1;
+	}
+}
