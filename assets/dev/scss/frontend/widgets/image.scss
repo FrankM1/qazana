@@ -3,9 +3,7 @@
 //
 
 .builder-widget-image {
-
 	.builder-image {
-
 		> a,
 		figure > a {
 			display: block; // For alignment image with link
@@ -13,10 +11,10 @@
 
 		img {
 			vertical-align: middle;
+			display: block;
 		}
 
 		&.builder-image-shape- {
-
 			&circle {
 				border-radius: 50%;
 			}
