@@ -43,6 +43,13 @@ abstract class Element_Base {
 	private $_element_scripts = array();
 
 	/**
+	 * Holds the current element stylesheets
+	 *
+	 * @var null|array
+	 */
+	private $_element_stylesheets = array();
+
+	/**
 	 * Holds the current tab while render a set of controls tabs
 	 *
 	 * @var null|array
@@ -489,6 +496,10 @@ abstract class Element_Base {
 
 	public function print_element() {
 
+		if ( ! builder()->editor->is_edit_mode() ) {
+			$this->load_script_dependencies();
+			$this->load_style_dependencies();
+		}
 
 		do_action( 'builder/frontend/' . static::get_type() . '/before_render', $this );
 
@@ -497,8 +508,6 @@ abstract class Element_Base {
 		$this->_print_content();
 
 		$this->after_render();
-
-		$this->load_script_dependencies();
 
 		do_action( 'builder/frontend/' . static::get_type() . '/after_render', $this );
 	}
@@ -739,9 +748,21 @@ abstract class Element_Base {
 		$this->_data = array_merge( $this->get_default_data(), $data );
 		$this->_id = $data['id'];
 		$this->_settings = $this->_get_parsed_settings();
+		$this->add_element_dependencies();
 	}
 
-	public function add_script_dependencies( array $args ) {
+	/**
+	 * Add elements scripts
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_element_dependencies() {}
+
+	public function add_frontend_stylesheets( array $args ) {
+		$this->_element_stylesheets = array_merge( $args, $this->_element_stylesheets );
+	}
+
+	public function add_frontend_scripts( array $args ) {
 		$this->_element_scripts = array_merge( $args, $this->_element_scripts );
 	}
 
@@ -753,6 +774,14 @@ abstract class Element_Base {
 		}
 	}
 
+	public function load_style_dependencies() {
+		if ( ! empty( $this->_element_stylesheets ) && is_array( $this->_element_stylesheets ) ) {
+			foreach ( $this->_element_stylesheets as $key => $value ) {
+				wp_enqueue_style( $value );
+			}
+		}
+	}
+
 	public function __construct( array $data = [], array $args = null ) {
 		if ( $data ) {
 		    $this->_is_type_instance = false;
@@ -760,10 +789,15 @@ abstract class Element_Base {
 		} elseif ( $args ) {
 			$this->_default_args = $args;
 		}
+
 	}
 
 	public function bool( $var ) {
 		$falsey = array( 'false', '0', 'no', 'n' );
         return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
+	}
+
+	public function is_edit_mode() {
+        return builder()->editor->is_edit_mode();
 	}
 }

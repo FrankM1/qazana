@@ -6,21 +6,17 @@ use Builder\Utils;
 class Iconset_FontAwesome extends Base {
 
 	public function get_config() {
-
         return [
         	'title' => __( 'Fontawesome iconset', 'builder' ),
             'name' => 'iconset_fontawesome',
         	'required' => true,
         	'default_activation' => true,
         ];
-
 	}
 
-     public function __construct() {
-
+    public function __construct() {
         $this->_register_icons();
         $this->_add_actions();
-
     }
 
     public function _add_actions() {
@@ -37,9 +33,7 @@ class Iconset_FontAwesome extends Base {
         $iconset = builder()->icons_manager->get_icons_for_controls( $file, 'font-awesome', 'fa fa-' );
 
         builder()->icons_manager->add_iconset( 'font-awesome', $iconset  );
-
     }
-
 
 	public function enqueue_styles() {
 
@@ -52,7 +46,5 @@ class Iconset_FontAwesome extends Base {
 		);
 
         wp_enqueue_style( 'font-awesome' );
-
 	}
-
 }
