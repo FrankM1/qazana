@@ -48,7 +48,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors' => [
-					'{{WRAPPER}} .builder-widget-container .builder-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .builder-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -78,7 +78,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 				'prefix_class' => 'builder-align-',
 				'selectors' => [
-					'{{WRAPPER}} .builder-text-editor' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .builder-wrapper' => 'text-align: {{VALUE}};',
 				],
 			]
 		);

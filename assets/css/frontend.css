@@ -1342,14 +1342,14 @@
 
 .builder-testimonial-wrapper {
   overflow: hidden;
-  text-align: center;
-  margin: 1em; }
+  margin: 1em;
+  text-align: center; }
   .builder-testimonial-wrapper.builder-element-style-2 .builder-testimonial-content {
-    background-color: #f7f7f7;
-    padding: 1.5em; }
+    padding: 1.5em;
+    background-color: #f7f7f7; }
   .builder-testimonial-wrapper.builder-element-style-3 .builder-testimonial-content {
-    background-color: #f7f7f7;
-    padding: 1.5em; }
+    padding: 1.5em;
+    background-color: #f7f7f7; }
     .builder-testimonial-wrapper.builder-element-style-3 .builder-testimonial-content:after {
       border-top: 8px solid #f7f7f7; }
   .builder-testimonial-wrapper.builder-testimonial-text-align-left {
@@ -1360,8 +1360,8 @@
   .builder-testimonial-wrapper.builder-testimonial-text-align-right {
     text-align: right; }
     .builder-testimonial-wrapper.builder-testimonial-text-align-right .builder-testimonial-content:after {
-      left: auto;
       right: 42px;
+      left: auto;
       margin-left: 0; }
   .builder-testimonial-wrapper .builder-testimonial-image-position-aside .builder-testimonial-details,
   .builder-testimonial-wrapper .builder-testimonial-image-position-aside .builder-testimonial-image {
@@ -1371,26 +1371,26 @@
   .builder-testimonial-wrapper .builder-testimonial-image-position-top.builder-testimonial-meta .builder-testimonial-image {
     display: block; }
   .builder-testimonial-wrapper .builder-testimonial-content {
-    font-size: 1em;
+    position: relative;
     margin-bottom: 1em;
-    position: relative; }
+    font-size: 1em; }
     .builder-testimonial-wrapper .builder-testimonial-content:after {
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 8px solid #f7f7f7;
-      border-bottom-width: 0;
+      position: absolute;
+      bottom: -8px;
       left: 50%;
       margin-left: -4px;
-      bottom: -8px;
-      content: '';
       width: 0;
       height: 0;
-      position: absolute; }
+      border-top: 8px solid #f7f7f7;
+      border-right: 8px solid transparent;
+      border-bottom-width: 0;
+      border-left: 8px solid transparent;
+      content: ''; }
   .builder-testimonial-wrapper .builder-testimonial-name {
     line-height: 1.5; }
   .builder-testimonial-wrapper .builder-testimonial-job {
-    font-size: 0.85em;
-    margin-top: 0.3em; }
+    margin-top: 0.3em;
+    font-size: 0.85em; }
   .builder-testimonial-wrapper .builder-testimonial-meta {
     width: 100%;
     line-height: 1; }

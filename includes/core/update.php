@@ -198,9 +198,9 @@ function builder_version_updater() {
     /** 1.0.1 Branch ************************************************************/
 
     // 1.0.1
-    if ( $raw_db_version < 101 ) {
-      builder_upgrade_v101();
-    }
+    //if ( $raw_db_version < 101 ) {
+     // builder_upgrade_v101();
+    //}
 
     // Bump the version
     builder_version_bump();
@@ -230,57 +230,4 @@ function builder_add_activation_redirect() {
 
     // Add the transient to redirect
     set_transient( '_builder_activation_redirect', true, 30 );
-}
-
-/**
- * Upgrade builder database to version 101
- *
- * @return [type] [description]
- */
-function builder_upgrade_v101() {
-
-    global $wpdb;
-
-    // Fix Button widget to new sizes options
-    $post_ids = $wpdb->get_col( $wpdb->prepare( 'SELECT `post_id` FROM %1$s WHERE `meta_key` = \'_builder_version\' AND `meta_value` = \'%2$s\';', $wpdb->postmeta, '102' ) );
-
-    if ( empty( $post_ids ) ) {
-        return;
-    }
-
-    foreach ( $post_ids as $post_id ) {
-
-        $data = builder()->db->get_plain_editor( $post_id );
-        $data = builder()->db->iterate_data( $data, function( $element ) {
-
-        if ( empty( $element['widgetType'] ) ) {
-            return $element;
-        }
-
-        if ( 'button' === $element['widgetType'] ) {
-
-            $size_to_replace = [
-                'small' => 'xs',
-                'medium' => 'sm',
-                'large' => 'md',
-                'xl' => 'lg',
-                'xxl' => 'xl',
-            ];
-
-            if ( ! empty( $element['settings']['size'] ) ) {
-                $old_size = $element['settings']['size'];
-
-            if ( isset( $size_to_replace[ $old_size ] ) ) {
-                $element['settings']['size'] = $size_to_replace[ $old_size ];
-            }
-        }
-
-        }
-
-        return $element;
-
-    });
-
-        builder()->db->save_editor( $post_id, $data );
-    }
 }

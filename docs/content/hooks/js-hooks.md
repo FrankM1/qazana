@@ -3,14 +3,14 @@
 ## Frontend Filters
 
 ### `frontend/handlers/menu_anchor/scroll_top_distance`
-Applied to the Menu Anchor widget, set a custom top distance 
+Applied to the Menu Anchor widget, set a custom top distance
 
 #### Arguments
 
 Argument     | Type        | Description
 ------------ | :---------: | ---------------------------------------------
 `scrollTop`  | *`integer`* | The default scrollTop. It takes only the WordPress Admin Bar in account.
- 
+
 #### Example
 
 ```javascript
@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 
 ```php
 add_action( 'wp_footer', function() {
-	if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
+	if ( ! function_exists( 'builder' ) ) {
 		return;
 	}
 	?>
@@ -51,7 +51,7 @@ Builder frontend is loaded
 
 #### Arguments
 None
- 
+
 #### Example
 
  ```javascript
@@ -59,19 +59,19 @@ builderFrontend.hooks.addAction( 'init', function() {
   // Do something that is based on the builderFrontend object.
 } );
  ```
- 
+
 ### `frontend/element_ready/global`
 Runs on every element (includes sections and columns) when it's ready
- 
+
 #### Arguments
 
 Argument    | Type                                        | Description
 ----------- | :------:                                    | ---------------------------------------------
 `$scope`    | *`The current element wrapped with jQuery`* |
 `$`         | *`The jQuery instanse`*                     |
- 
+
 #### Example
- 
+
 ```javascript
 builderFrontend.hooks.addAction( 'frontend/element_ready/global', function( $scope ) {
 	if ( $scope.data( 'shake' ) ){
@@ -82,16 +82,16 @@ builderFrontend.hooks.addAction( 'frontend/element_ready/global', function( $sco
 
 ### `frontend/element_ready/widget`
 Runs on every widget when it's ready.
- 
+
 #### Arguments
 
 Argument    | Type                                        | Description
 ----------- | :------:                                    | ---------------------------------------------
 `$scope`    | *`The current element wrapped with jQuery`* |
 `$`         | *`The jQuery instanse`*                     |
- 
+
 #### Example
- 
+
 ```javascript
 builderFrontend.hooks.addAction( 'frontend/element_ready/widget', function( $scope ) {
 	if ( $scope.data( 'shake' ) ){
@@ -102,16 +102,16 @@ builderFrontend.hooks.addAction( 'frontend/element_ready/widget', function( $sco
 
 ### `frontend/element_ready/{elementType.skinName}`
 Runs on a specific element type and it's skin when it's ready.
- 
+
 #### Arguments
 
 Argument    | Type                                        | Description
 ----------- | :------:                                    | ---------------------------------------------
 `$scope`    | *`The current element wrapped with jQuery`* |
 `$`         | *`The jQuery instanse`*                     |
- 
+
 #### Example
- 
+
 ```javascript
 // For a widget without a skin (skin = default)
 builderFrontend.hooks.addAction( 'frontend/element_ready/image.default', function( $scope ) {
@@ -124,7 +124,7 @@ builderFrontend.hooks.addAction( 'frontend/element_ready/image.default', functio
 builderFrontend.hooks.addAction( 'frontend/element_ready/google-maps.satellite', function( $scope ) {
 	var $iframe = $scope.find( 'iframe' ),
 		iframeUrl = $iframe.attr( 'src' );
-		
+
 		$iframe.attr( 'src', iframeUrl + '&maptype=satellite' );
 	}
 } );
@@ -142,7 +142,7 @@ Argument     | Type       | Description
 `panel`      | *`object`* | The Panel object
 `model`      | *`object`* | The Backbone model instance
 `view`       | *`object`* | The Backbone view instance
- 
+
 #### Example
 
  ```javascript
@@ -170,7 +170,7 @@ Argument     | Type       | Description
 `panel`      | *`object`* | The Panel object
 `model`      | *`object`* | The Backbone model instance
 `view`       | *`object`* | The Backbone view instance
- 
+
 #### Example
 
  ```javascript

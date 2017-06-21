@@ -411,7 +411,6 @@ class Element_Column extends Element_Base {
 			$this->add_render_attribute( 'wrapper', 'class', 'builder-column-animated' );
 			$this->add_render_attribute( 'wrapper', 'data-animation-in', $settings['_animation_in'] );
 			$this->add_render_attribute( 'wrapper', 'data-animation-out', $settings['_animation_in'] );
-			$this->add_render_attribute( 'wrapper', 'data-scroll', '"toggle(.column-animation-in-play, .column-animation-out-play)"' );
 		}
 
 		if ( ! empty( $settings['hover_animation'] ) ) {
