@@ -9,10 +9,10 @@
     width: 100%; }
 
 #wpadminbar #wp-admin-bar-builder_edit_page > .ab-item::before {
+  margin-top: 5px;
   content: "\e800";
-  font-family: eicon;
   font-size: 12px;
-  margin-top: 5px; }
+  font-family: eicon; }
 
 .builder {
   -webkit-hyphens: manual;
@@ -29,8 +29,8 @@
     margin: 0;
     background-color: transparent; }
   .builder img {
-    height: auto;
     max-width: 100%;
+    height: auto;
     border: none;
     border-radius: 0;
     -webkit-box-shadow: none;
@@ -41,42 +41,42 @@
   .builder iframe,
   .builder object,
   .builder video {
+    margin: 0;
     max-width: 100%;
     width: 100%;
-    margin: 0;
     line-height: 1; }
   .builder .builder-custom-embed {
     line-height: 0; }
   .builder .builder-background-video-container {
-    height: 100%;
-    width: 100%;
+    position: absolute;
     top: 0;
     left: 0;
-    position: absolute;
+    z-index: 0;
     overflow: hidden;
-    z-index: 0; }
+    width: 100%;
+    height: 100%; }
   .builder .builder-background-video {
     position: absolute;
-    max-width: none;
     top: 50%;
     left: 50%;
+    max-width: none;
     -webkit-transform: translateY(-50%) translateX(-50%);
             transform: translateY(-50%) translateX(-50%); }
   .builder .builder-html5-video {
     -o-object-fit: cover;
        object-fit: cover; }
   .builder .builder-background-overlay {
-    height: 100%;
-    width: 100%;
+    position: absolute;
     top: 0;
     left: 0;
-    position: absolute; }
+    width: 100%;
+    height: 100%; }
   .builder .builder-invisible {
     visibility: hidden; }
 
 .builder-align-center {
-  text-align: center;
-  margin: 0 auto; }
+  margin: 0 auto;
+  text-align: center; }
   .builder-align-center .builder-wrapper {
     margin: 0 auto; }
   .builder-align-center .builder-button {
@@ -710,8 +710,8 @@
 .builder-widget-image .builder-image figure > a {
   display: block; }
 .builder-widget-image .builder-image img {
-  vertical-align: middle;
-  display: block; }
+  display: inline-block;
+  vertical-align: middle; }
 .builder-widget-image .builder-image.builder-image-shape-circle {
   border-radius: 50%; }
 

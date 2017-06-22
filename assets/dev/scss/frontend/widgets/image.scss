@@ -1,23 +1,26 @@
 //
+
 // Image
+
 //
 
 .builder-widget-image {
-	.builder-image {
-		> a,
-		figure > a {
-			display: block; // For alignment image with link
-		}
+  .builder-image {
+    > a,
+    figure > a {
+      display : block;
+      // For alignment image with link
+    }
 
-		img {
-			vertical-align: middle;
-			display: block;
-		}
+    img {
+      display        : inline-block;
+      vertical-align : middle;
+    }
 
-		&.builder-image-shape- {
-			&circle {
-				border-radius: 50%;
-			}
-		}
-	}
+    &.builder-image-shape- {
+      &circle {
+        border-radius : 50%;
+      }
+    }
+  }
 }
