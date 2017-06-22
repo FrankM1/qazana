@@ -359,6 +359,7 @@ module.exports = function( grunt ) {
                     '!bower.json',
                     '!bower_components/**',
                     '!vendor/**',
+                    '!docs/**',
 
                     '!assets/dev/**',
                     '!assets/**/*.map',
