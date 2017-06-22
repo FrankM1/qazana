@@ -47,16 +47,7 @@ if ( ! version_compare( PHP_VERSION, '5.4', '>=' ) ) {
     add_action( 'admin_notices', 'builder_fail_php_version' );
 } else {
     require( plugin_dir_path( BUILDER__FILE__ ) . 'includes/plugin.php' );
-    require( plugin_dir_path( BUILDER__FILE__ ) . 'vendor/YahnisElsts/plugin-update-checker/plugin-update-checker.php' );
 }
-
-$UpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://github.com/FrankM1/builder',
-    __FILE__,
-    'builder'
-);
-
-$UpdateChecker->setBranch('master');
 
 /**
  * Show in WP Dashboard notice about the plugin is not activated.

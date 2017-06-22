@@ -345,16 +345,20 @@ module.exports = function( grunt ) {
 					'!.jshintignore',
 					'!.jshintrc',
 					'!ruleset.xml',
+                    '!phpcs.ruleset.xml',
 					'!README.md',
 					'!phpunit.xml',
-					'!vendor/**',
 					'!Gruntfile.js',
+                    '!gulp.js',
 					'!package.json',
 					'!npm-debug.log',
 					'!composer.json',
 					'!composer.lock',
 					'!.gitignore',
 					'!.gitmodules',
+                    '!bower.json',
+                    '!bower_components/**',
+                    '!vendor/**',
 
                     '!assets/dev/**',
                     '!assets/**/*.map',
@@ -363,6 +367,23 @@ module.exports = function( grunt ) {
                 expand: true,
                 dest: 'build/'
             }
+        },
+
+        // make a zipfile
+        compress: {
+          main: {
+            options: {
+              archive: 'builder.zip'
+            },
+            files: [
+                {
+                    expand: true,
+                    cwd: 'build/',
+                    src: ['**'],
+                    dest: 'builder/'
+                } // makes all src relative to cwd
+            ]
+          }
         },
 
         clean: {
@@ -379,6 +400,13 @@ module.exports = function( grunt ) {
         'scripts',
         'styles',
         'watch'
+    ] );
+
+    //Default task above without the watch task
+    grunt.registerTask( 'compile-build', [
+        'i18n',
+        'scripts',
+        'styles'
     ] );
 
     grunt.registerTask( 'i18n', [
@@ -398,15 +426,16 @@ module.exports = function( grunt ) {
     ] );
 
     grunt.registerTask( 'build', [
-        'default',
+        'compile-build',
         'usebanner',
         'clean',
         'copy',
+        'compress',
         'default' // Remove banners for GitHub
     ] );
 
     grunt.registerTask( 'publish', [
-        'default',
+        'compile-build',
         'bumpup',
         'replace',
         'shell:git_add_all',
