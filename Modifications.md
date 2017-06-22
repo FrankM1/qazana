@@ -1,4 +1,4 @@
-Based on builder 0.9.3
+Based on the Elementor plugin
 
 1. Added action to widget manager
 2. Added action for adding new css and js in editor

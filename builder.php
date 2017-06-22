@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Builder: A Frontend page builder for WordPress
- * Description: The most advanced frontend drag & drop page builder. Create high-end, pixel perfect websites at record speeds. Any theme, any page, any design.
- * Plugin URI: https://radiumthemes.com/
+ * Description: Front-end page Builder for WordPress with live drag and drop editing. Build high quality responsive websites and landing pages visually. Any theme, anywhere.
+ * Plugin URI: https://radiumthemes.com/builder
  * Author: RadiumThemes.com
  * Version: 1.0.0
  * Author URI: https://radiumthemes.com/
