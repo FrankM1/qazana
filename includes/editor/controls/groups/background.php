@@ -13,7 +13,6 @@ class Group_Control_Background extends Group_Base_Control {
 		return 'background';
 	}
 
-
 	public static function get_background_types() {
 		if ( null === self::$background_types ) {
 			self::$background_types = self::init_background_types();
@@ -264,16 +263,16 @@ class Group_Control_Background extends Group_Base_Control {
 		];
 
 		$fields['video_source'] = [
-			'label' 		=> __( 'Video Source', 'energia' ),
+			'label' 		=> __( 'Video Source', 'qazana' ),
 			'type' 			=> Controls_Manager::CHOOSE,
 			'default'		=> 'self-hosted',
 			'options' 		=> [
 				'youtube' 		=> [
-					'title' => __( 'Youtube', 'energia' ),
+					'title' => __( 'Youtube', 'qazana' ),
 					'icon' 	=> 'fa fa-youtube',
 				],
 				'self_hosted' 	=> [
-					'title' => __( 'Self Hosted', 'energia' ),
+					'title' => __( 'Self Hosted', 'qazana' ),
 					'icon' 	=> 'fa fa-play',
 				],
 			],

@@ -9,13 +9,13 @@ class Admin_Api {
      * [$api_info_url description]
      * @var string
      */
-    public $api_info_url = 'https://api.radiumthemes.com/api/v1/builder/updates/';
+    public $api_info_url = 'https://api.radiumthemes.com/api/v1/qazana/updates/';
 
     /**
      * [$api_feedback_url description]
      * @var string
      */
-    private $api_feedback_url = 'https://api.radiumthemes.com/api/v1/builder/feedback/';
+    private $api_feedback_url = 'https://api.radiumthemes.com/api/v1/qazana/feedback/';
 
     public function send_feedback( $feedback_key, $feedback_text ) {
 

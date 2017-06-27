@@ -3,12 +3,12 @@ Contributors: frankgitonga, radiumthemes
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8T9VMQZ8URY4
 License: GPLv2+
 License URI: https://www.gnu.org/licenses/gpl.html
-Tags: page qazana, editor, landing page, drag-and-drop, qazana, visual composer, visual editor, visual qazana, wysiwyg, design, website qazana, landing page qazana, front-end qazana, frontend editor, frontend qazana, theme qazana, site-qazana, layout qazana, drag-and-drop, qazana, editor, responsive, mobile, layout, front end, frontend, Page Layout, squeeze page, page qazana plugin, drag-n-drop page qazana
+Tags: page qazana, editor, landing page, drag-and-drop, builder, visual composer, visual editor, visual builder, wysiwyg, design, website builder, landing page builder, front-end builder, frontend editor, frontend builder, theme builder, site-builder, layout builder, drag-and-drop, builder, editor, responsive, mobile, layout, front end, frontend, Page Layout, squeeze page, page builder plugin, drag-n-drop page builder, qazana
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
-Qazana is the ultimate page layout qazana for WordPress.
+Qazana is the ultimate page layout builder for WordPress.
 
 == Description ==
 
@@ -17,7 +17,7 @@ Qazana allows you to create unique and high quality page layouts in WordPress.
 The plugin uses best practices to deliver great looking pages to your users. Our main focus with this plugin is the ability to create very high quality designs and to provide the best integration with themes and plugins.
 
 > <strong>Use Qazana in your premium themes</strong><br>
-> Qazana is an open source page qazana. You can use it to build any free or premium theme. It's easy to ship your designs with Qazana and create new additional modules.
+> Qazana is an open source page builder. You can use it to build any free or premium theme. It's easy to ship your designs with Qazana and create new additional modules.
 
 = Features =
 * Frontend live editing.
@@ -33,7 +33,7 @@ The plugin uses best practices to deliver great looking pages to your users. Our
 * Custom page fonts
 
 = Well Integrated With WordPress =
-Qazana works with any standard compliant WordPress theme. It's fully compatible with other plugins like Yoast WP SEO or contact form qazanas.
+Qazana works with any standard compliant WordPress theme. It's fully compatible with other plugins like Yoast WP SEO or contact form builders.
 
 = Export/Import Sections, Layouts or whole Pages =
 Export any page section or the whole page. Reuse pages, sections or widgets you created.

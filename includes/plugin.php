@@ -206,8 +206,8 @@ class Plugin {
 
         /* Versions **********************************************************/
 
-        $this->version = '1.0.0';
-        $this->db_version = '100';
+        $this->version = '1.0.5';
+        $this->db_version = '106';
 
         /* Paths *************************************************************/
 
@@ -292,6 +292,10 @@ class Plugin {
     public function init() {
 
         $cpt_support = get_option( 'qazana_cpt_support', [ 'page', 'post' ] );
+
+        if ( empty( $cpt_support ) ) {
+            $cpt_support = [ 'page', 'post' ];
+        }
 
         foreach ( $cpt_support as $cpt_slug ) {
             add_post_type_support( $cpt_slug, 'qazana', 'revisions' );
