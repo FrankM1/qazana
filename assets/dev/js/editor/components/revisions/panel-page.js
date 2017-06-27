@@ -1,15 +1,15 @@
 module.exports = Marionette.CompositeView.extend( {
-	id: 'builder-panel-revisions',
+	id: 'qazana-panel-revisions',
 
-	template: '#tmpl-builder-panel-revisions',
+	template: '#tmpl-qazana-panel-revisions',
 
 	childView: require( './view' ),
 
-	childViewContainer: '#builder-revisions-list',
+	childViewContainer: '#qazana-revisions-list',
 
 	ui: {
-		discard: '.builder-panel-scheme-discard .builder-button',
-		apply: '.builder-panel-scheme-save .builder-button'
+		discard: '.qazana-panel-scheme-discard .qazana-button',
+		apply: '.qazana-panel-scheme-save .qazana-button'
 	},
 
 	events: {
@@ -26,14 +26,14 @@ module.exports = Marionette.CompositeView.extend( {
 	currentPreviewItem: null,
 
 	initialize: function() {
-		this.listenTo( builder.channels.editor, 'saved', this.onEditorSaved );
+		this.listenTo( qazana.channels.editor, 'saved', this.onEditorSaved );
 	},
 
 	getRevisionViewData: function( revisionView ) {
 		var self = this,
 			revisionID = revisionView.model.get( 'id' );
 
-		self.jqueryXhr = builder.ajax.send( 'get_revision_data', {
+		self.jqueryXhr = qazana.ajax.send( 'get_revision_data', {
 			data: {
 				id: revisionID
 			},
@@ -44,12 +44,12 @@ module.exports = Marionette.CompositeView.extend( {
 
 				self.jqueryXhr = null;
 
-				revisionView.$el.removeClass( 'builder-revision-item-loading' );
+				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				self.enterReviewMode();
 			},
 			error: function( data ) {
-				revisionView.$el.removeClass( 'builder-revision-item-loading' );
+				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				if ( 'abort' === self.jqueryXhr.statusText ) {
 					return;
@@ -69,7 +69,7 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	setEditorData: function( data ) {
-		var collection = builder.getRegion( 'sections' ).currentView.collection;
+		var collection = qazana.getRegion( 'sections' ).currentView.collection;
 
 		collection.reset( data );
 	},
@@ -77,9 +77,9 @@ module.exports = Marionette.CompositeView.extend( {
 	deleteRevision: function( revisionView ) {
 		var self = this;
 
-		revisionView.$el.addClass( 'builder-revision-item-loading' );
+		revisionView.$el.addClass( 'qazana-revision-item-loading' );
 
-		builder.revisions.deleteRevision( revisionView.model, {
+		qazana.revisions.deleteRevision( revisionView.model, {
 			success: function() {
 				if ( revisionView.model.get( 'id' ) === self.currentPreviewId ) {
 					self.onDiscardClick();
@@ -88,7 +88,7 @@ module.exports = Marionette.CompositeView.extend( {
 				self.currentPreviewId = null;
 			},
 			error: function( data ) {
-				revisionView.$el.removeClass( 'builder-revision-item-loading' );
+				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				alert( 'An error occurred' );
 			}
@@ -96,11 +96,11 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	enterReviewMode: function() {
-		builder.changeEditMode( 'review' );
+		qazana.changeEditMode( 'review' );
 	},
 
 	exitReviewMode: function() {
-		builder.changeEditMode( 'edit' );
+		qazana.changeEditMode( 'edit' );
 	},
 
 	navigate: function( reverse ) {
@@ -125,7 +125,7 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	onApplyClick: function() {
-		builder.getPanelView().getChildView( 'footer' )._publishBuilder();
+		qazana.getPanelView().getChildView( 'footer' )._publishQazana();
 
 		this.isRevisionApplied = true;
 
@@ -133,9 +133,9 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	onDiscardClick: function() {
-		this.setEditorData( builder.config.data );
+		this.setEditorData( qazana.config.data );
 
-		builder.setFlagEditorChange( this.isRevisionApplied );
+		qazana.setFlagEditorChange( this.isRevisionApplied );
 
 		this.isRevisionApplied = false;
 
@@ -146,7 +146,7 @@ module.exports = Marionette.CompositeView.extend( {
 		this.exitReviewMode();
 
 		if ( this.currentPreviewItem ) {
-			this.currentPreviewItem.$el.removeClass( 'builder-revision-current-preview' );
+			this.currentPreviewItem.$el.removeClass( 'qazana-revision-current-preview' );
 		}
 	},
 
@@ -165,7 +165,7 @@ module.exports = Marionette.CompositeView.extend( {
 
 		this.currentPreviewItem = this.children.findByModelCid( currentPreviewModel.cid );
 
-		this.currentPreviewItem.$el.addClass( 'builder-revision-current-preview' );
+		this.currentPreviewItem.$el.addClass( 'qazana-revision-current-preview' );
 	},
 
 	onChildviewDetailsAreaClick: function( childView ) {
@@ -181,13 +181,13 @@ module.exports = Marionette.CompositeView.extend( {
 		}
 
 		if ( self.currentPreviewItem ) {
-			self.currentPreviewItem.$el.removeClass( 'builder-revision-current-preview' );
+			self.currentPreviewItem.$el.removeClass( 'qazana-revision-current-preview' );
 		}
 
-		childView.$el.addClass( 'builder-revision-current-preview builder-revision-item-loading' );
+		childView.$el.addClass( 'qazana-revision-current-preview qazana-revision-item-loading' );
 
-		if ( builder.isEditorChanged() && null === self.currentPreviewId ) {
-			builder.saveEditor( {
+		if ( qazana.isEditorChanged() && null === self.currentPreviewId ) {
+			qazana.saveEditor( {
 				status: 'autosave',
 				save_state: 'save',
 				onSuccess: function() {
@@ -208,12 +208,12 @@ module.exports = Marionette.CompositeView.extend( {
 			type = childView.model.get( 'type' ),
 			id = childView.model.get( 'id' );
 
-		var removeDialog = builder.dialogsManager.createWidget( 'confirm', {
-			message: builder.translate( 'dialog_confirm_delete', [ type ] ),
-			headerMessage: builder.translate( 'delete_element', [ type ] ),
+		var removeDialog = qazana.dialogsManager.createWidget( 'confirm', {
+			message: qazana.translate( 'dialog_confirm_delete', [ type ] ),
+			headerMessage: qazana.translate( 'delete_element', [ type ] ),
 			strings: {
-				confirm: builder.translate( 'delete' ),
-				cancel: builder.translate( 'cancel' )
+				confirm: qazana.translate( 'delete' ),
+				cancel: qazana.translate( 'cancel' )
 			},
 			defaultOption: 'confirm',
 			onConfirm: function() {

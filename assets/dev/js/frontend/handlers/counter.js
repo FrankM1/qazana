@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	builderFrontend.utils.waypoint( $scope.find( '.builder-counter-number' ), function() {
+	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
 		var $number = $( this ),
 			data = $number.data();
 

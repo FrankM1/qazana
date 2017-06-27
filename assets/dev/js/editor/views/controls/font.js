@@ -1,10 +1,10 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlFontItemView;
 
 ControlFontItemView = ControlBaseItemView.extend( {
 	onReady: function() {
 		this.ui.select.select2( {
-			dir: builder.config.is_rtl ? 'rtl' : 'ltr'
+			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
 		} );
 	},
 

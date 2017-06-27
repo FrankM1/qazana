@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Alert extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Alert', 'builder' );
+		return __( 'Alert', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,21 +25,21 @@ class Widget_Alert extends Widget_Base {
 		$this->start_controls_section(
 			'section_alert',
 			[
-				'label' => __( 'Alert', 'builder' ),
+				'label' => __( 'Alert', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'alert_type',
 			[
-				'label' => __( 'Type', 'builder' ),
+				'label' => __( 'Type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'info',
 				'options' => [
-					'info' => __( 'Info', 'builder' ),
-					'success' => __( 'Success', 'builder' ),
-					'warning' => __( 'Warning', 'builder' ),
-					'danger' => __( 'Danger', 'builder' ),
+					'info' => __( 'Info', 'qazana' ),
+					'success' => __( 'Success', 'qazana' ),
+					'warning' => __( 'Warning', 'qazana' ),
+					'danger' => __( 'Danger', 'qazana' ),
 				],
 			]
 		);
@@ -47,10 +47,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'alert_title',
 			[
-				'label' => __( 'Title & Description', 'builder' ),
+				'label' => __( 'Title & Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Your Title', 'builder' ),
-				'default' => __( 'This is Alert', 'builder' ),
+				'placeholder' => __( 'Your Title', 'qazana' ),
+				'default' => __( 'This is Alert', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -58,10 +58,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'alert_description',
 			[
-				'label' => __( 'Content', 'builder' ),
+				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'placeholder' => __( 'Your Description', 'builder' ),
-				'default' => __( 'I am description. Click the edit button to change this text.', 'builder' ),
+				'placeholder' => __( 'Your Description', 'qazana' ),
+				'default' => __( 'I am description. Click the edit button to change this text.', 'qazana' ),
 				'separator' => 'none',
 				'show_label' => false,
 			]
@@ -70,12 +70,12 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'show_dismiss',
 			[
-				'label' => __( 'Dismiss Button', 'builder' ),
+				'label' => __( 'Dismiss Button', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'show',
 				'options' => [
-					'show' => __( 'Show', 'builder' ),
-					'hide' => __( 'Hide', 'builder' ),
+					'show' => __( 'Show', 'qazana' ),
+					'hide' => __( 'Hide', 'qazana' ),
 				],
 			]
 		);
@@ -83,7 +83,7 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -94,7 +94,7 @@ class Widget_Alert extends Widget_Base {
 		$this->start_controls_section(
 			'section_type',
 			[
-				'label' => __( 'Alert Type', 'builder' ),
+				'label' => __( 'Alert Type', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -102,10 +102,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'background',
 			[
-				'label' => __( 'Background Color', 'builder' ),
+				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-alert' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-alert' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -113,10 +113,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'border_color',
 			[
-				'label' => __( 'Border Color', 'builder' ),
+				'label' => __( 'Border Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-alert' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-alert' => 'border-color: {{VALUE}};',
 				],
 			]
 		);
@@ -124,7 +124,7 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'border_left-width',
 			[
-				'label' => __( 'Left Border Width', 'builder' ),
+				'label' => __( 'Left Border Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -133,7 +133,7 @@ class Widget_Alert extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-alert' => 'border-left-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-alert' => 'border-left-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -143,7 +143,7 @@ class Widget_Alert extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -151,10 +151,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-alert-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-alert-title' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -163,7 +163,7 @@ class Widget_Alert extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'alert_title',
-				'selector' => '{{WRAPPER}} .builder-alert-title',
+				'selector' => '{{WRAPPER}} .qazana-alert-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
@@ -173,7 +173,7 @@ class Widget_Alert extends Widget_Base {
 		$this->start_controls_section(
 			'section_description',
 			[
-				'label' => __( 'Description', 'builder' ),
+				'label' => __( 'Description', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -181,10 +181,10 @@ class Widget_Alert extends Widget_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-alert-description' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-alert-description' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -193,7 +193,7 @@ class Widget_Alert extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'alert_description',
-				'selector' => '{{WRAPPER}} .builder-alert-description',
+				'selector' => '{{WRAPPER}} .qazana-alert-description',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
@@ -210,18 +210,18 @@ class Widget_Alert extends Widget_Base {
 		}
 
 		if ( ! empty( $settings['alert_type'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'builder-alert builder-alert-' . $settings['alert_type'] );
+			$this->add_render_attribute( 'wrapper', 'class', 'qazana-alert qazana-alert-' . $settings['alert_type'] );
 		}
 
 		echo '<div ' . $this->get_render_attribute_string( 'wrapper' ) . ' role="alert">';
-		$html = sprintf( '<span class="builder-alert-title">%1$s</span>', $settings['alert_title'] );
+		$html = sprintf( '<span class="qazana-alert-title">%1$s</span>', $settings['alert_title'] );
 
 		if ( ! empty( $settings['alert_description'] ) ) {
-			$html .= sprintf( '<span class="builder-alert-description">%s</span>', $settings['alert_description'] );
+			$html .= sprintf( '<span class="qazana-alert-description">%s</span>', $settings['alert_description'] );
 		}
 
 		if ( ! empty( $settings['show_dismiss'] ) && 'show' === $settings['show_dismiss'] ) {
-			$html .= '<button type="button" class="builder-alert-dismiss">X</button></div>';
+			$html .= '<button type="button" class="qazana-alert-dismiss">X</button></div>';
 		}
 
 		echo $html;
@@ -230,16 +230,16 @@ class Widget_Alert extends Widget_Base {
 	protected function _content_template() {
 		?>
 		<#
-		var html = '<div class="builder-alert builder-alert-' + settings.alert_type + '" role="alert">';
+		var html = '<div class="qazana-alert qazana-alert-' + settings.alert_type + '" role="alert">';
 		if ( '' !== settings.title ) {
-			html += '<span class="builder-alert-title">' + settings.alert_title + '</span>';
+			html += '<span class="qazana-alert-title">' + settings.alert_title + '</span>';
 
 			if ( '' !== settings.description ) {
-				html += '<span class="builder-alert-description">' + settings.alert_description + '</span>';
+				html += '<span class="qazana-alert-description">' + settings.alert_description + '</span>';
 			}
 
 			if ( 'show' === settings.show_dismiss ) {
-				html += '<button type="button" class="builder-alert-dismiss">X</button></div>';
+				html += '<button type="button" class="qazana-alert-dismiss">X</button></div>';
 			}
 
 			print( html );

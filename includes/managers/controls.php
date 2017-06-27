@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -69,14 +69,14 @@ class Controls_Manager {
 	private static function _get_available_tabs_controls() {
 		if ( ! self::$_available_tabs_controls ) {
 			self::$_available_tabs_controls = [
-				self::TAB_CONTENT => __( 'Content', 'builder' ),
-				self::TAB_STYLE => __( 'Style', 'builder' ),
-				self::TAB_ADVANCED => __( 'Advanced', 'builder' ),
-				self::TAB_RESPONSIVE => __( 'Responsive', 'builder' ),
-				self::TAB_LAYOUT => __( 'Layout', 'builder' ),
+				self::TAB_CONTENT => __( 'Content', 'qazana' ),
+				self::TAB_STYLE => __( 'Style', 'qazana' ),
+				self::TAB_ADVANCED => __( 'Advanced', 'qazana' ),
+				self::TAB_RESPONSIVE => __( 'Responsive', 'qazana' ),
+				self::TAB_LAYOUT => __( 'Layout', 'qazana' ),
 			];
 
-			self::$_available_tabs_controls = apply_filters( 'builder/controls/get_available_tabs_controls', self::$_available_tabs_controls );
+			self::$_available_tabs_controls = apply_filters( 'qazana/controls/get_available_tabs_controls', self::$_available_tabs_controls );
 		}
 
 		return self::$_available_tabs_controls;
@@ -86,9 +86,9 @@ class Controls_Manager {
 	 * @since 1.0.0
 	 */
 	public function register_controls() {
-		require( builder()->includes_dir  . 'editor/controls/base.php' );
-		require( builder()->includes_dir  . 'editor/controls/base-multiple.php' );
-		require( builder()->includes_dir  . 'editor/controls/base-units.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-multiple.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-units.php' );
 
 		$available_controls = [
 			self::TEXT,
@@ -135,7 +135,7 @@ class Controls_Manager {
 
 		foreach ( $available_controls as $control_id ) {
 			$control_filename = str_replace( '_', '-', $control_id );
-			$control_filename =  builder()->includes_dir . "editor/controls/{$control_filename}.php";
+			$control_filename =  qazana()->includes_dir . "editor/controls/{$control_filename}.php";
 			require( $control_filename );
 
 			$class_name = __NAMESPACE__ . '\Control_' . ucwords( $control_id );
@@ -143,16 +143,16 @@ class Controls_Manager {
 		}
 
 		// Group Controls
-		require( builder()->includes_dir  . 'editor/interfaces/group-control.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/base.php' );
+		require( qazana()->includes_dir  . 'editor/interfaces/group-control.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/base.php' );
 
-		require( builder()->includes_dir  . 'editor/controls/groups/background.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/border.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/typography.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/image-size.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/animations.php' );
-		require( builder()->includes_dir  . 'editor/controls/groups/icon.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/background.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/border.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/typography.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/image-size.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
 
 		$this->_control_groups['background'] = new Group_Control_Background();
 		$this->_control_groups['border']     = new Group_Control_Border();
@@ -210,7 +210,7 @@ class Controls_Manager {
 	 * @since 1.0.0
 	 * @param $control_id
 	 *
-	 * @return bool|\Builder\Base_Control
+	 * @return bool|\Qazana\Base_Control
 	 */
 	public function get_control( $control_id ) {
 		$controls = $this->get_controls();
@@ -383,7 +383,7 @@ class Controls_Manager {
 		$stack = $this->_controls_stack[ $stack_id ];
 
 		if ( 'widget' === $element->get_type() && 'common' !== $stack_id ) {
-			$common_widget = builder()->widgets_manager->get_widget_types( 'common' );
+			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
 
 			$stack['controls'] = array_merge( $stack['controls'], $common_widget->get_controls() );
 

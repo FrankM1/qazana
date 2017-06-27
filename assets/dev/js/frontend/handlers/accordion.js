@@ -17,8 +17,8 @@ var activateSection = function( sectionIndex, $accordionTitles ) {
 };
 
 module.exports = function( $scope, $ ) {
-	var defaultActiveSection = $scope.find( '.builder-accordion' ).data( 'active-section' ),
-		$accordionTitles = $scope.find( '.builder-accordion-title' );
+	var defaultActiveSection = $scope.find( '.qazana-accordion' ).data( 'active-section' ),
+		$accordionTitles = $scope.find( '.qazana-accordion-title' );
 
 	if ( ! defaultActiveSection ) {
 		defaultActiveSection = 1;

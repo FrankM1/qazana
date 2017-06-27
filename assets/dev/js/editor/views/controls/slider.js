@@ -1,11 +1,11 @@
-var ControlBaseUnitsItemView = require( 'builder-views/controls/base-units' ),
+var ControlBaseUnitsItemView = require( 'qazana-views/controls/base-units' ),
 	ControlSliderItemView;
 
 ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseUnitsItemView.prototype.ui.apply( this, arguments );
 
-		ui.slider = '.builder-slider';
+		ui.slider = '.qazana-slider';
 
 		return ui;
 	},

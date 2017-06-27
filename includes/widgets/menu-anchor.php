@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Menu Anchor', 'builder' );
+		return __( 'Menu Anchor', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,25 +25,25 @@ class Widget_Menu_Anchor extends Widget_Base {
 		$this->start_controls_section(
 			'section_anchor',
 			[
-				'label' => __( 'Anchor', 'builder' ),
+				'label' => __( 'Anchor', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'anchor_description',
 			[
-				'raw' => __( 'This ID will be the CSS ID you will have to use in your own page, Without #.', 'builder' ),
+				'raw' => __( 'This ID will be the CSS ID you will have to use in your own page, Without #.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
-				'classes' => 'builder-descriptor',
+				'classes' => 'qazana-descriptor',
 			]
 		);
 
 		$this->add_control(
 			'anchor',
 			[
-				'label' => __( 'The ID of Menu Anchor.', 'builder' ),
+				'label' => __( 'The ID of Menu Anchor.', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'For Example: About', 'builder' ),
+				'placeholder' => __( 'For Example: About', 'qazana' ),
 	            'label_block' => true,
 			]
 		);
@@ -58,7 +58,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 			$this->add_render_attribute( 'inner', 'id', $anchor );
 		}
 
-		$this->add_render_attribute( 'inner', 'class', 'builder-menu-anchor' );
+		$this->add_render_attribute( 'inner', 'class', 'qazana-menu-anchor' );
 		?>
 		<div <?php echo $this->get_render_attribute_string( 'inner' ); ?>></div>
 		<?php
@@ -66,7 +66,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="builder-menu-anchor"{{{ settings.anchor ? ' id="' + settings.anchor + '"' : '' }}}></div>
+		<div class="qazana-menu-anchor"{{{ settings.anchor ? ' id="' + settings.anchor + '"' : '' }}}></div>
 		<?php
 	}
 }

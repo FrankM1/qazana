@@ -1,13 +1,13 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
-use Builder\Utils;
+use Qazana\Utils;
 
 class Iconset_FontAwesome extends Base {
 
 	public function get_config() {
         return [
-        	'title' => __( 'Fontawesome iconset', 'builder' ),
+        	'title' => __( 'Fontawesome iconset', 'qazana' ),
             'name' => 'iconset_fontawesome',
         	'required' => true,
         	'default_activation' => true,
@@ -21,18 +21,18 @@ class Iconset_FontAwesome extends Base {
 
     public function _add_actions() {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-        add_action( 'builder/editor/before_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+        add_action( 'qazana/editor/before_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 	}
 
     private function _register_icons() {
 
         $config = $this->get_config();
 
-        $file = builder()->extensions_loader->locate_widget( $config['name'] . '/icons/font-awesome.json');
+        $file = qazana()->extensions_loader->locate_widget( $config['name'] . '/icons/font-awesome.json');
 
-        $iconset = builder()->icons_manager->get_icons_for_controls( $file, 'font-awesome', 'fa fa-' );
+        $iconset = qazana()->icons_manager->get_icons_for_controls( $file, 'font-awesome', 'fa fa-' );
 
-        builder()->icons_manager->add_iconset( 'font-awesome', $iconset  );
+        qazana()->icons_manager->add_iconset( 'font-awesome', $iconset  );
     }
 
 	public function enqueue_styles() {

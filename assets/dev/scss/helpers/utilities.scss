@@ -2,7 +2,7 @@
 // Utilities
 //
 
-.builder-screen-only,
+.qazana-screen-only,
 .screen-reader-text, // wp - common.css
 .screen-reader-text span, // wp - common.css
 .ui-helper-hidden-accessible // wp - common.css
@@ -17,7 +17,7 @@
 	border: 0;
 }
 
-.builder-clearfix:after{
+.qazana-clearfix:after{
 	content: '';
 	display: block;
 	clear: both;

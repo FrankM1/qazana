@@ -46,8 +46,8 @@ body {
 		}
 	}
 
-	&.builder-editor-active {
-		#builder-preview {
+	&.qazana-editor-active {
+		#qazana-preview {
 			@media (max-width: $screen-lg-max) {
 				 @include start($panel-width);
 			}
@@ -57,11 +57,11 @@ body {
 			@include end(0);
 		}
 
-		#builder-panel {
+		#qazana-panel {
 			@include start(0);
 		}
 
-		#builder-mode-switcher-preview {
+		#qazana-mode-switcher-preview {
 			.fa {
 				&:before {
 					content: getValueByDirection('\f104', '\f105');
@@ -70,12 +70,12 @@ body {
 		}
 	}
 
-	&.builder-editor-preview {
-		#builder-preview {
+	&.qazana-editor-preview {
+		#qazana-preview {
 			left: 0;
 		}
 
-		#builder-panel {
+		#qazana-panel {
 			@media (max-width: $screen-lg-max) {
 				 @include start(-$panel-width);
 			}
@@ -89,7 +89,7 @@ body {
 			}
 		}
 
-		#builder-mode-switcher-preview {
+		#qazana-mode-switcher-preview {
 			.fa {
 				&:before {
 					content: getValueByDirection('\f105', '\f104');
@@ -99,8 +99,8 @@ body {
 	}
 }
 
-#builder-panel,
-#builder-preview {
+#qazana-panel,
+#qazana-preview {
 	&:not(.ui-resizable-resizing) {
 		transition: $start 0.5s, width 0.5s;
 	}

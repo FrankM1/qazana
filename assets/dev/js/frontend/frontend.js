@@ -1,16 +1,16 @@
-/* global builderFrontendConfig */
+/* global qazanaFrontendConfig */
 ( function( $ ) {
 	var EventManager = require( '../utils/hooks' ),
-		ElementsHandler = require( 'builder-frontend/elements-handler' ),
-	    Utils = require( 'builder-frontend/utils' );
+		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
+	    Utils = require( 'qazana-frontend/utils' );
 
-	var BuilderFrontend = function() {
+	var QazanaFrontend = function() {
 		var self = this,
 			scopeWindow = window;
 
 		var addGlobalHandlers = function() {
-			self.hooks.addAction( 'frontend/element_ready/global', require( 'builder-frontend/handlers/global' ) );
-			self.hooks.addAction( 'frontend/element_ready/widget', require( 'builder-frontend/handlers/widget' ) );
+			self.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
+			self.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
 		};
 
 		var addElementsHandlers = function() {
@@ -24,9 +24,9 @@
 
 			if ( self.isEditMode() ) {
 				// Elements outside from the Preview
-				$elements = self.getScopeWindow().jQuery( '.builder-element', '.builder:not(.builder-edit-mode)' );
+				$elements = self.getScopeWindow().jQuery( '.qazana-element', '.qazana:not(.qazana-edit-mode)' );
 			} else {
-				$elements = $( '.builder-element' );
+				$elements = $( '.qazana-element' );
 			}
 
 			$elements.each( function() {
@@ -37,21 +37,21 @@
 		// element-type.skin-type
 		this.handlers = {
 			// Elements
-			'section': require( 'builder-frontend/handlers/section' ),
+			'section': require( 'qazana-frontend/handlers/section' ),
 
 			// Widgets
-			'accordion.default': require( 'builder-frontend/handlers/accordion' ),
-			'alert.default': require( 'builder-frontend/handlers/alert' ),
-			'counter.default': require( 'builder-frontend/handlers/counter' ),
-			'progress.default': require( 'builder-frontend/handlers/progress' ),
-			'tabs.default': require( 'builder-frontend/handlers/tabs' ),
-			'toggle.default': require( 'builder-frontend/handlers/toggle' ),
-			'video.default': require( 'builder-frontend/handlers/video' ),
-			//'image-carousel.default': require( 'builder-frontend/handlers/image-carousel' ),
-			'menu-anchor.default': require( 'builder-frontend/handlers/menu-anchor' ),
+			'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
+			'alert.default': require( 'qazana-frontend/handlers/alert' ),
+			'counter.default': require( 'qazana-frontend/handlers/counter' ),
+			'progress.default': require( 'qazana-frontend/handlers/progress' ),
+			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
+			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
+			'video.default': require( 'qazana-frontend/handlers/video' ),
+			//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
+			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),
 		};
 
-		this.config = builderFrontendConfig;
+		this.config = qazanaFrontendConfig;
 
 		this.getScopeWindow = function() {
 			return scopeWindow;
@@ -127,11 +127,11 @@
 
     };
 
-	window.builderFrontend = new BuilderFrontend();
+	window.qazanaFrontend = new QazanaFrontend();
 })( jQuery );
 
 jQuery( function() {
-	if ( ! builderFrontend.isEditMode() ) {
-		builderFrontend.init();
+	if ( ! qazanaFrontend.isEditMode() ) {
+		qazanaFrontend.init();
 	}
 });

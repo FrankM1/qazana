@@ -1,12 +1,12 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 class Ninja_Forms extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Ninja Forms Compatibility', 'builder' ),
+        	'title' => __( 'Ninja Forms Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
         	'required' => true,
         	'default_activation' => true,
@@ -22,7 +22,7 @@ class Ninja_Forms extends Base {
 
         // Hack for Ninja Forms
         if ( class_exists( '\Ninja_Forms' ) ) {
-            add_action( 'builder/preview/enqueue_styles', function() {
+            add_action( 'qazana/preview/enqueue_styles', function() {
                 ob_start();
 
                 \NF_Display_Render::localize( 0 );

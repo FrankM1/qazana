@@ -1,4 +1,4 @@
-var ControlBaseMultipleItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlBaseMultipleItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlBaseUnitsItemView;
 
 ControlBaseUnitsItemView = ControlBaseMultipleItemView.extend( {

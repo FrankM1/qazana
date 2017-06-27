@@ -1,4 +1,4 @@
-/* global BuilderConfig */
+/* global QazanaConfig */
 var App;
 
 Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
@@ -12,17 +12,17 @@ Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, opti
 };
 
 App = Marionette.Application.extend( {
-	helpers: require( 'builder-utils/helpers' ),
-	heartbeat: require( 'builder-utils/heartbeat' ),
-	imagesManager: require( 'builder-utils/images-manager' ),
-	schemes: require( 'builder-utils/schemes' ),
-	presetsFactory: require( 'builder-utils/presets-factory' ),
-	modals: require( 'builder-utils/modals' ),
-	templates: require( 'builder-templates/manager' ),
-	ajax: require( 'builder-utils/ajax' ),
-	conditions: require( 'builder-utils/conditions' ),
-	revisions:  require( 'builder-revisions/manager' ),
-	hotKeys: require( 'builder-utils/hot-keys' ),
+	helpers: require( 'qazana-utils/helpers' ),
+	heartbeat: require( 'qazana-utils/heartbeat' ),
+	imagesManager: require( 'qazana-utils/images-manager' ),
+	schemes: require( 'qazana-utils/schemes' ),
+	presetsFactory: require( 'qazana-utils/presets-factory' ),
+	modals: require( 'qazana-utils/modals' ),
+	templates: require( 'qazana-templates/manager' ),
+	ajax: require( 'qazana-utils/ajax' ),
+	conditions: require( 'qazana-utils/conditions' ),
+	revisions:  require( 'qazana-revisions/manager' ),
+	hotKeys: require( 'qazana-utils/hot-keys' ),
 
 	channels: {
 		editor: Backbone.Radio.channel( 'BUILDER:editor' ),
@@ -34,10 +34,10 @@ App = Marionette.Application.extend( {
 	},
 
 	modules: {
-		element: require( 'builder-models/element' ),
-		WidgetView: require( 'builder-views/widget' ),
+		element: require( 'qazana-models/element' ),
+		WidgetView: require( 'qazana-views/widget' ),
 		templateLibrary: {
-			ElementsCollectionView: require( 'builder-panel/pages/elements/views/elements' )
+			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
 
@@ -89,35 +89,35 @@ App = Marionette.Application.extend( {
 	getControlItemView: function( controlType ) {
 		if ( null === this._controlsItemView ) {
 			this._controlsItemView = {
-				color: require( 'builder-views/controls/color' ),
-				dimensions: require( 'builder-views/controls/dimensions' ),
-				image_dimensions: require( 'builder-views/controls/image-dimensions' ),
-				media: require( 'builder-views/controls/media' ),
-				slider: require( 'builder-views/controls/slider' ),
-				wysiwyg: require( 'builder-views/controls/wysiwyg' ),
-				choose: require( 'builder-views/controls/choose' ),
-				url: require( 'builder-views/controls/url' ),
-				font: require( 'builder-views/controls/font' ),
-				section: require( 'builder-views/controls/section' ),
-				tab: require( 'builder-views/controls/tab' ),
-				repeater: require( 'builder-views/controls/repeater' ),
-				wp_widget: require( 'builder-views/controls/wp_widget' ),
-				icon: require( 'builder-views/controls/icon' ),
-				gallery: require( 'builder-views/controls/gallery' ),
-				select2: require( 'builder-views/controls/select2' ),
-				date_time: require( 'builder-views/controls/date-time' ),
-				code: require( 'builder-views/controls/code' ),
-				box_shadow: require( 'builder-views/controls/box-shadow' ),
-				structure: require( 'builder-views/controls/structure' ),
-				animation: require( 'builder-views/controls/animation' ),
-				hover_animation: require( 'builder-views/controls/animation' ),
-				order: require( 'builder-views/controls/order' )
+				color: require( 'qazana-views/controls/color' ),
+				dimensions: require( 'qazana-views/controls/dimensions' ),
+				image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
+				media: require( 'qazana-views/controls/media' ),
+				slider: require( 'qazana-views/controls/slider' ),
+				wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
+				choose: require( 'qazana-views/controls/choose' ),
+				url: require( 'qazana-views/controls/url' ),
+				font: require( 'qazana-views/controls/font' ),
+				section: require( 'qazana-views/controls/section' ),
+				tab: require( 'qazana-views/controls/tab' ),
+				repeater: require( 'qazana-views/controls/repeater' ),
+				wp_widget: require( 'qazana-views/controls/wp_widget' ),
+				icon: require( 'qazana-views/controls/icon' ),
+				gallery: require( 'qazana-views/controls/gallery' ),
+				select2: require( 'qazana-views/controls/select2' ),
+				date_time: require( 'qazana-views/controls/date-time' ),
+				code: require( 'qazana-views/controls/code' ),
+				box_shadow: require( 'qazana-views/controls/box-shadow' ),
+				structure: require( 'qazana-views/controls/structure' ),
+				animation: require( 'qazana-views/controls/animation' ),
+				hover_animation: require( 'qazana-views/controls/animation' ),
+				order: require( 'qazana-views/controls/order' )
 			};
 
 			this.channels.editor.trigger( 'controls:initialize' );
 		}
 
-		return this._controlsItemView[ controlType ] || require( 'builder-views/controls/base' );
+		return this._controlsItemView[ controlType ] || require( 'qazana-views/controls/base' );
 	},
 
 	getPanelView: function() {
@@ -143,17 +143,17 @@ App = Marionette.Application.extend( {
 	},
 
 	initElements: function() {
-		var ElementModel = builder.modules.element;
+		var ElementModel = qazana.modules.element;
 
 		this.elements = new ElementModel.Collection( this.config.data );
 	},
 
 	initPreview: function() {
-		this.$previewWrapper = Backbone.$( '#builder-preview' );
+		this.$previewWrapper = Backbone.$( '#qazana-preview' );
 
-		this.$previewResponsiveWrapper = Backbone.$( '#builder-preview-responsive-wrapper' );
+		this.$previewResponsiveWrapper = Backbone.$( '#qazana-preview-responsive-wrapper' );
 
-		var previewIframeId = 'builder-preview-iframe';
+		var previewIframeId = 'qazana-preview-iframe';
 
 		// Make sure the iFrame does not exist.
 		if ( ! Backbone.$( '#' + previewIframeId ).length ) {
@@ -173,9 +173,9 @@ App = Marionette.Application.extend( {
 	},
 
 	initFrontend: function() {
-		builderFrontend.setScopeWindow( this.$preview[0].contentWindow );
+		qazanaFrontend.setScopeWindow( this.$preview[0].contentWindow );
 
-		builderFrontend.init();
+		qazanaFrontend.init();
 	},
 
 	initClearPageDialog: function() {
@@ -188,16 +188,16 @@ App = Marionette.Application.extend( {
 			}
 
 			dialog = this.dialogsManager.createWidget( 'confirm', {
-				id: 'builder-clear-page-dialog',
-				headerMessage: builder.translate( 'clear_page' ),
-				message: builder.translate( 'dialog_confirm_clear_page' ),
+				id: 'qazana-clear-page-dialog',
+				headerMessage: qazana.translate( 'clear_page' ),
+				message: qazana.translate( 'dialog_confirm_clear_page' ),
 				position: {
 					my: 'center center',
 					at: 'center center'
 				},
 				strings: {
-					confirm: builder.translate( 'delete' ),
-					cancel: builder.translate( 'cancel' )
+					confirm: qazana.translate( 'delete' ),
+					cancel: qazana.translate( 'cancel' )
 				},
 				onConfirm: function() {
 					self.getRegion( 'sections' ).currentView.collection.reset();
@@ -214,7 +214,7 @@ App = Marionette.Application.extend( {
 		NProgress.start();
 		NProgress.inc( 0.2 );
 
-		this.config = BuilderConfig;
+		this.config = QazanaConfig;
 
 		Backbone.Radio.DEBUG = false;
 		Backbone.Radio.tuneIn( 'BUILDER' );
@@ -227,7 +227,7 @@ App = Marionette.Application.extend( {
 
 		this.initClearPageDialog();
 
-		this.$window.trigger( 'builder:init' );
+		this.$window.trigger( 'qazana:init' );
 
 		this.initPreview();
 
@@ -238,23 +238,23 @@ App = Marionette.Application.extend( {
 
 		this.initFrontend();
 
-		this.hotKeys.bindListener( Backbone.$( builderFrontend.getScopeWindow() ) );
+		this.hotKeys.bindListener( Backbone.$( qazanaFrontend.getScopeWindow() ) );
 
 		this.$previewContents = this.$preview.contents();
 
-		var Preview = require( 'builder-views/preview' ),
-			PanelLayoutView = require( 'builder-layouts/panel/panel' );
+		var Preview = require( 'qazana-views/preview' ),
+			PanelLayoutView = require( 'qazana-layouts/panel/panel' );
 
-		var $previewBuilderEl = this.$previewContents.find( '#builder' );
+		var $previewQazanaEl = this.$previewContents.find( '#qazana' );
 
-		if ( ! $previewBuilderEl.length ) {
+		if ( ! $previewQazanaEl.length ) {
 			this.onPreviewElNotFound();
 			return;
 		}
 
 		var iframeRegion = new Marionette.Region( {
 			// Make sure you get the DOM object out of the jQuery object
-			el: $previewBuilderEl[0]
+			el: $previewQazanaEl[0]
 		} );
 
 		this.schemes.init();
@@ -263,11 +263,11 @@ App = Marionette.Application.extend( {
 
 		this.$previewContents.on( 'click', function( event ) {
 			var $target = Backbone.$( event.target ),
-				editMode = builder.channels.dataEditMode.request( 'activeMode' ),
-				isClickInsideBuilder = !! $target.closest( '#builder' ).length,
+				editMode = qazana.channels.dataEditMode.request( 'activeMode' ),
+				isClickInsideQazana = !! $target.closest( '#qazana' ).length,
 				isTargetInsideDocument = this.contains( $target[0] );
 
-			if ( isClickInsideBuilder && 'edit' === editMode || ! isTargetInsideDocument ) {
+			if ( isClickInsideQazana && 'edit' === editMode || ! isTargetInsideDocument ) {
 				return;
 			}
 
@@ -275,8 +275,8 @@ App = Marionette.Application.extend( {
 				event.preventDefault();
 			}
 
-			if ( ! isClickInsideBuilder ) {
-				var panelView = builder.getPanelView();
+			if ( ! isClickInsideQazana ) {
+				var panelView = qazana.getPanelView();
 
 				if ( 'elements' !== panelView.getCurrentPageName() ) {
 					panelView.setPage( 'elements' );
@@ -286,7 +286,7 @@ App = Marionette.Application.extend( {
 
 		this.addRegions( {
 			sections: iframeRegion,
-			panel: '#builder-panel'
+			panel: '#qazana-panel'
 		} );
 
 		this.getRegion( 'sections' ).show( new Preview( {
@@ -297,19 +297,19 @@ App = Marionette.Application.extend( {
 
 		this.$previewContents
 		    .children() // <html>
-		    .addClass( 'builder-html' )
+		    .addClass( 'qazana-html' )
 		    .children( 'body' )
-		    .addClass( 'builder-editor-active' )
-			.addClass( 'builder-page' );
+		    .addClass( 'qazana-editor-active' )
+			.addClass( 'qazana-page' );
 
 		this.setResizablePanel();
 
 		this.changeDeviceMode( this._defaultDeviceMode );
 
-		Backbone.$( '#builder-loading, #builder-preview-loading' ).fadeOut( 600 );
+		Backbone.$( '#qazana-loading, #qazana-preview-loading' ).fadeOut( 600 );
 
 		_.defer( function() {
-			builderFrontend.getScopeWindow().jQuery.holdReady( false );
+			qazanaFrontend.getScopeWindow().jQuery.holdReady( false );
 		} );
 
 		this.enqueueTypographyFonts();
@@ -327,19 +327,19 @@ App = Marionette.Application.extend( {
 
 	onPreviewElNotFound: function() {
 		var dialog = this.dialogsManager.createWidget( 'confirm', {
-			id: 'builder-fatal-error-dialog',
-			headerMessage: builder.translate( 'preview_el_not_found_header' ),
-			message: builder.translate( 'preview_el_not_found_message' ),
+			id: 'qazana-fatal-error-dialog',
+			headerMessage: qazana.translate( 'preview_el_not_found_header' ),
+			message: qazana.translate( 'preview_el_not_found_message' ),
 			position: {
 				my: 'center center',
 				at: 'center center'
 			},
             strings: {
-				confirm: builder.translate( 'learn_more' ),
-				cancel: builder.translate( 'go_back' )
+				confirm: qazana.translate( 'learn_more' ),
+				cancel: qazana.translate( 'go_back' )
             },
 			onConfirm: function() {
-				open( builder.config.help_the_content_url, '_blank' );
+				open( qazana.config.help_the_content_url, '_blank' );
 			},
 			onCancel: function() {
 				parent.history.go( -1 );
@@ -351,29 +351,29 @@ App = Marionette.Application.extend( {
 	},
 
 	setFlagEditorChange: function( status ) {
-		builder.channels.editor
+		qazana.channels.editor
 			.reply( 'change', status )
 			.trigger( 'change', status );
 	},
 
 	isEditorChanged: function() {
-		return ( true === builder.channels.editor.request( 'change' ) );
+		return ( true === qazana.channels.editor.request( 'change' ) );
 	},
 
 	setWorkSaver: function() {
 		this.$window.on( 'beforeunload', function() {
-			if ( builder.isEditorChanged() ) {
-				return builder.translate( 'before_unload_alert' );
+			if ( qazana.isEditorChanged() ) {
+				return qazana.translate( 'before_unload_alert' );
 			}
 		} );
 	},
 
 	setResizablePanel: function() {
 		var self = this,
-			side = builder.config.is_rtl ? 'right' : 'left';
+			side = qazana.config.is_rtl ? 'right' : 'left';
 
 		self.panel.$el.resizable( {
-			handles: builder.config.is_rtl ? 'w' : 'e',
+			handles: qazana.config.is_rtl ? 'w' : 'e',
 			minWidth: 200,
 			maxWidth: 680,
 			start: function() {
@@ -386,7 +386,7 @@ App = Marionette.Application.extend( {
 					.removeClass( 'ui-resizable-resizing' )
 					.css( 'pointer-events', '' );
 
-				builder.channels.data.trigger( 'scrollbar:update' );
+				qazana.channels.data.trigger( 'scrollbar:update' );
 			},
 			resize: function( event, ui ) {
 				self.$previewWrapper
@@ -403,12 +403,12 @@ App = Marionette.Application.extend( {
 		}
 
 		$elements
-			.removeClass( 'builder-editor-active' )
-			.addClass( 'builder-editor-preview' );
+			.removeClass( 'qazana-editor-active' )
+			.addClass( 'qazana-editor-preview' );
 
 		if ( hidePanel ) {
 			// Handle panel resize
-			this.$previewWrapper.css( builder.config.is_rtl ? 'right' : 'left', '' );
+			this.$previewWrapper.css( qazana.config.is_rtl ? 'right' : 'left', '' );
 
 			this.panel.$el.css( 'width', '' );
 		}
@@ -418,12 +418,12 @@ App = Marionette.Application.extend( {
 		this.$previewContents
 			.find( 'body' )
 			.add( 'body' )
-			.removeClass( 'builder-editor-preview' )
-			.addClass( 'builder-editor-active' );
+			.removeClass( 'qazana-editor-preview' )
+			.addClass( 'qazana-editor-active' );
 	},
 
 	changeEditMode: function( newMode ) {
-		var dataEditMode = builder.channels.dataEditMode,
+		var dataEditMode = qazana.channels.dataEditMode,
 			oldEditMode = dataEditMode.request( 'activeMode' );
 
 		dataEditMode.reply( 'activeMode', newMode );
@@ -440,14 +440,14 @@ App = Marionette.Application.extend( {
 			onSuccess: null
 		}, options );
 
-		if ( builder.elements.length === 0 ) {
+		if ( qazana.elements.length === 0 ) {
         	options.save_state = 'delete';
         }
 
 		var self = this,
-			newData = builder.elements.toJSON();
+			newData = qazana.elements.toJSON();
 
-		return this.ajax.send( 'save_builder', {
+		return this.ajax.send( 'save_qazana', {
 	        data: {
 		        post_id: this.config.post_id,
 		        status: options.status,
@@ -469,7 +469,7 @@ App = Marionette.Application.extend( {
 	},
 
 	reloadPreview: function() {
-		Backbone.$( '#builder-preview-loading' ).show();
+		Backbone.$( '#qazana-preview-loading' ).show();
 
 		this.$preview[0].contentWindow.location.reload( true );
 	},
@@ -486,8 +486,8 @@ App = Marionette.Application.extend( {
 		}
 
 		Backbone.$( 'body' )
-			.removeClass( 'builder-device-' + oldDeviceMode )
-			.addClass( 'builder-device-' + newDeviceMode );
+			.removeClass( 'qazana-device-' + oldDeviceMode )
+			.addClass( 'qazana-device-' + newDeviceMode );
 
 		this.channels.deviceMode
 			.reply( 'previousMode', oldDeviceMode )
@@ -525,4 +525,4 @@ App = Marionette.Application.extend( {
 	}
 } );
 
-module.exports = ( window.builder = new App() ).start();
+module.exports = ( window.qazana = new App() ).start();

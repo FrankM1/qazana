@@ -1,4 +1,4 @@
-var BaseElementView = require( 'builder-views/base-element' ),
+var BaseElementView = require( 'qazana-views/base-element' ),
 	WidgetView;
 
 WidgetView = BaseElementView.extend( {
@@ -8,14 +8,14 @@ WidgetView = BaseElementView.extend( {
 		var editModel = this.getEditModel();
 
 		if ( 'remote' !== this.getTemplateType() ) {
-			return Marionette.TemplateCache.get( '#tmpl-builder-' + editModel.get( 'elType' ) + '-' + editModel.get( 'widgetType' ) + '-content' );
+			return Marionette.TemplateCache.get( '#tmpl-qazana-' + editModel.get( 'elType' ) + '-' + editModel.get( 'widgetType' ) + '-content' );
 		} else {
 			return _.template( '' );
 		}
 	},
 
 	className: function() {
-		return BaseElementView.prototype.className.apply( this, arguments ) + ' builder-widget';
+		return BaseElementView.prototype.className.apply( this, arguments ) + ' qazana-widget';
 	},
 
 	events: function() {
@@ -44,7 +44,7 @@ WidgetView = BaseElementView.extend( {
 	getTemplateType: function() {
 		if ( null === this._templateType ) {
 			var editModel = this.getEditModel(),
-				$template = Backbone.$( '#tmpl-builder-' + editModel.get( 'elType' ) + '-' + editModel.get( 'widgetType' ) + '-content' );
+				$template = Backbone.$( '#tmpl-qazana-' + editModel.get( 'elType' ) + '-' + editModel.get( 'widgetType' ) + '-content' );
 
 			this._templateType = $template.length ? 'js' : 'remote';
 		}
@@ -53,12 +53,12 @@ WidgetView = BaseElementView.extend( {
 	},
 
 	onModelBeforeRemoteRender: function() {
-		this.$el.addClass( 'builder-loading' );
+		this.$el.addClass( 'qazana-loading' );
 	},
 
 	onBeforeDestroy: function() {
 		// Remove old style from the DOM.
-		builder.$previewContents.find( '#builder-style-' + this.model.cid ).remove();
+		qazana.$previewContents.find( '#qazana-style-' + this.model.cid ).remove();
 	},
 
 	onModelRemoteRender: function() {
@@ -66,7 +66,7 @@ WidgetView = BaseElementView.extend( {
 			return;
 		}
 
-		this.$el.removeClass( 'builder-loading' );
+		this.$el.removeClass( 'qazana-loading' );
 		this.render();
 	},
 
@@ -81,7 +81,7 @@ WidgetView = BaseElementView.extend( {
 			el = this.$el[0];
 
 		_.defer( function() {
-			builderFrontend.getScopeWindow().jQuery( el ).html( htmlContent );
+			qazanaFrontend.getScopeWindow().jQuery( el ).html( htmlContent );
 		} );
 
 		return this;
@@ -94,19 +94,19 @@ WidgetView = BaseElementView.extend( {
 
         self.$el
 	        .attr( 'data-element_type', editModel.get( 'widgetType' ) + '.' + skinType )
-            .removeClass( 'builder-widget-empty' )
-	        .addClass( 'builder-widget-' + editModel.get( 'widgetType' ) + ' builder-widget-can-edit' )
-            .children( '.builder-widget-empty-icon' )
+            .removeClass( 'qazana-widget-empty' )
+	        .addClass( 'qazana-widget-' + editModel.get( 'widgetType' ) + ' qazana-widget-can-edit' )
+            .children( '.qazana-widget-empty-icon' )
             .remove();
 
         self.$el.imagesLoaded().always( function() {
             setTimeout( function() {
                 if ( 1 > self.$el.height() ) {
-                    self.$el.addClass( 'builder-widget-empty' );
+                    self.$el.addClass( 'qazana-widget-empty' );
 
                     // TODO: REMOVE THIS !!
                     // TEMP CODING !!
-                    self.$el.append( '<i class="builder-widget-empty-icon ' + editModel.getIcon() + '"></i>' );
+                    self.$el.append( '<i class="qazana-widget-empty-icon ' + editModel.getIcon() + '"></i>' );
                 }
             }, 200 );
             // Is element empty?
@@ -120,7 +120,7 @@ WidgetView = BaseElementView.extend( {
 
         var self = this,
             config = {
-                class : 'builder-widget-settings-active'
+                class : 'qazana-widget-settings-active'
             };
 
         var hoverConfig = {

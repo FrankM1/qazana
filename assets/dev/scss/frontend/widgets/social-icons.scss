@@ -2,11 +2,11 @@
 // Social Icons
 //
 
-.builder-social-icons-wrapper {
+.qazana-social-icons-wrapper {
 	font-size: 0;
 }
 
-.builder-social-icon {
+.qazana-social-icon {
 	color: white;
 	font-size: 25px;
 	text-align: center;
@@ -20,7 +20,7 @@
 
 	&:hover {
 		opacity: .5;
-		color: white; //for override .builder-icon class
+		color: white; //for override .qazana-icon class
 	}
 
 	&- {
@@ -54,21 +54,21 @@
 	}
 }
 
-.builder-shape-rounded {
+.qazana-shape-rounded {
 
-	.builder-icon {
+	.qazana-icon {
 
-		&.builder-social-icon {
+		&.qazana-social-icon {
 			border-radius: 10%;
 		}
 	}
 }
 
-.builder-shape-circle {
+.qazana-shape-circle {
 
-	.builder-icon {
+	.qazana-icon {
 
-		&.builder-social-icon {
+		&.qazana-social-icon {
 			border-radius: 50%;
 		}
 	}

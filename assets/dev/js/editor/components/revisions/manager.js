@@ -8,14 +8,14 @@ RevisionsManager = function() {
 		revisions;
 
 	var addPanelPage = function() {
-		builder.getPanelView().addPage( 'revisionsPage', {
+		qazana.getPanelView().addPage( 'revisionsPage', {
 			getView: function() {
 				if ( revisions.length ) {
 					return RevisionsPageView;
 				}
 				return RevisionsEmptyView;
 			},
-			title: builder.translate( 'revision_history' ),
+			title: qazana.translate( 'revision_history' ),
 			options: {
 				collection: revisions
 			}
@@ -35,7 +35,7 @@ RevisionsManager = function() {
 	};
 
 	var attachEvents = function() {
-		builder.channels.editor.on( 'saved', onEditorSaved );
+		qazana.channels.editor.on( 'saved', onEditorSaved );
 	};
 
 	var addHotKeys = function() {
@@ -45,7 +45,7 @@ RevisionsManager = function() {
 
 		var navigationHandler = {
 			isWorthHandling: function() {
-				var panel = builder.getPanelView();
+				var panel = qazana.getPanelView();
 
 				if ( 'revisionsPage' !== panel.getCurrentPageName() ) {
 					return false;
@@ -56,20 +56,20 @@ RevisionsManager = function() {
 				return revisionsPage.currentPreviewId && revisionsPage.currentPreviewItem && revisionsPage.children.length > 1;
 			},
 			handle: function( event ) {
-				builder.getPanelView().getCurrentPageView().navigate( UP_ARROW_KEY === event.which );
+				qazana.getPanelView().getCurrentPageView().navigate( UP_ARROW_KEY === event.which );
 			}
 		};
 
-		builder.hotKeys.addHotKeyHandler( UP_ARROW_KEY, 'revisionNavigation', navigationHandler );
+		qazana.hotKeys.addHotKeyHandler( UP_ARROW_KEY, 'revisionNavigation', navigationHandler );
 
-		builder.hotKeys.addHotKeyHandler( DOWN_ARROW_KEY, 'revisionNavigation', navigationHandler );
+		qazana.hotKeys.addHotKeyHandler( DOWN_ARROW_KEY, 'revisionNavigation', navigationHandler );
 
-		builder.hotKeys.addHotKeyHandler( H_KEY, 'showRevisionsPage', {
+		qazana.hotKeys.addHotKeyHandler( H_KEY, 'showRevisionsPage', {
 			isWorthHandling: function( event ) {
-				return builder.hotKeys.isControlEvent( event ) && event.shiftKey;
+				return qazana.hotKeys.isControlEvent( event ) && event.shiftKey;
 			},
 			handle: function() {
-				builder.getPanelView().setPage( 'revisionsPage' );
+				qazana.getPanelView().setPage( 'revisionsPage' );
 			}
 		} );
 	};
@@ -77,7 +77,7 @@ RevisionsManager = function() {
 	this.addRevision = function( revisionData ) {
 		revisions.add( revisionData, { at: 0 } );
 
-		var panel = builder.getPanelView();
+		var panel = qazana.getPanelView();
 
 		if ( panel.getCurrentPageView() instanceof RevisionsEmptyView ) {
 			panel.setPage( 'revisionsPage' );
@@ -97,7 +97,7 @@ RevisionsManager = function() {
 				revisionModel.destroy();
 
 				if ( ! revisions.length ) {
-					builder.getPanelView().setPage( 'revisionsPage' );
+					qazana.getPanelView().setPage( 'revisionsPage' );
 				}
 			}
 		};
@@ -106,17 +106,17 @@ RevisionsManager = function() {
 			params.error = options.error;
 		}
 
-		builder.ajax.send( 'delete_revision', params );
+		qazana.ajax.send( 'delete_revision', params );
 	};
 
 	this.init = function() {
-		revisions = new RevisionsCollection( builder.config.revisions );
+		revisions = new RevisionsCollection( qazana.config.revisions );
 
 		attachEvents();
 
 		addHotKeys();
 
-		builder.on( 'preview:loaded', addPanelPage );
+		qazana.on( 'preview:loaded', addPanelPage );
 	};
 };
 

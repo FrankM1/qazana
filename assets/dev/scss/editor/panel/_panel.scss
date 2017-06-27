@@ -2,7 +2,7 @@
 // Panel
 //
 
-.builder-panel {
+.qazana-panel {
     font-family: $editor-font;
     font-size: 13px;
     line-height: 1.5;
@@ -36,13 +36,13 @@
         cursor: ew-resize;
     }
 
-    #builder-panel-inner {
+    #qazana-panel-inner {
         position: relative;
         height: 100%;
         box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
     }
 
-    .builder-panel-container {
+    .qazana-panel-container {
         clear: both;
         padding-left: 15px;
         padding-right: 15px;
@@ -58,7 +58,7 @@
     // Schemes
     @import "schemes";
     // Main Panel
-    #builder-panel-content-wrapper {
+    #qazana-panel-content-wrapper {
         position: absolute;
         bottom: 40px;
         top: 100px;
@@ -77,7 +77,7 @@
     //Footer
     @import "footer";
 
-    .builder-panel-hide {
+    .qazana-panel-hide {
         display: none;
     }
 }

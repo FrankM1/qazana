@@ -1,4 +1,4 @@
-.builder-revision- {
+.qazana-revision- {
 
 	&item {
 		display: flex;
@@ -7,27 +7,27 @@
 		padding: 10px 15px;
 		margin-bottom: 10px;
 
-		&:hover:not(.builder-revision-current-preview) {
+		&:hover:not(.qazana-revision-current-preview) {
 			background-color: fade_out($editor-background, 0.7) ;
 		}
 
 		&:not(:hover) {
 
-			.builder-revision-item__tools-delete {
+			.qazana-revision-item__tools-delete {
 				display: none;
 			}
 		}
 
 		&-loading {
 
-			.builder-revision-item__tools-delete {
+			.qazana-revision-item__tools-delete {
 				display: none;
 			}
 		}
 
-		&:not(.builder-revision-item-loading) {
+		&:not(.qazana-revision-item-loading) {
 
-			.builder-revision-item__tools-spinner {
+			.qazana-revision-item__tools-spinner {
 				display: none;
 			}
 		}

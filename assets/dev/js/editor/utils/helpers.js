@@ -17,7 +17,7 @@ helpers = {
 			return;
 		}
 
-		var fontType = builder.config.controls.font.fonts[ font ],
+		var fontType = qazana.config.controls.font.fonts[ font ],
 			fontUrl,
 
 			subsets = {
@@ -33,8 +33,8 @@ helpers = {
 			case 'googlefonts' :
 				fontUrl = 'https://fonts.googleapis.com/css?family=' + font + ':100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic';
 
-				if ( subsets[ builder.config.locale ] ) {
-					fontUrl += '&subset=' + subsets[ builder.config.locale ];
+				if ( subsets[ qazana.config.locale ] ) {
+					fontUrl += '&subset=' + subsets[ qazana.config.locale ];
 				}
 
 				break;
@@ -46,7 +46,7 @@ helpers = {
 		}
 
 		if ( ! _.isEmpty( fontUrl ) ) {
-			builder.$previewContents.find( 'link:last' ).after( '<link href="' + fontUrl + '" rel="stylesheet" type="text/css">' );
+			qazana.$previewContents.find( 'link:last' ).after( '<link href="' + fontUrl + '" rel="stylesheet" type="text/css">' );
 		}
 		this._enqueuedFonts.push( font );
 	},
@@ -132,7 +132,7 @@ helpers = {
 
 		// Repeater items conditions
 		if ( controlModel.conditions ) {
-			return builder.conditions.check( controlModel.conditions, values );
+			return qazana.conditions.check( controlModel.conditions, values );
 		}
 
 		if ( _.isEmpty( condition ) ) {
@@ -204,7 +204,7 @@ helpers = {
 
 	wpColorPicker: function( $element, options ) {
 		var self = this,
-			colorPickerScheme = builder.schemes.getScheme( 'color-picker' ),
+			colorPickerScheme = qazana.schemes.getScheme( 'color-picker' ),
 			items = _.sortBy( colorPickerScheme.items, function( item ) {
 				return self.getColorPickerPaletteIndex( item.key );
 			} ),

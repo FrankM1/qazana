@@ -1,5 +1,5 @@
 //
-// Admin CSS for Builder
+// Admin CSS for Qazana
 //
 
 // Core variables and mixins
@@ -8,12 +8,12 @@
 @import "../editor/dialog";
 
 body {
-	&.builder-editor-active {
-		.builder-switch-mode-off {
+	&.qazana-editor-active {
+		.qazana-switch-mode-off {
 			display: none;
 		}
 
-		#builder-switch-mode-button {
+		#qazana-switch-mode-button {
 			background-color: #f7f7f7;
 			color: #555;
 			border-color: #ccc;
@@ -30,7 +30,7 @@ body {
 			}
 		}
 
-		#builder-editor {
+		#qazana-editor {
 			display: table;
 		}
 
@@ -39,19 +39,19 @@ body {
 		}
 	}
 
-	&.builder-editor-inactive {
-		.builder-switch-mode-on {
+	&.qazana-editor-inactive {
+		.qazana-switch-mode-on {
 			display: none;
 		}
 
-		#builder-editor {
+		#qazana-editor {
 			display: none;
 		}
 	}
 }
 
-#builder-editor-button,
-.builder-editor-inactive #builder-switch-mode-button {
+#qazana-editor-button,
+.qazana-editor-inactive #qazana-switch-mode-button {
 	background: #0085ba;
 	border-color: #0073aa #006799 #006799;
 	box-shadow: 0 1px 0 #006799;
@@ -76,8 +76,8 @@ body {
 }
 
 // Dashboard Icon
-#adminmenu #toplevel_page_builder div.wp-menu-image:before {
-	background-image: url('../images/builder-logo-small-light.png');
+#adminmenu #toplevel_page_qazana div.wp-menu-image:before {
+	background-image: url('../images/logo-small-light.png');
 	background-repeat: no-repeat;
 	content: " ";
 	background-size: 15px;
@@ -85,11 +85,11 @@ body {
 }
 
 // Switcher Editor
-#builder-switch-mode {
+#qazana-switch-mode {
 	margin: 15px 0;
 }
 
-.builder-button {
+.qazana-button {
 	padding: 12.5px 25px;
 	display: inline-block;
 	line-height: 1;
@@ -98,12 +98,12 @@ body {
 	outline: none;
 	cursor: pointer;
 
-	.eicon-builder {
+	.eicon-qazana {
 		@include margin-end(5px);
 	}
 }
 
-#builder-editor {
+#qazana-editor {
 	background-color: #F7F7F7;
 	border: 1px solid #DDD;
 	height: 300px;
@@ -115,42 +115,42 @@ body {
 	}
 	@import "../editor/loader";
 
-	.builder-loader-box {
+	.qazana-loader-box {
 		background-color: $editor-light;
 	}
 
 }
 
-#builder-go-to-edit-page-link {
+#qazana-go-to-edit-page-link {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
 	text-decoration: none;
 
-	&.builder-animate {
-		#builder-editor-button {
+	&.qazana-animate {
+		#qazana-editor-button {
 			display: none;
 		}
 	}
 
-	&:not(.builder-animate) {
-		.builder-loader-wrapper {
+	&:not(.qazana-animate) {
+		.qazana-loader-wrapper {
 			display: none;
 		}
 	}
 }
 
-.builder-loader-wrapper {
+.qazana-loader-wrapper {
 	margin: auto;
 	width: 80px;
 }
 
-.builder-loader {
+.qazana-loader {
 	height: 80px;
 	position: relative;
 }
 
-.builder-loading-title {
+.qazana-loading-title {
 	color: $editor-light;
 	text-transform: uppercase;
 	margin-top: 15px;
@@ -158,7 +158,7 @@ body {
 	letter-spacing: 5px;
 }
 
-button.builder-button-spinner {
+button.qazana-button-spinner {
 	&:before {
 		font: normal 20px/.5 dashicons;
 		speak: none;
@@ -183,7 +183,7 @@ button.builder-button-spinner {
 }
 
 // Customizer widget icon
-#available-widgets [class*="builder-template"] .widget-title:before {
+#available-widgets [class*="qazana-template"] .widget-title:before {
 	content: "\e801";
 	font-family: eicon;
 	font-size: 17px;

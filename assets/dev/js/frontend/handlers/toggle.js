@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	var $toggleTitles = $scope.find( '.builder-toggle-title' );
+	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
 	$toggleTitles.on( 'click', function() {
 		var $active = $( this ),

@@ -1,8 +1,8 @@
 <?php
-namespace Builder\System_Info\Classes;
+namespace Qazana\System_Info\Classes;
 
-use Builder\Template_Api;
-use Builder\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\Template_Api;
+use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -21,7 +21,7 @@ class Server_Reporter extends Base_Reporter {
 			'php_max_input_vars' => 'PHP Max Input Vars',
 			'php_max_post_size' => 'PHP Max Post Size',
 			'gd_installed' => 'GD Installed',
-			'builder_library' => 'Builder Library',
+			'qazana_library' => 'Qazana Library',
 		];
 	}
 
@@ -43,7 +43,7 @@ class Server_Reporter extends Base_Reporter {
 		];
 
 		if ( version_compare( $result['value'], '5.4', '<' ) ) {
-			$result['recommendation'] = _x( 'We recommend to use php 5.4 or higher', 'System Info', 'builder' );
+			$result['recommendation'] = _x( 'We recommend to use php 5.4 or higher', 'System Info', 'qazana' );
 		}
 
 		return $result;
@@ -75,12 +75,12 @@ class Server_Reporter extends Base_Reporter {
 		];
 	}
 
-	public function get_builder_library() {
-		$response = wp_remote_post( builder()->admin->admin_api->api_info_url, [
+	public function get_qazana_library() {
+		$response = wp_remote_post( qazana()->admin->admin_api->api_info_url, [
 			'timeout' => 25,
 			'body' => [
 				// Which API version is used
-				'api_version' => builder()->get_version(),
+				'api_version' => qazana()->get_version(),
 				// Which language to return
 				'site_lang' => get_bloginfo( 'language' ),
 			],

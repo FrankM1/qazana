@@ -2,13 +2,13 @@ var TemplateLibraryTemplateView;
 
 TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 	className: function() {
-		return 'builder-template-library-template builder-template-library-template-' + this.model.get( 'source' );
+		return 'qazana-template-library-template qazana-template-library-template-' + this.model.get( 'source' );
 	},
 
 	ui: function() {
 		return {
-			insertButton: '.builder-template-library-template-insert',
-			previewButton: '.builder-template-library-template-preview'
+			insertButton: '.qazana-template-library-template-insert',
+			previewButton: '.qazana-template-library-template-preview'
 		};
 	},
 
@@ -20,7 +20,7 @@ TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 	},
 
 	onInsertButtonClick: function() {
-		builder.templates.importTemplate( this.model );
+		qazana.templates.importTemplate( this.model );
 	}
 } );
 

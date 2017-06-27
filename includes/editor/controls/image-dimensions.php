@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -36,28 +36,28 @@ class Control_Image_Dimensions extends Base_Control_Multiple {
 	public function content_template() {
 		if ( ! $this->_is_image_editor_supports() ) : ?>
 		<div class="panel-alert panel-alert-danger">
-			<?php _e( 'The server does not have ImageMagick or GD installed and/or enabled! Any of these libraries are required for WordPress to be able to resize images. Please contact your server administrator to enable this before continuing.', 'builder' ); ?>
+			<?php _e( 'The server does not have ImageMagick or GD installed and/or enabled! Any of these libraries are required for WordPress to be able to resize images. Please contact your server administrator to enable this before continuing.', 'qazana' ); ?>
 		</div>
 		<?php
 			return;
 		endif;
 		?>
 		<# if ( data.description ) { #>
-			<div class="builder-control-description">{{{ data.description }}}</div>
+			<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<div class="builder-image-dimensions-field">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<div class="qazana-image-dimensions-field">
 					<input type="text" data-setting="width" />
-					<div class="builder-image-dimensions-field-description"><?php _e( 'Width', 'builder' ); ?></div>
+					<div class="qazana-image-dimensions-field-description"><?php _e( 'Width', 'qazana' ); ?></div>
 				</div>
-				<div class="builder-image-dimensions-separator">x</div>
-				<div class="builder-image-dimensions-field">
+				<div class="qazana-image-dimensions-separator">x</div>
+				<div class="qazana-image-dimensions-field">
 					<input type="text" data-setting="height" />
-					<div class="builder-image-dimensions-field-description"><?php _e( 'Height', 'builder' ); ?></div>
+					<div class="qazana-image-dimensions-field-description"><?php _e( 'Height', 'qazana' ); ?></div>
 				</div>
-				<button class="builder-button builder-button-success builder-image-dimensions-apply-button"><?php _e( 'Apply', 'builder' ); ?></button>
+				<button class="qazana-button qazana-button-success qazana-image-dimensions-apply-button"><?php _e( 'Apply', 'qazana' ); ?></button>
 			</div>
 		</div>
 		<?php

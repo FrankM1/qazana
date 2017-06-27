@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -78,10 +78,10 @@ abstract class Base_Control_Units extends Base_Control_Multiple {
 	protected function print_units_template() {
 		?>
 		<# if ( data.size_units.length > 1 ) { #>
-		<div class="builder-units-choices">
+		<div class="qazana-units-choices">
 			<# _.each( data.size_units, function( unit ) { #>
-			<input id="builder-choose-{{ data._cid + data.name + unit }}" type="radio" name="builder-choose-{{ data.name }}" data-setting="unit" value="{{ unit }}">
-			<label class="builder-units-choices-label" for="builder-choose-{{ data._cid + data.name + unit }}">{{{ unit }}}</label>
+			<input id="qazana-choose-{{ data._cid + data.name + unit }}" type="radio" name="qazana-choose-{{ data.name }}" data-setting="unit" value="{{ unit }}">
+			<label class="qazana-units-choices-label" for="qazana-choose-{{ data._cid + data.name + unit }}">{{{ unit }}}</label>
 			<# } ); #>
 		</div>
 		<# } #>

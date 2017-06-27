@@ -3,7 +3,7 @@ var BaseSettingsModel;
 BaseSettingsModel = Backbone.Model.extend( {
 
 	initialize: function( data, options ) {
-		this.controls = ( options && options.controls ) ? options.controls : builder.getElementControls( this );
+		this.controls = ( options && options.controls ) ? options.controls : qazana.getElementControls( this );
 
 		if ( ! this.controls ) {
 			return;
@@ -13,7 +13,7 @@ BaseSettingsModel = Backbone.Model.extend( {
 			defaults = {};
 
 		_.each( this.controls, function( field ) {
-			var control = builder.config.controls[ field.type ];
+			var control = qazana.config.controls[ field.type ];
 
 			if ( _.isObject( control.default_value )  ) {
 				defaults[ field.name ] = _.extend( {}, control.default_value, field['default'] || {} );
@@ -102,7 +102,7 @@ BaseSettingsModel = Backbone.Model.extend( {
 			controls = {};
 
 		_.each( self.controls, function( control, controlKey ) {
-			if ( builder.helpers.isActiveControl( control, self.attributes ) ) {
+			if ( qazana.helpers.isActiveControl( control, self.attributes ) ) {
 				controls[ controlKey ] = control;
 			}
 		} );
@@ -111,7 +111,7 @@ BaseSettingsModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		return new BaseSettingsModel( builder.helpers.cloneObject( this.attributes ) );
+		return new BaseSettingsModel( qazana.helpers.cloneObject( this.attributes ) );
 	},
 
 	toJSON: function() {

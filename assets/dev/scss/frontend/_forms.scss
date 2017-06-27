@@ -2,24 +2,24 @@
 // Forms (Input, Textarea, Select Etc..)
 //
 
-.builder-form-fields-wrapper {
+.qazana-form-fields-wrapper {
 	display: flex;
 	flex-wrap: wrap;
 
-	&.builder-labels-above {
-		> .builder-field-group {
-			 > .builder-select-wrapper,
+	&.qazana-labels-above {
+		> .qazana-field-group {
+			 > .qazana-select-wrapper,
 			 > textarea,
-			.builder-field-subgroup,
+			.qazana-field-subgroup,
 			> input {
 				flex-basis: 100%;
 			}
 		}
 	}
 
-	&.builder-labels-inline {
-		> .builder-field-group {
-			.builder-select-wrapper,
+	&.qazana-labels-inline {
+		> .qazana-field-group {
+			.qazana-select-wrapper,
 			> input {
 				flex-grow: 1;
 			}
@@ -27,15 +27,15 @@
 	}
 }
 
-.builder-field-group {
+.qazana-field-group {
 	flex-wrap: wrap;
 	align-items: center;
 
-	&.builder-field-type-submit {
+	&.qazana-field-type-submit {
 		align-items: flex-end;
 	}
 
-	.builder-field-textual {
+	.qazana-field-textual {
 		width: 100%;
 		border: 1px solid $gray;
 		background-color: transparent;
@@ -64,7 +64,7 @@
 		}
 	}
 
-	.builder-select-wrapper {
+	.qazana-select-wrapper {
 		display: flex;
 		position: relative;
 		width: 100%;
@@ -88,38 +88,38 @@
 	}
 }
 
-.builder-field-subgroup {
+.qazana-field-subgroup {
 	display: flex;
 	flex-wrap: wrap;
 
-	.builder-field-option {
+	.qazana-field-option {
 		label {
 			display: inline-block;
 		}
 	}
 
-	&.builder-subgroup-inline {
-		.builder-field-option {
+	&.qazana-subgroup-inline {
+		.qazana-field-option {
 			@include padding-end(10px);
 		}
 	}
 
-	&:not(.builder-subgroup-inline) {
-		.builder-field-option {
+	&:not(.qazana-subgroup-inline) {
+		.qazana-field-option {
 			flex-basis: 100%;
 		}
 	}
 }
 
-.builder-field-label {
+.qazana-field-label {
 	cursor: pointer;
 }
 
 // Keep the following out from another parent selector!
-.builder-field-textual {
+.qazana-field-textual {
 	line-height: 1.4;
 
-	&.builder-size- {
+	&.qazana-size- {
 		&xs {
 			font-size: 13px;
 			min-height: 33px;
@@ -157,42 +157,42 @@
 	}
 }
 @mixin btn-align() {
-	&center .builder-field-type-submit {
+	&center .qazana-field-type-submit {
 		justify-content: center;
 	}
 
-	&stretch .builder-field-type-submit {
+	&stretch .qazana-field-type-submit {
 		button {
 			flex-basis: 100%;
 		}
 	}
 
-	&start .builder-field-type-submit {
+	&start .qazana-field-type-submit {
 		justify-content: getValueByDirection(flex-start, flex-end);
 	}
 
-	&end .builder-field-type-submit {
+	&end .qazana-field-type-submit {
 		justify-content: getValueByDirection(flex-end, flex-start);
 	}
 }
 
-.builder-button-align- {
+.qazana-button-align- {
 	@include btn-align();
 }
 @media screen and ( max-width: $screen-md-max ) {
-	.builder-tablet-button-align- {
+	.qazana-tablet-button-align- {
 		@include btn-align();
 	}
 }
 @media screen and ( max-width: $screen-sm-max ) {
-	.builder-mobile-button-align- {
+	.qazana-mobile-button-align- {
 		@include btn-align();
 	}
 }
 
 // Form Messages
-.builder-error {
-	.builder-field {
+.qazana-error {
+	.qazana-field {
 		border-color: $danger;
 	}
 
@@ -202,7 +202,7 @@
 	}
 }
 
-.builder-message {
+.qazana-message {
 	margin: 10px 0;
 	font-size: 1em;
 	line-height: 1;
@@ -217,7 +217,7 @@
 		margin-right: 5px;
 	}
 
-	&.builder-message-danger {
+	&.qazana-message-danger {
 		color: $danger;
 
 		&:before {
@@ -231,8 +231,8 @@
 }
 
 // Form Submit Button
-.builder-form {
-	.builder-button {
+.qazana-form {
+	.qazana-button {
 		padding-top: 0;
 		padding-bottom: 0;
 		border: 0 none;
@@ -242,15 +242,15 @@
 			justify-content: center;
 		}
 
-		.builder-align-icon-right {
+		.qazana-align-icon-right {
 			order: getValueByDirection( 2 ,0 );
 		}
 
-		.builder-align-icon-left {
+		.qazana-align-icon-left {
 			order: getValueByDirection( 0 ,2 );
 		}
 
-		&.builder-size- {
+		&.qazana-size- {
 			&xs {
 				min-height: 33px;
 			}

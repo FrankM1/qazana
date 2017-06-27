@@ -8,24 +8,24 @@ ElementsHandler = function( $ ) {
 			return;
 		}
 
-		builderFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
+		qazanaFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
 
 		var isWidgetType = ( -1 === [ 'section', 'column' ].indexOf( elementType ) );
 
 		if ( isWidgetType ) {
-			builderFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
+			qazanaFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
 		}
 
-		builderFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
+		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 
 		$(document).trigger( 'element_ready', $scope );
 		$(document).trigger( 'element_ready::'+ elementType, $scope );
 	};
 
 	this.addExternalListener = function( $scope, event, callback, externalElement ) {
-		var $externalElement = $( externalElement || builderFrontend.getScopeWindow() );
+		var $externalElement = $( externalElement || qazanaFrontend.getScopeWindow() );
 
-		if ( ! builderFrontend.isEditMode() ) {
+		if ( ! qazanaFrontend.isEditMode() ) {
 			$externalElement.on( event, callback );
 
 			return;

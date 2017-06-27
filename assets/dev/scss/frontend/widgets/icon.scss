@@ -4,7 +4,7 @@
 
 // For the all elements with icon options
 
-.builder-icon {
+.qazana-icon {
 	display: inline-block;
 	line-height: 1;
 	transition: $transition-hover;
@@ -29,16 +29,16 @@
 	}
 }
 
-.builder-view-stacked {
-	.builder-icon {
+.qazana-view-stacked {
+	.qazana-icon {
 		padding: 0.5em;
 		background-color: $gray;
 		color: #fff;
 	}
 }
 
-.builder-view-framed {
-	.builder-icon {
+.qazana-view-framed {
+	.qazana-icon {
 		padding: 0.5em;
 		color: $gray;
 		border: 3px solid $gray;
@@ -46,9 +46,9 @@
 	}
 }
 
-.builder-shape- {
+.qazana-shape- {
 	&circle {
-		.builder-icon {
+		.qazana-icon {
 			border-radius: 50%;
 		}
 	}

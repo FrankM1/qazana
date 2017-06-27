@@ -1,4 +1,4 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWPWidgetItemView;
 
 ControlWPWidgetItemView = ControlBaseItemView.extend( {
@@ -18,13 +18,13 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 
 	onFormChanged: function() {
 		var idBase = 'widget-' + this.model.get( 'id_base' ),
-			settings = this.ui.form.builderSerializeObject()[ idBase ].REPLACE_TO_ID;
+			settings = this.ui.form.qazanaSerializeObject()[ idBase ].REPLACE_TO_ID;
 
 		this.setValue( settings );
 	},
 
 	onReady: function() {
-		builder.ajax.send( 'editor_get_wp_widget_form', {
+		qazana.ajax.send( 'editor_get_wp_widget_form', {
 			data: {
 				widget_type: this.model.get( 'widget' ),
 				data: JSON.stringify( this.elementSettingsModel.toJSON() )

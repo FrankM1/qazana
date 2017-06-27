@@ -2,11 +2,11 @@ var PanelSchemeItemView;
 
 PanelSchemeItemView = Marionette.ItemView.extend( {
 	getTemplate: function() {
-		return Marionette.TemplateCache.get( '#tmpl-builder-panel-scheme-' + this.getUIType() + '-item' );
+		return Marionette.TemplateCache.get( '#tmpl-qazana-panel-scheme-' + this.getUIType() + '-item' );
 	},
 
 	className: function() {
-		return 'builder-panel-scheme-item';
+		return 'qazana-panel-scheme-item';
 	}
 } );
 

@@ -6,23 +6,23 @@
 @import '_compatibility';
 
 // Hidden WP Admin Bar
-html.builder-html {
+html.qazana-html {
     margin-top: 0 !important;
 }
 
-#builder {
+#qazana {
     position: relative;
 }
 
-.builder-editor-active {
-    .builder.builder-edit-mode {
-        .builder-element-empty {
-            .builder-sortable-placeholder {
+.qazana-editor-active {
+    .qazana.qazana-edit-mode {
+        .qazana-element-empty {
+            .qazana-sortable-placeholder {
                 display: none;
             }
         }
 
-        .builder-empty-view {
+        .qazana-empty-view {
             display: table;
             width: 100%;
             height: 100%;
@@ -30,21 +30,21 @@ html.builder-html {
             z-index: $first-layer;
         }
 
-        .builder-first-add {
+        .qazana-first-add {
             display: table-cell;
             vertical-align: middle;
             text-align: center;
             border: 1px dashed #d5dadf;
 
-            .builder-icon {
+            .qazana-icon {
                 font-size: 19px;
                 color: $editor-light;
                 cursor: pointer;
             }
         }
 
-        .builder-element {
-            > .builder-element-overlay {
+        .qazana-element {
+            > .qazana-element-overlay {
                 position: absolute;
                 top: 0;
                 right: 0;
@@ -55,7 +55,7 @@ html.builder-html {
                 pointer-events: none;
             }
 
-            &.builder-widget-empty {
+            &.qazana-widget-empty {
                 height: 50px;
                 background: $white;
 
@@ -69,7 +69,7 @@ html.builder-html {
                     background-color: fade-out($editor-background, .2);
                 }
 
-                .builder-widget-empty-icon {
+                .qazana-widget-empty-icon {
                     position: absolute;
                     height: 25px;
                     width: 25px;
@@ -83,52 +83,52 @@ html.builder-html {
                 }
             }
 
-            > .builder-element-overlay {
-                .builder-editor-element-settings-list,
+            > .qazana-element-overlay {
+                .qazana-editor-element-settings-list,
                 .column-title {
                     display: none;
                 }
             }
 
-            &.builder-section-tools-active {
-                 > .builder-element-overlay .builder-editor-element-settings-list,
-                > .builder-element-overlay .column-title {
+            &.qazana-section-tools-active {
+                 > .qazana-element-overlay .qazana-editor-element-settings-list,
+                > .qazana-element-overlay .column-title {
                     display: block;
                 }
 
-                &:not(.builder-element-editable) {
-                    > .builder-element-overlay {
-                        .builder-editor-element-settings-list {
+                &:not(.qazana-element-editable) {
+                    > .qazana-element-overlay {
+                        .qazana-editor-element-settings-list {
                             display: block;
                         }
                     }
                 }
 
                 &:not(.ui-resizable-resizing) {
-                    > .builder-element-overlay {
+                    > .qazana-element-overlay {
                         .column-title {
                             display: block;
                         }
                     }
                 }
                 @media (max-width: $screen-md-max) {
-                    > .builder-element-overlay {
+                    > .qazana-element-overlay {
                         .column-title {}
                     }
                 }
             }
 
             /* &:not(:hover) {
-                &:not(.builder-element-editable) {
-                    > .builder-element-overlay {
-                        .builder-editor-element-settings-list {
+                &:not(.qazana-element-editable) {
+                    > .qazana-element-overlay {
+                        .qazana-editor-element-settings-list {
                             display: none;
                         }
                     }
                 }
 
                 &:not(.ui-resizable-resizing) {
-                    > .builder-element-overlay {
+                    > .qazana-element-overlay {
                         .column-title {
                             display: none;
                         }
@@ -137,7 +137,7 @@ html.builder-html {
             }
 
             @media (max-width: $screen-md-max) {
-                > .builder-element-overlay {
+                > .qazana-element-overlay {
                     .column-title {
                         display: none;
                     }
@@ -149,7 +149,7 @@ html.builder-html {
                 animation-timing-function: ease-out;
             }
 
-            &[data-side="bottom"] + .builder-element,
+            &[data-side="bottom"] + .qazana-element,
             &[data-side="top"] {
                 border-top: 4px solid $editor-info;
             }
@@ -160,13 +160,13 @@ html.builder-html {
         }
 
         // Section
-        .builder-section {
-            &:not(.builder-section-height-full) {
-                .builder-column-wrap {
-                    &.builder-element-empty {
+        .qazana-section {
+            &:not(.qazana-section-height-full) {
+                .qazana-column-wrap {
+                    &.qazana-element-empty {
                         @media (min-width: $screen-md-min) {
                             &,
-                            .builder-widget-wrap {
+                            .qazana-widget-wrap {
                                 position: absolute;
                                 width: 100%;
                                 height: 100%;
@@ -179,19 +179,19 @@ html.builder-html {
         }
 
         // Inner Section
-        .builder-top-column {
-            .builder-widget-wrap {
-                .builder-inner-section {
+        .qazana-top-column {
+            .qazana-widget-wrap {
+                .qazana-inner-section {
                 }
             }
         }
 
         // General - Overlay Settings
-        .builder-editor-element-settings {
+        .qazana-editor-element-settings {
             position: absolute;
             overflow: hidden;
 
-            .builder-editor-element-settings-list {
+            .qazana-editor-element-settings-list {
                 display: table;
                 table-layout: fixed;
                 height: 30px;
@@ -204,18 +204,18 @@ html.builder-html {
                 font-style: normal;
                 line-height: 1;
 
-                &.builder-editor-section-settings-list {
+                &.qazana-editor-section-settings-list {
                     background-color: $editor-light;
 
-                    .builder-editor-element-setting {
+                    .qazana-editor-element-setting {
                         @media (min-width: $screen-lg-min) {
                             &:not(:last-child) {
                                 @include border-end(1px solid $editor-lighter);
                             }
                         }
 
-                        &.builder-editor-element-trigger {
-                            &:not(.builder-active) {
+                        &.qazana-editor-element-trigger {
+                            &:not(.qazana-active) {
                                 border: none;
                             }
                         }
@@ -233,7 +233,7 @@ html.builder-html {
                 }
             }
 
-            .builder-editor-element-setting {
+            .qazana-editor-element-setting {
                 display: table-cell;
                 vertical-align: middle;
                 width: 35px;
@@ -251,7 +251,7 @@ html.builder-html {
                 }
             }
 
-            .builder-editor-element-remove {
+            .qazana-editor-element-remove {
                 .fa {
                     color: $editor-danger;
                 }
@@ -259,7 +259,7 @@ html.builder-html {
         }
 
         // Column - Overlay Settings
-        .builder-editor-column-settings {
+        .qazana-editor-column-settings {
             @include start(-1px);
             z-index: $first-layer;
             bottom: 100%;
@@ -268,11 +268,11 @@ html.builder-html {
             border-radius: 3px 3px 0 0;
             pointer-events: all;
 
-            .builder-editor-element-settings-list {
+            .qazana-editor-element-settings-list {
                 float: $start;
                 background-color: $editor-darkest;
 
-                .builder-editor-element-setting {
+                .qazana-editor-element-setting {
                     @media (min-width: $screen-lg-min) {
                         &:not(:last-child) {
                             @include border-end(1px solid $editor-darker);
@@ -287,9 +287,9 @@ html.builder-html {
                 }
             }
 
-            .builder-editor-element-trigger {
-                &:not(.builder-active) {
-                    ~ .builder-editor-element-setting {
+            .qazana-editor-element-trigger {
+                &:not(.qazana-active) {
+                    ~ .qazana-editor-element-setting {
                         display: none;
                     }
                 }
@@ -310,7 +310,7 @@ html.builder-html {
                         }
                     }
 
-                    &.builder-active {
+                    &.qazana-active {
                         > a {
                             &:after {
                                 content: getValueByDirection('\f105', '\f104');
@@ -324,12 +324,12 @@ html.builder-html {
         }
 
         // Widget - Overlay Settings
-        .builder-editor-widget-settings {
+        .qazana-editor-widget-settings {
             z-index: $second-layer;
             top: 2px;
             @include end(2px);
 
-            .builder-editor-element-setting {
+            .qazana-editor-element-setting {
                 width: 24px;
 
                 &:not(:last-child) {
@@ -347,7 +347,7 @@ html.builder-html {
                 }
             }
 
-            .builder-editor-element-remove {
+            .qazana-editor-element-remove {
                 .fa {
                     color: #ffffff;
                 }
@@ -359,15 +359,15 @@ html.builder-html {
                 }
             }
 
-            .builder-editor-element-edit {
+            .qazana-editor-element-edit {
                 a {
                     cursor: move;
                 }
             }
         }
 
-        .builder-editor-element-setting {
-            &:not(.builder-editor-element-edit):not(.builder-editor-element-trigger) {
+        .qazana-editor-element-setting {
+            &:not(.qazana-editor-element-edit):not(.qazana-editor-element-trigger) {
                 @media (max-width: $screen-md-max) {
                     display: none;
                 }
@@ -375,37 +375,37 @@ html.builder-html {
         }
 
         // Section Full (No more columns) - Overlay
-        .builder-section-filled {
-            .builder-editor-column-settings {
-                .builder-editor-element-add,
-                .builder-editor-element-duplicate {
+        .qazana-section-filled {
+            .qazana-editor-column-settings {
+                .qazana-editor-element-add,
+                .qazana-editor-element-duplicate {
                     display: none;
                 }
             }
 
-            .builder-sortable-placeholder {
-                &.builder-column {
+            .qazana-sortable-placeholder {
+                &.qazana-column {
                     display: none;
                 }
             }
 
-            .builder-row {
-                &.builder-draggable-over {
+            .qazana-row {
+                &.qazana-draggable-over {
                     border: 1px solid $editor-danger;
                 }
             }
         }
 
         // Row
-        .builder-row {
+        .qazana-row {
             min-height: 100px; // Min Height for Section
         }
 
         // Column
-        .builder-column {
-            &.builder-element-editable,
-            &.builder-section-tools-active {
-                > .builder-element-overlay {
+        .qazana-column {
+            &.qazana-element-editable,
+            &.qazana-section-tools-active {
+                > .qazana-element-overlay {
                     border: 1px solid $white;
 
                     &:after {
@@ -422,8 +422,8 @@ html.builder-html {
                 }
             }
 
-            &.builder-dragging-on-child {
-                > .builder-element-overlay {
+            &.qazana-dragging-on-child {
+                > .qazana-element-overlay {
                     border: 1px solid $editor-info;
 
                     &:after {
@@ -470,7 +470,7 @@ html.builder-html {
         }
     }
 
-    .builder-inner {
+    .qazana-inner {
 
         // Force keeping in top for blank page detection
         &:before {
@@ -480,9 +480,9 @@ html.builder-html {
         }
     }
 
-    .builder-column-wrap {
-        &.builder-element-empty {
-            .builder-widget-wrap {
+    .qazana-column-wrap {
+        &.qazana-element-empty {
+            .qazana-widget-wrap {
                 @media (min-width: $screen-md-min) {
                     padding: 10px;
                 }
@@ -490,32 +490,32 @@ html.builder-html {
         }
     }
 
-    .builder-widget {
+    .qazana-widget {
         position: relative;
 
-        &.builder-loading {
+        &.qazana-loading {
             opacity: 0.3;
         }
 
-        &:not(.builder-loading):not(.builder-widget-menu-anchor) {
+        &:not(.qazana-loading):not(.qazana-widget-menu-anchor) {
             // Don't apply transition on anchor widget - Safari hack
             transition: all 0.1s;
         }
 
-        &.builder-element-editable,
-        &.builder-widget-can-edit:hover {
+        &.qazana-element-editable,
+        &.qazana-widget-can-edit:hover {
             outline: 1px solid $editor-info;
         }
 
-        &:not(.builder-element-editable):not(.builder-widget-settings-active) {
-            .builder-editor-element-settings {
+        &:not(.qazana-element-editable):not(.qazana-widget-settings-active) {
+            .qazana-editor-element-settings {
                 display: none;
             }
         }
     }
 
-    .builder-column.builder-dragging {
-        div.builder-column-wrap {
+    .qazana-column.qazana-dragging {
+        div.qazana-column-wrap {
             min-height: 50px; //FOR EMPTY COLUMN - DON'T REMOVE!
         }
     }
@@ -524,20 +524,20 @@ html.builder-html {
         display: none; //TEMP
     }
 
-    .builder-sortable-placeholder {
+    .qazana-sortable-placeholder {
         background: $editor-info;
         transition-timing-function: ease-out;
 
-        &:not(.builder-column) {
+        &:not(.qazana-column) {
             height: 5px;
         }
 
-        &.builder-column {
+        &.qazana-column {
             width: 5px;
         }
     }
 
-    .builder-sortable-helper {
+    .qazana-sortable-helper {
         position: absolute;
         border-radius: 3px;
         background-color: #fff;
@@ -551,7 +551,7 @@ html.builder-html {
             line-height: 1;
         }
 
-        .builder-element-title-wrapper {
+        .qazana-element-title-wrapper {
             display: table;
             width: 100%;
         }
@@ -567,8 +567,8 @@ html.builder-html {
         }
     }
 
-    .builder-draggable-over:not([data-dragged-element="section"]):not([data-dragged-is-inner="true"]) > .builder-empty-view > .builder-first-add,
-    .builder-first-add[data-side] {
+    .qazana-draggable-over:not([data-dragged-element="section"]):not([data-dragged-is-inner="true"]) > .qazana-empty-view > .qazana-first-add,
+    .qazana-first-add[data-side] {
         &:after {
             content: '';
             height: 4px;
@@ -576,21 +576,21 @@ html.builder-html {
             background-color: $editor-info;
         }
 
-        .builder-icon {
+        .qazana-icon {
             display: none;
         }
     }
 
-    .builder-draggable-over[data-dragged-element="section"][data-dragged-is-inner="true"] {
-        .builder-inner-column {
-            .builder-sortable-placeholder {
+    .qazana-draggable-over[data-dragged-element="section"][data-dragged-is-inner="true"] {
+        .qazana-inner-column {
+            .qazana-sortable-placeholder {
                 display: none;
             }
         }
     }
 
     // Add new Section
-    #builder-add-section {
+    #qazana-add-section {
         background-color: rgba(255, 255, 255, .5);
         margin: 60px auto;
         max-width: 1140px;
@@ -608,16 +608,16 @@ html.builder-html {
         }
     }
 
-    #builder-add-section-inner {
+    #qazana-add-section-inner {
         text-align: center;
         margin-top: 10px;
         padding: 40px 0;
     }
 
-    #builder-add-new-section {
+    #qazana-add-new-section {
         display: inline-block; // For smooth dragging above
 
-        .builder-button {
+        .qazana-button {
             color: #fff;
             background-image: none; // Reset for some themes
             font-size: 13px;
@@ -644,16 +644,16 @@ html.builder-html {
         }
     }
 
-    #builder-add-section-button {
+    #qazana-add-section-button {
         background-color: $editor-accent;
     }
 
-    #builder-add-template-button {
+    #qazana-add-template-button {
         background-color: $editor-dark;
         @include margin-start(25px);
     }
 
-    #builder-add-section-drag-title {
+    #qazana-add-section-drag-title {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 13px;
         font-weight: normal;
@@ -663,7 +663,7 @@ html.builder-html {
         margin-top: 15px;
     }
 
-    #builder-select-preset-close {
+    #qazana-select-preset-close {
         position: absolute;
         right: 20px;
         top: 20px;
@@ -673,7 +673,7 @@ html.builder-html {
         color: $editor-lightest;
     }
 
-    #builder-select-preset-title {
+    #qazana-select-preset-title {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 13px;
         font-weight: 500;
@@ -682,14 +682,14 @@ html.builder-html {
         color: $editor-darker;
     }
 
-    #builder-select-preset-list {
+    #qazana-select-preset-list {
         list-style: none;
         padding: 0 25px;
         margin: 20px auto 0;
         overflow: hidden;
         max-width: 700px;
 
-        .builder-preset {
+        .qazana-preset {
             cursor: pointer;
             margin: 0;
             padding: 10px;
@@ -715,13 +715,13 @@ html.builder-html {
 }
 
 // Preview Mode
-.builder-editor-preview {
-    #builder-add-section,
-    .builder-editor-widget-settings,
-    .builder-element-empty,
-    .builder-element-overlay,
-    .builder-empty,
-    .builder-widget-empty,
+.qazana-editor-preview {
+    #qazana-add-section,
+    .qazana-editor-widget-settings,
+    .qazana-element-empty,
+    .qazana-element-overlay,
+    .qazana-empty,
+    .qazana-widget-empty,
     .column-title {
         display: none;
     }

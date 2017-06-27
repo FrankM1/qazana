@@ -1,7 +1,7 @@
 <?php
-namespace Builder\System_Info\Classes;
+namespace Qazana\System_Info\Classes;
 
-use Builder\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -40,7 +40,7 @@ class WordPress_Reporter extends Base_Reporter {
 
 		if ( $memory_limit_bytes < $min_recommended_bytes ) {
 			$result['recommendation'] = sprintf(
-				_x( 'We recommend setting memory to at least %s. For more information, read about <a href="%s">how to Increase memory allocated to PHP</a>.', 'System Info', 'builder' ),
+				_x( 'We recommend setting memory to at least %s. For more information, read about <a href="%s">how to Increase memory allocated to PHP</a>.', 'System Info', 'qazana' ),
 				$min_recommended_memory,
 				'https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP'
 			);

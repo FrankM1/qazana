@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -19,7 +19,7 @@ class Control_Radio extends Base_Control {
 
 	public function content_template() {
 		?>
-		<label class="builder-control-title">
+		<label class="qazana-control-title">
             <# _.each( data.options, function( option_title, option_value ) {
                 var value = data.controlValue;
                 if ( typeof value == 'string' ) {
@@ -34,7 +34,7 @@ class Control_Radio extends Base_Control {
             <# } ); #>
 		</label>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

@@ -52,7 +52,7 @@ Modals = {
 			}
 		};
 
-		DialogsManager.addWidgetType( 'builder-modal', DialogsManager.getWidgetType( 'options' ).extend( 'builder-modal', modalProperties ) );
+		DialogsManager.addWidgetType( 'qazana-modal', DialogsManager.getWidgetType( 'options' ).extend( 'qazana-modal', modalProperties ) );
 	}
 };
 

@@ -1,27 +1,27 @@
 // Global style for animate.css
 
-.builder-hover-animation-grow {
+.qazana-hover-animation-grow {
     transition-duration: 0.3s;
     transition-property: transform;
 }
 
-.builder-hover-animation-grow:active,
-.builder-hover-animation-grow:focus,
-.builder-hover-animation-grow:hover {
+.qazana-hover-animation-grow:active,
+.qazana-hover-animation-grow:focus,
+.qazana-hover-animation-grow:hover {
     transform: scale(1.1);
 }
 
-.builder-hover-animation-shrink {
+.qazana-hover-animation-shrink {
     transition-duration: 0.3s;
     transition-property: transform;
 }
 
-.builder-hover-animation-shrink:active,
-.builder-hover-animation-shrink:focus,
-.builder-hover-animation-shrink:hover {
+.qazana-hover-animation-shrink:active,
+.qazana-hover-animation-shrink:focus,
+.qazana-hover-animation-shrink:hover {
     transform: scale(0.9);
 }
-@keyframes builder-hover-animation-pulse {
+@keyframes qazana-hover-animation-pulse {
     25% {
         transform: scale(1.1);
     }
@@ -31,45 +31,45 @@
     }
 }
 
-.builder-hover-animation-pulse:active,
-.builder-hover-animation-pulse:focus,
-.builder-hover-animation-pulse:hover {
-    animation-name: builder-hover-animation-pulse;
+.qazana-hover-animation-pulse:active,
+.qazana-hover-animation-pulse:focus,
+.qazana-hover-animation-pulse:hover {
+    animation-name: qazana-hover-animation-pulse;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
-@keyframes builder-hover-animation-pulse-grow {
+@keyframes qazana-hover-animation-pulse-grow {
     to {
         transform: scale(1.1);
     }
 }
 
-.builder-hover-animation-pulse-grow:active,
-.builder-hover-animation-pulse-grow:focus,
-.builder-hover-animation-pulse-grow:hover {
-    animation-name: builder-hover-animation-pulse-grow;
+.qazana-hover-animation-pulse-grow:active,
+.qazana-hover-animation-pulse-grow:focus,
+.qazana-hover-animation-pulse-grow:hover {
+    animation-name: qazana-hover-animation-pulse-grow;
     animation-duration: 0.3s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-@keyframes builder-hover-animation-pulse-shrink {
+@keyframes qazana-hover-animation-pulse-shrink {
     to {
         transform: scale(0.9);
     }
 }
 
-.builder-hover-animation-pulse-shrink:active,
-.builder-hover-animation-pulse-shrink:focus,
-.builder-hover-animation-pulse-shrink:hover {
-    animation-name: builder-hover-animation-pulse-shrink;
+.qazana-hover-animation-pulse-shrink:active,
+.qazana-hover-animation-pulse-shrink:focus,
+.qazana-hover-animation-pulse-shrink:hover {
+    animation-name: qazana-hover-animation-pulse-shrink;
     animation-duration: 0.3s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-@keyframes builder-hover-animation-push {
+@keyframes qazana-hover-animation-push {
     50% {
         transform: scale(0.8);
     }
@@ -79,97 +79,97 @@
     }
 }
 
-.builder-hover-animation-push:active,
-.builder-hover-animation-push:focus,
-.builder-hover-animation-push:hover {
-    animation-name: builder-hover-animation-push;
+.qazana-hover-animation-push:active,
+.qazana-hover-animation-push:focus,
+.qazana-hover-animation-push:hover {
+    animation-name: qazana-hover-animation-push;
     animation-duration: 0.3s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-pop {
+@keyframes qazana-hover-animation-pop {
     50% {
         transform: scale(1.2);
     }
 }
 
-.builder-hover-animation-pop:active,
-.builder-hover-animation-pop:focus,
-.builder-hover-animation-pop:hover {
-    animation-name: builder-hover-animation-pop;
+.qazana-hover-animation-pop:active,
+.qazana-hover-animation-pop:focus,
+.qazana-hover-animation-pop:hover {
+    animation-name: qazana-hover-animation-pop;
     animation-duration: 0.3s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
 
-.builder-hover-animation-bounce-in {
+.qazana-hover-animation-bounce-in {
     transition-duration: 0.5s;
 }
 
-.builder-hover-animation-bounce-in:active,
-.builder-hover-animation-bounce-in:focus,
-.builder-hover-animation-bounce-in:hover {
+.qazana-hover-animation-bounce-in:active,
+.qazana-hover-animation-bounce-in:focus,
+.qazana-hover-animation-bounce-in:hover {
     transform: scale(1.2);
     transition-timing-function: cubic-bezier(0.47, 2.02, .31, -.36);
 }
 
-.builder-hover-animation-bounce-out {
+.qazana-hover-animation-bounce-out {
     transition-duration: 0.5s;
 }
 
-.builder-hover-animation-bounce-out:active,
-.builder-hover-animation-bounce-out:focus,
-.builder-hover-animation-bounce-out:hover {
+.qazana-hover-animation-bounce-out:active,
+.qazana-hover-animation-bounce-out:focus,
+.qazana-hover-animation-bounce-out:hover {
     transform: scale(0.8);
     transition-timing-function: cubic-bezier(0.47, 2.02, .31, -.36);
 }
 
-.builder-hover-animation-rotate {
+.qazana-hover-animation-rotate {
     transition-duration: 0.3s;
     transition-property: transform;
 }
 
-.builder-hover-animation-rotate:active,
-.builder-hover-animation-rotate:focus,
-.builder-hover-animation-rotate:hover {
+.qazana-hover-animation-rotate:active,
+.qazana-hover-animation-rotate:focus,
+.qazana-hover-animation-rotate:hover {
     transform: rotate(4deg);
 }
 
-.builder-hover-animation-grow-rotate {
+.qazana-hover-animation-grow-rotate {
     transition-duration: 0.3s;
     transition-property: transform;
 }
 
-.builder-hover-animation-grow-rotate:active,
-.builder-hover-animation-grow-rotate:focus,
-.builder-hover-animation-grow-rotate:hover {
+.qazana-hover-animation-grow-rotate:active,
+.qazana-hover-animation-grow-rotate:focus,
+.qazana-hover-animation-grow-rotate:hover {
     transform: scale(1.1) rotate(4deg);
 }
 
-.builder-hover-animation-float {
+.qazana-hover-animation-float {
     transition-duration: 0.3s;
     transition-property: transform;
     transition-timing-function: ease-out;
 }
 
-.builder-hover-animation-float:active,
-.builder-hover-animation-float:focus,
-.builder-hover-animation-float:hover {
+.qazana-hover-animation-float:active,
+.qazana-hover-animation-float:focus,
+.qazana-hover-animation-float:hover {
     transform: translateY(-8px);
 }
 
-.builder-hover-animation-sink {
+.qazana-hover-animation-sink {
     transition-duration: 0.3s;
     transition-property: transform;
     transition-timing-function: ease-out;
 }
 
-.builder-hover-animation-sink:active,
-.builder-hover-animation-sink:focus,
-.builder-hover-animation-sink:hover {
+.qazana-hover-animation-sink:active,
+.qazana-hover-animation-sink:focus,
+.qazana-hover-animation-sink:hover {
     transform: translateY(8px);
 }
-@keyframes builder-hover-animation-bob {
+@keyframes qazana-hover-animation-bob {
     0% {
         transform: translateY(-8px);
     }
@@ -182,16 +182,16 @@
         transform: translateY(-8px);
     }
 }
-@keyframes builder-hover-animation-bob-float {
+@keyframes qazana-hover-animation-bob-float {
     100% {
         transform: translateY(-8px);
     }
 }
 
-.builder-hover-animation-bob:active,
-.builder-hover-animation-bob:focus,
-.builder-hover-animation-bob:hover {
-    animation-name: builder-hover-animation-bob-float, builder-hover-animation-bob;
+.qazana-hover-animation-bob:active,
+.qazana-hover-animation-bob:focus,
+.qazana-hover-animation-bob:hover {
+    animation-name: qazana-hover-animation-bob-float, qazana-hover-animation-bob;
     animation-duration: 0.3s, 1.5s;
     animation-delay: 0s, 0.3s;
     animation-timing-function: ease-out, ease-in-out;
@@ -199,7 +199,7 @@
     animation-fill-mode: forwards;
     animation-direction: normal, alternate;
 }
-@keyframes builder-hover-animation-hang {
+@keyframes qazana-hover-animation-hang {
     0% {
         transform: translateY(8px);
     }
@@ -212,16 +212,16 @@
         transform: translateY(8px);
     }
 }
-@keyframes builder-hover-animation-hang-sink {
+@keyframes qazana-hover-animation-hang-sink {
     100% {
         transform: translateY(8px);
     }
 }
 
-.builder-hover-animation-hang:active,
-.builder-hover-animation-hang:focus,
-.builder-hover-animation-hang:hover {
-    animation-name: builder-hover-animation-hang-sink, builder-hover-animation-hang;
+.qazana-hover-animation-hang:active,
+.qazana-hover-animation-hang:focus,
+.qazana-hover-animation-hang:hover {
+    animation-name: qazana-hover-animation-hang-sink, qazana-hover-animation-hang;
     animation-duration: 0.3s, 1.5s;
     animation-delay: 0s, 0.3s;
     animation-timing-function: ease-out, ease-in-out;
@@ -230,41 +230,41 @@
     animation-direction: normal, alternate;
 }
 
-.builder-hover-animation-skew {
+.qazana-hover-animation-skew {
     transition-duration: 0.3s;
     transition-property: transform;
 }
 
-.builder-hover-animation-skew:active,
-.builder-hover-animation-skew:focus,
-.builder-hover-animation-skew:hover {
+.qazana-hover-animation-skew:active,
+.qazana-hover-animation-skew:focus,
+.qazana-hover-animation-skew:hover {
     transform: skew(-10deg);
 }
 
-.builder-hover-animation-skew-forward {
+.qazana-hover-animation-skew-forward {
     transition-duration: 0.3s;
     transition-property: transform;
     transform-origin: 0 100%;
 }
 
-.builder-hover-animation-skew-forward:active,
-.builder-hover-animation-skew-forward:focus,
-.builder-hover-animation-skew-forward:hover {
+.qazana-hover-animation-skew-forward:active,
+.qazana-hover-animation-skew-forward:focus,
+.qazana-hover-animation-skew-forward:hover {
     transform: skew(-10deg);
 }
 
-.builder-hover-animation-skew-backward {
+.qazana-hover-animation-skew-backward {
     transition-duration: 0.3s;
     transition-property: transform;
     transform-origin: 0 100%;
 }
 
-.builder-hover-animation-skew-backward:active,
-.builder-hover-animation-skew-backward:focus,
-.builder-hover-animation-skew-backward:hover {
+.qazana-hover-animation-skew-backward:active,
+.qazana-hover-animation-skew-backward:focus,
+.qazana-hover-animation-skew-backward:hover {
     transform: skew(10deg);
 }
-@keyframes builder-hover-animation-wobble-vertical {
+@keyframes qazana-hover-animation-wobble-vertical {
     16.65% {
         transform: translateY(8px);
     }
@@ -290,15 +290,15 @@
     }
 }
 
-.builder-hover-animation-wobble-vertical:active,
-.builder-hover-animation-wobble-vertical:focus,
-.builder-hover-animation-wobble-vertical:hover {
-    animation-name: builder-hover-animation-wobble-vertical;
+.qazana-hover-animation-wobble-vertical:active,
+.qazana-hover-animation-wobble-vertical:focus,
+.qazana-hover-animation-wobble-vertical:hover {
+    animation-name: qazana-hover-animation-wobble-vertical;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-horizontal {
+@keyframes qazana-hover-animation-wobble-horizontal {
     16.65% {
         transform: translateX(8px);
     }
@@ -324,15 +324,15 @@
     }
 }
 
-.builder-hover-animation-wobble-horizontal:active,
-.builder-hover-animation-wobble-horizontal:focus,
-.builder-hover-animation-wobble-horizontal:hover {
-    animation-name: builder-hover-animation-wobble-horizontal;
+.qazana-hover-animation-wobble-horizontal:active,
+.qazana-hover-animation-wobble-horizontal:focus,
+.qazana-hover-animation-wobble-horizontal:hover {
+    animation-name: qazana-hover-animation-wobble-horizontal;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-to-bottom-right {
+@keyframes qazana-hover-animation-wobble-to-bottom-right {
     16.65% {
         transform: translate(8px, 8px);
     }
@@ -358,15 +358,15 @@
     }
 }
 
-.builder-hover-animation-wobble-to-bottom-right:active,
-.builder-hover-animation-wobble-to-bottom-right:focus,
-.builder-hover-animation-wobble-to-bottom-right:hover {
-    animation-name: builder-hover-animation-wobble-to-bottom-right;
+.qazana-hover-animation-wobble-to-bottom-right:active,
+.qazana-hover-animation-wobble-to-bottom-right:focus,
+.qazana-hover-animation-wobble-to-bottom-right:hover {
+    animation-name: qazana-hover-animation-wobble-to-bottom-right;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-to-top-right {
+@keyframes qazana-hover-animation-wobble-to-top-right {
     16.65% {
         transform: translate(8px, -8px);
     }
@@ -392,15 +392,15 @@
     }
 }
 
-.builder-hover-animation-wobble-to-top-right:active,
-.builder-hover-animation-wobble-to-top-right:focus,
-.builder-hover-animation-wobble-to-top-right:hover {
-    animation-name: builder-hover-animation-wobble-to-top-right;
+.qazana-hover-animation-wobble-to-top-right:active,
+.qazana-hover-animation-wobble-to-top-right:focus,
+.qazana-hover-animation-wobble-to-top-right:hover {
+    animation-name: qazana-hover-animation-wobble-to-top-right;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-top {
+@keyframes qazana-hover-animation-wobble-top {
     16.65% {
         transform: skew(-12deg);
     }
@@ -426,19 +426,19 @@
     }
 }
 
-.builder-hover-animation-wobble-top {
+.qazana-hover-animation-wobble-top {
     transform-origin: 0 100%;
 }
 
-.builder-hover-animation-wobble-top:active,
-.builder-hover-animation-wobble-top:focus,
-.builder-hover-animation-wobble-top:hover {
-    animation-name: builder-hover-animation-wobble-top;
+.qazana-hover-animation-wobble-top:active,
+.qazana-hover-animation-wobble-top:focus,
+.qazana-hover-animation-wobble-top:hover {
+    animation-name: qazana-hover-animation-wobble-top;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-bottom {
+@keyframes qazana-hover-animation-wobble-bottom {
     16.65% {
         transform: skew(-12deg);
     }
@@ -464,19 +464,19 @@
     }
 }
 
-.builder-hover-animation-wobble-bottom {
+.qazana-hover-animation-wobble-bottom {
     transform-origin: 100% 0;
 }
 
-.builder-hover-animation-wobble-bottom:active,
-.builder-hover-animation-wobble-bottom:focus,
-.builder-hover-animation-wobble-bottom:hover {
-    animation-name: builder-hover-animation-wobble-bottom;
+.qazana-hover-animation-wobble-bottom:active,
+.qazana-hover-animation-wobble-bottom:focus,
+.qazana-hover-animation-wobble-bottom:hover {
+    animation-name: qazana-hover-animation-wobble-bottom;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-wobble-skew {
+@keyframes qazana-hover-animation-wobble-skew {
     16.65% {
         transform: skew(-12deg);
     }
@@ -502,15 +502,15 @@
     }
 }
 
-.builder-hover-animation-wobble-skew:active,
-.builder-hover-animation-wobble-skew:focus,
-.builder-hover-animation-wobble-skew:hover {
-    animation-name: builder-hover-animation-wobble-skew;
+.qazana-hover-animation-wobble-skew:active,
+.qazana-hover-animation-wobble-skew:focus,
+.qazana-hover-animation-wobble-skew:hover {
+    animation-name: qazana-hover-animation-wobble-skew;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-@keyframes builder-hover-animation-buzz {
+@keyframes qazana-hover-animation-buzz {
     50% {
         transform: translateX(3px) rotate(2deg);
     }
@@ -520,15 +520,15 @@
     }
 }
 
-.builder-hover-animation-buzz:active,
-.builder-hover-animation-buzz:focus,
-.builder-hover-animation-buzz:hover {
-    animation-name: builder-hover-animation-buzz;
+.qazana-hover-animation-buzz:active,
+.qazana-hover-animation-buzz:focus,
+.qazana-hover-animation-buzz:hover {
+    animation-name: qazana-hover-animation-buzz;
     animation-duration: 0.15s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
-@keyframes builder-hover-animation-buzz-out {
+@keyframes qazana-hover-animation-buzz-out {
     10% {
         transform: translateX(3px) rotate(2deg);
     }
@@ -570,41 +570,41 @@
     }
 }
 
-.builder-hover-animation-buzz-out:active,
-.builder-hover-animation-buzz-out:focus,
-.builder-hover-animation-buzz-out:hover {
-    animation-name: builder-hover-animation-buzz-out;
+.qazana-hover-animation-buzz-out:active,
+.qazana-hover-animation-buzz-out:focus,
+.qazana-hover-animation-buzz-out:hover {
+    animation-name: qazana-hover-animation-buzz-out;
     animation-duration: 0.75s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
 
-.builder-hover-animation-shadow-bottom {
+.qazana-hover-animation-shadow-bottom {
     transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease;
 }
 
-.builder-hover-animation-shadow-bottom:active,
-.builder-hover-animation-shadow-bottom:focus,
-.builder-hover-animation-shadow-bottom:hover {
+.qazana-hover-animation-shadow-bottom:active,
+.qazana-hover-animation-shadow-bottom:focus,
+.qazana-hover-animation-shadow-bottom:hover {
     box-shadow: 0 10px 27px 0 rgba(0,0,0,0.1) !important;
     border-color: transparent !important;
 }
 
-.builder-hover-animation-no-shadow {
+.qazana-hover-animation-no-shadow {
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 
-    .builder-widget-container {
+    .qazana-widget-container {
         transition: box-shadow 0.3s ease;
     }
 }
 
-.builder-hover-animation-no-shadow:active,
-.builder-hover-animation-no-shadow:focus,
-.builder-hover-animation-no-shadow:hover {
+.qazana-hover-animation-no-shadow:active,
+.qazana-hover-animation-no-shadow:focus,
+.qazana-hover-animation-no-shadow:hover {
     box-shadow: none !important;
     transform: translateY(-2px);
 
-    .builder-widget-container {
+    .qazana-widget-container {
         box-shadow: none !important;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -31,7 +31,7 @@ class Page_Template_Manager {
     private function __construct() {
         $this->templates = array();
 
-        $this->page_template_path = apply_filters( 'builder_view_page_template_path', plugin_dir_path( dirname( dirname( __FILE__ ) ) ).'templates/default/' );
+        $this->page_template_path = apply_filters( 'qazana_view_page_template_path', plugin_dir_path( dirname( dirname( __FILE__ ) ) ).'templates/default/' );
 
         // Add a filter to the attributes metabox to inject template into the cache.
         add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_project_templates' ) );
@@ -45,10 +45,10 @@ class Page_Template_Manager {
 
         // Add your templates to this array.
         $templates = array(
-            'builder.php' => 'Builder',
+            'qazana.php' => 'Qazana',
         );
 
-        $this->templates = apply_filters( 'builder_page_templates', $templates );
+        $this->templates = apply_filters( 'qazana_page_templates', $templates );
     }
 
     /**
@@ -88,8 +88,8 @@ class Page_Template_Manager {
 
         $page_template = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
-        if ( $page_template == 'builder.php' ) {
-            add_filter( 'builder_is_builder_page', '__return_true' );
+        if ( $page_template == 'qazana.php' ) {
+            add_filter( 'qazana_is_qazana_page', '__return_true' );
         }
 
         if ( ! isset( $this->templates[ get_post_meta( get_the_ID(), '_wp_page_template', true ) ] ) ) {

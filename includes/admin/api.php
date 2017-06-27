@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -22,7 +22,7 @@ class Admin_Api {
 		return wp_remote_post( $this->api_feedback_url, [
 			'timeout' => 30,
 			'body' => [
-				'api_version' => builder_get_version(),
+				'api_version' => qazana_get_version(),
 				'site_lang' => get_bloginfo( 'language' ),
 				'feedback_key' => $feedback_key,
 				'feedback' => $feedback_text,
@@ -39,7 +39,7 @@ class Admin_Api {
      * @return array|bool
      */
     private function _get_info_data( $force = false ) {
-        $cache_key = 'builder_remote_info_api_data_' . builder()->get_version();
+        $cache_key = 'qazana_remote_info_api_data_' . qazana()->get_version();
         $info_data = get_transient( $cache_key );
 
         if ( $force || false === $info_data ) {
@@ -47,7 +47,7 @@ class Admin_Api {
                 'timeout' => 25,
                 'body' => [
                     // Which API version is used
-                    'api_version' => builder()->get_version(),
+                    'api_version' => qazana()->get_version(),
                     // Which language to return
                     'site_lang' => get_bloginfo( 'language' ),
                 ],
@@ -67,7 +67,7 @@ class Admin_Api {
             }
 
             if ( isset( $info_data['templates'] ) ) {
-                update_option( 'builder_remote_info_api_data', $info_data['templates'], 'no' );
+                update_option( 'qazana_remote_info_api_data', $info_data['templates'], 'no' );
                 unset( $info_data['templates'] );
             }
             set_transient( $cache_key, $info_data, 12 * HOUR_IN_SECONDS );
@@ -85,7 +85,7 @@ class Admin_Api {
     }
 
     public function ajax_remote_info_api_data() {
-        check_ajax_referer( 'builder_reset_library', '_nonce' );
+        check_ajax_referer( 'qazana_reset_library', '_nonce' );
 
         $this->_get_info_data( true );
 
@@ -93,6 +93,6 @@ class Admin_Api {
     }
 
     public function __construct() {
-        add_action( 'wp_ajax_builder_clear_library_cache', [ $this, 'ajax_remote_info_api_data' ] );
+        add_action( 'wp_ajax_qazana_clear_library_cache', [ $this, 'ajax_remote_info_api_data' ] );
     }
 }

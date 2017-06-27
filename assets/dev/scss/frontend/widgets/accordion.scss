@@ -2,28 +2,28 @@
 // Accordion
 //
 
-.builder-accordion {
+.qazana-accordion {
 	text-align: $start;
 
-	.builder-accordion-item {
+	.qazana-accordion-item {
 		border: 1px solid $gray-light;
 
-		+ .builder-accordion-item {
+		+ .qazana-accordion-item {
 			border-top: none;
 		}
 	}
 
-	.builder-accordion-title {
+	.qazana-accordion-title {
 		padding: 15px 20px;
 		font-weight: bold;
 		line-height: 1;
 		cursor: pointer;
 
-		.builder-accordion-icon {
+		.qazana-accordion-icon {
 			display: inline-block;
 			width: 1.5em;
 
-			&.builder-accordion-icon- {
+			&.qazana-accordion-icon- {
 				&right {
 					float: right;
 					text-align: right;
@@ -37,7 +37,7 @@
 		}
 	}
 
-	.builder-accordion-content {
+	.qazana-accordion-content {
 		display: none;
 		padding: 15px 20px;
 		border-top: 1px solid $gray-light;
@@ -46,16 +46,16 @@
 
 // Responsive mode
 @media (max-width: $screen-sm-max) {
-	.builder-accordion {
-		.builder-accordion-title {
+	.qazana-accordion {
+		.qazana-accordion-title {
 			padding: 12px 15px;
 
-			.builder-accordion-icon {
+			.qazana-accordion-icon {
 				width: 1.2em;
 			}
 		}
 
-		.builder-accordion-content {
+		.qazana-accordion-content {
 			padding: 7px 15px;
 		}
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -13,8 +13,8 @@ class Widgets_Manager {
 
         add_action( 'after_setup_theme', [ $this, 'require_files' ] );
 
-        add_action( 'wp_ajax_builder_render_widget', [ $this, 'ajax_render_widget' ] );
-        add_action( 'wp_ajax_builder_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
+        add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
+        add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
     }
 
     private function _init_widgets() {
@@ -60,24 +60,24 @@ class Widgets_Manager {
         *
         * @param array $build_widgets_filename.
         */
-        $build_widgets_filename = apply_filters( 'builder/widgets/widget_filenames', $build_widgets_filename );
+        $build_widgets_filename = apply_filters( 'qazana/widgets/widget_filenames', $build_widgets_filename );
 
         // remove duplicates
         $build_widgets_filename = array_unique( $build_widgets_filename );
 
         foreach ( $build_widgets_filename as $widget_filename ) {
 
-            if ( ! builder()->widget_loader->locate_widget( $widget_filename .'.php', false ) ) {
+            if ( ! qazana()->widget_loader->locate_widget( $widget_filename .'.php', false ) ) {
                 continue;
             }
 
             $class_name = str_replace( '-', '_', $widget_filename );
             $class_name = __NAMESPACE__ . '\Widget_' . $class_name;
 
-            $class_name = apply_filters( "builder/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
+            $class_name = apply_filters( "qazana/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
 
             if ( ! class_exists( $class_name ) ) {
-                builder()->widget_loader->locate_widget( $widget_filename .'.php', true );
+                qazana()->widget_loader->locate_widget( $widget_filename .'.php', true );
             }
 
             $widget_instance = new $class_name();
@@ -87,14 +87,14 @@ class Widgets_Manager {
 
         $this->_register_wp_widgets();
 
-        do_action( 'builder/widgets/widgets_registered' );
+        do_action( 'qazana/widgets/widgets_registered' );
     }
 
     private function _register_wp_widgets() {
 
         global $wp_widget_factory;
 
-        builder()->widget_loader->locate_widget( 'wordpress.php', true );
+        qazana()->widget_loader->locate_widget( 'wordpress.php', true );
 
         /**
          * Allow override of allowed widgets
@@ -104,7 +104,7 @@ class Widgets_Manager {
          * @param array $allowed_widgets.
          */
         // Allow themes/plugins to filter out their widgets
-		$black_list = apply_filters( 'builder/widgets/black_list', [] );
+		$black_list = apply_filters( 'qazana/widgets/black_list', [] );
 
         foreach ( $wp_widget_factory->widgets as $widget_class => $widget_obj ) {
 
@@ -112,8 +112,8 @@ class Widgets_Manager {
     			continue;
     		}
 
-            $builder_widget_class = __NAMESPACE__ . '\Widget_WordPress';
-            $this->register_widget_type( new $builder_widget_class( array(), [ 'widget_name' => $widget_class ] ) );
+            $qazana_widget_class = __NAMESPACE__ . '\Widget_WordPress';
+            $this->register_widget_type( new $qazana_widget_class( array(), [ 'widget_name' => $widget_class ] ) );
         }
     }
 
@@ -121,23 +121,23 @@ class Widgets_Manager {
 
         $default_files = [];
 
-		if ( ! class_exists( 'Builder\Controls_Stack' ) ) {
+		if ( ! class_exists( 'Qazana\Controls_Stack' ) ) {
             $default_files[] = 'base/controls-stack.php';
         }
 
-        if ( ! class_exists( 'Builder\Element_Base' ) ) {
+        if ( ! class_exists( 'Qazana\Element_Base' ) ) {
             $default_files[] = 'base/element-base.php';
         }
 
-        if ( ! class_exists( 'Builder\Widget_Base' ) ) {
+        if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
             $default_files[] = 'base/widget-base.php';
         }
 
-        $files = apply_filters( 'builder/widgets/require_files', $default_files );
+        $files = apply_filters( 'qazana/widgets/require_files', $default_files );
 
         if ( is_array( $files ) ) {
             foreach ( $files as $file ) {
-                builder()->widget_loader->locate_widget( $file, true );
+                qazana()->widget_loader->locate_widget( $file, true );
             }
         }
 
@@ -150,7 +150,7 @@ class Widgets_Manager {
 
         $this->_widget_types[ $widget->get_name() ] = $widget;
 
-        $this->_widget_types = apply_filters( 'builder/widgets/register_widget_type', $this->_widget_types, $this );
+        $this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
 
         return true;
     }
@@ -195,7 +195,7 @@ class Widgets_Manager {
     }
 
     public function ajax_render_widget() {
-        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'builder-editing' ) ) {
+        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
             wp_send_json_error( new \WP_Error( 'token_expired' ) );
         }
 
@@ -215,7 +215,7 @@ class Widgets_Manager {
         // Start buffering
         ob_start();
 
-		$widget = builder()->elements_manager->create_element_instance( $data );
+		$widget = qazana()->elements_manager->create_element_instance( $data );
 
 		if ( ! is_object( $widget ) ) {
 			wp_send_json_error( new \WP_Error( 'no_widget', 'Widget not found' ) );
@@ -229,7 +229,7 @@ class Widgets_Manager {
     }
 
     public function ajax_get_wp_widget_form() {
-        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'builder-editing' ) ) {
+        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
             die;
         }
 

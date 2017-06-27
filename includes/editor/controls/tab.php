@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -17,7 +17,7 @@ class Control_Tab extends Base_Control {
 
 	public function content_template() {
 		?>
-			<div class="builder-panel-tab-heading">
+			<div class="qazana-panel-tab-heading">
 				{{{ data.label }}}
 			</div>
 		<?php

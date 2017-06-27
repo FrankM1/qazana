@@ -1,24 +1,24 @@
 var PanelFooterItemView;
 
 PanelFooterItemView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-panel-footer-content',
+	template: '#tmpl-qazana-panel-footer-content',
 
 	tagName: 'nav',
 
-	id: 'builder-panel-footer-tools',
+	id: 'qazana-panel-footer-tools',
 
 	possibleRotateModes: [ 'portrait', 'landscape' ],
 
 	ui: {
-		menuButtons: '.builder-panel-footer-tool',
-		deviceModeIcon: '#builder-panel-footer-responsive > i',
-		deviceModeButtons: '#builder-panel-footer-responsive .builder-panel-footer-sub-menu-item',
-		buttonSave: '#builder-panel-footer-save',
-		buttonSaveButton: '#builder-panel-footer-save .builder-button',
-		buttonPublish: '#builder-panel-footer-publish',
-		watchTutorial: '#builder-panel-footer-watch-tutorial',
-		showTemplates: '#builder-panel-footer-templates-modal',
-		saveTemplate: '#builder-panel-footer-save-template'
+		menuButtons: '.qazana-panel-footer-tool',
+		deviceModeIcon: '#qazana-panel-footer-responsive > i',
+		deviceModeButtons: '#qazana-panel-footer-responsive .qazana-panel-footer-sub-menu-item',
+		buttonSave: '#qazana-panel-footer-save',
+		buttonSaveButton: '#qazana-panel-footer-save .qazana-button',
+		buttonPublish: '#qazana-panel-footer-publish',
+		watchTutorial: '#qazana-panel-footer-watch-tutorial',
+		showTemplates: '#qazana-panel-footer-templates-modal',
+		saveTemplate: '#qazana-panel-footer-save-template'
 	},
 
 	events: {
@@ -33,8 +33,8 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 	initialize: function() {
 		this._initDialog();
 
-		this.listenTo( builder.channels.editor, 'change', this.onEditorChanged )
-			.listenTo( builder.channels.deviceMode, 'change', this.onDeviceModeChange );
+		this.listenTo( qazana.channels.editor, 'change', this.onEditorChanged )
+			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
 	},
 
 	_initDialog: function() {
@@ -44,18 +44,18 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 			if ( ! dialog ) {
 				var $ = Backbone.$,
 					$dialogMessage = $( '<div>', {
-						'class': 'builder-dialog-message'
+						'class': 'qazana-dialog-message'
 					} ),
 					$messageIcon = $( '<i>', {
 						'class': 'fa fa-check-circle'
 					} ),
 					$messageText = $( '<div>', {
-						'class': 'builder-dialog-message-text'
-					} ).text( builder.translate( 'saved' ) );
+						'class': 'qazana-dialog-message-text'
+					} ).text( qazana.translate( 'saved' ) );
 
 				$dialogMessage.append( $messageIcon, $messageText );
 
-				dialog = builder.dialogsManager.createWidget( 'popup', {
+				dialog = qazana.dialogsManager.createWidget( 'popup', {
 					hide: {
 						delay: 1500
 					}
@@ -68,27 +68,27 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		};
 	},
 
-	_publishBuilder: function() {
+	_publishQazana: function() {
 		var self = this;
 
 		var options = {
 			status: 'publish',
 			onSuccess: function() {
 				self.getDialog().show();
-				self.ui.buttonSaveButton.removeClass( 'builder-button-state' );
+				self.ui.buttonSaveButton.removeClass( 'qazana-button-state' );
 				NProgress.done();
 			}
 		};
 
-		self.ui.buttonSaveButton.addClass( 'builder-button-state' );
+		self.ui.buttonSaveButton.addClass( 'qazana-button-state' );
 
 		NProgress.start();
 
-		builder.saveEditor( options );
+		qazana.saveEditor( options );
 	},
 
-	_saveBuilderDraft: function() {
-		builder.saveEditor();
+	_saveQazanaDraft: function() {
+		qazana.saveEditor();
 	},
 
 	getDeviceModeButton: function( deviceMode ) {
@@ -97,29 +97,29 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 
 	onPanelClick: function( event ) {
 		var $target = Backbone.$( event.target ),
-			isClickInsideOfTool = $target.closest( '.builder-panel-footer-sub-menu-wrapper' ).length;
+			isClickInsideOfTool = $target.closest( '.qazana-panel-footer-sub-menu-wrapper' ).length;
 
 		if ( isClickInsideOfTool ) {
 			return;
 		}
 
-		var $tool = $target.closest( '.builder-panel-footer-tool' ),
-			isClosedTool = $tool.length && ! $tool.hasClass( 'builder-open' );
+		var $tool = $target.closest( '.qazana-panel-footer-tool' ),
+			isClosedTool = $tool.length && ! $tool.hasClass( 'qazana-open' );
 
-		this.ui.menuButtons.removeClass( 'builder-open' );
+		this.ui.menuButtons.removeClass( 'qazana-open' );
 
 		if ( isClosedTool ) {
-			$tool.addClass( 'builder-open' );
+			$tool.addClass( 'qazana-open' );
 		}
 	},
 
 	onEditorChanged: function() {
-		this.ui.buttonSave.toggleClass( 'builder-save-active', builder.isEditorChanged() );
+		this.ui.buttonSave.toggleClass( 'qazana-save-active', qazana.isEditorChanged() );
 	},
 
 	onDeviceModeChange: function() {
-		var previousDeviceMode = builder.channels.deviceMode.request( 'previousMode' ),
-			currentDeviceMode = builder.channels.deviceMode.request( 'currentMode' );
+		var previousDeviceMode = qazana.channels.deviceMode.request( 'previousMode' ),
+			currentDeviceMode = qazana.channels.deviceMode.request( 'currentMode' );
 
 		this.getDeviceModeButton( previousDeviceMode ).removeClass( 'active' );
 
@@ -130,37 +130,37 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 	},
 
 	onClickButtonSave: function() {
-		//this._saveBuilderDraft();
-		this._publishBuilder();
+		//this._saveQazanaDraft();
+		this._publishQazana();
 	},
 
 	onClickButtonPublish: function( event ) {
 		// Prevent click on save button
 		event.stopPropagation();
 
-		this._publishBuilder();
+		this._publishQazana();
 	},
 
 	onClickResponsiveButtons: function( event ) {
 		var $clickedButton = this.$( event.currentTarget ),
 			newDeviceMode = $clickedButton.data( 'device-mode' );
 
-		builder.changeDeviceMode( newDeviceMode );
+		qazana.changeDeviceMode( newDeviceMode );
 	},
 
 	onClickWatchTutorial: function() {
-		builder.introduction.startIntroduction();
+		qazana.introduction.startIntroduction();
 	},
 
 	onClickShowTemplates: function() {
-		builder.templates.startModal( function() {
-			builder.templates.showTemplates();
+		qazana.templates.startModal( function() {
+			qazana.templates.showTemplates();
 		} );
 	},
 
 	onClickSaveTemplate: function() {
-		builder.templates.startModal( function() {
-			builder.templates.getLayout().showSaveTemplateView();
+		qazana.templates.startModal( function() {
+			qazana.templates.getLayout().showSaveTemplateView();
 		} );
 	},
 
@@ -168,7 +168,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		var self = this;
 
 		_.defer( function() {
-			builder.getPanelView().$el.on( 'click', _.bind( self.onPanelClick, self ) );
+			qazana.getPanelView().$el.on( 'click', _.bind( self.onPanelClick, self ) );
 		} );
 	}
 } );

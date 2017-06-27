@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Html extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'HTML', 'builder' );
+		return __( 'HTML', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,7 +25,7 @@ class Widget_Html extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'HTML Code', 'builder' ),
+				'label' => __( 'HTML Code', 'qazana' ),
 			]
 		);
 
@@ -35,7 +35,7 @@ class Widget_Html extends Widget_Base {
 				'label' => '',
 				'type' => Controls_Manager::CODE,
 				'default' => '',
-				'placeholder' => __( 'Enter your embed code here', 'builder' ),
+				'placeholder' => __( 'Enter your embed code here', 'qazana' ),
 				'show_label' => false,
 			]
 		);

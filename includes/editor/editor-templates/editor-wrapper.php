@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,23 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo __( 'Builder', 'builder' ) . ' | ' . get_the_title(); ?></title>
+	<title><?php echo __( 'Qazana', 'qazana' ) . ' | ' . get_the_title(); ?></title>
 	<?php wp_head(); ?>
 </head>
-<body class="builder-editor-active">
-<div id="builder-editor-wrapper">
-	<div id="builder-preview">
-		<div id="builder-loading">
-			<?php echo builder_loading_indicator(); ?>
+<body class="qazana-editor-active">
+<div id="qazana-editor-wrapper">
+	<div id="qazana-preview">
+		<div id="qazana-loading">
+			<?php echo qazana_loading_indicator(); ?>
 		</div>
-		<div id="builder-preview-responsive-wrapper" class="builder-device-desktop builder-device-rotate-portrait">
-			<div id="builder-preview-loading">
+		<div id="qazana-preview-responsive-wrapper" class="qazana-device-desktop qazana-device-rotate-portrait">
+			<div id="qazana-preview-loading">
 				<i class="fa fa-spin fa-circle-o-notch"></i>
 			</div>
 			<?php // Iframe will be create here by the Javascript later. ?>
 		</div>
 	</div>
-	<div id="builder-panel" class="builder-panel"></div>
+	<div id="qazana-panel" class="qazana-panel"></div>
 </div>
 <?php wp_footer(); ?>
 </body>

@@ -1,4 +1,4 @@
-var SectionView = require( 'builder-views/section' ),
+var SectionView = require( 'qazana-views/section' ),
 	BaseSectionsContainerView;
 
 BaseSectionsContainerView = Marionette.CompositeView.extend( {
@@ -6,21 +6,21 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 	behaviors: {
 		Sortable: {
-			behaviorClass: require( 'builder-behaviors/sortable' ),
+			behaviorClass: require( 'qazana-behaviors/sortable' ),
 			elChildType: 'section'
 		},
 		HandleDuplicate: {
-			behaviorClass: require( 'builder-behaviors/handle-duplicate' )
+			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
 		},
 		HandleAdd: {
-			behaviorClass: require( 'builder-behaviors/duplicate' )
+			behaviorClass: require( 'qazana-behaviors/duplicate' )
 		}
 	},
 
 	getSortableOptions: function() {
 		return {
-			handle: '> .builder-container > .builder-row > .builder-column > .builder-element-overlay .builder-editor-section-settings-list .builder-editor-element-trigger',
-			items: '> .builder-section'
+			handle: '> .qazana-container > .qazana-row > .qazana-column > .qazana-element-overlay .qazana-editor-section-settings-list .qazana-editor-element-trigger',
+			items: '> .qazana-section'
 		};
 	},
 
@@ -35,8 +35,8 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 	initialize: function() {
 		this
 			.listenTo( this.collection, 'add remove reset', this.onCollectionChanged )
-			.listenTo( builder.channels.panelElements, 'element:drag:start', this.onPanelElementDragStart )
-			.listenTo( builder.channels.panelElements, 'element:drag:end', this.onPanelElementDragEnd );
+			.listenTo( qazana.channels.panelElements, 'element:drag:start', this.onPanelElementDragStart )
+			.listenTo( qazana.channels.panelElements, 'element:drag:end', this.onPanelElementDragEnd );
 	},
 
 	addChildModel: function( model, options ) {
@@ -45,7 +45,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 	addSection: function( properties ) {
 		var newSection = {
-			id: builder.helpers.getUniqueID(),
+			id: qazana.helpers.getUniqueID(),
 			elType: 'section',
 			settings: {},
 			elements: []
@@ -61,15 +61,15 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 	},
 
 	onCollectionChanged: function() {
-		builder.setFlagEditorChange( true );
+		qazana.setFlagEditorChange( true );
 	},
 
 	onPanelElementDragStart: function() {
-		builder.helpers.disableElementEvents( this.$el.find( 'iframe' ) );
+		qazana.helpers.disableElementEvents( this.$el.find( 'iframe' ) );
 	},
 
 	onPanelElementDragEnd: function() {
-		builder.helpers.enableElementEvents( this.$el.find( 'iframe' ) );
+		qazana.helpers.enableElementEvents( this.$el.find( 'iframe' ) );
 	}
 } );
 

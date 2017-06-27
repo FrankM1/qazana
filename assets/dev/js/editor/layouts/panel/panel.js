@@ -1,16 +1,16 @@
-var EditModeItemView = require( 'builder-layouts/edit-mode' ),
+var EditModeItemView = require( 'qazana-layouts/edit-mode' ),
 	PanelLayoutView;
 
 PanelLayoutView = Marionette.LayoutView.extend( {
-	template: '#tmpl-builder-panel',
+	template: '#tmpl-qazana-panel',
 
-	id: 'builder-panel-inner',
+	id: 'qazana-panel-inner',
 
 	regions: {
-		content: '#builder-panel-content-wrapper',
-		header: '#builder-panel-header-wrapper',
-		footer: '#builder-panel-footer',
-		modeSwitcher: '#builder-mode-switcher'
+		content: '#qazana-panel-content-wrapper',
+		header: '#qazana-panel-header-wrapper',
+		footer: '#qazana-panel-footer',
+		modeSwitcher: '#qazana-mode-switcher'
 	},
 
 	pages: {},
@@ -35,34 +35,34 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 	buildPages: function() {
 		var pages = {
 			elements: {
-				view: require( 'builder-panel/pages/elements/elements' ),
-				title: '<img src="' + builder.config.assets_url + 'images/logo-panel.svg">'
+				view: require( 'qazana-panel/pages/elements/elements' ),
+				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">'
 			},
 			editor: {
-				view: require( 'builder-panel/pages/editor' )
+				view: require( 'qazana-panel/pages/editor' )
 			},
 			menu: {
-				view: require( 'builder-panel/pages/menu/menu' ),
-				title: '<img src="' + builder.config.assets_url + 'images/logo-panel.svg">'
+				view: require( 'qazana-panel/pages/menu/menu' ),
+				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">'
 			},
 			colorScheme: {
-				view: require( 'builder-panel/pages/schemes/colors' )
+				view: require( 'qazana-panel/pages/schemes/colors' )
 			},
 			typographyScheme: {
-				view: require( 'builder-panel/pages/schemes/typography' )
+				view: require( 'qazana-panel/pages/schemes/typography' )
 			},
 			colorPickerScheme: {
-				view: require( 'builder-panel/pages/schemes/color-picker' )
+				view: require( 'qazana-panel/pages/schemes/color-picker' )
 			}
 		};
 
-		var schemesTypes = Object.keys( builder.schemes.getSchemes() ),
-			disabledSchemes = _.difference( schemesTypes, builder.schemes.getEnabledSchemesTypes() );
+		var schemesTypes = Object.keys( qazana.schemes.getSchemes() ),
+			disabledSchemes = _.difference( schemesTypes, qazana.schemes.getEnabledSchemesTypes() );
 
 		_.each( disabledSchemes, function( schemeType ) {
-			var scheme  = builder.schemes.getScheme( schemeType );
+			var scheme  = qazana.schemes.getScheme( schemeType );
 
-			pages[ schemeType + 'Scheme' ].view = require( 'builder-panel/pages/schemes/disabled' ).extend( {
+			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
 				disabledTitle: scheme.disabled_title
 			} );
 		} );
@@ -110,7 +110,7 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		var pageData = this.getPages( page );
 
 		if ( ! pageData ) {
-			throw new ReferenceError( 'Builder panel doesn\'t have page named \'' + page + '\'' );
+			throw new ReferenceError( 'Qazana panel doesn\'t have page named \'' + page + '\'' );
 		}
 
 		if ( pageData.options ) {
@@ -142,9 +142,9 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 			}
 		}
 
-		var elementData = builder.getElementData( model );
+		var elementData = qazana.getElementData( model );
 
-		this.setPage( 'editor', builder.translate( 'edit_element', [ elementData.title ] ), {
+		this.setPage( 'editor', qazana.translate( 'edit_element', [ elementData.title ] ), {
 			model: model,
 			editedElementView: view
 		} );
@@ -152,15 +152,15 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		var action = 'panel/open_editor/' + model.get( 'elType' );
 
 		// Example: panel/open_editor/widget
-		builder.hooks.doAction( action, this, model, view );
+		qazana.hooks.doAction( action, this, model, view );
 
 		// Example: panel/open_editor/widget/heading
-		builder.hooks.doAction( action + '/' + model.get( 'widgetType' ), this, model, view );
+		qazana.hooks.doAction( action + '/' + model.get( 'widgetType' ), this, model, view );
 	},
 
 	onBeforeShow: function() {
-		var PanelFooterItemView = require( 'builder-layouts/panel/footer' ),
-			PanelHeaderItemView = require( 'builder-layouts/panel/header' );
+		var PanelFooterItemView = require( 'qazana-layouts/panel/footer' ),
+			PanelHeaderItemView = require( 'qazana-layouts/panel/header' );
 
 		// Edit Mode
 		this.showChildView( 'modeSwitcher', new EditModeItemView() );
@@ -182,7 +182,7 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		// Set default page to elements
 		this.setPage( 'elements' );
 
-		this.listenTo( builder.channels.data, 'scrollbar:update', this.updateScrollbar );
+		this.listenTo( qazana.channels.data, 'scrollbar:update', this.updateScrollbar );
 	},
 
 	onEditorBeforeShow: function() {

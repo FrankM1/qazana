@@ -2,19 +2,19 @@ var TemplateLibraryHeaderView;
 
 TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
 
-	id: 'builder-template-library-header',
+	id: 'qazana-template-library-header',
 
-	template: '#tmpl-builder-template-library-header',
+	template: '#tmpl-qazana-template-library-header',
 
 	regions: {
-		logoArea: '#builder-template-library-header-logo-area',
-		tools: '#builder-template-library-header-tools',
-		menuArea: '#builder-template-library-header-menu-area',
-		searchArea: '#builder-template-library-header-search-area'
+		logoArea: '#qazana-template-library-header-logo-area',
+		tools: '#qazana-template-library-header-tools',
+		menuArea: '#qazana-template-library-header-menu-area',
+		searchArea: '#qazana-template-library-header-search-area'
 	},
 
 	ui: {
-		closeModal: '#builder-template-library-header-close-modal'
+		closeModal: '#qazana-template-library-header-close-modal'
 	},
 
 	events: {
@@ -22,7 +22,7 @@ TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
 	},
 
 	onCloseModalClick: function() {
-		builder.templates.closeModal();
+		qazana.templates.closeModal();
 	}
 } );
 

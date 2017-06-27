@@ -1,11 +1,11 @@
-var ControlMultipleBaseItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlOrderItemView;
 
 ControlOrderItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.reverseOrderLabel = '.builder-control-order-label';
+		ui.reverseOrderLabel = '.qazana-control-order-label';
 
 		return ui;
 	},
@@ -13,7 +13,7 @@ ControlOrderItemView = ControlMultipleBaseItemView.extend( {
 	changeLabelTitle: function() {
 		var reverseOrder = this.getControlValue( 'reverse_order' );
 
-		this.ui.reverseOrderLabel.attr( 'title', builder.translate( reverseOrder ? 'asc' : 'desc' ) );
+		this.ui.reverseOrderLabel.attr( 'title', qazana.translate( reverseOrder ? 'asc' : 'desc' ) );
 	},
 
 	onRender: function() {

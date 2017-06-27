@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -19,7 +19,7 @@ class Control_Icon extends Base_Control {
 	}
 
     public function get_icons() {
-		return builder()->icons_manager->get_all_iconsets();
+		return qazana()->icons_manager->get_all_iconsets();
     }
 
 	protected function get_default_settings() {
@@ -30,11 +30,11 @@ class Control_Icon extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<select class="builder-control-icon" data-setting="{{ data.name }}" data-placeholder="<?php _e( 'Select an Icon', 'builder' ); ?>">
-                    <option value=""><?php _e( 'Select an Icon', 'builder' ); ?></option>
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<select class="qazana-control-icon" data-setting="{{ data.name }}" data-placeholder="<?php _e( 'Select an Icon', 'qazana' ); ?>">
+                    <option value=""><?php _e( 'Select an Icon', 'qazana' ); ?></option>
                     <?php foreach ( $this->get_icons() as $group => $iconset ) {
 
 							if ( empty( $iconset ) ) continue; ?>
@@ -49,7 +49,7 @@ class Control_Icon extends Base_Control {
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{ data.description }}</div>
+		<div class="qazana-control-description">{{ data.description }}</div>
 		<# } #>
 		<?php
 	}

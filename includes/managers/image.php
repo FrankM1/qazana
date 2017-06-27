@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -48,8 +48,8 @@ class Images_Manager {
 	}
 
 	public function __construct() {
-		add_action( 'wp_ajax_builder_get_image_details', [ $this, 'get_image_details' ] );
-		add_action( 'wp_ajax_builder_get_images_details', [ $this, 'get_images_details' ] );
+		add_action( 'wp_ajax_qazana_get_image_details', [ $this, 'get_image_details' ] );
+		add_action( 'wp_ajax_qazana_get_images_details', [ $this, 'get_images_details' ] );
 	}
 }
 

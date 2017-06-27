@@ -1,8 +1,8 @@
 <?php
-namespace Builder\System_Info;
+namespace Qazana\System_Info;
 
-use Builder\System_Info\Classes\Abstracts\Base_Reporter;
-use Builder\System_Info\Helpers\Model_Helper;
+use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\System_Info\Helpers\Model_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -54,7 +54,7 @@ class Main {
 	private function add_actions() {
 		add_action( 'admin_menu', [ $this, 'register_menu' ], 501 );
 
-		add_action( 'wp_ajax_builder_system_info_download_file', [ $this, 'download_file' ] );
+		add_action( 'wp_ajax_qazana_system_info_download_file', [ $this, 'download_file' ] );
 	}
 
 	public function display_page() {
@@ -63,13 +63,13 @@ class Main {
 		$reports = $this->load_reports( $reports_info );
 
 		?>
-		<div id="builder-system-info">
-			<h3><?php _e( 'System Info', 'builder' ); ?></h3>
+		<div id="qazana-system-info">
+			<h3><?php _e( 'System Info', 'qazana' ); ?></h3>
 			<div><?php $this->print_report( $reports, 'html' ); ?></div>
-			<h3><?php _e( 'Copy & Paste Info', 'builder' ); ?></h3>
-			<div id="builder-system-info-raw">
-				<label id="builder-system-info-raw-code-label" for="builder-system-info-raw-code"><?php _e( 'You can copy the below info as simple text with Ctrl+C / Ctrl+V:', 'builder' ) ?></label>
-				<textarea id="builder-system-info-raw-code" readonly>
+			<h3><?php _e( 'Copy & Paste Info', 'qazana' ); ?></h3>
+			<div id="qazana-system-info-raw">
+				<label id="qazana-system-info-raw-code-label" for="qazana-system-info-raw-code"><?php _e( 'You can copy the below info as simple text with Ctrl+C / Ctrl+V:', 'qazana' ) ?></label>
+				<textarea id="qazana-system-info-raw-code" readonly>
 					<?php
 					unset( $reports['wordpress']['report']['admin_email'] );
 
@@ -77,7 +77,7 @@ class Main {
 					?>
 				</textarea>
 				<script>
-					var textarea = document.getElementById( 'builder-system-info-raw-code' );
+					var textarea = document.getElementById( 'qazana-system-info-raw-code' );
 					var selectRange = function () {
 						textarea.setSelectionRange( 0, textarea.value.length );
 					};
@@ -87,8 +87,8 @@ class Main {
 			</div>
 			<hr>
 			<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post">
-				<input type="hidden" name="action" value="builder_system_info_download_file">
-				<input type="submit" class="button button-primary" value="<?php _e( 'Download System Info', 'builder' ); ?>">
+				<input type="hidden" name="action" value="qazana_system_info_download_file">
+				<input type="submit" class="button button-primary" value="<?php _e( 'Download System Info', 'qazana' ); ?>">
 			</form>
 		</div>
 		<?php
@@ -96,7 +96,7 @@ class Main {
 
 	public function download_file() {
 		if ( ! current_user_can( $this->capability ) ) {
-			wp_die( __( 'You don\'t have a permission to download this file', 'builder' ) );
+			wp_die( __( 'You don\'t have a permission to download this file', 'qazana' ) );
 		}
 
 		$reports_info = self::get_allowed_reports();
@@ -163,14 +163,14 @@ class Main {
 	}
 
 	public function register_menu() {
-		$system_info_text = __( 'System Info', 'builder' );
+		$system_info_text = __( 'System Info', 'qazana' );
 
 		add_submenu_page(
-			'builder',
+			'qazana',
 			$system_info_text,
 			$system_info_text,
 			$this->capability,
-			'builder-system-info',
+			'qazana-system-info',
 			[ $this, 'display_page' ]
 		);
 	}
@@ -184,7 +184,7 @@ class Main {
 
 		$settings['reporter_properties'] = $reporter_properties;
 
-		$base_lib_dir = builder()->includes_dir  . 'admin/settings/system-info/';
+		$base_lib_dir = qazana()->includes_dir  . 'admin/settings/system-info/';
 
 		$settings['dirs'] = [
 			'lib'       => $base_lib_dir,

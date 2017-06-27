@@ -1,14 +1,14 @@
 var EditModeItemView;
 
 EditModeItemView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-mode-switcher-content',
+	template: '#tmpl-qazana-mode-switcher-content',
 
-	id: 'builder-mode-switcher-inner',
+	id: 'qazana-mode-switcher-inner',
 
 	ui: {
-		previewButton: '#builder-mode-switcher-preview-input',
-		previewLabel: '#builder-mode-switcher-preview',
-		previewLabelA11y: '#builder-mode-switcher-preview .builder-screen-only'
+		previewButton: '#qazana-mode-switcher-preview-input',
+		previewLabel: '#qazana-mode-switcher-preview',
+		previewLabelA11y: '#qazana-mode-switcher-preview .qazana-screen-only'
 	},
 
 	events: {
@@ -16,7 +16,7 @@ EditModeItemView = Marionette.ItemView.extend( {
 	},
 
 	initialize: function() {
-		this.listenTo( builder.channels.dataEditMode, 'switch', this.onEditModeChanged );
+		this.listenTo( qazana.channels.dataEditMode, 'switch', this.onEditModeChanged );
 	},
 
 	getCurrentMode: function() {
@@ -38,11 +38,11 @@ EditModeItemView = Marionette.ItemView.extend( {
 	},
 
 	onPreviewButtonChange: function() {
-		builder.changeEditMode( this.getCurrentMode() );
+		qazana.changeEditMode( this.getCurrentMode() );
 	},
 
 	onEditModeChanged: function( activeMode ) {
-		var title = builder.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
+		var title = qazana.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
 
 		this.ui.previewLabel.attr( 'title', title );
 		this.ui.previewLabelA11y.text( title );

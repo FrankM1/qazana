@@ -1,12 +1,12 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 class Wordpress_Importer extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Wordpress importer', 'builder' ),
+        	'title' => __( 'Wordpress importer', 'qazana' ),
             'name' => 'wordpress_importer',
         	'required' => true,
         	'default_activation' => true,
@@ -22,7 +22,7 @@ class Wordpress_Importer extends Base {
     }
 
     /**
-     * Normalize Builder post meta on import,
+     * Normalize Qazana post meta on import,
      * We need the `wp_slash` in order to avoid the unslashing during the `add_post_meta`
      *
      * @param array $post_meta
@@ -31,7 +31,7 @@ class Wordpress_Importer extends Base {
      */
     public static function on_wp_import_post_meta( $post_meta ) {
         foreach ( $post_meta as &$meta ) {
-            if ( '_builder_data' === $meta['key'] ) {
+            if ( '_qazana_data' === $meta['key'] ) {
                 $meta['value'] = wp_slash( $meta['value'] );
                 break;
             }
@@ -41,7 +41,7 @@ class Wordpress_Importer extends Base {
 	}
 
 	/**
-	 * Normalize Builder post meta on import with the new WP_importer,
+	 * Normalize Qazana post meta on import with the new WP_importer,
 	 * We need the `wp_slash` in order to avoid the unslashing during the `add_post_meta`
 	 *
 	 * @param array $post_meta
@@ -50,7 +50,7 @@ class Wordpress_Importer extends Base {
 	 */
 
 	public static function on_wxr_importer_pre_process_post_meta( $post_meta ) {
-		if ( '_builder_data' === $post_meta['key'] ) {
+		if ( '_qazana_data' === $post_meta['key'] ) {
 			$post_meta['value'] = wp_slash( $post_meta['value'] );
 		}
 

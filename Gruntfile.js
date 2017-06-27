@@ -16,7 +16,7 @@ module.exports = function( grunt ) {
 		checktextdomain: {
 			standard: {
 				options:{
-					text_domain: 'builder',
+					text_domain: 'qazana',
 					correct_domain: true,
 					keywords: [
 						// WordPress keywords
@@ -73,57 +73,57 @@ module.exports = function( grunt ) {
                         {
                             cwd: 'assets/dev/js/editor/behaviors',
                             src: '**/*.js',
-                            expose: 'builder-behaviors'
+                            expose: 'qazana-behaviors'
                         },
                         {
                             cwd: 'assets/dev/js/editor/layouts',
                             src: '**/*.js',
-                            expose: 'builder-layouts'
+                            expose: 'qazana-layouts'
                         },
                         {
                             cwd: 'assets/dev/js/editor/models',
                             src: '**/*.js',
-                            expose: 'builder-models'
+                            expose: 'qazana-models'
                         },
                         {
                             cwd: 'assets/dev/js/editor/collections',
                             src: '**/*.js',
-                            expose: 'builder-collections'
+                            expose: 'qazana-collections'
                         },
                         {
                             cwd: 'assets/dev/js/editor/views',
                             src: '**/*.js',
-                            expose: 'builder-views'
+                            expose: 'qazana-views'
                         },
                         {
                             cwd: 'assets/dev/js/editor/components',
                             src: '**/*.js',
-                            expose: 'builder-components'
+                            expose: 'qazana-components'
                         },
                         {
                             cwd: 'assets/dev/js/editor/utils',
                             src: '**/*.js',
-                            expose: 'builder-utils'
+                            expose: 'qazana-utils'
                         },
                         {
                             cwd: 'assets/dev/js/editor/layouts/panel',
                             src: '**/*.js',
-                            expose: 'builder-panel'
+                            expose: 'qazana-panel'
                         },
                         {
                             cwd: 'assets/dev/js/editor/components/template-library',
                             src: '**/*.js',
-                            expose: 'builder-templates'
+                            expose: 'qazana-templates'
                         },
                         {
                             cwd: 'assets/dev/js/frontend',
                             src: '**/*.js',
-                            expose: 'builder-frontend'
+                            expose: 'qazana-frontend'
                         },
                         {
 							cwd: 'assets/dev/js/editor/components/revisions',
 							src: '**/*.js',
-							expose: 'builder-revisions'
+							expose: 'qazana-revisions'
 						}
 
                     ] );
@@ -261,10 +261,10 @@ module.exports = function( grunt ) {
         wp_readme_to_markdown: {
             github: {
                 options: {
-                    wordpressPluginSlug: 'builder',
-                    travisUrlRepo: 'https://travis-ci.org/FrankM1/builder',
-                    gruntDependencyStatusUrl: 'https://david-dm.org/FrankM1/builder',
-                    coverallsRepo: 'FrankM1/builder',
+                    wordpressPluginSlug: 'qazana',
+                    travisUrlRepo: 'https://travis-ci.org/FrankM1/qazana',
+                    gruntDependencyStatusUrl: 'https://david-dm.org/FrankM1/qazana',
+                    coverallsRepo: 'FrankM1/qazana',
                     screenshot_url: 'assets/{screenshot}.png'
                 },
                 files: {
@@ -284,7 +284,7 @@ module.exports = function( grunt ) {
 
         replace: {
             plugin_main: {
-                src: [ 'builder.php' ],
+                src: [ 'qazana.php' ],
                 overwrite: true,
                 replacements: [
                     {
@@ -374,14 +374,14 @@ module.exports = function( grunt ) {
         compress: {
           main: {
             options: {
-              archive: 'builder.zip'
+              archive: 'qazana.zip'
             },
             files: [
                 {
                     expand: true,
                     cwd: 'build/',
                     src: ['**'],
-                    dest: 'builder/'
+                    dest: 'qazana/'
                 } // makes all src relative to cwd
             ]
           }

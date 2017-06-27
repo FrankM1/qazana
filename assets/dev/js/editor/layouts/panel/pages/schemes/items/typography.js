@@ -1,4 +1,4 @@
-var PanelSchemeItemView = require( 'builder-panel/pages/schemes/items/base' ),
+var PanelSchemeItemView = require( 'qazana-panel/pages/schemes/items/base' ),
 	PanelSchemeTypographyView;
 
 PanelSchemeTypographyView = PanelSchemeItemView.extend( {
@@ -9,15 +9,15 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 	className: function() {
 		var classes = PanelSchemeItemView.prototype.className.apply( this, arguments );
 
-		return classes + ' builder-panel-box';
+		return classes + ' qazana-panel-box';
 	},
 
 	ui: {
-		heading: '.builder-panel-heading',
-		allFields: '.builder-panel-scheme-typography-item-field',
-		inputFields: 'input.builder-panel-scheme-typography-item-field',
-		selectFields: 'select.builder-panel-scheme-typography-item-field',
-		selectFamilyFields: 'select.builder-panel-scheme-typography-item-field[name="font_family"]'
+		heading: '.qazana-panel-heading',
+		allFields: '.qazana-panel-scheme-typography-item-field',
+		inputFields: 'input.qazana-panel-scheme-typography-item-field',
+		selectFields: 'select.qazana-panel-scheme-typography-item-field',
+		selectFamilyFields: 'select.qazana-panel-scheme-typography-item-field[name="font_family"]'
 	},
 
 	events: {
@@ -38,12 +38,12 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 		} );
 
 		this.ui.selectFamilyFields.select2( {
-			dir: builder.config.is_rtl ? 'rtl' : 'ltr'
+			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
 		} );
 	},
 
 	toggleVisibility: function() {
-		this.ui.heading.toggleClass( 'builder-open' );
+		this.ui.heading.toggleClass( 'qazana-open' );
 	},
 
 	changeUIValue: function( newValue ) {
@@ -58,13 +58,13 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 
 	onFieldChange: function( event ) {
 		var $select = this.$( event.currentTarget ),
-			currentValue = builder.schemes.getSchemeValue( 'typography', this.model.get( 'key' ) ).value,
+			currentValue = qazana.schemes.getSchemeValue( 'typography', this.model.get( 'key' ) ).value,
 			fieldKey = $select.attr( 'name' );
 
 		currentValue[ fieldKey ] = $select.val();
 
 		if ( 'font_family' === fieldKey && ! _.isEmpty( currentValue[ fieldKey ] ) ) {
-			builder.helpers.enqueueFont( currentValue[ fieldKey ] );
+			qazana.helpers.enqueueFont( currentValue[ fieldKey ] );
 		}
 
 		this.triggerMethod( 'value:change', currentValue );

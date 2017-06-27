@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -11,13 +11,13 @@ class Admin_Tracker {
 	 * Hook into cron event.
 	 */
 	public function __construct() {
-		add_action( 'builder/tracker/send_event', [ __CLASS__, 'send_tracking_data' ] );
+		add_action( 'qazana/tracker/send_event', [ __CLASS__, 'send_tracking_data' ] );
 		add_action( 'admin_init', [ __CLASS__, 'handle_tracker_actions' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
 	}
 
 	public static function check_for_settings_optin( $new_value ) {
-		$old_value = get_option( 'builder_allow_tracking', 'no' );
+		$old_value = get_option( 'qazana_allow_tracking', 'no' );
 		if ( $old_value !== $new_value && 'yes' === $new_value ) {
 			self::send_tracking_data( true );
 		}
@@ -43,10 +43,10 @@ class Admin_Tracker {
 			return;
 		}
 
-		if ( ! apply_filters( 'builder/tracker/send_override', $override ) ) {
+		if ( ! apply_filters( 'qazana/tracker/send_override', $override ) ) {
 			// Send a maximum of once per week by default.
 			$last_send = self::_get_last_send_time();
-			if ( $last_send && $last_send > apply_filters( 'builder/tracker/last_send_interval', strtotime( '-1 week' ) ) ) {
+			if ( $last_send && $last_send > apply_filters( 'qazana/tracker/last_send_interval', strtotime( '-1 week' ) ) ) {
 				return;
 			}
 		} else {
@@ -63,7 +63,7 @@ class Admin_Tracker {
     public static function _get_tracking_data() {
 
 		// Update time first before sending to ensure it is set
-		update_option( 'builder_tracker_last_send', time() );
+		update_option( 'qazana_tracker_last_send', time() );
 
 		// Send here..
 		$params = [
@@ -92,28 +92,28 @@ class Admin_Tracker {
 	}
 
 	public static function is_allow_track() {
-		return 'yes' === get_option( 'builder_allow_tracking', 'no' );
+		return 'yes' === get_option( 'qazana_allow_tracking', 'no' );
 	}
 
 	public static function handle_tracker_actions() {
-		if ( ! isset( $_GET['builder_tracker'] ) )
+		if ( ! isset( $_GET['qazana_tracker'] ) )
 			return;
 
-		if ( 'opt_into' === $_GET['builder_tracker'] ) {
+		if ( 'opt_into' === $_GET['qazana_tracker'] ) {
 			check_admin_referer( 'opt_into' );
 
-			update_option( 'builder_allow_tracking', 'yes' );
+			update_option( 'qazana_allow_tracking', 'yes' );
 			self::send_tracking_data( true );
 		}
 
-		if ( 'opt_out' === $_GET['builder_tracker'] ) {
+		if ( 'opt_out' === $_GET['qazana_tracker'] ) {
 			check_admin_referer( 'opt_out' );
 
-			update_option( 'builder_allow_tracking', 'no' );
-			update_option( 'builder_tracker_notice', '1' );
+			update_option( 'qazana_allow_tracking', 'no' );
+			update_option( 'qazana_tracker_notice', '1' );
 		}
 
-		wp_redirect( remove_query_arg( 'builder_tracker' ) );
+		wp_redirect( remove_query_arg( 'qazana_tracker' ) );
 		exit;
 	}
 
@@ -122,7 +122,7 @@ class Admin_Tracker {
 		if ( self::_get_installed_time() > strtotime( '-24 hours' ) )
 			return;
 
-		if ( '1' === get_option( 'builder_tracker_notice' ) )
+		if ( '1' === get_option( 'qazana_tracker_notice' ) )
 			return;
 
 		if ( self::is_allow_track() )
@@ -132,27 +132,27 @@ class Admin_Tracker {
 			return;
 
 		// TODO: Skip for development env
-		$optin_url = wp_nonce_url( add_query_arg( 'builder_tracker', 'opt_into' ), 'opt_into' );
-		$optout_url = wp_nonce_url( add_query_arg( 'builder_tracker', 'opt_out' ), 'opt_out' );
+		$optin_url = wp_nonce_url( add_query_arg( 'qazana_tracker', 'opt_into' ), 'opt_into' );
+		$optout_url = wp_nonce_url( add_query_arg( 'qazana_tracker', 'opt_out' ), 'opt_out' );
 		?>
 		<div class="updated">
-			<p><?php _e( 'Love using Builder? Become a super contributor by opting in to our anonymous plugin data collection and to our updates. We guarantee no sensitive data is collected.', 'builder' ); ?> <a href="https://radiumthemes.com/plugins/builder/builder-usage-data/" target="_blank"><?php _e( 'Learn more.', 'builder' ); ?></a></p>
-			<p><a href="<?php echo $optin_url; ?>" class="button-primary"><?php _e( 'Sure! I\'d love to help', 'builder' ); ?></a>&nbsp;<a href="<?php echo $optout_url; ?>" class="button-secondary"><?php _e( 'No thanks', 'builder' ); ?></a></p>
+			<p><?php _e( 'Love using Qazana? Become a super contributor by opting in to our anonymous plugin data collection and to our updates. We guarantee no sensitive data is collected.', 'qazana' ); ?> <a href="https://radiumthemes.com/plugins/qazana/qazana-usage-data/" target="_blank"><?php _e( 'Learn more.', 'qazana' ); ?></a></p>
+			<p><a href="<?php echo $optin_url; ?>" class="button-primary"><?php _e( 'Sure! I\'d love to help', 'qazana' ); ?></a>&nbsp;<a href="<?php echo $optout_url; ?>" class="button-secondary"><?php _e( 'No thanks', 'qazana' ); ?></a></p>
 		</div>
 		<?php
 	}
 
 	private static function _get_installed_time() {
-		$installed_time = get_option( '_builder_installed_time' );
+		$installed_time = get_option( '_qazana_installed_time' );
 		if ( ! $installed_time ) {
 			$installed_time = time();
-			update_option( '_builder_installed_time', $installed_time );
+			update_option( '_qazana_installed_time', $installed_time );
 		}
 		return $installed_time;
 	}
 
 	private static function _get_system_reports_data() {
-		$reports = builder()->admin->system_info->load_reports( System_Info\Main::get_allowed_reports() );
+		$reports = qazana()->admin->system_info->load_reports( System_Info\Main::get_allowed_reports() );
 
 		$system_reports = [];
 		foreach ( $reports as $report_key => $report_details ) {
@@ -169,7 +169,7 @@ class Admin_Tracker {
 	 * @return int|bool
 	 */
 	private static function _get_last_send_time() {
-		return apply_filters( 'builder/tracker/last_send_time', get_option( 'builder_tracker_last_send', false ) );
+		return apply_filters( 'qazana/tracker/last_send_time', get_option( 'qazana_tracker_last_send', false ) );
 	}
 
 	private static function _get_posts_usage() {
@@ -181,8 +181,8 @@ class Admin_Tracker {
 			"SELECT `post_type`, `post_status`, COUNT(`ID`) `hits`
 				FROM {$wpdb->posts} `p`
 				LEFT JOIN {$wpdb->postmeta} `pm` ON(`p`.`ID` = `pm`.`post_id`)
-				WHERE `post_type` != 'builder_library'
-					AND `meta_key` = '_builder_edit_mode' AND `meta_value` = 'builder'
+				WHERE `post_type` != 'qazana_library'
+					AND `meta_key` = '_qazana_edit_mode' AND `meta_value` = 'qazana'
 				GROUP BY `post_type`, `post_status`;"
 		);
 
@@ -205,8 +205,8 @@ class Admin_Tracker {
 			"SELECT `meta_value`, COUNT(`ID`) `hits`
 				FROM {$wpdb->posts} `p`
 				LEFT JOIN {$wpdb->postmeta} `pm` ON(`p`.`ID` = `pm`.`post_id`)
-				WHERE `post_type` = 'builder_library'
-					AND `meta_key` = '_builder_template_type'
+				WHERE `post_type` = 'qazana_library'
+					AND `meta_key` = '_qazana_template_type'
 				GROUP BY `post_type`, `meta_value`;"
 		);
 

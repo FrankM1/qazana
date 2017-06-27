@@ -1,12 +1,12 @@
 var TemplateLibraryHeaderPreviewView;
 
 TemplateLibraryHeaderPreviewView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-header-preview',
+	template: '#tmpl-qazana-template-library-header-preview',
 
-	id: 'builder-template-library-header-preview',
+	id: 'qazana-template-library-header-preview',
 
 	ui: {
-		insertButton: '#builder-template-library-header-preview-insert'
+		insertButton: '#qazana-template-library-header-preview-insert'
 	},
 
 	events: {
@@ -14,7 +14,7 @@ TemplateLibraryHeaderPreviewView = Marionette.ItemView.extend( {
 	},
 
 	onInsertButtonClick: function() {
-		builder.templates.importTemplate( this.model );
+		qazana.templates.importTemplate( this.model );
 	}
 } );
 

@@ -1,9 +1,9 @@
 var PanelElementsElementView;
 
 PanelElementsElementView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-element-library-element',
+	template: '#tmpl-qazana-element-library-element',
 
-	className: 'builder-element-wrapper',
+	className: 'qazana-element-wrapper',
 
 	onRender: function() {
 		var self = this;
@@ -11,16 +11,16 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 		this.$el.html5Draggable( {
 
 			onDragStart: function() {
-				builder.channels.panelElements
+				qazana.channels.panelElements
 					.reply( 'element:selected', self )
 					.trigger( 'element:drag:start' );
 			},
 
 			onDragEnd: function() {
-				builder.channels.panelElements.trigger( 'element:drag:end' );
+				qazana.channels.panelElements.trigger( 'element:drag:end' );
 			},
 
-			groups: [ 'builder-element' ]
+			groups: [ 'qazana-element' ]
 		} );
 	}
 } );

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -24,7 +24,7 @@ class Preview {
         add_action( 'radium_after_loop', [ $this, 'preview_grid' ] );
 
 		add_filter( 'body_class', [ $this, 'body_class' ] );
-		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
+		add_filter( 'the_content', [ $this, 'qazana_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
 		Utils::do_not_cache();
@@ -41,7 +41,7 @@ class Preview {
 			return false;
 		}
 
-		if ( ! isset( $_GET['builder-preview'] ) ) {
+		if ( ! isset( $_GET['qazana-preview'] ) ) {
 			return false;
 		}
 
@@ -57,7 +57,7 @@ class Preview {
 	 * @return array
 	 */
 	public function body_class( $classes = [] ) {
-		$classes[] = 'builder-body';
+		$classes[] = 'qazana-body';
 		return $classes;
 	}
 
@@ -70,17 +70,17 @@ class Preview {
 	 *
 	 * @return string
 	 */
-	public function builder_wrapper( $content ) {
-		return '<div id="builder" class="builder builder-edit-mode"></div>';
+	public function qazana_wrapper( $content ) {
+		return '<div id="qazana" class="qazana qazana-edit-mode"></div>';
 	}
 
 	public function print_custom_css() {
-		$container_width = absint( get_option( 'builder_container_width' ) );
+		$container_width = absint( get_option( 'qazana_container_width' ) );
 		if ( empty( $container_width ) ) {
 			return;
 		}
 
-		?><style>.builder-section.builder-section-boxed > .builder-container{max-width: <?php echo esc_html( $container_width ); ?>px</style><?php
+		?><style>.qazana-section.qazana-section-boxed > .qazana-container{max-width: <?php echo esc_html( $container_width ); ?>px</style><?php
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Preview {
 		// Make sure jQuery embed in preview window
 		wp_enqueue_script( 'jquery' );
 
-		builder()->frontend->enqueue_styles();
+		qazana()->frontend->enqueue_styles();
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -104,33 +104,33 @@ class Preview {
 
         wp_register_style(
             'editor-preview',
-            builder()->core_assets_url . 'css/editor-preview' . $direction_suffix . $suffix . '.css',
+            qazana()->core_assets_url . 'css/editor-preview' . $direction_suffix . $suffix . '.css',
             [],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
         wp_enqueue_style( 'editor-preview' );
 
-        do_action( 'builder/preview/enqueue_styles' );
+        do_action( 'qazana/preview/enqueue_styles' );
     }
 
     public function preview_grid() {
 
         echo '<div id="grid">
-            <div class="builder-container">
-                <div class="builder-row">
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="builder-column" data-col="12"><div class="shadow"></div></div>
+            <div class="qazana-container">
+                <div class="qazana-row">
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
+                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
                 </div>
             </div>
         </div>';

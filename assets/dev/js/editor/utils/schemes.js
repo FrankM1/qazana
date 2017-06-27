@@ -1,13 +1,13 @@
 var Schemes,
-	Stylesheet = require( 'builder-utils/stylesheet' ),
-	BaseElementView = require( 'builder-views/base-element' );
+	Stylesheet = require( 'qazana-utils/stylesheet' ),
+	BaseElementView = require( 'qazana-views/base-element' );
 
 Schemes = function() {
 	var self = this,
 		stylesheet = new Stylesheet(),
 		schemes = {},
 		settings = {
-			selectorWrapperPrefix: '.builder-widget-'
+			selectorWrapperPrefix: '.qazana-widget-'
 		},
 		elements = {};
 
@@ -17,14 +17,14 @@ Schemes = function() {
 
 	var initElements = function() {
 		elements.$style = Backbone.$( '<style>', {
-			id: 'builder-style-scheme'
+			id: 'qazana-style-scheme'
 		});
 
-		elements.$previewHead = builder.$previewContents.find( 'head' );
+		elements.$previewHead = qazana.$previewContents.find( 'head' );
 	};
 
 	var initSchemes = function() {
-		schemes = builder.helpers.cloneObject( builder.config.schemes.items );
+		schemes = qazana.helpers.cloneObject( qazana.config.schemes.items );
 	};
 
 	var fetchControlStyles = function( control, controlsStack, widgetType ) {
@@ -42,7 +42,7 @@ Schemes = function() {
 	};
 
 	var fetchAllWidgetsSchemesStyle = function() {
-		_.each( builder.config.widgets, function( widget ) {
+		_.each( qazana.config.widgets, function( widget ) {
 			fetchWidgetControlsStyles(  widget  );
 		} );
 	};
@@ -66,7 +66,7 @@ Schemes = function() {
 	};
 
 	this.getEnabledSchemesTypes = function() {
-		return builder.config.schemes.enabled_schemes;
+		return qazana.config.schemes.enabled_schemes;
 	};
 
 	this.getScheme = function( schemeType ) {
@@ -82,7 +82,7 @@ Schemes = function() {
 			schemeValue = scheme.items[ value ];
 
 		if ( key && _.isObject( schemeValue ) ) {
-			var clonedSchemeValue = builder.helpers.cloneObject( schemeValue );
+			var clonedSchemeValue = qazana.helpers.cloneObject( schemeValue );
 
 			clonedSchemeValue.value = schemeValue.value[ key ];
 
@@ -101,11 +101,11 @@ Schemes = function() {
 	};
 
 	this.resetSchemes = function( schemeName ) {
-		schemes[ schemeName ] = builder.helpers.cloneObject( builder.config.schemes.items[ schemeName ] );
+		schemes[ schemeName ] = qazana.helpers.cloneObject( qazana.config.schemes.items[ schemeName ] );
 	};
 
 	this.saveScheme = function( schemeName ) {
-		builder.config.schemes.items[ schemeName ].items = builder.helpers.cloneObject( schemes[ schemeName ].items );
+		qazana.config.schemes.items[ schemeName ].items = qazana.helpers.cloneObject( schemes[ schemeName ].items );
 
 		var itemsToSave = {};
 
@@ -115,7 +115,7 @@ Schemes = function() {
 
 		NProgress.start();
 
-		builder.ajax.send( 'apply_scheme', {
+		qazana.ajax.send( 'apply_scheme', {
 			data: {
 				scheme_name: schemeName,
 				data: JSON.stringify( itemsToSave )

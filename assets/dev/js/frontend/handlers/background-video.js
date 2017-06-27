@@ -51,16 +51,16 @@ module.exports = function( $scope, $ ) {
 				}
 			} );
 
-			$( builderFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
+			$( qazanaFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
 		};
 
 	    var prepareVimeoVideo = function( YT, videoID ) {
 
-	        $( builderFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
+	        $( qazanaFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
 	    };
 
 		var initElements = function() {
-			elements.$backgroundVideo = $backgroundVideoContainer.children( '.builder-background-video' );
+			elements.$backgroundVideo = $backgroundVideoContainer.children( '.qazana-background-video' );
 		};
 
 		var run = function() {
@@ -70,14 +70,14 @@ module.exports = function( $scope, $ ) {
 			if ( videoID && videoHost === 'youtube' ) {
 				isYTVideo = true;
 
-				builderFrontend.utils.onYoutubeApiReady( function( YT ) {
+				qazanaFrontend.utils.onYoutubeApiReady( function( YT ) {
 					setTimeout( function() {
 						prepareYTVideo( YT, videoID );
 					}, 1 );
 				} );
 
 				/*// slider reaches top of screen
-				builderFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
+				qazanaFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
 
 					// slider scrolled into view
 					if ( direction === 'up' ) {
@@ -100,7 +100,7 @@ module.exports = function( $scope, $ ) {
 					// slider reaches bottom of screen
 				}});
 
-				 builderFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
+				 qazanaFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
 
 					// slider scrolled into view
 					if ( direction === 'down' ) {
@@ -136,7 +136,7 @@ module.exports = function( $scope, $ ) {
 		init();
 	};
 
-	var $backgroundVideoContainer = $scope.find( '.builder-background-video-container' );
+	var $backgroundVideoContainer = $scope.find( '.qazana-background-video-container' );
 
 	if ( $backgroundVideoContainer ) {
 		new BackgroundVideo( $backgroundVideoContainer, $ );

@@ -2,7 +2,7 @@
 // Shape Divider
 //
 
-.builder-shape {
+.qazana-shape {
 	overflow: hidden;
 	position: absolute;
 	left: 0;
@@ -19,13 +19,13 @@
 	}
 
 	&[data-negative="false"] {
-		&.builder-shape-bottom {
+		&.qazana-shape-bottom {
 			transform: rotate(180deg);
 		}
 	}
 
 	&[data-negative="true"] {
-		&.builder-shape-top {
+		&.qazana-shape-top {
 			transform: rotate(180deg);
 		}
 	}
@@ -38,7 +38,7 @@
 		transform: translateX(-50%);
 	}
 
-	.builder-shape-fill {
+	.qazana-shape-fill {
 		fill: #fff;
 		transform-origin: center;
 	}

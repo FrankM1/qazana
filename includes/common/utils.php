@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -14,18 +14,18 @@ class Utils {
 	}
 
 	public static function get_edit_link( $post_id = 0 ) {
-		return apply_filters( 'builder/utils/get_edit_link', add_query_arg( 'builder', '', get_permalink( $post_id ) ), $post_id );
+		return apply_filters( 'qazana/utils/get_edit_link', add_query_arg( 'qazana', '', get_permalink( $post_id ) ), $post_id );
 	}
 
 	public static function is_post_type_support( $post_id = 0 ) {
 		$post_type = get_post_type( $post_id );
-		$is_supported = post_type_supports( $post_type, 'builder' );
+		$is_supported = post_type_supports( $post_type, 'qazana' );
 
-		return apply_filters( 'builder/utils/is_post_type_support', $is_supported, $post_id, $post_type );
+		return apply_filters( 'qazana/utils/is_post_type_support', $is_supported, $post_id, $post_type );
 	}
 
 	public static function get_placeholder_image_src() {
-		return apply_filters( 'builder/utils/get_placeholder_image_src', builder()->core_assets_url . 'images/placeholder.png' );
+		return apply_filters( 'qazana/utils/get_placeholder_image_src', qazana()->core_assets_url . 'images/placeholder.png' );
 	}
 
 	public static function generate_random_string( $length = 7 ) {

@@ -1,17 +1,17 @@
 var PanelHeaderItemView;
 
 PanelHeaderItemView = Marionette.ItemView.extend( {
-    template: '#tmpl-builder-panel-header',
+    template: '#tmpl-qazana-panel-header',
 
-    id: 'builder-panel-header',
+    id: 'qazana-panel-header',
 
     ui: {
-        menuButton: '#builder-panel-header-menu-button',
-        menuDropButton: '#builder-panel-header-nav-button',
-        title: '#builder-panel-header-title',
-        addButton: '#builder-panel-header-add-button',
-        buttonSave: '#builder-panel-header-save',
-        buttonSaveButton: '#builder-panel-header-save .builder-button'
+        menuButton: '#qazana-panel-header-menu-button',
+        menuDropButton: '#qazana-panel-header-nav-button',
+        title: '#qazana-panel-header-title',
+        addButton: '#qazana-panel-header-add-button',
+        buttonSave: '#qazana-panel-header-save',
+        buttonSaveButton: '#qazana-panel-header-save .qazana-button'
     },
 
     events: {
@@ -26,8 +26,8 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         this._initDialog();
         this.onClickMenuDrop();
 
-        this.listenTo( builder.channels.editor, 'change', this.onEditorChanged )
-			.listenTo( builder.channels.deviceMode, 'change', this.onDeviceModeChange );
+        this.listenTo( qazana.channels.editor, 'change', this.onEditorChanged )
+			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
     },
 
     _initDialog: function() {
@@ -37,18 +37,18 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
             if ( ! dialog ) {
                 var $ = Backbone.$,
                     $dialogMessage = $( '<div>', {
-                        'class': 'builder-dialog-message'
+                        'class': 'qazana-dialog-message'
                     } ),
                     $messageIcon = $( '<i>', {
                         'class': 'fa fa-check-circle'
                     } ),
                     $messageText = $( '<div>', {
-                        'class': 'builder-dialog-message-text'
-                    } ).text( builder.translate( 'saved' ) );
+                        'class': 'qazana-dialog-message-text'
+                    } ).text( qazana.translate( 'saved' ) );
 
                 $dialogMessage.append( $messageIcon, $messageText );
 
-                dialog = builder.dialogsManager.createWidget( 'popup', {
+                dialog = qazana.dialogsManager.createWidget( 'popup', {
                     hide: {
                         delay: 1500
                     }
@@ -61,27 +61,27 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         };
     },
 
-    _publishBuilder: function() {
+    _publishQazana: function() {
         var self = this;
 
         var options = {
             status: 'publish',
             onSuccess: function() {
                 self.getDialog().show();
-                self.ui.buttonSaveButton.removeClass( 'builder-button-state' );
+                self.ui.buttonSaveButton.removeClass( 'qazana-button-state' );
                 NProgress.done();
             }
         };
 
-        self.ui.buttonSaveButton.addClass( 'builder-button-state' );
+        self.ui.buttonSaveButton.addClass( 'qazana-button-state' );
 
         NProgress.start();
 
-        builder.saveEditor( options );
+        qazana.saveEditor( options );
     },
 
-    _saveBuilderDraft: function() {
-        builder.saveEditor();
+    _saveQazanaDraft: function() {
+        qazana.saveEditor();
     },
 
     setTitle: function( title ) {
@@ -89,11 +89,11 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
     },
 
     onClickAdd: function() {
-        builder.getPanelView().setPage( 'elements' );
+        qazana.getPanelView().setPage( 'elements' );
     },
 
     onClickMenu: function() {
-        var panel = builder.getPanelView(),
+        var panel = qazana.getPanelView(),
             currentPanelPageName = panel.getCurrentPageName(),
             nextPage = 'menu' === currentPanelPageName ? 'elements' : 'menu';
 
@@ -105,26 +105,26 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         var $ = Backbone.$;
 
         // Delay showing of main nav with hoverIntent
-        $( 'ul.builder-panel-header-nav > li' ).hoverIntent(
-            function() { $( this ).addClass( 'builder-menu-hover' ); },
-            function() { $( this ).removeClass( 'builder-menu-hover' ); }
+        $( 'ul.qazana-panel-header-nav > li' ).hoverIntent(
+            function() { $( this ).addClass( 'qazana-menu-hover' ); },
+            function() { $( this ).removeClass( 'qazana-menu-hover' ); }
         );
     },
 
     onEditorChanged: function() {
-        this.ui.buttonSave.toggleClass( 'builder-save-active', builder.isEditorChanged() );
+        this.ui.buttonSave.toggleClass( 'qazana-save-active', qazana.isEditorChanged() );
     },
 
     onClickButtonSave: function() {
-        //this._saveBuilderDraft();
-        this._publishBuilder();
+        //this._saveQazanaDraft();
+        this._publishQazana();
     },
 
     onClickButtonPublish: function( event ) {
         // Prevent click on save button
         event.stopPropagation();
 
-        this._publishBuilder();
+        this._publishQazana();
     }
 
 } );

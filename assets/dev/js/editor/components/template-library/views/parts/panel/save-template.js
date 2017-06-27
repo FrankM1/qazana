@@ -1,13 +1,13 @@
 var TemplateLibrarySaveTemplateView;
 
 TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-save-template',
+	template: '#tmpl-qazana-template-library-save-template',
 
-	id: 'builder-template-library-save-template',
+	id: 'qazana-template-library-save-template',
 
 	ui: {
-		form: '#builder-template-library-save-template-form',
-		submitButton: '#builder-template-library-save-template-submit'
+		form: '#qazana-template-library-save-template-form',
+		submitButton: '#qazana-template-library-save-template-submit'
 	},
 
 	events: {
@@ -20,7 +20,7 @@ TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
 
 	templateHelpers: function() {
 		var saveType = this.getSaveType(),
-			templateType = builder.templates.getTemplateTypes( saveType );
+			templateType = qazana.templates.getTemplateTypes( saveType );
 
 		return templateType.saveDialog;
 	},
@@ -28,14 +28,14 @@ TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
 	onFormSubmit: function( event ) {
 		event.preventDefault();
 
-		var formData = this.ui.form.builderSerializeObject(),
+		var formData = this.ui.form.qazanaSerializeObject(),
 			saveType = this.model ? this.model.get( 'elType' ) : 'page';
 
-		formData.data = this.model ? [ this.model.toJSON() ] : builder.elements.toJSON();
+		formData.data = this.model ? [ this.model.toJSON() ] : qazana.elements.toJSON();
 
-		this.ui.submitButton.addClass( 'builder-button-state' );
+		this.ui.submitButton.addClass( 'qazana-button-state' );
 
-		builder.templates.saveTemplate( saveType, formData );
+		qazana.templates.saveTemplate( saveType, formData );
 	}
 } );
 

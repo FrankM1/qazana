@@ -1,11 +1,11 @@
-var PanelSchemeBaseView = require( 'builder-panel/pages/schemes/base' ),
+var PanelSchemeBaseView = require( 'qazana-panel/pages/schemes/base' ),
 	PanelSchemeColorsView;
 
 PanelSchemeColorsView = PanelSchemeBaseView.extend( {
 	ui: function() {
 		var ui = PanelSchemeBaseView.prototype.ui.apply( this, arguments );
 
-		ui.systemSchemes = '.builder-panel-scheme-color-system-scheme';
+		ui.systemSchemes = '.qazana-panel-scheme-color-system-scheme';
 
 		return ui;
 	},
@@ -25,7 +25,7 @@ PanelSchemeColorsView = PanelSchemeBaseView.extend( {
 	onSystemSchemeClick: function( event ) {
 		var $schemeClicked = Backbone.$( event.currentTarget ),
 			schemeName = $schemeClicked.data( 'schemeName' ),
-			scheme = builder.config.system_schemes[ this.getType() ][ schemeName ].items;
+			scheme = qazana.config.system_schemes[ this.getType() ][ schemeName ].items;
 
 		this.changeChildrenUIValues( scheme );
 	}

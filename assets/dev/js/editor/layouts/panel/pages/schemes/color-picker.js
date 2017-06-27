@@ -1,4 +1,4 @@
-var PanelSchemeColorsView = require( 'builder-panel/pages/schemes/colors' ),
+var PanelSchemeColorsView = require( 'qazana-panel/pages/schemes/colors' ),
 	PanelSchemeColorPickerView;
 
 PanelSchemeColorPickerView = PanelSchemeColorsView.extend( {
@@ -17,7 +17,7 @@ PanelSchemeColorPickerView = PanelSchemeColorsView.extend( {
 	},
 
 	orderView: function( model ) {
-		return builder.helpers.getColorPickerPaletteIndex( model.get( 'key' ) );
+		return qazana.helpers.getColorPickerPaletteIndex( model.get( 'key' ) );
 	}
 } );
 

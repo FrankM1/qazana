@@ -1,8 +1,8 @@
-# Introduction to Builder
+# Introduction to Qazana
 
-Builder is an [Open Source](https://opensource.org/) free frontend page builder for WordPress that features a simple and intuitive drag and drop interface.
+Qazana is an [Open Source](https://opensource.org/) free frontend page qazana for WordPress that features a simple and intuitive drag and drop interface.
 
-**What is Builder built with?**
+**What is Qazana built with?**
 
 * Server side: [PHP](http://php.net/) OOP, compatible with PHP 5.4 and above
 * Client side: [jQuery](https://jquery.com/), [Backbone](http://backbonejs.org/) & [Marionette](http://marionettejs.com/)
@@ -20,14 +20,14 @@ Builder is an [Open Source](https://opensource.org/) free frontend page builder 
   - [Page Settings](#page-settings)
   - [Icons](#icons)
   - [Menus](#menus)
-* [Builder Pro](#additional-components)
+* [Qazana Pro](#additional-components)
 
 ## Definitions
 
 ### Element
 
-In Builder, the main component is the 'Element'. An element is an visual entity that gets rendered on the page and can be controlled by the user in the editor.<br>
-There are three types of elements in Builder: Section, Column, and Widget.<br>
+In Qazana, the main component is the 'Element'. An element is an visual entity that gets rendered on the page and can be controlled by the user in the editor.<br>
+There are three types of elements in Qazana: Section, Column, and Widget.<br>
 A standard Element structure consists of the following settings and functions:
 
 * ID
@@ -46,7 +46,7 @@ The editor is the editing environment in which the user creates and edits elemen
 
 Controls are different types of input fields and UI elements that are used to construct the UI of elements.<br>
 For more information about controls, Please refer to [this article](content/controls/README.md).<br>
-Builder includes a wide array of controls:
+Qazana includes a wide array of controls:
 
 ##### Default settings
 
@@ -87,7 +87,7 @@ Builder includes a wide array of controls:
 
 ## Hooks
 
-Builder has many hooks that allow to change the default behavior and even extend it with new functionality.
+Qazana has many hooks that allow to change the default behavior and even extend it with new functionality.
 - [PHP Hooks](content/hooks/php-hooks.md) - Based on the WordPress Hooks API
 - [JS Hooks](content/hooks/js-hooks.md) - Using an API similar to WordPress Hooks
 
@@ -95,19 +95,19 @@ Builder has many hooks that allow to change the default behavior and even extend
 
 ### Template Library
 
-The Template Library lets you save pages, sections and widgets for reuse, as well as use pre-designed Builder templates.
+The Template Library lets you save pages, sections and widgets for reuse, as well as use pre-designed Qazana templates.
 
 ### Page Settings
 
-Page Settings lets the user control some basic and useful settings in the page from within Builder.
+Page Settings lets the user control some basic and useful settings in the page from within Qazana.
 
 For more information about extending the Page Settings features, please follow [this article](content/controls/page-settings.md).
 
 
 ### Icons
 
-You can use the [Builder Icons](https://github.com/FrankM1/builder-icons), as well as [Font Awesome](http://fontawesome.io/).
+You can use the [Qazana Icons](https://github.com/FrankM1/qazana-icons), as well as [Font Awesome](http://fontawesome.io/).
 
 ### Menus
 
-You can add admin menu under the Builder menu. As long as it involves simple settings - use the Builder settings page.
+You can add admin menu under the Qazana menu. As long as it involves simple settings - use the Qazana settings page.

@@ -1,7 +1,7 @@
 module.exports = function( $scope, $ ) {
-	var defaultActiveTab = $scope.find( '.builder-tabs' ).data( 'active-tab' ),
-		$tabsTitles = $scope.find( '.builder-tab-title' ),
-		$tabs = $scope.find( '.builder-tab-content' ),
+	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
+		$tabsTitles = $scope.find( '.qazana-tab-title' ),
+		$tabs = $scope.find( '.qazana-tab-content' ),
 		$active,
 		$content;
 

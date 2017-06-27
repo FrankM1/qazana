@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -22,12 +22,12 @@ abstract class Scheme_Base implements Scheme_Interface {
 	}
 
 	public function get_scheme_value() {
-		$scheme_value = get_option( 'builder_scheme_' . static::get_type() );
+		$scheme_value = get_option( 'qazana_scheme_' . static::get_type() );
 
 		if ( ! $scheme_value ) {
 			$scheme_value = $this->get_default_scheme();
 
-			update_option( 'builder_scheme_' . static::get_type(), $scheme_value );
+			update_option( 'qazana_scheme_' . static::get_type(), $scheme_value );
 		}
 
 		return $scheme_value;
@@ -36,7 +36,7 @@ abstract class Scheme_Base implements Scheme_Interface {
 	public function save_scheme( array $posted ) {
 		$scheme_value = $this->get_scheme_value();
 
-		update_option( 'builder_scheme_' . static::get_type(), array_replace( $scheme_value, array_intersect_key( $posted, $scheme_value ) ) );
+		update_option( 'qazana_scheme_' . static::get_type(), array_replace( $scheme_value, array_intersect_key( $posted, $scheme_value ) ) );
 	}
 
 	public function get_scheme() {
@@ -56,20 +56,20 @@ abstract class Scheme_Base implements Scheme_Interface {
 
 	public final function print_template() {
 		?>
-		<script type="text/template" id="tmpl-builder-panel-schemes-<?php echo static::get_type(); ?>">
-			<div class="builder-panel-scheme-buttons">
-				<div class="builder-panel-scheme-button-wrapper builder-panel-scheme-reset">
-					<button class="builder-button">
-						<i class="fa fa-undo"></i><?php _e( 'Reset', 'builder' ); ?>
+		<script type="text/template" id="tmpl-qazana-panel-schemes-<?php echo static::get_type(); ?>">
+			<div class="qazana-panel-scheme-buttons">
+				<div class="qazana-panel-scheme-button-wrapper qazana-panel-scheme-reset">
+					<button class="qazana-button">
+						<i class="fa fa-undo"></i><?php _e( 'Reset', 'qazana' ); ?>
 					</button>
 				</div>
-				<div class="builder-panel-scheme-button-wrapper builder-panel-scheme-discard">
-					<button class="builder-button">
-						<i class="fa fa-times"></i><?php _e( 'Discard', 'builder' ); ?>
+				<div class="qazana-panel-scheme-button-wrapper qazana-panel-scheme-discard">
+					<button class="qazana-button">
+						<i class="fa fa-times"></i><?php _e( 'Discard', 'qazana' ); ?>
 					</button>
 				</div>
-				<div class="builder-panel-scheme-button-wrapper builder-panel-scheme-save">
-					<button class="builder-button builder-button-success" disabled><?php _e( 'Apply', 'builder' ); ?></button>
+				<div class="qazana-panel-scheme-button-wrapper qazana-panel-scheme-save">
+					<button class="qazana-button qazana-button-success" disabled><?php _e( 'Apply', 'qazana' ); ?></button>
 				</div>
 			</div>
 			<?php $this->print_template_content(); ?>

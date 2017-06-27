@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -20,14 +20,14 @@ class Plugin {
     /** Magic *****************************************************************/
 
     /**
-     * Builder uses many variables, several of which can be filtered to
+     * Qazana uses many variables, several of which can be filtered to
      * customize the way it operates. Most of these variables are stored in a
      * private array that gets updated with the help of PHP magic methods.
      *
      * This is a precautionary measure, to avoid potential errors produced by
-     * unanticipated direct manipulation of Builder's run-time data.
+     * unanticipated direct manipulation of Qazana's run-time data.
      *
-     * @see builder::setup_globals()
+     * @see qazana::setup_globals()
      *
      * @var array
      */
@@ -115,30 +115,30 @@ class Plugin {
     /** Magic Methods *********************************************************/
 
     /**
-     * A dummy constructor to prevent Builder from being loaded more than once.
+     * A dummy constructor to prevent Qazana from being loaded more than once.
      *
      * @since 1.0.0
-     * @see builder::instance()
-     * @see builder();
+     * @see qazana::instance()
+     * @see qazana();
      */
     private function __construct() {}
 
     /**
-     * A dummy magic method to prevent Builder from being cloned.
+     * A dummy magic method to prevent Qazana from being cloned.
      *
      * @since 1.0.0
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'builder' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'qazana' ), '1.0.0' );
     }
 
     /**
-     * A dummy magic method to prevent Builder from being unserialized.
+     * A dummy magic method to prevent Qazana from being unserialized.
      *
      * @since 1.0.0
      */
     public function __wakeup() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'builder' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'qazana' ), '1.0.0' );
     }
 
     /**
@@ -151,7 +151,7 @@ class Plugin {
     }
 
     /**
-     * Magic method for getting Builder variables.
+     * Magic method for getting Qazana variables.
      *
      * @since 1.0.0
      */
@@ -160,7 +160,7 @@ class Plugin {
     }
 
     /**
-     * Magic method for setting Builder variables.
+     * Magic method for setting Qazana variables.
      *
      * @since 1.0.0
      */
@@ -169,7 +169,7 @@ class Plugin {
     }
 
     /**
-     * Magic method for unsetting Builder variables.
+     * Magic method for unsetting Qazana variables.
      *
      * @since 1.0.0
      */
@@ -198,8 +198,8 @@ class Plugin {
      *
      * @since 1.0.0
      *
-     * @uses plugin_dir_path() To generate Builder plugin path
-     * @uses plugin_dir_url() To generate Builder plugin url
+     * @uses plugin_dir_path() To generate Qazana plugin path
+     * @uses plugin_dir_url() To generate Qazana plugin url
      * @uses apply_filters() Calls various filters
      */
     private function setup_globals() {
@@ -212,29 +212,29 @@ class Plugin {
         /* Paths *************************************************************/
 
         // Setup some base path and URL information
-        $this->file = BUILDER__FILE__;
-        $this->slug = 'builder';
+        $this->file = QAZANA__FILE__;
+        $this->slug = 'qazana';
 
-        $this->basename = apply_filters( 'builder_plugin_basename', plugin_basename( BUILDER__FILE__ ) );
-        $this->plugin_dir = apply_filters( 'builder_plugin_dir_path',  plugin_dir_path( BUILDER__FILE__ ) );
-        $this->plugin_url = apply_filters( 'builder_plugin_dir_url', plugins_url( '/', BUILDER__FILE__ ) );
+        $this->basename = apply_filters( 'qazana_plugin_basename', plugin_basename( QAZANA__FILE__ ) );
+        $this->plugin_dir = apply_filters( 'qazana_plugin_dir_path',  plugin_dir_path( QAZANA__FILE__ ) );
+        $this->plugin_url = apply_filters( 'qazana_plugin_dir_url', plugins_url( '/', QAZANA__FILE__ ) );
 
         // core assets
-        $this->core_assets_dir = apply_filters( 'builder_core_assets_dir', trailingslashit( $this->plugin_dir . 'assets' ) );
-        $this->core_assets_url = apply_filters( 'builder_core_assets_url', trailingslashit( $this->plugin_url . 'assets' ) );
+        $this->core_assets_dir = apply_filters( 'qazana_core_assets_dir', trailingslashit( $this->plugin_dir . 'assets' ) );
+        $this->core_assets_url = apply_filters( 'qazana_core_assets_url', trailingslashit( $this->plugin_url . 'assets' ) );
 
         // Includes
-        $this->includes_dir = apply_filters( 'builder_includes_dir', trailingslashit( $this->plugin_dir . 'includes' ) );
-        $this->includes_url = apply_filters( 'builder_includes_url', trailingslashit( $this->plugin_url . 'includes' ) );
+        $this->includes_dir = apply_filters( 'qazana_includes_dir', trailingslashit( $this->plugin_dir . 'includes' ) );
+        $this->includes_url = apply_filters( 'qazana_includes_url', trailingslashit( $this->plugin_url . 'includes' ) );
 
         // Languages
-        $this->lang_dir = apply_filters( 'builder_lang_dir',     trailingslashit( $this->plugin_dir . 'languages' ) );
+        $this->lang_dir = apply_filters( 'qazana_lang_dir',     trailingslashit( $this->plugin_dir . 'languages' ) );
 
         /* Identifiers *******************************************************/
         $this->admin = new \StdClass(); // Used by admin
 
         /* Misc **************************************************************/
-        $this->domain = 'builder'; // Unique identifier for retrieving translated strings
+        $this->domain = 'qazana'; // Unique identifier for retrieving translated strings
         $this->extend = new \StdClass(); // Plugins add data here
         $this->errors = new \WP_Error(); // Feedback
 
@@ -243,7 +243,7 @@ class Plugin {
         );
 
         $this->extensions_locations = array(
-            'includes/extensions/builder/extensions',
+            'includes/extensions/qazana/extensions',
             'includes/extensions',
         );
 
@@ -258,31 +258,31 @@ class Plugin {
     public function setup_actions() {
 
         // Add actions to plugin activation and deactivation hooks
-        add_action( 'activate_' . $this->basename, 'builder_activation' );
-        add_action( 'deactivate_' . $this->basename, 'builder_deactivation' );
+        add_action( 'activate_' . $this->basename, 'qazana_activation' );
+        add_action( 'deactivate_' . $this->basename, 'qazana_deactivation' );
 
-        // If Builder is being deactivated, do not add any actions
-        if ( builder_is_deactivation( $this->basename ) ) {
+        // If Qazana is being deactivated, do not add any actions
+        if ( qazana_is_deactivation( $this->basename ) ) {
             return;
         }
 
-        // Array of Builder core actions
+        // Array of Qazana core actions
         $actions = array(
             'init',     // check for supported cpts
             'init_classes',     // load plugin classes
-            'load_textdomain', // Load textdomain (builder)
+            'load_textdomain', // Load textdomain (qazana)
         );
 
         // Add the actions
         foreach ( $actions as $class_action ) {
-            add_action( 'builder_' . $class_action, array( $this, $class_action ), 5 );
+            add_action( 'qazana_' . $class_action, array( $this, $class_action ), 5 );
         }
 
-        // All Builder actions are setup (includes video-central-core-hooks.php)
-        do_action_ref_array( 'builder_after_setup_actions', array( &$this ) );
+        // All Qazana actions are setup (includes video-central-core-hooks.php)
+        do_action_ref_array( 'qazana_after_setup_actions', array( &$this ) );
 
         // Add Page Templates
-        add_action( 'after_setup_theme', array( 'Builder\Page_Template_Manager', 'get_instance' ) ); // load late for filters to work
+        add_action( 'after_setup_theme', array( 'Qazana\Page_Template_Manager', 'get_instance' ) ); // load late for filters to work
 
     }
 
@@ -291,10 +291,10 @@ class Plugin {
      */
     public function init() {
 
-        $cpt_support = get_option( 'builder_cpt_support', [ 'page', 'post' ] );
+        $cpt_support = get_option( 'qazana_cpt_support', [ 'page', 'post' ] );
 
         foreach ( $cpt_support as $cpt_slug ) {
-            add_post_type_support( $cpt_slug, 'builder', 'revisions' );
+            add_post_type_support( $cpt_slug, 'qazana', 'revisions' );
         }
     }
 
@@ -406,17 +406,17 @@ class Plugin {
 
         if ( version_compare( $wp_version, '3.0.0', '<' ) ) {
             deactivate_plugins( plugin_basename( __FILE__ ) );
-            wp_die( printf( __( 'Sorry, but your version of WordPress, <strong>%s</strong>, does not meet the Builder\'s required version of <strong>3.3.1</strong> to run properly. The plugin has been deactivated. <a href="%s">Click here to return to the Dashboard</a>', 'builder'), $wp_version, admin_url() ) );
+            wp_die( printf( __( 'Sorry, but your version of WordPress, <strong>%s</strong>, does not meet the Qazana\'s required version of <strong>3.3.1</strong> to run properly. The plugin has been deactivated. <a href="%s">Click here to return to the Dashboard</a>', 'qazana'), $wp_version, admin_url() ) );
         }
     }
 
     /**
      * Load the translation file for current language. Checks the languages
-     * folder inside the Builder plugin first, and then the default WordPress
+     * folder inside the Qazana plugin first, and then the default WordPress
      * languages folder.
      *
-     * Note that custom translation files inside the Builder plugin folder
-     * will be removed on Builder updates. If you're creating custom
+     * Note that custom translation files inside the Qazana plugin folder
+     * will be removed on Qazana updates. If you're creating custom
      * translation files, please use the global language folder.
      *
      * @since 1.0.0
@@ -432,12 +432,12 @@ class Plugin {
 
         // Setup paths to current locale file
         $mofile_local = $this->lang_dir.$mofile;
-        $mofile_global = WP_LANG_DIR . '/plugins/builder/' . $mofile;
+        $mofile_global = WP_LANG_DIR . '/plugins/qazana/' . $mofile;
 
-        // Look in global /wp-content/languages/builder folder
+        // Look in global /wp-content/languages/qazana folder
         load_textdomain( $this->domain, $mofile_global );
 
-        // Look in local /wp-content/plugins/builder/ folder
+        // Look in local /wp-content/plugins/qazana/ folder
         load_textdomain( $this->domain, $mofile_local );
 
         // Look in global /wp-content/languages/plugins/

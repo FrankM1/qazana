@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,7 +15,7 @@ class Scheme_Color_Picker extends Scheme_Color {
 	}
 
 	public static function get_description() {
-		return __( 'Choose which colors appear in the editor\'s color picker. This makes accessing the colors you chose for the site much easier.', 'builder' );
+		return __( 'Choose which colors appear in the editor\'s color picker. This makes accessing the colors you chose for the site much easier.', 'qazana' );
 	}
 
 	public function get_default_scheme() {
@@ -101,7 +101,7 @@ class Scheme_Color_Picker extends Scheme_Color {
 			];
 		}
 
-		$schemes = apply_filters( 'builder/schemes/default_color_picker_schemes', $schemes );
+		$schemes = apply_filters( 'qazana/schemes/default_color_picker_schemes', $schemes );
 
 		return $schemes;
 	}
@@ -128,6 +128,6 @@ class Scheme_Color_Picker extends Scheme_Color {
 	}
 
 	protected function _get_current_scheme_title() {
-		return __( 'Color Picker', 'builder' );
+		return __( 'Color Picker', 'qazana' );
 	}
 }

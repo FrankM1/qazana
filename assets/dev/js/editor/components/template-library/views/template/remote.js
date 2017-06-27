@@ -1,11 +1,11 @@
-var TemplateLibraryTemplateView = require( 'builder-templates/views/template/base' ),
+var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
 	TemplateLibraryTemplateRemoteView;
 
 TemplateLibraryTemplateRemoteView = TemplateLibraryTemplateView.extend( {
-	template: '#tmpl-builder-template-library-template-remote',
+	template: '#tmpl-qazana-template-library-template-remote',
 
 	onPreviewButtonClick: function() {
-		builder.templates.getLayout().showPreviewView( this.model );
+		qazana.templates.getLayout().showPreviewView( this.model );
 	}
 } );
 

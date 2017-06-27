@@ -2,21 +2,21 @@
 // Panel Controls
 //
 
-#builder-panel-page-editor {
-	#builder-controls {
-		> .builder-control {
-			&:not(.builder-active-tab) {
+#qazana-panel-page-editor {
+	#qazana-controls {
+		> .qazana-control {
+			&:not(.qazana-active-tab) {
 				display: none;
 			}
 		}
 	}
 
-	.builder-control {
+	.qazana-control {
 		background-color: #fff;
 		position: relative;
 		padding: 0 20px 15px;
 
-		&.builder-control-separator- {
+		&.qazana-control-separator- {
 			&default {
 				&:before {
 					content: '';
@@ -27,7 +27,7 @@
 				}
 
 				// WP Widgets
-				&.builder-control-wp {
+				&.qazana-control-wp {
 					margin-top: 15px;
 
 					&:before {
@@ -61,64 +61,64 @@
 					background-color: $editor-lightest;
 				}
 
-				+ .builder-control-type-tabs {
+				+ .qazana-control-type-tabs {
 					padding-top: 15px;
 				}
 			}
 		}
 
-		&.builder-control-deprecated {
+		&.qazana-control-deprecated {
 			color: $editor-warning;
 
-			.builder-control-description {
+			.qazana-control-description {
 				color: $editor-warning;
 			}
 		}
 
-		&.builder-control-hidden-label {
-			.builder-control-title {
+		&.qazana-control-hidden-label {
+			.qazana-control-title {
 				display: none;
 			}
 		}
 
-		&.builder-hidden-control {
+		&.qazana-hidden-control {
 			display: none;
 		}
 
-		&.builder-control-under-section {
-			&:not(.builder-open) {
+		&.qazana-control-under-section {
+			&:not(.qazana-open) {
 				display: none;
 			}
 		}
 
-		&.builder-control-type-heading {
-			.builder-control-title {
+		&.qazana-control-type-heading {
+			.qazana-control-title {
 				font-weight: bold;
 				margin: 0;
 			}
 		}
 
-		&.builder-control-responsive- {
+		&.qazana-control-responsive- {
 			&desktop {
-				body:not(.builder-device-desktop) & {
+				body:not(.qazana-device-desktop) & {
 					display: none;
 				}
 			}
 
 			&tablet {
-				body:not(.builder-device-tablet) & {
+				body:not(.qazana-device-tablet) & {
 					display: none;
 				}
 			}
 
 			&mobile {
-				body:not(.builder-device-mobile) & {
+				body:not(.qazana-device-mobile) & {
 					display: none;
 				}
 			}
 		}
 
-		&.builder-control-type-icon {
+		&.qazana-control-type-icon {
 			.icons-selector .selector-popup {
 				width: 262px;
 			}
@@ -135,7 +135,7 @@
 	}
 
 	// WP Widgets
-	.builder-control-wp {
+	.qazana-control-wp {
 		line-height: 1.5;
 
 		p {
@@ -143,24 +143,24 @@
 		}
 	}
 
-	.builder-label-block {
-		> .builder-control-content {
-			> .builder-control-field {
+	.qazana-label-block {
+		> .qazana-control-content {
+			> .qazana-control-field {
 				display: flex;
 				flex-wrap: wrap;
 				align-items: center;
 
-				> .builder-control-input-wrapper {
+				> .qazana-control-input-wrapper {
 					flex-basis: 100%;
 					margin-top: 10px;
 				}
 			}
 		}
 
-		&.builder-control-hidden-label {
-			> .builder-control-content {
-				> .builder-control-field {
-					> .builder-control-input-wrapper {
+		&.qazana-control-hidden-label {
+			> .qazana-control-content {
+				> .qazana-control-field {
+					> .qazana-control-input-wrapper {
 						margin-top: 0;
 					}
 				}
@@ -168,9 +168,9 @@
 		}
 	}
 
-	.builder-label-inline {
-		> .builder-control-content {
-			> .builder-control-field {
+	.qazana-label-inline {
+		> .qazana-control-content {
+			> .qazana-control-field {
 				display: table;
 				width: 100%;
 
@@ -179,20 +179,20 @@
 					vertical-align: middle;
 				}
 
-				> .builder-control-title {
+				> .qazana-control-title {
 					width: 45%;
 				}
 			}
 		}
 	}
 
-	.builder-control-description {
-		@extend .builder-descriptor;
+	.qazana-control-description {
+		@extend .qazana-descriptor;
 
 		margin-top: 10px;
 	}
 
-	.builder-choices {
+	.qazana-choices {
 		display: table;
 		width: 100%;
 		height: 27px;
@@ -204,17 +204,17 @@
 		input {
 			display: none;
 
-			&:checked + .builder-choices-label {
+			&:checked + .qazana-choices-label {
 				color: #fff;
 			}
 
-			&:not(:checked) + .builder-choices-label {
+			&:not(:checked) + .qazana-choices-label {
 				background-color: #fff;
 				color: $editor-light;
 			}
 		}
 
-		.builder-choices-label {
+		.qazana-choices-label {
 			display: table-cell;
 			vertical-align: middle;
 			font-size: 12px;
@@ -223,7 +223,7 @@
 		}
 	}
 
-	.builder-slider {
+	.qazana-slider {
 		display: inline-block;
 		margin-top: 10px;
 		height: 4px;
@@ -246,7 +246,7 @@
 		}
 	}
 
-	.builder-slider-input {
+	.qazana-slider-input {
 		width: 33%;
 		float: $end;
 
@@ -256,7 +256,7 @@
 		}
 	}
 
-	.builder-units-choices {
+	.qazana-units-choices {
 		flex-grow: 1;
 		text-align: $end;
 
@@ -280,12 +280,12 @@
 		}
 	}
 
-	.builder-control-responsive-switchers {
+	.qazana-control-responsive-switchers {
 		display: flex;
 		@include margin-start(5px);
 	}
 
-	.builder-responsive-switcher {
+	.qazana-responsive-switcher {
 		$icon-size: 18px;
 
 		display: inline-block;
@@ -310,46 +310,46 @@
 		}
 	}
 
-	@at-root .builder-device-desktop #builder-panel #builder-panel-page-editor:not(.builder-responsive-switchers-open) .builder-responsive-switcher {
+	@at-root .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
 		background: $editor-lighter;
 
-		&:not(.builder-responsive-switcher-desktop) {
+		&:not(.qazana-responsive-switcher-desktop) {
 			display: none;
 		}
 	}
 
-	.builder-responsive-switcher-mobile {
-		.builder-device-mobile & {
+	.qazana-responsive-switcher-mobile {
+		.qazana-device-mobile & {
 			background-color: $editor-info;
 		}
 	}
 
-	.builder-responsive-switcher-tablet {
-		.builder-device-tablet & {
+	.qazana-responsive-switcher-tablet {
+		.qazana-device-tablet & {
 			background-color: $editor-info;
 		}
 	}
 
-	#builder-update-preview {
+	#qazana-update-preview {
 		margin: 15px 15px 0;
 		background-color: $editor-background;
 		display: flex;
 		align-items: center;
 	}
 
-	#builder-update-preview-button-wrapper {
+	#qazana-update-preview-button-wrapper {
 		flex-grow: 1;
 		text-align: $end;
 	}
 
-	#builder-update-preview-button {
+	#qazana-update-preview-button {
 		padding: 8px 15px;
 		text-transform: uppercase;
 	}
 
 	// Media Control
-	.builder-control-type-media {
-		.builder-control-media {
+	.qazana-control-type-media {
+		.qazana-control-media {
 			padding: 7px;
 			border: 1px solid;
 			height: 150px;
@@ -357,7 +357,7 @@
 			&:not(:hover) {
 				border-color: $editor-lightest;
 
-				.builder-control-media-upload-button {
+				.qazana-control-media-upload-button {
 					background-color: $editor-lightest;
 				}
 			}
@@ -365,19 +365,19 @@
 			&:hover {
 				border-color: $editor-light;
 
-				.builder-control-media-upload-button {
+				.qazana-control-media-upload-button {
 					background-color: $editor-light;
 				}
 			}
 
 			&.media-empty {
-				.builder-control-media-image-area {
+				.qazana-control-media-image-area {
 					display: none;
 				}
 			}
 
 			&:not(.media-empty) {
-				.builder-control-media-upload-button {
+				.qazana-control-media-upload-button {
 					display: none;
 				}
 			}
@@ -398,21 +398,21 @@
 			font-size: 20px;
 		}
 
-		.builder-control-media-image-area {
+		.qazana-control-media-image-area {
 			&:not(:hover) {
-				.builder-control-media-delete {
+				.qazana-control-media-delete {
 					display: none;
 				}
 			}
 
 			&:hover {
-				.builder-control-media-image {
+				.qazana-control-media-image {
 					opacity: 0.5;
 				}
 			}
 		}
 
-		.builder-control-media-delete {
+		.qazana-control-media-delete {
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -425,14 +425,14 @@
 			text-transform: uppercase;
 		}
 
-		.builder-control-media-image {
+		.qazana-control-media-image {
 			height: 100%;
 			background-size: cover;
 		}
 	}
 	// Dimensions Control
-	.builder-control-type-dimensions {
-		.builder-control-dimensions {
+	.qazana-control-type-dimensions {
+		.qazana-control-dimensions {
 			overflow: hidden;
 		}
 
@@ -440,7 +440,7 @@
 			float: left;
 			width: 20%;
 
-			.builder-link-dimensions,
+			.qazana-link-dimensions,
 			input {
 				display: block;
 				text-align: center;
@@ -470,7 +470,7 @@
 				}
 			}
 
-			.builder-link-dimensions {
+			.qazana-link-dimensions {
 				border: 1px solid $editor-light;
 				border-left: none;
 				background-color: #fff;
@@ -488,11 +488,11 @@
 			}
 		}
 
-		.builder-link-dimensions {
+		.qazana-link-dimensions {
 			&.unlinked {
 				background-color: #fff;
 
-				.builder-linked {
+				.qazana-linked {
 					display: none;
 				}
 			}
@@ -500,12 +500,12 @@
 			&:not(.unlinked) {
 				background-color: $editor-light;
 
-				.builder-unlinked {
+				.qazana-unlinked {
 					display: none;
 				}
 			}
 
-			.builder-linked {
+			.qazana-linked {
 				color: #fff;
 			}
 
@@ -513,24 +513,24 @@
 	}
 
 	// URL Control
-	.builder-control-type-url {
-		.builder-control-url-external-hide {
-			.builder-control-url-target {
+	.qazana-control-type-url {
+		.qazana-control-url-external-hide {
+			.qazana-control-url-target {
 				display: none;
 			}
 		}
 
-		.builder-control-url-external-show {
+		.qazana-control-url-external-show {
 			input {
 				padding-right: 46px;
 			}
 		}
 
-		.builder-control-input-wrapper {
+		.qazana-control-input-wrapper {
 			position: relative;
 		}
 
-		.builder-control-url-target {
+		.qazana-control-url-target {
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -547,13 +547,13 @@
 			&.active {
 				background-color: $editor-light;
 
-				.builder-control-url-external {
+				.qazana-control-url-external {
 					color: #fff;
 				}
 			}
 
 			&:not(.active) {
-				.builder-control-url-external {
+				.qazana-control-url-external {
 					opacity: 0.5;
 				}
 			}
@@ -563,7 +563,7 @@
 			direction: ltr; // Force ltr also in RTL languages
 
 			&:not(:focus) {
-				+ .builder-control-url-target {
+				+ .qazana-control-url-target {
 					border-color: $editor-lightest;
 
 					&.active {
@@ -573,7 +573,7 @@
 			}
 
 			&:focus {
-				+ .builder-control-url-target {
+				+ .qazana-control-url-target {
 					border-color: $editor-light;
 
 					&.active {
@@ -585,21 +585,21 @@
 	}
 
 	// = Choices control for alignment
-	.builder-control-align,
-	.builder-control-position,
-	.builder-control-text_align {
-		.builder-choices {
+	.qazana-control-align,
+	.qazana-control-position,
+	.qazana-control-text_align {
+		.qazana-choices {
 			direction: ltr; // Force ltr also in RTL languages
 		}
 	}
 
 	// Section control
-	.builder-control-type-section {
+	.qazana-control-type-section {
 		margin-top: 10px;
 		padding: 0;
 
-		& + .builder-control {
-			&:not(.builder-control-type-section) {
+		& + .qazana-control {
+			&:not(.qazana-control-type-section) {
 				padding-top: 15px;
 
 				&:before {
@@ -625,8 +625,8 @@
 	}
 
 	// Wysiwyg control
-	.builder-control-type-wysiwyg {
-		&.builder-rich-editing-disabled {
+	.qazana-control-type-wysiwyg {
+		&.qazana-rich-editing-disabled {
 			.wp-editor-container {
 				margin-top: 10px;
 			}
@@ -703,7 +703,7 @@
 			}
 		}
 
-		.builder-wp-editor {
+		.qazana-wp-editor {
 			box-sizing: border-box;
 		}
 
@@ -734,7 +734,7 @@
 	}
 
 	// Icon control
-	.builder-control-type-icon {
+	.qazana-control-type-icon {
 		.select2-selection__rendered {
 			.fa {
 				margin-right: 3px;
@@ -743,25 +743,25 @@
 	}
 
 	// Gallery control
-	.builder-control-type-gallery {
-		&.builder-gallery-empty {
-			.builder-control-gallery-clear,
-			.builder-control-gallery-thumbnails {
+	.qazana-control-type-gallery {
+		&.qazana-gallery-empty {
+			.qazana-control-gallery-clear,
+			.qazana-control-gallery-thumbnails {
 				display: none;
 			}
 		}
 
-		.builder-control-media {
+		.qazana-control-media {
 			//	padding-top: 20px; //temp remove for some space in gallery widget
 		}
 
-		.builder-control-gallery-thumbnails {
+		.qazana-control-gallery-thumbnails {
 			overflow: hidden;
 			margin-top: 20px;
 			cursor: pointer;
 		}
 
-		.builder-control-gallery-thumbnail {
+		.qazana-control-gallery-thumbnail {
 			width: 40px;
 			height: 40px;
 			background-size: cover;
@@ -774,7 +774,7 @@
 			}
 		}
 
-		.builder-control-gallery-add {
+		.qazana-control-gallery-add {
 			width: 100%;
 			height: 30px;
 			color: #fff;
@@ -783,20 +783,20 @@
 			text-transform: uppercase;
 		}
 
-		.builder-control-gallery-clear {
+		.qazana-control-gallery-clear {
 			color: $editor-warning;
 			cursor: pointer;
 		}
 	}
 
 	// Structure control
-	.builder-control-type-structure {
-		.builder-control-structure-preset {
+	.qazana-control-type-structure {
+		.qazana-control-structure-preset {
 			border: 1px solid $editor-background;
 			padding: 3px;
 			border-radius: 3px;
 
-			&:not(.builder-control-structure-current-preset) {
+			&:not(.qazana-control-structure-current-preset) {
 				display: inline-block;
 				cursor: pointer;
 				height: 50px;
@@ -811,7 +811,7 @@
 			}
 		}
 
-		.builder-control-structure-current-preset {
+		.qazana-control-structure-current-preset {
 			margin-top: 15px;
 
 			// For Safari
@@ -821,7 +821,7 @@
 			}
 		}
 
-		.builder-control-structure-reset {
+		.qazana-control-structure-reset {
 			padding: 10px 0 0 2px;
 			font-size: 11px;
 			cursor: pointer;
@@ -832,8 +832,8 @@
 			}
 		}
 
-		.builder-control-structure-more-presets-title,
-		.builder-control-structure-title {
+		.qazana-control-structure-more-presets-title,
+		.qazana-control-structure-title {
 			color: $editor-darkest;
 			font-weight: bold;
 			padding: 13.5px 20px;
@@ -860,7 +860,7 @@
 			}
 		}
 
-		.builder-control-structure-title {
+		.qazana-control-structure-title {
 			margin: 10px -20px 0;
 
 			&:before {
@@ -869,7 +869,7 @@
 			}
 		}
 
-		.builder-control-structure-more-presets-title {
+		.qazana-control-structure-more-presets-title {
 			margin: 15px -20px 0;
 
 			&:before {
@@ -877,7 +877,7 @@
 			}
 		}
 
-		.builder-control-structure-more-presets {
+		.qazana-control-structure-more-presets {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
@@ -885,7 +885,7 @@
 			input {
 				display: none;
 
-				&:checked + .builder-control-structure-preset {
+				&:checked + .qazana-control-structure-preset {
 					border: 1px solid $editor-light;
 
 					path {
@@ -895,11 +895,11 @@
 			}
 		}
 
-		.builder-control-structure-preset-wrapper {
+		.qazana-control-structure-preset-wrapper {
 			margin-top: 15px;
 		}
 
-		.builder-control-structure-preset-title {
+		.qazana-control-structure-preset-title {
 			text-align: center;
 			padding-top: 5px;
 			font-style: italic;
@@ -909,37 +909,37 @@
 	}
 
 	// Image dimensions control
-	.builder-control-type-image_dimensions {
-		.builder-control-description {
+	.qazana-control-type-image_dimensions {
+		.qazana-control-description {
 			margin: 0 0 15px;
 			line-height: 1.4;
 		}
 
-		.builder-control-input-wrapper {
+		.qazana-control-input-wrapper {
 			overflow: hidden;
 		}
 
-		.builder-image-dimensions-field {
+		.qazana-image-dimensions-field {
 			width: 70px;
 			float: $start;
 
 			input {
 				&:focus {
-					+ .builder-image-dimensions-field-description {
+					+ .qazana-image-dimensions-field-description {
 						color: $editor-light;
 					}
 				}
 			}
 		}
 
-		.builder-image-dimensions-separator {
+		.qazana-image-dimensions-separator {
 			width: 20px;
 			text-align: center;
 			float: $start;
 			padding-top: 4px;
 		}
 
-		.builder-image-dimensions-field-description {
+		.qazana-image-dimensions-field-description {
 			text-transform: uppercase;
 			margin-top: 5px;
 			color: $editor-lightest;
@@ -947,7 +947,7 @@
 			text-align: center;
 		}
 
-		.builder-image-dimensions-apply-button {
+		.qazana-image-dimensions-apply-button {
 			float: $end;
 			height: 27px;
 			width: 70px;
@@ -955,7 +955,7 @@
 	}
 
 	// Code Editor
-	.builder-control-type-code {
+	.qazana-control-type-code {
 		padding: 0 10px 15px;
 	}
 
@@ -978,7 +978,7 @@
 	@import "controls/order";
 
 	// Hidden control
-	.builder-control-type-hidden {
+	.qazana-control-type-hidden {
 		display: none !important;
 	}
 }

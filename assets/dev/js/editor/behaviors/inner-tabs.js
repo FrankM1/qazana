@@ -7,14 +7,14 @@ InnerTabsBehavior = Marionette.Behavior.extend( {
 	},
 
 	handleInnerTabs: function( parent ) {
-		var closedClass = 'builder-tab-close',
-			activeClass = 'builder-tab-active',
+		var closedClass = 'qazana-tab-close',
+			activeClass = 'qazana-tab-active',
 			tabsWrappers = parent.children.filter( function( view ) {
 				return 'tabs' === view.model.get( 'type' );
 			} );
 
 			_.each( tabsWrappers, function( view ) {
-				view.$el.find( '.builder-control-content' ).remove();
+				view.$el.find( '.qazana-control-content' ).remove();
 
 				var tabsId = view.model.get( 'name' ),
 				tabs = parent.children.filter( function( childView ) {
@@ -41,8 +41,8 @@ InnerTabsBehavior = Marionette.Behavior.extend( {
 	},
 
 	onChildviewControlTabClicked: function( childView ) {
-		var closedClass = 'builder-tab-close',
-			activeClass = 'builder-tab-active',
+		var closedClass = 'qazana-tab-close',
+			activeClass = 'qazana-tab-active',
 			tabClicked = childView.model.get( 'name' ),
 			childrenUnderTab = this.view.children.filter( function( view ) {
 				return ( 'tab' !== view.model.get( 'type' ) && childView.model.get( 'tabs_wrapper' ) === view.model.get( 'tabs_wrapper' ) );
@@ -65,7 +65,7 @@ InnerTabsBehavior = Marionette.Behavior.extend( {
 				}
 			} );
 
-			builder.channels.data.trigger( 'scrollbar:update' );
+			qazana.channels.data.trigger( 'scrollbar:update' );
 	}
 } );
 

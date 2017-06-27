@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Image_Carousel extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Image Carousel', 'builder' );
+		return __( 'Image Carousel', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->start_controls_section(
 			'section_image_carousel',
 			[
-				'label' => __( 'Image Carousel', 'builder' ),
+				'label' => __( 'Image Carousel', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'carousel',
 			[
-				'label' => __( 'Add Images', 'builder' ),
+				'label' => __( 'Add Images', 'qazana' ),
 				'type' => Controls_Manager::GALLERY,
 				'default' => [],
 			]
@@ -51,7 +51,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'slides_to_show',
 			[
-				'label' => __( 'Slides to Show', 'builder' ),
+				'label' => __( 'Slides to Show', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '3',
 				'options' => $slides_to_show,
@@ -61,7 +61,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'slides_to_scroll',
 			[
-				'label' => __( 'Slides to Scroll', 'builder' ),
+				'label' => __( 'Slides to Scroll', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '2',
 				'options' => $slides_to_show,
@@ -74,12 +74,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'image_stretch',
 			[
-				'label' => __( 'Image Stretch', 'builder' ),
+				'label' => __( 'Image Stretch', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'no',
 				'options' => [
-					'no' => __( 'No', 'builder' ),
-					'yes' => __( 'Yes', 'builder' ),
+					'no' => __( 'No', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
 				],
 			]
 		);
@@ -87,15 +87,15 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'navigation',
 			[
-				'label' => __( 'Navigation', 'builder' ),
+				'label' => __( 'Navigation', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'both',
 				'options' => [
-					'both' => __( 'Arrows and Dots', 'builder' ),
-					'arrows' => __( 'Arrows', 'builder' ),
-					'dots' => __( 'Dots', 'builder' ),
-					'thumbnails' => __( 'Thumbnails', 'builder' ),
-					'none' => __( 'None', 'builder' ),
+					'both' => __( 'Arrows and Dots', 'qazana' ),
+					'arrows' => __( 'Arrows', 'qazana' ),
+					'dots' => __( 'Dots', 'qazana' ),
+					'thumbnails' => __( 'Thumbnails', 'qazana' ),
+					'none' => __( 'None', 'qazana' ),
 				],
 			]
 		);
@@ -103,13 +103,13 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'link_to',
 			[
-				'label' => __( 'Link to', 'builder' ),
+				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'none',
 				'options' => [
-					'none' => __( 'None', 'builder' ),
-					'file' => __( 'Media File', 'builder' ),
-					'custom' => __( 'Custom URL', 'builder' ),
+					'none' => __( 'None', 'qazana' ),
+					'file' => __( 'Media File', 'qazana' ),
+					'custom' => __( 'Custom URL', 'qazana' ),
 				],
 			]
 		);
@@ -119,7 +119,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			[
 				'label' => 'Link to',
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'builder' ),
+				'placeholder' => __( 'http://your-link.com', 'qazana' ),
 				'condition' => [
 					'link_to' => 'custom',
 				],
@@ -130,7 +130,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -141,19 +141,19 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->start_controls_section(
 			'section_additional_options',
 			[
-				'label' => __( 'Additional Options', 'builder' ),
+				'label' => __( 'Additional Options', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'pause_on_hover',
 			[
-				'label' => __( 'Pause on Hover', 'builder' ),
+				'label' => __( 'Pause on Hover', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'yes',
 				'options' => [
-					'yes' => __( 'Yes', 'builder' ),
-					'no' => __( 'No', 'builder' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
 				],
 			]
 		);
@@ -161,12 +161,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'autoplay',
 			[
-				'label' => __( 'Autoplay', 'builder' ),
+				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'yes',
 				'options' => [
-					'yes' => __( 'Yes', 'builder' ),
-					'no' => __( 'No', 'builder' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
 				],
 			]
 		);
@@ -174,7 +174,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'autoplay_speed',
 			[
-				'label' => __( 'Autoplay Speed', 'builder' ),
+				'label' => __( 'Autoplay Speed', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 5000,
 			]
@@ -183,12 +183,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'infinite',
 			[
-				'label' => __( 'Infinite Loop', 'builder' ),
+				'label' => __( 'Infinite Loop', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'yes',
 				'options' => [
-					'yes' => __( 'Yes', 'builder' ),
-					'no' => __( 'No', 'builder' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
 				],
 			]
 		);
@@ -196,12 +196,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'effect',
 			[
-				'label' => __( 'Effect', 'builder' ),
+				'label' => __( 'Effect', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'slide',
 				'options' => [
-					'slide' => __( 'Slide', 'builder' ),
-					'fade' => __( 'Fade', 'builder' ),
+					'slide' => __( 'Slide', 'qazana' ),
+					'fade' => __( 'Fade', 'qazana' ),
 				],
 				'condition' => [
 					'slides_to_show' => '1',
@@ -212,7 +212,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'speed',
 			[
-				'label' => __( 'Animation Speed', 'builder' ),
+				'label' => __( 'Animation Speed', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 500,
 			]
@@ -221,12 +221,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'direction',
 			[
-				'label' => __( 'Direction', 'builder' ),
+				'label' => __( 'Direction', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'ltr',
 				'options' => [
-					'ltr' => __( 'Left', 'builder' ),
-					'rtl' => __( 'Right', 'builder' ),
+					'ltr' => __( 'Left', 'qazana' ),
+					'rtl' => __( 'Right', 'qazana' ),
 				],
 			]
 		);
@@ -236,7 +236,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_navigation',
 			[
-				'label' => __( 'Navigation', 'builder' ),
+				'label' => __( 'Navigation', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'navigation' => [ 'arrows', 'dots', 'both' ],
@@ -247,7 +247,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'heading_style_arrows',
 			[
-				'label' => __( 'Arrows', 'builder' ),
+				'label' => __( 'Arrows', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -259,12 +259,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'arrows_position',
 			[
-				'label' => __( 'Arrows Position', 'builder' ),
+				'label' => __( 'Arrows Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'inside',
 				'options' => [
-					'inside' => __( 'Inside', 'builder' ),
-					'outside' => __( 'Outside', 'builder' ),
+					'inside' => __( 'Inside', 'qazana' ),
+					'outside' => __( 'Outside', 'qazana' ),
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -275,7 +275,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'arrows_size',
 			[
-				'label' => __( 'Arrows Size', 'builder' ),
+				'label' => __( 'Arrows Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -284,7 +284,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .builder-image-carousel-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -295,10 +295,10 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'arrows_color',
 			[
-				'label' => __( 'Arrows Color', 'builder' ),
+				'label' => __( 'Arrows Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .builder-image-carousel-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -309,7 +309,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'heading_style_dots',
 			[
-				'label' => __( 'Dots', 'builder' ),
+				'label' => __( 'Dots', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -321,12 +321,12 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'dots_position',
 			[
-				'label' => __( 'Dots Position', 'builder' ),
+				'label' => __( 'Dots Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'outside',
 				'options' => [
-					'outside' => __( 'Outside', 'builder' ),
-					'inside' => __( 'Inside', 'builder' ),
+					'outside' => __( 'Outside', 'qazana' ),
+					'inside' => __( 'Inside', 'qazana' ),
 				],
 				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
@@ -337,7 +337,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'dots_size',
 			[
-				'label' => __( 'Dots Size', 'builder' ),
+				'label' => __( 'Dots Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -346,7 +346,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-carousel-wrapper .builder-image-carousel .slick-dots li button:before' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-dots li button:before' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
@@ -357,10 +357,10 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'dots_color',
 			[
-				'label' => __( 'Dots Color', 'builder' ),
+				'label' => __( 'Dots Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-carousel-wrapper .builder-image-carousel .slick-dots li button:before' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-dots li button:before' => 'color: {{VALUE}};',
 				],
 				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
@@ -373,7 +373,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_image',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -381,11 +381,11 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'image_spacing',
 			[
-				'label' => __( 'Spacing', 'builder' ),
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'' => __( 'Default', 'builder' ),
-					'custom' => __( 'Custom', 'builder' ),
+					'' => __( 'Default', 'qazana' ),
+					'custom' => __( 'Custom', 'qazana' ),
 				],
 				'default' => '',
 				'condition' => [
@@ -397,7 +397,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'image_spacing_custom',
 			[
-				'label' => __( 'Image Spacing', 'builder' ),
+				'label' => __( 'Image Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -423,18 +423,18 @@ class Widget_Image_Carousel extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .builder-image-carousel-wrapper .builder-image-carousel .slick-slide-image',
+				'selector' => '{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image',
 			]
 		);
 
 		$this->add_control(
 			'image_border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-carousel-wrapper .builder-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -530,7 +530,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			'rtl' => $is_rtl,
 		];
 
-		$carousel_classes = [ 'builder-image-carousel' ];
+		$carousel_classes = [ 'qazana-image-carousel' ];
 
 		if ( $show_arrows ) {
 			$carousel_classes[] = 'slick-arrows-' . $settings['arrows_position'];
@@ -551,7 +551,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		}
 
 		?>
-		<div class="builder-image-carousel-wrapper builder-slick-slider" dir="<?php echo $direction; ?>">
+		<div class="qazana-image-carousel-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
 			<div class="<?php echo implode( ' ', $carousel_classes ); ?>" data-slider_options='<?php echo esc_attr( wp_json_encode( $slick_options ) ); ?>'>
 				<div class="slick-slideshow-large-container-biggie">
 					<div class="slick-slides slick-slides-biggie">

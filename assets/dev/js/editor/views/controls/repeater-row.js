@@ -1,20 +1,20 @@
 var RepeaterRowView;
 
 RepeaterRowView = Marionette.CompositeView.extend( {
-	template: Marionette.TemplateCache.get( '#tmpl-builder-repeater-row' ),
+	template: Marionette.TemplateCache.get( '#tmpl-qazana-repeater-row' ),
 
 	className: 'repeater-fields',
 
 	ui: {
-		duplicateButton: '.builder-repeater-tool-duplicate',
-		editButton: '.builder-repeater-tool-edit',
-		removeButton: '.builder-repeater-tool-remove',
-		itemTitle: '.builder-repeater-row-item-title'
+		duplicateButton: '.qazana-repeater-tool-duplicate',
+		editButton: '.qazana-repeater-tool-edit',
+		removeButton: '.qazana-repeater-tool-remove',
+		itemTitle: '.qazana-repeater-row-item-title'
 	},
 
 	behaviors: {
 		HandleInnerTabs: {
-			behaviorClass: require( 'builder-behaviors/inner-tabs' )
+			behaviorClass: require( 'qazana-behaviors/inner-tabs' )
 		}
 	},
 
@@ -30,12 +30,12 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 		};
 	},
 
-	childViewContainer: '.builder-repeater-row-controls',
+	childViewContainer: '.qazana-repeater-row-controls',
 
 	getChildView: function( item ) {
 		var controlType = item.get( 'type' );
 
-		return builder.getControlItemView( controlType );
+		return qazana.getControlItemView( controlType );
 	},
 
 	childViewOptions: function() {
@@ -53,16 +53,16 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 				isVisible = true;
 
 			if ( conditions ) {
-				isVisible = builder.conditions.check( conditions, self.model.attributes );
+				isVisible = qazana.conditions.check( conditions, self.model.attributes );
 			}
 
 			if ( parentConditions ) {
-				isVisible = builder.conditions.check( parentConditions, self.getOption( 'parentModel' ).attributes );
+				isVisible = qazana.conditions.check( parentConditions, self.getOption( 'parentModel' ).attributes );
 			}
 
 			var child = self.children.findByModelCid( model.cid );
 
-			child.$el.toggleClass( 'builder-panel-hide', ! isVisible );
+			child.$el.toggleClass( 'qazana-panel-hide', ! isVisible );
 		} );
 	},
 
@@ -87,7 +87,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 		}
 
 		if ( ! title ) {
-			title = builder.translate( 'Item #{0}', [ self.getOption( 'itemIndex' ) ] );
+			title = qazana.translate( 'Item #{0}', [ self.getOption( 'itemIndex' ) ] );
 		}
 
 		self.ui.itemTitle.html( title );

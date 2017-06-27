@@ -1,21 +1,21 @@
 var PanelElementsCategoriesCollection = require( './collections/categories' ),
 	PanelElementsElementsCollection = require( './collections/elements' ),
 	PanelElementsCategoriesView = require( './views/categories' ),
-	PanelElementsElementsView = builder.modules.templateLibrary.ElementsCollectionView,
+	PanelElementsElementsView = qazana.modules.templateLibrary.ElementsCollectionView,
 	PanelElementsSearchView = require( './views/search' ),
 	PanelElementsGlobalView = require( './views/global' ),
 	PanelElementsLayoutView;
 
 PanelElementsLayoutView = Marionette.LayoutView.extend( {
-	template: '#tmpl-builder-panel-elements',
+	template: '#tmpl-qazana-panel-elements',
 
 	regions: {
-		elements: '#builder-panel-elements-wrapper',
-		search: '#builder-panel-elements-search-area'
+		elements: '#qazana-panel-elements-wrapper',
+		search: '#qazana-panel-elements-search-area'
 	},
 
 	ui: {
-		tabs: '.builder-panel-navigation-tab'
+		tabs: '.qazana-panel-navigation-tab'
 	},
 
 	events: {
@@ -29,7 +29,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 	categoriesCollection: null,
 
 	initialize: function() {
-		this.listenTo( builder.channels.panelElements, 'element:selected', this.destroy );
+		this.listenTo( qazana.channels.panelElements, 'element:selected', this.destroy );
 
 		this.initElementsCollection();
 
@@ -60,22 +60,22 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 			}
 		};
 
-		this.regionViews = builder.hooks.applyFilters( 'panel/elements/regionViews', regionViews );
+		this.regionViews = qazana.hooks.applyFilters( 'panel/elements/regionViews', regionViews );
 	},
 
 	initElementsCollection: function() {
 		var elementsCollection = new PanelElementsElementsCollection(),
-			sectionConfig = builder.config.elements.section;
+			sectionConfig = qazana.config.elements.section;
 
 		elementsCollection.add( {
-			title: builder.translate( 'inner_section' ),
+			title: qazana.translate( 'inner_section' ),
 			elType: 'section',
 			categories: [ 'basic' ],
 			icon: sectionConfig.icon
 		} );
 
 		// TODO: Change the array from server syntax, and no need each loop for initialize
-		_.each( builder.config.widgets, function( element ) {
+		_.each( qazana.config.widgets, function( element ) {
 			elementsCollection.add( {
 				title: element.title,
 				elType: element.elType,
@@ -105,7 +105,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 
 		var categoriesCollection = new PanelElementsCategoriesCollection();
 
-		_.each( builder.config.elements_categories, function( categoryConfig, categoryName ) {
+		_.each( qazana.config.elements_categories, function( categoryConfig, categoryName ) {
 			if ( ! categories[ categoryName ] ) {
 				return;
 			}
@@ -142,7 +142,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 	},
 
 	changeFilter: function( filterValue ) {
-		builder.channels.panelElements
+		qazana.channels.panelElements
 			.reply( 'filter:value', filterValue )
 			.trigger( 'filter:change' );
 	},
@@ -161,7 +161,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 	},
 
 	onDestroy: function() {
-		builder.channels.panelElements.reply( 'filter:value', null );
+		qazana.channels.panelElements.reply( 'filter:value', null );
 	},
 
 	onShow: function() {
@@ -175,7 +175,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 	},
 
 	updateElementsScrollbar: function() {
-		builder.channels.data.trigger( 'scrollbar:update' );
+		qazana.channels.data.trigger( 'scrollbar:update' );
 	}
 } );
 

@@ -1,9 +1,9 @@
 var PanelElementsSearchView;
 
 PanelElementsSearchView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-panel-element-search',
+	template: '#tmpl-qazana-panel-element-search',
 
-	id: 'builder-panel-elements-search-wrapper',
+	id: 'qazana-panel-elements-search-wrapper',
 
 	ui: {
 		input: 'input'

@@ -2,7 +2,7 @@
 $loader-size: 5rem;
 $animation-duration: 1.5s;
 
-.builder-loader .cubes {
+.qazana-loader .cubes {
 	position: relative;
 	display: flex;
 	flex-flow: row wrap;
@@ -66,7 +66,7 @@ $animation-duration: 1.5s;
 	}
 }
 
-.builder-loading-title {
+.qazana-loading-title {
 	animation: load-title $animation-duration linear infinite;
 	@keyframes load-title {
 		0% {

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Shortcode extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Shortcode', 'builder' );
+		return __( 'Shortcode', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -29,14 +29,14 @@ class Widget_Shortcode extends Widget_Base {
 		$this->start_controls_section(
 			'section_shortcode',
 			[
-				'label' => __( 'Shortcode', 'builder' ),
+				'label' => __( 'Shortcode', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'shortcode',
 			[
-				'label' => __( 'Insert your shortcode here', 'builder' ),
+				'label' => __( 'Insert your shortcode here', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'placeholder' => '[gallery id="123" size="medium"]',
 				'default' => '',
@@ -51,7 +51,7 @@ class Widget_Shortcode extends Widget_Base {
 
 		$shortcode = do_shortcode( shortcode_unautop( $shortcode ) );
 		?>
-		<div class="builder-shortcode"><?php echo $shortcode; ?></div>
+		<div class="qazana-shortcode"><?php echo $shortcode; ?></div>
 		<?php
 	}
 

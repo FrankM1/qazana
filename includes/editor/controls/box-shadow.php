@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -36,10 +36,10 @@ class Control_Box_Shadow extends Base_Control_Multiple {
 
 	public function get_sliders() {
 		return [
-			[ 'label' => __( 'Blur', 'builder' ), 'type' => 'blur', 'min' => 0, 'max' => 100 ],
-			[ 'label' => __( 'Spread', 'builder' ), 'type' => 'spread', 'min' => 0, 'max' => 100 ],
-			[ 'label' => __( 'Horizontal', 'builder' ), 'type' => 'horizontal', 'min' => -100, 'max' => 100 ],
-			[ 'label' => __( 'Vertical', 'builder' ), 'type' => 'vertical', 'min' => -100, 'max' => 100 ],
+			[ 'label' => __( 'Blur', 'qazana' ), 'type' => 'blur', 'min' => 0, 'max' => 100 ],
+			[ 'label' => __( 'Spread', 'qazana' ), 'type' => 'spread', 'min' => 0, 'max' => 100 ],
+			[ 'label' => __( 'Horizontal', 'qazana' ), 'type' => 'horizontal', 'min' => -100, 'max' => 100 ],
+			[ 'label' => __( 'Vertical', 'qazana' ), 'type' => 'vertical', 'min' => -100, 'max' => 100 ],
 		];
 	}
 
@@ -58,18 +58,18 @@ class Control_Box_Shadow extends Base_Control_Multiple {
 			defaultColorValue = ' data-default-color=' + defaultColorValue; // Quotes added automatically.
 		}
 		#>
-		<div class="builder-control-field">
-			<label class="builder-control-title"><?php _e( 'Color', 'builder' ); ?></label>
-			<div class="builder-control-input-wrapper">
-				<input data-setting="color" class="builder-box-shadow-color-picker" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'builder' ); ?>" data-alpha="true"{{{ defaultColorValue }}} />
+		<div class="qazana-control-field">
+			<label class="qazana-control-title"><?php _e( 'Color', 'qazana' ); ?></label>
+			<div class="qazana-control-input-wrapper">
+				<input data-setting="color" class="qazana-box-shadow-color-picker" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" data-alpha="true"{{{ defaultColorValue }}} />
 			</div>
 		</div>
 		<?php foreach ( $this->get_sliders() as $slider ) : ?>
-			<div class="builder-box-shadow-slider">
-				<label class="builder-control-title"><?php echo $slider['label']; ?></label>
-				<div class="builder-control-input-wrapper">
-					<div class="builder-slider" data-input="<?php echo $slider['type']; ?>"></div>
-					<div class="builder-slider-input">
+			<div class="qazana-box-shadow-slider">
+				<label class="qazana-control-title"><?php echo $slider['label']; ?></label>
+				<div class="qazana-control-input-wrapper">
+					<div class="qazana-slider" data-input="<?php echo $slider['type']; ?>"></div>
+					<div class="qazana-slider-input">
 						<input type="number" min="<?php echo $slider['min']; ?>" max="<?php echo $slider['max']; ?>" data-setting="<?php echo $slider['type']; ?>"/>
 					</div>
 				</div>

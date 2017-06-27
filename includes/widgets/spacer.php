@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Spacer extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Spacer', 'builder' );
+		return __( 'Spacer', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Spacer extends Widget_Base {
 		$this->start_controls_section(
 			'section_spacer',
 			[
-				'label' => __( 'Spacer', 'builder' ),
+				'label' => __( 'Spacer', 'qazana' ),
 			]
 		);
 
 		$this->add_responsive_control(
 			'space',
 			[
-				'label' => __( 'Space (PX)', 'builder' ),
+				'label' => __( 'Space (PX)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 50,
@@ -44,7 +44,7 @@ class Widget_Spacer extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-spacer-inner' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-spacer-inner' => 'height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -52,7 +52,7 @@ class Widget_Spacer extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -63,16 +63,16 @@ class Widget_Spacer extends Widget_Base {
 
 	protected function render() {
 		?>
-		<div class="builder-spacer">
-			<div class="builder-spacer-inner"></div>
+		<div class="qazana-spacer">
+			<div class="qazana-spacer-inner"></div>
 		</div>
 		<?php
 	}
 
 	protected function _content_template() {
 		?>
-		<div class="builder-spacer">
-			<div class="builder-spacer-inner"></div>
+		<div class="qazana-spacer">
+			<div class="qazana-spacer-inner"></div>
 		</div>
 		<?php
 	}

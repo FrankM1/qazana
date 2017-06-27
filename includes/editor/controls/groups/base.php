@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -55,7 +55,7 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 	}
 
 	public function get_base_group_classes() {
-		return 'builder-group-control-' . static::get_type() . ' builder-group-control';
+		return 'qazana-group-control-' . static::get_type() . ' qazana-group-control';
 	}
 
 	// TODO: Temp - Make it abstract
@@ -101,7 +101,7 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 			$field_args['section'] = $args['section'];
 		}
 
-		$field_args['classes'] = $this->get_base_group_classes() . ' builder-group-control-' . $control_id;
+		$field_args['classes'] = $this->get_base_group_classes() . ' qazana-group-control-' . $control_id;
 
 		// add defaults
 		if ( ! empty( $args['defaults'][$control_id] ) ) {

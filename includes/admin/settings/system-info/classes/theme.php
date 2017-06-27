@@ -1,7 +1,7 @@
 <?php
-namespace Builder\System_Info\Classes;
+namespace Qazana\System_Info\Classes;
 
-use Builder\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -75,7 +75,7 @@ class Theme_Reporter extends Base_Reporter {
 		if ( ! $is_child_theme ) {
 			$result['recommendation'] = sprintf(
 				/* translators: %s: codex child theme URL */
-				_x( 'If you want to modify the source code of your theme, we recommend using a <a href="%s">child theme</a>.', 'System Info', 'builder' ),
+				_x( 'If you want to modify the source code of your theme, we recommend using a <a href="%s">child theme</a>.', 'System Info', 'qazana' ),
 				esc_html( 'https://codex.wordpress.org/Child_Themes' )
 			);
 		}

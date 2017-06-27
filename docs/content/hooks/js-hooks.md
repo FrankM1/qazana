@@ -15,9 +15,9 @@ Argument     | Type        | Description
 
 ```javascript
 jQuery( function( $ ) {
-	// Add space for Builder Menu Anchor link
-	if ( undefined !== window.builderFrontend ) {
-		builderFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
+	// Add space for Qazana Menu Anchor link
+	if ( undefined !== window.qazanaFrontend ) {
+		qazanaFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
 			return scrollTop - 30;
 		} );
 	}
@@ -26,15 +26,15 @@ jQuery( function( $ ) {
 
 ```php
 add_action( 'wp_footer', function() {
-	if ( ! function_exists( 'builder' ) ) {
+	if ( ! function_exists( 'qazana' ) ) {
 		return;
 	}
 	?>
 	<script>
 		jQuery( function( $ ) {
-			// Add space for Builder Menu Anchor link
-			if ( undefined !== window.builderFrontend ) {
-				builderFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
+			// Add space for Qazana Menu Anchor link
+			if ( undefined !== window.qazanaFrontend ) {
+				qazanaFrontend.hooks.addFilter( 'frontend/handlers/menu_anchor/scroll_top_distance', function( scrollTop ) {
 					return scrollTop - 30;
 				} );
 			}
@@ -47,7 +47,7 @@ add_action( 'wp_footer', function() {
 ## Frontend Actions
 
 ### `init`
-Builder frontend is loaded
+Qazana frontend is loaded
 
 #### Arguments
 None
@@ -55,8 +55,8 @@ None
 #### Example
 
  ```javascript
-builderFrontend.hooks.addAction( 'init', function() {
-  // Do something that is based on the builderFrontend object.
+qazanaFrontend.hooks.addAction( 'init', function() {
+  // Do something that is based on the qazanaFrontend object.
 } );
  ```
 
@@ -73,7 +73,7 @@ Argument    | Type                                        | Description
 #### Example
 
 ```javascript
-builderFrontend.hooks.addAction( 'frontend/element_ready/global', function( $scope ) {
+qazanaFrontend.hooks.addAction( 'frontend/element_ready/global', function( $scope ) {
 	if ( $scope.data( 'shake' ) ){
 		$scope.shake();
 	}
@@ -93,7 +93,7 @@ Argument    | Type                                        | Description
 #### Example
 
 ```javascript
-builderFrontend.hooks.addAction( 'frontend/element_ready/widget', function( $scope ) {
+qazanaFrontend.hooks.addAction( 'frontend/element_ready/widget', function( $scope ) {
 	if ( $scope.data( 'shake' ) ){
 		$scope.shake();
 	}
@@ -114,14 +114,14 @@ Argument    | Type                                        | Description
 
 ```javascript
 // For a widget without a skin (skin = default)
-builderFrontend.hooks.addAction( 'frontend/element_ready/image.default', function( $scope ) {
+qazanaFrontend.hooks.addAction( 'frontend/element_ready/image.default', function( $scope ) {
 	if ( $scope.find( 'a' ) ){
 		$scope.find( 'a' ).lightbox();
 	}
 } );
 
 // For a widget with a skin named `satellite`
-builderFrontend.hooks.addAction( 'frontend/element_ready/google-maps.satellite', function( $scope ) {
+qazanaFrontend.hooks.addAction( 'frontend/element_ready/google-maps.satellite', function( $scope ) {
 	var $iframe = $scope.find( 'iframe' ),
 		iframeUrl = $iframe.attr( 'src' );
 
@@ -146,11 +146,11 @@ Argument     | Type       | Description
 #### Example
 
  ```javascript
- builder.hooks.addAction( 'panel/open_editor/widget', function( panel, model, view ) {
+ qazana.hooks.addAction( 'panel/open_editor/widget', function( panel, model, view ) {
  	if ( 'section' !== model.elType && 'column' !== model.elType ) {
  		return;
  	}
-	var $element = view.$el.find( '.builder-selector' );
+	var $element = view.$el.find( '.qazana-selector' );
 
 	if ( $element.length ) {
 		$element.click( function() {
@@ -174,8 +174,8 @@ Argument     | Type       | Description
 #### Example
 
  ```javascript
-builder.hooks.addAction( 'panel/open_editor/widget/slider', function( panel, model, view ) {
-	var $element = view.$el.find( '.builder-selector' );
+qazana.hooks.addAction( 'panel/open_editor/widget/slider', function( panel, model, view ) {
+	var $element = view.$el.find( '.qazana-selector' );
 
 	if ( $element.length ) {
 		$element.click( function() {

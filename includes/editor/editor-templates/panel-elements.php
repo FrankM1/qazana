@@ -1,44 +1,44 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
-<script type="text/template" id="tmpl-builder-panel-elements">
-	<div id="builder-panel-elements-navigation" class="builder-panel-navigation">
-		<div id="builder-panel-elements-navigation-all" class="builder-panel-navigation-tab active" data-view="categories"><?php echo __( 'Elements', 'builder' ); ?></div>
-		<div id="builder-panel-elements-navigation-global" class="builder-panel-navigation-tab" data-view="global"><?php echo __( 'Global', 'builder' ); ?></div>
+<script type="text/template" id="tmpl-qazana-panel-elements">
+	<div id="qazana-panel-elements-navigation" class="qazana-panel-navigation">
+		<div id="qazana-panel-elements-navigation-all" class="qazana-panel-navigation-tab active" data-view="categories"><?php echo __( 'Elements', 'qazana' ); ?></div>
+		<div id="qazana-panel-elements-navigation-global" class="qazana-panel-navigation-tab" data-view="global"><?php echo __( 'Global', 'qazana' ); ?></div>
 	</div>
-	<div id="builder-panel-elements-search-area"></div>
-	<div id="builder-panel-elements-wrapper"></div>
+	<div id="qazana-panel-elements-search-area"></div>
+	<div id="qazana-panel-elements-wrapper"></div>
 </script>
 
-<script type="text/template" id="tmpl-builder-panel-categories">
-	<div id="builder-panel-categories"></div>
+<script type="text/template" id="tmpl-qazana-panel-categories">
+	<div id="qazana-panel-categories"></div>
 </script>
 
-<script type="text/template" id="tmpl-builder-panel-elements-category">
+<script type="text/template" id="tmpl-qazana-panel-elements-category">
 	<div class="panel-elements-category-title panel-elements-category-title-{{ name }}">{{{ title }}}</div>
 	<div class="panel-elements-category-items"></div>
 </script>
 
-<script type="text/template" id="tmpl-builder-panel-element-search">
-	<input id="builder-panel-elements-search-input" placeholder="<?php _e( 'Search Widget...', 'builder' ); ?>" />
+<script type="text/template" id="tmpl-qazana-panel-element-search">
+	<input id="qazana-panel-elements-search-input" placeholder="<?php _e( 'Search Widget...', 'qazana' ); ?>" />
 	<i class="fa fa-search"></i>
 </script>
 
-<script type="text/template" id="tmpl-builder-element-library-element">
-	<div class="builder-element">
+<script type="text/template" id="tmpl-qazana-element-library-element">
+	<div class="qazana-element">
 		<div class="icon">
 			<i class="{{ icon }}"></i>
 		</div>
-		<div class="builder-element-title-wrapper">
+		<div class="qazana-element-title-wrapper">
 			<div class="title">{{{ title }}}</div>
 		</div>
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-panel-global">
-	<div class="builder-panel-nerd-box">
+<script type="text/template" id="tmpl-qazana-panel-global">
+	<div class="qazana-panel-nerd-box">
 		
 	</div>
 </script>

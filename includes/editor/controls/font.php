@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
@@ -26,23 +26,23 @@ class Control_Font extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<select class="builder-control-font-family" data-setting="{{ data.name }}">
-					<option value=""><?php _e( 'Default', 'builder' ); ?></option>
-					<optgroup label="<?php _e( 'System', 'builder' ); ?>">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<select class="qazana-control-font-family" data-setting="{{ data.name }}">
+					<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
+					<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
 						<# _.each( getFontsByGroups( 'system' ), function( fontType, fontName ) { #>
 						<option value="{{ fontName }}">{{{ fontName }}}</option>
 						<# } ); #>
 					</optgroup>
 					<?php /*
-					<optgroup label="<?php _e( 'Local', 'builder' ); ?>">
+					<optgroup label="<?php _e( 'Local', 'qazana' ); ?>">
 						<# _.each( getFontsByGroups( 'local' ), function( fontType, fontName ) { #>
 						<option value="{{ fontName }}">{{{ fontName }}}</option>
 						<# } ); #>
 					</optgroup> */ ?>
-					<optgroup label="<?php _e( 'Google', 'builder' ); ?>">
+					<optgroup label="<?php _e( 'Google', 'qazana' ); ?>">
 						<# _.each( getFontsByGroups( [ 'googlefonts', 'earlyaccess' ] ), function( fontType, fontName ) { #>
 						<option value="{{ fontName }}">{{{ fontName }}}</option>
 						<# } ); #>
@@ -51,7 +51,7 @@ class Control_Font extends Base_Control {
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

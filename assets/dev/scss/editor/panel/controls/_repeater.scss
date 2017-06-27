@@ -2,23 +2,23 @@
 // Repeater
 //
 
-.builder-control-type-repeater {
+.qazana-control-type-repeater {
 
 	&,
-	.builder-control:not(.builder-control-type-tab) {
+	.qazana-control:not(.qazana-control-type-tab) {
 		padding: 0 10px 15px;
 	}
 
-	.builder-control {
+	.qazana-control {
 
 		&:before {
 			display: none;
 		}
 	}
 
-	&.builder-repeater-has-minimum-rows {
+	&.qazana-repeater-has-minimum-rows {
 
-		.builder-repeater-tool-remove {
+		.qazana-repeater-tool-remove {
 			display: none;
 		}
 	}
@@ -27,7 +27,7 @@
 		margin: 10px 0;
 	}
 
-	.builder-repeater-row-controls {
+	.qazana-repeater-row-controls {
 		border: 1px solid $editor-lightest;
 		border-top-width: 0;
 		padding-top: 15px;
@@ -47,7 +47,7 @@
 		}
 	}
 
-	.builder-repeater-row-tools {
+	.qazana-repeater-row-tools {
 		display: table;
 		table-layout: fixed;
 		width: 100%;
@@ -67,7 +67,7 @@
 			vertical-align: middle;
 			cursor: pointer;
 
-			&:not(.builder-repeater-row-handle-sortable) {
+			&:not(.qazana-repeater-row-handle-sortable) {
 				background-color: #fff;
 			}
 
@@ -76,7 +76,7 @@
 			}
 		}
 
-		.builder-repeater-row-item-title {
+		.qazana-repeater-row-item-title {
 			text-align: $start;
 			padding: 0 10px;
 			white-space: nowrap;
@@ -88,18 +88,18 @@
 			}
 		}
 
-		.builder-repeater-row-tool {
+		.qazana-repeater-row-tool {
 			width: 40px;
 		}
 
-		.builder-repeater-row-handle-sortable {
+		.qazana-repeater-row-handle-sortable {
 			cursor: move;
 			width: 10px;
 			color: #fff;
 		}
 	}
 
-	.builder-button-wrapper {
+	.qazana-button-wrapper {
 		text-align: center;
 		padding: 10px;
 	}

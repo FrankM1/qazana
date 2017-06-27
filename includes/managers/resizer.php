@@ -6,7 +6,7 @@
  * @package Radium\Functions
  * @subpackage  NewsFront
  * @author   Franklin M Gitonga
- * @link     http://builderthemes.com/
+ * @link     http://qazanathemes.com/
  */
 
 /**
@@ -18,7 +18,7 @@
  *
  * @return integer|boolean Returns image ID, or false if image with given index does not exist.
  */
-function builder_get_image_id( $index = 0, $post_id = null ) {
+function qazana_get_image_id( $index = 0, $post_id = null ) {
 
     $image_ids = array_keys(
         get_children(
@@ -48,8 +48,8 @@ function builder_get_image_id( $index = 0, $post_id = null ) {
  * @param int $post_id Optional. Post ID.
  * @return bool Whether post has an image attached.
  */
-function builder_has_post_thumbnail( $post_id = null ) {
-    return (bool) builder_get_post_thumbnail_id( $post_id );
+function qazana_has_post_thumbnail( $post_id = null ) {
+    return (bool) qazana_get_post_thumbnail_id( $post_id );
 }
 
 /**
@@ -60,7 +60,7 @@ function builder_has_post_thumbnail( $post_id = null ) {
  * @param int|null $post_id Optional. Post ID.
  * @return mixed
  */
-function builder_get_post_thumbnail_id( $post_id = null ) {
+function qazana_get_post_thumbnail_id( $post_id = null ) {
 
     $post_id = ( null === $post_id ) ? get_the_ID() : $post_id;
     $post_thumbnail_id = get_post_meta( $post_id, '_thumbnail_id', true );
@@ -73,7 +73,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
      * @param int  $post_thumbnail_id     The featured image id
      * @param int  $post_id         the parent id
      */
-    return apply_filters( 'builder_get_post_thumbnail_id', $post_thumbnail_id, $post_id );
+    return apply_filters( 'qazana_get_post_thumbnail_id', $post_thumbnail_id, $post_id );
 }
 
  /**
@@ -83,7 +83,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
   *
   * @return string
   */
- function builder_get_image( $args = array() ) {
+ function qazana_get_image( $args = array() ) {
 
     $defaults = array(
         'wrap'				=> '<a %HREF% %CLASS% %TITLE% %CUSTOM%><img %SRC% %IMG_CLASS% %SIZE% %ALT% %IMG_TITLE% /></a>',
@@ -104,19 +104,19 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
             'zc'           => 1, // 0, 1, 3
             'z'            => 1, // 1
         ),
-        'default_img'		=> wp_get_attachment_image_src( builder_get_default_image_id(), 'full' ),
+        'default_img'		=> wp_get_attachment_image_src( qazana_get_default_image_id(), 'full' ),
         'aspect_ratio'		=> 1.66667, // aspect ratio
         'src'  			    => false,
         'srcset_2x'         => false,
     );
 
-    $args = builder_parse_args( $args, $defaults, 'get_thumb_img' );
+    $args = qazana_parse_args( $args, $defaults, 'get_thumb_img' );
 
     if ( ! isset( $args['options']['retina'] ) ) {
-        $args['options']['retina'] = builder_get_meta_retina_on();
+        $args['options']['retina'] = qazana_get_meta_retina_on();
     }
 
-    if ( ! builder_get_meta_is_hd_device() ) {
+    if ( ! qazana_get_meta_is_hd_device() ) {
         $args['options']['retina'] = false;
     }
 
@@ -139,7 +139,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
      } elseif ( $args['img_id'] ) {
         $original_image = wp_get_attachment_image_src( $args['img_id'], 'full' );
      } elseif ( 0 == $args['img_id'] ) {
-        $original_image = wp_get_attachment_image_src( builder_get_post_thumbnail_id(), 'full' );
+        $original_image = wp_get_attachment_image_src( qazana_get_post_thumbnail_id(), 'full' );
      }
 
      if ( ! $original_image ) {
@@ -154,7 +154,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
 
             $__prop = $args['aspect_ratio'];
             $w 		= intval( $args['options']['w'] );
-            $h 		= builder_calculate_image_height_by_aspect( $w, $args['aspect_ratio'] );
+            $h 		= qazana_calculate_image_height_by_aspect( $w, $args['aspect_ratio'] );
 
         } elseif ( ! empty( $args['options']['w'] ) && ! empty( $args['options']['h'] ) && ! $args['aspect_ratio'] ) {
 
@@ -174,11 +174,11 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
             $_prop = $args['aspect_ratio'];
 
             if ( $_prop > 1 ) {
-                $h = builder_calculate_image_height_by_aspect( $_img_meta[1], $_prop );
+                $h = qazana_calculate_image_height_by_aspect( $_img_meta[1], $_prop );
                 $w = intval( floor( $_prop * $h ) );
             } else if ( $_prop < 1 ) {
                 $w = intval( floor( $_prop * $_img_meta[2] ) );
-                $h = builder_calculate_image_height_by_aspect( $w, $_prop );
+                $h = qazana_calculate_image_height_by_aspect( $w, $_prop );
             } else {
                 $w = min( $_img_meta[1], $_img_meta[2] );
             }
@@ -191,13 +191,13 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
 
     if ( $args['options'] ) {
 
-        $resized_image = builder_get_resized_img( $original_image, $args['options'], true, false );
-        $src = apply_filters( 'builder_get_thumb_image_src', $resized_image[0], $args );
+        $resized_image = qazana_get_resized_img( $original_image, $args['options'], true, false );
+        $src = apply_filters( 'qazana_get_thumb_image_src', $resized_image[0], $args );
 
         if ( $args['options']['use_srcset'] ) {
 
-            $resized_2x_image_hd = builder_get_resized_img( $original_image, $args['options'], true, true );
-            $srcset_2x = apply_filters( 'builder_get_thumb_image_srcset_2x', $resized_2x_image_hd[0], $args );
+            $resized_2x_image_hd = qazana_get_resized_img( $original_image, $args['options'], true, true );
+            $srcset_2x = apply_filters( 'qazana_get_thumb_image_srcset_2x', $resized_2x_image_hd[0], $args );
 
             $srcset_2x_resized_images = $srcset_2x .' 2x';
         }
@@ -299,8 +299,8 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
       *
       * @return string
       */
-     function builder_image_html( $args = array() ) {
-         echo builder_get_image( $args );
+     function qazana_image_html( $args = array() ) {
+         echo qazana_get_image( $args );
      }
 
  /**
@@ -315,9 +315,9 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
   *
   * @return array
   */
- function builder_get_resized_img( $img, $args, $resize = true, $is_retina = false ) {
+ function qazana_get_resized_img( $img, $args, $resize = true, $is_retina = false ) {
 
-    $args = apply_filters( 'builder_get_resized_img_options', $args, $img );
+    $args = apply_filters( 'qazana_get_resized_img_options', $args, $img );
 
     if ( ! is_array( $img ) || ( ! $img[1] && ! $img[2]) ) {
         return false;
@@ -347,7 +347,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
         'z'    => 1,
     );
 
-    $args = builder_parse_args( $args, $defaults, 'get_resized_img' );
+    $args = qazana_parse_args( $args, $defaults, 'get_resized_img' );
 
      $w = absint( $args['w'] );
      $h = absint( $args['h'] );
@@ -360,7 +360,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
      } elseif ( 3 == $args['zc'] || empty( $w ) || empty( $h ) ) {
 
          if ( 0 == $args['z'] ) {
-             builder_resizer_constrain_dim( $img[1], $img[2], $w, $h, true );
+             qazana_resizer_constrain_dim( $img[1], $img[2], $w, $h, true );
          } else {
              $p = absint( $img[1] ) / absint( $img[2] );
              $hx = absint( floor( $w / $p ) );
@@ -426,7 +426,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
     }
 
     if ( $resize ) {
-        $file_url = builder_resize( $img[0], $img_w, $img_h, $args['options']['crop'], true, false );
+        $file_url = qazana_resize( $img[0], $img_w, $img_h, $args['options']['crop'], true, false );
     }
 
     if ( empty( $file_url ) ) {
@@ -452,7 +452,7 @@ function builder_get_post_thumbnail_id( $post_id = null ) {
   *
   * @return array
   */
-function builder_resizer_constrain_dim( $w0, $h0, &$w1, &$h1, $change = false ) {
+function qazana_resizer_constrain_dim( $w0, $h0, &$w1, &$h1, $change = false ) {
 
     $prop_sizes = wp_constrain_dimensions( $w0, $h0, $w1, $h1 );
 
@@ -463,13 +463,13 @@ function builder_resizer_constrain_dim( $w0, $h0, &$w1, &$h1, $change = false ) 
     return array( $w1, $h1 );
 }
 
-if ( ! function_exists( 'builder_resize' ) ) {
+if ( ! function_exists( 'qazana_resize' ) ) {
 
     /**
      * This is just a tiny wrapper function for the class above so that there is no
      * need to change any code in your own WP themes. Usage is still the same :)
      */
-    function builder_resize( $url, $width = null, $height = null, $crop = null, $single = true, $upscale = false ) {
+    function qazana_resize( $url, $width = null, $height = null, $crop = null, $single = true, $upscale = false ) {
 
         /* WPML Fix */
         if ( defined( 'ICL_SITEPRESS_VERSION' ) ){
@@ -490,24 +490,24 @@ if ( ! function_exists( 'builder_resize' ) ) {
  *
  * @since 1.0.0
  */
-function builder_framework_add_image_sizes( $add_image_size = false ) {
+function qazana_framework_add_image_sizes( $add_image_size = false ) {
 
     // Content Width
-    $content_width = apply_filters( 'builder_framework_content_width', 1240 ); // Default width of primary content area
+    $content_width = apply_filters( 'qazana_framework_content_width', 1240 ); // Default width of primary content area
 
     // Crop sizes
     $sizes = array(
-        'builder_large' => array(
+        'qazana_large' => array(
             'width'     => $content_width,  // 940 => Full width thumb for 1-col page
             'height'    => 9999,
             'crop'      => false
         ),
-        'builder_medium' => array(
+        'qazana_medium' => array(
             'width'     => 750,             // 620 => Full width thumb for 2-col/3-col page
             'height'    => 9999,
             'crop'      => false
         ),
-        'builder_small' => array(
+        'qazana_small' => array(
             'width'     => 195,             // Square'ish thumb floated left
             'height'    => 195,
             'crop'      => false
@@ -539,7 +539,7 @@ function builder_framework_add_image_sizes( $add_image_size = false ) {
 
     );
 
-    $sizes = apply_filters( 'builder_framework_image_sizes', $sizes );
+    $sizes = apply_filters( 'qazana_framework_image_sizes', $sizes );
 
     if ( $add_image_size ) {
 
@@ -564,7 +564,7 @@ function builder_framework_add_image_sizes( $add_image_size = false ) {
  *
  * @return array width and height
  */
-function builder_calculate_image_height( $srcWidth, $srcHeight, $maxWidth, $maxHeight ) {
+function qazana_calculate_image_height( $srcWidth, $srcHeight, $maxWidth, $maxHeight ) {
 
     $ratio1 = $maxWidth / $srcWidth;
 
@@ -590,7 +590,7 @@ function builder_calculate_image_height( $srcWidth, $srcHeight, $maxWidth, $maxH
  *
  * @return string height
  */
-function builder_calculate_image_height_by_aspect( $width, $aspect = '1.66669' ) {
+function qazana_calculate_image_height_by_aspect( $width, $aspect = '1.66669' ) {
 
     $height = intval( floor( $width / $aspect ) );
 
@@ -598,7 +598,7 @@ function builder_calculate_image_height_by_aspect( $width, $aspect = '1.66669' )
 
 }
 
-add_filter( 'builder_get_thumb_image_src', 'builder_images_ssl_friendly', 10, 2 );
+add_filter( 'qazana_get_thumb_image_src', 'qazana_images_ssl_friendly', 10, 2 );
 /**
  * Make resized images ssl friendly
  *
@@ -606,9 +606,9 @@ add_filter( 'builder_get_thumb_image_src', 'builder_images_ssl_friendly', 10, 2 
  * @param  [type] $args [description]
  * @return [type]       [description]
  */
-function builder_images_ssl_friendly( $src, $args ) {
+function qazana_images_ssl_friendly( $src, $args ) {
 
-    $src = builder_url_ssl_friendly( $src );
+    $src = qazana_url_ssl_friendly( $src );
 
     return $src;
 }
@@ -620,7 +620,7 @@ function builder_images_ssl_friendly( $src, $args ) {
  * @param  [type] $args [description]
  * @return [type]       [description]
  */
-function builder_get_image_metadata( $image_id = null ) {
+function qazana_get_image_metadata( $image_id = null ) {
 
     $image_id = ! empty( $image_id ) ? $image_id : get_post_thumbnail_id( get_the_ID() );
 
@@ -647,7 +647,7 @@ function builder_get_image_metadata( $image_id = null ) {
  *
  * @return boolean
  */
-function builder_get_meta_retina_on() {
+function qazana_get_meta_retina_on() {
 
     $retval = get_option( 'retina-images' );
 
@@ -659,7 +659,7 @@ function builder_get_meta_retina_on() {
  *
  * @return boolean
  */
-function builder_get_meta_is_hd_device() {
+function qazana_get_meta_is_hd_device() {
 
     $retval = true;
 

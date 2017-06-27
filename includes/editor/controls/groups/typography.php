@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -21,17 +21,17 @@ class Group_Control_Typography extends Group_Base_Control {
 		$fields = [];
 
 		$fields['typography'] = [
-			'label' => _x( 'Typography', 'Typography Control', 'builder' ),
+			'label' => _x( 'Typography', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SWITCHER,
 			'default' => '',
-			'label_on' => __( 'On', 'builder' ),
-			'label_off' => __( 'Off', 'builder' ),
+			'label_on' => __( 'On', 'qazana' ),
+			'label_off' => __( 'Off', 'qazana' ),
 			'return_value' => 'custom',
 			'render_type' => 'ui',
 		];
 
 		$fields['font_size'] = [
-			'label' => _x( 'Size', 'Typography Control', 'builder' ),
+			'label' => _x( 'Size', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SLIDER,
 			'size_units' => [ 'px', 'em', 'rem' ],
 			'range' => [
@@ -44,58 +44,58 @@ class Group_Control_Typography extends Group_Base_Control {
 			'selector_value' => 'font-size: {{SIZE}}{{UNIT}}',
 		];
 
-		$default_fonts = get_option( 'builder_default_generic_fonts', 'Sans-serif' );
+		$default_fonts = get_option( 'qazana_default_generic_fonts', 'Sans-serif' );
 
 		if ( $default_fonts ) {
 			$default_fonts = ', ' . $default_fonts;
 		}
 
 		$fields['font_family'] = [
-			'label' => _x( 'Family', 'Typography Control', 'builder' ),
+			'label' => _x( 'Family', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::FONT,
 			'default' => '',
 			'selector_value' => 'font-family: {{VALUE}}' . $default_fonts . ';',
 		];
 
-		$typo_weight_options = [ '' => __( 'Default', 'builder' ) ];
+		$typo_weight_options = [ '' => __( 'Default', 'qazana' ) ];
 		foreach ( array_merge( [ 'normal', 'bold' ], range( 100, 900, 100 ) ) as $weight ) {
 			$typo_weight_options[ $weight ] = ucfirst( $weight );
 		}
 
 		$fields['font_weight'] = [
-			'label' => _x( 'Weight', 'Typography Control', 'builder' ),
+			'label' => _x( 'Weight', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
 			'options' => $typo_weight_options,
 		];
 
 		$fields['text_transform'] = [
-			'label' => _x( 'Transform', 'Typography Control', 'builder' ),
+			'label' => _x( 'Transform', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
 			'options' => [
-				'' => __( 'Default', 'builder' ),
-				'uppercase' => _x( 'Uppercase', 'Typography Control', 'builder' ),
-				'lowercase' => _x( 'Lowercase', 'Typography Control', 'builder' ),
-				'capitalize' => _x( 'Capitalize', 'Typography Control', 'builder' ),
-				'none' => _x( 'Normal', 'Typography Control', 'builder' ),
+				'' => __( 'Default', 'qazana' ),
+				'uppercase' => _x( 'Uppercase', 'Typography Control', 'qazana' ),
+				'lowercase' => _x( 'Lowercase', 'Typography Control', 'qazana' ),
+				'capitalize' => _x( 'Capitalize', 'Typography Control', 'qazana' ),
+				'none' => _x( 'Normal', 'Typography Control', 'qazana' ),
 			],
 		];
 
 		$fields['font_style'] = [
-			'label' => _x( 'Style', 'Typography Control', 'builder' ),
+			'label' => _x( 'Style', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
 			'options' => [
-				'' => __( 'Default', 'builder' ),
-				'normal' => _x( 'Normal', 'Typography Control', 'builder' ),
-				'italic' => _x( 'Italic', 'Typography Control', 'builder' ),
-				'oblique' => _x( 'Oblique', 'Typography Control', 'builder' ),
+				'' => __( 'Default', 'qazana' ),
+				'normal' => _x( 'Normal', 'Typography Control', 'qazana' ),
+				'italic' => _x( 'Italic', 'Typography Control', 'qazana' ),
+				'oblique' => _x( 'Oblique', 'Typography Control', 'qazana' ),
 			],
 		];
 
 		$fields['line_height'] = [
-			'label' => _x( 'Line-Height', 'Typography Control', 'builder' ),
+			'label' => _x( 'Line-Height', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SLIDER,
 			'default' => [
 				'unit' => 'em',
@@ -111,7 +111,7 @@ class Group_Control_Typography extends Group_Base_Control {
 		];
 
 		$fields['letter_spacing'] = [
-			'label' => _x( 'Letter Spacing', 'Typography Control', 'builder' ),
+			'label' => _x( 'Letter Spacing', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SLIDER,
 			'range' => [
 				'px' => [

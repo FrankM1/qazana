@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Heading extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Heading', 'builder' );
+		return __( 'Heading', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -21,24 +21,24 @@ class Widget_Heading extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'title',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'placeholder' => __( 'Enter your title', 'builder' ),
-				'default' => __( 'This is heading element', 'builder' ),
+				'placeholder' => __( 'Enter your title', 'qazana' ),
+				'default' => __( 'This is heading element', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'link',
 			[
-				'label' => __( 'Link', 'builder' ),
+				'label' => __( 'Link', 'qazana' ),
 				'type' => Controls_Manager::URL,
 				'placeholder' => 'http://your-link.com',
 				'default' => [
@@ -51,16 +51,16 @@ class Widget_Heading extends Widget_Base {
 		$this->add_control(
 			'size',
 			[
-				'label' => __( 'Size', 'builder' ),
+				'label' => __( 'Size', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Default', 'builder' ),
-					'small' => __( 'Small', 'builder' ),
-					'medium' => __( 'Medium', 'builder' ),
-					'large' => __( 'Large', 'builder' ),
-					'xl' => __( 'XL', 'builder' ),
-					'xxl' => __( 'XXL', 'builder' ),
+					'default' => __( 'Default', 'qazana' ),
+					'small' => __( 'Small', 'qazana' ),
+					'medium' => __( 'Medium', 'qazana' ),
+					'large' => __( 'Large', 'qazana' ),
+					'xl' => __( 'XL', 'qazana' ),
+					'xxl' => __( 'XXL', 'qazana' ),
 				],
 			]
 		);
@@ -68,18 +68,18 @@ class Widget_Heading extends Widget_Base {
 		$this->add_control(
 			'header_size',
 			[
-				'label' => __( 'HTML Tag', 'builder' ),
+				'label' => __( 'HTML Tag', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'h1' => __( 'H1', 'builder' ),
-					'h2' => __( 'H2', 'builder' ),
-					'h3' => __( 'H3', 'builder' ),
-					'h4' => __( 'H4', 'builder' ),
-					'h5' => __( 'H5', 'builder' ),
-					'h6' => __( 'H6', 'builder' ),
-					'div' => __( 'div', 'builder' ),
-					'span' => __( 'span', 'builder' ),
-					'p' => __( 'p', 'builder' ),
+					'h1' => __( 'H1', 'qazana' ),
+					'h2' => __( 'H2', 'qazana' ),
+					'h3' => __( 'H3', 'qazana' ),
+					'h4' => __( 'H4', 'qazana' ),
+					'h5' => __( 'H5', 'qazana' ),
+					'h6' => __( 'H6', 'qazana' ),
+					'div' => __( 'div', 'qazana' ),
+					'span' => __( 'span', 'qazana' ),
+					'p' => __( 'p', 'qazana' ),
 				],
 				'default' => 'h2',
 			]
@@ -88,7 +88,7 @@ class Widget_Heading extends Widget_Base {
 		$this->add_responsive_control(
 			'max_width',
 			[
-				'label' => _x( 'Max width', 'Size Control', 'builder' ),
+				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem' ],
 				'range' => [
@@ -99,7 +99,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors' => [
-					'{{WRAPPER}} .builder-widget-container .builder-heading-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-widget-container .qazana-heading-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -107,23 +107,23 @@ class Widget_Heading extends Widget_Base {
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'builder' ),
+						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
 				],
@@ -137,7 +137,7 @@ class Widget_Heading extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -148,7 +148,7 @@ class Widget_Heading extends Widget_Base {
 		$this->start_controls_section(
 			'section_title_style',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -156,14 +156,14 @@ class Widget_Heading extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 				    'type' => Scheme_Color::get_type(),
 				    'value' => Scheme_Color::COLOR_1,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-heading-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-heading-title' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -173,7 +173,7 @@ class Widget_Heading extends Widget_Base {
 			[
 				'name' => 'typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .builder-heading-title',
+				'selector' => '{{WRAPPER}} .qazana-heading-title',
 			]
 		);
 
@@ -186,19 +186,19 @@ class Widget_Heading extends Widget_Base {
 		if ( empty( $settings['title'] ) )
 			return;
 
-		$this->add_render_attribute( 'heading', 'class', 'builder-heading-title' );
-        $this->add_render_attribute( 'heading-wrapper', 'class', 'builder-heading-wrapper' );
+		$this->add_render_attribute( 'heading', 'class', 'qazana-heading-title' );
+        $this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-heading-wrapper' );
 
 		if ( ! empty( $settings['size'] ) ) {
-			$this->add_render_attribute( 'heading', 'class', 'builder-size-' . $settings['size'] );
+			$this->add_render_attribute( 'heading', 'class', 'qazana-size-' . $settings['size'] );
 		}
 
         if ( ! empty( $settings['size'] ) ) {
-			$this->add_render_attribute( 'heading', 'class', 'builder-size-' . $settings['size'] );
+			$this->add_render_attribute( 'heading', 'class', 'qazana-size-' . $settings['size'] );
 		}
 
         if ( ! empty( $settings['align'] ) ) {
-			$this->add_render_attribute( 'heading-wrapper', 'class', 'builder-align-' . $settings['align'] );
+			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $settings['align'] );
 		}
 
 		if ( ! empty( $settings['link']['url'] ) ) {
@@ -222,11 +222,11 @@ class Widget_Heading extends Widget_Base {
 
 		<#
 		if ( '' !== settings.title ) {
-			var title_html = '<' + settings.header_size  + ' class="builder-heading-title builder-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
 		}
 
 		if ( '' !== settings.link.url ) {
-			var title_html = '<' + settings.header_size  + ' class="builder-heading-title builder-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
 		}
 
 		print( title_html );

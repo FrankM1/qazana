@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -39,7 +39,7 @@ class Control_File extends Base_Control_Multiple {
 			return $settings;
 		}
 
-		$settings = builder()->templates_manager->get_import_images_instance()->import( $settings );
+		$settings = qazana()->templates_manager->get_import_images_instance()->import( $settings );
 
 		if ( ! $settings ) {
 			$settings = [
@@ -77,21 +77,21 @@ class Control_File extends Base_Control_Multiple {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<div class="builder-control-file">
-					<div class="builder-control-file-upload-button">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<div class="qazana-control-file">
+					<div class="qazana-control-file-upload-button">
 						<i class="fa fa-plus-circle"></i>
 					</div>
-					<div class="builder-control-file-image-area">
-						<div class="builder-control-file-image" style="background-image: url({{ data.controlValue.url }});"></div>
-						<div class="builder-control-file-delete"><?php _e( 'Delete', 'builder' ); ?></div>
+					<div class="qazana-control-file-image-area">
+						<div class="qazana-control-file-image" style="background-image: url({{ data.controlValue.url }});"></div>
+						<div class="qazana-control-file-delete"><?php _e( 'Delete', 'qazana' ); ?></div>
 					</div>
 				</div>
 			</div>
 			<# if ( data.description ) { #>
-				<div class="builder-control-description">{{{ data.description }}}</div>
+				<div class="qazana-control-description">{{{ data.description }}}</div>
 			<# } #>
 			<input type="hidden" data-setting="{{ data.name }}" />
 		</div>

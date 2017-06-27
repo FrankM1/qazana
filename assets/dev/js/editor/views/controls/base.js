@@ -8,15 +8,15 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			radio: 'input[data-setting][type="radio"]',
 			select: 'select[data-setting]',
 			textarea: 'textarea[data-setting]',
-			controlTitle: '.builder-control-title',
-			responsiveSwitchers: '.builder-responsive-switcher',
-			switcherDesktop: '.builder-responsive-switcher-desktop'
+			controlTitle: '.qazana-control-title',
+			responsiveSwitchers: '.qazana-responsive-switcher',
+			switcherDesktop: '.qazana-responsive-switcher-desktop'
 		};
 	},
 
 	className: function() {
 		// TODO: Any better classes for that?
-		var classes = 'builder-control builder-control-' + this.model.get( 'name' ) + ' builder-control-type-' + this.model.get( 'type' ),
+		var classes = 'qazana-control qazana-control-' + this.model.get( 'name' ) + ' qazana-control-type-' + this.model.get( 'type' ),
 			modelClasses = this.model.get( 'classes' ),
 			responsive = this.model.get( 'responsive' );
 
@@ -25,18 +25,18 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		}
 
 		if ( ! _.isEmpty( this.model.get( 'section' ) ) ) {
-			classes += ' builder-control-under-section';
+			classes += ' qazana-control-under-section';
 		}
 
 		if ( ! _.isEmpty( responsive ) ) {
-			classes += ' builder-control-responsive-' + responsive;
+			classes += ' qazana-control-responsive-' + responsive;
 		}
 
 		return classes;
 	},
 
 	getTemplate: function() {
-		return Marionette.TemplateCache.get( '#tmpl-builder-control-' + this.model.get( 'type' ) + '-content' );
+		return Marionette.TemplateCache.get( '#tmpl-qazana-control-' + this.model.get( 'type' ) + '-content' );
 	},
 
 	templateHelpers: function() {
@@ -70,7 +70,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		this.elementSettingsModel = options.elementSettingsModel;
 
 		var controlType = this.model.get( 'type' ),
-			controlSettings = Backbone.$.extend( true, {}, builder.config.controls[ controlType ], this.model.attributes );
+			controlSettings = Backbone.$.extend( true, {}, qazana.config.controls[ controlType ], this.model.attributes );
 
 		this.model.set( controlSettings );
 
@@ -111,7 +111,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 
 		// Do not use with this action
 		// It's here for tests and maybe later will be publish
-		builder.hooks.doAction( 'panel/editor/element/' + elementType + '/' + this.model.get( 'name' ) + '/changed' );
+		qazana.hooks.doAction( 'panel/editor/element/' + elementType + '/' + this.model.get( 'name' ) + '/changed' );
 	},
 
 	applySavedValue: function() {
@@ -167,11 +167,11 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	onSettingsError: function() {
-		this.$el.addClass( 'builder-error' );
+		this.$el.addClass( 'qazana-error' );
 	},
 
 	onSettingsChange: function() {
-		this.$el.removeClass( 'builder-error' );
+		this.$el.removeClass( 'qazana-error' );
 	},
 
 	onRender: function() {
@@ -179,12 +179,12 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 
 		var layoutType = this.model.get( 'label_block' ) ? 'block' : 'inline',
 			showLabel = this.model.get( 'show_label' ),
-			elClasses = 'builder-label-' + layoutType;
+			elClasses = 'qazana-label-' + layoutType;
 
-		elClasses += ' builder-control-separator-' + this.model.get( 'separator' );
+		elClasses += ' qazana-control-separator-' + this.model.get( 'separator' );
 
 		if ( ! showLabel ) {
-			elClasses += ' builder-control-hidden-label';
+			elClasses += ' qazana-control-hidden-label';
 		}
 
 		this.$el.addClass( elClasses );
@@ -203,11 +203,11 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	onSwitcherClick: function( event ) {
 		var device = Backbone.$( event.currentTarget ).data( 'device' );
 
-		builder.changeDeviceMode( device );
+		qazana.changeDeviceMode( device );
 	},
 
 	onSwitcherDesktopClick: function() {
-		builder.getPanelView().getCurrentPageView().$el.toggleClass( 'builder-responsive-switchers-open' );
+		qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
 	},
 
 	renderResponsiveSwitchers: function() {
@@ -215,23 +215,23 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			return;
 		}
 
-		var templateHtml = Backbone.$( '#tmpl-builder-control-responsive-switchers' ).html();
+		var templateHtml = Backbone.$( '#tmpl-qazana-control-responsive-switchers' ).html();
 
 		this.ui.controlTitle.after( templateHtml );
 	},
 
 	toggleControlVisibility: function() {
-		var isVisible = builder.helpers.isActiveControl( this.model, this.elementSettingsModel.attributes );
+		var isVisible = qazana.helpers.isActiveControl( this.model, this.elementSettingsModel.attributes );
 
-		this.$el.toggleClass( 'builder-hidden-control', ! isVisible );
+		this.$el.toggleClass( 'qazana-hidden-control', ! isVisible );
 
-		builder.channels.data.trigger( 'scrollbar:update' );
+		qazana.channels.data.trigger( 'scrollbar:update' );
 	},
 
 	onControlSwitchTab: function( activeTab ) {
-		this.$el.toggleClass( 'builder-active-tab', ( activeTab === this.model.get( 'tab' ) ) );
+		this.$el.toggleClass( 'qazana-active-tab', ( activeTab === this.model.get( 'tab' ) ) );
 
-		builder.channels.data.trigger( 'scrollbar:update' );
+		qazana.channels.data.trigger( 'scrollbar:update' );
 	},
 
 	onReady: function() {},

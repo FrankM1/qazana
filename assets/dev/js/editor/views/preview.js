@@ -1,21 +1,21 @@
-var BaseSectionsContainerView = require( 'builder-views/base-sections-container' ),
+var BaseSectionsContainerView = require( 'qazana-views/base-sections-container' ),
 	Preview;
 
 Preview = BaseSectionsContainerView.extend( {
-	template: Marionette.TemplateCache.get( '#tmpl-builder-preview' ),
+	template: Marionette.TemplateCache.get( '#tmpl-qazana-preview' ),
 
-	className: 'builder-inner',
+	className: 'qazana-inner',
 
-	childViewContainer: '.builder-section-wrap',
+	childViewContainer: '.qazana-section-wrap',
 
 	ui: {
-		addSectionArea: '#builder-add-section',
-		addNewSection: '#builder-add-new-section',
-		closePresetsIcon: '#builder-select-preset-close',
-		addSectionButton: '#builder-add-section-button',
-		addTemplateButton: '#builder-add-template-button',
-		selectPreset: '#builder-select-preset',
-		presets: '.builder-preset'
+		addSectionArea: '#qazana-add-section',
+		addNewSection: '#qazana-add-new-section',
+		closePresetsIcon: '#qazana-select-preset-close',
+		addSectionButton: '#qazana-add-section-button',
+		addTemplateButton: '#qazana-add-template-button',
+		selectPreset: '#qazana-select-preset',
+		presets: '.qazana-preset'
 	},
 
 	events: {
@@ -36,8 +36,8 @@ Preview = BaseSectionsContainerView.extend( {
 			elTopOffsetRange = sectionHandleHeight - elTopOffset;
 
 		if ( 0 < elTopOffsetRange ) {
-			var $style = Backbone.$( '<style>' ).text( '.builder-editor-active .builder-inner{margin-top: ' + elTopOffsetRange + 'px}' );
-			builder.$previewContents.children().children( 'head' ).append( $style );
+			var $style = Backbone.$( '<style>' ).text( '.qazana-editor-active .qazana-inner{margin-top: ' + elTopOffsetRange + 'px}' );
+			qazana.$previewContents.children().children( 'head' ).append( $style );
 		}
 	},
 
@@ -47,8 +47,8 @@ Preview = BaseSectionsContainerView.extend( {
 	},
 
 	onAddTemplateButtonClick: function() {
-		builder.templates.startModal( function() {
-			builder.templates.showTemplates();
+		qazana.templates.startModal( function() {
+			qazana.templates.showTemplates();
 		} );
 	},
 
@@ -57,7 +57,7 @@ Preview = BaseSectionsContainerView.extend( {
 
 		self.ui.addSectionArea.html5Droppable( {
 			axis: [ 'vertical' ],
-			groups: [ 'builder-element' ],
+			groups: [ 'qazana-element' ],
 			onDragEnter: function( side ) {
 				self.ui.addSectionArea.attr( 'data-side', side );
 			},
@@ -76,13 +76,13 @@ Preview = BaseSectionsContainerView.extend( {
 		this.closeSelectPresets();
 
 		var selectedStructure = event.currentTarget.dataset.structure,
-			parsedStructure = builder.presetsFactory.getParsedStructure( selectedStructure ),
+			parsedStructure = qazana.presetsFactory.getParsedStructure( selectedStructure ),
 			elements = [],
 			loopIndex;
 
 		for ( loopIndex = 0; loopIndex < parsedStructure.columnsCount; loopIndex++ ) {
 			elements.push( {
-				id: builder.helpers.getUniqueID(),
+				id: qazana.helpers.getUniqueID(),
 				elType: 'column',
 				settings: {},
 				elements: []

@@ -1,28 +1,28 @@
 //
 // Video
 //
-.builder-widget-video {
-	&.builder-aspect-ratio- {
+.qazana-widget-video {
+	&.qazana-aspect-ratio- {
 		&169 {
-			.builder-video-wrapper {
+			.qazana-video-wrapper {
 				//padding-bottom: 56.25%;
 			}
 		}
 
 		&43 {
-			.builder-video-wrapper {
+			.qazana-video-wrapper {
 				//padding-bottom: 75%;
 			}
 		}
 
 		&32 {
-			.builder-video-wrapper {
+			.qazana-video-wrapper {
 				//padding-bottom: 66.6666%;
 			}
 		}
 	}
 
-	.builder-custom-embed-image-overlay {
+	.qazana-custom-embed-image-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -33,7 +33,7 @@
 		cursor: pointer;
 
 		&:hover {
-			.builder-custom-embed-play {
+			.qazana-custom-embed-play {
 				i {
 					opacity: 0.9;
 					text-shadow: 3px 2px 30px rgba(0,0,0,0.6);
@@ -42,7 +42,7 @@
 		}
 	}
 
-	.builder-image-background-overlay {
+	.qazana-image-background-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -50,7 +50,7 @@
 		height: 100%;
 	}
 
-	.builder-custom-embed-play {
+	.qazana-custom-embed-play {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -59,6 +59,6 @@
 	}
 }
 
-.builder-video-popup-image {
+.qazana-video-popup-image {
 	text-align: center;
 }

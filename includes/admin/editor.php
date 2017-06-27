@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -32,9 +32,9 @@ class Editor_Admin {
 
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_register_script( 'builder-admin-app', builder()->core_assets_url . 'js/admin' . $suffix . '.js', [ 'jquery' ], builder()->get_version(), true );
+        wp_register_script( 'qazana-admin-app', qazana()->core_assets_url . 'js/admin' . $suffix . '.js', [ 'jquery' ], qazana()->get_version(), true );
 
-        wp_enqueue_script( 'builder-admin-app' );
+        wp_enqueue_script( 'qazana-admin-app' );
 
     }
 
@@ -50,22 +50,22 @@ class Editor_Admin {
         $direction_suffix = is_rtl() ? '-rtl' : '';
 
         wp_register_style(
-            'builder-icons',
-            builder()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
+            'qazana-icons',
+            qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
         wp_register_style(
-            'builder-admin-app',
-            builder()->core_assets_url . 'css/admin' . $direction_suffix . $suffix . '.css',
+            'qazana-admin-app',
+            qazana()->core_assets_url . 'css/admin' . $direction_suffix . $suffix . '.css',
             [
-                'builder-icons',
+                'qazana-icons',
             ],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
-        wp_enqueue_style( 'builder-admin-app' );
+        wp_enqueue_style( 'qazana-admin-app' );
 
         // It's for upgrade notice
         // TODO: enqueue this just if needed
@@ -85,30 +85,30 @@ class Editor_Admin {
             return;
         }
 
-        $current_mode = builder()->db->get_edit_mode( $post->ID );
-        if ( 'builder' !== $current_mode ) {
+        $current_mode = qazana()->db->get_edit_mode( $post->ID );
+        if ( 'qazana' !== $current_mode ) {
             $current_mode = 'editor';
         }
 
-        wp_nonce_field( basename( __FILE__ ), '_builder_edit_mode_nonce' );
+        wp_nonce_field( basename( __FILE__ ), '_qazana_edit_mode_nonce' );
         ?>
-        <div id="builder-switch-mode">
-            <input id="builder-switch-mode-input" type="hidden" name="_builder_post_mode" value="<?php echo $current_mode; ?>" />
-            <button id="builder-switch-mode-button" class="builder-button">
-                <span class="builder-switch-mode-on"><?php _e( '&#8592; Back to WordPress Editor', 'builder' ); ?></span>
-                <span class="builder-switch-mode-off">
-                    <i class="eicon-builder"></i>
-                    <?php _e( 'Edit with Builder', 'builder' ); ?>
+        <div id="qazana-switch-mode">
+            <input id="qazana-switch-mode-input" type="hidden" name="_qazana_post_mode" value="<?php echo $current_mode; ?>" />
+            <button id="qazana-switch-mode-button" class="qazana-button">
+                <span class="qazana-switch-mode-on"><?php _e( '&#8592; Back to WordPress Editor', 'qazana' ); ?></span>
+                <span class="qazana-switch-mode-off">
+                    <i class="eicon-qazana"></i>
+                    <?php _e( 'Edit with Qazana', 'qazana' ); ?>
                 </span>
             </button>
         </div>
-        <div id="builder-editor">
-            <a id="builder-go-to-edit-page-link" href="<?php echo Utils::get_edit_link( $post->ID ); ?>">
-                <div id="builder-editor-button" class="builder-button">
-                    <i class="eicon-builder"></i>
-                    <?php _e( 'Edit with Builder', 'builder' ); ?>
+        <div id="qazana-editor">
+            <a id="qazana-go-to-edit-page-link" href="<?php echo Utils::get_edit_link( $post->ID ); ?>">
+                <div id="qazana-editor-button" class="qazana-button">
+                    <i class="eicon-qazana"></i>
+                    <?php _e( 'Edit with Qazana', 'qazana' ); ?>
                 </div>
-                <?php echo builder_loading_indicator(); ?>
+                <?php echo qazana_loading_indicator(); ?>
             </a>
         </div>
         <?php
@@ -123,7 +123,7 @@ class Editor_Admin {
      * @return void
      */
     public function save_post( $post_id ) {
-        if ( ! isset( $_POST['_builder_edit_mode_nonce'] ) || ! wp_verify_nonce( $_POST['_builder_edit_mode_nonce'], basename( __FILE__ ) ) ) {
+        if ( ! isset( $_POST['_qazana_edit_mode_nonce'] ) || ! wp_verify_nonce( $_POST['_qazana_edit_mode_nonce'], basename( __FILE__ ) ) ) {
             return;
         }
 
@@ -139,11 +139,11 @@ class Editor_Admin {
         // Make sure we are on the right page
         if ( $_POST['post_ID'] == $post_id ) {
 
-            if ( ! isset( $_POST['_builder_post_mode'] ) )
-                $_POST['_builder_post_mode'] = '';
+            if ( ! isset( $_POST['_qazana_post_mode'] ) )
+                $_POST['_qazana_post_mode'] = '';
 
-            // Save builder flag
-            builder()->db->set_edit_mode( $post_id, $_POST['_builder_post_mode'] );
+            // Save qazana flag
+            qazana()->db->set_edit_mode( $post_id, $_POST['_qazana_post_mode'] );
         }
     }
 
@@ -157,11 +157,11 @@ class Editor_Admin {
      * @return array
      */
     public function add_edit_in_dashboard( $actions, $post ) {
-        if ( User::is_current_user_can_edit( $post->ID ) && 'builder' === builder()->db->get_edit_mode( $post->ID ) ) {
-            $actions['edit_with_builder'] = sprintf(
+        if ( User::is_current_user_can_edit( $post->ID ) && 'qazana' === qazana()->db->get_edit_mode( $post->ID ) ) {
+            $actions['edit_with_qazana'] = sprintf(
                 '<a href="%s">%s</a>',
                 Utils::get_edit_link( $post->ID ),
-                __( 'Builder', 'builder' )
+                __( 'Qazana', 'qazana' )
             );
         }
 
@@ -173,9 +173,9 @@ class Editor_Admin {
 
         if ( in_array( $pagenow, [ 'post.php', 'post-new.php' ] ) && Utils::is_post_type_support() ) {
             $post = get_post();
-            $current_mode = builder()->db->get_edit_mode( $post->ID );
+            $current_mode = qazana()->db->get_edit_mode( $post->ID );
 
-            $mode_class = 'builder' === $current_mode ? 'builder-editor-active' : 'builder-editor-inactive';
+            $mode_class = 'qazana' === $current_mode ? 'qazana-editor-active' : 'qazana-editor-inactive';
 
             $classes .= ' ' . $mode_class;
         }

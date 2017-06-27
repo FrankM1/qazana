@@ -7,9 +7,9 @@
  * called 'plugin dependency'which enables a plugin to have plugins of their
  * own in a safe and reliable way.
  *
- * We do this in Builder by mirroring existing WordPress hooks in many places
- * allowing dependent plugins to hook into the Builder specific ones, thus
- * guaranteeing proper code execution only when Builder is active.
+ * We do this in Qazana by mirroring existing WordPress hooks in many places
+ * allowing dependent plugins to hook into the Qazana specific ones, thus
+ * guaranteeing proper code execution only when Qazana is active.
  *
  * The following functions are wrappers for hooks, allowing them to be
  * manually called and/or piggy-backed on top of other hooks if needed.
@@ -20,37 +20,37 @@
 /** Activation Actions ********************************************************/
 
 /**
- * Runs on Builder activation.
+ * Runs on Qazana activation.
  *
  * @since 1.0.0
  *
  * @uses register_uninstall_hook() To register our own uninstall hook
- * @uses do_action() Calls 'builder_activation'hook
+ * @uses do_action() Calls 'qazana_activation'hook
  */
-function builder_activation() {
+function qazana_activation() {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Runs on Builder deactivation.
+ * Runs on Qazana deactivation.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_deactivation'hook
+ * @uses do_action() Calls 'qazana_deactivation'hook
  */
-function builder_deactivation()
+function qazana_deactivation()
 {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Runs when uninstalling Builder.
+ * Runs when uninstalling Qazana.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_uninstall'hook
+ * @uses do_action() Calls 'qazana_uninstall'hook
  */
-function builder_uninstall() {
+function qazana_uninstall() {
     do_action( __FUNCTION__ );
 }
 
@@ -61,9 +61,9 @@ function builder_uninstall() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_loaded'
+ * @uses do_action() Calls 'qazana_loaded'
  */
-function builder_loaded() {
+function qazana_loaded() {
     do_action( __FUNCTION__ );
 }
 
@@ -72,9 +72,9 @@ function builder_loaded() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register'
+ * @uses do_action() Calls 'qazana_register'
  */
-function builder_register() {
+function qazana_register() {
     do_action( __FUNCTION__ );
 }
 
@@ -83,9 +83,9 @@ function builder_register() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_init'
+ * @uses do_action() Calls 'qazana_init'
  */
-function builder_init() {
+function qazana_init() {
     do_action( __FUNCTION__ );
 }
 
@@ -94,9 +94,9 @@ function builder_init() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_init'
+ * @uses do_action() Calls 'qazana_init'
  */
-function builder_init_classes() {
+function qazana_init_classes() {
     do_action( __FUNCTION__ );
 }
 
@@ -107,9 +107,9 @@ function builder_init_classes() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_load_textdomain'
+ * @uses do_action() Calls 'qazana_load_textdomain'
  */
-function builder_load_textdomain() {
+function qazana_load_textdomain() {
     do_action( __FUNCTION__ );
 }
 
@@ -118,53 +118,53 @@ function builder_load_textdomain() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register_post_type'
+ * @uses do_action() Calls 'qazana_register_post_type'
  */
-function builder_register_post_types() {
+function qazana_register_post_types() {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Register the built in Builder taxonomies.
+ * Register the built in Qazana taxonomies.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register_taxonomies'
+ * @uses do_action() Calls 'qazana_register_taxonomies'
  */
-function builder_register_taxonomies() {
+function qazana_register_taxonomies() {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Register the default Builder views.
+ * Register the default Qazana views.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register_views'
+ * @uses do_action() Calls 'qazana_register_views'
  */
-function builder_register_views() {
+function qazana_register_views() {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Register the default Builder shortcodes.
+ * Register the default Qazana shortcodes.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register_shortcodes'
+ * @uses do_action() Calls 'qazana_register_shortcodes'
  */
-function builder_register_shortcodes() {
+function qazana_register_shortcodes() {
     do_action( __FUNCTION__ );
 }
 
 /**
- * Enqueue Builder specific CSS and JS.
+ * Enqueue Qazana specific CSS and JS.
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_enqueue_scripts'
+ * @uses do_action() Calls 'qazana_enqueue_scripts'
  */
-function builder_enqueue_scripts() {
+function qazana_enqueue_scripts() {
     do_action( __FUNCTION__ );
 }
 
@@ -175,7 +175,7 @@ function builder_enqueue_scripts() {
  *
  * @uses do_action()
  */
-function builder_setup_theme() {
+function qazana_setup_theme() {
     do_action( __FUNCTION__ );
 }
 
@@ -186,7 +186,7 @@ function builder_setup_theme() {
  *
  * @uses do_action()
  */
-function builder_after_setup_theme() {
+function qazana_after_setup_theme() {
     do_action( __FUNCTION__ );
 }
 
@@ -197,10 +197,10 @@ function builder_after_setup_theme() {
  *
  * @uses do_action()
  */
-function builder_get_request() {
+function qazana_get_request() {
 
     // Bail if not a GET action
-    if ( ! builder_is_get_request() ) {
+    if ( ! qazana_is_get_request() ) {
         return;
     }
 
@@ -211,7 +211,7 @@ function builder_get_request() {
 
     // This dynamic action is probably the one you want to use. It narrows down
     // the scope of the 'action'without needing to check it in your function.
-    do_action( 'builder_get_request_' . $_GET['action'] );
+    do_action( 'qazana_get_request_' . $_GET['action'] );
 
     // Use this static action if you don't mind checking the 'action'yourself.
     do_action( __FUNCTION__, $_GET['action'] );
@@ -227,7 +227,7 @@ function builder_get_request() {
  * @param string $locale
  * @param string $domain
  */
-function builder_plugin_locale( $locale = '', $domain = '') {
+function qazana_plugin_locale( $locale = '', $domain = '') {
     return apply_filters( __FUNCTION__, $locale, $domain );
 }
 
@@ -241,7 +241,7 @@ function builder_plugin_locale( $locale = '', $domain = '') {
  * @param int    $user_id User id
  * @param mixed  $args    Arguments
  */
-function builder_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+function qazana_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
     return apply_filters( __FUNCTION__, $caps, $cap, $user_id, $args );
 }
 
@@ -253,6 +253,6 @@ function builder_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args 
  * @since bbPress (r3829)
  * @uses do_action()
  */
-function builder_register_widget_packages() {
+function qazana_register_widget_packages() {
 	do_action( __FUNCTION__ );
 }

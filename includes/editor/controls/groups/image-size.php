@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -28,7 +28,7 @@ class Group_Control_Image_Size extends Group_Base_Control {
 
 		$size = $settings[ $setting_key . '_size' ];
 
-		$image_class = ! empty( $settings['hover_animation'] ) ? 'builder-animation-' . $settings['hover_animation'] : '';
+		$image_class = ! empty( $settings['hover_animation'] ) ? 'qazana-animation-' . $settings['hover_animation'] : '';
 
 		$html = '';
 
@@ -99,8 +99,8 @@ class Group_Control_Image_Size extends Group_Base_Control {
 			$image_sizes[ $size_key ] = ucwords( str_replace( '_', ' ', $size_key ) ) . sprintf( ' - %d x %d', $size_attributes['width'], $size_attributes['height'] );
 		}
 
-		$image_sizes['full'] = _x( 'Full', 'Image Size Control', 'builder' );
-		$image_sizes['custom'] = _x( 'Custom', 'Image Size Control', 'builder' );
+		$image_sizes['full'] = _x( 'Full', 'Image Size Control', 'qazana' );
+		$image_sizes['custom'] = _x( 'Custom', 'Image Size Control', 'qazana' );
 
 		return $image_sizes;
 	}
@@ -109,15 +109,15 @@ class Group_Control_Image_Size extends Group_Base_Control {
 		$fields = [];
 
 		$fields['size'] = [
-			'label' => _x( 'Image Size', 'Image Size Control', 'builder' ),
+			'label' => _x( 'Image Size', 'Image Size Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'label_block' => false,
 		];
 
 		$fields['custom_dimension'] = [
-			'label' => _x( 'Image Dimension', 'Image Size Control', 'builder' ),
+			'label' => _x( 'Image Dimension', 'Image Size Control', 'qazana' ),
 			'type' => Controls_Manager::IMAGE_DIMENSIONS,
-			'description' => __( 'You can crop the original image size to any custom size. You can also set a single value for height or width in order to keep the original size ratio.', 'builder' ),
+			'description' => __( 'You can crop the original image size to any custom size. You can also set a single value for height or width in order to keep the original size ratio.', 'qazana' ),
 			'condition' => [
 				'size' => [ 'custom' ],
 			],
@@ -162,7 +162,7 @@ class Group_Control_Image_Size extends Group_Base_Control {
 		} else {
 			// Use BFI_Thumb script
 			// TODO: Please rewrite this code
-			require_once( builder()->includes_dir  . 'vendor/bfi-thumb/bfi-thumb.php' );
+			require_once( qazana()->includes_dir  . 'vendor/bfi-thumb/bfi-thumb.php' );
 
 			$custom_dimension = $instance[ $group_name . '_custom_dimension' ];
 

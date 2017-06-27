@@ -1,13 +1,13 @@
-var ControlMultipleBaseItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlMediaItemView;
 
 ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.controlMedia = '.builder-control-media';
-		ui.frameOpeners = '.builder-control-media-upload-button, .builder-control-media-image';
-		ui.deleteButton = '.builder-control-media-delete';
+		ui.controlMedia = '.qazana-control-media';
+		ui.frameOpeners = '.qazana-control-media-upload-button, .qazana-control-media-image';
+		ui.deleteButton = '.qazana-control-media-delete';
 
 		return ui;
 	},
@@ -46,11 +46,11 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 	initFrame: function() {
 		this.frame = wp.media( {
 			button: {
-				text: builder.translate( 'insert_media' )
+				text: qazana.translate( 'insert_media' )
 			},
 			states: [
 				new wp.media.controller.Library( {
-					title: builder.translate( 'insert_media' ),
+					title: qazana.translate( 'insert_media' ),
 					library: wp.media.query( { type: 'image' } ),
 					multiple: false,
 					date: false

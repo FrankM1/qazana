@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Testimonial', 'builder' );
+		return __( 'Testimonial', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -32,7 +32,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_testimonial',
 			[
-				'label' => __( 'Testimonials', 'builder' ),
+				'label' => __( 'Testimonials', 'qazana' ),
 			]
 		);
 
@@ -40,12 +40,12 @@ class Widget_Testimonial extends Widget_Base {
 
 		$repeater->start_controls_tabs( 'testimonial_repeater' );
 
-		$repeater->start_controls_tab( 'content', [ 'label' => __( 'Content', 'builder' ) ] );
+		$repeater->start_controls_tab( 'content', [ 'label' => __( 'Content', 'qazana' ) ] );
 
 		$repeater->add_control(
 			'testimonial_name',
 			[
-				'label' => __( 'Name', 'builder' ),
+				'label' => __( 'Name', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'John Doe',
 			]
@@ -54,7 +54,7 @@ class Widget_Testimonial extends Widget_Base {
 		$repeater->add_control(
 			'testimonial_content',
 			[
-				'label' => __( 'Content', 'builder' ),
+				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'rows' => '10',
 				'default' => 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
@@ -64,7 +64,7 @@ class Widget_Testimonial extends Widget_Base {
 		$repeater->add_control(
 			'testimonial_image',
 			[
-				'label' => __( 'Add Image', 'builder' ),
+				'label' => __( 'Add Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
@@ -75,7 +75,7 @@ class Widget_Testimonial extends Widget_Base {
 		$repeater->add_control(
 			'testimonial_job',
 			[
-				'label' => __( 'Job', 'builder' ),
+				'label' => __( 'Job', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'Designer',
 			]
@@ -83,17 +83,17 @@ class Widget_Testimonial extends Widget_Base {
 
 		$repeater->end_controls_tab();
 
-		$repeater->start_controls_tab( 'style', [ 'label' => __( 'Style', 'builder' ) ] );
+		$repeater->start_controls_tab( 'style', [ 'label' => __( 'Style', 'qazana' ) ] );
 
 		$repeater->add_control(
 			'testimonial_image_position',
 			[
-				'label' => __( 'Image Position', 'builder' ),
+				'label' => __( 'Image Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'aside',
 				'options' => [
-					'aside' => __( 'Aside', 'builder' ),
-					'top' => __( 'Top', 'builder' ),
+					'aside' => __( 'Aside', 'qazana' ),
+					'top' => __( 'Top', 'qazana' ),
 				],
 				'separator' => 'before',
 			]
@@ -102,20 +102,20 @@ class Widget_Testimonial extends Widget_Base {
 		$repeater->add_control(
 			'testimonial_alignment',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'default' => 'center',
 				'options' => [
 					'left'    => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
@@ -125,7 +125,7 @@ class Widget_Testimonial extends Widget_Base {
 		$repeater->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -138,7 +138,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'testimonials',
 			[
-				'label' => __( 'Slides', 'builder' ),
+				'label' => __( 'Slides', 'qazana' ),
 				'type' => Controls_Manager::REPEATER,
 				'show_label' => true,
 				'default' => array (
@@ -205,7 +205,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_testimonial_content_wrapper',
 			[
-				'label' => __( 'Content Wrapper', 'builder' ),
+				'label' => __( 'Content Wrapper', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -214,7 +214,7 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'content_wrapper_background',
-				'selector' => '{{WRAPPER}} .builder-testimonial-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-content-wrapper',
 			]
 		);
 
@@ -224,7 +224,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_testimonial_content',
 			[
-				'label' => __( 'Content', 'builder' ),
+				'label' => __( 'Content', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -232,12 +232,12 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'content_background_color',
 			[
-				'label' => __( 'Content Background Color', 'builder' ),
+				'label' => __( 'Content Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-content' => 'background-color: {{VALUE}}',
-					'{{WRAPPER}} .builder-testimonial-content:after' => 'border-top-color: {{VALUE}}'
+					'{{WRAPPER}} .qazana-testimonial-content' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .qazana-testimonial-content:after' => 'border-top-color: {{VALUE}}'
 				],
 			]
 		);
@@ -246,10 +246,10 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'border',
-				'label' => __( 'Border', 'builder' ),
+				'label' => __( 'Border', 'qazana' ),
 				'placeholder' => '1px',
 				'default' => '1px',
-				'selector' => '{{WRAPPER}} .builder-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
 				'defaults' => [
 					'border' => 'solid',
 					'width' => array(
@@ -276,11 +276,11 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'default' => [
 					'unit' => 'px',
@@ -297,14 +297,14 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'content_box_shadow',
-				'selector' => '{{WRAPPER}} .builder-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
 			]
 		);
 
 		$this->add_control(
 			'content_padding',
 			[
-				'label' => __( 'Content Padding', 'builder' ),
+				'label' => __( 'Content Padding', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'default' => array (
@@ -316,7 +316,7 @@ class Widget_Testimonial extends Widget_Base {
 					'isLinked' => true,
 				),
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -324,7 +324,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'content_content_color',
 			[
-				'label' => __( 'Content Color', 'builder' ),
+				'label' => __( 'Content Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -332,7 +332,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '#848484',
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-content' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial-content' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -341,9 +341,9 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'content_typography',
-				'label' => __( 'Typography', 'builder' ),
+				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .builder-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
 				'defaults' => [
 					'typography' => 'custom',
 				    'font_size' => array (
@@ -357,26 +357,26 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'content_align',
 			[
-				'label' => __( 'Description Align', 'builder' ),
+				'label' => __( 'Description Align', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'label_block' => false,
 				'default' => 'left',
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
 				'selectors' => [
-					 '{{WRAPPER}} .builder-testimonial-content' => 'text-align: {{VALUE}};',
+					 '{{WRAPPER}} .qazana-testimonial-content' => 'text-align: {{VALUE}};',
 				 ]
 			]
 		);
@@ -384,25 +384,25 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'details_align',
 			[
-				'label' => __( 'Details Align', 'builder' ),
+				'label' => __( 'Details Align', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'label_block' => false,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
 				'selectors' => [
-					 '{{WRAPPER}} .builder-testimonial-details' => 'text-align: {{VALUE}};',
+					 '{{WRAPPER}} .qazana-testimonial-details' => 'text-align: {{VALUE}};',
 				 ]
 			]
 		);
@@ -413,7 +413,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_testimonial_image',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -421,7 +421,7 @@ class Widget_Testimonial extends Widget_Base {
 		 $this->add_control(
 			'image_size',
 			[
-				'label' => __( 'Image Size', 'builder' ),
+				'label' => __( 'Image Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -431,7 +431,7 @@ class Widget_Testimonial extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-wrapper .builder-testimonial-image img' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -439,7 +439,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 		   'image_spacing',
 		   [
-			   'label' => __( 'Image Spacing', 'builder' ),
+			   'label' => __( 'Image Spacing', 'qazana' ),
 			   'type' => Controls_Manager::DIMENSIONS,
 			   'size_units' => [ 'px' ],
 			   'range' => [
@@ -457,7 +457,7 @@ class Widget_Testimonial extends Widget_Base {
 					'isLinked' => false,
 			   ),
 			   'selectors' => [
-				   '{{WRAPPER}} .builder-testimonial-wrapper .builder-testimonial-image img' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				   '{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 			   ],
 		   ]
 	   );
@@ -466,18 +466,18 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .builder-testimonial-wrapper .builder-testimonial-image img',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img',
 			]
 		);
 
 		$this->add_control(
 			'image_border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-wrapper .builder-testimonial-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -488,7 +488,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_testimonial_name',
 			[
-				'label' => __( 'Name', 'builder' ),
+				'label' => __( 'Name', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -496,7 +496,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'name_text_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -504,7 +504,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-name' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial-name' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -513,9 +513,9 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'name_typography',
-				'label' => __( 'Typography', 'builder' ),
+				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .builder-testimonial-name',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-name',
 			]
 		);
 
@@ -525,7 +525,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_testimonial_job',
 			[
-				'label' => __( 'Job', 'builder' ),
+				'label' => __( 'Job', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -533,7 +533,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'job_text_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -541,7 +541,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .builder-testimonial-job' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial-job' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -550,9 +550,9 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'job_typography',
-				'label' => __( 'Typography', 'builder' ),
+				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .builder-testimonial-job',
+				'selector' => '{{WRAPPER}} .qazana-testimonial-job',
 			]
 		);
 
@@ -564,7 +564,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_slider_options',
 			[
-				'label' => __( 'Slider Options', 'builder' ),
+				'label' => __( 'Slider Options', 'qazana' ),
 				'type' => Controls_Manager::SECTION,
 			]
 		);
@@ -575,7 +575,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'slides_to_show',
 			[
-				'label' => __( 'Slides to Show', 'builder' ),
+				'label' => __( 'Slides to Show', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '2',
 				'options' => $slides_to_show,
@@ -585,7 +585,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'slides_to_scroll',
 			[
-				'label' => __( 'Slides to Scroll', 'builder' ),
+				'label' => __( 'Slides to Scroll', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => $slides_to_show,
@@ -598,14 +598,14 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'navigation',
 			[
-				'label' => __( 'Navigation', 'builder' ),
+				'label' => __( 'Navigation', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'both',
 				'options' => [
-					'both' => __( 'Arrows and Dots', 'builder' ),
-					'arrows' => __( 'Arrows', 'builder' ),
-					'dots' => __( 'Dots', 'builder' ),
-					'none' => __( 'None', 'builder' ),
+					'both' => __( 'Arrows and Dots', 'qazana' ),
+					'arrows' => __( 'Arrows', 'qazana' ),
+					'dots' => __( 'Dots', 'qazana' ),
+					'none' => __( 'None', 'qazana' ),
 				],
 			]
 		);
@@ -613,10 +613,10 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'pause_on_hover',
 			[
-				'label' => __( 'Pause on Hover', 'builder' ),
+				'label' => __( 'Pause on Hover', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
 			]
@@ -625,10 +625,10 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'autoplay',
 			[
-				'label' => __( 'Autoplay', 'builder' ),
+				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
 			]
@@ -637,7 +637,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'autoplay_speed',
 			[
-				'label' => __( 'Autoplay Speed (ms)', 'builder' ),
+				'label' => __( 'Autoplay Speed (ms)', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 5000,
 				'condition' => [
@@ -649,10 +649,10 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'infinite',
 			[
-				'label' => __( 'Infinite Loop', 'builder' ),
+				'label' => __( 'Infinite Loop', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
 			]
@@ -661,12 +661,12 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'direction',
 			[
-				'label' => __( 'Direction', 'builder' ),
+				'label' => __( 'Direction', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'ltr',
 				'options' => [
-					'ltr' => __( 'Left', 'builder' ),
-					'rtl' => __( 'Right', 'builder' ),
+					'ltr' => __( 'Left', 'qazana' ),
+					'rtl' => __( 'Right', 'qazana' ),
 				],
 			]
 		);
@@ -674,12 +674,12 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'transition',
 			[
-				'label' => __( 'Transition', 'builder' ),
+				'label' => __( 'Transition', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'slide',
 				'options' => [
-					'slide' => __( 'Slide', 'builder' ),
-					'fade' => __( 'Fade', 'builder' ),
+					'slide' => __( 'Slide', 'qazana' ),
+					'fade' => __( 'Fade', 'qazana' ),
 				],
 			]
 		);
@@ -687,7 +687,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'transition_speed',
 			[
-				'label' => __( 'Transition Speed (ms)', 'builder' ),
+				'label' => __( 'Transition Speed (ms)', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 500,
 			]
@@ -696,16 +696,16 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'content_animation',
 			[
-				'label' => __( 'Content Animation', 'builder' ),
+				'label' => __( 'Content Animation', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'fadeInRight',
 				'options' => [
-					'' => __( 'None', 'builder' ),
-					'fadeInDown' => __( 'Down', 'builder' ),
-					'fadeInUp' => __( 'Up', 'builder' ),
-					'fadeInRight' => __( 'Right', 'builder' ),
-					'fadeInLeft' => __( 'Left', 'builder' ),
-					'zoomIn' => __( 'Zoom', 'builder' ),
+					'' => __( 'None', 'qazana' ),
+					'fadeInDown' => __( 'Down', 'qazana' ),
+					'fadeInUp' => __( 'Up', 'qazana' ),
+					'fadeInRight' => __( 'Right', 'qazana' ),
+					'fadeInLeft' => __( 'Left', 'qazana' ),
+					'zoomIn' => __( 'Zoom', 'qazana' ),
 				],
 			]
 		);
@@ -718,7 +718,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_navigation',
 			[
-				'label' => __( 'Navigation', 'builder' ),
+				'label' => __( 'Navigation', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'navigation' => [ 'arrows', 'dots', 'both' ],
@@ -729,7 +729,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'heading_style_arrows',
 			[
-				'label' => __( 'Arrows', 'builder' ),
+				'label' => __( 'Arrows', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -741,7 +741,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'arrows_size',
 			[
-				'label' => __( 'Arrows Size', 'builder' ),
+				'label' => __( 'Arrows Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -750,7 +750,7 @@ class Widget_Testimonial extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .builder-slides-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -761,10 +761,10 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'arrows_color',
 			[
-				'label' => __( 'Arrows Color', 'builder' ),
+				'label' => __( 'Arrows Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .builder-slides-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -775,7 +775,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'arrows_position',
 			[
-				'label' => __( 'Arrows Position', 'builder' ),
+				'label' => __( 'Arrows Position', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'allowed_dimensions' => 'horizontal',
@@ -795,8 +795,8 @@ class Widget_Testimonial extends Widget_Base {
 				  'isLinked' => false,
 				),
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides div.slick-navigation a.prev' => 'left: {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides div.slick-navigation a.next' => 'right: {{RIGHT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation a.prev' => 'left: {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation a.next' => 'right: {{RIGHT}}{{UNIT}};',
 
 				],
 				'condition' => [
@@ -808,7 +808,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'heading_style_dots',
 			[
-				'label' => __( 'Dots', 'builder' ),
+				'label' => __( 'Dots', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -820,7 +820,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'dots_size',
 			[
-				'label' => __( 'Dots Size', 'builder' ),
+				'label' => __( 'Dots Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -834,11 +834,11 @@ class Widget_Testimonial extends Widget_Base {
 			      'size' => 11,
 			    ),
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button' => 'width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button' => 'line-height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button:before' => 'width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button:before' => 'height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button:before' => 'line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'line-height: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
@@ -849,7 +849,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'dots_position_bottom',
 			[
-				'label' => __( 'Dots Position', 'builder' ),
+				'label' => __( 'Dots Position', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -862,7 +862,7 @@ class Widget_Testimonial extends Widget_Base {
 			      'size' => '-20',
 			    ),
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
@@ -873,11 +873,11 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'dots_color',
 			[
-				'label' => __( 'Dots Color', 'builder' ),
+				'label' => __( 'Dots Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .builder-slides-wrapper .builder-slides .slick-dots li button:before' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'background-color: {{VALUE}};',
 				],
 				'default' => '#4054b2',
 				'condition' => [
@@ -889,21 +889,21 @@ class Widget_Testimonial extends Widget_Base {
 		$this->add_control(
 			'dots_align',
 			[
-				'label' => __( 'Dots Align', 'builder' ),
+				'label' => __( 'Dots Align', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'label_block' => false,
 				'default' => 'center',
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
@@ -951,7 +951,7 @@ class Widget_Testimonial extends Widget_Base {
 			$slick_options['fade'] = ( 'fade' === $settings['transition'] );
 		}
 
-		$carousel_classes = [ 'builder-slides' ];
+		$carousel_classes = [ 'qazana-slides' ];
 
 		$this->add_render_attribute( 'slides', [
 			'class' => $carousel_classes,
@@ -961,8 +961,8 @@ class Widget_Testimonial extends Widget_Base {
 
 		$counter = 1;
 
-		?><div class="builder-testimonials-wrapper">
-			<div class="builder-slides-wrapper builder-slick-slider builder-dots-align-<?php echo $settings['dots_align']; ?>" dir="<?php echo $direction; ?>">
+		?><div class="qazana-testimonials-wrapper">
+			<div class="qazana-slides-wrapper qazana-slick-slider qazana-dots-align-<?php echo $settings['dots_align']; ?>" dir="<?php echo $direction; ?>">
 				<div <?php echo $this->get_render_attribute_string( 'slides' ); ?>>
 					<div class="slick-slideshow-large-container-biggie">
 						<div class="slick-slides slick-slides-biggie"><?php
@@ -970,39 +970,39 @@ class Widget_Testimonial extends Widget_Base {
 
 									$has_image = false;
 									if ( '' !== $item['testimonial_image']['url'] ) {
-										$image_url = builder_maybe_ssl_url( $item['testimonial_image']['url'] );
-										$has_image = ' builder-has-image';
+										$image_url = qazana_maybe_ssl_url( $item['testimonial_image']['url'] );
+										$has_image = ' qazana-has-image';
 									}
 
-									$testimonial_alignment = $item['testimonial_alignment'] ? ' builder-testimonial-text-align-' . $item['testimonial_alignment'] : '';
-									$testimonial_image_position = $item['testimonial_image_position'] ? ' builder-testimonial-image-position-' . $item['testimonial_image_position'] : '';
+									$testimonial_alignment = $item['testimonial_alignment'] ? ' qazana-testimonial-text-align-' . $item['testimonial_alignment'] : '';
+									$testimonial_image_position = $item['testimonial_image_position'] ? ' qazana-testimonial-image-position-' . $item['testimonial_image_position'] : '';
 
-									?><div class="builder-testimonial-wrapper<?php echo $testimonial_alignment; ?>">
-										<div class="builder-testimonial-content-wrapper">
+									?><div class="qazana-testimonial-wrapper<?php echo $testimonial_alignment; ?>">
+										<div class="qazana-testimonial-content-wrapper">
 
 											<?php if ( ! empty( $item['testimonial_content'] ) ) : ?>
-												<div class="builder-testimonial-content">
+												<div class="qazana-testimonial-content">
 													<?php echo $item['testimonial_content']; ?>
 												</div>
 											<?php endif; ?>
 
-											<div class="builder-testimonial-meta<?php if ( $has_image ) echo $has_image; ?><?php echo $testimonial_image_position; ?>">
-												<div class="builder-testimonial-meta-inner">
+											<div class="qazana-testimonial-meta<?php if ( $has_image ) echo $has_image; ?><?php echo $testimonial_image_position; ?>">
+												<div class="qazana-testimonial-meta-inner">
 													<?php if ( isset( $image_url ) ) : ?>
-														<div class="builder-testimonial-image">
+														<div class="qazana-testimonial-image">
 															<img src="<?php echo esc_attr( $image_url ); ?>" alt="<?php echo esc_attr( Control_Media::get_image_alt( $item['testimonial_image'] ) ); ?>" />
 														</div>
 													<?php endif; ?>
 
-													<div class="builder-testimonial-details">
+													<div class="qazana-testimonial-details">
 														<?php if ( ! empty( $item['testimonial_name'] ) ) : ?>
-															<div class="builder-testimonial-name">
+															<div class="qazana-testimonial-name">
 																<?php echo $item['testimonial_name']; ?>
 															</div>
 														<?php endif; ?>
 
 														<?php if ( ! empty( $item['testimonial_job'] ) ) : ?>
-															<div class="builder-testimonial-job">
+															<div class="qazana-testimonial-job">
 																<?php echo $item['testimonial_job']; ?>
 															</div>
 														<?php endif; ?>

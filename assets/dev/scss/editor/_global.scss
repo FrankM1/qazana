@@ -1,7 +1,7 @@
 
-// Loading Builder
+// Loading Qazana
 
-#builder-loading {
+#qazana-loading {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -11,7 +11,7 @@
 	z-index: $editor-layer;
 }
 
-.builder-loader-wrapper {
+.qazana-loader-wrapper {
 	$size: 100px;
 
 	position: absolute;
@@ -20,18 +20,18 @@
 	transform: translateX(-50%) translateY(-50%);
 	width: $size;
 
-	.builder-loader {
+	.qazana-loader {
 		height: $size;
 		position: relative;
 	}
 
-	.builder-loader-box {
+	.qazana-loader-box {
 		background-color: $editor-background;
 	}
 	@import "loader";
 }
 
-.builder-loading-title {
+.qazana-loading-title {
 	color: #fff;
 	text-align: center;
 	text-transform: uppercase;
@@ -40,7 +40,7 @@
 	font-size: 10px;
 }
 
-#builder-preview-loading {
+#qazana-preview-loading {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -67,7 +67,7 @@
 }
 
 // Modal Confirm (the_content missing)
-#builder-fatal-error-dialog {
+#qazana-fatal-error-dialog {
 	button.dialog-ok {
 		color: $editor-info;
 	}
@@ -78,6 +78,6 @@
 	}
 }
 
-.builder-hidden {
+.qazana-hidden {
 	display: none;
 }

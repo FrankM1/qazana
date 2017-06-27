@@ -1,6 +1,6 @@
 # Page Settings
 
-Builder's Page Settings feature allows the user to control various page definitions straight from Builder's editing panel.
+Qazana's Page Settings feature allows the user to control various page definitions straight from Qazana's editing panel.
 
 The Page Settings controls are similar to element controls. In a similar way, you can extend the Page Settings capabilities, and add new controls and settings that will be managed through the Page Settings panel.
 
@@ -22,17 +22,17 @@ In the Page Settings panel, controls that define the settings of the page appear
 
 #### Adding a new settings
 
-Similarly to widgets, you can add more controls to Page Settings for controlling and saving any type of setting. The new controls can be added to the existing tabs, or to any new tab from the available tabs in Builder.
+Similarly to widgets, you can add more controls to Page Settings for controlling and saving any type of setting. The new controls can be added to the existing tabs, or to any new tab from the available tabs in Qazana.
 
 Let's see an example for adding a control that sets the items color in the page menu:
 
 ```php
-function add_builder_page_settings_controls( \Builder\PageSettings\Page $page ) {
+function add_qazana_page_settings_controls( \Qazana\PageSettings\Page $page ) {
 	$page->add_control(
 		'menu_item_color',
 		[
-			'label' => __( 'Menu Item Color', 'builder' ),
-			'type' => \Builder\Controls_Manager::COLOR,
+			'label' => __( 'Menu Item Color', 'qazana' ),
+			'type' => \Qazana\Controls_Manager::COLOR,
 			'selectors' => [
 				'{{WRAPPER}} .menu-item a' => 'color: {{VALUE}}',
 			],
@@ -40,10 +40,10 @@ function add_builder_page_settings_controls( \Builder\PageSettings\Page $page ) 
 	);
 }
 
-add_action( 'builder/element/page-settings/section_page_style/before_section_end', 'add_builder_page_settings_controls' );
+add_action( 'qazana/element/page-settings/section_page_style/before_section_end', 'add_qazana_page_settings_controls' );
 ```
 
-With this example, we have created a function that adds a control for the instance of the class `Builder\PageSettings\Page` that represents all the settings that can be controlled with the Page Settings panel.
+With this example, we have created a function that adds a control for the instance of the class `Qazana\PageSettings\Page` that represents all the settings that can be controlled with the Page Settings panel.
 
 The returned value from the control affects the page by defining `selectors`. In Page Settings, the `{{WRAPPER}}` placeholder represents a unique class for the `body` element. You can read more about behaviors and functionality of `selectors` [here](controls-and-the-editor.md#adding-the-value-to-the-style-definitions-of-the-element).
 
@@ -51,7 +51,7 @@ After creating the function, we added an action that is called before closing th
 
 **Some notes:**
 
-* Adding the prefix `{{WRAPPER}}` before each selector is important to make sure the style rules do not cause any conflicts in case they are assimilated in other pages (like with the 'Builder Library' widget).
+* Adding the prefix `{{WRAPPER}}` before each selector is important to make sure the style rules do not cause any conflicts in case they are assimilated in other pages (like with the 'Qazana Library' widget).
 
 * Different themes may include changes of menu item selectors, or will require adding selectos that override the default theme directions. This is why the example above should be seen as an example alone and not as exact instructions.
 
@@ -61,7 +61,7 @@ The returned item from each control, including custom made controls, is saved au
 
 #### Getting a saved value of a control
 
-Much like any Builder element, you can get the saved value of each Page Settings control by accessing the instance of the class `Builder\PageSettings\Page`. 
+Much like any Qazana element, you can get the saved value of each Page Settings control by accessing the instance of the class `Qazana\PageSettings\Page`. 
 
 The right way to access is shown in the example below:
 
@@ -69,7 +69,7 @@ The right way to access is shown in the example below:
 $post_id = get_the_ID();
 
 // Creating an instance of page settings for specific post
-$page = \Builder\PageSettings\Manager::get_page( $post_id ); 
+$page = \Qazana\PageSettings\Manager::get_page( $post_id ); 
 
 $menu_item_color = $page->get_settings( 'menu_item_color' ); // The color we added before
 
@@ -87,14 +87,14 @@ We will first create the function that will handle the returning control value:
 ```javascript
 function handleMenuItemColor ( newValue ) {
 	console.log( newValue );
-	builder.reloadPreview();
+	qazana.reloadPreview();
 }
 ```
 
 Next, we will connect the function and the control we created:
 
 ```javascript
-builder.pageSettings.addChangeCallback( 'menu_item_color', handleMenuItemColor );
+qazana.pageSettings.addChangeCallback( 'menu_item_color', handleMenuItemColor );
 ```
 
 Now, after every change of the control, the function `handleMenuItemColor` will run when it gets a parameter of the new control value.

@@ -1,11 +1,11 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Post_CSS_File {
 
-	const FILE_BASE_DIR = '/builder/css';
+	const FILE_BASE_DIR = '/qazana/css';
 	// %s: Base folder; %s: file prefix; %d: post_id
 	const FILE_NAME_PATTERN = '%s/%s%d.css';
 	const FILE_PREFIX = 'post-';
@@ -14,14 +14,14 @@ class Post_CSS_File {
 	const CSS_STATUS_INLINE = 'inline';
 	const CSS_STATUS_EMPTY = 'empty';
 
-	const META_KEY_CSS = '_builder_css';
+	const META_KEY_CSS = '_qazana_css';
 
 	/*
 	 * @var int
 	 */
 	protected $post_id;
 
-	protected $is_built_with_builder;
+	protected $is_built_with_qazana;
 
 	protected $path;
 
@@ -57,7 +57,7 @@ class Post_CSS_File {
 						$value_to_insert = call_user_func( $value_callback, $parser_control );
 					}
 
-					$control_obj = builder()->controls_manager->get_control( $parser_control['type'] );
+					$control_obj = qazana()->controls_manager->get_control( $parser_control['type'] );
 
 					$parsed_value = $control_obj->get_style_value( strtolower( $matches[2] ), $value_to_insert );
 
@@ -100,10 +100,10 @@ class Post_CSS_File {
 	public function __construct( $post_id ) {
 		$this->post_id = $post_id;
 
-		// Check if it's a Builder post
-		$this->is_built_with_builder = builder()->db->is_built_with_builder( $post_id );
+		// Check if it's a Qazana post
+		$this->is_built_with_qazana = qazana()->db->is_built_with_qazana( $post_id );
 
-		if ( ! $this->is_built_with_builder ) {
+		if ( ! $this->is_built_with_qazana ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class Post_CSS_File {
 	}
 
 	public function update() {
-		if ( ! $this->is_built_with_builder() ) {
+		if ( ! $this->is_built_with_qazana() ) {
 			return;
 		}
 
@@ -153,7 +153,7 @@ class Post_CSS_File {
 	}
 
 	public function enqueue() {
-		if ( ! $this->is_built_with_builder() ) {
+		if ( ! $this->is_built_with_qazana() ) {
 			return;
 		}
 
@@ -170,21 +170,21 @@ class Post_CSS_File {
 		}
 
 		if ( self::CSS_STATUS_INLINE === $meta['status'] ) {
-			wp_add_inline_style( 'builder-frontend', $meta['css'] );
+			wp_add_inline_style( 'qazana-frontend', $meta['css'] );
 		} else {
-			wp_enqueue_style( 'builder-post-' . $this->post_id, $this->url, [ 'builder-frontend' ], $meta['time'] );
+			wp_enqueue_style( 'qazana-post-' . $this->post_id, $this->url, [ 'qazana-frontend' ], $meta['time'] );
 		}
 
 		// Handle fonts
 		if ( ! empty( $meta['fonts'] ) ) {
 			foreach ( $meta['fonts'] as $font ) {
-				builder()->frontend->add_enqueue_font( $font );
+				qazana()->frontend->add_enqueue_font( $font );
 			}
 		}
 	}
 
-	public function is_built_with_builder() {
-		return $this->is_built_with_builder;
+	public function is_built_with_qazana() {
+		return $this->is_built_with_qazana;
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Post_CSS_File {
 	}
 
 	public function get_element_unique_selector( Element_Base $element ) {
-		return '.builder-' . $this->post_id . ' .builder-element' . $element->get_unique_selector();
+		return '.qazana-' . $this->post_id . ' .qazana-element' . $element->get_unique_selector();
 	}
 
 	public function get_css() {
@@ -236,20 +236,20 @@ class Post_CSS_File {
 	}
 
 	protected function update_meta( $meta ) {
-		return update_post_meta( $this->post_id, '_builder_css', $meta );
+		return update_post_meta( $this->post_id, '_qazana_css', $meta );
 	}
 
 	protected function parse_elements_css() {
-		if ( ! $this->is_built_with_builder() ) {
+		if ( ! $this->is_built_with_qazana() ) {
 			return;
 		}
 
-		$data = builder()->db->get_plain_editor( $this->post_id );
+		$data = qazana()->db->get_plain_editor( $this->post_id );
 
 		$css = '';
 
 		foreach ( $data as $element_data ) {
-			$element = builder()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->elements_manager->create_element_instance( $element_data );
 			$this->render_styles( $element );
 		}
 
@@ -267,7 +267,7 @@ class Post_CSS_File {
 			$css = str_replace(array('http://','https://'), '//', $css);
 		}
 
-		$this->css = apply_filters( 'builder/element/parse_elements_css', $css, $this );
+		$this->css = apply_filters( 'qazana/element/parse_elements_css', $css, $this );
 	}
 
 	public function get_stylesheet() {
@@ -288,7 +288,7 @@ class Post_CSS_File {
 						$control['style_fields'],
 						$field_value,
 						array_merge( $placeholders, [ '{{CURRENT_ITEM}}' ] ),
-						array_merge( $replacements, [ '.builder-repeater-item-' . $field_value['_id'] ] )
+						array_merge( $replacements, [ '.qazana-repeater-item-' . $field_value['_id'] ] )
 					);
 				}
 			}
@@ -342,6 +342,6 @@ class Post_CSS_File {
 			}
 		}
 
-		do_action( 'builder/element/parse_css', $this, $element );
+		do_action( 'qazana/element/parse_css', $this, $element );
 	}
 }

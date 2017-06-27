@@ -45,7 +45,7 @@ ImagesManager = function() {
 
 			if ( 'custom' === image.size ) {
 
-				if ( builder.getPanelView() && 'editor' === builder.getPanelView().currentPageName && image.model ) {
+				if ( qazana.getPanelView() && 'editor' === qazana.getPanelView().currentPageName && image.model ) {
 					// Trigger change again, so it's will load from the cache
 					self.onceTriggerChange( image.model );
 				}
@@ -126,7 +126,7 @@ ImagesManager = function() {
 			} );
 		}
 
-		window.builder.ajax.send(
+		window.qazana.ajax.send(
 			'get_images_details', {
 				data: {
 					items: requestedItems

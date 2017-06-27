@@ -1,9 +1,9 @@
 module.exports = function( $scope, $ ) {
-	if ( builderFrontend.isEditMode() ) {
+	if ( qazanaFrontend.isEditMode() ) {
 		return;
 	}
 
-	var $anchor = $scope.find( '.builder-menu-anchor' ),
+	var $anchor = $scope.find( '.qazana-menu-anchor' ),
 		anchorID = $anchor.attr( 'id' ),
 		$anchorLinks = $( 'a[href*="#' + anchorID + '"]' ),
 		$scrollable = $( 'html, body' ),

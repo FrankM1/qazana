@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -23,7 +23,7 @@ class Revisions_Manager {
 
 		$revisions = [];
 
-		$query_args['meta_key'] = '_builder_data';
+		$query_args['meta_key'] = '_qazana_data';
 
 		$posts = wp_get_post_revisions( $post->ID, $query_args );
 
@@ -33,7 +33,7 @@ class Revisions_Manager {
 
 		/** @var \WP_Post $revision */
 		foreach ( $posts as $revision ) {
-			$date = date_i18n( _x( 'M j @ H:i', 'revision date format', 'builder' ), strtotime( $revision->post_date ) );
+			$date = date_i18n( _x( 'M j @ H:i', 'revision date format', 'qazana' ), strtotime( $revision->post_date ) );
 
 			$human_time = human_time_diff( strtotime( $revision->post_date ), current_time( 'timestamp' ) );
 
@@ -46,7 +46,7 @@ class Revisions_Manager {
 			$revisions[] = [
 				'id' => $revision->ID,
 				'author' => get_the_author_meta( 'display_name' , $revision->post_author ),
-				'date' => sprintf( __( '%1$s ago (%2$s)', 'builder' ), $human_time, $date ),
+				'date' => sprintf( __( '%1$s ago (%2$s)', 'qazana' ), $human_time, $date ),
 				'type' => $type,
 				'gravatar' => get_avatar( $revision->post_author, 22 ),
 			];
@@ -62,11 +62,11 @@ class Revisions_Manager {
 			return;
 		}
 
-		builder()->db->copy_builder_meta( $parent_id, $revision_id );
+		qazana()->db->copy_qazana_meta( $parent_id, $revision_id );
 	}
 
 	public static function restore_revision( $parent_id, $revision_id ) {
-		builder()->db->copy_builder_meta( $revision_id, $parent_id );
+		qazana()->db->copy_qazana_meta( $revision_id, $parent_id );
 
 		$post_css = new Post_CSS_File( $parent_id );
 
@@ -80,7 +80,7 @@ class Revisions_Manager {
 			wp_send_json_error( 'You must set the revision ID' );
 		}
 
-		$revision = builder()->db->get_plain_editor( $_REQUEST['id'] );
+		$revision = qazana()->db->get_plain_editor( $_REQUEST['id'] );
 
 		if ( empty( $revision ) ) {
 			wp_send_json_error( 'Invalid Revision' );
@@ -92,13 +92,13 @@ class Revisions_Manager {
 	public static function on_delete_revision_request() {
 
 		if ( empty( $_REQUEST['id'] ) ) {
-			wp_send_json_error( __( 'You must set the id', 'builder' ) );
+			wp_send_json_error( __( 'You must set the id', 'qazana' ) );
 		}
 
-		$revision = builder()->db->get_plain_editor( $_REQUEST['id'] );
+		$revision = qazana()->db->get_plain_editor( $_REQUEST['id'] );
 
 		if ( empty( $revision ) ) {
-			wp_send_json_error( __( 'Invalid Revision', 'builder' ) );
+			wp_send_json_error( __( 'Invalid Revision', 'qazana' ) );
 		}
 
 		$deleted = wp_delete_post_revision( $_REQUEST['id'] );
@@ -106,7 +106,7 @@ class Revisions_Manager {
 		if ( $deleted && ! is_wp_error( $deleted ) ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( __( 'Cannot delete this Revision', 'builder' ) );
+			wp_send_json_error( __( 'Cannot delete this Revision', 'qazana' ) );
 		}
 	}
 
@@ -114,8 +114,8 @@ class Revisions_Manager {
 		add_action( 'wp_restore_post_revision', [ __CLASS__, 'restore_revision' ], 10, 2 );
 
 		if ( Utils::is_ajax() ) {
-			add_action( 'wp_ajax_builder_get_revision_data', [ __CLASS__, 'on_revision_data_request' ] );
-			add_action( 'wp_ajax_builder_delete_revision', [ __CLASS__, 'on_delete_revision_request' ] );
+			add_action( 'wp_ajax_qazana_get_revision_data', [ __CLASS__, 'on_revision_data_request' ] );
+			add_action( 'wp_ajax_qazana_delete_revision', [ __CLASS__, 'on_delete_revision_request' ] );
 		}
 	}
 }

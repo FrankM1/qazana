@@ -20,7 +20,7 @@ HandleAddDuplicateBehavior = Marionette.Behavior.extend( {
 		options = options || {};
 
 		var newItem = {
-			id: builder.helpers.getUniqueID(),
+			id: qazana.helpers.getUniqueID(),
 			elType: this.view.getChildType()[0],
 			settings: {},
 			elements: []

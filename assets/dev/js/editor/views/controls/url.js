@@ -1,11 +1,11 @@
-var ControlMultipleBaseItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlUrlItemView;
 
 ControlUrlItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.btnExternal = 'button.builder-control-url-target';
+		ui.btnExternal = 'button.qazana-control-url-target';
 
 		return ui;
 	},

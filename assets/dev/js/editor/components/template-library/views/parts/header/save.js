@@ -1,18 +1,18 @@
 var TemplateLibraryHeaderSaveView;
 
 TemplateLibraryHeaderSaveView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-header-save',
+	template: '#tmpl-qazana-template-library-header-save',
 
-	id: 'builder-template-library-header-save',
+	id: 'qazana-template-library-header-save',
 
-	className: 'builder-template-library-header-item',
+	className: 'qazana-template-library-header-item',
 
 	events: {
 		'click': 'onClick'
 	},
 
 	onClick: function() {
-		builder.templates.getLayout().showSaveTemplateView();
+		qazana.templates.getLayout().showSaveTemplateView();
 	}
 } );
 

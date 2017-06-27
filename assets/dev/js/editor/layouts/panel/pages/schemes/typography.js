@@ -1,4 +1,4 @@
-var PanelSchemeBaseView = require( 'builder-panel/pages/schemes/base' ),
+var PanelSchemeBaseView = require( 'qazana-panel/pages/schemes/base' ),
 	PanelSchemeTypographyView;
 
 PanelSchemeTypographyView = PanelSchemeBaseView.extend( {

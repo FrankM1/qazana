@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,19 +15,19 @@ class Scheme_Color extends Scheme_Base {
 	}
 
 	public function get_title() {
-		return __( 'Colors', 'builder' );
+		return __( 'Colors', 'qazana' );
 	}
 
 	public function get_disabled_title() {
-		return __( 'Color Palettes', 'builder' );
+		return __( 'Color Palettes', 'qazana' );
 	}
 
 	public function get_scheme_titles() {
 		return [
-			self::COLOR_1 => __( 'Primary', 'builder' ),
-			self::COLOR_2 => __( 'Secondary', 'builder' ),
-			self::COLOR_3 => __( 'Text', 'builder' ),
-			self::COLOR_4 => __( 'Accent', 'builder' ),
+			self::COLOR_1 => __( 'Primary', 'qazana' ),
+			self::COLOR_2 => __( 'Secondary', 'qazana' ),
+			self::COLOR_3 => __( 'Text', 'qazana' ),
+			self::COLOR_4 => __( 'Accent', 'qazana' ),
 		];
 	}
 
@@ -39,38 +39,38 @@ class Scheme_Color extends Scheme_Base {
 			self::COLOR_4 => '#61ce70',
 		];
 
-		return apply_filters( 'builder/schemes/default_color_schemes', $colors );
+		return apply_filters( 'qazana/schemes/default_color_schemes', $colors );
 
 	}
 
 	public function print_template_content() {
 		?>
-		<div class="builder-panel-scheme-content builder-panel-box">
-			<div class="builder-panel-heading">
-				<div class="builder-panel-heading-title"><?php echo $this->_get_current_scheme_title(); ?></div>
+		<div class="qazana-panel-scheme-content qazana-panel-box">
+			<div class="qazana-panel-heading">
+				<div class="qazana-panel-heading-title"><?php echo $this->_get_current_scheme_title(); ?></div>
 			</div>
 			<?php
 			$description = static::get_description();
 
 			if ( $description ) { ?>
-				<div class="builder-panel-scheme-description builder-descriptor"><?php echo $description; ?></div>
+				<div class="qazana-panel-scheme-description qazana-descriptor"><?php echo $description; ?></div>
 			<?php } ?>
-			<div class="builder-panel-scheme-items builder-panel-box-content"></div>
+			<div class="qazana-panel-scheme-items qazana-panel-box-content"></div>
 		</div>
-		<div class="builder-panel-scheme-colors-more-palettes builder-panel-box">
-			<div class="builder-panel-heading">
-				<div class="builder-panel-heading-title"><?php _e( 'More Palettes', 'builder' ); ?></div>
+		<div class="qazana-panel-scheme-colors-more-palettes qazana-panel-box">
+			<div class="qazana-panel-heading">
+				<div class="qazana-panel-heading-title"><?php _e( 'More Palettes', 'qazana' ); ?></div>
 			</div>
-			<div class="builder-panel-box-content">
+			<div class="qazana-panel-box-content">
 				<?php foreach ( $this->_get_system_schemes_to_print() as $scheme_name => $scheme ) : ?>
-					<div class="builder-panel-scheme-color-system-scheme" data-scheme-name="<?php echo $scheme_name; ?>">
-						<div class="builder-panel-scheme-color-system-items">
+					<div class="qazana-panel-scheme-color-system-scheme" data-scheme-name="<?php echo $scheme_name; ?>">
+						<div class="qazana-panel-scheme-color-system-items">
 							<?php
 							foreach ( $scheme['items'] as $color_value ) : ?>
-								<div class="builder-panel-scheme-color-system-item" style="background-color: <?php echo esc_attr( $color_value ); ?>;"></div>
+								<div class="qazana-panel-scheme-color-system-item" style="background-color: <?php echo esc_attr( $color_value ); ?>;"></div>
 							<?php endforeach; ?>
 						</div>
-						<div class="builder-title"><?php echo $scheme['title']; ?></div>
+						<div class="qazana-title"><?php echo $scheme['title']; ?></div>
 					</div>
 				<?php endforeach; ?>
 			</div>
@@ -163,7 +163,7 @@ class Scheme_Color extends Scheme_Base {
 			],
 		];
 
-		return apply_filters( 'builder/schemes/system_color_schemes', $schemes );
+		return apply_filters( 'qazana/schemes/system_color_schemes', $schemes );
 	}
 
 	protected function _get_system_schemes_to_print() {
@@ -171,6 +171,6 @@ class Scheme_Color extends Scheme_Base {
 	}
 
 	protected function _get_current_scheme_title() {
-		return __( 'Color Palette', 'builder' );
+		return __( 'Color Palette', 'qazana' );
 	}
 }

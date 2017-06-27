@@ -1,12 +1,12 @@
-var ControlBaseUnitsItemView = require( 'builder-views/controls/base-units' ),
+var ControlBaseUnitsItemView = require( 'qazana-views/controls/base-units' ),
 	ControlDimensionsItemView;
 
 ControlDimensionsItemView = ControlBaseUnitsItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseUnitsItemView.prototype.ui.apply( this, arguments );
 
-		ui.controls = '.builder-control-dimension > input:enabled';
-		ui.link = 'button.builder-link-dimensions';
+		ui.controls = '.qazana-control-dimension > input:enabled';
+		ui.link = 'button.qazana-link-dimensions';
 
 		return ui;
 	},

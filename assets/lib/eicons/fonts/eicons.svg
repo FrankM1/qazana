@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg">
-<metadata>Builder Icon Font by Builder.com</metadata>
+<metadata>Qazana Icon Font by Qazana.com</metadata>
 <defs>
 <font id="eicons" horiz-adv-x="1000" >
 <font-face font-family="eicons" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
 <missing-glyph horiz-adv-x="1000" />
-<glyph glyph-name="builder" unicode="&#xe800;" d="M0 850h200v-1000h-200v1000z m400-800h600v-200h-600v200z m0 400h600v-200h-600v200z m0 400h600v-200h-600v200z" horiz-adv-x="1000" />
+<glyph glyph-name="qazana" unicode="&#xe800;" d="M0 850h200v-1000h-200v1000z m400-800h600v-200h-600v200z m0 400h600v-200h-600v200z m0 400h600v-200h-600v200z" horiz-adv-x="1000" />
 
-<glyph glyph-name="builder-square" unicode="&#xe801;" d="M950 850h-900c-28 0-50-22-50-50v-900c0-28 22-50 50-50h900c28 0 50 22 50 50v900c0 28-22 50-50 50z m-583-722h-89v444h89v-444z m355 0h-266v89h266v-89z m0 178h-266v88h266v-88z m0 177h-266v89h266v-89z" horiz-adv-x="1000" />
+<glyph glyph-name="qazana-square" unicode="&#xe801;" d="M950 850h-900c-28 0-50-22-50-50v-900c0-28 22-50 50-50h900c28 0 50 22 50 50v900c0 28-22 50-50 50z m-583-722h-89v444h89v-444z m355 0h-266v89h266v-89z m0 178h-266v88h266v-88z m0 177h-266v89h266v-89z" horiz-adv-x="1000" />
 
 <glyph glyph-name="plus" unicode="&#xe803;" d="M792 308h-250v-250h-84v250h-250v84h250v250h84v-250h250v-84z" horiz-adv-x="1000" />
 

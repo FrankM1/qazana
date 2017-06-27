@@ -1,5 +1,5 @@
 <?php
-namespace Builder\System_Info\Helpers;
+namespace Qazana\System_Info\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

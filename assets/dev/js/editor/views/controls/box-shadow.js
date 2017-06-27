@@ -1,12 +1,12 @@
-var ControlMultipleBaseItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlBoxShadowItemView;
 
 ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.sliders = '.builder-slider';
-		ui.colors = '.builder-box-shadow-color-picker';
+		ui.sliders = '.qazana-slider';
+		ui.colors = '.qazana-box-shadow-color-picker';
 
 		return ui;
 	},
@@ -20,7 +20,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 
 		this.ui.sliders.each( function() {
 			var $slider = Backbone.$( this ),
-				$input = $slider.next( '.builder-slider-input' ).find( 'input' );
+				$input = $slider.next( '.qazana-slider-input' ).find( 'input' );
 
 			$slider.slider( {
 				value: value[ this.dataset.input ],
@@ -33,7 +33,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 	initColors: function() {
 		var self = this;
 
-		builder.helpers.wpColorPicker( this.ui.colors, {
+		qazana.helpers.wpColorPicker( this.ui.colors, {
 			change: function() {
 				var $this = Backbone.$( this ),
 					type = $this.data( 'setting' );

@@ -1,16 +1,16 @@
 //
 // Schemes
 //
-.builder-panel-scheme-title {
+.qazana-panel-scheme-title {
 	padding: 10px 20px;
 	margin-top: 10px;
 }
 
-.builder-panel-scheme-description {
+.qazana-panel-scheme-description {
 	padding: 20px 20px 0;
 }
 
-.builder-panel-scheme-buttons {
+.qazana-panel-scheme-buttons {
 	padding: 0 20px;
 	display: table;
 	table-layout: fixed;
@@ -20,7 +20,7 @@
 	box-shadow: $panel-bottom-shadow;
 }
 
-.builder-panel-scheme-button-wrapper {
+.qazana-panel-scheme-button-wrapper {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
@@ -34,17 +34,17 @@
 	}
 }
 
-.builder-panel-scheme-save {
+.qazana-panel-scheme-save {
 
-	.builder-button {
+	.qazana-button {
 		padding: 6px 18px;
 		text-transform: uppercase;
 	}
 }
 
-.builder-panel-scheme-reset, .builder-panel-scheme-discard {
+.qazana-panel-scheme-reset, .qazana-panel-scheme-discard {
 
-	.builder-button {
+	.qazana-button {
 		color: $editor-light;
 		background: none;
 
@@ -55,13 +55,13 @@
 }
 
 
-.builder-panel-scheme-color {
+.qazana-panel-scheme-color {
 
-	.builder-panel-scheme-items {
+	.qazana-panel-scheme-items {
 		position: relative;
 	}
 
-	.builder-panel-scheme-item {
+	.qazana-panel-scheme-item {
 		display: inline-block;
 
 		&:not(:nth-child(4n)) {
@@ -95,7 +95,7 @@
 	}
 }
 
-.builder-panel-scheme-color-title {
+.qazana-panel-scheme-color-title {
 	text-align: center;
 	text-transform: uppercase;
 	margin: 10px 0;
@@ -103,7 +103,7 @@
 	font-size: 8px;
 }
 
-.builder-panel-scheme-typography-item {
+.qazana-panel-scheme-typography-item {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
@@ -115,30 +115,30 @@
 	 }
 }
 
-.builder-panel-scheme-typography-item-value {
+.qazana-panel-scheme-typography-item-value {
 
 	select, input {
 		width: 100%;
 	}
 }
 
-.builder-panel-scheme-item {
+.qazana-panel-scheme-item {
 
-	.builder-panel-heading {
+	.qazana-panel-heading {
 
-		&:not(.builder-open) {
+		&:not(.qazana-open) {
 
-			+ .builder-panel-scheme-typography-items {
+			+ .qazana-panel-scheme-typography-items {
 				display: none;
 			}
 		}
 	}
 }
 
-.builder-panel-scheme-color-system-scheme {
+.qazana-panel-scheme-color-system-scheme {
 	margin-bottom: 10px;
 
-	.builder-title {
+	.qazana-title {
 		font-size: 11px;
 		color: $editor-light;
 		font-style: italic;
@@ -146,7 +146,7 @@
 	}
 }
 
-.builder-panel-scheme-color-system-items {
+.qazana-panel-scheme-color-system-items {
 	display: flex;
 	transition: border .5s;
 	overflow: hidden;
@@ -160,12 +160,12 @@
 	}
 }
 
-.builder-panel-scheme-color-system-item {
+.qazana-panel-scheme-color-system-item {
 	height: 20px;
 	flex-grow: 1;
 }
 
-#builder-panel-schemes-disabled {
+#qazana-panel-schemes-disabled {
 
 	a {
 		

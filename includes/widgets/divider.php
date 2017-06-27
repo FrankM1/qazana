@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Divider extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Divider', 'builder' );
+		return __( 'Divider', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -21,24 +21,24 @@ class Widget_Divider extends Widget_Base {
 		$this->start_controls_section(
 			'section_divider',
 			[
-				'label' => __( 'Divider', 'builder' ),
+				'label' => __( 'Divider', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'style',
 			[
-				'label' => __( 'Style', 'builder' ),
+				'label' => __( 'Style', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'solid' => __( 'Solid', 'builder' ),
-					'double' => __( 'Double', 'builder' ),
-					'dotted' => __( 'Dotted', 'builder' ),
-					'dashed' => __( 'Dashed', 'builder' ),
+					'solid' => __( 'Solid', 'qazana' ),
+					'double' => __( 'Double', 'qazana' ),
+					'dotted' => __( 'Dotted', 'qazana' ),
+					'dashed' => __( 'Dashed', 'qazana' ),
 				],
 				'default' => 'solid',
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider-separator' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-style: {{VALUE}};',
 				],
 			]
 		);
@@ -46,7 +46,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_control(
 			'weight',
 			[
-				'label' => __( 'Weight', 'builder' ),
+				'label' => __( 'Weight', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 1,
@@ -58,7 +58,7 @@ class Widget_Divider extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider-separator' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -66,7 +66,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_control(
 			'color',
 			[
-				'label' => __( 'Color', 'builder' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'scheme' => [
@@ -74,7 +74,7 @@ class Widget_Divider extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider-separator' => 'border-top-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-color: {{VALUE}};',
 				],
 			]
 		);
@@ -82,14 +82,14 @@ class Widget_Divider extends Widget_Base {
 		$this->add_control(
 			'width',
 			[
-				'label' => __( 'Width', 'builder' ),
+				'label' => __( 'Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 100,
 					'unit' => '%',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider-separator' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-divider-separator' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -97,25 +97,25 @@ class Widget_Divider extends Widget_Base {
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .qazana-divider' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -123,7 +123,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_control(
 			'gap',
 			[
-				'label' => __( 'Gap', 'builder' ),
+				'label' => __( 'Gap', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 15,
@@ -135,7 +135,7 @@ class Widget_Divider extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-divider' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-divider' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -143,7 +143,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -154,16 +154,16 @@ class Widget_Divider extends Widget_Base {
 
 	protected function render() {
 		?>
-		<div class="builder-divider">
-			<span class="builder-divider-separator"></span>
+		<div class="qazana-divider">
+			<span class="qazana-divider-separator"></span>
 		</div>
 		<?php
 	}
 
 	protected function _content_template() {
 		?>
-		<div class="builder-divider">
-			<span class="builder-divider-separator"></span>
+		<div class="qazana-divider">
+			<span class="qazana-divider-separator"></span>
 		</div>
 		<?php
 	}

@@ -3,11 +3,11 @@
 //
 
 // Section
-.builder-section {
+.qazana-section {
 	position: relative;
 
 	// Container
-	.builder-container {
+	.qazana-container {
 		display: flex;
 		margin-right: auto;
 		margin-left: auto;
@@ -15,34 +15,34 @@
 	}
 
 	// Max-width of container depending on section settings
-	&.builder-section-boxed {
-		& > .builder-container {
+	&.qazana-section-boxed {
+		& > .qazana-container {
 			max-width: 1140px;
 		}
 	}
 
 	// Stretched section settings
-	&.builder-section-stretched {
+	&.qazana-section-stretched {
 		position: relative;
 		width: 100%;
 	}
 
 	// In section min-height / fit to screen mode
-	&.builder-section-items- {
+	&.qazana-section-items- {
 		&top {
-			> .builder-container {
+			> .qazana-container {
 				align-items: flex-start;
 			}
 		}
 
 		&middle {
-			> .builder-container {
+			> .qazana-container {
 				align-items: center;
 			}
 		}
 
 		&bottom {
-			> .builder-container {
+			> .qazana-container {
 				align-items: flex-end;
 			}
 		}
@@ -50,10 +50,10 @@
 	@media (min-width: $screen-md-min) {
 
 		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
-		&.builder-section-height-full {
+		&.qazana-section-height-full {
 			height: 100vh;
 
-			> .builder-container {
+			> .qazana-container {
 				height: 100%;
 			}
 		}
@@ -62,19 +62,19 @@
 
 // In columns stretch mode
 
-.builder-container {
-	> .builder-row {
-		> .builder-column {
-			> .builder-column-wrap {
-				.builder-section-content-top > & {
+.qazana-container {
+	> .qazana-row {
+		> .qazana-column {
+			> .qazana-column-wrap {
+				.qazana-section-content-top > & {
 					align-items: flex-start;
 				}
 
-				.builder-section-content-middle > & {
+				.qazana-section-content-middle > & {
 					align-items: center;
 				}
 
-				.builder-section-content-bottom > & {
+				.qazana-section-content-bottom > & {
 					align-items: flex-end;
 				}
 			}
@@ -83,7 +83,7 @@
 }
 
 // Row
-.builder-row {
+.qazana-row {
 	width: 100%;
 	display: flex;
 
@@ -94,46 +94,46 @@
 }
 
 @media (max-width: 1024px) {
-  .builder-row {
+  .qazana-row {
     flex-wrap: wrap;
   }
 }
 
 
 // Widget
-.builder-column-wrap {
+.qazana-column-wrap {
 	width: 100%;
 	display: flex;
 }
 
-.builder-widget-wrap {
+.qazana-widget-wrap {
 	width: 100%;
 }
 
-.builder-widget {
+.qazana-widget {
 	&:not(:last-child) {
 		margin-bottom: 20px;
 	}
 }
 
 // Columns
-.builder-column {
+.qazana-column {
 	position: relative;
 	min-height: 1px;
 	display: flex;
 
 }
-@mixin builder-grid-classes {
+@mixin qazana-grid-classes {
 	 @each $sizeKey, $size in $column-sizes{
-		&.builder-col-#{$sizeKey},
+		&.qazana-col-#{$sizeKey},
 		&[data-col="#{$sizeKey}"] {
 			width: $size;
 		}
 	}
 }
-@mixin builder-responsive($breakpoint-name) {
+@mixin qazana-responsive($breakpoint-name) {
 	 @each $size-name, $size in $column-sizes{
-		&.builder-#{$breakpoint-name}-#{$size-name} {
+		&.qazana-#{$breakpoint-name}-#{$size-name} {
 			width: $size;
 		}
 	}
@@ -141,26 +141,26 @@
 }
 
 // Columns Gap
-.builder-row {
-	> .builder-column {
-		> .builder-element-populated {
-			.builder-column-gap-narrow > & {
+.qazana-row {
+	> .qazana-column {
+		> .qazana-element-populated {
+			.qazana-column-gap-narrow > & {
 				padding: 5px;
 			}
 
-			.builder-column-gap-default > & {
+			.qazana-column-gap-default > & {
 				padding: 10px;
 			}
 
-			.builder-column-gap-extended > & {
+			.qazana-column-gap-extended > & {
 				padding: 15px;
 			}
 
-			.builder-column-gap-wide > & {
+			.qazana-column-gap-wide > & {
 				padding: 20px;
 			}
 
-			.builder-column-gap-wider > & {
+			.qazana-column-gap-wider > & {
 				padding: 30px;
 			}
 		}
@@ -168,42 +168,42 @@
 }
 
 // Columns Gap for Inner section
-.builder-inner-section {
-	.builder-column-gap-no {
-		.builder-element-populated {
+.qazana-inner-section {
+	.qazana-column-gap-no {
+		.qazana-element-populated {
 			padding: 0;
 		}
 	}
 }
 
-.builder-column-gap-no .builder-widget {
+.qazana-column-gap-no .qazana-widget {
 	margin-bottom: 0px;
 }
 
 // Responsive Grid
 @media (min-width: $screen-md-min) {
-	.builder-column {
-		@include builder-grid-classes;
+	.qazana-column {
+		@include qazana-grid-classes;
 	}
 }
 
-.builder-column {
+.qazana-column {
 	@media (max-width: $screen-xs-max) {
-		 @include builder-responsive(xs);
+		 @include qazana-responsive(xs);
 	}
 	@media (max-width: $screen-sm-max) {
-		 @include builder-responsive(sm);
+		 @include qazana-responsive(sm);
 	}
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-		 @include builder-responsive(md);
+		 @include qazana-responsive(md);
 	}
 }
 @media (max-width: $screen-sm-max) {
-	.builder-column {
+	.qazana-column {
 		width: 100%;
 	}
 
-	.builder-reverse-mobile > .builder-container > .builder-row {
+	.qazana-reverse-mobile > .qazana-container > .qazana-row {
 		flex-direction: column-reverse;
 	}
 }

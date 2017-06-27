@@ -1,4 +1,4 @@
-var ControlMultipleBaseItemView = require( 'builder-views/controls/base-multiple' ),
+var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlImageDimensionsItemView;
 
 ControlImageDimensionsItemView = ControlMultipleBaseItemView.extend( {
@@ -7,7 +7,7 @@ ControlImageDimensionsItemView = ControlMultipleBaseItemView.extend( {
 			inputWidth: 'input[data-setting="width"]',
 			inputHeight: 'input[data-setting="height"]',
 
-			btnApply: 'button.builder-image-dimensions-apply-button'
+			btnApply: 'button.qazana-image-dimensions-apply-button'
 		};
 	},
 

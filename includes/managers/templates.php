@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -147,7 +147,7 @@ class Template_Manager {
 		}
 
 		if ( isset( $args['edit_mode'] ) ) {
-			builder()->editor->set_edit_mode( $args['edit_mode'] );
+			qazana()->editor->set_edit_mode( $args['edit_mode'] );
 		}
 
 		$source = $this->get_source( $args['source'] );
@@ -211,14 +211,14 @@ class Template_Manager {
 	}
 
 	public function on_export_template_error( \WP_Error $error ) {
-		_default_wp_die_handler( $error->get_error_message(), 'Builder Library' );
+		_default_wp_die_handler( $error->get_error_message(), 'Qazana Library' );
 	}
 
 	private function register_default_sources() {
 
-		include( builder()->includes_dir . 'templates/sources/base.php' );
-        include( builder()->includes_dir . 'templates/classes/api.php' );
-		include( builder()->includes_dir . 'templates/classes/import-images.php' );
+		include( qazana()->includes_dir . 'templates/sources/base.php' );
+        include( qazana()->includes_dir . 'templates/classes/api.php' );
+		include( qazana()->includes_dir . 'templates/classes/import-images.php' );
 
 		$sources = [
 			'local',
@@ -227,7 +227,7 @@ class Template_Manager {
 		];
 
 		foreach ( $sources as $source_filename ) {
-			include( builder()->includes_dir  . 'templates/sources/' . $source_filename . '.php' );
+			include( qazana()->includes_dir  . 'templates/sources/' . $source_filename . '.php' );
 
 			$class_name = ucwords( $source_filename );
 			$class_name = str_replace( '-', '_', $class_name );
@@ -289,7 +289,7 @@ class Template_Manager {
 		];
 
 		foreach ( $allowed_ajax_requests as $ajax_request ) {
-			add_action( 'wp_ajax_builder_' . $ajax_request, function() use ( $ajax_request ) {
+			add_action( 'wp_ajax_qazana_' . $ajax_request, function() use ( $ajax_request ) {
 				$this->handle_ajax_request( $ajax_request );
 			} );
 		}

@@ -1,49 +1,49 @@
 <?php
 
 /**
- * Builder Admin Actions.
+ * Qazana Admin Actions.
  *
  *
- * @see builder-core-actions.php
- * @see builder-core-filters.php
+ * @see qazana-core-actions.php
+ * @see qazana-core-filters.php
  */
 
 /*
- * Attach Builder to WordPress
+ * Attach Qazana to WordPress
  *
- * Builder uses its own internal actions to help aid in third-party plugin
+ * Qazana uses its own internal actions to help aid in third-party plugin
  * development, and to limit the amount of potential future code changes when
  * updates to WordPress core occur.
  *
  * These actions exist to create the concept of 'plugin dependencies'. They
- * provide a safe way for plugins to execute code *only* when Builder is
+ * provide a safe way for plugins to execute code *only* when Qazana is
  * installed and activated, without needing to do complicated guesswork.
  *
  * For more information on how this works, see the 'Plugin Dependency' section
  * near the bottom of this file.
  *
- *           v--WordPress Actions       v--Builder Sub-actions
+ *           v--WordPress Actions       v--Qazana Sub-actions
  */
-add_action( 'admin_menu',              'builder_admin_menu' );
-add_action( 'admin_init',              'builder_admin_init' );
-add_action( 'admin_head',              'builder_admin_head' );
-add_action( 'admin_notices',           'builder_admin_notices' );
+add_action( 'admin_menu',              'qazana_admin_menu' );
+add_action( 'admin_init',              'qazana_admin_init' );
+add_action( 'admin_head',              'qazana_admin_head' );
+add_action( 'admin_notices',           'qazana_admin_notices' );
 
 // Hook on to admin_init
-add_action( 'builder_admin_init', 'builder_setup_updater', 999 );
+add_action( 'qazana_admin_init', 'qazana_setup_updater', 999 );
 
-add_action( 'builder_admin_init', 'builder_register_admin_style' );
-add_action( 'builder_admin_init', 'builder_register_admin_settings' );
-add_action( 'builder_admin_init', 'builder_do_activation_redirect', 1 );
+add_action( 'qazana_admin_init', 'qazana_register_admin_style' );
+add_action( 'qazana_admin_init', 'qazana_register_admin_settings' );
+add_action( 'qazana_admin_init', 'qazana_do_activation_redirect', 1 );
 
 // Initialize the admin area
-add_action( 'builder_init', 'builder_admin' );
+add_action( 'qazana_init', 'qazana_admin' );
 
 // Activation
-add_action( 'builder_activation', 'builder_delete_rewrite_rules' );
+add_action( 'qazana_activation', 'qazana_delete_rewrite_rules' );
 
 // Deactivation
-add_action( 'builder_deactivation', 'builder_delete_rewrite_rules' );
+add_action( 'qazana_deactivation', 'qazana_delete_rewrite_rules' );
 
 /** Sub-Actions ***************************************************************/
 
@@ -52,9 +52,9 @@ add_action( 'builder_deactivation', 'builder_delete_rewrite_rules' );
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_admin_init'
+ * @uses do_action() Calls 'qazana_admin_init'
  */
-function builder_admin_init() {
+function qazana_admin_init() {
     do_action( __FUNCTION__ );
 }
 
@@ -63,9 +63,9 @@ function builder_admin_init() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_admin_menu'
+ * @uses do_action() Calls 'qazana_admin_menu'
  */
-function builder_admin_menu() {
+function qazana_admin_menu() {
     do_action( __FUNCTION__ );
 }
 
@@ -74,9 +74,9 @@ function builder_admin_menu() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_admin_head'
+ * @uses do_action() Calls 'qazana_admin_head'
  */
-function builder_admin_head() {
+function qazana_admin_head() {
     do_action( __FUNCTION__ );
 }
 
@@ -85,9 +85,9 @@ function builder_admin_head() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_admin_notices'
+ * @uses do_action() Calls 'qazana_admin_notices'
  */
-function builder_admin_notices() {
+function qazana_admin_notices() {
     do_action( __FUNCTION__ );
 }
 
@@ -96,9 +96,9 @@ function builder_admin_notices() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_admin_notices'
+ * @uses do_action() Calls 'qazana_admin_notices'
  */
-function builder_register_admin_style() {
+function qazana_register_admin_style() {
     do_action( __FUNCTION__ );
 }
 
@@ -107,8 +107,8 @@ function builder_register_admin_style() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'builder_register_admin_settings'
+ * @uses do_action() Calls 'qazana_register_admin_settings'
  */
-function builder_register_admin_settings() {
+function qazana_register_admin_settings() {
     do_action( __FUNCTION__ );
 }

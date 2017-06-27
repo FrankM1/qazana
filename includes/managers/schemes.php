@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -101,7 +101,7 @@ class Schemes_Manager {
 	}
 
 	public function ajax_apply_scheme() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'builder-editing' ) ) {
+		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -130,23 +130,23 @@ class Schemes_Manager {
 			$enabled_schemes = [];
 
 			foreach ( self::$_schemes_types as $schemes_type ) {
-				if ( 'yes' === get_option( 'builder_disable_' . $schemes_type . '_schemes' ) ) {
+				if ( 'yes' === get_option( 'qazana_disable_' . $schemes_type . '_schemes' ) ) {
 					continue;
 				}
 				$enabled_schemes[] = $schemes_type;
 			}
-			self::$_enabled_schemes = apply_filters( 'builder/schemes/enabled_schemes', $enabled_schemes );
+			self::$_enabled_schemes = apply_filters( 'qazana/schemes/enabled_schemes', $enabled_schemes );
 		}
 		return self::$_enabled_schemes;
 	}
 
 	private function register_default_schemes() {
-		include( builder()->includes_dir  . 'editor/interfaces/scheme.php' );
+		include( qazana()->includes_dir  . 'editor/interfaces/scheme.php' );
 
-		include( builder()->includes_dir  . 'editor/schemes/base.php' );
+		include( qazana()->includes_dir  . 'editor/schemes/base.php' );
 
 		foreach ( self::$_schemes_types as $schemes_type ) {
-			include( builder()->includes_dir  . 'editor/schemes/' . $schemes_type . '.php' );
+			include( qazana()->includes_dir  . 'editor/schemes/' . $schemes_type . '.php' );
 
 			$this->register_scheme( __NAMESPACE__ . '\Scheme_' . ucfirst( str_replace( '-', '_', $schemes_type ) ) );
 		}
@@ -155,6 +155,6 @@ class Schemes_Manager {
 	public function __construct() {
 		$this->register_default_schemes();
 
-		add_action( 'wp_ajax_builder_apply_scheme', [ $this, 'ajax_apply_scheme' ] );
+		add_action( 'wp_ajax_qazana_apply_scheme', [ $this, 'ajax_apply_scheme' ] );
 	}
 }

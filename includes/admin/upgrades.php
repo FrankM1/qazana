@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,12 +10,12 @@ class Upgrades {
     }
 
     public static function init() {
-        $builder_version = get_option( 'builder_version' );
+        $qazana_version = get_option( 'qazana_version' );
 
-        if ( ! $builder_version ) {
+        if ( ! $qazana_version ) {
             // 0.3.1 is the first version to use this option so we must add it
-            $builder_version = '1.0.0';
-            update_option( 'builder_version', $builder_version );
+            $qazana_version = '1.0.0';
+            update_option( 'qazana_version', $qazana_version );
         }
     }
 }

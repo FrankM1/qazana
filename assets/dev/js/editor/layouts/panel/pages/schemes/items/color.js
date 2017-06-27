@@ -1,4 +1,4 @@
-var PanelSchemeItemView = require( 'builder-panel/pages/schemes/items/base' ),
+var PanelSchemeItemView = require( 'qazana-panel/pages/schemes/items/base' ),
 	PanelSchemeColorView;
 
 PanelSchemeColorView = PanelSchemeItemView.extend( {
@@ -7,7 +7,7 @@ PanelSchemeColorView = PanelSchemeItemView.extend( {
 	},
 
 	ui: {
-		input: '.builder-panel-scheme-color-value'
+		input: '.qazana-panel-scheme-color-value'
 	},
 
 	changeUIValue: function( newValue ) {
@@ -21,7 +21,7 @@ PanelSchemeColorView = PanelSchemeItemView.extend( {
 	},
 
 	onRender: function() {
-		builder.helpers.wpColorPicker( this.ui.input, {
+		qazana.helpers.wpColorPicker( this.ui.input, {
 			change: _.bind( function( event, ui ) {
 				this.triggerMethod( 'value:change', ui.color.toString() );
 			}, this )

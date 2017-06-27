@@ -1,9 +1,9 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWysiwygItemView;
 
 ControlWysiwygItemView = ControlBaseItemView.extend( {
 	childEvents: {
-		'keyup textarea.builder-wp-editor': 'updateElementModel'
+		'keyup textarea.qazana-wp-editor': 'updateElementModel'
 	},
 
 	// List of buttons to move {buttonToMove: afterButton}
@@ -24,7 +24,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 
 		var self = this;
 
-		self.editorID = 'builderwpeditor' + self.cid;
+		self.editorID = 'qazanawpeditor' + self.cid;
 
 		// Wait a cycle before initializing the editors.
 		_.defer( function() {
@@ -34,15 +34,15 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 				id: self.editorID
 			} );
 
-			if ( builder.config.rich_editing_enabled ) {
+			if ( qazana.config.rich_editing_enabled ) {
 				switchEditors.go( self.editorID, 'tmce' );
 			}
 
 			delete QTags.instances[ 0 ];
 		} );
 
-		if ( ! builder.config.rich_editing_enabled ) {
-			self.$el.addClass( 'builder-rich-editing-disabled' );
+		if ( ! qazana.config.rich_editing_enabled ) {
+			self.$el.addClass( 'qazana-rich-editing-disabled' );
 
 			return;
 		}
@@ -59,13 +59,13 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 			}
 		};
 
-		tinyMCEPreInit.mceInit[ self.editorID ] = _.extend( _.clone( tinyMCEPreInit.mceInit.builderwpeditor ), editorConfig );
+		tinyMCEPreInit.mceInit[ self.editorID ] = _.extend( _.clone( tinyMCEPreInit.mceInit.qazanawpeditor ), editorConfig );
 
 		self.rearrangeButtons();
 	},
 
 	attachElContent: function() {
-		var editorTemplate = builder.config.wp_editor.replace( /builderwpeditor/g, this.editorID ).replace( '%%EDITORCONTENT%%', this.getControlValue() );
+		var editorTemplate = qazana.config.wp_editor.replace( /qazanawpeditor/g, this.editorID ).replace( '%%EDITORCONTENT%%', this.getControlValue() );
 
 		this.$el.html( editorTemplate );
 
@@ -112,7 +112,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 		// Remove TinyMCE and QuickTags instances
 		delete QTags.instances[ this.editorID ];
 
-		if ( ! builder.config.rich_editing_enabled ) {
+		if ( ! qazana.config.rich_editing_enabled ) {
 			return;
 		}
 

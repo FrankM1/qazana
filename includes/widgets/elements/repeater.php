@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 class Repeater extends Element_Base {
 
@@ -24,7 +24,7 @@ class Repeater extends Element_Base {
 			$args = array_merge( $args, $this->_current_tab );
 		}
 
-		return builder()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
+		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
 	}
 
 	protected function _get_default_child_type( array $element_data ) {

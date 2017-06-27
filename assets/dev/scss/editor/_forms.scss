@@ -2,7 +2,7 @@
 // Forms
 //
 
-input, select, textarea, .builder-input-style {
+input, select, textarea, .qazana-input-style {
 	border-radius: 3px;
 	font-size: 12px;
 	width: 100%;
@@ -21,18 +21,18 @@ input, select, textarea, .builder-input-style {
 	}
 }
 
-.builder-error {
+.qazana-error {
 
 	input, select, textarea {
 		border-color: $editor-warning;
 	}
 }
 
-input, textarea, .builder-input-style {
+input, textarea, .qazana-input-style {
 	padding: 5px 8px;
 }
 
-textarea, .builder-input-style {
+textarea, .qazana-input-style {
 	resize: vertical;
 }
 

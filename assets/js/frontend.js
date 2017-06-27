@@ -9,24 +9,24 @@ ElementsHandler = function( $ ) {
 			return;
 		}
 
-		builderFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
+		qazanaFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
 
 		var isWidgetType = ( -1 === [ 'section', 'column' ].indexOf( elementType ) );
 
 		if ( isWidgetType ) {
-			builderFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
+			qazanaFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
 		}
 
-		builderFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
+		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 
 		$(document).trigger( 'element_ready', $scope );
 		$(document).trigger( 'element_ready::'+ elementType, $scope );
 	};
 
 	this.addExternalListener = function( $scope, event, callback, externalElement ) {
-		var $externalElement = $( externalElement || builderFrontend.getScopeWindow() );
+		var $externalElement = $( externalElement || qazanaFrontend.getScopeWindow() );
 
-		if ( ! builderFrontend.isEditMode() ) {
+		if ( ! qazanaFrontend.isEditMode() ) {
 			$externalElement.on( event, callback );
 
 			return;
@@ -43,19 +43,19 @@ ElementsHandler = function( $ ) {
 module.exports = ElementsHandler;
 
 },{}],2:[function(require,module,exports){
-/* global builderFrontendConfig */
+/* global qazanaFrontendConfig */
 ( function( $ ) {
 	var EventManager = require( '../utils/hooks' ),
-		ElementsHandler = require( 'builder-frontend/elements-handler' ),
-	    Utils = require( 'builder-frontend/utils' );
+		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
+	    Utils = require( 'qazana-frontend/utils' );
 
-	var BuilderFrontend = function() {
+	var QazanaFrontend = function() {
 		var self = this,
 			scopeWindow = window;
 
 		var addGlobalHandlers = function() {
-			self.hooks.addAction( 'frontend/element_ready/global', require( 'builder-frontend/handlers/global' ) );
-			self.hooks.addAction( 'frontend/element_ready/widget', require( 'builder-frontend/handlers/widget' ) );
+			self.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
+			self.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
 		};
 
 		var addElementsHandlers = function() {
@@ -69,9 +69,9 @@ module.exports = ElementsHandler;
 
 			if ( self.isEditMode() ) {
 				// Elements outside from the Preview
-				$elements = self.getScopeWindow().jQuery( '.builder-element', '.builder:not(.builder-edit-mode)' );
+				$elements = self.getScopeWindow().jQuery( '.qazana-element', '.qazana:not(.qazana-edit-mode)' );
 			} else {
-				$elements = $( '.builder-element' );
+				$elements = $( '.qazana-element' );
 			}
 
 			$elements.each( function() {
@@ -82,21 +82,21 @@ module.exports = ElementsHandler;
 		// element-type.skin-type
 		this.handlers = {
 			// Elements
-			'section': require( 'builder-frontend/handlers/section' ),
+			'section': require( 'qazana-frontend/handlers/section' ),
 
 			// Widgets
-			'accordion.default': require( 'builder-frontend/handlers/accordion' ),
-			'alert.default': require( 'builder-frontend/handlers/alert' ),
-			'counter.default': require( 'builder-frontend/handlers/counter' ),
-			'progress.default': require( 'builder-frontend/handlers/progress' ),
-			'tabs.default': require( 'builder-frontend/handlers/tabs' ),
-			'toggle.default': require( 'builder-frontend/handlers/toggle' ),
-			'video.default': require( 'builder-frontend/handlers/video' ),
-			//'image-carousel.default': require( 'builder-frontend/handlers/image-carousel' ),
-			'menu-anchor.default': require( 'builder-frontend/handlers/menu-anchor' ),
+			'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
+			'alert.default': require( 'qazana-frontend/handlers/alert' ),
+			'counter.default': require( 'qazana-frontend/handlers/counter' ),
+			'progress.default': require( 'qazana-frontend/handlers/progress' ),
+			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
+			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
+			'video.default': require( 'qazana-frontend/handlers/video' ),
+			//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
+			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),
 		};
 
-		this.config = builderFrontendConfig;
+		this.config = qazanaFrontendConfig;
 
 		this.getScopeWindow = function() {
 			return scopeWindow;
@@ -172,16 +172,16 @@ module.exports = ElementsHandler;
 
     };
 
-	window.builderFrontend = new BuilderFrontend();
+	window.qazanaFrontend = new QazanaFrontend();
 })( jQuery );
 
 jQuery( function() {
-	if ( ! builderFrontend.isEditMode() ) {
-		builderFrontend.init();
+	if ( ! qazanaFrontend.isEditMode() ) {
+		qazanaFrontend.init();
 	}
 });
 
-},{"../utils/hooks":16,"builder-frontend/elements-handler":1,"builder-frontend/handlers/accordion":3,"builder-frontend/handlers/alert":4,"builder-frontend/handlers/counter":6,"builder-frontend/handlers/global":7,"builder-frontend/handlers/menu-anchor":8,"builder-frontend/handlers/progress":9,"builder-frontend/handlers/section":10,"builder-frontend/handlers/tabs":11,"builder-frontend/handlers/toggle":12,"builder-frontend/handlers/video":13,"builder-frontend/handlers/widget":14,"builder-frontend/utils":15}],3:[function(require,module,exports){
+},{"../utils/hooks":16,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":3,"qazana-frontend/handlers/alert":4,"qazana-frontend/handlers/counter":6,"qazana-frontend/handlers/global":7,"qazana-frontend/handlers/menu-anchor":8,"qazana-frontend/handlers/progress":9,"qazana-frontend/handlers/section":10,"qazana-frontend/handlers/tabs":11,"qazana-frontend/handlers/toggle":12,"qazana-frontend/handlers/video":13,"qazana-frontend/handlers/widget":14,"qazana-frontend/utils":15}],3:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -201,8 +201,8 @@ var activateSection = function( sectionIndex, $accordionTitles ) {
 };
 
 module.exports = function( $scope, $ ) {
-	var defaultActiveSection = $scope.find( '.builder-accordion' ).data( 'active-section' ),
-		$accordionTitles = $scope.find( '.builder-accordion-title' );
+	var defaultActiveSection = $scope.find( '.qazana-accordion' ).data( 'active-section' ),
+		$accordionTitles = $scope.find( '.qazana-accordion-title' );
 
 	if ( ! defaultActiveSection ) {
 		defaultActiveSection = 1;
@@ -217,7 +217,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],4:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	$scope.find( '.builder-alert-dismiss' ).on( 'click', function() {
+	$scope.find( '.qazana-alert-dismiss' ).on( 'click', function() {
 		$( this ).parent().fadeOut();
 	} );
 };
@@ -276,16 +276,16 @@ module.exports = function( $scope, $ ) {
 				}
 			} );
 
-			$( builderFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
+			$( qazanaFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
 		};
 
 	    var prepareVimeoVideo = function( YT, videoID ) {
 
-	        $( builderFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
+	        $( qazanaFrontend.getScopeWindow() ).on( 'resize', changeVideoSize );
 	    };
 
 		var initElements = function() {
-			elements.$backgroundVideo = $backgroundVideoContainer.children( '.builder-background-video' );
+			elements.$backgroundVideo = $backgroundVideoContainer.children( '.qazana-background-video' );
 		};
 
 		var run = function() {
@@ -295,14 +295,14 @@ module.exports = function( $scope, $ ) {
 			if ( videoID && videoHost === 'youtube' ) {
 				isYTVideo = true;
 
-				builderFrontend.utils.onYoutubeApiReady( function( YT ) {
+				qazanaFrontend.utils.onYoutubeApiReady( function( YT ) {
 					setTimeout( function() {
 						prepareYTVideo( YT, videoID );
 					}, 1 );
 				} );
 
 				/*// slider reaches top of screen
-				builderFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
+				qazanaFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
 
 					// slider scrolled into view
 					if ( direction === 'up' ) {
@@ -325,7 +325,7 @@ module.exports = function( $scope, $ ) {
 					// slider reaches bottom of screen
 				}});
 
-				 builderFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
+				 qazanaFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
 
 					// slider scrolled into view
 					if ( direction === 'down' ) {
@@ -361,7 +361,7 @@ module.exports = function( $scope, $ ) {
 		init();
 	};
 
-	var $backgroundVideoContainer = $scope.find( '.builder-background-video-container' );
+	var $backgroundVideoContainer = $scope.find( '.qazana-background-video-container' );
 
 	if ( $backgroundVideoContainer ) {
 		new BackgroundVideo( $backgroundVideoContainer, $ );
@@ -370,7 +370,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],6:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	builderFrontend.utils.waypoint( $scope.find( '.builder-counter-number' ), function() {
+	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
 		var $number = $( this ),
 			data = $number.data();
 
@@ -386,7 +386,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],7:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	if ( builderFrontend.isEditMode() ) {
+	if ( qazanaFrontend.isEditMode() ) {
 		return;
 	}
 
@@ -396,20 +396,20 @@ module.exports = function( $scope, $ ) {
 		return;
 	}
 
-	$scope.addClass( 'builder-invisible' ).removeClass( animation );
+	$scope.addClass( 'qazana-invisible' ).removeClass( animation );
 
-	builderFrontend.utils.waypoint( $scope, function() {
-		$scope.removeClass( 'builder-invisible' ).addClass( animation );
+	qazanaFrontend.utils.waypoint( $scope, function() {
+		$scope.removeClass( 'qazana-invisible' ).addClass( animation );
 	}, { offset: '90%' } );
 };
 
 },{}],8:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	if ( builderFrontend.isEditMode() ) {
+	if ( qazanaFrontend.isEditMode() ) {
 		return;
 	}
 
-	var $anchor = $scope.find( '.builder-menu-anchor' ),
+	var $anchor = $scope.find( '.qazana-menu-anchor' ),
 		anchorID = $anchor.attr( 'id' ),
 		$anchorLinks = $( 'a[href*="#' + anchorID + '"]' ),
 		$scrollable = $( 'html, body' ),
@@ -433,7 +433,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	builderFrontend.utils.waypoint( $scope.find( '.builder-progress-bar' ), function() {
+	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
 		var $progressbar = $( this );
 
 		$progressbar.css( 'width', $progressbar.data( 'max' ) + '%' );
@@ -441,7 +441,7 @@ module.exports = function( $scope, $ ) {
 };
 
 },{}],10:[function(require,module,exports){
-var BackgroundVideo = require( 'builder-frontend/handlers/background-video' );
+var BackgroundVideo = require( 'qazana-frontend/handlers/background-video' );
 
 var StretchedSection = function( $section, $ ) {
 	var elements = {},
@@ -458,7 +458,7 @@ var StretchedSection = function( $section, $ ) {
 
 		$section.css( resetCss );
 
-		if ( ! $section.hasClass( 'builder-section-stretched' ) ) {
+		if ( ! $section.hasClass( 'qazana-section-stretched' ) ) {
 			return;
 		}
 
@@ -491,18 +491,18 @@ var StretchedSection = function( $section, $ ) {
 	};
 
 	var initSettings = function() {
-		settings.sectionContainerSelector = builderFrontend.config.stretchedSectionContainer;
-		settings.is_rtl = builderFrontend.config.is_rtl;
+		settings.sectionContainerSelector = qazanaFrontend.config.stretchedSectionContainer;
+		settings.is_rtl = qazanaFrontend.config.is_rtl;
 	};
 
 	var initElements = function() {
-		elements.scopeWindow = builderFrontend.getScopeWindow();
+		elements.scopeWindow = qazanaFrontend.getScopeWindow();
 		elements.$scopeWindow = $( elements.scopeWindow );
 		elements.$sectionContainer = $( elements.scopeWindow.document ).find( settings.sectionContainerSelector );
 	};
 
 	var bindEvents = function() {
-		builderFrontend.elementsHandler.addExternalListener( $section, 'resize', stretchSection );
+		qazanaFrontend.elementsHandler.addExternalListener( $section, 'resize', stretchSection );
 	};
 
 	var init = function() {
@@ -520,11 +520,11 @@ module.exports = function( $scope, $ ) {
 	new BackgroundVideo( $scope, $ );
 };
 
-},{"builder-frontend/handlers/background-video":5}],11:[function(require,module,exports){
+},{"qazana-frontend/handlers/background-video":5}],11:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	var defaultActiveTab = $scope.find( '.builder-tabs' ).data( 'active-tab' ),
-		$tabsTitles = $scope.find( '.builder-tab-title' ),
-		$tabs = $scope.find( '.builder-tab-content' ),
+	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
+		$tabsTitles = $scope.find( '.qazana-tab-title' ),
+		$tabs = $scope.find( '.qazana-tab-content' ),
 		$active,
 		$content;
 
@@ -557,7 +557,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],12:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	var $toggleTitles = $scope.find( '.builder-toggle-title' );
+	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
 	$toggleTitles.on( 'click', function() {
 		var $active = $( this ),
@@ -575,7 +575,7 @@ module.exports = function( $scope, $ ) {
 
 },{}],13:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	var $imageOverlay = $scope.find( '.builder-custom-embed-image-overlay' ),
+	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
 		$videoFrame = $scope.find( 'iframe' );
 
 	if ( ! $imageOverlay.length ) {
@@ -594,16 +594,16 @@ module.exports = function( $scope, $ ) {
 
 },{}],14:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	if ( ! builderFrontend.isEditMode() ) {
+	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
 	}
 
-	if ( $scope.hasClass( 'builder-widget-edit-disabled' ) ) {
+	if ( $scope.hasClass( 'qazana-widget-edit-disabled' ) ) {
 		return;
 	}
 
-	$scope.find( '.builder-element' ).each( function() {
-		builderFrontend.elementsHandler.runReadyTrigger( $( this ) );
+	$scope.find( '.qazana-element' ).each( function() {
+		qazanaFrontend.elementsHandler.runReadyTrigger( $( this ) );
 	} );
 };
 

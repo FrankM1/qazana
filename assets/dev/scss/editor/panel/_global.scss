@@ -2,7 +2,7 @@
 // Panel Global
 //
 
-.builder-panel-heading {
+.qazana-panel-heading {
 	display: table;
 	table-layout: fixed;
 	height: 40px;
@@ -11,8 +11,8 @@
 	border-bottom: 1px solid $editor-background;
 	cursor: pointer;
 
-	&:not(.builder-open) {
-		.builder-panel-heading-toggle {
+	&:not(.qazana-open) {
+		.qazana-panel-heading-toggle {
 			.fa {
 				&:before {
 					content: getValueByDirection('\f0da', '\f0d9');
@@ -21,8 +21,8 @@
 		}
 	}
 
-	&.builder-open {
-		.builder-panel-heading-toggle {
+	&.qazana-open {
+		.qazana-panel-heading-toggle {
 			.fa {
 				&:before {
 					content: '\f0d7';
@@ -37,34 +37,34 @@
 	}
 }
 
-.builder-panel-heading-toggle {
+.qazana-panel-heading-toggle {
 	width: 20px;
 	color: $editor-darkest;
 }
 
-.builder-panel-heading-title {
+.qazana-panel-heading-title {
 	color: $editor-darkest;
 	font-weight: bold;
 }
 
-.builder-panel-box {
+.qazana-panel-box {
 	margin-top: 10px;
 	background-color: #fff;
 }
 
-.builder-panel-box-content {
+.qazana-panel-box-content {
 	padding: 20px 20px 10px;
 }
 
-.builder-control-title {
+.qazana-control-title {
 	font-size: 12px;
 }
 
-.builder-button {
+.qazana-button {
 	display: inline-block;
 }
 
-.builder-tab-close {
+.qazana-tab-close {
 	display: none !important;
 }
 
@@ -150,7 +150,7 @@
 	}
 }
 
-.builder-label {
+.qazana-label {
 	display: inline;
 	padding: 0.2em 0.6em 0.3em;
 	font-size: 75%;
@@ -163,56 +163,56 @@
 	border-radius: 0.25em;
 	text-transform: capitalize;
 
-	&.builder-label-default {
+	&.qazana-label-default {
 		background-color: $editor-light;
 	}
 
-	&.builder-label-info {
+	&.qazana-label-info {
 		background-color: $info;
 	}
 
-	&.builder-label-success {
+	&.qazana-label-success {
 		background-color: $success;
 	}
 
-	&.builder-label-warning {
+	&.qazana-label-warning {
 		background-color: $warning;
 	}
 
-	&.builder-label-danger {
+	&.qazana-label-danger {
 		background-color: $danger;
 	}
 }
 
-.builder-descriptor {
+.qazana-descriptor {
 	font-size: 11px;
 	font-style: italic;
 	line-height: 1.4;
 	color: $editor-light;
 }
 
-.builder-panel-nerd-box {
+.qazana-panel-nerd-box {
 	padding: 10px 0 30px;
 	text-align: center;
 
-	.builder-panel-nerd-box-icon {
+	.qazana-panel-nerd-box-icon {
 		font-size: 52px;
 		color: #a4afb7;
 	}
 
-	.builder-panel-nerd-box-title {
+	.qazana-panel-nerd-box-title {
 		margin-top: 20px;
 		font-size: 16px;
 		font-weight: bold;
 	}
 
-	.builder-panel-nerd-box-message {
+	.qazana-panel-nerd-box-message {
 		margin-top: 20px;
 		line-height: 1.4;
 		font-size: 11px;
 	}
 
-	.builder-button.builder-panel-nerd-box-link {
+	.qazana-button.qazana-panel-nerd-box-link {
 		background-color: $editor-orange;
 		color: #ffffff;
 		padding: 7px 25px;
@@ -226,26 +226,26 @@
 	}
 }
 
-#builder-global-templates,
-#builder-panel-global {
-	.builder-panel-nerd-box {
+#qazana-global-templates,
+#qazana-panel-global {
+	.qazana-panel-nerd-box {
 		padding: 30px 25px;
 	}
 }
 
-#builder-panel-get-pro-elements {
-	&.builder-panel-nerd-box {
+#qazana-panel-get-pro-elements {
+	&.qazana-panel-nerd-box {
 		padding: 40px 0;
 
-		.builder-panel-nerd-box-title {
+		.qazana-panel-nerd-box-title {
 			margin-top: 0;
 		}
 
-		.builder-panel-nerd-box-message {
+		.qazana-panel-nerd-box-message {
 			margin-top: 0;
 		}
 
-		.builder-button.builder-panel-nerd-box-link {
+		.qazana-button.qazana-panel-nerd-box-link {
 			margin-top: 0;
 		}
 	}

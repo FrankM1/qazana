@@ -1,5 +1,5 @@
-var BaseSettingsModel = require( 'builder-models/base-settings' ),
-	Stylesheet = require( 'builder-utils/stylesheet' ),
+var BaseSettingsModel = require( 'qazana-models/base-settings' ),
+	Stylesheet = require( 'qazana-utils/stylesheet' ),
 	BaseElementView;
 
 BaseElementView = Marionette.CompositeView.extend( {
@@ -24,9 +24,9 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 	ui: function() {
 		return {
-			duplicateButton: '> .builder-editor-element-settings .builder-editor-element-duplicate',
-			removeButton: '> .builder-editor-element-settings .builder-editor-element-remove',
-			saveButton: '> .builder-editor-element-settings .builder-editor-element-save'
+			duplicateButton: '> .qazana-editor-element-settings .qazana-editor-element-duplicate',
+			removeButton: '> .qazana-editor-element-settings .qazana-editor-element-remove',
+			saveButton: '> .qazana-editor-element-settings .qazana-editor-element-save'
 		};
 	},
 
@@ -45,7 +45,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 	},
 
 	getChildType: function() {
-		return builder.helpers.getElementChildType( this.getElementType() );
+		return qazana.helpers.getElementChildType( this.getElementType() );
 	},
 
 	getChildView: function( model ) {
@@ -53,14 +53,14 @@ BaseElementView = Marionette.CompositeView.extend( {
 			elType = model.get( 'elType' );
 
 		if ( 'section' === elType ) {
-			ChildView = require( 'builder-views/section' );
+			ChildView = require( 'qazana-views/section' );
 		} else if ( 'column' === elType ) {
-			ChildView = require( 'builder-views/column' );
+			ChildView = require( 'qazana-views/column' );
 		} else {
-			ChildView = builder.modules.WidgetView;
+			ChildView = qazana.modules.WidgetView;
 		}
 
-		return builder.hooks.applyFilters( 'element/view', ChildView, model, this );
+		return qazana.hooks.applyFilters( 'element/view', ChildView, model, this );
 	},
 
 	templateHelpers: function() {
@@ -109,7 +109,7 @@ BaseElementView = Marionette.CompositeView.extend( {
         var self = this;
 
         var config = {
-            class : 'builder-element-settings-active'
+            class : 'qazana-element-settings-active'
         };
 
         var hoverConfig = {
@@ -129,7 +129,7 @@ BaseElementView = Marionette.CompositeView.extend( {
     },
 
 	edit: function() {
-		builder.getPanelView().openEditor( this.getEditModel(), this );
+		qazana.getPanelView().openEditor( this.getEditModel(), this );
 	},
 
 	addChildModel: function( model, options ) {
@@ -160,10 +160,10 @@ BaseElementView = Marionette.CompositeView.extend( {
 	},
 
 	addElementFromPanel: function( options ) {
-		var elementView = builder.channels.panelElements.request( 'element:selected' );
+		var elementView = qazana.channels.panelElements.request( 'element:selected' );
 
 		var itemData = {
-			id: builder.helpers.getUniqueID(),
+			id: qazana.helpers.getUniqueID(),
 			elType: elementView.model.get( 'elType' )
 		};
 
@@ -200,12 +200,12 @@ BaseElementView = Marionette.CompositeView.extend( {
 			if ( ! removeDialog ) {
 				var elementTitle = this.model.getTitle();
 
-				removeDialog = builder.dialogsManager.createWidget( 'confirm', {
-					message: builder.translate( 'dialog_confirm_delete', [ elementTitle.toLowerCase() ] ),
-					headerMessage: builder.translate( 'delete_element', [ elementTitle ] ),
+				removeDialog = qazana.dialogsManager.createWidget( 'confirm', {
+					message: qazana.translate( 'dialog_confirm_delete', [ elementTitle.toLowerCase() ] ),
+					headerMessage: qazana.translate( 'delete_element', [ elementTitle ] ),
 					strings: {
-						confirm: builder.translate( 'delete' ),
-						cancel: builder.translate( 'cancel' )
+						confirm: qazana.translate( 'delete' ),
+						cancel: qazana.translate( 'cancel' )
 					},
 					defaultOption: 'confirm',
 					onConfirm: _.bind( function() {
@@ -219,7 +219,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 	},
 
 	initStylesheet: function() {
-		var viewportBreakpoints = builder.config.viewportBreakpoints;
+		var viewportBreakpoints = qazana.config.viewportBreakpoints;
 
 		this.stylesheet = new Stylesheet();
 
@@ -230,9 +230,9 @@ BaseElementView = Marionette.CompositeView.extend( {
 	},
 
 	createStylesheetElement: function() {
-		this.$stylesheetElement = Backbone.$( '<style>', { id: 'builder-style-' + this.model.cid } );
+		this.$stylesheetElement = Backbone.$( '<style>', { id: 'qazana-style-' + this.model.cid } );
 
-		builder.$previewContents.find( 'head' ).append( this.$stylesheetElement );
+		qazana.$previewContents.find( 'head' ).append( this.$stylesheetElement );
 	},
 
 	enqueueFonts: function() {
@@ -246,7 +246,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 				return;
 			}
 
-			builder.helpers.enqueueFont( fontFamilyName );
+			qazana.helpers.enqueueFont( fontFamilyName );
 		}, this ) );
 	},
 
@@ -260,7 +260,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 						control.styleFields,
 						itemModel.attributes,
 						placeholders.concat( [ '{{CURRENT_ITEM}}' ] ),
-						replacements.concat( [ '.builder-repeater-item-' + itemModel.get( '_id' ) ] )
+						replacements.concat( [ '.qazana-repeater-item-' + itemModel.get( '_id' ) ] )
 					);
 				} );
 			}
@@ -280,7 +280,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 	addStyleToDocument: function() {
 		var styleText = this.stylesheet.toString();
 
-		styleText = builder.hooks.applyFilters( 'editor/style/styleText', styleText, this );
+		styleText = qazana.hooks.applyFilters( 'editor/style/styleText', styleText, this );
 
 		if ( _.isEmpty( styleText ) && ! this.$stylesheetElement ) {
 			return;
@@ -313,13 +313,13 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		self.stylesheet.empty();
 
-		self.addStyleRules( settings.getStyleControls(), settings.attributes, [ /\{\{WRAPPER}}/g ], [ '#builder .' + self.getElementUniqueID() ] );
+		self.addStyleRules( settings.getStyleControls(), settings.attributes, [ /\{\{WRAPPER}}/g ], [ '#qazana .' + self.getElementUniqueID() ] );
 
 		if ( 'column' === self.model.get( 'elType' ) ) {
 			var inlineSize = settings.get( '_inline_size' );
 
 			if ( ! _.isEmpty( inlineSize ) ) {
-				self.stylesheet.addRules( '#builder .' + self.getElementUniqueID(), { width: inlineSize + '%' }, { min: 'tablet' } );
+				self.stylesheet.addRules( '#qazana .' + self.getElementUniqueID(), { width: inlineSize + '%' }, { min: 'tablet' } );
 			}
 		}
 
@@ -330,7 +330,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		var self = this;
 
-		self.$el.addClass( 'builder-element' );
+		self.$el.addClass( 'qazana-element' );
 
 		var settings = self.getEditModel().get( 'settings' );
 
@@ -352,7 +352,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 				self.$el.removeClass( currentControl.prefix_class + previousClassValue );
 
-				var isVisible = builder.helpers.isActiveControl( currentControl, settings.attributes );
+				var isVisible = qazana.helpers.isActiveControl( currentControl, settings.attributes );
 
 				if ( isVisible && ! _.isEmpty( classValue ) ) {
 					self.$el
@@ -371,12 +371,12 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 	runReadyTrigger: function() {
 		_.defer( _.bind( function() {
-			builderFrontend.elementsHandler.runReadyTrigger( this.$el );
+			qazanaFrontend.elementsHandler.runReadyTrigger( this.$el );
 		}, this ) );
 	},
 
 	getElementUniqueID: function() {
-		return 'builder-element-' + this.model.get( 'id' );
+		return 'qazana-element-' + this.model.get( 'id' );
 	},
 
 	duplicate: function( event ) {
@@ -392,7 +392,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var activeMode = builder.channels.dataEditMode.request( 'activeMode' );
+		var activeMode = qazana.channels.dataEditMode.request( 'activeMode' );
 
 		if ( 'edit' !== activeMode ) {
 			return;
@@ -402,7 +402,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 	},
 
 	onCollectionChanged: function() {
-		builder.setFlagEditorChange( true );
+		qazana.setFlagEditorChange( true );
 	},
 
 	onSettingsChanged: function( settings ) {
@@ -410,7 +410,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		if ( editModel.get( 'editSettings' ) !== settings ) {
 			// Change flag only if server settings was changed
-			builder.setFlagEditorChange( true );
+			qazana.setFlagEditorChange( true );
 		}
 
 		// Make sure is correct model
@@ -459,8 +459,8 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		var model = this.model;
 
-		builder.templates.startModal( function() {
-			builder.templates.getLayout().showSaveTemplateView( model );
+		qazana.templates.startModal( function() {
+			qazana.templates.getLayout().showSaveTemplateView( model );
 		} );
 	},
 
@@ -491,7 +491,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 						valueToInsert = valueCallback( parserControl );
 					}
 
-					var parsedValue = builder.getControlItemView( parserControl.type ).getStyleValue( placeholder.toLowerCase(), valueToInsert );
+					var parsedValue = qazana.getControlItemView( parserControl.type ).getStyleValue( placeholder.toLowerCase(), valueToInsert );
 
 					if ( '' === parsedValue ) {
 						throw '';

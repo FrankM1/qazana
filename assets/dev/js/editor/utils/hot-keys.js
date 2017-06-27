@@ -20,13 +20,13 @@ var HotKeys = function( $ ) {
 		hotKeysHandlers[ keysDictionary.del ] = {
 			deleteElement: {
 				isWorthHandling: function( event ) {
-					var isEditorOpen = 'editor' === builder.getPanelView().getCurrentPageName(),
+					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName(),
 						isInputTarget = $( event.target ).is( ':input' );
 
 					return isEditorOpen && ! isInputTarget;
 				},
 				handle: function() {
-					builder.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).confirmRemove();
+					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).confirmRemove();
 				}
 			}
 		};
@@ -38,7 +38,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event );
 				},
 				handle: function() {
-					var panel = builder.getPanelView();
+					var panel = qazana.getPanelView();
 
 					if ( 'editor' !== panel.getCurrentPageName() ) {
 						return;
@@ -55,7 +55,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event ) && event.shiftKey;
 				},
 				handle: function() {
-					builder.templates.showTemplatesModal();
+					qazana.templates.showTemplatesModal();
 				}
 			}
 		};
@@ -67,7 +67,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event ) && event.shiftKey;
 				},
 				handle: function() {
-					var currentDeviceMode = builder.channels.deviceMode.request( 'currentMode' ),
+					var currentDeviceMode = qazana.channels.deviceMode.request( 'currentMode' ),
 						modeIndex = this.devices.indexOf( currentDeviceMode );
 
 					modeIndex++;
@@ -76,7 +76,7 @@ var HotKeys = function( $ ) {
 						modeIndex = 0;
 					}
 
-					builder.changeDeviceMode( this.devices[ modeIndex ] );
+					qazana.changeDeviceMode( this.devices[ modeIndex ] );
 				}
 			}
 		};
@@ -87,7 +87,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event );
 				},
 				handle: function() {
-					builder.getPanelView().modeSwitcher.currentView.toggleMode();
+					qazana.getPanelView().modeSwitcher.currentView.toggleMode();
 				}
 			}
 		};
@@ -98,7 +98,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event );
 				},
 				handle: function() {
-					builder.getPanelView().getFooterView()._publishBuilder();
+					qazana.getPanelView().getFooterView()._publishQazana();
 				}
 			}
 		};
@@ -123,7 +123,7 @@ var HotKeys = function( $ ) {
 	};
 
 	var bindEvents = function() {
-		self.bindListener( builder.$window );
+		self.bindListener( qazana.$window );
 	};
 
 	this.isControlEvent = function( event ) {

@@ -3,23 +3,23 @@
 //
 
 @media (max-width: $screen-sm-max) {
-	.builder-hidden-phone {
+	.qazana-hidden-phone {
 		display: none;
 	}
 }
 
 @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-	.builder-hidden-tablet {
+	.qazana-hidden-tablet {
 		display: none;
 	}
 }
 
 @media (min-width: $screen-lg-min) {
-	.builder-hidden-desktop {
+	.qazana-hidden-desktop {
 		display: none;
 	}
 }
 
-.builder-hidden {
+.qazana-hidden {
 	display: none;
 }

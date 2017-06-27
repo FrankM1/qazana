@@ -3,15 +3,15 @@ var EditToolsBehavior;
 EditToolsBehavior = Marionette.Behavior.extend( {
 
     config : {
-        class : 'builder-section-tools-active'
+        class : 'qazana-section-tools-active'
     },
 
     initialize: function() {
-        this.listenTo( builder.channels.dataEditMode, 'switch', this.onEditModeSwitched );
+        this.listenTo( qazana.channels.dataEditMode, 'switch', this.onEditModeSwitched );
     },
 
     onEditModeSwitched: function() {
-        var activeMode = builder.channels.dataEditMode.request( 'activeMode' );
+        var activeMode = qazana.channels.dataEditMode.request( 'activeMode' );
         this.view.$el.removeClass( this.config.class, 'edit' === activeMode );
     },
 

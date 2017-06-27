@@ -1,34 +1,34 @@
-.builder-shortcode-input {
+.qazana-shortcode-input {
     min-width: 215px;
 }
 
-#available-widgets [class*="builder-template"] .widget-title:before {
+#available-widgets [class*="qazana-template"] .widget-title:before {
     content: "\e801";
     font-family: eicon;
     font-size: 17px;
 }
 
-#builder-widget-template-empty-templates {
+#qazana-widget-template-empty-templates {
     margin-top: 15px;
     text-align: center;
 }
 
-.builder-widget-template-empty-templates-title {
+.qazana-widget-template-empty-templates-title {
     padding: 25px 0 30px;
 }
 
-.builder-widget-template-empty-templates-icon {
+.qazana-widget-template-empty-templates-icon {
     font-size: 96px;
     color: #d5dadf;
 }
 
-.builder-widget-template-empty-templates-footer {
+.qazana-widget-template-empty-templates-footer {
     color: #a4afb7;
     font-size: 13px;
     font-style: italic;
     margin-bottom: 15px;
 }
 
-.builder-widget-template-empty-templates-footer a {
+.qazana-widget-template-empty-templates-footer a {
     color: #a4afb7;
 }

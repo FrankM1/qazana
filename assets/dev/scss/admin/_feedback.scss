@@ -1,7 +1,7 @@
 
-/*= Builder Feedback
+/*= Qazana Feedback
 ---------------------------------------*/
-@keyframes builder-rotation {
+@keyframes qazana-rotation {
 	0% {
 		transform: rotate(0deg);
 	}
@@ -11,11 +11,11 @@
 	}
 }
 
-#builder-deactivate-feedback-dialog-wrapper {
+#qazana-deactivate-feedback-dialog-wrapper {
 	display: none;
 }
 
-#builder-deactivate-feedback-modal {
+#qazana-deactivate-feedback-modal {
 	.dialog-widget-content {
 		width: 550px;
 		background-color: white;
@@ -38,7 +38,7 @@
 		color: white;
 	}
 
-	.dialog-builder-modal-close-button {
+	.dialog-qazana-modal-close-button {
 		color: white;
 	}
 
@@ -47,25 +47,25 @@
 		text-align: $start;
 	}
 
-	.builder-deactivate-feedback-dialog-input {
+	.qazana-deactivate-feedback-dialog-input {
 		float: $start;
 		@include margin(0, 15px, 0, 0);
 		box-shadow: none;
 
 		&:not(:checked) {
-			~ .builder-feedback-text {
+			~ .qazana-feedback-text {
 				display: none;
 			}
 		}
 	}
 
-	.builder-deactivate-feedback-dialog-label {
+	.qazana-deactivate-feedback-dialog-label {
 		display: block;
 		font-size: 13px;
 		color: $editor-dark;
 	}
 
-	.builder-feedback-text {
+	.qazana-feedback-text {
 		@include margin(10px, 0, 0, 30px);
 		padding: 5px;
 		font-size: 13px;
@@ -90,12 +90,12 @@
 		width: 180px;
 		height: 38px;
 
-		&.builder-loading {
+		&.qazana-loading {
 			&:before {
 				display: inline-block;
 				content: '\f463';
 				font: 18px dashicons;
-				animation: builder-rotation 2s infinite linear;
+				animation: qazana-rotation 2s infinite linear;
 			}
 		}
 	}
@@ -108,32 +108,32 @@
 	}
 }
 
-#builder-deactivate-feedback-dialog-header {
+#qazana-deactivate-feedback-dialog-header {
 	i {
 		color: $editor-accent;
 		font-size: 19px;
 	}
 }
 
-#builder-deactivate-feedback-dialog-header-title {
+#qazana-deactivate-feedback-dialog-header-title {
 	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: bold;
 	@include padding-start(5px);
 }
 
-#builder-deactivate-feedback-dialog-form-caption {
+#qazana-deactivate-feedback-dialog-form-caption {
 	font-weight: bold;
 	font-size: 15px;
 	color: $editor-darkest;
 	line-height: 1.4;
 }
 
-#builder-deactivate-feedback-dialog-form-body {
+#qazana-deactivate-feedback-dialog-form-body {
 	padding-top: 30px;
 }
 
-.builder-deactivate-feedback-dialog-input-wrapper {
+.qazana-deactivate-feedback-dialog-input-wrapper {
 	line-height: 1.3;
 	overflow: hidden;
 	margin-bottom: 15px;

@@ -1,4 +1,4 @@
-var BackgroundVideo = require( 'builder-frontend/handlers/background-video' );
+var BackgroundVideo = require( 'qazana-frontend/handlers/background-video' );
 
 var StretchedSection = function( $section, $ ) {
 	var elements = {},
@@ -15,7 +15,7 @@ var StretchedSection = function( $section, $ ) {
 
 		$section.css( resetCss );
 
-		if ( ! $section.hasClass( 'builder-section-stretched' ) ) {
+		if ( ! $section.hasClass( 'qazana-section-stretched' ) ) {
 			return;
 		}
 
@@ -48,18 +48,18 @@ var StretchedSection = function( $section, $ ) {
 	};
 
 	var initSettings = function() {
-		settings.sectionContainerSelector = builderFrontend.config.stretchedSectionContainer;
-		settings.is_rtl = builderFrontend.config.is_rtl;
+		settings.sectionContainerSelector = qazanaFrontend.config.stretchedSectionContainer;
+		settings.is_rtl = qazanaFrontend.config.is_rtl;
 	};
 
 	var initElements = function() {
-		elements.scopeWindow = builderFrontend.getScopeWindow();
+		elements.scopeWindow = qazanaFrontend.getScopeWindow();
 		elements.$scopeWindow = $( elements.scopeWindow );
 		elements.$sectionContainer = $( elements.scopeWindow.document ).find( settings.sectionContainerSelector );
 	};
 
 	var bindEvents = function() {
-		builderFrontend.elementsHandler.addExternalListener( $section, 'resize', stretchSection );
+		qazanaFrontend.elementsHandler.addExternalListener( $section, 'resize', stretchSection );
 	};
 
 	var init = function() {

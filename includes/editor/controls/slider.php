@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -34,18 +34,18 @@ class Control_Slider extends Base_Control_Units {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
 			<?php $this->print_units_template(); ?>
-			<div class="builder-control-input-wrapper builder-clearfix">
-				<div class="builder-slider"></div>
-				<div class="builder-slider-input">
+			<div class="qazana-control-input-wrapper qazana-clearfix">
+				<div class="qazana-slider"></div>
+				<div class="qazana-slider-input">
 					<input type="number" min="{{ data.min }}" max="{{ data.max }}" step="{{ data.step }}" data-setting="size" />
 				</div>
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

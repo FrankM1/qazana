@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -42,6 +42,6 @@ class Skins_Manager {
 	}
 
 	public function __construct() {
-		builder()->widget_loader->locate_widget( 'base/skin-base.php', true );
+		qazana()->widget_loader->locate_widget( 'base/skin-base.php', true );
 	}
 }

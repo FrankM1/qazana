@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class DB {
 	const STATUS_AUTOSAVE = 'autosave';
 
 	/**
-	 * Save builder method.
+	 * Save qazana method.
 	 *
 	 * @since 1.0.0
 	 * @param int    $post_id
@@ -42,7 +42,7 @@ class DB {
 
 			$this->remove_draft( $post_id );
 
-			$is_meta_updated = update_post_meta( $post_id, '_builder_data', $json_value );
+			$is_meta_updated = update_post_meta( $post_id, '_qazana_data', $json_value );
 
 			if ( $is_meta_updated ) {
 				Revisions_Manager::handle_revision();
@@ -62,17 +62,17 @@ class DB {
 
 			$autosave_id = wp_create_post_autosave( [
 				'post_ID' => $post_id,
-				'post_title' => __( 'Auto Save', 'builder' ) . ' ' . date( 'Y-m-d H:i' ),
+				'post_title' => __( 'Auto Save', 'qazana' ) . ' ' . date( 'Y-m-d H:i' ),
 				'post_modified' => current_time( 'mysql' ),
 			] );
 
 			if ( $autosave_id ) {
-				update_metadata( 'post',  $autosave_id, '_builder_data', $json_value );
+				update_metadata( 'post',  $autosave_id, '_qazana_data', $json_value );
 			}
 
 		}
 
-		update_post_meta( $post_id, '_builder_version', builder_get_db_version() );
+		update_post_meta( $post_id, '_qazana_version', qazana_get_db_version() );
 
 		// Restore global post
 		if ( isset( $global_post ) ) {
@@ -84,11 +84,11 @@ class DB {
 		$css_file = new Post_CSS_File( $post_id );
 		$css_file->update();
 
-		do_action( 'builder/editor/after_save', $post_id, $editor_data );
+		do_action( 'qazana/editor/after_save', $post_id, $editor_data );
 	}
 
 	/**
-	 * Get & Parse the builder from DB.
+	 * Get & Parse the qazana from DB.
 	 *
 	 * @since 1.0.0
 	 * @param int $post_id
@@ -96,7 +96,7 @@ class DB {
 	 *
 	 * @return array
 	 */
-	public function get_builder( $post_id, $status = self::STATUS_PUBLISH ) {
+	public function get_qazana( $post_id, $status = self::STATUS_PUBLISH ) {
 		$data = $this->get_plain_editor( $post_id, $status );
 
 		return $this->_get_editor_data( $data, true );
@@ -114,10 +114,10 @@ class DB {
 
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
 
-		$data = $this->_get_json_meta( $post_id, '_builder_data' );
+		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
 
-		if ( self::STATUS_DRAFT === $status && isset( $_GET['builder'] ) ) {
-			$draft_data = $this->_get_json_meta( $post_id, '_builder_draft_data' );
+		if ( self::STATUS_DRAFT === $status && isset( $_GET['qazana'] ) ) {
+			$draft_data = $this->_get_json_meta( $post_id, '_qazana_draft_data' );
 
 			if ( ! empty( $draft_data ) ) {
 				$data = $draft_data;
@@ -138,7 +138,7 @@ class DB {
 			return [];
 		}
 
-		$text_editor_widget_type = builder()->widgets_manager->get_widget_types( 'text-editor' );
+		$text_editor_widget_type = qazana()->widgets_manager->get_widget_types( 'text-editor' );
 
 		// TODO: Better coding to start template for editor
 		return [
@@ -174,7 +174,7 @@ class DB {
 	 * @return void
 	 */
 	public function remove_draft( $post_id ) {
-		delete_post_meta( $post_id, '_builder_draft_data' );
+		delete_post_meta( $post_id, '_qazana_draft_data' );
 	}
 
 	/**
@@ -186,7 +186,7 @@ class DB {
 	 * @return mixed
 	 */
 	public function get_edit_mode( $post_id ) {
-		return get_post_meta( $post_id, '_builder_edit_mode', true );
+		return get_post_meta( $post_id, '_qazana_edit_mode', true );
 	}
 
 	/**
@@ -198,22 +198,22 @@ class DB {
 	 *
 	 * @return void
 	 */
-	public function set_edit_mode( $post_id, $mode = 'builder' ) {
+	public function set_edit_mode( $post_id, $mode = 'qazana' ) {
 
 		global $pagenow;
 
-		if ( 'builder' === $mode ) {
-			update_post_meta( $post_id, '_builder_edit_mode', $mode );
-			do_action('builder/db/set_edit_mode', $mode, $post_id );
+		if ( 'qazana' === $mode ) {
+			update_post_meta( $post_id, '_qazana_edit_mode', $mode );
+			do_action('qazana/db/set_edit_mode', $mode, $post_id );
 		} else {
-			delete_post_meta( $post_id, '_builder_edit_mode' );
+			delete_post_meta( $post_id, '_qazana_edit_mode' );
 		}
 	}
 
 	private function _render_element_plain_content( $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
-			$widget = builder()->elements_manager->create_element_instance( $element_data );
+			$widget = qazana()->elements_manager->create_element_instance( $element_data );
 
 			if ( is_object( $widget ) ) {
 				$widget->render_plain_content();
@@ -277,7 +277,7 @@ class DB {
         }
 
 		foreach ( $data as $element_data ) {
-			$element = builder()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->elements_manager->create_element_instance( $element_data );
 
 			$editor_data[] = $element->get_raw_data( $with_html_content );
 		} // End Section
@@ -307,21 +307,21 @@ class DB {
 		return $data_container;
 	}
 
-	public function copy_builder_meta( $from_post_id, $to_post_id ) {
+	public function copy_qazana_meta( $from_post_id, $to_post_id ) {
 
-		if ( ! $this->is_built_with_builder( $from_post_id ) ) {
+		if ( ! $this->is_built_with_qazana( $from_post_id ) ) {
 			return;
 		}
 
 		$from_post_meta = get_post_meta( $from_post_id );
 
 		foreach ( $from_post_meta as $meta_key => $values ) {
-			// Copy only meta with the `_builder` prefix
-			if ( 0 === strpos( $meta_key, '_builder' ) ) {
+			// Copy only meta with the `_qazana` prefix
+			if ( 0 === strpos( $meta_key, '_qazana' ) ) {
 				$value = $values[0];
 
-				// The builder JSON needs slashes before saving
-				if ( '_builder_data' === $meta_key ) {
+				// The qazana JSON needs slashes before saving
+				if ( '_qazana_data' === $meta_key ) {
 					$value = wp_slash( $value );
 				}
 
@@ -330,18 +330,18 @@ class DB {
 		}
 	}
 
-	public function is_built_with_builder( $post_id ) {
+	public function is_built_with_qazana( $post_id ) {
 		$data = $this->get_plain_editor( $post_id );
 
 		$edit_mode = $this->get_edit_mode( $post_id );
 
-		return ( ! empty( $data ) && 'builder' === $edit_mode );
+		return ( ! empty( $data ) && 'qazana' === $edit_mode );
 	}
 
-	public function has_builder_in_post( $post_id ) {
+	public function has_qazana_in_post( $post_id ) {
 		$data = $this->get_plain_editor( $post_id );
 		$edit_mode = $this->get_edit_mode( $post_id );
 
-		return ( ! empty( $data ) && 'builder' === $edit_mode );
+		return ( ! empty( $data ) && 'qazana' === $edit_mode );
 	}
 }

@@ -1,7 +1,7 @@
-var BaseSettingsModel = require( 'builder-models/base-settings' ),
-	WidgetSettingsModel = require( 'builder-models/widget-settings' ),
-	ColumnSettingsModel = require( 'builder-models/column-settings' ),
-	SectionSettingsModel = require( 'builder-models/section-settings' ),
+var BaseSettingsModel = require( 'qazana-models/base-settings' ),
+	WidgetSettingsModel = require( 'qazana-models/widget-settings' ),
+	ColumnSettingsModel = require( 'qazana-models/column-settings' ),
+	SectionSettingsModel = require( 'qazana-models/section-settings' ),
 
 	ElementModel,
 	ElementCollection;
@@ -71,7 +71,7 @@ ElementModel = Backbone.Model.extend( {
 
 		this.set( 'settings', settings );
 
-		builderFrontend.config.elements.data[ this.cid ] = settings;
+		qazanaFrontend.config.elements.data[ this.cid ] = settings;
 
 	},
 
@@ -138,13 +138,13 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	getTitle: function() {
-		var elementData = builder.getElementData( this );
+		var elementData = qazana.getElementData( this );
 
 		return ( elementData ) ? elementData.title : 'Unknown';
 	},
 
 	getIcon: function() {
-		var elementData = builder.getElementData( this );
+		var elementData = qazana.getElementData( this );
 
 		return ( elementData ) ? elementData.icon : 'unknown';
 	},
@@ -152,11 +152,11 @@ ElementModel = Backbone.Model.extend( {
 	getRemoteRenderRequest: function() {
 		var data = this.toJSON();
 
-		return builder.ajax.send( 'render_widget', {
+		return qazana.ajax.send( 'render_widget', {
 			data: {
-				post_id: builder.config.post_id,
+				post_id: qazana.config.post_id,
 				data: JSON.stringify( data ),
-				_nonce: builder.config.nonce
+				_nonce: qazana.config.nonce
 			},
 			success: _.bind( this.onRemoteGetHtml, this )
 		} );
@@ -185,7 +185,7 @@ ElementModel = Backbone.Model.extend( {
 
 	clone: function() {
 		var newModel = Backbone.Model.prototype.clone.apply( this, arguments );
-		newModel.set( 'id', builder.helpers.getUniqueID() );
+		newModel.set( 'id', qazana.helpers.getUniqueID() );
 
 		newModel.setHtmlCache( this.getHtmlCache() );
 
@@ -239,7 +239,7 @@ ElementCollection = Backbone.Collection.extend( {
 		var ModelClass = Backbone.Model;
 
 		if ( attrs.elType ) {
-			ModelClass = builder.hooks.applyFilters( 'element/model', ElementModel, attrs );
+			ModelClass = qazana.hooks.applyFilters( 'element/model', ElementModel, attrs );
 		}
 
 		return new ModelClass( attrs, options );
