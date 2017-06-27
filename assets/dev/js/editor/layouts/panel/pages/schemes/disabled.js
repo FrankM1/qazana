@@ -1,11 +1,11 @@
 var PanelSchemeDisabledView;
 
 PanelSchemeDisabledView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-panel-schemes-disabled',
+	template: '#tmpl-qazana-panel-schemes-disabled',
 
-	id: 'builder-panel-schemes-disabled',
+	id: 'qazana-panel-schemes-disabled',
 
-	className: 'builder-panel-nerd-box',
+	className: 'qazana-panel-nerd-box',
 
 	disabledTitle: '',
 

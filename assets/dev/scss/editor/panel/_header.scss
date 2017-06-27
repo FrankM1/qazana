@@ -2,18 +2,18 @@
 // Panel Header
 //
 
-#builder-panel-header {
+#qazana-panel-header {
     background-color: #fff;
     color: #555;
 
-    .builder-panel-header-row > * {
+    .qazana-panel-header-row > * {
         display: table-cell;
         vertical-align: middle;
         text-align: center;
     }
 }
 
-.builder-panel-header-row {
+.qazana-panel-header-row {
     width: 100%;
     display: table;
     height: 40px;
@@ -25,10 +25,10 @@
     }
 }
 
-.builder-header-button {
+.qazana-header-button {
     width: 40px;
 
-    .builder-icon {
+    .qazana-icon {
         cursor: pointer;
         display: block;
         font-size: 19px;
@@ -42,7 +42,7 @@
     }
 }
 
-#builder-panel-header-view-page {
+#qazana-panel-header-view-page {
     width: 45px;
     height: 45px;
     padding: 0 2px 0 0;
@@ -82,11 +82,11 @@
     }
 }
 
-#builder-panel-header-save {
+#qazana-panel-header-save {
     width: 90px;
     padding: 0 10px;
 
-    .builder-button {
+    .qazana-button {
         line-height: 26px;
         margin: 0;
         border-width: 1px;
@@ -108,7 +108,7 @@
         text-decoration: none;
         text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 
-        &.builder-button-state {
+        &.qazana-button-state {
             background: #0073aa;
             border-color: #006799;
             -webkit-box-shadow: inset 0 2px 0 #006799;
@@ -116,15 +116,15 @@
             vertical-align: top;
         }
 
-        &.builder-save-active {
-            .builder-button {
-                @extend .builder-button-success;
+        &.qazana-save-active {
+            .qazana-button {
+                @extend .qazana-button-success;
             }
         }
     }
 }
 
-#builder-panel-header-title {
+#qazana-panel-header-title {
     font-size: 15px;
 
     img {
@@ -134,7 +134,7 @@
 
 /*---------------------------*/
 /*- CUSOTMIZER MENUS --------*/
-#builder-panel-header-menu {
+#qazana-panel-header-menu {
     display: none;
     left: 48px;
     top: 0;
@@ -143,20 +143,20 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav {
+#qazana-panel-header-menu ul.qazana-panel-header-nav {
     display: block;
     vertical-align: bottom;
     margin: 0;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li {
     display: block;
     margin: 0;
     vertical-align: bottom;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav > li > a,
-#builder-panel-header-menu ul.builder-panel-header-nav > li > span {
+#qazana-panel-header-menu ul.qazana-panel-header-nav > li > a,
+#qazana-panel-header-menu ul.qazana-panel-header-nav > li > span {
     width: 48px;
     height: 52px;
     background: transparent;
@@ -171,14 +171,14 @@
     cursor: pointer;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav > li:hover > a,
-#builder-panel-header-menu ul.builder-panel-header-nav > li:hover > span {
+#qazana-panel-header-menu ul.qazana-panel-header-nav > li:hover > a,
+#qazana-panel-header-menu ul.qazana-panel-header-nav > li:hover > span {
     background: #fff;
 }
 
 /*-----------------------*/
 /*- DROP MENU -----------*/
-#builder-panel-header-menu ul.builder-panel-header-nav li ul {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li ul {
     position: absolute;
     min-width: 280px;
     margin-left: -48px;
@@ -220,7 +220,7 @@
     }
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul {
     background: #f5f5f5;
     opacity: 1;
     z-index: 1;
@@ -229,7 +229,7 @@
     transition: background 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li ul li {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li ul li {
     border-top: 1px solid #eee;
     opacity: 0;
     visibility: hidden;
@@ -237,11 +237,11 @@
     transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out, visibility 0.1s ease-in-out;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li ul li:first-child {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li ul li:first-child {
     border-top-color: #e0e0e0;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li {
     opacity: 1;
     visibility: visible;
     transform: translate3d(0, 0, 0);
@@ -249,27 +249,27 @@
 
 /*-------------------*/
 /*- ITEM ANIMATION --*/
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li {
     transition-delay: 0.25s;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li:nth-child(2) {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li:nth-child(2) {
     transition-delay: 0.27s;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li:nth-child(3) {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li:nth-child(3) {
     transition-delay: 0.29s;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li:nth-child(4) {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li:nth-child(4) {
     transition-delay: 0.31s;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li.builder-menu-hover ul li:nth-child(5) {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li.qazana-menu-hover ul li:nth-child(5) {
     transition-delay: 0.33s;
 }
 
-#builder-panel-header-menu ul.builder-panel-header-nav li ul a {
+#qazana-panel-header-menu ul.qazana-panel-header-nav li ul a {
     padding: 0 17px 0 14px;
     border: none;
 }

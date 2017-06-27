@@ -1,12 +1,12 @@
-var TemplateLibraryTemplateView = require( 'builder-templates/views/template/base' ),
+var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
 	TemplateLibraryTemplateLocalView;
 
 TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
-	template: '#tmpl-builder-template-library-template-local',
+	template: '#tmpl-qazana-template-library-template-local',
 
 	ui: function() {
 		return _.extend( TemplateLibraryTemplateView.prototype.ui.apply( this, arguments ), {
-			deleteButton: '.builder-template-library-template-delete'
+			deleteButton: '.qazana-template-library-template-delete'
 		} );
 	},
 
@@ -17,7 +17,7 @@ TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
 	},
 
 	onDeleteButtonClick: function() {
-		builder.templates.deleteTemplate( this.model );
+		qazana.templates.deleteTemplate( this.model );
 	},
 
 	onPreviewButtonClick: function() {

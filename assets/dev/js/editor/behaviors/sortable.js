@@ -15,8 +15,8 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	initialize: function() {
-		this.listenTo( builder.channels.dataEditMode, 'switch', this.onEditModeSwitched );
-		this.listenTo( builder.channels.deviceMode, 'change', this.onDeviceModeChange );
+		this.listenTo( qazana.channels.dataEditMode, 'switch', this.onEditModeSwitched );
+		this.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
 	},
 
 	onEditModeSwitched: function( activeMode ) {
@@ -28,7 +28,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	onDeviceModeChange: function() {
-		var deviceMode = builder.channels.deviceMode.request( 'currentMode' );
+		var deviceMode = qazana.channels.deviceMode.request( 'currentMode' );
 
 		if ( 'desktop' === deviceMode ) {
 			this.active();
@@ -41,7 +41,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		var self = this;
 
 		_.defer( function() {
-			self.onEditModeSwitched( builder.channels.dataEditMode.request( 'activeMode' ) );
+			self.onEditModeSwitched( qazana.channels.dataEditMode.request( 'activeMode' ) );
 		} );
 	},
 
@@ -58,7 +58,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 			defaultSortableOptions = {
 				connectWith: $childViewContainer.selector,
 				cursor: 'move',
-				placeholder: 'builder-sortable-placeholder',
+				placeholder: 'qazana-sortable-placeholder',
 				cursorAt: {
 					top: 20,
 					left: 25
@@ -75,7 +75,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 			cid: $item.data( 'model-cid' )
 		} );
 
-		return '<div style="height: 84px; width: 125px;" class="builder-sortable-helper builder-sortable-helper-' + model.get( 'elType' ) + '"><div class="icon"><i class="' + model.getIcon() + '"></i></div><div class="builder-element-title-wrapper"><div class="title">' + model.getTitle() + '</div></div></div>';
+		return '<div style="height: 84px; width: 125px;" class="qazana-sortable-helper qazana-sortable-helper-' + model.get( 'elType' ) + '"><div class="icon"><i class="' + model.getIcon() + '"></i></div><div class="qazana-element-title-wrapper"><div class="title">' + model.getTitle() + '</div></div></div>';
 	},
 
 	deactivate: function() {
@@ -93,7 +93,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 		if ( 'column' === this.options.elChildType ) {
 			// the following code is just for touch
-			ui.placeholder.addClass( 'builder-column' );
+			ui.placeholder.addClass( 'qazana-column' );
 
 			var uiData = ui.item.data( 'sortableItem' ),
 				uiItems = uiData.items,
@@ -108,37 +108,37 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 			ui.placeholder.height( itemHeight );
 
-			// ui.placeholder.addClass( 'builder-column builder-col-' + model.getSetting( 'size' ) );
+			// ui.placeholder.addClass( 'qazana-column qazana-col-' + model.getSetting( 'size' ) );
 		}
 
-		builder.channels.data.trigger( model.get( 'elType' ) + ':drag:start' );
+		qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:start' );
 
-		builder.channels.data.reply( 'cache:' + model.cid, model );
+		qazana.channels.data.reply( 'cache:' + model.cid, model );
 	},
 
 	onSortOver: function( event, ui ) {
 		event.stopPropagation();
 
-		var model = builder.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) );
+		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) );
 
 		Backbone.$( event.target )
-			.addClass( 'builder-draggable-over' )
+			.addClass( 'qazana-draggable-over' )
 			.attr( {
 				'data-dragged-element': model.get( 'elType' ),
 				'data-dragged-is-inner': model.get( 'isInner' )
 			} );
 
-		this.$el.addClass( 'builder-dragging-on-child' );
+		this.$el.addClass( 'qazana-dragging-on-child' );
 	},
 
 	onSortOut: function( event ) {
 		event.stopPropagation();
 
 		Backbone.$( event.target )
-			.removeClass( 'builder-draggable-over' )
+			.removeClass( 'qazana-draggable-over' )
 			.removeAttr( 'data-dragged-element data-dragged-is-inner' );
 
-		this.$el.removeClass( 'builder-dragging-on-child' );
+		this.$el.removeClass( 'qazana-dragging-on-child' );
 	},
 
 	onSortReceive: function( event, ui ) {
@@ -149,7 +149,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 			return;
 		}
 
-		var model = builder.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) ),
+		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) ),
 			draggedElType = model.get( 'elType' ),
 			draggedIsInnerSection = 'section' === draggedElType && model.get( 'isInner' ),
 			targetIsInnerColumn = 'column' === this.view.getElementType() && this.view.isInner();
@@ -164,7 +164,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 		this.view.addChildModel( newModel, { at: newIndex } );
 
-		builder.channels.data.trigger( draggedElType + ':drag:end' );
+		qazana.channels.data.trigger( draggedElType + ':drag:end' );
 
 		model.destroy();
 	},
@@ -174,7 +174,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 		var model = this.view.collection.get( ui.item.attr( 'data-model-cid' ) );
 		if ( model ) {
-			builder.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
+			qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
 		}
 	},
 
@@ -194,10 +194,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 					collection.remove( model );
 					this.view.addChildModel( model, { at: newIndex } );
 
-					builder.setFlagEditorChange( true );
+					qazana.setFlagEditorChange( true );
 				}
 
-				builder.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
+				qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
 			}
 		}
 	},

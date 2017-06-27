@@ -1,22 +1,22 @@
 var childViewTypes = {
-		color: require( 'builder-panel/pages/schemes/items/color' ),
-		typography: require( 'builder-panel/pages/schemes/items/typography' )
+		color: require( 'qazana-panel/pages/schemes/items/color' ),
+		typography: require( 'qazana-panel/pages/schemes/items/typography' )
 	},
 	PanelSchemeBaseView;
 
 PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	id: function() {
-		return 'builder-panel-scheme-' + this.getType();
+		return 'qazana-panel-scheme-' + this.getType();
 	},
 
 	className: function() {
-		return 'builder-panel-scheme builder-panel-scheme-' + this.getUIType();
+		return 'qazana-panel-scheme qazana-panel-scheme-' + this.getUIType();
 	},
 
-	childViewContainer: '.builder-panel-scheme-items',
+	childViewContainer: '.qazana-panel-scheme-items',
 
 	getTemplate: function() {
-		return Marionette.TemplateCache.get( '#tmpl-builder-panel-schemes-' + this.getType() );
+		return Marionette.TemplateCache.get( '#tmpl-qazana-panel-schemes-' + this.getType() );
 	},
 
 	getChildView: function() {
@@ -29,9 +29,9 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 
 	ui: function() {
 		return {
-			saveButton: '.builder-panel-scheme-save .builder-button',
-			discardButton: '.builder-panel-scheme-discard .builder-button',
-			resetButton: '.builder-panel-scheme-reset .builder-button'
+			saveButton: '.qazana-panel-scheme-save .qazana-button',
+			discardButton: '.qazana-panel-scheme-discard .qazana-button',
+			resetButton: '.qazana-panel-scheme-reset .qazana-button'
 		};
 	},
 
@@ -52,7 +52,7 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	getType: function() {},
 
 	getScheme: function() {
-		return builder.schemes.getScheme( this.getType() );
+		return qazana.schemes.getScheme( this.getType() );
 	},
 
 	changeChildrenUIValues: function( schemeItems ) {
@@ -67,7 +67,7 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	},
 
 	discardScheme: function() {
-		builder.schemes.resetSchemes( this.getType() );
+		qazana.schemes.resetSchemes( this.getType() );
 
 		this.onSchemeChange();
 
@@ -77,13 +77,13 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	},
 
 	setSchemeValue: function( key, value ) {
-		builder.schemes.setSchemeValue( this.getType(), key, value );
+		qazana.schemes.setSchemeValue( this.getType(), key, value );
 
 		this.onSchemeChange();
 	},
 
 	saveScheme: function() {
-		builder.schemes.saveScheme( this.getType() );
+		qazana.schemes.saveScheme( this.getType() );
 
 		this.ui.saveButton.prop( 'disabled', true );
 
@@ -93,7 +93,7 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	},
 
 	setDefaultScheme: function() {
-		var defaultScheme = builder.config.default_schemes[ this.getType() ].items;
+		var defaultScheme = qazana.config.default_schemes[ this.getType() ].items;
 
 		this.changeChildrenUIValues( defaultScheme );
 	},
@@ -121,7 +121,7 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 	},
 
 	onSchemeChange: function() {
-		builder.schemes.printSchemesStyle();
+		qazana.schemes.printSchemesStyle();
 	},
 
 	onChildviewValueChange: function( childView, newValue ) {

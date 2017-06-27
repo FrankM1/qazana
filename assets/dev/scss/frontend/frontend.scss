@@ -28,6 +28,6 @@
 @import "shapes";
 
 // Visibility (for preview mode or front-end)
-body:not(.builder-editor-active) {
+body:not(.qazana-editor-active) {
 	@import "_visibility";
 }

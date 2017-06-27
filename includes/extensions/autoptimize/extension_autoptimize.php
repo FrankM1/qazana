@@ -1,12 +1,12 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 class Autoptimize extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Autoptimize Compatibility', 'builder' ),
+        	'title' => __( 'Autoptimize Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
         	'required' => true,
         	'default_activation' => true,
@@ -22,7 +22,7 @@ class Autoptimize extends Base {
 
         // Disable optimize files in Editor from Autoptimize plugin
         add_filter( 'autoptimize_filter_noptimize', function( $retval ) {
-            if ( builder()->editor->is_edit_mode() ) {
+            if ( qazana()->editor->is_edit_mode() ) {
                 $retval = true;
             }
 

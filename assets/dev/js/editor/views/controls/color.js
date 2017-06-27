@@ -1,4 +1,4 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlColorItemView;
 
 ControlColorItemView = ControlBaseItemView.extend( {
@@ -11,7 +11,7 @@ ControlColorItemView = ControlBaseItemView.extend( {
 	},
 
 	onReady: function() {
-		builder.helpers.wpColorPicker( this.ui.picker, {
+		qazana.helpers.wpColorPicker( this.ui.picker, {
 			change: _.bind( function() {
 				this.setValue( this.ui.picker.wpColorPicker( 'color' ) );
 			}, this ),

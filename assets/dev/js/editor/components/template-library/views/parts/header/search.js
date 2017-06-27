@@ -1,13 +1,13 @@
 var TemplateLibraryHeaderSearchView;
 
 TemplateLibraryHeaderSearchView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-header-search',
+	template: '#tmpl-qazana-template-library-header-search',
 
-	id: 'builder-template-library-header-search-input',
+	id: 'qazana-template-library-header-search-input',
 
 	ui: {
 		input: 'input',
-		clearInput: '#builder-template-library-header-search-input-clear'
+		clearInput: '#qazana-template-library-header-search-input-clear'
 	},
 
 	events: {
@@ -32,13 +32,13 @@ TemplateLibraryHeaderSearchView = Marionette.ItemView.extend( {
 			this.clearInput();
 		}
 
-		builder.templates.onSearchViewChangeInput( this );
+		qazana.templates.onSearchViewChangeInput( this );
 	},
 
 	clearInput: function() {
 		this.ui.input.val( '' );
 		this.$el.removeClass( 'active' );
-		builder.templates.onSearchViewChangeInput( this );
+		qazana.templates.onSearchViewChangeInput( this );
 	}
 } );
 

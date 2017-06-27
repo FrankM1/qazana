@@ -7,10 +7,10 @@ Ajax = {
 		this.config = {
 			ajaxParams: {
 				type: 'POST',
-				url: builder.config.ajaxurl,
+				url: qazana.config.ajaxurl,
 				data: {}
 			},
-			actionPrefix: 'builder_'
+			actionPrefix: 'qazana_'
 		};
 	},
 
@@ -19,7 +19,7 @@ Ajax = {
 	},
 
 	send: function( action, options ) {
-		var ajaxParams = builder.helpers.cloneObject( this.config.ajaxParams );
+		var ajaxParams = qazana.helpers.cloneObject( this.config.ajaxParams );
 
 		options = options || {};
 
@@ -29,10 +29,10 @@ Ajax = {
 
 		if ( ajaxParams.data instanceof FormData ) {
 			ajaxParams.data.append( 'action', action );
-			ajaxParams.data.append( '_nonce', builder.config.nonce );
+			ajaxParams.data.append( '_nonce', qazana.config.nonce );
 		} else {
 			ajaxParams.data.action = action;
-			ajaxParams.data._nonce = builder.config.nonce;
+			ajaxParams.data._nonce = qazana.config.nonce;
 		}
 
 		var successCallback = ajaxParams.success,

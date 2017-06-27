@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	var $imageOverlay = $scope.find( '.builder-custom-embed-image-overlay' ),
+	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
 		$videoFrame = $scope.find( 'iframe' );
 
 	if ( ! $imageOverlay.length ) {

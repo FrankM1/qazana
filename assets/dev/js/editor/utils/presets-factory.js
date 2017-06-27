@@ -15,7 +15,7 @@ presetsFactory = {
 	},
 
 	getAbsolutePresetValues: function( preset ) {
-		var clonedPreset = builder.helpers.cloneObject( preset ),
+		var clonedPreset = qazana.helpers.cloneObject( preset ),
 			presetDictionary = this.getPresetsDictionary();
 
 		_.each( clonedPreset, function( unitValue, unitIndex ) {
@@ -28,7 +28,7 @@ presetsFactory = {
 	},
 
 	getPresets: function( columnsCount, presetIndex ) {
-		var presets = builder.helpers.cloneObject( builder.config.elements.section.presets );
+		var presets = qazana.helpers.cloneObject( qazana.config.elements.section.presets );
 
 		if ( columnsCount ) {
 			presets = presets[ columnsCount ];

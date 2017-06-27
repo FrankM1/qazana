@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -14,7 +14,7 @@ class Elements_Manager {
 
     public function __construct() {
         add_action( 'after_setup_theme', [ $this, 'require_files' ] );
-        add_action( 'wp_ajax_builder_save_builder', [ $this, 'ajax_save_builder' ] );
+        add_action( 'wp_ajax_qazana_save_qazana', [ $this, 'ajax_save_qazana' ] );
     }
 
 	/**
@@ -30,7 +30,7 @@ class Elements_Manager {
 		}
 
 		if ( 'widget' === $element_data['elType'] ) {
-			$element_type = builder()->widgets_manager->get_widget_types( $element_data['widgetType'] );
+			$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
 
 			if ( ! $element_type ) {
 				return null;
@@ -114,8 +114,8 @@ class Elements_Manager {
 		}
 	}
 
-	public function ajax_save_builder() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'builder-editing' ) ) {
+	public function ajax_save_qazana() {
+		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -141,7 +141,7 @@ class Elements_Manager {
 
 		$posted = json_decode( stripslashes( html_entity_decode( $_POST['data'] ) ), true );
 
-		builder()->db->save_editor( $_POST['post_id'], $posted, $status, $save_state );
+		qazana()->db->save_editor( $_POST['post_id'], $posted, $status, $save_state );
 
 		$return_data = [];
 
@@ -171,26 +171,26 @@ class Elements_Manager {
 			$this->register_element_type( new $class_name() );
 		}
 
-		do_action( 'builder/elements/elements_registered' );
+		do_action( 'qazana/elements/elements_registered' );
 	}
 
     private function init_categories() {
         $categories = [
             'basic' => [
-                'title' => __( 'Basic', 'builder' ),
+                'title' => __( 'Basic', 'qazana' ),
                 'icon' => 'eicon-font',
             ],
             'general-elements' => [
-                'title' => __( 'General Elements', 'builder' ),
+                'title' => __( 'General Elements', 'qazana' ),
                 'icon' => 'eicon-font',
             ],
             'wordpress' => [
-                'title' => __( 'WordPress', 'builder' ),
+                'title' => __( 'WordPress', 'qazana' ),
                 'icon' => 'eicon-wordpress',
             ],
         ];
 
-        $this->_categories = apply_filters( 'builder/elements/categories', $categories );
+        $this->_categories = apply_filters( 'qazana/elements/categories', $categories );
 
         return $this->_categories;
 
@@ -205,11 +205,11 @@ class Elements_Manager {
 	     	'elements/repeater.php',
         );
 
-        $files = apply_filters( 'builder\elements\require_files', $default_files );
+        $files = apply_filters( 'qazana\elements\require_files', $default_files );
 
         if ( is_array( $files ) ) {
             foreach ( $files as $file ) {
-                builder()->widget_loader->locate_widget( $file, true );
+                qazana()->widget_loader->locate_widget( $file, true );
             }
         }
     }

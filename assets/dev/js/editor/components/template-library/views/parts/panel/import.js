@@ -1,12 +1,12 @@
 var TemplateLibraryImportView;
 
 TemplateLibraryImportView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-import',
+	template: '#tmpl-qazana-template-library-import',
 
-	id: 'builder-template-library-import',
+	id: 'qazana-template-library-import',
 
 	ui: {
-		uploadForm: '#builder-template-library-import-form'
+		uploadForm: '#qazana-template-library-import-form'
 	},
 
 	events: {
@@ -16,19 +16,19 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 	onFormSubmit: function( event ) {
 		event.preventDefault();
 
-		builder.templates.getLayout().showLoadingView();
+		qazana.templates.getLayout().showLoadingView();
 
-		builder.ajax.send( 'import_template', {
+		qazana.ajax.send( 'import_template', {
 			data: new FormData( this.ui.uploadForm[ 0 ] ),
 			processData: false,
 			contentType: false,
 			success: function( data ) {
-				builder.templates.getTemplatesCollection().add( data.item );
+				qazana.templates.getTemplatesCollection().add( data.item );
 
-				builder.templates.showTemplates();
+				qazana.templates.showTemplates();
 			},
 			error: function( data ) {
-				builder.templates.showErrorDialog( data );
+				qazana.templates.showErrorDialog( data );
 			}
 		} );
 	}

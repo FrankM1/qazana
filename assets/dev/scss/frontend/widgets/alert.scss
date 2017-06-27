@@ -1,22 +1,22 @@
 //
 // Alert
 //
-.builder-alert {
+.qazana-alert {
 	padding: 15px;
 	border-left: 5px solid transparent;
 	position: relative;
 	text-align: $start;
 
-	.builder-alert-title {
+	.qazana-alert-title {
 		display: block;
 		font-weight: bold;
 	}
 
-	.builder-alert-description {
+	.qazana-alert-description {
 		font-size: 13px;
 	}
 
-	button.builder-alert-dismiss {
+	button.qazana-alert-dismiss {
 		position: absolute;
 		@include end(10px);
 		top: 10px;
@@ -28,25 +28,25 @@
 		border: none;
 	}
 
-	&.builder-alert-info {
+	&.qazana-alert-info {
 		color: $info-text;
 		background-color: $info-bg;
 		border-color: $info-border;
 	}
 
-	&.builder-alert-success {
+	&.qazana-alert-success {
 		color: $success-text;
 		background-color: $success-bg;
 		border-color: $success-border;
 	}
 
-	&.builder-alert-warning {
+	&.qazana-alert-warning {
 		color: $warning-text;
 		background-color: $warning-bg;
 		border-color: $warning-border;
 	}
 
-	&.builder-alert-danger {
+	&.qazana-alert-danger {
 		color: $danger-text;
 		background-color: $danger-bg;
 		border-color: $danger-border;
@@ -56,10 +56,10 @@
 // Responsive mode
 @media (max-width: $screen-sm-max) {
 
-	.builder-alert {
+	.qazana-alert {
 		padding: 10px;
 
-		button.builder-alert-dismiss {
+		button.qazana-alert-dismiss {
 			right: 7px;
 			top: 7px;
 		}

@@ -6,7 +6,7 @@ Based on the Elementor plugin
 5. Modified UI to match WordPress
 6. Added local template filesystem
 7. Added filter for template sources
-8. Added default page builder page template for added compatibility across themes
+8. Added default page qazana page template for added compatibility across themes
 9. Rebuilt the core of the plugin
 10. More robust extension manager
 11. New image importer
@@ -18,4 +18,4 @@ Based on the Elementor plugin
 
 
 // Todo
-Integrate with customizer like so. Add ability to switch to the builder if current page being viewed in customizer is a builder page.
+Integrate with customizer like so. Add ability to switch to the qazana if current page being viewed in customizer is a qazana page.

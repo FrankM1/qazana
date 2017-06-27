@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -16,27 +16,27 @@ class Control_Structure extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<div class="builder-control-input-wrapper">
-				<div class="builder-control-structure-title"><?php _e( 'Structure', 'builder' ); ?></div>
-				<# var currentPreset = builder.presetsFactory.getPresetByStructure( data.controlValue ); #>
-				<div class="builder-control-structure-preset builder-control-structure-current-preset">
-					{{{ builder.presetsFactory.getPresetSVG( currentPreset.preset, 233, 72, 5 ).outerHTML }}}
+		<div class="qazana-control-field">
+			<div class="qazana-control-input-wrapper">
+				<div class="qazana-control-structure-title"><?php _e( 'Structure', 'qazana' ); ?></div>
+				<# var currentPreset = qazana.presetsFactory.getPresetByStructure( data.controlValue ); #>
+				<div class="qazana-control-structure-preset qazana-control-structure-current-preset">
+					{{{ qazana.presetsFactory.getPresetSVG( currentPreset.preset, 233, 72, 5 ).outerHTML }}}
 				</div>
-				<div class="builder-control-structure-reset"><i class="fa fa-undo"></i><?php _e( 'Reset Structure', 'builder' ); ?></div>
+				<div class="qazana-control-structure-reset"><i class="fa fa-undo"></i><?php _e( 'Reset Structure', 'qazana' ); ?></div>
 				<#
 				var morePresets = getMorePresets();
 
 				if ( morePresets.length > 1 ) { #>
-					<div class="builder-control-structure-more-presets-title"><?php _e( 'More Structures', 'builder' ); ?></div>
-					<div class="builder-control-structure-more-presets">
+					<div class="qazana-control-structure-more-presets-title"><?php _e( 'More Structures', 'qazana' ); ?></div>
+					<div class="qazana-control-structure-more-presets">
 						<# _.each( morePresets, function( preset ) { #>
-							<div class="builder-control-structure-preset-wrapper">
-								<input id="builder-control-structure-preset-{{ data._cid }}-{{ preset.key }}" type="radio" name="builder-control-structure-preset-{{ data._cid }}" data-setting="structure" value="{{ preset.key }}">
-								<label class="builder-control-structure-preset" for="builder-control-structure-preset-{{ data._cid }}-{{ preset.key }}">
-									{{{ builder.presetsFactory.getPresetSVG( preset.preset, 102, 42 ).outerHTML }}}
+							<div class="qazana-control-structure-preset-wrapper">
+								<input id="qazana-control-structure-preset-{{ data._cid }}-{{ preset.key }}" type="radio" name="qazana-control-structure-preset-{{ data._cid }}" data-setting="structure" value="{{ preset.key }}">
+								<label class="qazana-control-structure-preset" for="qazana-control-structure-preset-{{ data._cid }}-{{ preset.key }}">
+									{{{ qazana.presetsFactory.getPresetSVG( preset.preset, 102, 42 ).outerHTML }}}
 								</label>
-								<div class="builder-control-structure-preset-title">{{{ preset.preset.join( ', ' ) }}}</div>
+								<div class="qazana-control-structure-preset-title">{{{ preset.preset.join( ', ' ) }}}</div>
 							</div>
 						<# } ); #>
 					</div>
@@ -45,7 +45,7 @@ class Control_Structure extends Base_Control {
 		</div>
 		
 		<# if ( data.description ) { #>
-			<div class="builder-control-description">{{{ data.description }}}</div>
+			<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

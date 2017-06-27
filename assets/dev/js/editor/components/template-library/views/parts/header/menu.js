@@ -2,15 +2,15 @@ var TemplateLibraryHeaderMenuView;
 
 TemplateLibraryHeaderMenuView = Marionette.ItemView.extend( {
 	options: {
-		activeClass: 'builder-active'
+		activeClass: 'qazana-active'
 	},
 
-	template: '#tmpl-builder-template-library-header-menu',
+	template: '#tmpl-qazana-template-library-header-menu',
 
-	id: 'builder-template-library-header-menu',
+	id: 'qazana-template-library-header-menu',
 
 	ui: {
-		menuItems: '.builder-template-library-menu-item'
+		menuItems: '.qazana-template-library-menu-item'
 	},
 
 	events: {
@@ -36,7 +36,7 @@ TemplateLibraryHeaderMenuView = Marionette.ItemView.extend( {
 	},
 
 	onRender: function() {
-		var currentSource = builder.channels.templates.request( 'filter:source' ),
+		var currentSource = qazana.channels.templates.request( 'filter:source' ),
 			$sourceItem = this.ui.menuItems.filter( '[data-template-source="' + currentSource + '"]' );
 
 		this.activateMenuItem( $sourceItem );
@@ -47,7 +47,7 @@ TemplateLibraryHeaderMenuView = Marionette.ItemView.extend( {
 
 		this.activateMenuItem( Backbone.$( item ) );
 
-		builder.templates.setTemplatesSource( item.dataset.templateSource, true );
+		qazana.templates.setTemplatesSource( item.dataset.templateSource, true );
 	}
 } );
 

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -12,15 +12,15 @@ class Element_Section extends Element_Base {
 	protected static function get_default_edit_tools() {
 		return [
 			'duplicate' => [
-				'title' => __( 'Duplicate', 'builder' ),
+				'title' => __( 'Duplicate', 'qazana' ),
 				'icon' => 'files-o',
 			],
 			'save' => [
-				'title' => __( 'Save', 'builder' ),
+				'title' => __( 'Save', 'qazana' ),
 				'icon' => 'floppy-o',
 			],
 			'remove' => [
-				'title' => __( 'Remove', 'builder' ),
+				'title' => __( 'Remove', 'qazana' ),
 				'icon' => 'times',
 			],
 		];
@@ -31,7 +31,7 @@ class Element_Section extends Element_Base {
 	}
 
 	public function get_title() {
-		return __( 'Section', 'builder' );
+		return __( 'Section', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -118,7 +118,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_layout',
 			[
-				'label' => __( 'Layout', 'builder' ),
+				'label' => __( 'Layout', 'qazana' ),
 				'tab' => Controls_Manager::TAB_LAYOUT,
 			]
 		);
@@ -126,37 +126,37 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'stretch_section',
 			[
-				'label' => __( 'Stretch Section', 'builder' ),
+				'label' => __( 'Stretch Section', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'section-stretched',
-				'prefix_class' => 'builder-',
+				'prefix_class' => 'qazana-',
 				'force_render' => true,
 				'hide_in_inner' => true,
-				'description' => __( 'Stretch the section to the full width of the page using JS.', 'builder' ) . sprintf( ' <a href="%s" target="_blank">%s</a>', 'https://radiumthemes.com/plugins/builder/stretch-section/', __( 'Learn more.', 'builder' ) ),
+				'description' => __( 'Stretch the section to the full width of the page using JS.', 'qazana' ) . sprintf( ' <a href="%s" target="_blank">%s</a>', 'https://radiumthemes.com/plugins/qazana/stretch-section/', __( 'Learn more.', 'qazana' ) ),
 			]
 		);
 
 		$this->add_control(
 			'layout',
 			[
-				'label' => __( 'Content Width', 'builder' ),
+				'label' => __( 'Content Width', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'boxed',
 				'options' => [
-					'boxed' => __( 'Boxed', 'builder' ),
-					'full_width' => __( 'Full Width', 'builder' ),
+					'boxed' => __( 'Boxed', 'qazana' ),
+					'full_width' => __( 'Full Width', 'qazana' ),
 				],
-				'prefix_class' => 'builder-section-',
+				'prefix_class' => 'qazana-section-',
 			]
 		);
 
 		$this->add_control(
 			'content_width',
 			[
-				'label' => __( 'Content Width', 'builder' ),
+				'label' => __( 'Content Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -165,7 +165,7 @@ class Element_Section extends Element_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}}.builder-section-boxed>.builder-container, {{WRAPPER}}.builder-section-boxed>.builder-container' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-section-boxed>.qazana-container, {{WRAPPER}}.qazana-section-boxed>.qazana-container' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'layout' => [ 'boxed' ],
@@ -178,16 +178,16 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'gap',
 			[
-				'label' => __( 'Columns Gap', 'builder' ),
+				'label' => __( 'Columns Gap', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Default', 'builder' ),
-					'no' => __( 'No Gap', 'builder' ),
-					'narrow' => __( 'Narrow', 'builder' ),
-					'extended' => __( 'Extended', 'builder' ),
-					'wide' => __( 'Wide', 'builder' ),
-					'wider' => __( 'Wider', 'builder' ),
+					'default' => __( 'Default', 'qazana' ),
+					'no' => __( 'No Gap', 'qazana' ),
+					'narrow' => __( 'Narrow', 'qazana' ),
+					'extended' => __( 'Extended', 'qazana' ),
+					'wide' => __( 'Wide', 'qazana' ),
+					'wider' => __( 'Wider', 'qazana' ),
 				],
 			]
 		);
@@ -195,15 +195,15 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'height',
 			[
-				'label' => __( 'Height', 'builder' ),
+				'label' => __( 'Height', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Default', 'builder' ),
-					'full' => __( 'Fit To Screen', 'builder' ),
-					'min-height' => __( 'Min Height', 'builder' ),
+					'default' => __( 'Default', 'qazana' ),
+					'full' => __( 'Fit To Screen', 'qazana' ),
+					'min-height' => __( 'Min Height', 'qazana' ),
 				],
-				'prefix_class' => 'builder-section-height-',
+				'prefix_class' => 'qazana-section-height-',
 				'hide_in_inner' => true,
 			]
 		);
@@ -211,7 +211,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'custom_height',
 			[
-				'label' => __( 'Minimum Height', 'builder' ),
+				'label' => __( 'Minimum Height', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 400,
@@ -228,7 +228,7 @@ class Element_Section extends Element_Base {
 				],
 				'size_units' => [ 'px', 'vh' ],
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-container' => 'min-height: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'height' => [ 'min-height' ],
@@ -240,14 +240,14 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'height_inner',
 			[
-				'label' => __( 'Height', 'builder' ),
+				'label' => __( 'Height', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Default', 'builder' ),
-					'min-height' => __( 'Min Height', 'builder' ),
+					'default' => __( 'Default', 'qazana' ),
+					'min-height' => __( 'Min Height', 'qazana' ),
 				],
-				'prefix_class' => 'builder-section-height-',
+				'prefix_class' => 'qazana-section-height-',
 				'hide_in_top' => true,
 			]
 		);
@@ -255,7 +255,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'custom_height_inner',
 			[
-				'label' => __( 'Minimum Height', 'builder' ),
+				'label' => __( 'Minimum Height', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 400,
@@ -267,7 +267,7 @@ class Element_Section extends Element_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-container' => 'min-height: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'height_inner' => [ 'min-height' ],
@@ -279,16 +279,16 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'column_position',
 			[
-				'label' => __( 'Column Position', 'builder' ),
+				'label' => __( 'Column Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'middle',
 				'options' => [
-					'stretch' => __( 'Stretch', 'builder' ),
-					'top' => __( 'Top', 'builder' ),
-					'middle' => __( 'Middle', 'builder' ),
-					'bottom' => __( 'Bottom', 'builder' ),
+					'stretch' => __( 'Stretch', 'qazana' ),
+					'top' => __( 'Top', 'qazana' ),
+					'middle' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
 				],
-				'prefix_class' => 'builder-section-items-',
+				'prefix_class' => 'qazana-section-items-',
 				'condition' => [
 					'height' => [ 'full', 'min-height' ],
 				],
@@ -298,23 +298,23 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'content_position',
 			[
-				'label' => __( 'Content Position', 'builder' ),
+				'label' => __( 'Content Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'' => __( 'Default', 'builder' ),
-					'top' => __( 'Top', 'builder' ),
-					'middle' => __( 'Middle', 'builder' ),
-					'bottom' => __( 'Bottom', 'builder' ),
+					'' => __( 'Default', 'qazana' ),
+					'top' => __( 'Top', 'qazana' ),
+					'middle' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
 				],
-				'prefix_class' => 'builder-section-content-',
+				'prefix_class' => 'qazana-section-content-',
 			]
 		);
 
 		$this->add_control(
 			'structure',
 			[
-				'label' => __( 'Structure', 'builder' ),
+				'label' => __( 'Structure', 'qazana' ),
 				'type' => Controls_Manager::STRUCTURE,
 				'default' => '10',
 				'selectors' => [
@@ -329,7 +329,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_background',
 			[
-				'label' => __( 'Background', 'builder' ),
+				'label' => __( 'Background', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -345,14 +345,14 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'parallax',
 			[
-				'label' => __( 'Parallax', 'builder' ),
+				'label' => __( 'Parallax', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'prefix_class' => 'builder-',
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'prefix_class' => 'qazana-',
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'parallax',
-				'description' => __( 'Enable parallax scroll on this section.', 'builder' ),
+				'description' => __( 'Enable parallax scroll on this section.', 'qazana' ),
 				'condition' => [
 					'background_background' => [ 'classic' ],
 				],
@@ -362,7 +362,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'parallax_speed',
 			[
-				'label' => __( 'Parallax speed', 'builder' ),
+				'label' => __( 'Parallax speed', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0.2,
@@ -383,7 +383,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'background_overlay_section',
 			[
-				'label' => __( 'Background Overlay', 'builder' ),
+				'label' => __( 'Background Overlay', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'background_background' => [ 'classic', 'video' ],
@@ -396,7 +396,7 @@ class Element_Section extends Element_Base {
 			[
 				'name' => 'background_overlay',
 				'types' => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} > .builder-background-overlay',
+				'selector' => '{{WRAPPER}} > .qazana-background-overlay',
 				'condition' => [
 					'background_background' => [ 'none', 'classic', 'gradient', 'video' ],
 				],
@@ -406,7 +406,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'background_overlay_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'builder' ),
+				'label' => __( 'Opacity (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => .5,
@@ -418,7 +418,7 @@ class Element_Section extends Element_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} > .builder-background-overlay' => 'opacity: {{SIZE}};',
+					'{{WRAPPER}} > .qazana-background-overlay' => 'opacity: {{SIZE}};',
 				],
 				'condition' => [
 					'background_overlay_background' => [ 'classic', 'gradient' ],
@@ -432,7 +432,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_border',
 			[
-				'label' => __( 'Border', 'builder' ),
+				'label' => __( 'Border', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -447,11 +447,11 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}}, {{WRAPPER}} > .builder-background-overlay' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}}, {{WRAPPER}} > .qazana-background-overlay' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -469,7 +469,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_typo',
 			[
-				'label' => __( 'Typography', 'builder' ),
+				'label' => __( 'Typography', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -479,8 +479,8 @@ class Element_Section extends Element_Base {
 				'colors_warning',
 				[
 					'type' => Controls_Manager::RAW_HTML,
-					'raw' => __( 'Note: The following colors won\'t work if Global Colors are enabled.', 'builder' ),
-					'content_classes' => 'builder-panel-alert builder-panel-alert-warning',
+					'raw' => __( 'Note: The following colors won\'t work if Global Colors are enabled.', 'qazana' ),
+					'content_classes' => 'qazana-panel-alert qazana-panel-alert-warning',
 				]
 			);
 		}
@@ -488,11 +488,11 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'heading_color',
 			[
-				'label' => __( 'Heading Color', 'builder' ),
+				'label' => __( 'Heading Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container .builder-heading-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} > .qazana-container .qazana-heading-title' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -500,11 +500,11 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'color_text',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container' => 'color: {{VALUE}};',
+					'{{WRAPPER}} > .qazana-container' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -512,11 +512,11 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'color_link',
 			[
-				'label' => __( 'Link Color', 'builder' ),
+				'label' => __( 'Link Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container a' => 'color: {{VALUE}};',
+					'{{WRAPPER}} > .qazana-container a' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -524,11 +524,11 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'color_link_hover',
 			[
-				'label' => __( 'Link Hover Color', 'builder' ),
+				'label' => __( 'Link Hover Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container a:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} > .qazana-container a:hover' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -536,24 +536,24 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'text_align',
 			[
-				'label' => __( 'Text Align', 'builder' ),
+				'label' => __( 'Text Align', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} > .builder-container' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} > .qazana-container' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -564,7 +564,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_advanced',
 			[
-				'label' => __( 'Advanced', 'builder' ),
+				'label' => __( 'Advanced', 'qazana' ),
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
 		);
@@ -572,7 +572,7 @@ class Element_Section extends Element_Base {
 		$this->add_responsive_control(
 			'margin',
 			[
-				'label' => __( 'Margin', 'builder' ),
+				'label' => __( 'Margin', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'allowed_dimensions' => 'vertical',
@@ -591,7 +591,7 @@ class Element_Section extends Element_Base {
 		$this->add_responsive_control(
 			'padding',
 			[
-				'label' => __( 'Padding', 'builder' ),
+				'label' => __( 'Padding', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -604,7 +604,7 @@ class Element_Section extends Element_Base {
 			Group_Control_Animations::get_type(),
 			[
 				'name' => '_background',
-				'selector' => '{{WRAPPER}} .builder-widget-container',
+				'selector' => '{{WRAPPER}} .qazana-widget-container',
 			]
 		);
 
@@ -612,23 +612,23 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'_element_id',
 			[
-				'label' => __( 'CSS ID', 'builder' ),
+				'label' => __( 'CSS ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'label_block' => true,
-				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'builder' ),
+				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'css_classes',
 			[
-				'label' => __( 'CSS Classes', 'builder' ),
+				'label' => __( 'CSS Classes', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'prefix_class' => '',
 				'label_block' => true,
-				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'builder' ),
+				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'qazana' ),
 			]
 		);
 
@@ -638,7 +638,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'_section_responsive',
 			[
-				'label' => __( 'Responsive', 'builder' ),
+				'label' => __( 'Responsive', 'qazana' ),
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
 		);
@@ -646,21 +646,21 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'reverse_order_mobile',
 			[
-				'label' => __( 'Reverse Columns', 'builder' ),
+				'label' => __( 'Reverse Columns', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'prefix_class' => 'builder-',
-				'label_on' => __( 'Yes', 'builder' ),
-				'label_off' => __( 'No', 'builder' ),
+				'prefix_class' => 'qazana-',
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'reverse-mobile',
-				'description' => __( 'Reverse column order - When on mobile, the column order is reversed, so the last column appears on top and vice versa.', 'builder' ),
+				'description' => __( 'Reverse column order - When on mobile, the column order is reversed, so the last column appears on top and vice versa.', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'heading_visibility',
 			[
-				'label' => __( 'Visibility', 'builder' ),
+				'label' => __( 'Visibility', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -669,21 +669,21 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'responsive_description',
 			[
-				'raw' => __( 'Attention: The display settings (show/hide for mobile, tablet or desktop) will only take effect once you are on the preview or live page, and not while you\'re in editing mode in Builder.', 'builder' ),
+				'raw' => __( 'Attention: The display settings (show/hide for mobile, tablet or desktop) will only take effect once you are on the preview or live page, and not while you\'re in editing mode in Qazana.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
-				'classes' => 'builder-descriptor',
+				'classes' => 'qazana-descriptor',
 			]
 		);
 
 		$this->add_control(
 			'hide_desktop',
 			[
-				'label' => __( 'Hide On Desktop', 'builder' ),
+				'label' => __( 'Hide On Desktop', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'prefix_class' => 'builder-',
-				'label_on' => __( 'Hide', 'builder' ),
-				'label_off' => __( 'Show', 'builder' ),
+				'prefix_class' => 'qazana-',
+				'label_on' => __( 'Hide', 'qazana' ),
+				'label_off' => __( 'Show', 'qazana' ),
 				'return_value' => 'hidden-desktop',
 			]
 		);
@@ -691,12 +691,12 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'hide_tablet',
 			[
-				'label' => __( 'Hide On Tablet', 'builder' ),
+				'label' => __( 'Hide On Tablet', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'prefix_class' => 'builder-',
-				'label_on' => __( 'Hide', 'builder' ),
-				'label_off' => __( 'Show', 'builder' ),
+				'prefix_class' => 'qazana-',
+				'label_on' => __( 'Hide', 'qazana' ),
+				'label_off' => __( 'Show', 'qazana' ),
 				'return_value' => 'hidden-tablet',
 			]
 		);
@@ -704,12 +704,12 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'hide_mobile',
 			[
-				'label' => __( 'Hide On Mobile', 'builder' ),
+				'label' => __( 'Hide On Mobile', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'prefix_class' => 'builder-',
-				'label_on' => __( 'Hide', 'builder' ),
-				'label_off' => __( 'Show', 'builder' ),
+				'prefix_class' => 'qazana-',
+				'label_on' => __( 'Hide', 'qazana' ),
+				'label_off' => __( 'Show', 'qazana' ),
 				'return_value' => 'hidden-phone',
 			]
 		);
@@ -720,7 +720,7 @@ class Element_Section extends Element_Base {
 
 	protected function _render_settings() {
 		?>
-		<div class="builder-element-overlay"></div>
+		<div class="qazana-element-overlay"></div>
 		<?php
 	}
 
@@ -730,30 +730,30 @@ class Element_Section extends Element_Base {
 			var videoLink = settings.background_video_link;
 
 			if ( videoLink ) {
-				var videoID = builder.helpers.getYoutubeIDFromURL( settings.background_video_link ); #>
+				var videoID = qazana.helpers.getYoutubeIDFromURL( settings.background_video_link ); #>
 
-				<div class="builder-background-video-container builder-hidden-phone">
+				<div class="qazana-background-video-container qazana-hidden-phone">
 					<# if ( videoID ) { #>
-						<div class="builder-background-video" data-video-id="{{ videoID }}"></div>
+						<div class="qazana-background-video" data-video-id="{{ videoID }}"></div>
 					<# } else { #>
-						<video class="builder-background-video" src="{{ videoLink }}" autoplay loop muted></video>
+						<video class="qazana-background-video" src="{{ videoLink }}" autoplay loop muted></video>
 					<# } #>
 				</div>
 			<# }
 
 			if ( settings.background_video_fallback ) { #>
-				<div class="builder-background-video-fallback" style="background-image: url({{ settings.background_video_fallback.url }})"></div>
+				<div class="qazana-background-video-fallback" style="background-image: url({{ settings.background_video_fallback.url }})"></div>
 			<# }
 		}
 
 		if ( 'classic' === settings.background_overlay_background ) { #>
-			<div class="builder-background-overlay"></div>
+			<div class="qazana-background-overlay"></div>
 		<# } #>
 
-		<div class="builder-shape builder-shape-top"></div>
-		<div class="builder-shape builder-shape-bottom"></div>
-		<div class="builder-container builder-column-gap-{{ settings.gap }}" <# if ( settings.get_render_attribute_string ) { #>{{{ settings.get_render_attribute_string( 'wrapper' ) }}} <# } #> >
-			<div class="builder-row"></div>
+		<div class="qazana-shape qazana-shape-top"></div>
+		<div class="qazana-shape qazana-shape-bottom"></div>
+		<div class="qazana-container qazana-column-gap-{{ settings.gap }}" <# if ( settings.get_render_attribute_string ) { #>{{{ settings.get_render_attribute_string( 'wrapper' ) }}} <# } #> >
+			<div class="qazana-row"></div>
 		</div>
 		<?php
 	}
@@ -763,7 +763,7 @@ class Element_Section extends Element_Base {
 	    $base_setting_key = "shape_divider_$side";
 		$negative = ! empty( $settings[ $base_setting_key . '_negative' ] );
 	    ?>
-		<div class="builder-shape builder-shape-<?php echo $side; ?>" data-negative="<?php echo var_export( $negative ); ?>">
+		<div class="qazana-shape qazana-shape-<?php echo $side; ?>" data-negative="<?php echo var_export( $negative ); ?>">
 			<?php include Shapes::get_shape_path( $settings[ $base_setting_key ], ! empty( $settings[ $base_setting_key . '_negative' ] ) ); ?>
 		</div>
 		<?php
@@ -773,10 +773,10 @@ class Element_Section extends Element_Base {
 		$section_type = $this->get_data( 'isInner' ) ? 'inner' : 'top';
 
 		$this->add_render_attribute( 'wrapper', 'class', [
-			'builder-section',
-			'builder-element',
-			'builder-element-' . $this->get_id(),
-			'builder-' . $section_type . '-section',
+			'qazana-section',
+			'qazana-element',
+			'qazana-element-' . $this->get_id(),
+			'qazana-' . $section_type . '-section',
 		] );
 
 		$settings = $this->get_settings();
@@ -796,7 +796,7 @@ class Element_Section extends Element_Base {
 		}
 
         $this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
-		$this->add_render_attribute( 'row', 'class', 'builder-row' );
+		$this->add_render_attribute( 'row', 'class', 'qazana-row' );
 
         ?>
         <section <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
@@ -806,21 +806,21 @@ class Element_Section extends Element_Base {
                 if ( $settings['background_video_link'] ) :
                     $video_data = Utils::get_video_id_from_url( $settings['background_video_link'] );
                     ?>
-                    <div class="builder-background-video-container builder-hidden-phone">
+                    <div class="qazana-background-video-container qazana-hidden-phone">
                         <?php if ( ! empty( $video_data ) ) : ?>
-                            <div class="builder-background-video" data-video-host="<?php echo $video_data['host']; ?>" data-video-id="<?php echo $video_data['id']; ?>"></div>
+                            <div class="qazana-background-video" data-video-host="<?php echo $video_data['host']; ?>" data-video-id="<?php echo $video_data['id']; ?>"></div>
                         <?php else : ?>
-                            <video class="builder-background-video builder-html5-video" src="<?php echo $settings['background_video_link'] ?>" autoplay loop muted></video>
+                            <video class="qazana-background-video qazana-html5-video" src="<?php echo $settings['background_video_link'] ?>" autoplay loop muted></video>
                         <?php endif; ?>
                     </div>
                 <?php endif;
             endif;
 
             if ( in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ) : ?>
-                <div class="builder-background-overlay"></div>
+                <div class="qazana-background-overlay"></div>
             <?php endif; ?>
 
-            <div class="builder-container builder-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
+            <div class="qazana-container qazana-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
                 <div <?php echo $this->get_render_attribute_string( 'row' ); ?>>
         <?php
     }
@@ -834,6 +834,6 @@ class Element_Section extends Element_Base {
     }
 
 	protected function _get_default_child_type( array $element_data ) {
-		return builder()->elements_manager->get_element_types( 'column' );
+		return qazana()->elements_manager->get_element_types( 'column' );
 	}
 }

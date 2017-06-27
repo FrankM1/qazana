@@ -1,16 +1,16 @@
 var ElementEmptyView;
 
 ElementEmptyView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-empty-preview',
+	template: '#tmpl-qazana-empty-preview',
 
-	className: 'builder-empty-view',
+	className: 'qazana-empty-view',
 
 	events: {
 		'click': 'onClickAdd'
 	},
 
 	onClickAdd: function() {
-		builder.getPanelView().setPage( 'elements' );
+		qazana.getPanelView().setPage( 'elements' );
 	}
 } );
 

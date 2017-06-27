@@ -2,20 +2,20 @@ var PanelElementsCategoryView = require( './category' ),
 	PanelElementsCategoriesView;
 
 PanelElementsCategoriesView = Marionette.CompositeView.extend( {
-	template: '#tmpl-builder-panel-categories',
+	template: '#tmpl-qazana-panel-categories',
 
 	childView: PanelElementsCategoryView,
 
-	childViewContainer: '#builder-panel-categories',
+	childViewContainer: '#qazana-panel-categories',
 
-	id: 'builder-panel-elements-categories',
+	id: 'qazana-panel-elements-categories',
 
 	initialize: function() {
-		this.listenTo( builder.channels.panelElements, 'filter:change', this.onPanelElementsFilterChange );
+		this.listenTo( qazana.channels.panelElements, 'filter:change', this.onPanelElementsFilterChange );
 	},
 
 	onPanelElementsFilterChange: function() {
-		builder.getPanelView().getCurrentPageView().showView( 'elements' );
+		qazana.getPanelView().getCurrentPageView().showView( 'elements' );
 	}
 } );
 

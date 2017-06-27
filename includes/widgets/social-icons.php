@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Social_Icons extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Social Icons', 'builder' );
+		return __( 'Social Icons', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->start_controls_section(
 			'section_social_icon',
 			[
-				'label' => __( 'Social Icons', 'builder' ),
+				'label' => __( 'Social Icons', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'social_icon_list',
 			[
-				'label' => __( 'Social Icons', 'builder' ),
+				'label' => __( 'Social Icons', 'qazana' ),
 				'type' => Controls_Manager::REPEATER,
 				'default' => [
 					[
@@ -48,7 +48,7 @@ class Widget_Social_Icons extends Widget_Base {
 				'fields' => [
 					[
 						'name' => 'social',
-						'label' => __( 'Icon', 'builder' ),
+						'label' => __( 'Icon', 'qazana' ),
 						'type' => Controls_Manager::ICON,
 						'label_block' => true,
 						'default' => 'fa fa-wordpress',
@@ -87,14 +87,14 @@ class Widget_Social_Icons extends Widget_Base {
 					],
 					[
 						'name' => 'link',
-						'label' => __( 'Link', 'builder' ),
+						'label' => __( 'Link', 'qazana' ),
 						'type' => Controls_Manager::URL,
 						'label_block' => true,
 						'default' => [
 							'url' => '',
 							'is_external' => 'true',
 						],
-						'placeholder' => __( 'http://your-link.com', 'builder' ),
+						'placeholder' => __( 'http://your-link.com', 'qazana' ),
 					],
 				],
 				'title_field' => '<i class="{{ social }}"></i> {{{ social.replace( \'fa fa-\', \'\' ).replace( \'-\', \' \' ).replace( /\b\w/g, function( letter ){ return letter.toUpperCase() } ) }}}',
@@ -104,34 +104,34 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'shape',
 			[
-				'label' => __( 'Shape', 'builder' ),
+				'label' => __( 'Shape', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'rounded',
 				'options' => [
-					'rounded' => __( 'Rounded', 'builder' ),
-					'square' => __( 'Square', 'builder' ),
-					'circle' => __( 'Circle', 'builder' ),
+					'rounded' => __( 'Rounded', 'qazana' ),
+					'square' => __( 'Square', 'qazana' ),
+					'circle' => __( 'Circle', 'qazana' ),
 				],
-				'prefix_class' => 'builder-shape-',
+				'prefix_class' => 'qazana-shape-',
 			]
 		);
 
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left'    => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
@@ -145,7 +145,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -156,7 +156,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->start_controls_section(
 			'section_social_style',
 			[
-				'label' => __( 'Icon', 'builder' ),
+				'label' => __( 'Icon', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -164,12 +164,12 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_color',
 			[
-				'label' => __( 'Icon Color', 'builder' ),
+				'label' => __( 'Icon Color', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Official Color', 'builder' ),
-					'custom' => __( 'Custom', 'builder' ),
+					'default' => __( 'Official Color', 'qazana' ),
+					'custom' => __( 'Custom', 'qazana' ),
 				],
 			]
 		);
@@ -177,13 +177,13 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_primary_color',
 			[
-				'label' => __( 'Primary Color', 'builder' ),
+				'label' => __( 'Primary Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'condition' => [
 					'icon_color' => 'custom',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-social-icon' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-social-icon' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -191,13 +191,13 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_secondary_color',
 			[
-				'label' => __( 'Secondary Color', 'builder' ),
+				'label' => __( 'Secondary Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'condition' => [
 					'icon_color' => 'custom',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-social-icon' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-social-icon' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -205,7 +205,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_size',
 			[
-				'label' => __( 'Icon Size', 'builder' ),
+				'label' => __( 'Icon Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -214,7 +214,7 @@ class Widget_Social_Icons extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-social-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-social-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -222,10 +222,10 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_padding',
 			[
-				'label' => __( 'Icon Padding', 'builder' ),
+				'label' => __( 'Icon Padding', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'selectors' => [
-					'{{WRAPPER}} .builder-social-icon' => 'padding: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-social-icon' => 'padding: {{SIZE}}{{UNIT}};',
 				],
 				'default' => [
 					'unit' => 'em',
@@ -244,7 +244,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_spacing',
 			[
-				'label' => __( 'Icon Spacing', 'builder' ),
+				'label' => __( 'Icon Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -253,7 +253,7 @@ class Widget_Social_Icons extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-social-icon:not(:last-child)' => $icon_spacing,
+					'{{WRAPPER}} .qazana-social-icon:not(:last-child)' => $icon_spacing,
 				],
 			]
 		);
@@ -262,18 +262,18 @@ class Widget_Social_Icons extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .builder-social-icon',
+				'selector' => '{{WRAPPER}} .qazana-social-icon',
 			]
 		);
 
 		$this->add_control(
 			'border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -283,12 +283,12 @@ class Widget_Social_Icons extends Widget_Base {
 
 	protected function render() {
 		?>
-		<div class="builder-social-icons-wrapper">
+		<div class="qazana-social-icons-wrapper">
 			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $item ) :
 				$social = str_replace( 'fa fa-', '', $item['social'] );
 				$target = $item['link']['is_external'] ? ' target="_blank"' : '';
 				?>
-				<a class="builder-icon builder-social-icon builder-social-icon-<?php echo esc_attr( $social ); ?>" href="<?php echo esc_attr( $item['link']['url'] ); ?>"<?php echo $target; ?>>
+				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo esc_attr( $social ); ?>" href="<?php echo esc_attr( $item['link']['url'] ); ?>"<?php echo $target; ?>>
 					<i class="<?php echo $item['social']; ?>"></i>
 				</a>
 			<?php endforeach; ?>
@@ -298,11 +298,11 @@ class Widget_Social_Icons extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="builder-social-icons-wrapper">
+		<div class="qazana-social-icons-wrapper">
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
 					social = item.social.replace( 'fa fa-', '' ); #>
-				<a class="builder-icon builder-social-icon builder-social-icon-{{ social }}" href="{{ link }}">
+				<a class="qazana-icon qazana-social-icon qazana-social-icon-{{ social }}" href="{{ link }}">
 					<i class="{{ item.social }}"></i>
 				</a>
 			<# } ); #>

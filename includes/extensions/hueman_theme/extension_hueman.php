@@ -1,12 +1,12 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 class Hueman_Theme extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Hueman Theme Compatibility', 'builder' ),
+        	'title' => __( 'Hueman Theme Compatibility', 'qazana' ),
             'name' => 'hueman_theme',
         	'required' => true,
         	'default_activation' => true,
@@ -23,10 +23,10 @@ class Hueman_Theme extends Base {
     	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
         wp_enqueue_style(
-            'builder-theme-compat-hueman',
-            builder()->core_assets_url . 'css/hueman' . $suffix . '.css',
+            'qazana-theme-compat-hueman',
+            qazana()->core_assets_url . 'css/hueman' . $suffix . '.css',
             [],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
     }

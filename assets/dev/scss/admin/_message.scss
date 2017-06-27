@@ -1,30 +1,30 @@
 
-/*= Builder Message
+/*= Qazana Message
 ---------------------------------------*/
 
-.notice.builder-message {
+.notice.qazana-message {
 	@include border-start-property(color, $editor-accent !important);
 	padding: 20px;
 
-	.builder-message-inner {
+	.qazana-message-inner {
 		display: table;
 		width: 100%;
 
-		.builder-message-icon,
-		.builder-message-content,
-		.builder-update-now {
+		.qazana-message-icon,
+		.qazana-message-content,
+		.qazana-update-now {
 			display: table-cell;
 			vertical-align: middle;
 		}
 	}
 
-	.builder-message-icon {
+	.qazana-message-icon {
 		color: $editor-accent;
 		font-size: 50px;
 		width: 50px;
 	}
 
-	.builder-message-content {
+	.qazana-message-content {
 		padding: 0 20px;
 	}
 
@@ -37,10 +37,10 @@
 		margin: 0 0 5px;
 	}
 
-	.builder-update-now {
+	.qazana-update-now {
 		text-align: center;
 
-		.builder-button {
+		.qazana-button {
 			background-color: $editor-accent;
 			color: #fff;
 			border-color: #7c1337;
@@ -67,19 +67,19 @@
 }
 
 @media (max-width: 767px) {
-	.notice.builder-message {
+	.notice.qazana-message {
 		padding: 10px;
 
-		.builder-message-inner {
+		.qazana-message-inner {
 			display: block;
 
-			.builder-message-content {
+			.qazana-message-content {
 				display: block;
 				padding: 0;
 			}
 
-			.builder-message-icon,
-			.builder-update-now {
+			.qazana-message-icon,
+			.qazana-update-now {
 				display: none;
 			}
 		}

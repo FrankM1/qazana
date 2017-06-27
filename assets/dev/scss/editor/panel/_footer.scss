@@ -2,7 +2,7 @@
 // Panel Footer
 //
 
-#builder-panel-footer {
+#qazana-panel-footer {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -11,14 +11,14 @@
 	background-color: $editor-darkest;
 }
 
-#builder-panel-footer-tools {
+#qazana-panel-footer-tools {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
 	height: 100%;
 }
 
-.builder-panel-footer-tool {
+.qazana-panel-footer-tool {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
@@ -26,22 +26,22 @@
 	color: $editor-light;
 	transition: $transition-hover;
 
-	&.builder-open {
+	&.qazana-open {
 		color: #fff;
 	}
 
-	&:not(.builder-open) {
+	&:not(.qazana-open) {
 		&:hover {
 			color: $editor-lightest;
 		}
 
-		.builder-panel-footer-sub-menu-wrapper {
+		.qazana-panel-footer-sub-menu-wrapper {
 			display: none;
 		}
 	}
 }
 
-.builder-panel-footer-sub-menu-wrapper {
+.qazana-panel-footer-sub-menu-wrapper {
 	position: absolute;
 	bottom: 100%;
 	left: 0;
@@ -52,12 +52,12 @@
 	cursor: default;
 }
 
-.builder-panel-footer-sub-menu {
+.qazana-panel-footer-sub-menu {
 	border-radius: 5px;
 	overflow: hidden;
 }
 
-.builder-panel-footer-sub-menu-item {
+.qazana-panel-footer-sub-menu-item {
 	background-color: $editor-darkest;
 	display: table;
 	table-layout: fixed;
@@ -88,17 +88,17 @@
 		vertical-align: middle;
 	}
 
-	.builder-icon {
+	.qazana-icon {
 		width: 40px;
 		color: $editor-light;
 	}
 
-	.builder-title {
+	.qazana-title {
 		text-align: $start;
 		color: $editor-lightest;
 	}
 
-	.builder-description {
+	.qazana-description {
 		width: 95px;
 		text-align: $start;
 		font-size: 11px;
@@ -107,17 +107,17 @@
 	}
 }
 
-#builder-panel-footer-help-title {
+#qazana-panel-footer-help-title {
 	text-align: $start;
 	padding: 10px 0;
 	color: $editor-lightest;
 }
 
-#builder-panel-footer-save {
+#qazana-panel-footer-save {
 	width: 130px;
 	padding: 0 10px;
 
-	.builder-button {
+	.qazana-button {
 		font-size: 11px;
 		text-transform: uppercase;
 		width: 100%;
@@ -130,24 +130,24 @@
 		text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 	}
 
-	&.builder-save-active {
-		.builder-button {
-			@extend .builder-button-success;
+	&.qazana-save-active {
+		.qazana-button {
+			@extend .qazana-button-success;
 			text-shadow: none;
 		}
 	}
 }
 
-#builder-panel-footer-publish {
-	.builder-icon,
-	.builder-title {
+#qazana-panel-footer-publish {
+	.qazana-icon,
+	.qazana-title {
 		color: $editor-success;
 	}
 }
 
-#builder-panel-footer-discard {
-	.builder-icon,
-	.builder-title {
+#qazana-panel-footer-discard {
+	.qazana-icon,
+	.qazana-title {
 		color: $editor-warning;
 	}
 }

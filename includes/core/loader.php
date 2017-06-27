@@ -1,14 +1,14 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 /**
- * Builder Template Functions
+ * Qazana Template Functions
  *
  * This file contains functions necessary to mirror the WordPress core widget
  * loading process. Many of those functions are not filterable, and even then
- * would not be robust enough to predict where Builder widgets might exist.
+ * would not be robust enough to predict where Qazana widgets might exist.
  *
- * @package Builder
+ * @package Qazana
  * @subpackage TemplateFunctions
  */
 
@@ -33,13 +33,13 @@ Class Loader {
         $this->_stack = array(
             get_stylesheet_directory(),
             get_template_directory(),
-            builder()->plugin_dir,
+            qazana()->plugin_dir,
         );
 
         $this->_stack_uri = array(
             get_stylesheet_directory_uri(),
             get_template_directory_uri(),
-            builder()->plugin_url,
+            qazana()->plugin_url,
         );
 
         $this->_locations = $locations;
@@ -60,7 +60,7 @@ Class Loader {
     }
 
     /**
-     * Call the functions added to the 'builder_widget_stack' filter hook, and return
+     * Call the functions added to the 'qazana_widget_stack' filter hook, and return
      * an array of the widget locations.
      *
      * @since 1.0.0
@@ -72,7 +72,7 @@ Class Loader {
     }
 
     /**
-     * Call the functions added to the 'builder_widget_stack' filter hook, and return
+     * Call the functions added to the 'qazana_widget_stack' filter hook, and return
      * an array of the widget locations.
      *
      * @since 1.0.0
@@ -84,7 +84,7 @@ Class Loader {
     }
 
     /**
-     * Call the functions added to the 'builder_widget_stack' filter hook, and return
+     * Call the functions added to the 'qazana_widget_stack' filter hook, and return
      * an array of the widget locations.
      *
      * @since 1.0.0

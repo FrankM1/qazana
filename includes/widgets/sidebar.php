@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Sidebar extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Sidebar', 'builder' );
+		return __( 'Sidebar', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -27,9 +27,9 @@ class Widget_Sidebar extends Widget_Base {
 		$options = [];
 
 		if ( ! $wp_registered_sidebars ) {
-			$options[''] = __( 'No sidebars were found', 'builder' );
+			$options[''] = __( 'No sidebars were found', 'qazana' );
 		} else {
-			$options[''] = __( 'Choose Sidebar', 'builder' );
+			$options[''] = __( 'Choose Sidebar', 'qazana' );
 
 			foreach ( $wp_registered_sidebars as $sidebar_id => $sidebar ) {
 				$options[ $sidebar_id ] = $sidebar['name'];
@@ -42,12 +42,12 @@ class Widget_Sidebar extends Widget_Base {
 		$this->start_controls_section(
 			'section_sidebar',
 			[
-				'label' => __( 'Sidebar', 'builder' ),
+				'label' => __( 'Sidebar', 'qazana' ),
 			]
 		);
 
 		$this->add_control( 'sidebar', [
-			'label' => __( 'Choose Sidebar', 'builder' ),
+			'label' => __( 'Choose Sidebar', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => $default_key,
 			'options' => $options,

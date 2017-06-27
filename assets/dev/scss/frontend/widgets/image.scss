@@ -4,8 +4,8 @@
 
 //
 
-.builder-widget-image {
-  .builder-image {
+.qazana-widget-image {
+  .qazana-image {
     > a,
     figure > a {
       display : block;
@@ -17,7 +17,7 @@
       vertical-align : middle;
     }
 
-    &.builder-image-shape- {
+    &.qazana-image-shape- {
       &circle {
         border-radius : 50%;
       }

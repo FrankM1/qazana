@@ -1,9 +1,9 @@
 var TemplateLibraryPreviewView;
 
 TemplateLibraryPreviewView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-preview',
+	template: '#tmpl-qazana-template-library-preview',
 
-	id: 'builder-template-library-preview',
+	id: 'qazana-template-library-preview',
 
 	ui: {
 		iframe: '> iframe'

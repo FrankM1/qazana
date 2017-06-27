@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -90,8 +90,8 @@ abstract class Base_Control {
 	 */
 	final public function print_template() {
 		?>
-		<script type="text/html" id="tmpl-builder-control-<?php echo esc_attr( $this->get_type() ); ?>-content">
-			<div class="builder-control-content">
+		<script type="text/html" id="tmpl-qazana-control-<?php echo esc_attr( $this->get_type() ); ?>-content">
+			<div class="qazana-control-content">
 				<?php $this->content_template(); ?>
 			</div>
 		</script>

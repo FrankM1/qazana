@@ -2,51 +2,51 @@
 
 ## TOC
   * [Frontend Filters](#frontend-filters)
-    + [`builder/frontend/the_content`](#builderfrontendthe_content)
-    + [`builder/widget/render_content`](#builderwidgetrender_content)
-    + [`builder/frontend/print_google_fonts`](#builderfrontendprint_google_fonts)
+    + [`qazana/frontend/the_content`](#qazanafrontendthe_content)
+    + [`qazana/widget/render_content`](#qazanawidgetrender_content)
+    + [`qazana/frontend/print_google_fonts`](#qazanafrontendprint_google_fonts)
   * [Editor Filters](#editor-filters)
-    + [`builder/element/print_template`](#builderelementprint_template)
+    + [`qazana/element/print_template`](#qazanaelementprint_template)
   * [Init Actions](#init-actions)
-    + [`builder/loaded`](#builderloaded)
-    + [`builder/init`](#builderinit)
-    + [`builder/widget/{name}/skins_init`](#builderwidgetnameskins_init)
+    + [`qazana/loaded`](#qazanaloaded)
+    + [`qazana/init`](#qazanainit)
+    + [`qazana/widget/{name}/skins_init`](#qazanawidgetnameskins_init)
   * [Frontend Actions](#frontend-actions)
-    + [`builder/frontend/before_enqueue_scripts`](#builderfrontendbefore_enqueue_scripts)
-    + [`builder/frontend/after_register_styles`](#builderfrontendafter_register_styles)
-    + [`builder/element/parse_css`](#builderelementparse_css)
-    + [`builder/frontend/{section|column|widget}/before_render`](#builderfrontendsectioncolumnwidgetbefore_render)
-    + [`builder/frontend/{section|column|widget}/after_render`](#builderfrontendsectioncolumnwidgetafter_render)
-    + [`builder/widgets/widgets_registered`](#builderwidgetswidgets_registered)
+    + [`qazana/frontend/before_enqueue_scripts`](#qazanafrontendbefore_enqueue_scripts)
+    + [`qazana/frontend/after_register_styles`](#qazanafrontendafter_register_styles)
+    + [`qazana/element/parse_css`](#qazanaelementparse_css)
+    + [`qazana/frontend/{section|column|widget}/before_render`](#qazanafrontendsectioncolumnwidgetbefore_render)
+    + [`qazana/frontend/{section|column|widget}/after_render`](#qazanafrontendsectioncolumnwidgetafter_render)
+    + [`qazana/widgets/widgets_registered`](#qazanawidgetswidgets_registered)
   * [Editor Actions](#editor-actions)
-    + [`builder/editor/after_save`](#buildereditorafter_save)
-    + [`builder/editor/before_enqueue_scripts`](#buildereditorbefore_enqueue_scripts)
-    + [`builder/element/before_section_start`](#builderelementbefore_section_start)
-    + [`builder/element/after_section_end`](#builderelementafter_section_end)
-    + [`builder/element/{$element_name}/{$section_id}/before_section_start`](#builderelementelementnamesection_idbefore_section_start)
-    + [`builder/element/{element_name}/{section_id}/after_section_end`](#builderelementelementnamesection_idafter_section_end)
-    + [`builder/element/after_section_start`](#builderelementafter_section_start)
-    + [`builder/element/before_section_end`](#builderelementbefore_section_end)
-    + [`builder/element/{$element_name}/{$section_id}/after_section_start`](#builderelementelementnamesection_idafter_section_start)
-    + [`builder/element/{element_name}/{section_id}/before_section_end`](#builderelementelementnamesection_idbefore_section_end)
+    + [`qazana/editor/after_save`](#qazanaeditorafter_save)
+    + [`qazana/editor/before_enqueue_scripts`](#qazanaeditorbefore_enqueue_scripts)
+    + [`qazana/element/before_section_start`](#qazanaelementbefore_section_start)
+    + [`qazana/element/after_section_end`](#qazanaelementafter_section_end)
+    + [`qazana/element/{$element_name}/{$section_id}/before_section_start`](#qazanaelementelementnamesection_idbefore_section_start)
+    + [`qazana/element/{element_name}/{section_id}/after_section_end`](#qazanaelementelementnamesection_idafter_section_end)
+    + [`qazana/element/after_section_start`](#qazanaelementafter_section_start)
+    + [`qazana/element/before_section_end`](#qazanaelementbefore_section_end)
+    + [`qazana/element/{$element_name}/{$section_id}/after_section_start`](#qazanaelementelementnamesection_idafter_section_start)
+    + [`qazana/element/{element_name}/{section_id}/before_section_end`](#qazanaelementelementnamesection_idbefore_section_end)
   * [Preview Actions](#preview-actions)
-    + [`builder/preview/enqueue_styles`](#builderpreviewenqueue_styles)
+    + [`qazana/preview/enqueue_styles`](#qazanapreviewenqueue_styles)
 
 ## Frontend Filters
 
-### `builder/frontend/the_content`
-Applied to frontend HTML content (the entire Builder content in page).
+### `qazana/frontend/the_content`
+Applied to frontend HTML content (the entire Qazana content in page).
 
 #### Arguments
 
 Argument          | Type         | Description
 ------------      | :------:     | ---------------------------------------------
-`content`         | *`string`*   | The entire Builder HTML output of current page/post
+`content`         | *`string`*   | The entire Qazana HTML output of current page/post
  
 #### Example
 
 ```php
-add_action( 'builder/frontend/the_content', function( $content ) {
+add_action( 'qazana/frontend/the_content', function( $content ) {
 	if ( ! membership_plugin_is_allowed_content() ) {
 		$content = __( 'Forbidden', 'membership_plugin' );
 	}
@@ -55,8 +55,8 @@ add_action( 'builder/frontend/the_content', function( $content ) {
 } );
 ```
 
-### `builder/widget/render_content`
-Applied to the PHP html content of a single widget. ( in the Editor it will be shown after the finish edit the element. to change the JavaScript Template see [`builder/element/print_template`](#builderelementprint_template))
+### `qazana/widget/render_content`
+Applied to the PHP html content of a single widget. ( in the Editor it will be shown after the finish edit the element. to change the JavaScript Template see [`qazana/element/print_template`](#qazanaelementprint_template))
  
 #### Arguments
 
@@ -68,7 +68,7 @@ Argument          | Type              | Description
 #### Example
 
  ```php
-add_action( 'builder/widget/render_content', function( $content, $widget ) {
+add_action( 'qazana/widget/render_content', function( $content, $widget ) {
 	if ( 'heading' === $widget->get_name() ) {
 		$settings = $widget->get_settings();
 	
@@ -81,8 +81,8 @@ add_action( 'builder/widget/render_content', function( $content, $widget ) {
 }, 10, 2 );
  ```
  
- ### `builder/frontend/print_google_fonts`
- Used to prevent loading of Google Fonts by Builder
+ ### `qazana/frontend/print_google_fonts`
+ Used to prevent loading of Google Fonts by Qazana
  
  #### Arguments
  None
@@ -90,12 +90,12 @@ add_action( 'builder/widget/render_content', function( $content, $widget ) {
  #### Example
  
   ```php
-add_filter( 'builder/frontend/print_google_fonts', '__return_false' );
+add_filter( 'qazana/frontend/print_google_fonts', '__return_false' );
  ```
 
 ## Editor Filters
 
-### `builder/element/print_template`
+### `qazana/element/print_template`
 Applied to the javascript preview templates.
 
 #### Arguments
@@ -108,7 +108,7 @@ Argument          | Type              | Description
 #### Example
 
  ```php
-add_action( 'builder/element/print_template', function( $template, $widget ) {
+add_action( 'qazana/element/print_template', function( $template, $widget ) {
 	if ( 'heading' === $widget->get_name() ) {
 		$old_template = '<a href="\' + settings.link.url + \'">\' + title_html + \'</a>';
 		$new_template = '<a href="\' + settings.link.url + \'">\' + title_html + ( settings.link.is_external ? \'<i class="fa fa-external-link" aria-hidden="true"></i>\' : \'\' ) + \'</a>';
@@ -122,8 +122,8 @@ add_action( 'builder/element/print_template', function( $template, $widget ) {
  
 ## Init Actions
 
-### `builder/loaded`
-Builder plugin is loaded, before load all components
+### `qazana/loaded`
+Qazana plugin is loaded, before load all components
 
 #### Arguments
 None
@@ -131,11 +131,11 @@ None
 #### Example
 
  ```php
-add_action( 'builder/loaded', 'load_my_plugin' );
+add_action( 'qazana/loaded', 'load_my_plugin' );
  ```
 
-### `builder/init`
-Builder is fully loaded
+### `qazana/init`
+Qazana is fully loaded
 
 #### Arguments
 None
@@ -144,8 +144,8 @@ None
 
  ```php
 // Add a custom category for panel widgets
-add_action( 'builder/init', function() {
-	\Builder\Plugin::$instance->elements_manager->add_category( 
+add_action( 'qazana/init', function() {
+	\Qazana\Plugin::$instance->elements_manager->add_category( 
 		'theme-elements',
 		[
 			'title' => __( 'Theme Elements', 'theme-domain' ),
@@ -156,7 +156,7 @@ add_action( 'builder/init', function() {
 } );
 ```
 
-### `builder/widget/{name}/skins_init`
+### `qazana/widget/{name}/skins_init`
 Runs after widget construction. 
 Here is th place to register custom skins. 
 
@@ -170,14 +170,14 @@ Argument          | Type              | Description
 
  ```php
 // Add a custom skin for the Google Maps widget
-add_action( 'builder/widget/google_maps/skins_init', function( $widget ) {
+add_action( 'qazana/widget/google_maps/skins_init', function( $widget ) {
 	$widget->add_skin( new MySkins\Skin_Dark_Map( $widget ) );
 } );
 ```
 
 ## Frontend Actions
 
-### `builder/frontend/before_enqueue_scripts`
+### `qazana/frontend/before_enqueue_scripts`
 Before the frontend scripts enqueuing.
 
 #### Arguments
@@ -186,12 +186,12 @@ None
 #### Example
 
  ```php
-add_action( 'builder/frontend/before_enqueue_scripts', function() {
+add_action( 'qazana/frontend/before_enqueue_scripts', function() {
 	wp_enqueue_script(
 		'plugin-name-frontend',
 		'plugin-url/assets/frontend.js',
 		[
-			'builder-frontend', // dependency
+			'qazana-frontend', // dependency
 		],
 		'plugin_version',
 		true // in_footer
@@ -199,8 +199,8 @@ add_action( 'builder/frontend/before_enqueue_scripts', function() {
 } );
 ```
 
-### `builder/frontend/after_register_styles`
-After Builder registers all styles.
+### `qazana/frontend/after_register_styles`
+After Qazana registers all styles.
 
 #### Arguments
 None
@@ -208,12 +208,12 @@ None
 #### Example
 
  ```php
-add_action( 'builder/frontend/after_register_styles', function() {
+add_action( 'qazana/frontend/after_register_styles', function() {
     wp_dequeue_style( 'font-awesome' );
 } );
 ```
 
-### `builder/element/parse_css`
+### `qazana/element/parse_css`
 After Parse the element CSS in order to generate the CSS file
 
 #### Arguments
@@ -225,11 +225,11 @@ Argument          | Type              | Description
 #### Example
 
  ```php
-add_action(	'builder/element/parse_css', function( $post_css, $element ) {
+add_action(	'qazana/element/parse_css', function( $post_css, $element ) {
 	$item_width = some_get_theme_config_function( 'item_width' );
 	/**
-	 * @var \Builder\Post_CSS_File $post_css
-	 * @var \Builder\Element_Base  $element
+	 * @var \Qazana\Post_CSS_File $post_css
+	 * @var \Qazana\Element_Base  $element
 	 */
 	$post_css->get_stylesheet()->add_rules( $element->get_unique_selector(), [
 		'width' => $item_width . 'px',
@@ -237,8 +237,8 @@ add_action(	'builder/element/parse_css', function( $post_css, $element ) {
 }, 10, 2 );
 ```
 
-### `builder/frontend/{element|widget}/before_render`
-### `builder/frontend/{element|widget}/after_render`
+### `qazana/frontend/{element|widget}/before_render`
+### `qazana/frontend/{element|widget}/after_render`
 Before/after the element is printed
 
 #### Arguments
@@ -250,7 +250,7 @@ Argument          | Type              | Description
 #### Example
 
 ```php
-add_action( 'builder/frontend/element/before_render', function ( \Builder\Element_Base $element ) {
+add_action( 'qazana/frontend/element/before_render', function ( \Qazana\Element_Base $element ) {
 	if ( ! $element->get_settings( 'my-custom-settings' ) ) {
 		return;
 	}
@@ -262,7 +262,7 @@ add_action( 'builder/frontend/element/before_render', function ( \Builder\Elemen
 } );
 ```
 
-### `builder/widgets/widgets_registered`
+### `qazana/widgets/widgets_registered`
 The place to register your custom widgets. 
 
 #### Arguments
@@ -274,7 +274,7 @@ Argument          | Type               | Description
 #### Example
 
 ```php
-add_action( 'builder/widgets/widgets_registered', function( $widgets_manager ) {
+add_action( 'qazana/widgets/widgets_registered', function( $widgets_manager ) {
 	require 'plugin-path/widgets/my-widget.php';
     
     $widgets_manager->register_widget_type( new My_Widget() );
@@ -282,25 +282,25 @@ add_action( 'builder/widgets/widgets_registered', function( $widgets_manager ) {
 ```
 
 ## Editor Actions
-### `builder/editor/after_save`
-Runs after saving Builder data.
+### `qazana/editor/after_save`
+Runs after saving Qazana data.
 
 #### Arguments
 
 Argument          | Type              | Description
 ------------      | :------:          | ----------------------
 `post_id`         | *`integer`*       | The post ID
-`editor_data`     | *`array`*         | Array of Builder elements
+`editor_data`     | *`array`*         | Array of Qazana elements
 
 #### Example
 
 ```php
-add_action( 'builder/editor/after_save', function( $post_id, $editor_data ) {
+add_action( 'qazana/editor/after_save', function( $post_id, $editor_data ) {
     // Activity Log Plugin
     aal_insert_log(
 		[
 			'action' => 'saved',
-			'object_type' => 'Builder Data',
+			'object_type' => 'Qazana Data',
 			'object_id' => $post_id,
 			'object_name' => get_the_title( $post_id ),
 		]
@@ -308,7 +308,7 @@ add_action( 'builder/editor/after_save', function( $post_id, $editor_data ) {
 }
 ```
 
-### `builder/editor/before_enqueue_scripts`
+### `qazana/editor/before_enqueue_scripts`
 Before the editor scripts enqueuing.
 
 #### Arguments
@@ -317,12 +317,12 @@ None
 #### Example
 
  ```php
-add_action( 'builder/editor/before_enqueue_scripts', function() {
+add_action( 'qazana/editor/before_enqueue_scripts', function() {
 	wp_enqueue_script(
 		'plugin-name-editor',
 		'plugin-url/assets/editor.js',
 		[
-			'builder-editor', // dependency
+			'qazana-editor', // dependency
 		],
 		'plugin_version',
 		true // in_footer
@@ -331,11 +331,11 @@ add_action( 'builder/editor/before_enqueue_scripts', function() {
 ```
 
 start_controls_section
-### `builder/element/before_section_start`
-### `builder/element/after_section_end`
+### `qazana/element/before_section_start`
+### `qazana/element/after_section_end`
 Runs before/after an editor section is registered.
 Here is the place to add additional sections before and after each section for all elements in panel
-If you need to add a section in a specific place ( a specific element & section ), prefer to use the [next hook](#builderelementelement_namesection_idbefore_section_start)
+If you need to add a section in a specific place ( a specific element & section ), prefer to use the [next hook](#qazanaelementelement_namesection_idbefore_section_start)
 
 #### Arguments
 
@@ -349,14 +349,14 @@ Argument          | Type              | Description
 
  ```php
 
-add_action( 'builder/element/before_section_start', function( $element, $section_id, $args ) {
-	/** @var \Builder\Element_Base $element */
+add_action( 'qazana/element/before_section_start', function( $element, $section_id, $args ) {
+	/** @var \Qazana\Element_Base $element */
 	if ( 'section' === $element->get_name() && 'section_background' === $section_id ) {
 
 		$element->start_controls_section(
 			'custom_section',
 			[
-				'tab' => \Builder\Controls_Manager::TAB_STYLE,
+				'tab' => \Qazana\Controls_Manager::TAB_STYLE,
 				'label' => __( 'Custom Section', 'plugin-name' ),
 			]
 		);
@@ -364,7 +364,7 @@ add_action( 'builder/element/before_section_start', function( $element, $section
 		$element->add_control(
 			'custom_control',
 			[
-			'type' => \Builder\Controls_Manager::NUMBER,
+			'type' => \Qazana\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 			]
 		);
@@ -374,8 +374,8 @@ add_action( 'builder/element/before_section_start', function( $element, $section
 }, 10, 3 );
 ```
 
-### `builder/element/{$element_name}/{$section_id}/before_section_start`
-### `builder/element/{element_name}/{section_id}/after_section_end`
+### `qazana/element/{$element_name}/{$section_id}/before_section_start`
+### `qazana/element/{element_name}/{section_id}/after_section_end`
 Runs before/after a specific element ( like `heading`) and a specific section ( like `section_title` )
 
 #### Arguments
@@ -388,12 +388,12 @@ Argument          | Type              | Description
 #### Example
 
 ```php
-add_action( 'builder/element/heading/section_title/before_section_start', function( $element, $args ) {
-	/** @var \Builder\Element_Base $element */
+add_action( 'qazana/element/heading/section_title/before_section_start', function( $element, $args ) {
+	/** @var \Qazana\Element_Base $element */
 	$element->start_controls_section(
 		'custom_section',
 		[
-			'tab' => \Builder\Controls_Manager::TAB_STYLE,
+			'tab' => \Qazana\Controls_Manager::TAB_STYLE,
 			'label' => __( 'Custom Section', 'plugin-name' ),
 		]
 	);
@@ -401,7 +401,7 @@ add_action( 'builder/element/heading/section_title/before_section_start', functi
 	$element->add_control(
 		'custom_control',
 		[
-			'type' => \Builder\Controls_Manager::NUMBER,
+			'type' => \Qazana\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 		]
 	);
@@ -410,11 +410,11 @@ add_action( 'builder/element/heading/section_title/before_section_start', functi
 }, 10, 2 );
 ```
 
-### `builder/element/after_section_start`
-### `builder/element/before_section_end`
+### `qazana/element/after_section_start`
+### `qazana/element/before_section_end`
 Runs within an editor section. after it was opened / before the section is closed.
 Here is the place to add additional controls to existing sections.
-If you need to add a control to a specific place ( a specific element & section ), prefer to use the [next hook](#builderelementelement_namesection_idafter_section_start)
+If you need to add a control to a specific place ( a specific element & section ), prefer to use the [next hook](#qazanaelementelement_namesection_idafter_section_start)
 
 #### Arguments
 
@@ -427,13 +427,13 @@ Argument          | Type              | Description
 #### Example
 
 ```php
-add_action( 'builder/element/after_section_start', function( $element, $section_id, $args ) {
-	/** @var \Builder\Element_Base $element */
+add_action( 'qazana/element/after_section_start', function( $element, $section_id, $args ) {
+	/** @var \Qazana\Element_Base $element */
 	if ( 'section' === $element->get_name() && 'section_background' === $section_id ) {
 		$element->add_control(
 			'custom_control',
 			[
-				'type' => \Builder\Controls_Manager::NUMBER,
+				'type' => \Qazana\Controls_Manager::NUMBER,
 				'label' => __( 'Custom Control', 'plugin-name' ),
 			]
 		);
@@ -441,8 +441,8 @@ add_action( 'builder/element/after_section_start', function( $element, $section_
 }, 10, 3 );
 ```
 
-### `builder/element/{$element_name}/{$section_id}/after_section_start`
-### `builder/element/{element_name}/{section_id}/before_section_end`
+### `qazana/element/{$element_name}/{$section_id}/after_section_start`
+### `qazana/element/{element_name}/{section_id}/before_section_end`
 
 Runs within an editor section. after it was opened / before the section is closed.
 Here is the place to add additional controls before and after a specific element ( like `heading`) and a specific section ( like `section_title` )
@@ -457,12 +457,12 @@ Argument          | Type              | Description
 #### Example
 
 ```php
-add_action( 'builder/element/heading/section_title/before_section_start', function( $element, $args ) {
-	/** @var \Builder\Element_Base $element */
+add_action( 'qazana/element/heading/section_title/before_section_start', function( $element, $args ) {
+	/** @var \Qazana\Element_Base $element */
 	$element->add_control(
 		'custom_control',
 		[
-			'type' => \Builder\Controls_Manager::NUMBER,
+			'type' => \Qazana\Controls_Manager::NUMBER,
 			'label' => __( 'Custom Control', 'plugin-name' ),
 		]
 	);
@@ -470,7 +470,7 @@ add_action( 'builder/element/heading/section_title/before_section_start', functi
 ```
 
 ## Preview Actions
-### `builder/preview/enqueue_styles`
+### `qazana/preview/enqueue_styles`
 Before the preview styles enqueuing.
 
 #### Arguments
@@ -479,9 +479,9 @@ None
 #### Example
 
  ```php
-add_action( 'builder/preview/enqueue_styles', function() {
+add_action( 'qazana/preview/enqueue_styles', function() {
 	wp_enqueue_style(
-		'builder-preview-style',
+		'qazana-preview-style',
 		url/to/style.css',
 		[],
 		'plugin-version'

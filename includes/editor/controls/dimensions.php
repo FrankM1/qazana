@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -48,19 +48,19 @@ class Control_Dimensions extends Base_Control_Units {
 
 	public function content_template() {
 		$dimensions = [
-			'top' => __( 'Top', 'builder' ),
-			'right' => __( 'Right', 'builder' ),
-			'bottom' => __( 'Bottom', 'builder' ),
-			'left' => __( 'Left', 'builder' ),
+			'top' => __( 'Top', 'qazana' ),
+			'right' => __( 'Right', 'qazana' ),
+			'bottom' => __( 'Bottom', 'qazana' ),
+			'left' => __( 'Left', 'qazana' ),
 		];
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
 			<?php $this->print_units_template(); ?>
-			<div class="builder-control-input-wrapper">
-				<ul class="builder-control-dimensions">
+			<div class="qazana-control-input-wrapper">
+				<ul class="qazana-control-dimensions">
 					<?php foreach ( $dimensions as $dimension_key => $dimension_title ) : ?>
-						<li class="builder-control-dimension">
+						<li class="qazana-control-dimension">
 							<input type="number" data-setting="<?php echo esc_attr( $dimension_key ); ?>"
 							       placeholder="<#
 						       if ( _.isObject( data.placeholder ) ) {
@@ -78,16 +78,16 @@ class Control_Dimensions extends Base_Control_Units {
 						</li>
 					<?php endforeach; ?>
 					<li>
-						<button class="builder-link-dimensions tooltip-target" data-tooltip="<?php _e( 'Link values together', 'builder' ); ?>">
-							<span class="builder-linked"><i class="fa fa-link"></i></span>
-							<span class="builder-unlinked"><i class="fa fa-chain-broken"></i></span>
+						<button class="qazana-link-dimensions tooltip-target" data-tooltip="<?php _e( 'Link values together', 'qazana' ); ?>">
+							<span class="qazana-linked"><i class="fa fa-link"></i></span>
+							<span class="qazana-unlinked"><i class="fa fa-chain-broken"></i></span>
 						</button>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

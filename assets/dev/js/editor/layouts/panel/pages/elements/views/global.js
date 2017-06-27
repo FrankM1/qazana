@@ -1,13 +1,13 @@
 module.exports = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-panel-global',
+	template: '#tmpl-qazana-panel-global',
 
-	id: 'builder-panel-global',
+	id: 'qazana-panel-global',
 
 	initialize: function() {
-		builder.getPanelView().getCurrentPageView().search.reset();
+		qazana.getPanelView().getCurrentPageView().search.reset();
 	},
 
 	onDestroy: function() {
-		builder.getPanelView().getCurrentPageView().showView( 'search' );
+		qazana.getPanelView().getCurrentPageView().showView( 'search' );
 	}
 } );

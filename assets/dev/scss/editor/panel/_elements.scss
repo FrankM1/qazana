@@ -1,8 +1,8 @@
 //
 // Panel Elements
 //
-#builder-panel-elements-navigation {
-	.builder-panel-navigation-tab {
+#qazana-panel-elements-navigation {
+	.qazana-panel-navigation-tab {
 		text-align: center;
 		padding: 10px 0;
 		font-size: 12px;
@@ -12,13 +12,13 @@
 	}
 }
 
-#builder-panel-elements {
+#qazana-panel-elements {
 	overflow: hidden;
 	padding: 0 5px;
 
 }
 
-.builder-element-wrapper {
+.qazana-element-wrapper {
 	float: $start;
 	width: 50%;
 	padding: 5px;
@@ -26,7 +26,7 @@
 	box-sizing: border-box;
 }
 
-.builder-element {
+.qazana-element {
 	border-radius: 4px;
 	background-color: #fff;
 	cursor: move;
@@ -55,7 +55,7 @@
 		display: inline-block;
 	}
 
-	.builder-element-title-wrapper {
+	.qazana-element-title-wrapper {
 		display: table;
 		width: 100%;
 	}
@@ -69,7 +69,7 @@
 	}
 }
 
-#builder-panel-elements-search-wrapper {
+#qazana-panel-elements-search-wrapper {
 	position: relative;
 	margin: 10px 10px 5px;
 
@@ -83,7 +83,7 @@
 	}
 }
 
-#builder-panel-elements-search-input {
+#qazana-panel-elements-search-input {
 	font-size: 11px;
 	border-radius: 0;
 	@include padding(10px, 27px, 10px, 0);

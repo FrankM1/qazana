@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -60,11 +60,11 @@ class Control_Hover_Animation extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
 				<select data-setting="{{ data.name }}">
-					<option value=""><?php _e( 'None', 'builder' ); ?></option>
+					<option value=""><?php _e( 'None', 'qazana' ); ?></option>
 					<?php foreach ( self::get_animations() as $animation_name => $animation_title ) : ?>
 						<option value="<?php echo $animation_name; ?>"><?php echo $animation_title; ?></option>
 					<?php endforeach; ?>
@@ -72,7 +72,7 @@ class Control_Hover_Animation extends Base_Control {
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

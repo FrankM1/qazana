@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -28,16 +28,16 @@ class Control_Color extends Base_Control {
 			'wp-color-picker',
 			'wpColorPickerL10n',
 			[
-				'clear' => __( 'Clear', 'builder' ),
-				'defaultString' => __( 'Default', 'builder' ),
-				'pick' => __( 'Select Color', 'builder' ),
-				'current' => __( 'Current Color', 'builder' ),
+				'clear' => __( 'Clear', 'qazana' ),
+				'defaultString' => __( 'Default', 'qazana' ),
+				'pick' => __( 'Select Color', 'qazana' ),
+				'current' => __( 'Current Color', 'qazana' ),
 			]
 		);
 
 		wp_register_script(
 			'wp-color-picker-alpha',
-			builder()->core_assets_url . 'lib/wp-color-picker/wp-color-picker-alpha' . $suffix . '.js',
+			qazana()->core_assets_url . 'lib/wp-color-picker/wp-color-picker-alpha' . $suffix . '.js',
 			[
 				'wp-color-picker',
 			],
@@ -63,17 +63,17 @@ class Control_Color extends Base_Control {
 			if ( data.alpha ) {
 				dataAlpha = ' data-alpha=true';
 			} #>
-		<div class="builder-control-field">
-			<label class="builder-control-title">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">
 				<# if ( data.label ) { #>
 					{{{ data.label }}}
 				<# } #>
 				<# if ( data.description ) { #>
-					<span class="builder-control-description">{{{ data.description }}}</span>
+					<span class="qazana-control-description">{{{ data.description }}}</span>
 				<# } #>
 			</label>
-			<div class="builder-control-input-wrapper">
-				<input data-setting="{{ name }}" class="color-picker-hex" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'builder' ); ?>" {{ defaultValue }}{{ dataAlpha }} />
+			<div class="qazana-control-input-wrapper">
+				<input data-setting="{{ name }}" class="color-picker-hex" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" {{ defaultValue }}{{ dataAlpha }} />
 			</div>
 		</div>
 		<?php

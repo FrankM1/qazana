@@ -1,7 +1,7 @@
 <?php
-namespace Builder\System_Info\Classes;
+namespace Qazana\System_Info\Classes;
 
-use Builder\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

@@ -5,11 +5,11 @@
  *
  * @return
  */
-function builder_loading_indicator() {
+function qazana_loading_indicator() {
 
-        $html = '<div class="builder-loader-wrapper">';
+        $html = '<div class="qazana-loader-wrapper">';
 
-            $html .= '<div class="builder-loader">';
+            $html .= '<div class="qazana-loader">';
                 $html .= '<div class="cubes">';
                     $html .= '<div class="cube cube-1"></div>';
                     $html .= '<div class="cube cube-2"></div>';
@@ -23,7 +23,7 @@ function builder_loading_indicator() {
                 $html .= '</div>';
             $html .= '</div>';
 
-            $html .= '<div class="builder-loading-title">';
+            $html .= '<div class="qazana-loading-title">';
                 $html .= '<div class="loading-text">';
                     $html .= '<span class="loading-text-words">L</span>';
                     $html .= '<span class="loading-text-words">O</span>';
@@ -42,11 +42,11 @@ function builder_loading_indicator() {
 }
 
 /**
- * [builder_maybe_ssl_url description]
+ * [qazana_maybe_ssl_url description]
  * @param  [type] $url [description]
  * @return [type]      [description]
  */
-function builder_maybe_ssl_url( $url ) {
+function qazana_maybe_ssl_url( $url ) {
 
    if ( is_ssl() ) {
        $url = str_replace('http://', 'https://', $url );
@@ -64,7 +64,7 @@ function builder_maybe_ssl_url( $url ) {
  * @param  boolean $recursive [description]
  * @return [type]             [description]
  */
-function builder_replace_array_key($subject, $newKey, $oldKey, $recursive = false ) {
+function qazana_replace_array_key($subject, $newKey, $oldKey, $recursive = false ) {
 
     // if the value is not an array, then you have reached the deepest
     // point of the branch, so return the value
@@ -80,7 +80,7 @@ function builder_replace_array_key($subject, $newKey, $oldKey, $recursive = fals
         // add the value with the recursive call
 
         if ( $recursive ) {
-            $newArray[$key] = builder_replace_array_key($value, $newKey, $oldKey);
+            $newArray[$key] = qazana_replace_array_key($value, $newKey, $oldKey);
         } else {
             $newArray[$key] = $value;
         }

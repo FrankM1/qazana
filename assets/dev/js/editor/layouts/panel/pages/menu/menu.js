@@ -1,8 +1,8 @@
-var PanelMenuItemView = require( 'builder-panel/pages/menu/views/item' ),
+var PanelMenuItemView = require( 'qazana-panel/pages/menu/views/item' ),
 	PanelMenuPageView;
 
 PanelMenuPageView = Marionette.CollectionView.extend( {
-	id: 'builder-panel-page-menu',
+	id: 'qazana-panel-page-menu',
 
 	childView: PanelMenuItemView,
 
@@ -10,47 +10,47 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 		this.collection = new Backbone.Collection( [
             {
                 icon: 'paint-brush',
-                title: builder.translate( 'global_colors' ),
+                title: qazana.translate( 'global_colors' ),
 				type: 'page',
                 pageName: 'colorScheme'
             },
             {
                 icon: 'font',
-                title: builder.translate( 'global_fonts' ),
+                title: qazana.translate( 'global_fonts' ),
 				type: 'page',
                 pageName: 'typographyScheme'
             },
 			{
 				icon: 'eyedropper',
-				title: builder.translate( 'color_picker' ),
+				title: qazana.translate( 'color_picker' ),
 				type: 'page',
 				pageName: 'colorPickerScheme'
 			},
 			{
 				icon: 'history',
-				title: builder.translate( 'revision_history' ),
+				title: qazana.translate( 'revision_history' ),
 				type: 'page',
 				pageName: 'revisionsPage'
 			},
 			{
 				icon: 'cog',
-				title: builder.translate( 'builder_settings' ),
+				title: qazana.translate( 'qazana_settings' ),
 				type: 'link',
-				link: builder.config.settings_page_link,
+				link: qazana.config.settings_page_link,
 				newTab: true
 			},
             {
                 icon: 'eraser',
-                title: builder.translate( 'clear_page' ),
+                title: qazana.translate( 'clear_page' ),
                 callback: function() {
-                    builder.clearPage();
+                    qazana.clearPage();
                 }
             },
 			{
 				icon: 'info-circle',
-				title: builder.translate( 'about_builder' ),
+				title: qazana.translate( 'about_qazana' ),
 				type: 'link',
-				link: builder.config.builder_site,
+				link: qazana.config.qazana_site,
 				newTab: true
 			}
 		] );
@@ -64,7 +64,7 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 				var pageName = childView.model.get( 'pageName' ),
 					pageTitle = childView.model.get( 'title' );
 
-				builder.getPanelView().setPage( pageName, pageTitle );
+				qazana.getPanelView().setPage( pageName, pageTitle );
 				break;
 
 			case 'link' :

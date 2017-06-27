@@ -1,13 +1,13 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlMediaItemView;
 
 ControlMediaItemView = ControlBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.addImages = '.builder-control-gallery-add';
-		ui.clearGallery = '.builder-control-gallery-clear';
-		ui.galleryThumbnails = '.builder-control-gallery-thumbnails';
+		ui.addImages = '.qazana-control-gallery-add';
+		ui.clearGallery = '.qazana-control-gallery-clear';
+		ui.galleryThumbnails = '.qazana-control-gallery-thumbnails';
 
 		return ui;
 	},
@@ -22,8 +22,8 @@ ControlMediaItemView = ControlBaseItemView.extend( {
 		var hasImages = this.hasImages();
 
 		this.$el
-		    .toggleClass( 'builder-gallery-has-images', hasImages )
-		    .toggleClass( 'builder-gallery-empty', ! hasImages );
+		    .toggleClass( 'qazana-gallery-has-images', hasImages )
+		    .toggleClass( 'qazana-gallery-empty', ! hasImages );
 
 		this.initRemoveDialog();
 	},
@@ -50,7 +50,7 @@ ControlMediaItemView = ControlBaseItemView.extend( {
 			multiple: true,
 			state: frameStates[ action ],
 			button: {
-				text: builder.translate( 'insert_media' )
+				text: qazana.translate( 'insert_media' )
 			}
 		};
 
@@ -132,12 +132,12 @@ ControlMediaItemView = ControlBaseItemView.extend( {
 
 		this.getRemoveDialog = function() {
 			if ( ! removeDialog ) {
-				removeDialog = builder.dialogsManager.createWidget( 'confirm', {
-					message: builder.translate( 'dialog_confirm_gallery_delete' ),
-					headerMessage: builder.translate( 'delete_gallery' ),
+				removeDialog = qazana.dialogsManager.createWidget( 'confirm', {
+					message: qazana.translate( 'dialog_confirm_gallery_delete' ),
+					headerMessage: qazana.translate( 'delete_gallery' ),
 					strings: {
-						confirm: builder.translate( 'delete' ),
-						cancel: builder.translate( 'cancel' )
+						confirm: qazana.translate( 'delete' ),
+						cancel: qazana.translate( 'cancel' )
 					},
 					defaultOption: 'confirm',
 					onConfirm: _.bind( this.resetGallery, this )

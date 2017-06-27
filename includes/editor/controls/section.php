@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -18,11 +18,11 @@ class Control_Section extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-panel-heading">
-			<div class="builder-panel-heading-toggle builder-section-toggle" data-collapse_id="{{ data.name }}">
+		<div class="qazana-panel-heading">
+			<div class="qazana-panel-heading-toggle qazana-section-toggle" data-collapse_id="{{ data.name }}">
 				<i class="fa"></i>
 			</div>
-			<div class="builder-panel-heading-title builder-section-title">{{{ data.label }}}</div>
+			<div class="qazana-panel-heading-title qazana-section-title">{{{ data.label }}}</div>
 		</div>
 		<?php
 	}

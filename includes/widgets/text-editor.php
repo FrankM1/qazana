@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Text_Editor extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Text Editor', 'builder' );
+		return __( 'Text Editor', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -21,7 +21,7 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->start_controls_section(
 			'section_editor',
 			[
-				'label' => __( 'Text Editor', 'builder' ),
+				'label' => __( 'Text Editor', 'qazana' ),
 			]
 		);
 
@@ -30,14 +30,14 @@ class Widget_Text_Editor extends Widget_Base {
 			[
 				'label' => '',
 				'type' => Controls_Manager::WYSIWYG,
-				'default' => __( 'I am a text block. Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'builder' ),
+				'default' => __( 'I am a text block. Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
 			]
 		);
 
 		$this->add_responsive_control(
 			'max_width',
 			[
-				'label' => _x( 'Max width', 'Size Control', 'builder' ),
+				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem' ],
 				'range' => [
@@ -48,7 +48,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors' => [
-					'{{WRAPPER}} .builder-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -56,29 +56,29 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'builder' ),
+						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
 				],
-				'prefix_class' => 'builder-align-',
+				'prefix_class' => 'qazana-align-',
 				'selectors' => [
-					'{{WRAPPER}} .builder-wrapper' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .qazana-wrapper' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -88,7 +88,7 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->start_controls_section(
 			'section_style',
 			[
-				'label' => __( 'Text Editor', 'builder' ),
+				'label' => __( 'Text Editor', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -96,7 +96,7 @@ class Widget_Text_Editor extends Widget_Base {
 	    $this->add_control(
 	        'text_color',
 	        [
-	            'label' => __( 'Text Color', 'builder' ),
+	            'label' => __( 'Text Color', 'qazana' ),
 	            'type' => Controls_Manager::COLOR,
 	            'default' => '',
 	            'selectors' => [
@@ -123,11 +123,11 @@ class Widget_Text_Editor extends Widget_Base {
 	protected function render() {
         $settings = $this->get_settings();
 
-        $this->add_render_attribute( 'heading', 'class', 'builder-text-editor builder-clearfix' );
+        $this->add_render_attribute( 'heading', 'class', 'qazana-text-editor qazana-clearfix' );
 
 		$editor_content = $this->parse_text_editor( $settings['editor'] );
 
-		?><div <?php echo $this->get_render_attribute_string( 'heading' ); ?>><div class="builder-wrapper"><?php echo $settings['editor']; ?></div></div><?php
+		?><div <?php echo $this->get_render_attribute_string( 'heading' ); ?>><div class="qazana-wrapper"><?php echo $settings['editor']; ?></div></div><?php
 
 	}
 
@@ -139,7 +139,7 @@ class Widget_Text_Editor extends Widget_Base {
 	protected function _content_template() {
 		?>
 
-		<div class="builder-text-editor builder-clearfix"><div class="builder-wrapper">{{{ settings.editor }}}</div></div>
+		<div class="qazana-text-editor qazana-clearfix"><div class="qazana-wrapper">{{{ settings.editor }}}</div></div>
 		<?php
 	}
 }

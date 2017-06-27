@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -22,7 +22,7 @@ class Control_Gallery extends Base_Control {
 			if ( empty( $attachment['url'] ) )
 				continue;
 
-			$attachment = builder()->templates_manager->get_import_images_instance()->import( $attachment );
+			$attachment = qazana()->templates_manager->get_import_images_instance()->import( $attachment );
 		}
 
 		// Filter out attachments that don't exist
@@ -33,28 +33,28 @@ class Control_Gallery extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<div class="builder-control-input-wrapper">
+		<div class="qazana-control-field">
+			<div class="qazana-control-input-wrapper">
 				<# if ( data.description ) { #>
-				<div class="builder-control-description">{{{ data.description }}}</div>
+				<div class="qazana-control-description">{{{ data.description }}}</div>
 				<# } #>
-				<div class="builder-control-media">
-					<div class="builder-control-gallery-status">
-						<span class="builder-control-gallery-status-title">
+				<div class="qazana-control-media">
+					<div class="qazana-control-gallery-status">
+						<span class="qazana-control-gallery-status-title">
 							<# if ( data.controlValue.length ) {
-								print( builder.translate( 'gallery_images_selected', [ data.controlValue.length ] ) );
+								print( qazana.translate( 'gallery_images_selected', [ data.controlValue.length ] ) );
 							} else { #>
-								<?php _e( 'No Images Selected', 'builder' ); ?>
+								<?php _e( 'No Images Selected', 'qazana' ); ?>
 							<# } #>
 						</span>
-						<span class="builder-control-gallery-clear">(<?php _e( 'Clear', 'builder' ); ?>)</span>
+						<span class="qazana-control-gallery-clear">(<?php _e( 'Clear', 'qazana' ); ?>)</span>
 					</div>
-					<div class="builder-control-gallery-thumbnails">
+					<div class="qazana-control-gallery-thumbnails">
 						<# _.each( data.controlValue, function( image ) { #>
-							<div class="builder-control-gallery-thumbnail" style="background-image: url({{ image.url }})"></div>
+							<div class="qazana-control-gallery-thumbnail" style="background-image: url({{ image.url }})"></div>
 						<# } ); #>
 					</div>
-					<button class="builder-button builder-control-gallery-add"><?php _e( '+ Add Images', 'builder' ); ?></button>
+					<button class="qazana-button qazana-control-gallery-add"><?php _e( '+ Add Images', 'qazana' ); ?></button>
 				</div>
 			</div>
 		</div>

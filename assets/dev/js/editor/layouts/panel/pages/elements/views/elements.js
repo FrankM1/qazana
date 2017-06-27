@@ -1,16 +1,16 @@
 var PanelElementsElementsView;
 
 PanelElementsElementsView = Marionette.CollectionView.extend( {
-	childView: require( 'builder-panel/pages/elements/views/element' ),
+	childView: require( 'qazana-panel/pages/elements/views/element' ),
 
-	id: 'builder-panel-elements',
+	id: 'qazana-panel-elements',
 
 	initialize: function() {
-		this.listenTo( builder.channels.panelElements, 'filter:change', this.onFilterChanged );
+		this.listenTo( qazana.channels.panelElements, 'filter:change', this.onFilterChanged );
 	},
 
 	filter: function( childModel ) {
-		var filterValue = builder.channels.panelElements.request( 'filter:value' );
+		var filterValue = qazana.channels.panelElements.request( 'filter:value' );
 
 		if ( ! filterValue ) {
 			return true;
@@ -26,7 +26,7 @@ PanelElementsElementsView = Marionette.CollectionView.extend( {
 	},
 
 	onFilterChanged: function() {
-		var filterValue = builder.channels.panelElements.request( 'filter:value' );
+		var filterValue = qazana.channels.panelElements.request( 'filter:value' );
 
 		if ( ! filterValue ) {
 			this.onFilterEmpty();
@@ -38,7 +38,7 @@ PanelElementsElementsView = Marionette.CollectionView.extend( {
 	},
 
 	onFilterEmpty: function() {
-		builder.getPanelView().getCurrentPageView().showView( 'categories' );
+		qazana.getPanelView().getCurrentPageView().showView( 'categories' );
 	}
 } );
 

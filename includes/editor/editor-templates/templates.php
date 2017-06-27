@@ -1,161 +1,161 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
-<script type="text/template" id="tmpl-builder-template-library-header">
-	<div id="builder-template-library-header-logo-area"></div>
-	<div id="builder-template-library-header-menu-area"></div>
-	<div id="builder-template-library-header-search-area"></div>
-	<div id="builder-template-library-header-items-area">
-		<div id="builder-template-library-header-close-modal" class="builder-template-library-header-item" title="<?php _e( 'Close', 'builder' ); ?>">
-			<i class="eicon-close" title="<?php _e( 'Close', 'builder' ); ?>"></i>
+<script type="text/template" id="tmpl-qazana-template-library-header">
+	<div id="qazana-template-library-header-logo-area"></div>
+	<div id="qazana-template-library-header-menu-area"></div>
+	<div id="qazana-template-library-header-search-area"></div>
+	<div id="qazana-template-library-header-items-area">
+		<div id="qazana-template-library-header-close-modal" class="qazana-template-library-header-item" title="<?php _e( 'Close', 'qazana' ); ?>">
+			<i class="eicon-close" title="<?php _e( 'Close', 'qazana' ); ?>"></i>
 		</div>
-		<div id="builder-template-library-header-tools"></div>
+		<div id="qazana-template-library-header-tools"></div>
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-logo">
-	<i class="eicon-builder-square"></i><span><?php _e( 'Library', 'builder' ); ?></span>
+<script type="text/template" id="tmpl-qazana-template-library-header-logo">
+	<i class="eicon-qazana-square"></i><span><?php _e( 'Library', 'qazana' ); ?></span>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-save">
-	<i class="eicon-save" title="<?php _e( 'Save Template', 'builder' ); ?>"></i>
+<script type="text/template" id="tmpl-qazana-template-library-header-save">
+	<i class="eicon-save" title="<?php _e( 'Save Template', 'qazana' ); ?>"></i>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-menu">
-    <div id="builder-template-library-menu-pre-made-templates" class="builder-template-library-menu-item" data-template-source="theme"><?php _e( 'Theme  Templates', 'builder' ); ?></div>
-    <div id="builder-template-library-menu-pre-made-templates" class="builder-template-library-menu-item" data-template-source="remote"><?php _e( 'Predesigned Templates', 'builder' ); ?></div>
-    <div id="builder-template-library-menu-my-templates" class="builder-template-library-menu-item" data-template-source="local"><?php _e( 'Saved Templates', 'builder' ); ?></div>
+<script type="text/template" id="tmpl-qazana-template-library-header-menu">
+    <div id="qazana-template-library-menu-pre-made-templates" class="qazana-template-library-menu-item" data-template-source="theme"><?php _e( 'Theme  Templates', 'qazana' ); ?></div>
+    <div id="qazana-template-library-menu-pre-made-templates" class="qazana-template-library-menu-item" data-template-source="remote"><?php _e( 'Predesigned Templates', 'qazana' ); ?></div>
+    <div id="qazana-template-library-menu-my-templates" class="qazana-template-library-menu-item" data-template-source="local"><?php _e( 'Saved Templates', 'qazana' ); ?></div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-preview">
-	<div id="builder-template-library-header-preview-insert-wrapper" class="builder-template-library-header-item">
+<script type="text/template" id="tmpl-qazana-template-library-header-preview">
+	<div id="qazana-template-library-header-preview-insert-wrapper" class="qazana-template-library-header-item">
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-preview-insert-button">
-	<button id="builder-template-library-header-preview-insert" class="builder-template-library-template-insert builder-button builder-button-success">
-		<i class="eicon-file-download"></i><span class="builder-button-title"><?php _e( 'Insert', 'builder' ); ?></span>
+<script type="text/template" id="tmpl-qazana-template-library-header-preview-insert-button">
+	<button id="qazana-template-library-header-preview-insert" class="qazana-template-library-template-insert qazana-button qazana-button-success">
+		<i class="eicon-file-download"></i><span class="qazana-button-title"><?php _e( 'Insert', 'qazana' ); ?></span>
 	</button>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-back">
-	<i class="eicon-"></i><span><?php _e( 'Back To library', 'builder' ); ?></span>
+<script type="text/template" id="tmpl-qazana-template-library-header-back">
+	<i class="eicon-"></i><span><?php _e( 'Back To library', 'qazana' ); ?></span>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-header-search">
-	<input id="builder-template-library-header-search-input-text" placeholder="<?php _e( 'Search Widget...', 'builder' ); ?>" />
+<script type="text/template" id="tmpl-qazana-template-library-header-search">
+	<input id="qazana-template-library-header-search-input-text" placeholder="<?php _e( 'Search Widget...', 'qazana' ); ?>" />
 	<i class="fa fa-search"></i>
-	<div id="builder-template-library-header-search-input-clear"><i class="eicon-close"></i></div>
+	<div id="qazana-template-library-header-search-input-clear"><i class="eicon-close"></i></div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-loading">
-	<?php echo builder_loading_indicator(); ?>
+<script type="text/template" id="tmpl-qazana-template-library-loading">
+	<?php echo qazana_loading_indicator(); ?>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-templates">
-	<div id="builder-template-library-templates-container"></div>
-	<div id="builder-template-library-footer-banner">
+<script type="text/template" id="tmpl-qazana-template-library-templates">
+	<div id="qazana-template-library-templates-container"></div>
+	<div id="qazana-template-library-footer-banner">
 		<i class="eicon-nerd"></i>
-		<div class="builder-excerpt"><?php echo __( 'Stay tuned! More awesome templates coming real soon.', 'builder' ); ?></div>
+		<div class="qazana-excerpt"><?php echo __( 'Stay tuned! More awesome templates coming real soon.', 'qazana' ); ?></div>
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-template-theme">
-    <div class="builder-template-library-template-body">
-        <div class="builder-template-library-template-screenshot" style="background-image: url({{ thumbnail }});"></div>
-        <div class="builder-template-library-template-controls">
-            <div class="builder-template-library-template-preview">
+<script type="text/template" id="tmpl-qazana-template-library-template-theme">
+    <div class="qazana-template-library-template-body">
+        <div class="qazana-template-library-template-screenshot" style="background-image: url({{ thumbnail }});"></div>
+        <div class="qazana-template-library-template-controls">
+            <div class="qazana-template-library-template-preview">
                 <i class="fa fa-search-plus"></i>
             </div>
-            <button class="builder-template-library-template-insert builder-button builder-button-success">
+            <button class="qazana-template-library-template-insert qazana-button qazana-button-success">
                 <i class="eicon-file-download"></i>
-                <?php _e( 'Insert', 'builder' ); ?>
+                <?php _e( 'Insert', 'qazana' ); ?>
             </button>
         </div>
     </div>
-    <div class="builder-template-library-template-name">{{{ title }}}</div>
+    <div class="qazana-template-library-template-name">{{{ title }}}</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-insert-button">
-	<button class="builder-template-library-template-insert builder-button builder-button-success" data-action="insert">
-		<i class="eicon-file-download"></i><span class="builder-button-title"><?php _e( 'Insert', 'builder' ); ?></span>
+<script type="text/template" id="tmpl-qazana-template-library-insert-button">
+	<button class="qazana-template-library-template-insert qazana-button qazana-button-success" data-action="insert">
+		<i class="eicon-file-download"></i><span class="qazana-button-title"><?php _e( 'Insert', 'qazana' ); ?></span>
 	</button>
 </script>
 
 
-<script type="text/template" id="tmpl-builder-template-library-template-remote">
-	<div class="builder-template-library-template-body">
-		<div class="builder-template-library-template-screenshot" style="background-image: url({{ thumbnail }});"></div>
-		<div class="builder-template-library-template-controls">
-			<div class="builder-template-library-template-preview">
+<script type="text/template" id="tmpl-qazana-template-library-template-remote">
+	<div class="qazana-template-library-template-body">
+		<div class="qazana-template-library-template-screenshot" style="background-image: url({{ thumbnail }});"></div>
+		<div class="qazana-template-library-template-controls">
+			<div class="qazana-template-library-template-preview">
 				<i class="fa fa-search-plus"></i>
 			</div>
-			<button class="builder-template-library-template-insert builder-button builder-button-success">
+			<button class="qazana-template-library-template-insert qazana-button qazana-button-success">
 				<i class="eicon-file-download"></i>
-				<?php _e( 'Insert', 'builder' ); ?>
+				<?php _e( 'Insert', 'qazana' ); ?>
 			</button>
 		</div>
 	</div>
-	<div class="builder-template-library-template-name">{{{ title }}}</div>
+	<div class="qazana-template-library-template-name">{{{ title }}}</div>
 </script>
 
 
-<script type="text/template" id="tmpl-builder-template-library-template-local">
-	<div class="builder-template-library-template-icon">
+<script type="text/template" id="tmpl-qazana-template-library-template-local">
+	<div class="qazana-template-library-template-icon">
 		<i class="fa fa-{{ 'section' === type ? 'columns' : 'file-text-o' }}"></i>
 	</div>
-	<div class="builder-template-library-template-name">{{{ title }}}</div>
-	<div class="builder-template-library-template-type">{{{ builder.translate( type ) }}}</div>
-	<div class="builder-template-library-template-controls">
-		<button class="builder-template-library-template-insert builder-button builder-button-success" data-action="insert">
-			<i class="eicon-file-download"></i><span class="builder-button-title"><?php _e( 'Insert', 'builder' ); ?></span>
+	<div class="qazana-template-library-template-name">{{{ title }}}</div>
+	<div class="qazana-template-library-template-type">{{{ qazana.translate( type ) }}}</div>
+	<div class="qazana-template-library-template-controls">
+		<button class="qazana-template-library-template-insert qazana-button qazana-button-success" data-action="insert">
+			<i class="eicon-file-download"></i><span class="qazana-button-title"><?php _e( 'Insert', 'qazana' ); ?></span>
 		</button>
-		<div class="builder-template-library-template-export">
+		<div class="qazana-template-library-template-export">
 			<a href="{{ export_link }}">
-				<i class="fa fa-sign-out"></i><span class="builder-template-library-template-control-title"><?php echo __( 'Export', 'builder' ); ?></span>
+				<i class="fa fa-sign-out"></i><span class="qazana-template-library-template-control-title"><?php echo __( 'Export', 'qazana' ); ?></span>
 			</a>
 		</div>
-		<div class="builder-template-library-template-delete">
-			<i class="fa fa-trash-o"></i><span class="builder-template-library-template-control-title"><?php echo __( 'Delete', 'builder' ); ?></span>
+		<div class="qazana-template-library-template-delete">
+			<i class="fa fa-trash-o"></i><span class="qazana-template-library-template-control-title"><?php echo __( 'Delete', 'qazana' ); ?></span>
 		</div>
-		<div class="builder-template-library-template-preview">
-			<i class="eicon-zoom-in"></i><span class="builder-template-library-template-control-title"><?php echo __( 'Preview', 'builder' ); ?></span>
+		<div class="qazana-template-library-template-preview">
+			<i class="eicon-zoom-in"></i><span class="qazana-template-library-template-control-title"><?php echo __( 'Preview', 'qazana' ); ?></span>
 		</div>
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-save-template">
-    <div class="builder-template-library-blank-title">{{{ title }}}</div>
-    <div class="builder-template-library-blank-excerpt">{{{ description }}}</div>
-    <form id="builder-template-library-save-template-form">
-        <input id="builder-template-library-save-template-name" name="title" placeholder="<?php _e( 'Enter Template Name', 'builder' ); ?>" required>
-        <button id="builder-template-library-save-template-submit" class="builder-button builder-button-success">
-            <span class="builder-state-icon">
+<script type="text/template" id="tmpl-qazana-template-library-save-template">
+    <div class="qazana-template-library-blank-title">{{{ title }}}</div>
+    <div class="qazana-template-library-blank-excerpt">{{{ description }}}</div>
+    <form id="qazana-template-library-save-template-form">
+        <input id="qazana-template-library-save-template-name" name="title" placeholder="<?php _e( 'Enter Template Name', 'qazana' ); ?>" required>
+        <button id="qazana-template-library-save-template-submit" class="qazana-button qazana-button-success">
+            <span class="qazana-state-icon">
                 <i class="fa fa-spin fa-circle-o-notch "></i>
             </span>
-            <?php _e( 'Save', 'builder' ); ?>
+            <?php _e( 'Save', 'qazana' ); ?>
         </button>
     </form>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-import">
-    <form id="builder-template-library-import-form">
+<script type="text/template" id="tmpl-qazana-template-library-import">
+    <form id="qazana-template-library-import-form">
         <input type="file" name="file" />
         <input type="submit">
     </form>
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-templates-empty">
-    <div id="builder-template-library-templates-empty-icon">
+<script type="text/template" id="tmpl-qazana-template-library-templates-empty">
+    <div id="qazana-template-library-templates-empty-icon">
         <i class="eicon-nerd"></i>
     </div>
-    <div class="builder-template-library-blank-title"><?php _e( 'Haven’t Saved Templates Yet?', 'builder' ); ?></div>
-    <div class="builder-template-library-blank-excerpt"><?php _e( 'This is where your templates should be. Design it. Save it. Reuse it.', 'builder' ); ?></div>
+    <div class="qazana-template-library-blank-title"><?php _e( 'Haven’t Saved Templates Yet?', 'qazana' ); ?></div>
+    <div class="qazana-template-library-blank-excerpt"><?php _e( 'This is where your templates should be. Design it. Save it. Reuse it.', 'qazana' ); ?></div>
 
 </script>
 
-<script type="text/template" id="tmpl-builder-template-library-preview">
+<script type="text/template" id="tmpl-qazana-template-library-preview">
 	<iframe></iframe>
 </script>

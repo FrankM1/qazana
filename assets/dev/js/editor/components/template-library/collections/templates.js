@@ -1,4 +1,4 @@
-var TemplateLibraryTemplateModel = require( 'builder-templates/models/template' ),
+var TemplateLibraryTemplateModel = require( 'qazana-templates/models/template' ),
 	TemplateLibraryCollection;
 
 TemplateLibraryCollection = Backbone.Collection.extend( {

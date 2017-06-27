@@ -1,68 +1,68 @@
 //
 // Icon Box
 //
-.builder-widget-icon-box {
+.qazana-widget-icon-box {
     position: relative;
     @media (min-width: $screen-md-min) {
-        &.builder-position- {
+        &.qazana-position- {
             &left,
             &right {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     display: flex;
                 }
 
-                .builder-icon-box-icon {
+                .qazana-icon-box-icon {
                     flex: 0 0 auto; // Hack for Safari
                 }
             }
 
             &right {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     text-align: $end;
                     flex-direction: getValueByDirection(row-reverse, row);
                 }
             }
 
             &left {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     text-align: $start;
                     flex-direction: getValueByDirection(row, row-reverse);
                 }
             }
 
             &top {
-                .builder-icon-box-img {
+                .qazana-icon-box-img {
                     margin: auto;
                 }
             }
         }
 
-        &.builder-vertical-align- {
+        &.qazana-vertical-align- {
             &top {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     align-items: flex-start;
                 }
             }
 
             &middle {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     align-items: center;
                 }
             }
 
             &bottom {
-                .builder-icon-box-wrapper {
+                .qazana-icon-box-wrapper {
                     align-items: flex-end;
                 }
             }
         }
 
-        &.builder-view-animated-1 {
+        &.qazana-view-animated-1 {
             max-width: 100%;
             width: 100%;
             position: relative;
 
-            .builder-icon-box-wrapper {
+            .qazana-icon-box-wrapper {
                 text-align: center;
                 width: 100%;
                 display: inline-block;
@@ -85,7 +85,7 @@
                 margin-top: 100%;
             }
 
-            .builder-icon-box-inner {
+            .qazana-icon-box-inner {
                 position: absolute;
                 overflow: hidden;
                 top: 0;
@@ -146,22 +146,22 @@
                 transform: translateY(100%);
             }
 
-            .builder-icon-box-title {
+            .qazana-icon-box-title {
                 margin-top: 25px;
             }
 
-            .builder-icon-box-icon {}
+            .qazana-icon-box-icon {}
 
-            .builder-icon-box-content {}
+            .qazana-icon-box-content {}
         }
 
-        &.builder-view-align-left {
-            .builder-icon {
+        &.qazana-view-align-left {
+            .qazana-icon {
                 position: absolute;
                 left: 0;
             }
 
-            .builder-icon-box-content {
+            .qazana-icon-box-content {
                 margin-left: 90px;
             }
         }
@@ -170,24 +170,24 @@
     @media (max-width: $screen-sm-max) {
 
         // TEMP code to override the icon spacing
-        .builder-icon-box-icon {
+        .qazana-icon-box-icon {
             margin-left: auto !important;
             margin-right: auto;
             margin-bottom: 15px !important;
         }
     }
 
-    .builder-icon-box-wrapper {
+    .qazana-icon-box-wrapper {
         text-align: center;
     }
 
-    .builder-icon-box-title {
+    .qazana-icon-box-title {
         a {
             color: inherit;
         }
     }
 
-    .builder-icon-box-description {
+    .qazana-icon-box-description {
         margin: 0;
     }
 }

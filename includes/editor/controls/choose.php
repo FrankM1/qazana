@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -23,13 +23,13 @@ class Control_Choose extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<div class="builder-choices">
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<div class="qazana-choices">
 					<# _.each( data.options, function( options, value ) { #>
-					<input id="builder-choose-{{ data._cid + data.name + value }}" type="radio" name="builder-choose-{{ data.name }}" value="{{ value }}">
-					<label class="builder-choices-label tooltip-target" for="builder-choose-{{ data._cid + data.name + value }}" data-tooltip="{{ options.title }}" title="{{ options.title }}">
+					<input id="qazana-choose-{{ data._cid + data.name + value }}" type="radio" name="qazana-choose-{{ data.name }}" value="{{ value }}">
+					<label class="qazana-choices-label tooltip-target" for="qazana-choose-{{ data._cid + data.name + value }}" data-tooltip="{{ options.title }}" title="{{ options.title }}">
 						<i class="{{ options.icon }}"></i>
 					</label>
 					<# } ); #>
@@ -38,7 +38,7 @@ class Control_Choose extends Base_Control {
 		</div>
 
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

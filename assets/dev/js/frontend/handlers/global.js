@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	if ( builderFrontend.isEditMode() ) {
+	if ( qazanaFrontend.isEditMode() ) {
 		return;
 	}
 
@@ -9,9 +9,9 @@ module.exports = function( $scope, $ ) {
 		return;
 	}
 
-	$scope.addClass( 'builder-invisible' ).removeClass( animation );
+	$scope.addClass( 'qazana-invisible' ).removeClass( animation );
 
-	builderFrontend.utils.waypoint( $scope, function() {
-		$scope.removeClass( 'builder-invisible' ).addClass( animation );
+	qazanaFrontend.utils.waypoint( $scope, function() {
+		$scope.removeClass( 'qazana-invisible' ).addClass( animation );
 	}, { offset: '90%' } );
 };

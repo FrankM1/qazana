@@ -1,14 +1,14 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
-use Builder\Template_Library;
+use Qazana\Template_Library;
 
 class WPSEO extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'WPSEO Compatibility', 'builder' ),
+        	'title' => __( 'WPSEO Compatibility', 'qazana' ),
             'name' => 'wpseo',
         	'required' => true,
         	'default_activation' => true,

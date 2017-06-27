@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	var $carousel = $scope.find( '.builder-image-carousel' );
+	var $carousel = $scope.find( '.qazana-image-carousel' );
 	if ( ! $carousel.length ) {
 		return;
 	}

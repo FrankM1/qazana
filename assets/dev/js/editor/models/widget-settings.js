@@ -1,4 +1,4 @@
-var BaseSettingsModel = require( 'builder-models/base-settings' ),
+var BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	WidgetSettingsModel;
 
 WidgetSettingsModel = BaseSettingsModel.extend( {

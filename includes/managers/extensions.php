@@ -1,5 +1,5 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -36,7 +36,7 @@ final class Manager {
      */
 	public function __construct() {
 
-        $this->path = builder()->extensions_loader->merge_files_stack_locations();
+        $this->path = qazana()->extensions_loader->merge_files_stack_locations();
 
         $this->reflection = new \ReflectionClass( $this );
 
@@ -48,10 +48,10 @@ final class Manager {
 
         $this->_load_extensions();
 
-        add_action( 'builder/widgets/widgets_registered', [ $this, '_load_widgets' ] );
+        add_action( 'qazana/widgets/widgets_registered', [ $this, '_load_widgets' ] );
 
         if ( is_admin() ) {
-            add_action( 'builder/admin/settings/after', [ $this, 'register_admin_fields' ], 21 ); // After the base settings
+            add_action( 'qazana/admin/settings/after', [ $this, 'register_admin_fields' ], 21 ); // After the base settings
         }
 	}
 
@@ -71,11 +71,11 @@ final class Manager {
         $folders = scandir( $path, 1 );
 
         /**
-         * action 'builder/extensions/before'
+         * action 'qazana/extensions/before'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions/before", $this );
+        do_action( "qazana/extensions/before", $this );
 
         foreach ( $folders as $folder ) {
 
@@ -85,19 +85,19 @@ final class Manager {
                 continue;
             }
 
-            $extension_class = 'Builder\Extensions\\' . $folder;
+            $extension_class = 'Qazana\Extensions\\' . $folder;
 
             /**
-             * filter 'builder/extension/{folder}'
+             * filter 'qazana/extension/{folder}'
              *
              * @param        string                    extension class file path
              * @param string $extension_class          extension class name
              */
             $class_file = "$path/$folder/extension_{$folder}.php";
 
-            if ( $file = builder()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) ) {
+            if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) ) {
 
-                builder()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true );
+                qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true );
 
                 $this->extensions[ $folder ] = new $extension_class ( $this );
             }
@@ -105,11 +105,11 @@ final class Manager {
         }
 
         /**
-         * action 'builder/extensions'
+         * action 'qazana/extensions'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions", $this );
+        do_action( "qazana/extensions", $this );
 
     }
 
@@ -122,11 +122,11 @@ final class Manager {
     private function _register_widgets( $extension, $widgets ) {
 
         /**
-         * action 'builder/extensions/before'
+         * action 'qazana/extensions/before'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions/widgets/before", $this );
+        do_action( "qazana/extensions/widgets/before", $this );
 
         if ( empty( $widgets ) )
             return;
@@ -141,17 +141,17 @@ final class Manager {
     			)
     		);
 
-            if ( $file = builder()->extensions_loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
+            if ( $file = qazana()->extensions_loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
                 require_once $file;
             }
         }
 
         /**
-         * action 'builder/extensions'
+         * action 'qazana/extensions'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions/widgets", $this );
+        do_action( "qazana/extensions/widgets", $this );
 
     }
 
@@ -164,11 +164,11 @@ final class Manager {
     private function _load_skins( $extension, $skins ) {
 
         /**
-         * action 'builder/extensions/before'
+         * action 'qazana/extensions/before'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions/skins/before", $this );
+        do_action( "qazana/extensions/skins/before", $this );
 
         if ( empty( $skins ) )
             return;
@@ -189,17 +189,17 @@ final class Manager {
                 continue;
             }
 
-            if ( $file = builder()->extensions_loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
+            if ( $file = qazana()->extensions_loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
                 require_once $file;
             }
         }
 
         /**
-         * action 'builder/extensions'
+         * action 'qazana/extensions'
          *
-         * @param object $this Builder
+         * @param object $this Qazana
          */
-        do_action( "builder/extensions/skins", $this );
+        do_action( "qazana/extensions/skins", $this );
 
     }
 
@@ -231,7 +231,7 @@ final class Manager {
         if ( empty( $this->instance ) )
             return;
 
-		$widget_manager = builder()->widgets_manager;
+		$widget_manager = qazana()->widgets_manager;
 
         foreach ( $this->instance as $extension => $extension_data ) {
 
@@ -284,7 +284,7 @@ final class Manager {
 			return true;
 		}
 
-		$options = get_option( 'builder_extension_' . $extension_data['name'] );
+		$options = get_option( 'qazana_extension_' . $extension_data['name'] );
 
         if ( ! isset( $options[ $extension_id ] ) ) {
 			return $extension_data['default_activation'];
@@ -313,9 +313,9 @@ final class Manager {
 
         $extension_data = $this->get_extension_data( $extension_id ) ;
 
-        $section = 'builder_extension ' . $extension_id . '_editor_section';
+        $section = 'qazana_extension ' . $extension_id . '_editor_section';
 
-        $controls_class_name = 'Builder\Settings_Controls';
+        $controls_class_name = 'Qazana\Settings_Controls';
 
         add_settings_section(
             $section,
@@ -323,15 +323,15 @@ final class Manager {
             function () {
                 //echo $extension_data['description'];
             },
-            builder()->slug
+            qazana()->slug
         );
 
-        $field_id = 'builder_extension_' . $extension_data['name'];
+        $field_id = 'qazana_extension_' . $extension_data['name'];
         add_settings_field(
             $field_id,
-            __( 'Enable Extension', 'builder' ),
+            __( 'Enable Extension', 'qazana' ),
             [ $controls_class_name, 'render' ],
-            builder()->slug,
+            qazana()->slug,
             $section,
             [
                 'id' => $field_id,
@@ -340,6 +340,6 @@ final class Manager {
             ]
         );
 
-        register_setting( builder()->slug, $field_id );
+        register_setting( qazana()->slug, $field_id );
     }
 }

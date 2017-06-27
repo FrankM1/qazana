@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,7 +28,7 @@ class Custom_Css {
 		$element->start_controls_section(
 			'section_custom_css',
 			[
-				'label' => __( 'Custom CSS', 'builder' ),
+				'label' => __( 'Custom CSS', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_ADVANCED,
 			]
 		);
@@ -37,7 +37,7 @@ class Custom_Css {
 			'custom_css',
 			[
 				'type'      => Controls_Manager::CODE,
-				'label'     => __( 'Add your own custom CSS here', 'builder' ),
+				'label'     => __( 'Add your own custom CSS here', 'qazana' ),
 				'language'  => 'css',
 				'selectors' => [
 					'' => '',
@@ -48,9 +48,9 @@ class Custom_Css {
 		$element->add_control(
 			'custom_css_description',
 			[
-				'raw'     => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'builder' ),
+				'raw'     => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
 				'type'    => Controls_Manager::RAW_HTML,
-				'classes' => 'builder-descriptor',
+				'classes' => 'qazana-descriptor',
 			]
 		);
 
@@ -97,7 +97,7 @@ class Custom_Css {
 	}
 
 	protected function add_actions() {
-		add_action( 'builder/element/after_section_end', [ $this, 'register_controls' ], 10, 3 );
-		add_action( 'builder/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
+		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 10, 3 );
+		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
 	}
 }

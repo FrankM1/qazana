@@ -1,19 +1,19 @@
 //
 
-// Global selectors for Builder Front-End
+// Global selectors for Qazana Front-End
 
 //
 
 // Admin Bar - Icon (Front-End)
 
-#wpadminbar #wp-admin-bar-builder_edit_page > .ab-item::before {
+#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
   margin-top  : 5px;
   content     : "\e800";
   font-size   : 12px;
   font-family : eicon;
 }
 
-.builder {
+.qazana {
   // Reset Style for some themes and browsers
   hyphens : manual;
 
@@ -58,13 +58,13 @@
     line-height : 1;
   }
 
-  .builder-custom-embed {
+  .qazana-custom-embed {
     line-height : 0;
     // for google maps margin bottom
   }
   // Background Video
 
-  .builder-background-video-container {
+  .qazana-background-video-container {
     position : absolute;
     top      : 0;
     left     : 0;
@@ -74,7 +74,7 @@
     height   : 100%;
   }
 
-  .builder-background-video {
+  .qazana-background-video {
     position  : absolute;
     top       : 50%;
     left      : 50%;
@@ -82,13 +82,13 @@
     transform : translateY(-50%) translateX(-50%);
   }
   
-  .builder-html5-video {
+  .qazana-html5-video {
     object-fit : cover;
     // For HTML5 portrait video
   }
   // End Background Video
 
-  .builder-background-overlay {
+  .qazana-background-overlay {
     position : absolute;
     top      : 0;
     left     : 0;
@@ -96,23 +96,23 @@
     height   : 100%;
   }
 
-  .builder-invisible {
+  .qazana-invisible {
     visibility : hidden;
   }
 }
 
 // Alignment Classes
 
-.builder-align- {
+.qazana-align- {
   &center {
     margin     : 0 auto;
     text-align : center;
 
-    .builder-wrapper {
+    .qazana-wrapper {
       margin : 0 auto;
     }
 
-    .builder-button {
+    .qazana-button {
       width : auto;
     }
   }
@@ -120,11 +120,11 @@
   &right {
     text-align : right;
 
-    .builder-wrapper {
+    .qazana-wrapper {
       margin-left : auto;
     }
 
-    .builder-button {
+    .qazana-button {
       width : auto;
     }
   }
@@ -132,17 +132,17 @@
   &left {
     text-align : left;
 
-    .builder-wrapper {
+    .qazana-wrapper {
       margin-right : auto;
     }
 
-    .builder-button {
+    .qazana-button {
       width : auto;
     }
   }
 
   &justify {
-    .builder-button {
+    .qazana-button {
       width : 100%;
     }
   }
@@ -151,11 +151,11 @@
 // Alignment for Tablet
 
 @media (max-width: $screen-md-max) {
-  .builder-tablet-align- {
+  .qazana-tablet-align- {
     &center {
       text-align : center;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
@@ -163,7 +163,7 @@
     &right {
       text-align : right;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
@@ -171,13 +171,13 @@
     &left {
       text-align : left;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
 
     &justify {
-      .builder-button {
+      .qazana-button {
         width : 100%;
       }
     }
@@ -187,11 +187,11 @@
 // Alignment for Mobile
 
 @media (max-width: $screen-sm-max) {
-  .builder-mobile-align- {
+  .qazana-mobile-align- {
     &center {
       text-align : center;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
@@ -199,7 +199,7 @@
     &right {
       text-align : right;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
@@ -207,13 +207,13 @@
     &left {
       text-align : left;
 
-      .builder-button {
+      .qazana-button {
         width : auto;
       }
     }
 
     &justify {
-      .builder-button {
+      .qazana-button {
         width : 100%;
       }
     }
@@ -222,10 +222,10 @@
 
 // TEMP CODE
 
-#builder-select-preset {
+#qazana-select-preset {
   display : none;
 }
 
-.builder-widget-container {
+.qazana-widget-container {
   width : 100%;
 }

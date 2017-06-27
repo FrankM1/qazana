@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Main Builder Admin Class.
+ * Main Qazana Admin Class.
  */
-namespace Builder;
+namespace Qazana;
 
 /**
- * Loads Builder plugin admin area.
+ * Loads Qazana plugin admin area.
  *
  * @since 1.0.0
  */
@@ -15,34 +15,34 @@ class Admin {
     /** Directory *************************************************************/
 
     /**
-     * @var string Path to the Builder admin directory
+     * @var string Path to the Qazana admin directory
      */
     public $admin_dir = '';
 
     /** URLs ******************************************************************/
 
     /**
-     * @var string URL to the Builder admin directory
+     * @var string URL to the Qazana admin directory
      */
     public $admin_url = '';
 
     /**
-     * @var string URL to the Builder images directory
+     * @var string URL to the Qazana images directory
      */
     public $images_url = '';
 
     /**
-     * @var string URL to the Builder admin styles directory
+     * @var string URL to the Qazana admin styles directory
      */
     public $styles_url = '';
 
     /**
-     * @var string URL to the Builder admin css directory
+     * @var string URL to the Qazana admin css directory
      */
     public $css_url = '';
 
     /**
-     * @var string URL to the Builder admin js directory
+     * @var string URL to the Qazana admin js directory
      */
     public $js_url = '';
 
@@ -75,13 +75,13 @@ class Admin {
     /** Functions *************************************************************/
 
     /**
-     * The main Builder admin loader.
+     * The main Qazana admin loader.
      *
      * @since 1.0.0
      *
-     * @uses Builder_Admin::setup_globals() Setup the globals needed
-     * @uses Builder_Admin::includes() Include the required files
-     * @uses Builder_Admin::setup_actions() Setup the hooks and actions
+     * @uses Qazana_Admin::setup_globals() Setup the globals needed
+     * @uses Qazana_Admin::includes() Include the required files
+     * @uses Qazana_Admin::setup_actions() Setup the hooks and actions
      */
     public function __construct() {
 
@@ -98,10 +98,10 @@ class Admin {
      */
     private function setup_globals() {
 
-        $builder = builder();
+        $qazana = qazana();
 
-        $this->admin_dir    = trailingslashit( $builder->includes_dir . 'admin' ); // Admin path
-        $this->admin_url    = trailingslashit( $builder->core_assets_url ); // Admin url
+        $this->admin_dir    = trailingslashit( $qazana->includes_dir . 'admin' ); // Admin path
+        $this->admin_url    = trailingslashit( $qazana->core_assets_url ); // Admin url
         $this->images_url   = trailingslashit( $this->admin_url . 'images' ); // Admin images URL
         $this->styles_url   = trailingslashit( $this->admin_url . 'styles' ); // Admin styles URL
         $this->css_url      = trailingslashit( $this->admin_url . 'css' ); // Admin css URL
@@ -134,33 +134,33 @@ class Admin {
     private function setup_actions() {
 
         // Bail to prevent interfering with the deactivation process
-        if ( builder_is_deactivation() ) {
+        if ( qazana_is_deactivation() ) {
             return;
         }
 
         /* General Actions ***************************************************/
 
-        add_action( 'builder_admin_menu',              array( $this, 'admin_menus' ) ); // Add menu item to settings menu
-        add_action( 'builder_admin_notices',           array( $this, 'activation_notice' ) ); // Add notice if not using a Builder theme
-        //add_action( 'builder_register_admin_settings', array( $this, 'register_admin_settings' ) ); // Add settings
-        add_action( 'builder_activation',              array( $this, 'new_install' ) ); // Add menu item to settings menu
+        add_action( 'qazana_admin_menu',              array( $this, 'admin_menus' ) ); // Add menu item to settings menu
+        add_action( 'qazana_admin_notices',           array( $this, 'activation_notice' ) ); // Add notice if not using a Qazana theme
+        //add_action( 'qazana_register_admin_settings', array( $this, 'register_admin_settings' ) ); // Add settings
+        add_action( 'qazana_activation',              array( $this, 'new_install' ) ); // Add menu item to settings menu
 
         add_action( 'admin_enqueue_scripts',                    array( $this, 'enqueue_styles' ) ); // Add enqueued CSS
         add_action( 'admin_enqueue_scripts',                    array( $this, 'enqueue_scripts' ) ); // Add enqueued JS
 
-        add_action( 'wp_dashboard_setup',                       array( $this, 'dashboard_widget_right_now' ) ); // Builder 'Right now' Dashboard widget
-        add_action( 'admin_bar_menu',                           array( $this, 'admin_bar_about_link' ), 15 ); // Add a link to Builder about page to the admin bar
+        add_action( 'wp_dashboard_setup',                       array( $this, 'dashboard_widget_right_now' ) ); // Qazana 'Right now' Dashboard widget
+        add_action( 'admin_bar_menu',                           array( $this, 'admin_bar_about_link' ), 15 ); // Add a link to Qazana about page to the admin bar
 
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ] );
 
         // Ajax
-        add_action( 'wp_ajax_builder_deactivate_feedback', [ $this, 'ajax_builder_deactivate_feedback' ] );
+        add_action( 'wp_ajax_qazana_deactivate_feedback', [ $this, 'ajax_qazana_deactivate_feedback' ] );
 
         /* Filters ***********************************************************/
 
-        // Modify Builder's admin links
-        add_filter( 'plugin_action_links_' . builder()->basename, array( $this, 'modify_plugin_action_links' )  );
+        // Modify Qazana's admin links
+        add_filter( 'plugin_action_links_' . qazana()->basename, array( $this, 'modify_plugin_action_links' )  );
 
         /* Network Admin *****************************************************/
 
@@ -168,10 +168,10 @@ class Admin {
         add_action( 'network_admin_menu',  array( $this, 'network_admin_menus' ) );
 
         /* Dependencies ******************************************************/
-        add_action( 'builder_admin_loaded',  array( $this, 'init_classes' ) );
+        add_action( 'qazana_admin_loaded',  array( $this, 'init_classes' ) );
 
         // Allow plugins to modify these actions
-        do_action_ref_array( 'builder_admin_loaded', array( &$this ) );
+        do_action_ref_array( 'qazana_admin_loaded', array( &$this ) );
     }
 
     /**
@@ -196,41 +196,41 @@ class Admin {
      * @since 1.0.0
      *
      * @uses add_management_page() To add the Recount page in Tools section
-     * @uses add_options_page() To add the Builder settings page in Settings
+     * @uses add_options_page() To add the Qazana settings page in Settings
      *                           section
      */
     public function admin_menus() {
 
         // Are settings enabled?
             add_options_page(
-                __( 'Builder',  'builder' ),
-                __( 'Builder',  'builder' ),
+                __( 'Qazana',  'qazana' ),
+                __( 'Qazana',  'qazana' ),
                 $this->minimum_capability,
-                'builder',
+                'qazana',
                 array( &$this, 'plugin_options_page' )
             );
 
             // These are later removed in admin_head
             // About
             add_dashboard_page(
-                __( 'Welcome to Builder',  'builder' ),
-                __( 'Welcome to Builder',  'builder' ),
+                __( 'Welcome to Qazana',  'qazana' ),
+                __( 'Welcome to Qazana',  'qazana' ),
                 $this->minimum_capability,
-                'builder-about',
+                'qazana-about',
                 array( $this, 'about_screen' )
             );
 
         // Bail if plugin is not network activated
-        if ( ! is_plugin_active_for_network( builder()->basename ) ) {
+        if ( ! is_plugin_active_for_network( qazana()->basename ) ) {
             return;
         }
 
         add_submenu_page(
             'index.php',
-            __( 'Update Builder', 'builder' ),
-            __( 'Update Builder', 'builder' ),
+            __( 'Update Qazana', 'qazana' ),
+            __( 'Update Qazana', 'qazana' ),
             'manage_network',
-            'builder-update',
+            'qazana-update',
             array( $this, 'update_screen' )
         );
     }
@@ -240,20 +240,20 @@ class Admin {
      *
      * @since 1.0.0
      *
-     * @uses add_submenu_page() To add the Update Builder page in Updates
+     * @uses add_submenu_page() To add the Update Qazana page in Updates
      */
     public function network_admin_menus() {
 
         // Bail if plugin is not network activated
-        if ( ! is_plugin_active_for_network( builder()->basename ) ) {
+        if ( ! is_plugin_active_for_network( qazana()->basename ) ) {
             return;
         }
 
-        add_submenu_page( 'upgrade.php', __( 'Update Builder', 'builder' ), __( 'Update Builder', 'builder' ), 'manage_network', 'builder-update', array( $this, 'network_update_screen' ) );
+        add_submenu_page( 'upgrade.php', __( 'Update Qazana', 'qazana' ), __( 'Update Qazana', 'qazana' ), 'manage_network', 'qazana-update', array( $this, 'network_update_screen' ) );
     }
 
     /**
-     * If this is a new installation, create some initial builder content.
+     * If this is a new installation, create some initial qazana content.
      *
      * @since 1.0.0
      *
@@ -261,11 +261,11 @@ class Admin {
      */
     public static function new_install() {
 
-        if ( ! builder_is_install() ) {
+        if ( ! qazana_is_install() ) {
             return;
         }
 
-        builder_create_initial_content();
+        qazana_create_initial_content();
     }
 
     /**
@@ -282,7 +282,7 @@ class Admin {
     public function register_admin_settings() {
 
         // Bail if no sections available
-        $sections = builder_admin_get_settings_sections();
+        $sections = qazana_admin_get_settings_sections();
 
         if ( empty( $sections ) ) {
             return false;
@@ -300,7 +300,7 @@ class Admin {
             }
 
             // Only add section and fields if section has fields
-            $fields = builder_admin_get_settings_fields_for_section( $section_id );
+            $fields = qazana_admin_get_settings_fields_for_section( $section_id );
             if ( empty( $fields ) ) {
                 continue;
             }
@@ -309,7 +309,7 @@ class Admin {
             if ( ( true === $settings_integration ) && ! empty( $section['page'] ) ) {
                 $page = $section['page'];
             } else {
-                $page = builder()->slug;
+                $page = qazana()->slug;
 
                 $this->general_settings_key = $section_id;
                 $this->plugin_settings_tabs[$this->general_settings_key] = $section['title'];
@@ -336,7 +336,7 @@ class Admin {
     /**
      * Admin area activation notice.
      *
-     * Shows a nag message in admin area about the theme not supporting Builder
+     * Shows a nag message in admin area about the theme not supporting Qazana
      *
      * @since 1.0.0
      *
@@ -360,28 +360,28 @@ class Admin {
         $new_links = array();
 
         // Settings page link
-        $new_links['settings'] = '<a href="'. esc_url( add_query_arg( array( 'page' => 'builder' ), admin_url( 'options-general.php' ) ) ).'">'.esc_html__( 'Settings', 'builder' ).'</a>';
+        $new_links['settings'] = '<a href="'. esc_url( add_query_arg( array( 'page' => 'qazana' ), admin_url( 'options-general.php' ) ) ).'">'.esc_html__( 'Settings', 'qazana' ).'</a>';
 
         // About page link
-        $new_links['about'] = '<a href="'. esc_url( add_query_arg( array( 'page' => 'builder-about' ), admin_url( 'index.php' ) ) ).'">'.esc_html__( 'About',    'builder' ).'</a>';
+        $new_links['about'] = '<a href="'. esc_url( add_query_arg( array( 'page' => 'qazana-about' ), admin_url( 'index.php' ) ) ).'">'.esc_html__( 'About',    'qazana' ).'</a>';
 
         // Add a few links to the existing links array
         return array_merge( $links, $new_links );
     }
 
     /**
-     * Add the 'Right now in Builder' dashboard widget.
+     * Add the 'Right now in Qazana' dashboard widget.
      *
      * @since 1.0.0
      *
      * @uses wp_add_dashboard_widget() To add the dashboard widget
      */
     public static function dashboard_widget_right_now() {
-        //wp_add_dashboard_widget( 'builder-dashboard-right-now', __( 'Right Now in Builder', 'builder' ), 'builder_dashboard_widget_right_now' );
+        //wp_add_dashboard_widget( 'qazana-dashboard-right-now', __( 'Right Now in Qazana', 'qazana' ), 'qazana_dashboard_widget_right_now' );
     }
 
     /**
-     * Add a link to Builder about page to the admin bar.
+     * Add a link to Qazana about page to the admin bar.
      *
      * @since 1.0.0
      *
@@ -393,9 +393,9 @@ class Admin {
 
             $wp_admin_bar->add_menu( array(
                 'parent' => 'wp-logo',
-                'id' => 'builder-about',
-                'title' => esc_html__( 'About Builder', 'builder' ),
-                'href' => add_query_arg( array( 'page' => 'builder-about' ), admin_url( 'index.php' ) ),
+                'id' => 'qazana-about',
+                'title' => esc_html__( 'About Qazana', 'qazana' ),
+                'href' => add_query_arg( array( 'page' => 'qazana-about' ), admin_url( 'index.php' ) ),
             ) );
 
         }
@@ -408,7 +408,7 @@ class Admin {
      */
     public function enqueue_scripts() {
         // Get the version to use for JS
-        $version = builder_get_version();
+        $version = qazana_get_version();
 
         if ( in_array( get_current_screen()->id, [ 'plugins', 'plugins-network' ] ) ) {
             add_action( 'admin_footer', [ $this, 'print_deactivate_feedback_dialog' ] );
@@ -424,7 +424,7 @@ class Admin {
     public function enqueue_styles() {
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_enqueue_style( 'builder-admin-app', $this->css_url . 'admin'. $suffix .'.css', array( 'dashicons' ), builder_get_version() );
+        wp_enqueue_style( 'qazana-admin-app', $this->css_url . 'admin'. $suffix .'.css', array( 'dashicons' ), qazana_get_version() );
     }
 
     /** About *****************************************************************/
@@ -436,22 +436,22 @@ class Admin {
      */
     public function about_screen() {
 
-        list( $display_version ) = explode( '-', builder_get_version() ); ?>
+        list( $display_version ) = explode( '-', qazana_get_version() ); ?>
 
         <div class="wrap about-wrap">
-            <h1><?php printf( esc_html__( 'Welcome to Builder %s', 'builder' ), $display_version ); ?></h1>
-            <div class="about-text"><?php printf( esc_html__( 'Thank you for updating.', 'builder' ), $display_version ); ?></div>
+            <h1><?php printf( esc_html__( 'Welcome to Qazana %s', 'qazana' ), $display_version ); ?></h1>
+            <div class="about-text"><?php printf( esc_html__( 'Thank you for updating.', 'qazana' ), $display_version ); ?></div>
 
             <h2 class="nav-tab-wrapper">
-                <a class="nav-tab nav-tab-active" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'builder-about' ), 'index.php' ) ) ); ?>">
-                    <?php esc_html_e( 'What&#8217;s New', 'builder' ); ?>
-                </a><a class="nav-tab" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'builder-credits' ), 'index.php' ) ) ); ?>">
-                    <?php esc_html_e( 'Credits', 'builder' ); ?>
+                <a class="nav-tab nav-tab-active" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'qazana-about' ), 'index.php' ) ) ); ?>">
+                    <?php esc_html_e( 'What&#8217;s New', 'qazana' ); ?>
+                </a><a class="nav-tab" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'qazana-credits' ), 'index.php' ) ) ); ?>">
+                    <?php esc_html_e( 'Credits', 'qazana' ); ?>
                 </a>
             </h2>
 
             <div class="return-to-dashboard">
-                <a href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'builder' ), 'options-general.php' ) ) ); ?>"><?php esc_html_e( 'Go to builder Settings', 'builder' ); ?></a>
+                <a href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'qazana' ), 'options-general.php' ) ) ); ?>"><?php esc_html_e( 'Go to qazana Settings', 'qazana' ); ?></a>
             </div>
 
         </div>
@@ -462,7 +462,7 @@ class Admin {
     /** Updaters **************************************************************/
 
     /**
-     * Update all Builder Builder across all sites.
+     * Update all Qazana Qazana across all sites.
      *
      * @since 1.0.0
      *
@@ -475,7 +475,7 @@ class Admin {
     }
 
     /**
-     * Update all Builder Builder across all sites.
+     * Update all Qazana Qazana across all sites.
      *
      * @since 1.0.0
      *
@@ -536,7 +536,7 @@ class Admin {
         foreach ( $this->plugin_settings_tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
 
-            echo '<a class="nav-tab '.$active.'" href="?page=builder&tab='.esc_attr( $tab_key ).'">'.$tab_caption.'</a>';
+            echo '<a class="nav-tab '.$active.'" href="?page=qazana&tab='.esc_attr( $tab_key ).'">'.$tab_caption.'</a>';
         }
 
         echo '</h2>';
@@ -550,19 +550,19 @@ class Admin {
         if ( ! current_user_can( 'update_plugins' ) )
             return;
 
-        if ( ! in_array( get_current_screen()->id, [ 'toplevel_page_builder', 'edit-builder_library', 'builder_page_builder-system-info', 'dashboard' ] ) ) {
+        if ( ! in_array( get_current_screen()->id, [ 'toplevel_page_qazana', 'edit-qazana_library', 'qazana_page_qazana-system-info', 'dashboard' ] ) ) {
             return;
         }
 
         // Check if have any upgrades
         $update_plugins = get_site_transient( 'update_plugins' );
-        if ( empty( $update_plugins ) || empty( $update_plugins->response[ builder()->basename ] ) || empty( $update_plugins->response[ builder()->basename ]->package ) ) {
+        if ( empty( $update_plugins ) || empty( $update_plugins->response[ qazana()->basename ] ) || empty( $update_plugins->response[ qazana()->basename ]->package ) ) {
             return;
         }
-        $product = $update_plugins->response[ builder()->basename ];
+        $product = $update_plugins->response[ qazana()->basename ];
 
         // Check if have upgrade notices to show
-        if ( version_compare( builder()->get_version(), $upgrade_notice['version'], '>=' ) )
+        if ( version_compare( qazana()->get_version(), $upgrade_notice['version'], '>=' ) )
             return;
 
         $notice_id = 'upgrade_notice_' . $upgrade_notice['version'];
@@ -570,35 +570,35 @@ class Admin {
             return;
 
         $details_url = self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $product->slug . '&section=changelog&TB_iframe=true&width=600&height=800' );
-        $upgrade_url = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' . builder()->basename ), 'upgrade-plugin_' . builder()->basename );
+        $upgrade_url = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' . qazana()->basename ), 'upgrade-plugin_' . qazana()->basename );
         ?>
-        <div class="notice updated is-dismissible builder-message builder-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id ); ?>">
-            <div class="builder-message-inner">
-                <div class="builder-message-icon">
-                    <i class="eicon-builder-square"></i>
+        <div class="notice updated is-dismissible qazana-message qazana-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id ); ?>">
+            <div class="qazana-message-inner">
+                <div class="qazana-message-icon">
+                    <i class="eicon-qazana-square"></i>
                 </div>
-                <div class="builder-message-content">
-                    <h3><?php _e( 'New in Builder', 'builder' ); ?></h3>
+                <div class="qazana-message-content">
+                    <h3><?php _e( 'New in Qazana', 'qazana' ); ?></h3>
                     <p><?php
                         printf(
                             /* translators: 1: details URL, 2: accessibility text, 3: version number, 4: update URL, 5: accessibility text */
-                            __( 'There is a new version of Builder Page Builder available. <a href="%1$s" class="thickbox open-plugin-details-modal" aria-label="%2$s">View version %3$s details</a> or <a href="%4$s" class="update-link" aria-label="%5$s">update now</a>.', 'builder' ),
+                            __( 'There is a new version of Qazana Page Qazana available. <a href="%1$s" class="thickbox open-plugin-details-modal" aria-label="%2$s">View version %3$s details</a> or <a href="%4$s" class="update-link" aria-label="%5$s">update now</a>.', 'qazana' ),
                             esc_url( $details_url ),
                             esc_attr(
                                 sprintf(
                                     /* translators: %s: version number */
-                                    __( 'View Builder version %s details', 'builder' ),
+                                    __( 'View Qazana version %s details', 'qazana' ),
                                     $product->new_version
                                 )
                             ),
                             $product->new_version,
                             esc_url( $upgrade_url ),
-                            esc_attr( __( 'Update Now', 'builder' ) )
+                            esc_attr( __( 'Update Now', 'qazana' ) )
                         );
                         ?></p>
                 </div>
-                <div class="builder-update-now">
-                    <a class="button builder-button" href="<?php echo $upgrade_url; ?>"><i class="dashicons dashicons-update"></i><?php _e( 'Update Now', 'builder' ); ?></a>
+                <div class="qazana-update-now">
+                    <a class="button qazana-button" href="<?php echo $upgrade_url; ?>"><i class="dashicons dashicons-update"></i><?php _e( 'Update Now', 'qazana' ); ?></a>
                 </div>
             </div>
         </div>
@@ -607,13 +607,13 @@ class Admin {
 
     public function admin_footer_text( $footer_text ) {
         $current_screen = get_current_screen();
-        $is_builder_screen = ( $current_screen && false !== strpos( $current_screen->base, 'builder' ) );
+        $is_qazana_screen = ( $current_screen && false !== strpos( $current_screen->base, 'qazana' ) );
 
-        if ( $is_builder_screen ) {
+        if ( $is_qazana_screen ) {
             $footer_text = sprintf(
                 /* translators: %s: link to plugin review */
-                __( 'Enjoyed <strong>Builder</strong>? Please leave us a %s rating. We really appreciate your support!', 'builder' ),
-                '<a href="https://wordpress.org/support/view/plugin-reviews/builder?filter=5#postform" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+                __( 'Enjoyed <strong>Qazana</strong>? Please leave us a %s rating. We really appreciate your support!', 'qazana' ),
+                '<a href="https://wordpress.org/support/view/plugin-reviews/qazana?filter=5#postform" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
             );
         }
 
@@ -624,8 +624,8 @@ class Admin {
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
         wp_register_script(
-            'builder-dialog',
-            builder()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
+            'qazana-dialog',
+            qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
             [
                 'jquery-ui-position',
             ],
@@ -634,26 +634,26 @@ class Admin {
         );
 
         wp_register_script(
-            'builder-admin-feedback',
-            builder()->core_assets_url . 'js/admin-feedback' . $suffix . '.js',
+            'qazana-admin-feedback',
+            qazana()->core_assets_url . 'js/admin-feedback' . $suffix . '.js',
             [
                 'underscore',
-                'builder-dialog',
+                'qazana-dialog',
             ],
-            builder()->get_version(),
+            qazana()->get_version(),
             true
         );
 
-        wp_enqueue_script( 'builder-admin-feedback' );
+        wp_enqueue_script( 'qazana-admin-feedback' );
 
         wp_localize_script(
-            'builder-admin-feedback',
-            'BuilderAdminFeedbackArgs',
+            'qazana-admin-feedback',
+            'QazanaAdminFeedbackArgs',
             [
                 'is_tracker_opted_in' => Admin_Tracker::is_allow_track(),
                 'i18n' => [
-                    'submit_n_deactivate' => __( 'Submit & Deactivate', 'builder' ),
-                    'skip_n_deactivate' => __( 'Skip & Deactivate', 'builder' ),
+                    'submit_n_deactivate' => __( 'Submit & Deactivate', 'qazana' ),
+                    'skip_n_deactivate' => __( 'Skip & Deactivate', 'qazana' ),
                 ],
             ]
         );
@@ -662,47 +662,47 @@ class Admin {
     public function print_deactivate_feedback_dialog() {
         $deactivate_reasons = [
             'no_longer_needed' => [
-                'title' => __( 'I no longer need the plugin', 'builder' ),
+                'title' => __( 'I no longer need the plugin', 'qazana' ),
                 'input_placeholder' => '',
             ],
             'found_a_better_plugin' => [
-                'title' => __( 'I found a better plugin', 'builder' ),
-                'input_placeholder' => __( 'Please share which plugin', 'builder' ),
+                'title' => __( 'I found a better plugin', 'qazana' ),
+                'input_placeholder' => __( 'Please share which plugin', 'qazana' ),
             ],
             'couldnt_get_the_plugin_to_work' => [
-                'title' => __( 'I couldn\'t get the plugin to work', 'builder' ),
+                'title' => __( 'I couldn\'t get the plugin to work', 'qazana' ),
                 'input_placeholder' => '',
             ],
             'temporary_deactivation' => [
-                'title' => __( 'It\'s a temporary deactivation', 'builder' ),
+                'title' => __( 'It\'s a temporary deactivation', 'qazana' ),
                 'input_placeholder' => '',
             ],
             'other' => [
-                'title' => __( 'Other', 'builder' ),
-                'input_placeholder' => __( 'Please share the reason', 'builder' ),
+                'title' => __( 'Other', 'qazana' ),
+                'input_placeholder' => __( 'Please share the reason', 'qazana' ),
             ],
         ];
 
         ?>
-        <div id="builder-deactivate-feedback-dialog-wrapper">
-            <div id="builder-deactivate-feedback-dialog-header">
-                <i class="eicon-builder-square"></i>
-                <span id="builder-deactivate-feedback-dialog-header-title"><?php _e( 'Quick Feedback', 'builder' ); ?></span>
+        <div id="qazana-deactivate-feedback-dialog-wrapper">
+            <div id="qazana-deactivate-feedback-dialog-header">
+                <i class="eicon-qazana-square"></i>
+                <span id="qazana-deactivate-feedback-dialog-header-title"><?php _e( 'Quick Feedback', 'qazana' ); ?></span>
             </div>
-            <form id="builder-deactivate-feedback-dialog-form" method="post">
+            <form id="qazana-deactivate-feedback-dialog-form" method="post">
                 <?php
-                wp_nonce_field( '_builder_deactivate_feedback_nonce' );
+                wp_nonce_field( '_qazana_deactivate_feedback_nonce' );
                 ?>
-                <input type="hidden" name="action" value="builder_deactivate_feedback" />
+                <input type="hidden" name="action" value="qazana_deactivate_feedback" />
 
-                <div id="builder-deactivate-feedback-dialog-form-caption"><?php _e( 'If you have a moment, please share why you are deactivating Builder:', 'builder' ); ?></div>
-                <div id="builder-deactivate-feedback-dialog-form-body">
+                <div id="qazana-deactivate-feedback-dialog-form-caption"><?php _e( 'If you have a moment, please share why you are deactivating Qazana:', 'qazana' ); ?></div>
+                <div id="qazana-deactivate-feedback-dialog-form-body">
                     <?php foreach ( $deactivate_reasons as $reason_key => $reason ) : ?>
-                        <div class="builder-deactivate-feedback-dialog-input-wrapper">
-                            <input id="builder-deactivate-feedback-<?php echo esc_attr( $reason_key ); ?>" class="builder-deactivate-feedback-dialog-input" type="radio" name="reason_key" value="<?php echo esc_attr( $reason_key ); ?>" />
-                            <label for="builder-deactivate-feedback-<?php echo esc_attr( $reason_key ); ?>" class="builder-deactivate-feedback-dialog-label"><?php echo $reason['title']; ?></label>
+                        <div class="qazana-deactivate-feedback-dialog-input-wrapper">
+                            <input id="qazana-deactivate-feedback-<?php echo esc_attr( $reason_key ); ?>" class="qazana-deactivate-feedback-dialog-input" type="radio" name="reason_key" value="<?php echo esc_attr( $reason_key ); ?>" />
+                            <label for="qazana-deactivate-feedback-<?php echo esc_attr( $reason_key ); ?>" class="qazana-deactivate-feedback-dialog-label"><?php echo $reason['title']; ?></label>
                             <?php if ( ! empty( $reason['input_placeholder'] ) ) : ?>
-                                <input class="builder-feedback-text" type="text" name="reason_<?php echo esc_attr( $reason_key ); ?>" placeholder="<?php echo esc_attr( $reason['input_placeholder'] ); ?>" />
+                                <input class="qazana-feedback-text" type="text" name="reason_<?php echo esc_attr( $reason_key ); ?>" placeholder="<?php echo esc_attr( $reason['input_placeholder'] ); ?>" />
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
@@ -712,8 +712,8 @@ class Admin {
         <?php
     }
 
-    public function ajax_builder_deactivate_feedback() {
-        if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], '_builder_deactivate_feedback_nonce' ) ) {
+    public function ajax_qazana_deactivate_feedback() {
+        if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], '_qazana_deactivate_feedback_nonce' ) ) {
             wp_send_json_error();
         }
 

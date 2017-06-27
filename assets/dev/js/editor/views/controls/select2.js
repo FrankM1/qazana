@@ -1,13 +1,13 @@
 // Attention: DO NOT use this control since it has bugs
 // TODO: This control is unused
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlSelect2ItemView;
 
 ControlSelect2ItemView = ControlBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.select = '.builder-select2';
+		ui.select = '.qazana-select2';
 
 		return ui;
 	},

@@ -1,17 +1,17 @@
 var TemplateLibraryHeaderLogoView;
 
 TemplateLibraryHeaderLogoView = Marionette.ItemView.extend( {
-	template: '#tmpl-builder-template-library-header-logo',
+	template: '#tmpl-qazana-template-library-header-logo',
 
-	id: 'builder-template-library-header-logo',
+	id: 'qazana-template-library-header-logo',
 
 	events: {
 		'click': 'onClick'
 	},
 
 	onClick: function() {
-		builder.templates.setTemplatesSource( 'remote' );
-		builder.templates.showTemplates();
+		qazana.templates.setTemplatesSource( 'remote' );
+		qazana.templates.showTemplates();
 	}
 } );
 

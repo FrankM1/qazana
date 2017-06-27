@@ -6,7 +6,7 @@ A UI only control. Show a text heading between controls.
 $this->add_control(
     'more_options',
     [
-        'label' => __( 'Additional Options', 'builder' ),
+        'label' => __( 'Additional Options', 'qazana' ),
         'type' => Controls_Manager::HEADING,
         'separator' => 'before',
     ]

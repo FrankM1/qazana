@@ -1,6 +1,6 @@
-.builder-control-type-order {
+.qazana-control-type-order {
 
-	.builder-control-oreder-wrapper {
+	.qazana-control-oreder-wrapper {
 		display: flex;
 	}
 
@@ -9,7 +9,7 @@
 
 		&:checked {
 
-			+ .builder-control-order-label {
+			+ .qazana-control-order-label {
 				transform: scale(1, -1);
 			}
 		}
@@ -20,20 +20,20 @@
 
 		&:not(:focus) {
 
-			~ .builder-control-order-label {
+			~ .qazana-control-order-label {
 				border-color: $editor-lightest;
 			}
 		}
 
 		&:focus {
 
-			~ .builder-control-order-label {
+			~ .qazana-control-order-label {
 				border-color: $editor-light;
 			}
 		}
 	}
 
-	.builder-control-order-label {
+	.qazana-control-order-label {
 		position: relative;
 		padding: 0;
 		width: 40px;

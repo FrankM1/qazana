@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,27 +15,27 @@ class Group_Control_Animations extends Group_Base_Control {
 		$fields = [];
 
         $fields['in'] = [
-        	'label' => __( 'Entrance Animation', 'builder' ),
+        	'label' => __( 'Entrance Animation', 'qazana' ),
         	'type' => Controls_Manager::ANIMATION_IN,
         	'default' => '',
         	'label_block' => true,
         ];
 
         /*$fields['out'] = [
-        	'label' => __( 'Exit Animation', 'builder' ),
+        	'label' => __( 'Exit Animation', 'qazana' ),
         	'type' => Controls_Manager::ANIMATION_OUT,
         	'default' => '',
         	'label_block' => true,
         ];*/
 
         $fields['duration'] = [
-        	'label' => __( 'Animation Duration', 'builder' ),
+        	'label' => __( 'Animation Duration', 'qazana' ),
         	'type' => Controls_Manager::SELECT,
         	'default' => '',
         	'options' => [
-        		'slow' => __( 'Slow', 'builder' ),
-        		'' => __( 'Normal', 'builder' ),
-        		'fast' => __( 'Fast', 'builder' ),
+        		'slow' => __( 'Slow', 'qazana' ),
+        		'' => __( 'Normal', 'qazana' ),
+        		'fast' => __( 'Fast', 'qazana' ),
         	],
         	'prefix_class' => 'animated-',
         	'condition' => [
@@ -57,11 +57,11 @@ class Group_Control_Animations extends Group_Base_Control {
 
         $animation_control = [
             'animated' => [
-                'label' => _x( 'Animated', 'Typography Control', 'builder' ),
+                'label' => _x( 'Animated', 'Typography Control', 'qazana' ),
                 'type' => Controls_Manager::SWITCHER,
                 'default' => '',
-                'label_on' => __( 'On', 'builder' ),
-                'label_off' => __( 'Off', 'builder' ),
+                'label_on' => __( 'On', 'qazana' ),
+                'label_off' => __( 'Off', 'qazana' ),
                 'return_value' => 'animated',
             ],
         ];

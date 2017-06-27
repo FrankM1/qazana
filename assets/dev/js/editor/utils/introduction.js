@@ -5,8 +5,8 @@ Introduction = function() {
 		modal;
 
 	var initModal = function() {
-		modal = builder.dialogsManager.createWidget( 'builder-modal', {
-			id: 'builder-introduction'
+		modal = qazana.dialogsManager.createWidget( 'qazana-modal', {
+			id: 'qazana-introduction'
 		} );
 
 		modal.getElements( 'closeButton' ).on( 'click', function() {
@@ -19,7 +19,7 @@ Introduction = function() {
 	};
 
 	this.getSettings = function() {
-		return builder.config.introduction;
+		return qazana.config.introduction;
 	};
 
 	this.getModal = function() {
@@ -52,7 +52,7 @@ Introduction = function() {
 	};
 
 	this.setIntroductionViewed = function() {
-		builder.ajax.send( 'introduction_viewed' );
+		qazana.ajax.send( 'introduction_viewed' );
 	};
 };
 

@@ -2,13 +2,13 @@
 // Tabs
 //
 
-.builder-tabs {
+.qazana-tabs {
 	text-align: $start;
 
-	.builder-tabs-wrapper {
+	.qazana-tabs-wrapper {
 		overflow: hidden;
 
-		.builder-tab-title {
+		.qazana-tab-title {
 			display: table-cell;
 
 			> span {
@@ -49,7 +49,7 @@
 		}
 	}
 
-	.builder-tab-content {
+	.qazana-tab-content {
 	    padding: 20px;
 	    display: none;
 		border: 1px solid $gray-light;
@@ -60,11 +60,11 @@
 // Responsive mode
 @media (max-width: $screen-sm-max) {
 
-	.builder-tabs {
+	.qazana-tabs {
 
-		.builder-tabs-wrapper {
+		.qazana-tabs-wrapper {
 
-			.builder-tab-title {
+			.qazana-tab-title {
 
 				> span {
 					padding: 12px 15px;
@@ -72,7 +72,7 @@
 			}
 		}
 
-		.builder-tab-content {
+		.qazana-tab-content {
 			padding: 10px;
 		}
 	}

@@ -1,7 +1,7 @@
 {
-  "name": "builder",
-  "slug": "builder",
-  "version": "1.0.0",
+  "name": "qazana",
+  "slug": "qazana",
+  "version": "1.0.1",
   "author": "RadiumThemes",
   "homepage": "http://radiumthemes.com/",
   "devDependencies": {

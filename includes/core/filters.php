@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Builder Filters.
+ * Qazana Filters.
  *
  *
  * @see /core/filters.php

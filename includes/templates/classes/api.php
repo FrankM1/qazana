@@ -1,9 +1,9 @@
 <?php
-namespace Builder\Template_Library;
+namespace Qazana\Template_Library;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use Builder\Plugin;
+use Qazana\Plugin;
 
 class Template_Api {
 
@@ -11,19 +11,19 @@ class Template_Api {
      * [$api_template_url description]
      * @var string
      */
-    public static $api_template_url = 'https://api.radiumthemes.com/api/v1/builder/templates';
+    public static $api_template_url = 'https://api.radiumthemes.com/api/v1/qazana/templates';
 
     /**
      * [$api_template_content_url description]
      * @var string
      */
-    private static $api_template_content_url = 'https://api.radiumthemes.com/api/v1/builder/templates/%d';
+    private static $api_template_content_url = 'https://api.radiumthemes.com/api/v1/qazana/templates/%d';
 
     /**
      * [__construct description]
      */
     public function __construct() {
-        add_action( 'wp_ajax_builder_reset_remote_library', array( $this, 'ajax_reset_api_data' ) );
+        add_action( 'wp_ajax_qazana_reset_remote_library', array( $this, 'ajax_reset_api_data' ) );
     }
 
     /**
@@ -34,7 +34,7 @@ class Template_Api {
      * @return array|bool
      */
     private static function _get_info_data( $force = false ) {
-        $cache_key = 'builder_remote_template_data_' . builder()->get_version();
+        $cache_key = 'qazana_remote_template_data_' . qazana()->get_version();
         $info_data = get_transient( $cache_key );
 
         if ( $force || false === $info_data ) {
@@ -42,7 +42,7 @@ class Template_Api {
                 'timeout' => 25,
                 'body' => [
                     // Which API version is used
-                    'api_version' => builder()->get_version(),
+                    'api_version' => qazana()->get_version(),
                     // Which language to return
                     'site_lang' => get_bloginfo( 'language' ),
                 ],
@@ -61,7 +61,7 @@ class Template_Api {
             }
 
             if ( isset( $info_data['templates'] ) ) {
-                update_option( 'builder_remote_templates_data', $info_data['templates'], 'no' );
+                update_option( 'qazana_remote_templates_data', $info_data['templates'], 'no' );
                 unset( $info_data['templates'] );
             }
             set_transient( $cache_key, $info_data, 12 * HOUR_IN_SECONDS );
@@ -73,7 +73,7 @@ class Template_Api {
     public static function get_templates_data() {
         self::_get_info_data(true);
 
-        $templates = get_option( 'builder_remote_templates_data' );
+        $templates = get_option( 'qazana_remote_templates_data' );
 
         if ( empty( $templates ) )
             return [];
@@ -89,7 +89,7 @@ class Template_Api {
             'timeout' => 40,
             'body' => [
                 // Which API version is used
-                'api_version' => builder()->get_version(),
+                'api_version' => qazana()->get_version(),
                 // Which language to return
                 'site_lang' => get_bloginfo( 'language' ),
             ],
@@ -109,7 +109,7 @@ class Template_Api {
     }
 
     public function ajax_reset_api_data() {
-        check_ajax_referer( 'builder_reset_library', '_nonce' );
+        check_ajax_referer( 'qazana_reset_library', '_nonce' );
 
         self::_get_info_data( true );
 

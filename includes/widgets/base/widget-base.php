@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -14,15 +14,15 @@ abstract class Widget_Base extends Element_Base {
 	protected static function get_default_edit_tools() {
 		return [
 			'edit' => [
-				'title' => __( 'Edit', 'builder' ),
+				'title' => __( 'Edit', 'qazana' ),
 				'icon' => 'pencil',
 			],
 			'duplicate' => [
-				'title' => __( 'Duplicate', 'builder' ),
+				'title' => __( 'Duplicate', 'qazana' ),
 				'icon' => 'files-o',
 			],
 			'remove' => [
-				'title' => __( 'Remove', 'builder' ),
+				'title' => __( 'Remove', 'qazana' ),
 				'icon' => 'times',
 			],
 		];
@@ -52,7 +52,7 @@ abstract class Widget_Base extends Element_Base {
 		if ( $is_type_instance ) {
 			$this->_register_skins();
 
-			do_action( 'builder/widget/' . $this->get_name() . '/skins_init', $this );
+			do_action( 'qazana/widget/' . $this->get_name() . '/skins_init', $this );
 		}
 
 		$this->add_actions();
@@ -84,7 +84,7 @@ abstract class Widget_Base extends Element_Base {
 			$skin_options = [];
 
 			if ( $this->_has_template_content ) {
-				$skin_options[''] = __( 'Default', 'builder' );
+				$skin_options[''] = __( 'Default', 'qazana' );
 			}
 
 			foreach ( $skins as $skin_id => $skin ) {
@@ -99,7 +99,7 @@ abstract class Widget_Base extends Element_Base {
 				$this->add_control(
 					'_skin',
 					[
-						'label' => __( 'Skin', 'builder' ),
+						'label' => __( 'Skin', 'qazana' ),
 						'type' => Controls_Manager::HIDDEN,
 						'default' => $default_value,
 					]
@@ -108,7 +108,7 @@ abstract class Widget_Base extends Element_Base {
 				$this->add_control(
 					'_skin',
 					[
-						'label' => __( 'Skin', 'builder' ),
+						'label' => __( 'Skin', 'qazana' ),
 						'type' => Controls_Manager::SELECT,
 						'default' => $default_value,
 						'options' => $skin_options,
@@ -136,15 +136,15 @@ abstract class Widget_Base extends Element_Base {
 
 		$content_template = ob_get_clean();
 
-		$content_template = apply_filters( 'builder/widget/print_template', $content_template,  $this );
+		$content_template = apply_filters( 'qazana/widget/print_template', $content_template,  $this );
 
 		if ( empty( $content_template ) ) {
 			return;
 		}
 		?>
-		<script type="text/html" id="tmpl-builder-<?php echo static::get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
+		<script type="text/html" id="tmpl-qazana-<?php echo static::get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
 			<?php self::_render_settings(); ?>
-			<div class="builder-widget-container">
+			<div class="qazana-widget-container">
 				<?php echo $content_template; ?>
 			</div>
 		</script>
@@ -153,12 +153,12 @@ abstract class Widget_Base extends Element_Base {
 
 	protected function _render_settings() {
 		?>
-		<div class="builder-editor-element-settings builder-editor-<?php echo esc_attr( static::get_type() ); ?>-settings builder-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
-			<ul class="builder-editor-element-settings-list">
+		<div class="qazana-editor-element-settings qazana-editor-<?php echo esc_attr( static::get_type() ); ?>-settings qazana-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
+			<ul class="qazana-editor-element-settings-list">
 				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
-					<li class="builder-editor-element-setting builder-editor-element-<?php echo $edit_tool_name; ?>">
+					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>">
 						<a title="<?php echo $edit_tool['title']; ?>">
-							<span class="builder-screen-only"><?php echo $edit_tool['title']; ?></span>
+							<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
 							<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
 						</a>
 					</li>
@@ -182,11 +182,11 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	public function render_content() {
-		if ( builder()->editor->is_edit_mode() ) {
+		if ( qazana()->editor->is_edit_mode() ) {
 			$this->_render_settings();
 		}
 		?>
-		<div class="builder-widget-container">
+		<div class="qazana-widget-container">
 			<?php
 			ob_start();
 
@@ -198,7 +198,7 @@ abstract class Widget_Base extends Element_Base {
 				$this->render();
 			}
 
-			echo apply_filters( 'builder/widget/render_content', ob_get_clean(), $this );
+			echo apply_filters( 'qazana/widget/render_content', ob_get_clean(), $this );
 			?>
 		</div>
 		<?php
@@ -210,10 +210,10 @@ abstract class Widget_Base extends Element_Base {
 
 	protected function _add_render_attributes() {
 		$this->add_render_attribute( '_wrapper', 'class', [
-			'builder-widget',
-			'builder-element',
-			'builder-element-' . $this->get_id(),
-			'builder-widget-' . $this->get_name(),
+			'qazana-widget',
+			'qazana-element',
+			'qazana-element-' . $this->get_id(),
+			'qazana-widget-' . $this->get_name(),
 		] );
 
 		$settings = $this->get_settings();
@@ -229,13 +229,13 @@ abstract class Widget_Base extends Element_Base {
 		}
 
 		if ( ! empty( $settings['_animation_animated'] ) && ! empty( $settings['_animation_in'] ) ) {
-			$this->add_render_attribute( '_wrapper', 'class', 'builder-element-animated' );
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-element-animated' );
 			$this->add_render_attribute( '_wrapper', 'data-animation-in', $settings['_animation_in'] );
 			$this->add_render_attribute( '_wrapper', 'data-animation-out', $settings['_animation_in'] );
 		}
 
 		if ( ! empty( $settings['_hover_animation'] ) ) {
-            $this->add_render_attribute( '_wrapper', 'class', 'builder-hover-animation-' . $settings['_hover_animation'] );
+            $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['_hover_animation'] );
         }
 
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
@@ -287,11 +287,11 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	protected function _get_default_child_type( array $element_data ) {
-		return builder()->elements_manager->get_element_types( 'section' );
+		return qazana()->elements_manager->get_element_types( 'section' );
 	}
 
 	public function add_skin( Skin_Base $skin ) {
-		builder()->skins_manager->add_skin( $this, $skin );
+		qazana()->skins_manager->add_skin( $this, $skin );
 	}
 
 	public function get_skin( $skin_id ) {
@@ -311,13 +311,13 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	public function remove_skin( $skin_id ) {
-		return builder()->skins_manager->remove_skin( $this, $skin_id );
+		return qazana()->skins_manager->remove_skin( $this, $skin_id );
 	}
 
 	/**
 	 * @return Skin_Base[]
 	 */
 	public function get_skins() {
-		return builder()->skins_manager->get_skins( $this );
+		return qazana()->skins_manager->get_skins( $this );
 	}
 }

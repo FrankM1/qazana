@@ -1,15 +1,15 @@
-var TemplateLibraryTemplateLocalView = require( 'builder-templates/views/template/local' ),
-    TemplateLibraryTemplateRemoteView = require( 'builder-templates/views/template/remote' ),
-    TemplateLibraryTemplateThemeView = require( 'builder-templates/views/template/theme' ),
-    TemplateLibraryTemplatesEmptyView = require( 'builder-templates/views/parts/panel/templates-empty' ),
+var TemplateLibraryTemplateLocalView = require( 'qazana-templates/views/template/local' ),
+    TemplateLibraryTemplateRemoteView = require( 'qazana-templates/views/template/remote' ),
+    TemplateLibraryTemplateThemeView = require( 'qazana-templates/views/template/theme' ),
+    TemplateLibraryTemplatesEmptyView = require( 'qazana-templates/views/parts/panel/templates-empty' ),
     TemplateLibraryCollectionView;
 
 TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
-	template: '#tmpl-builder-template-library-templates',
+	template: '#tmpl-qazana-template-library-templates',
 
-	id: 'builder-template-library-templates',
+	id: 'qazana-template-library-templates',
 
-	childViewContainer: '#builder-template-library-templates-container',
+	childViewContainer: '#qazana-template-library-templates-container',
 
 	emptyView: TemplateLibraryTemplatesEmptyView,
 
@@ -26,11 +26,11 @@ TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
     },
 
 	initialize: function() {
-		this.listenTo( builder.channels.templates, 'filter:change', this._renderChildren );
+		this.listenTo( qazana.channels.templates, 'filter:change', this._renderChildren );
 	},
 
 	filterByName: function( model ) {
-		var filterValue = builder.channels.templates.request( 'filter:text' );
+		var filterValue = qazana.channels.templates.request( 'filter:text' );
 
 		if ( ! filterValue ) {
 			return true;
@@ -48,7 +48,7 @@ TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
 	},
 
 	filterBySource: function( model ) {
-		var filterValue = builder.channels.templates.request( 'filter:source' );
+		var filterValue = qazana.channels.templates.request( 'filter:source' );
 
 		if ( ! filterValue ) {
 			return true;
@@ -58,7 +58,7 @@ TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
 	},
 
 	filterByType: function( model ) {
-		return builder.templates.getTemplateTypes( model.get( 'type' ) ) && false !== builder.templates.getTemplateTypes( model.get( 'type' ) ).showInLibrary;
+		return qazana.templates.getTemplateTypes( model.get( 'type' ) ) && false !== qazana.templates.getTemplateTypes( model.get( 'type' ) ).showInLibrary;
 	},
 
 	filter: function( childModel ) {
@@ -68,7 +68,7 @@ TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
 	onRenderCollection: function() {
 		var isEmpty = this.children.isEmpty();
 
-		this.$childViewContainer.attr( 'data-template-source', isEmpty ? 'empty' : builder.channels.templates.request( 'filter:source' ) );
+		this.$childViewContainer.attr( 'data-template-source', isEmpty ? 'empty' : qazana.channels.templates.request( 'filter:source' ) );
 	}
 } );
 

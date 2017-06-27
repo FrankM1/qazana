@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,17 +15,17 @@ class Group_Control_Icon extends Group_Base_Control {
 		$fields = [];
 
         $fields['type'] = [
-            'label' => __( 'Icon type', 'builder' ),
+            'label' => __( 'Icon type', 'qazana' ),
             'type' => Controls_Manager::SELECT,
             'default' => 'icon',
             'options' => [
-                'icon' => __( 'Icon', 'builder' ),
-                'image' => __( 'Image File', 'builder' ),
+                'icon' => __( 'Icon', 'qazana' ),
+                'image' => __( 'Image File', 'qazana' ),
             ],
         ];
 
         $fields['image'] = [
-            'label' => __( 'Choose Image', 'builder' ),
+            'label' => __( 'Choose Image', 'qazana' ),
             'type' => Controls_Manager::MEDIA,
             'condition' => [
                 'type' => 'image',
@@ -36,7 +36,7 @@ class Group_Control_Icon extends Group_Base_Control {
         ];
 
         $fields['icon'] = [
-            'label' => __( 'Icon', 'builder' ),
+            'label' => __( 'Icon', 'qazana' ),
             'type' => Controls_Manager::ICON,
             'label_block' => true,
             'condition' => [

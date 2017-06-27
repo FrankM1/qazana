@@ -1,4 +1,4 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlBaseMultipleItemView;
 
 ControlBaseMultipleItemView = ControlBaseItemView.extend( {
@@ -28,7 +28,7 @@ ControlBaseMultipleItemView = ControlBaseItemView.extend( {
 			return values[ key ] || '';
 		}
 
-		return builder.helpers.cloneObject( values );
+		return qazana.helpers.cloneObject( values );
 	},
 
 	setValue: function( key, value ) {

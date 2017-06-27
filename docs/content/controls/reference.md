@@ -1,5 +1,5 @@
 # Controls Sheet
-Builder includes a wide array of settings controls. Let's get to know them.
+Qazana includes a wide array of settings controls. Let's get to know them.
 
 
 #### Content controls

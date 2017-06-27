@@ -1,20 +1,20 @@
-var TemplateLibraryHeaderLogoView = require( 'builder-templates/views/parts/header/logo' ),
-	TemplateLibraryHeaderSaveView = require( 'builder-templates/views/parts/header/save' ),
-	TemplateLibraryHeaderMenuView = require( 'builder-templates/views/parts/header/menu' ),
-	TemplateLibraryHeaderPreviewView = require( 'builder-templates/views/parts/header/preview' ),
-	TemplateLibraryHeaderSearchView = require( 'builder-templates/views/parts/header/search' ),
-	TemplateLibraryHeaderBackView = require( 'builder-templates/views/parts/header/back' ),
+var TemplateLibraryHeaderLogoView = require( 'qazana-templates/views/parts/header/logo' ),
+	TemplateLibraryHeaderSaveView = require( 'qazana-templates/views/parts/header/save' ),
+	TemplateLibraryHeaderMenuView = require( 'qazana-templates/views/parts/header/menu' ),
+	TemplateLibraryHeaderPreviewView = require( 'qazana-templates/views/parts/header/preview' ),
+	TemplateLibraryHeaderSearchView = require( 'qazana-templates/views/parts/header/search' ),
+	TemplateLibraryHeaderBackView = require( 'qazana-templates/views/parts/header/back' ),
 
-	TemplateLibraryHeaderView = require( 'builder-templates/views/parts/panel/header' ),
-	TemplateLibraryLoadingView = require( 'builder-templates/views/parts/panel/loading' ),
-	TemplateLibraryCollectionView = require( 'builder-templates/views/parts/panel/templates' ),
-	TemplateLibrarySaveTemplateView = require( 'builder-templates/views/parts/panel/save-template' ),
-	TemplateLibraryImportView = require( 'builder-templates/views/parts/panel/import' ),
-	TemplateLibraryPreviewView = require( 'builder-templates/views/parts/panel/preview' ),
+	TemplateLibraryHeaderView = require( 'qazana-templates/views/parts/panel/header' ),
+	TemplateLibraryLoadingView = require( 'qazana-templates/views/parts/panel/loading' ),
+	TemplateLibraryCollectionView = require( 'qazana-templates/views/parts/panel/templates' ),
+	TemplateLibrarySaveTemplateView = require( 'qazana-templates/views/parts/panel/save-template' ),
+	TemplateLibraryImportView = require( 'qazana-templates/views/parts/panel/import' ),
+	TemplateLibraryPreviewView = require( 'qazana-templates/views/parts/panel/preview' ),
 	TemplateLibraryLayoutView;
 
 TemplateLibraryLayoutView = Marionette.LayoutView.extend( {
-	el: '#builder-template-library-modal',
+	el: '#qazana-template-library-modal',
 
 	regions: {
 		modalContent: '.dialog-message',

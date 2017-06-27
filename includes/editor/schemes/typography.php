@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,19 +15,19 @@ class Scheme_Typography extends Scheme_Base {
     }
 
     public function get_title() {
-        return __( 'Typography', 'builder' );
+        return __( 'Typography', 'qazana' );
     }
 
     public function get_disabled_title() {
-        return __( 'Default Fonts', 'builder' );
+        return __( 'Default Fonts', 'qazana' );
     }
 
     public function get_scheme_titles() {
         return [
-            self::TYPOGRAPHY_1 => __( 'Primary Headline', 'builder' ),
-            self::TYPOGRAPHY_2 => __( 'Secondary Headline', 'builder' ),
-            self::TYPOGRAPHY_3 => __( 'Body Text', 'builder' ),
-            self::TYPOGRAPHY_4 => __( 'Accent Text', 'builder' ),
+            self::TYPOGRAPHY_1 => __( 'Primary Headline', 'qazana' ),
+            self::TYPOGRAPHY_2 => __( 'Secondary Headline', 'qazana' ),
+            self::TYPOGRAPHY_3 => __( 'Body Text', 'qazana' ),
+            self::TYPOGRAPHY_4 => __( 'Accent Text', 'qazana' ),
         ];
     }
 
@@ -51,7 +51,7 @@ class Scheme_Typography extends Scheme_Base {
             ),
         );
 
-        return apply_filters( 'builder/schemes/default_fonts', $fonts );
+        return apply_filters( 'qazana/schemes/default_fonts', $fonts );
 
     }
 
@@ -61,7 +61,7 @@ class Scheme_Typography extends Scheme_Base {
 
     public function print_template_content() {
 
-        ?><div class="builder-panel-scheme-items"></div><?php
+        ?><div class="qazana-panel-scheme-items"></div><?php
 
     }
 }

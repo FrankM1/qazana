@@ -1,8 +1,8 @@
 <?php
-namespace Builder\Template_Library;
+namespace Qazana\Template_Library;
 
-use Builder\Plugin;
-use Builder\Utils;
+use Qazana\Plugin;
+use Qazana\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -24,7 +24,7 @@ abstract class Source_Base {
 	}
 
 	protected function replace_elements_ids( $data ) {
-		return builder()->db->iterate_data( $data, function( $element ) {
+		return qazana()->db->iterate_data( $data, function( $element ) {
 			$element['id'] = Utils::generate_random_string();
 
 			return $element;
@@ -33,7 +33,7 @@ abstract class Source_Base {
 
 	public function get_supported_themes() {
 
-		$supported = apply_filters( 'builder_templates_add_template_support', array('all') );
+		$supported = apply_filters( 'qazana_templates_add_template_support', array('all') );
 
 		return array_unique( $supported );
 	}
@@ -67,12 +67,12 @@ abstract class Source_Base {
 	 */
 	protected function process_export_import_data( $data, $method ) {
 
-		return builder()->db->iterate_data( $data, function( $element ) use ( $method ) {
+		return qazana()->db->iterate_data( $data, function( $element ) use ( $method ) {
 
 			if ( 'widget' === $element['elType'] ) {
-				$element_class = builder()->widgets_manager->get_widget_types( $element['widgetType'] );
+				$element_class = qazana()->widgets_manager->get_widget_types( $element['widgetType'] );
 			} else {
-				$element_class = builder()->elements_manager->get_element_types( $element['elType'] );
+				$element_class = qazana()->elements_manager->get_element_types( $element['elType'] );
 			}
 
 			// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
@@ -85,7 +85,7 @@ abstract class Source_Base {
 			}
 
 			foreach ( $element_class->get_controls() as $control ) {
-				$control_class = builder()->controls_manager->get_control( $control['type'] );
+				$control_class = qazana()->controls_manager->get_control( $control['type'] );
 
 				// If the control isn't exist, like a plugin that creates the control but deactivated
 				if ( ! $control_class ) {

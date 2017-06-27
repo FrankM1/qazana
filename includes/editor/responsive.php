@@ -1,10 +1,10 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Responsive {
-	const BREAKPOINT_OPTION_PREFIX = 'builder_viewport_';
+	const BREAKPOINT_OPTION_PREFIX = 'qazana_viewport_';
 
 	private static $_default_breakpoints = [
 		'xs' => 0,

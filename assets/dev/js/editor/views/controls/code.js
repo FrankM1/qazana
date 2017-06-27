@@ -1,4 +1,4 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlCodeEditorItemView;
 
 ControlCodeEditorItemView = ControlBaseItemView.extend( {
@@ -6,7 +6,7 @@ ControlCodeEditorItemView = ControlBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.editor = '.builder-code-editor';
+		ui.editor = '.qazana-code-editor';
 
 		return ui;
 	},
@@ -20,7 +20,7 @@ ControlCodeEditorItemView = ControlBaseItemView.extend( {
 
 		self.editor = ace.edit( this.ui.editor[0] );
 
-		Backbone.$( self.editor.container ).addClass( 'builder-input-style builder-code-editor' );
+		Backbone.$( self.editor.container ).addClass( 'qazana-input-style qazana-code-editor' );
 
 		self.editor.setOptions( {
 			mode: 'ace/mode/' + self.model.attributes.language,

@@ -2,7 +2,7 @@ var ResizableBehavior;
 
 ResizableBehavior = Marionette.Behavior.extend( {
 	defaults: {
-		handles: builder.config.is_rtl ? 'w' : 'e'
+		handles: qazana.config.is_rtl ? 'w' : 'e'
 	},
 
 	ui: {
@@ -18,7 +18,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	initialize: function() {
 		Marionette.Behavior.prototype.initialize.apply( this, arguments );
 
-		this.listenTo( builder.channels.dataEditMode, 'switch', this.onEditModeSwitched );
+		this.listenTo( qazana.channels.dataEditMode, 'switch', this.onEditModeSwitched );
 	},
 
 	active: function() {
@@ -51,7 +51,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 		var self = this;
 
 		_.defer( function() {
-			self.onEditModeSwitched( builder.channels.dataEditMode.request( 'activeMode' ) );
+			self.onEditModeSwitched( qazana.channels.dataEditMode.request( 'activeMode' ) );
 		} );
 	},
 

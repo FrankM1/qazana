@@ -2,28 +2,28 @@
 ( function( $, window, document ) {
 	'use strict';
 
-	var BuilderAdminApp = {
+	var QazanaAdminApp = {
 
 		cacheElements: function() {
 			this.cache = {
 				$body: $( 'body' ),
-				$switchMode: $( '#builder-switch-mode' ),
-				$goToEditLink: $( '#builder-go-to-edit-page-link' ),
-				$switchModeInput: $( '#builder-switch-mode-input' ),
-				$switchModeButton: $( '#builder-switch-mode-button' ),
-				$builderLoader: $( '.builder-loader' ),
-				$builderEditor: $( '#builder-editor' ),
-				$importButton: $( '#builder-import-template-trigger' ),
-				$importArea: $( '#builder-import-template-area' )
+				$switchMode: $( '#qazana-switch-mode' ),
+				$goToEditLink: $( '#qazana-go-to-edit-page-link' ),
+				$switchModeInput: $( '#qazana-switch-mode-input' ),
+				$switchModeButton: $( '#qazana-switch-mode-button' ),
+				$qazanaLoader: $( '.qazana-loader' ),
+				$qazanaEditor: $( '#qazana-editor' ),
+				$importButton: $( '#qazana-import-template-trigger' ),
+				$importArea: $( '#qazana-import-template-area' )
 			};
 		},
 
 		toggleStatus: function() {
-			var isBuilderMode = 'builder' === this.getEditMode();
+			var isQazanaMode = 'qazana' === this.getEditMode();
 
 			this.cache.$body
-			    .toggleClass( 'builder-editor-active', isBuilderMode )
-			    .toggleClass( 'builder-editor-inactive', ! isBuilderMode );
+			    .toggleClass( 'qazana-editor-active', isQazanaMode )
+			    .toggleClass( 'qazana-editor-inactive', ! isQazanaMode );
 		},
 
 		bindEvents: function() {
@@ -32,15 +32,15 @@
 			self.cache.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();
 
-				if ( 'builder' === self.getEditMode() ) {
+				if ( 'qazana' === self.getEditMode() ) {
 					self.cache.$switchModeInput.val( 'editor' );
 				} else {
-					self.cache.$switchModeInput.val( 'builder' );
+					self.cache.$switchModeInput.val( 'qazana' );
 
 					var $wpTitle = $( '#title' );
 
 					if ( ! $wpTitle.val() ) {
-						$wpTitle.val( 'Builder #' + $( '#post_ID' ).val() );
+						$wpTitle.val( 'Qazana #' + $( '#post_ID' ).val() );
 					}
 
 					wp.autosave.server.triggerSave();
@@ -60,23 +60,23 @@
 				self.animateLoader();
 			} );
 
-			$( 'div.notice.builder-message-dismissed' ).on( 'click', 'button.notice-dismiss', function( event ) {
+			$( 'div.notice.qazana-message-dismissed' ).on( 'click', 'button.notice-dismiss', function( event ) {
 				event.preventDefault();
 
 				$.post( ajaxurl, {
-					action: 'builder_set_admin_notice_viewed',
-					notice_id: $( this ).closest( '.builder-message-dismissed' ).data( 'notice_id' )
+					action: 'qazana_set_admin_notice_viewed',
+					notice_id: $( this ).closest( '.qazana-message-dismissed' ).data( 'notice_id' )
 				} );
 			} );
 
-			$( '#builder-clear-css-cache-button' ).on( 'click', function( event ) {
+			$( '#qazana-clear-css-cache-button' ).on( 'click', function( event ) {
 				event.preventDefault();
 				var $thisButton = $( this );
 
 				$thisButton.removeClass( 'success' ).addClass( 'loading' );
 
 				$.post( ajaxurl, {
-					action: 'builder_clear_css_cache',
+					action: 'qazana_clear_css_cache',
 					_nonce: $thisButton.data( 'nonce' )
 				} )
 					.done( function() {
@@ -84,14 +84,14 @@
 					} );
 			} );
 
-			$( '#builder-library-sync-button' ).on( 'click', function( event ) {
+			$( '#qazana-library-sync-button' ).on( 'click', function( event ) {
 				event.preventDefault();
 				var $thisButton = $( this );
 
 				$thisButton.removeClass( 'success' ).addClass( 'loading' );
 
 				$.post( ajaxurl, {
-					action: 'builder_reset_remote_library',
+					action: 'qazana_reset_remote_library',
 					_nonce: $thisButton.data( 'nonce' )
 				} )
 					.done( function() {
@@ -99,7 +99,7 @@
 					} );
 			} );
 
-			$( '#builder-replace-url-button' ).on( 'click', function( event ) {
+			$( '#qazana-replace-url-button' ).on( 'click', function( event ) {
 				event.preventDefault();
 				var $this = $( this ),
 					$tr = $this.parents( 'tr' ),
@@ -109,7 +109,7 @@
 				$this.removeClass( 'success' ).addClass( 'loading' );
 
 				$.post( ajaxurl, {
-					action: 'builder_replace_url',
+					action: 'qazana_replace_url',
 					from: $from.val(),
 					to: $to.val(),
 					_nonce: $this.data( 'nonce' )
@@ -137,7 +137,7 @@
 		},
 
 		initTemplatesImport: function() {
-			if ( ! this.cache.$body.hasClass( 'post-type-builder_library' ) ) {
+			if ( ! this.cache.$body.hasClass( 'post-type-qazana_library' ) ) {
 				return;
 			}
 
@@ -152,7 +152,7 @@
 			self.cache.$formAnchor.after( $importArea );
 
 			$importButton.on( 'click', function() {
-				$( '#builder-import-template-area' ).toggle();
+				$( '#qazana-import-template-area' ).toggle();
 			} );
 		},
 
@@ -161,12 +161,12 @@
 		},
 
 		animateLoader: function() {
-			this.cache.$goToEditLink.addClass( 'builder-animate' );
+			this.cache.$goToEditLink.addClass( 'qazana-animate' );
 		}
 	};
 
 	$( function() {
-		BuilderAdminApp.init();
+		QazanaAdminApp.init();
 	} );
 
 }( jQuery, window, document ) );

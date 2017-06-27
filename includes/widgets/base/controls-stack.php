@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -54,7 +54,7 @@ abstract class Controls_Stack {
 	}
 
 	public function get_controls( $control_id = null ) {
-		$stack = builder()->controls_manager->get_element_stack( $this );
+		$stack = qazana()->controls_manager->get_element_stack( $this );
 
 		if ( null === $stack ) {
 			$this->_init_controls();
@@ -99,19 +99,19 @@ abstract class Controls_Stack {
 			}
 		}
 
-		return builder()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
+		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
 	}
 
 	public function remove_control( $control_id ) {
-		return builder()->controls_manager->remove_control_from_stack( $this->get_name(), $control_id );
+		return qazana()->controls_manager->remove_control_from_stack( $this->get_name(), $control_id );
 	}
 
 	public function update_control( $control_id, array $args ) {
-		return builder()->controls_manager->update_control_in_stack( $this, $control_id, $args );
+		return qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args );
 	}
 
 	final public function add_group_control( $group_name, array $args = [] ) {
-		$group = builder()->controls_manager->get_control_groups( $group_name );
+		$group = qazana()->controls_manager->get_control_groups( $group_name );
 
 		if ( ! $group ) {
 			wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
@@ -155,7 +155,7 @@ abstract class Controls_Stack {
 	}
 
 	final public function get_tabs_controls() {
-		$stack = builder()->controls_manager->get_element_stack( $this );
+		$stack = qazana()->controls_manager->get_element_stack( $this );
 
 		return $stack['tabs'];
 	}
@@ -297,21 +297,21 @@ abstract class Controls_Stack {
 	}
 
 	public function start_controls_section( $section_id, array $args ) {
-		do_action( 'builder/element/before_section_start', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/before_section_start', $this, $args );
+		do_action( 'qazana/element/before_section_start', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_start', $this, $args );
 
 		$args['type'] = Controls_Manager::SECTION;
 
 		$this->add_control( $section_id, $args );
 
 		if ( null !== $this->_current_section ) {
-			wp_die( sprintf( 'Builder: You can\'t start a section before the end of the previous section: `%s`', $this->_current_section['section'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`', $this->_current_section['section'] ) );
 		}
 
 		$this->_current_section = $this->get_section_args( $section_id );
 
-		do_action( 'builder/element/after_section_start', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/after_section_start', $this, $args );
+		do_action( 'qazana/element/after_section_start', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_start', $this, $args );
 	}
 
 	public function end_controls_section() {
@@ -320,18 +320,18 @@ abstract class Controls_Stack {
 		$section_id = $current_section['section'];
 		$args = [ 'tab' => $current_section['tab'] ];
 
-		do_action( 'builder/element/before_section_end', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/before_section_end', $this, $args );
+		do_action( 'qazana/element/before_section_end', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_end', $this, $args );
 
 		$this->_current_section = null;
 
-		do_action( 'builder/element/after_section_end', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/after_section_end', $this, $args );
+		do_action( 'qazana/element/after_section_end', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_end', $this, $args );
 	}
 
 	public function start_controls_tabs( $tabs_id ) {
 		if ( null !== $this->_current_tab ) {
-			wp_die( sprintf( 'Builder: You can\'t start tabs before the end of the previous tabs: `%s`', $this->_current_tab['tabs_wrapper'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`', $this->_current_tab['tabs_wrapper'] ) );
 		}
 
 		$this->add_control(
@@ -352,7 +352,7 @@ abstract class Controls_Stack {
 
 	public function start_controls_tab( $tab_id, $args ) {
 		if ( ! empty( $this->_current_tab['inner_tab'] ) ) {
-			wp_die( sprintf( 'Builder: You can\'t start a tab before the end of the previous tab: `%s`', $this->_current_tab['inner_tab'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`', $this->_current_tab['inner_tab'] ) );
 		}
 
 		$args['type'] = Controls_Manager::TAB;
@@ -388,7 +388,7 @@ abstract class Controls_Stack {
 		$settings = $this->_data['settings'];
 
 		foreach ( $this->get_controls() as $control ) {
-			$control_obj = builder()->controls_manager->get_control( $control['type'] );
+			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
 
 			$settings[ $control['name'] ] = $control_obj->get_value( $control, $settings );
 		}
@@ -411,7 +411,7 @@ abstract class Controls_Stack {
 	}
 
 	private function _init_controls() {
-		builder()->controls_manager->open_stack( $this );
+		qazana()->controls_manager->open_stack( $this );
 
 		$this->_register_controls();
 	}

@@ -1,16 +1,16 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class User {
 
-	const ADMIN_NOTICES_KEY = 'builder_admin_notices';
-	const INTRODUCTION_KEY = 'builder_introduction';
+	const ADMIN_NOTICES_KEY = 'qazana_admin_notices';
+	const INTRODUCTION_KEY = 'qazana_introduction';
 
 	public static function init() {
-		add_action( 'wp_ajax_builder_introduction_viewed', [ __CLASS__, 'set_introduction_viewed' ] );
-		add_action( 'wp_ajax_builder_set_admin_notice_viewed', [ __CLASS__, 'ajax_set_admin_notice_viewed' ] );
+		add_action( 'wp_ajax_qazana_introduction_viewed', [ __CLASS__, 'set_introduction_viewed' ] );
+		add_action( 'wp_ajax_qazana_set_admin_notice_viewed', [ __CLASS__, 'ajax_set_admin_notice_viewed' ] );
 	}
 
 	public static function is_current_user_can_edit( $post_id = 0 ) {
@@ -35,7 +35,7 @@ class User {
 			return false;
 
 		$user = wp_get_current_user();
-		$exclude_roles = get_option( 'builder_exclude_user_roles', [] );
+		$exclude_roles = get_option( 'qazana_exclude_user_roles', [] );
 
 		$compare_roles = array_intersect( $user->roles, $exclude_roles );
 		if ( ! empty( $compare_roles ) )
@@ -117,12 +117,12 @@ class User {
 	private static function get_current_introduction() {
 		return [
 			'active' => true,
-			'title' => '<div id="builder-introduction-title">' .
-			           __( 'Two Minute Tour Of Builder', 'builder' ) .
-			           '</div><div id="builder-introduction-subtitle">' .
-			           __( 'Watch this quick tour that gives you a basic understanding of how to use Builder.', 'builder' ) .
+			'title' => '<div id="qazana-introduction-title">' .
+			           __( 'Two Minute Tour Of Qazana', 'qazana' ) .
+			           '</div><div id="qazana-introduction-subtitle">' .
+			           __( 'Watch this quick tour that gives you a basic understanding of how to use Qazana.', 'qazana' ) .
 			           '</div>',
-			'content' => '<div class="builder-video-wrapper"><iframe src="https://www.youtube.com/embed/6u45V2q1s4k?autoplay=1&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe></div>',
+			'content' => '<div class="qazana-video-wrapper"><iframe src="https://www.youtube.com/embed/6u45V2q1s4k?autoplay=1&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe></div>',
 			'delay' => 2500,
 			'version' => 1,
 		];

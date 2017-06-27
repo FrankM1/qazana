@@ -19,7 +19,7 @@
   * [Adding a class to the element template wrapper](#adding-a-class-to-the-element-template-wrapper)
 
 ### The Editor
-The Builder editor panel is where you set all the settings for every element, including  sections, columns and widgets settings. Each element setting is represented in the editor panel by a control ([What's a control?](README.md#what-is-a-control))
+The Qazana editor panel is where you set all the settings for every element, including  sections, columns and widgets settings. Each element setting is represented in the editor panel by a control ([What's a control?](README.md#what-is-a-control))
 
 #### The editor panel layout
 
@@ -54,9 +54,9 @@ class Widget_Fake extends Widget_Base {
      $this->add_control(
         'title', // An unique id for this control. Used for every access to the control value.
         [
-           'label' => __( 'Title', 'builder' ), // The label will be displayed in the panel inside the control
+           'label' => __( 'Title', 'qazana' ), // The label will be displayed in the panel inside the control
            'type' => Controls_Manager::TEXT, // The type of the control
-           'placeholder' => __( 'Enter your title', 'builder' ), // A placeholder will be displayed inside the control input
+           'placeholder' => __( 'Enter your title', 'qazana' ), // A placeholder will be displayed inside the control input
         ]
      );
 
@@ -74,10 +74,10 @@ Now, we'll add a default value for a control:
 $this->add_control(
   'title',
   [
-     'label' => __( 'Title', 'builder' ),
+     'label' => __( 'Title', 'qazana' ),
      'type' => Controls_Manager::TEXT,
-     'placeholder' => __( 'Enter your title', 'builder' ),
-     'default' => __( 'This is a title', 'builder' ),
+     'placeholder' => __( 'Enter your title', 'qazana' ),
+     'default' => __( 'This is a title', 'qazana' ),
   ]
 );
 ```
@@ -95,7 +95,7 @@ Adding a new section is done as following:
 $this->start_controls_section(
   'my_section', // A unique id for the section
   [
-     'label' => __( 'My Section', 'builder' ), // The label of the section
+     'label' => __( 'My Section', 'qazana' ), // The label of the section
      'tab' => Controls_Manager::TAB_CONTENT, // The tab where the section is included in
   ]
 );
@@ -126,7 +126,7 @@ class Widget_Fake extends Widget_Base {
      $this->start_controls_section(
         'my_section',
         [
-           'label' => __( 'My Section', 'builder' ),
+           'label' => __( 'My Section', 'qazana' ),
            'tab' => Controls_Manager::TAB_CONTENT,
         ]
      );
@@ -134,17 +134,17 @@ class Widget_Fake extends Widget_Base {
      $this->add_control(
         'title',
         [
-           'label' => __( 'Title', 'builder' ),
+           'label' => __( 'Title', 'qazana' ),
            'type' => Controls_Manager::TEXT,
-           'placeholder' => __( 'Enter your title', 'builder' ),
-           'default' => __( 'This is a title', 'builder' ),
+           'placeholder' => __( 'Enter your title', 'qazana' ),
+           'default' => __( 'This is a title', 'qazana' ),
         ]
      );
 
      $this->add_control(
         'color',
         [
-           'label' => __( 'Color', 'builder' ),
+           'label' => __( 'Color', 'qazana' ),
            'type' => Controls_Manager::COLOR,
            'default' => '#f00',
         ]
@@ -188,10 +188,10 @@ Default: `'default'`
 $this->add_control(
   'image',
   [
-     'label' => __( 'Image', 'builder' ),
+     'label' => __( 'Image', 'qazana' ),
      'type' => Controls_Manager::MEDIA,
      'default' => [
-        'url' => 'https://builder.com/wp-content/uploads/2016/05/element-bg.png',
+        'url' => 'https://qazana.com/wp-content/uploads/2016/05/element-bg.png',
      ],
   ]
 );
@@ -200,7 +200,7 @@ $this->add_control(
 As we can see, we've added a default value to the 'url'. This value is saved as a property in an array that holds the returned value of the control.
 
 ### Proper use of a returned value from a control
-Builder offers a number of ways to use the returned value of a control. These include:
+Qazana offers a number of ways to use the returned value of a control. These include:
 * Printing the value in the Element template.
 * Adding the value to the element stylesheet file.
 * Adding a class to the element template wrapper.
@@ -233,7 +233,7 @@ Back to the 'color' control we created earlier, we'll add a 'selectors' property
 $this->add_control(
   'color',
   [
-     'label' => __( 'Color', 'builder' ),
+     'label' => __( 'Color', 'qazana' ),
      'type' => Controls_Manager::COLOR,
      'default' => '#f00',
      'selectors' => [
@@ -256,14 +256,14 @@ In order to allow for a dynamic insertion of the unique element selector and the
 Let's examine the 'selectors' property from before:
 
 `{{WRAPPER}} h2` - The `WRAPPER` placeholder represents the unique element selector. After replacing the placeholder, the full selector that includes the style rules can look something like:
-`.builder-element-u5bnmwa h2`
+`.qazana-element-u5bnmwa h2`
 
 `color: {{VALUE}}` - The `VALUE` placeholder represent the value returned by the control. In the previous 'color' control example mentioned earlier, the complete value of the style rule will be `color: #f00`
 
 At the end of the process, the element CSS will look something like:
 
 ```css
-.builder-element-u5bnmwa h2 {
+.qazana-element-u5bnmwa h2 {
     color: #f00;
 }
 ```
@@ -280,12 +280,12 @@ We will add a 'select' control to our element:
 $this->add_control(
   'title_size',
   [
-     'label' => __( 'Title Size', 'builder' ),
+     'label' => __( 'Title Size', 'qazana' ),
      'type' => Controls_Manager::SELECT,
      'options' => [
-        'small' => __( 'Small', 'builder' ),
-        'medium' => __( 'Medium', 'builder' ),
-        'large' => __( 'Large', 'builder' ),
+        'small' => __( 'Small', 'qazana' ),
+        'medium' => __( 'Medium', 'qazana' ),
+        'large' => __( 'Large', 'qazana' ),
      ],
      'default' => 'medium',
   ]
@@ -302,12 +302,12 @@ Now, we'll create the control, including the 'prefix_class' property:
 $this->add_control(
   'title_size',
   [
-     'label' => __( 'Title Size', 'builder' ),
+     'label' => __( 'Title Size', 'qazana' ),
      'type' => Controls_Manager::SELECT,
      'options' => [
-        'small' => __( 'Small', 'builder' ),
-        'medium' => __( 'Medium', 'builder' ),
-        'large' => __( 'Large', 'builder' ),
+        'small' => __( 'Small', 'qazana' ),
+        'medium' => __( 'Medium', 'qazana' ),
+        'large' => __( 'Large', 'qazana' ),
      ],
      'default' => 'medium',
      'prefix_class' => 'size-',

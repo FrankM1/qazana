@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Video extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Video', 'builder' );
+		return __( 'Video', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -21,20 +21,20 @@ class Widget_Video extends Widget_Base {
 		$this->start_controls_section(
 			'section_video',
 			[
-				'label' => __( 'Video', 'builder' ),
+				'label' => __( 'Video', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'video_type',
 			[
-				'label' => __( 'Video Type', 'builder' ),
+				'label' => __( 'Video Type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'youtube',
 				'options' => [
-					'youtube' => __( 'YouTube', 'builder' ),
-					'vimeo' => __( 'Vimeo', 'builder' ),
-					//'hosted' => __( 'HTML5 Video', 'builder' ),
+					'youtube' => __( 'YouTube', 'qazana' ),
+					'vimeo' => __( 'Vimeo', 'qazana' ),
+					//'hosted' => __( 'HTML5 Video', 'qazana' ),
 				],
 			]
 		);
@@ -42,9 +42,9 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label' => __( 'Link', 'builder' ),
+				'label' => __( 'Link', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your YouTube link', 'builder' ),
+				'placeholder' => __( 'Enter your YouTube link', 'qazana' ),
 				'default' => 'https://www.youtube.com/watch?v=1SkAqeshvBA',
 				'label_block' => true,
 				'condition' => [
@@ -56,9 +56,9 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_link',
 			[
-				'label' => __( 'Vimeo Link', 'builder' ),
+				'label' => __( 'Vimeo Link', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your Vimeo link', 'builder' ),
+				'placeholder' => __( 'Enter your Vimeo link', 'qazana' ),
 				'default' => 'https://vimeo.com/170933924',
 				'label_block' => true,
 				'condition' => [
@@ -70,9 +70,9 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'hosted_link',
 			[
-				'label' => __( 'Link', 'builder' ),
+				'label' => __( 'Link', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your video link', 'builder' ),
+				'placeholder' => __( 'Enter your video link', 'qazana' ),
 				'default' => '',
 				'label_block' => true,
 				'condition' => [
@@ -84,7 +84,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'aspect_ratio',
 			[
-				'label' => __( 'Aspect Ratio', 'builder' ),
+				'label' => __( 'Aspect Ratio', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'169' => '16:9',
@@ -92,14 +92,14 @@ class Widget_Video extends Widget_Base {
 					'32' => '3:2',
 				],
 				'default' => '169',
-				'prefix_class' => 'builder-aspect-ratio-',
+				'prefix_class' => 'qazana-aspect-ratio-',
 			]
 		);
 
 		$this->add_control(
 			'heading_youtube',
 			[
-				'label' => __( 'Video Options', 'builder' ),
+				'label' => __( 'Video Options', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -109,11 +109,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'yt_autoplay',
 			[
-				'label' => __( 'Autoplay', 'builder' ),
+				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'no' => __( 'No', 'builder' ),
-					'yes' => __( 'Yes', 'builder' ),
+					'no' => __( 'No', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
 				],
 				'condition' => [
 					'video_type' => 'youtube',
@@ -125,11 +125,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'yt_rel',
 			[
-				'label' => __( 'Suggested Videos', 'builder' ),
+				'label' => __( 'Suggested Videos', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'no' => __( 'Hide', 'builder' ),
-					'yes' => __( 'Show', 'builder' ),
+					'no' => __( 'Hide', 'qazana' ),
+					'yes' => __( 'Show', 'qazana' ),
 				],
 				'default' => 'no',
 				'condition' => [
@@ -141,11 +141,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'yt_controls',
 			[
-				'label' => __( 'Player Control', 'builder' ),
+				'label' => __( 'Player Control', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'yes' => __( 'Show', 'builder' ),
-					'no' => __( 'Hide', 'builder' ),
+					'yes' => __( 'Show', 'qazana' ),
+					'no' => __( 'Hide', 'qazana' ),
 				],
 				'default' => 'yes',
 				'condition' => [
@@ -157,11 +157,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'yt_showinfo',
 			[
-				'label' => __( 'Player Title & Actions', 'builder' ),
+				'label' => __( 'Player Title & Actions', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'yes' => __( 'Show', 'builder' ),
-					'no' => __( 'Hide', 'builder' ),
+					'yes' => __( 'Show', 'qazana' ),
+					'no' => __( 'Hide', 'qazana' ),
 				],
 				'default' => 'yes',
 				'condition' => [
@@ -174,11 +174,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_autoplay',
 			[
-				'label' => __( 'Autoplay', 'builder' ),
+				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'no' => __( 'No', 'builder' ),
-					'yes' => __( 'Yes', 'builder' ),
+					'no' => __( 'No', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
 				],
 				'default' => 'no',
 				'condition' => [
@@ -190,11 +190,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_loop',
 			[
-				'label' => __( 'Loop', 'builder' ),
+				'label' => __( 'Loop', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'no' => __( 'No', 'builder' ),
-					'yes' => __( 'Yes', 'builder' ),
+					'no' => __( 'No', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
 				],
 				'default' => 'no',
 				'condition' => [
@@ -206,11 +206,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_title',
 			[
-				'label' => __( 'Intro Title', 'builder' ),
+				'label' => __( 'Intro Title', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'yes' => __( 'Show', 'builder' ),
-					'no' => __( 'Hide', 'builder' ),
+					'yes' => __( 'Show', 'qazana' ),
+					'no' => __( 'Hide', 'qazana' ),
 				],
 				'default' => 'yes',
 				'condition' => [
@@ -222,11 +222,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_portrait',
 			[
-				'label' => __( 'Intro Portrait', 'builder' ),
+				'label' => __( 'Intro Portrait', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'yes' => __( 'Show', 'builder' ),
-					'no' => __( 'Hide', 'builder' ),
+					'yes' => __( 'Show', 'qazana' ),
+					'no' => __( 'Hide', 'qazana' ),
 				],
 				'default' => 'yes',
 				'condition' => [
@@ -238,11 +238,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_byline',
 			[
-				'label' => __( 'Intro Byline', 'builder' ),
+				'label' => __( 'Intro Byline', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'yes' => __( 'Show', 'builder' ),
-					'no' => __( 'Hide', 'builder' ),
+					'yes' => __( 'Show', 'qazana' ),
+					'no' => __( 'Hide', 'qazana' ),
 				],
 				'default' => 'yes',
 				'condition' => [
@@ -254,7 +254,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'vimeo_color',
 			[
-				'label' => __( 'Controls Color', 'builder' ),
+				'label' => __( 'Controls Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'condition' => [
@@ -267,7 +267,7 @@ class Widget_Video extends Widget_Base {
 		//$this->add_control(
 		//	'hosted_width',
 		//	[
-		//		'label' => __( 'Width', 'builder' ),
+		//		'label' => __( 'Width', 'qazana' ),
 		//		'type' => Controls_Manager::NUMBER,
 		//		'default' => '640',
 		//		'condition' => [
@@ -279,7 +279,7 @@ class Widget_Video extends Widget_Base {
 		//$this->add_control(
 		//	'hosted_height',
 		//	[
-		//		'label' => __( 'Height', 'builder' ),
+		//		'label' => __( 'Height', 'qazana' ),
 		//		'type' => Controls_Manager::NUMBER,
 		//		'default' => '360',
 		//		'condition' => [
@@ -291,11 +291,11 @@ class Widget_Video extends Widget_Base {
 		//$this->add_control(
 		//	'hosted_autoplay',
 		//	[
-		//		'label' => __( 'Autoplay', 'builder' ),
+		//		'label' => __( 'Autoplay', 'qazana' ),
 		//		'type' => Controls_Manager::SELECT,
 		//		'options' => [
-		//			'no' => __( 'No', 'builder' ),
-		//			'yes' => __( 'Yes', 'builder' ),
+		//			'no' => __( 'No', 'qazana' ),
+		//			'yes' => __( 'Yes', 'qazana' ),
 		//		],
 		//		'default' => 'no',
 		//		'condition' => [
@@ -307,11 +307,11 @@ class Widget_Video extends Widget_Base {
 		//$this->add_control(
 		//	'hosted_loop',
 		//	[
-		//		'label' => __( 'Loop', 'builder' ),
+		//		'label' => __( 'Loop', 'qazana' ),
 		//		'type' => Controls_Manager::SELECT,
 		//		'options' => [
-		//			'no' => __( 'No', 'builder' ),
-		//			'yes' => __( 'Yes', 'builder' ),
+		//			'no' => __( 'No', 'qazana' ),
+		//			'yes' => __( 'Yes', 'qazana' ),
 		//		],
 		//		'default' => 'no',
 		//		'condition' => [
@@ -323,7 +323,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'youtube',
 			]
@@ -334,19 +334,19 @@ class Widget_Video extends Widget_Base {
 		$this->start_controls_section(
 			'section_image_overlay',
 			[
-				'label' => __( 'Image Overlay', 'builder' ),
+				'label' => __( 'Image Overlay', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'show_image_overlay',
 			[
-				'label' => __( 'Image Overlay', 'builder' ),
+				'label' => __( 'Image Overlay', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'no',
 				'options' => [
-					'no' => __( 'Hide', 'builder' ),
-					'yes' => __( 'Show', 'builder' ),
+					'no' => __( 'Hide', 'qazana' ),
+					'yes' => __( 'Show', 'qazana' ),
 				],
 			]
 		);
@@ -354,7 +354,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'image_overlay',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
@@ -368,12 +368,12 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'show_play_icon',
 			[
-				'label' => __( 'Play Icon', 'builder' ),
+				'label' => __( 'Play Icon', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'yes',
 				'options' => [
-					'yes' => __( 'Yes', 'builder' ),
-					'no' => __( 'No', 'builder' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
 				],
 				'condition' => [
 					'show_image_overlay' => 'yes',
@@ -385,12 +385,12 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'play_icon_type',
 			[
-				'label' => __( 'Icon type', 'builder' ),
+				'label' => __( 'Icon type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'icon',
 				'options' => [
-					'icon' => __( 'Icon', 'builder' ),
-					'image' => __( 'Image File', 'builder' ),
+					'icon' => __( 'Icon', 'qazana' ),
+					'image' => __( 'Image File', 'qazana' ),
 				],
 				'condition' => [
 					'show_image_overlay' => 'yes',
@@ -402,7 +402,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'icon',
 			[
-				'label' => __( 'Icon', 'builder' ),
+				'label' => __( 'Icon', 'qazana' ),
 				'type' => Controls_Manager::ICON,
 				'label_block' => true,
 				'default' => 'fa fa-play-circle',
@@ -417,7 +417,7 @@ class Widget_Video extends Widget_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'image_background_overlay',
-				'selector' => '{{WRAPPER}} .builder-image-background-overlay',
+				'selector' => '{{WRAPPER}} .qazana-image-background-overlay',
 				'condition' => [
 					'show_image_overlay' => 'yes',
 				],
@@ -427,7 +427,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'image_background_overlay_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'builder' ),
+				'label' => __( 'Opacity (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => .5,
@@ -439,7 +439,7 @@ class Widget_Video extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-background-overlay' => 'opacity: {{SIZE}};',
+					'{{WRAPPER}} .qazana-image-background-overlay' => 'opacity: {{SIZE}};',
 				],
 				'condition' => [
 					'image_background_overlay_background' => [ 'classic' ],
@@ -458,7 +458,7 @@ class Widget_Video extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_icon',
 			[
-				'label' => __( 'Icon', 'builder' ),
+				'label' => __( 'Icon', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -466,7 +466,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'icon_color',
 			[
-				'label' => __( 'Icon Color', 'builder' ),
+				'label' => __( 'Icon Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -474,8 +474,8 @@ class Widget_Video extends Widget_Base {
 				],
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .builder-icon svg path ' => 'stroke: {{VALUE}};',
+					'{{WRAPPER}} .qazana-icon' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-icon svg path ' => 'stroke: {{VALUE}};',
 				],
 			]
 		);
@@ -483,7 +483,7 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'icon_size',
 			[
-				'label' => __( 'Icon Size', 'builder' ),
+				'label' => __( 'Icon Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 100
@@ -495,7 +495,7 @@ class Widget_Video extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -503,10 +503,10 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'icon_padding',
 			[
-				'label' => __( 'Icon Padding', 'builder' ),
+				'label' => __( 'Icon Padding', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'view!' => 'default',
@@ -517,10 +517,10 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'icon_margin',
 			[
-				'label' => __( 'Icon Margin', 'builder' ),
+				'label' => __( 'Icon Margin', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'view!' => 'default',
@@ -531,14 +531,14 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'rotate',
 			[
-				'label' => __( 'Icon Rotate', 'builder' ),
+				'label' => __( 'Icon Rotate', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
 					'unit' => 'deg',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'transform: rotate({{SIZE}}{{UNIT}});',
+					'{{WRAPPER}} .qazana-icon' => 'transform: rotate({{SIZE}}{{UNIT}});',
 				],
 			]
 		);
@@ -546,10 +546,10 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'border_width',
 			[
-				'label' => __( 'Border Width', 'builder' ),
+				'label' => __( 'Border Width', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'view' => 'framed',
@@ -560,11 +560,11 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'view!' => 'default',
@@ -581,7 +581,7 @@ class Widget_Video extends Widget_Base {
 
 		$icon_tag = 'span';
 
-		$this->add_render_attribute( 'icon', 'class', [ 'builder-icon' ] );
+		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
 
 		$icon_attributes = $this->get_render_attribute_string( 'icon' );
 
@@ -599,14 +599,14 @@ class Widget_Video extends Widget_Base {
 				$this->add_render_attribute( 'image', 'data-size', $settings['icon_size']['size'] );
 				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['animation_delay'] );
 				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
-				$this->add_render_attribute( 'image', 'data-icon', builder_maybe_ssl_url( $settings['image']['url'] ) );
+				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
 			}
 		}
 
 		$output = '<'. implode( ' ', [ $icon_tag, $icon_attributes ] ) .'>';
 
 			if ( $settings['icon_type'] === 'image' ) {
-				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. builder_maybe_ssl_url( $settings['image']['url'] ) .'" /></span>';
+				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" /></span>';
 			} else {
 				$output .= '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
 			}
@@ -635,18 +635,18 @@ class Widget_Video extends Widget_Base {
 		}
 
 		if ( $video_html ) : ?>
-			<div class="builder-video-wrapper">
+			<div class="qazana-video-wrapper">
 				<?php
 				echo $video_html;
 
 				if ( $this->has_image_overlay() ) : ?>
-					<div class="builder-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">
+					<div class="qazana-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">
 						<?php if ( 'yes' === $settings['show_play_icon'] ) : ?>
-							<div class="builder-custom-embed-play">
+							<div class="qazana-custom-embed-play">
 								<?php echo $this->get_render_icon(); ?>
 							</div>
 						<?php endif; ?>
-						<div class="builder-image-background-overlay"></div>
+						<div class="qazana-image-background-overlay"></div>
 					</div>
 				<?php endif; ?>
 			</div>

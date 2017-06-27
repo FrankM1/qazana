@@ -1,25 +1,25 @@
-#builder-panel-global-widget {
+#qazana-panel-global-widget {
     height: 100%;
 }
 
-#builder-panel-global-widget > * {
+#qazana-panel-global-widget > * {
     background-color: #fff;
 }
 
-#builder-global-widget-locked-header {
+#qazana-global-widget-locked-header {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
-#builder-global-widget-locked-header.builder-panel-nerd-box {
+#qazana-global-widget-locked-header.qazana-panel-nerd-box {
     padding: 40px 25px;
 }
 
-#builder-global-widget-locked-tools {
+#qazana-global-widget-locked-tools {
     margin-top: 15px;
     padding: 0 20px;
 }
 
-.builder-global-widget-locked-tool {
+.qazana-global-widget-locked-tool {
     display: -ms-flexbox;
     display: flex;
     padding: 20px 0;
@@ -27,7 +27,7 @@
     align-items: center;
 }
 
-.builder-global-widget-locked-tool .builder-button {
+.qazana-global-widget-locked-tool .qazana-button {
     text-transform: uppercase;
     color: #fff;
     padding: 8px 0;
@@ -35,28 +35,28 @@
     font-weight: 600;
 }
 
-.builder-global-widget-locked-tool-description {
+.qazana-global-widget-locked-tool-description {
     -ms-flex-positive: 1;
     flex-grow: 1;
 }
 
-#builder-global-widget-locked-unlink {
+#qazana-global-widget-locked-unlink {
     border-top: 1px solid #e6e9ec;
 }
 
-#builder-global-widget-locked-unlink .builder-button {
+#qazana-global-widget-locked-unlink .qazana-button {
     background-color: #aa1714;
 }
 
-#builder-global-templates {
+#qazana-global-templates {
     padding: 0 5px;
 }
 
-#builder-global-templates .builder-element {
+#qazana-global-templates .qazana-element {
     position: relative;
 }
 
-#builder-global-templates .builder-element:before {
+#qazana-global-templates .qazana-element:before {
     position: absolute;
     font-family: FontAwesome;
     content: '\f07b';
@@ -66,7 +66,7 @@
     font-size: 10px;
 }
 
-#builder-global-widget-loading {
+#qazana-global-widget-loading {
     position: absolute;
     top: 0;
     left: 0;
@@ -78,12 +78,12 @@
     justify-content: center;
 }
 
-#builder-global-widget-loading:not(.builder-hidden) {
+#qazana-global-widget-loading:not(.qazana-hidden) {
     display: -ms-flexbox;
     display: flex;
 }
 
-#builder-global-widget-loading i {
+#qazana-global-widget-loading i {
     color: #d5dadf;
     font-size: 50px;
 }

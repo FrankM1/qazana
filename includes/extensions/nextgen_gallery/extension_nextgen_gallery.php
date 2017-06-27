@@ -1,12 +1,12 @@
 <?php
-namespace Builder\Extensions;
+namespace Qazana\Extensions;
 
 class NextGen_Gallery extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Ninja_Forms Compatibility', 'builder' ),
+        	'title' => __( 'Ninja_Forms Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
         	'required' => true,
         	'default_activation' => true,
@@ -22,7 +22,7 @@ class NextGen_Gallery extends Base {
 
         // Hotfix for NextGEN Gallery plugin
         if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
-            add_filter( 'builder/utils/get_edit_link', function( $edit_link ) {
+            add_filter( 'qazana/utils/get_edit_link', function( $edit_link ) {
                 return add_query_arg( 'display_gallery_iframe', '', $edit_link );
             } );
         }

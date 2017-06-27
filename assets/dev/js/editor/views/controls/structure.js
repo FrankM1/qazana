@@ -1,11 +1,11 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlStructureItemView;
 
 ControlStructureItemView = ControlBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
 
-		ui.resetStructure = '.builder-control-structure-reset';
+		ui.resetStructure = '.qazana-control-structure-reset';
 
 		return ui;
 	},
@@ -23,15 +23,15 @@ ControlStructureItemView = ControlBaseItemView.extend( {
 	},
 
 	getCurrentEditedSection: function() {
-		var editor = builder.getPanelView().getCurrentPageView();
+		var editor = qazana.getPanelView().getCurrentPageView();
 
 		return editor.getOption( 'editedElementView' );
 	},
 
 	getMorePresets: function() {
-		var parsedStructure = builder.presetsFactory.getParsedStructure( this.getControlValue() );
+		var parsedStructure = qazana.presetsFactory.getParsedStructure( this.getControlValue() );
 
-		return builder.presetsFactory.getPresets( parsedStructure.columnsCount );
+		return qazana.presetsFactory.getPresets( parsedStructure.columnsCount );
 	},
 
 	onInputChange: function() {

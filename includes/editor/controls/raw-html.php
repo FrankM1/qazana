@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -22,9 +22,9 @@ class Control_Raw_Html extends Base_Control {
 	public function content_template() {
 		?>
 		<# if ( data.label ) { #>
-		<span class="builder-control-title">{{{ data.label }}}</span>
+		<span class="qazana-control-title">{{{ data.label }}}</span>
 		<# } #>
-		<div class="builder-control-raw-html {{ data.classes }}">{{{ data.raw }}}</div>
+		<div class="qazana-control-raw-html {{ data.classes }}">{{{ data.raw }}}</div>
 		<?php
 	}
 

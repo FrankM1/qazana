@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -32,7 +32,7 @@ class Control_Repeater extends Base_Control {
 		if ( ! empty( $value ) ) {
 			foreach ( $value as &$item ) {
 				foreach ( $control['fields'] as $field ) {
-					$control_obj = builder()->controls_manager->get_control( $field['type'] );
+					$control_obj = qazana()->controls_manager->get_control( $field['type'] );
 					if ( ! $control_obj )
 						continue;
 
@@ -46,11 +46,11 @@ class Control_Repeater extends Base_Control {
 	public function content_template() {
 		?>
 		<label>
-			<span class="builder-control-title">{{{ data.label }}}</span>
+			<span class="qazana-control-title">{{{ data.label }}}</span>
 		</label>
-		<div class="builder-repeater-fields"></div>
-		<div class="builder-button-wrapper">
-			<button class="builder-button builder-button-default builder-repeater-add"><span class="eicon-plus"></span><?php _e( 'Add Item', 'builder' ); ?></button>
+		<div class="qazana-repeater-fields"></div>
+		<div class="qazana-button-wrapper">
+			<button class="qazana-button qazana-button-default qazana-repeater-add"><span class="eicon-plus"></span><?php _e( 'Add Item', 'qazana' ); ?></button>
 		</div>
 		<?php
 	}

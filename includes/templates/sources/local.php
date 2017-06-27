@@ -1,21 +1,21 @@
 <?php
-namespace Builder\Template_Library;
+namespace Qazana\Template_Library;
 
-use Builder\DB;
-use Builder\Plugin;
-use Builder\User;
+use Qazana\DB;
+use Qazana\Plugin;
+use Qazana\User;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Source_Local extends Source_Base {
 
-	const CPT = 'builder_library';
+	const CPT = 'qazana_library';
 
-	const TAXONOMY_TYPE_SLUG = 'builder_library_type';
+	const TAXONOMY_TYPE_SLUG = 'qazana_library_type';
 
-	const TAXONOMY_TAG_SLUG = 'builder_library_tag';
+	const TAXONOMY_TAG_SLUG = 'qazana_library_tag';
 
-	const TYPE_META_KEY = '_builder_template_type';
+	const TYPE_META_KEY = '_qazana_template_type';
 
 	private static $_template_types = [ 'page', 'section' ];
 
@@ -42,24 +42,24 @@ class Source_Local extends Source_Base {
 	}
 
 	public function get_title() {
-		return __( 'Local', 'builder' );
+		return __( 'Local', 'qazana' );
 	}
 
 	public function register_data() {
 		$labels = [
-			'name' => _x( 'My Library', 'Template Library', 'builder' ),
-			'singular_name' => _x( 'Template', 'Template Library', 'builder' ),
-			'add_new' => _x( 'Add New', 'Template Library', 'builder' ),
-			'add_new_item' => _x( 'Add New Template', 'Template Library', 'builder' ),
-			'edit_item' => _x( 'Edit Template', 'Template Library', 'builder' ),
-			'new_item' => _x( 'New Template', 'Template Library', 'builder' ),
-			'all_items' => _x( 'All Templates', 'Template Library', 'builder' ),
-			'view_item' => _x( 'View Template', 'Template Library', 'builder' ),
-			'search_items' => _x( 'Search Template', 'Template Library', 'builder' ),
-			'not_found' => _x( 'No Templates found', 'Template Library', 'builder' ),
-			'not_found_in_trash' => _x( 'No Templates found in Trash', 'Template Library', 'builder' ),
+			'name' => _x( 'My Library', 'Template Library', 'qazana' ),
+			'singular_name' => _x( 'Template', 'Template Library', 'qazana' ),
+			'add_new' => _x( 'Add New', 'Template Library', 'qazana' ),
+			'add_new_item' => _x( 'Add New Template', 'Template Library', 'qazana' ),
+			'edit_item' => _x( 'Edit Template', 'Template Library', 'qazana' ),
+			'new_item' => _x( 'New Template', 'Template Library', 'qazana' ),
+			'all_items' => _x( 'All Templates', 'Template Library', 'qazana' ),
+			'view_item' => _x( 'View Template', 'Template Library', 'qazana' ),
+			'search_items' => _x( 'Search Template', 'Template Library', 'qazana' ),
+			'not_found' => _x( 'No Templates found', 'Template Library', 'qazana' ),
+			'not_found_in_trash' => _x( 'No Templates found in Trash', 'Template Library', 'qazana' ),
 			'parent_item_colon' => '',
-			'menu_name' => _x( 'My Library', 'Template Library', 'builder' ),
+			'menu_name' => _x( 'My Library', 'Template Library', 'qazana' ),
 		];
 
 		$args = [
@@ -72,12 +72,12 @@ class Source_Local extends Source_Base {
 			'exclude_from_search' => true,
 			'capability_type' => 'post',
 			'hierarchical' => false,
-			'supports' => [ 'title', 'thumbnail', 'author', 'builder' ],
+			'supports' => [ 'title', 'thumbnail', 'author', 'qazana' ],
 		];
 
 		register_post_type(
 			self::CPT,
-			apply_filters( 'builder/template_library/sources/local/register_post_type_args', $args )
+			apply_filters( 'qazana/template_library/sources/local/register_post_type_args', $args )
 		);
 
 		$args = [
@@ -88,13 +88,13 @@ class Source_Local extends Source_Base {
 			'query_var' => is_admin(),
 			'rewrite' => false,
 			'public' => false,
-			'label' => _x( 'Type', 'Template Library', 'builder' ),
+			'label' => _x( 'Type', 'Template Library', 'qazana' ),
 		];
 
 		register_taxonomy(
 			self::TAXONOMY_TYPE_SLUG,
 			self::CPT,
-			apply_filters( 'builder/template_library/sources/local/register_type_taxonomy_args', $args )
+			apply_filters( 'qazana/template_library/sources/local/register_type_taxonomy_args', $args )
 		);
 
 		$args = [
@@ -105,21 +105,21 @@ class Source_Local extends Source_Base {
 			'query_var' => is_admin(),
 			'rewrite' => false,
 			'public' => false,
-			'label' => _x( 'Tags', 'Template Library Tags', 'builder' ),
+			'label' => _x( 'Tags', 'Template Library Tags', 'qazana' ),
 		];
 
 		register_taxonomy(
 			self::TAXONOMY_TAG_SLUG,
 			self::CPT,
-			apply_filters( 'builder/template_library/sources/local/register_tag_taxonomy_args', $args )
+			apply_filters( 'qazana/template_library/sources/local/register_tag_taxonomy_args', $args )
 		);
 	}
 
 	public function register_admin_menu() {
 		add_submenu_page(
-			builder()->slug,
-			__( 'My Library', 'builder' ),
-			__( 'My Library', 'builder' ),
+			qazana()->slug,
+			__( 'My Library', 'qazana' ),
+			__( 'My Library', 'qazana' ),
 			'edit_pages',
 			'edit.php?post_type=' . self::CPT
 		);
@@ -163,7 +163,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$template_id = wp_insert_post( [
-			'post_title' => ! empty( $template_data['title'] ) ? $template_data['title'] : __( '(no title)', 'builder' ),
+			'post_title' => ! empty( $template_data['title'] ) ? $template_data['title'] : __( '(no title)', 'qazana' ),
 			'post_status' => 'publish',
 			'post_type' => self::CPT,
 		] );
@@ -172,23 +172,23 @@ class Source_Local extends Source_Base {
 			return $template_id;
 		}
 
-		builder()->db->set_edit_mode( $template_id );
+		qazana()->db->set_edit_mode( $template_id );
 
-		builder()->db->save_editor( $template_id, $template_data['data'] );
+		qazana()->db->save_editor( $template_id, $template_data['data'] );
 
 		$this->save_item_type( $template_id, $template_data['type'] );
 
-		do_action( 'builder/template-library/after_save_template', $template_id, $template_data );
+		do_action( 'qazana/template-library/after_save_template', $template_id, $template_data );
 
-		do_action( 'builder/template-library/after_update_template', $template_id, $template_data );
+		do_action( 'qazana/template-library/after_update_template', $template_id, $template_data );
 
 		return $template_id;
 	}
 
 	public function update_item( $new_data ) {
-		builder()->db->save_editor( $new_data['id'], $new_data['data'] );
+		qazana()->db->save_editor( $new_data['id'], $new_data['data'] );
 
-		do_action( 'builder/template-library/after_update_template', $new_data['id'], $new_data );
+		do_action( 'qazana/template-library/after_update_template', $new_data['id'], $new_data );
 
 		return true;
 	}
@@ -218,15 +218,15 @@ class Source_Local extends Source_Base {
 			'url' => get_permalink( $post->ID ),
 		];
 
-		return apply_filters( 'builder/template-library/get_template', $data );
+		return apply_filters( 'qazana/template-library/get_template', $data );
 	}
 
 	public function get_content( $item_id, $context = 'display' ) {
-		$db = builder()->db;
+		$db = qazana()->db;
 
 		// TODO: Valid the data (in JS too!)
 		if ( 'display' === $context ) {
-			$data = $db->get_builder( $item_id );
+			$data = $db->get_qazana( $item_id );
 		} else {
 			$data = $db->get_plain_editor( $item_id );
 		}
@@ -250,13 +250,13 @@ class Source_Local extends Source_Base {
 
 		// TODO: More fields to export?
 		$export_data = [
-			'version' => builder_get_db_version(),
+			'version' => qazana_get_db_version(),
 			'title' => get_the_title( $item_id ),
 			'type' => self::get_template_type( $item_id ),
 			'data' => $template_data,
 		];
 
-		$filename = 'builder-' . $item_id . '-' . date( 'Y-m-d' ) . '.json';
+		$filename = 'qazana-' . $item_id . '-' . date( 'Y-m-d' ) . '.json';
 		$template_contents = wp_json_encode( $export_data );
 		$filesize = strlen( $template_contents );
 
@@ -308,7 +308,7 @@ class Source_Local extends Source_Base {
 	public function post_row_actions( $actions, \WP_Post $post ) {
 		if ( self::is_base_templates_screen() ) {
 			if ( $this->is_template_supports_export( $post->ID ) ) {
-				$actions['export-template'] = sprintf( '<a href="%s">%s</a>', $this->_get_export_link( $post->ID ), __( 'Export Template', 'builder' ) );
+				$actions['export-template'] = sprintf( '<a href="%s">%s</a>', $this->_get_export_link( $post->ID ), __( 'Export Template', 'qazana' ) );
 			}
 
 			unset( $actions['inline hide-if-no-js'] );
@@ -322,15 +322,15 @@ class Source_Local extends Source_Base {
 			return;
 		}
 		?>
-		<div id="builder-hidden-area">
-			<a id="builder-import-template-trigger" class="page-title-action"><?php _e( 'Import Template', 'builder' ); ?></a>
-			<div id="builder-import-template-area">
-				<div id="builder-import-template-title"><?php _e( 'Choose an Builder template JSON file, and add it to the list of templates available in your library.', 'builder' ); ?></div>
-				<form id="builder-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
-					<input type="hidden" name="action" value="builder_import_template">
-					<fieldset id="builder-import-template-form-inputs">
+		<div id="qazana-hidden-area">
+			<a id="qazana-import-template-trigger" class="page-title-action"><?php _e( 'Import Template', 'qazana' ); ?></a>
+			<div id="qazana-import-template-area">
+				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file, and add it to the list of templates available in your library.', 'qazana' ); ?></div>
+				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
+					<input type="hidden" name="action" value="qazana_import_template">
+					<fieldset id="qazana-import-template-form-inputs">
 						<input type="file" name="file" accept="application/json" required>
-						<input type="submit" class="button" value="<?php _e( 'Import Now', 'builder' ); ?>">
+						<input type="submit" class="button" value="<?php _e( 'Import Now', 'qazana' ); ?>">
 					</fieldset>
 				</form>
 			</div>
@@ -346,13 +346,13 @@ class Source_Local extends Source_Base {
 	}
 
 	public function is_template_supports_export( $template_id ) {
-		return apply_filters( 'builder/template_library/is_template_supports_export', true, $template_id );
+		return apply_filters( 'qazana/template_library/is_template_supports_export', true, $template_id );
 	}
 
 	private function _get_export_link( $item_id ) {
 		return add_query_arg(
 			[
-				'action' => 'builder_export_template',
+				'action' => 'qazana_export_template',
 				'source' => $this->get_id(),
 				'template_id' => $item_id,
 			],

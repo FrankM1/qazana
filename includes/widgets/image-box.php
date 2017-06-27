@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Image_Box extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Image Box', 'builder' );
+		return __( 'Image Box', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Image_Box extends Widget_Base {
 		$this->start_controls_section(
 			'section_image',
 			[
-				'label' => __( 'Image Box', 'builder' ),
+				'label' => __( 'Image Box', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'image',
 			[
-				'label' => __( 'Choose Image', 'builder' ),
+				'label' => __( 'Choose Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
@@ -43,10 +43,10 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'title_text',
 			[
-				'label' => __( 'Title & Description', 'builder' ),
+				'label' => __( 'Title & Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( 'This is the heading', 'builder' ),
-				'placeholder' => __( 'Your Title', 'builder' ),
+				'default' => __( 'This is the heading', 'qazana' ),
+				'placeholder' => __( 'Your Title', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -54,11 +54,11 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'description_text',
 			[
-				'label' => __( 'Content', 'builder' ),
+				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'default' => __( 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'builder' ),
-				'placeholder' => __( 'Your Description', 'builder' ),
-				'title' => __( 'Input image text here', 'builder' ),
+				'default' => __( 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
+				'placeholder' => __( 'Your Description', 'qazana' ),
+				'title' => __( 'Input image text here', 'qazana' ),
 				'separator' => 'none',
 				'rows' => 10,
 				'show_label' => false,
@@ -68,9 +68,9 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label' => __( 'Link to', 'builder' ),
+				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'builder' ),
+				'placeholder' => __( 'http://your-link.com', 'qazana' ),
 				'separator' => 'before',
 			]
 		);
@@ -78,24 +78,24 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'position',
 			[
-				'label' => __( 'Image Position', 'builder' ),
+				'label' => __( 'Image Position', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'default' => 'top',
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'top' => [
-						'title' => __( 'Top', 'builder' ),
+						'title' => __( 'Top', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
-				'prefix_class' => 'builder-position-',
+				'prefix_class' => 'qazana-position-',
 				'toggle' => false,
 			]
 		);
@@ -103,18 +103,18 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'title_size',
 			[
-				'label' => __( 'Title HTML Tag', 'builder' ),
+				'label' => __( 'Title HTML Tag', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'h1' => __( 'H1', 'builder' ),
-					'h2' => __( 'H2', 'builder' ),
-					'h3' => __( 'H3', 'builder' ),
-					'h4' => __( 'H4', 'builder' ),
-					'h5' => __( 'H5', 'builder' ),
-					'h6' => __( 'H6', 'builder' ),
-					'div' => __( 'div', 'builder' ),
-					'span' => __( 'span', 'builder' ),
-					'p' => __( 'p', 'builder' ),
+					'h1' => __( 'H1', 'qazana' ),
+					'h2' => __( 'H2', 'qazana' ),
+					'h3' => __( 'H3', 'qazana' ),
+					'h4' => __( 'H4', 'qazana' ),
+					'h5' => __( 'H5', 'qazana' ),
+					'h6' => __( 'H6', 'qazana' ),
+					'div' => __( 'div', 'qazana' ),
+					'span' => __( 'span', 'qazana' ),
+					'p' => __( 'p', 'qazana' ),
 				],
 				'default' => 'h3',
 			]
@@ -123,7 +123,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -134,7 +134,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_image',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -142,7 +142,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'image_space',
 			[
-				'label' => __( 'Image Spacing', 'builder' ),
+				'label' => __( 'Image Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 15,
@@ -154,9 +154,9 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}}.builder-position-right .builder-image-box-img' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.builder-position-left .builder-image-box-img' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.builder-position-top .builder-image-box-img' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-right .qazana-image-box-img' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-left .qazana-image-box-img' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-top .qazana-image-box-img' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -164,7 +164,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'image_size',
 			[
-				'label' => __( 'Image Size', 'builder' ),
+				'label' => __( 'Image Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 30,
@@ -178,7 +178,7 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-wrapper .builder-image-box-img' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-box-wrapper .qazana-image-box-img' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -186,7 +186,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'image_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'builder' ),
+				'label' => __( 'Opacity (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 1,
@@ -199,7 +199,7 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-wrapper .builder-image-box-img img' => 'opacity: {{SIZE}};',
+					'{{WRAPPER}} .qazana-image-box-wrapper .qazana-image-box-img img' => 'opacity: {{SIZE}};',
 				],
 			]
 		);
@@ -207,7 +207,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'hover_animation',
 			[
-				'label' => __( 'Animation', 'builder' ),
+				'label' => __( 'Animation', 'qazana' ),
 				'type' => Controls_Manager::HOVER_ANIMATION,
 			]
 		);
@@ -217,7 +217,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_content',
 			[
-				'label' => __( 'Content', 'builder' ),
+				'label' => __( 'Content', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -225,28 +225,28 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_responsive_control(
 			'text_align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'builder' ),
+						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-wrapper' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .qazana-image-box-wrapper' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -254,22 +254,22 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'content_vertical_alignment',
 			[
-				'label' => __( 'Vertical Alignment', 'builder' ),
+				'label' => __( 'Vertical Alignment', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'top' => __( 'Top', 'builder' ),
-					'middle' => __( 'Middle', 'builder' ),
-					'bottom' => __( 'Bottom', 'builder' ),
+					'top' => __( 'Top', 'qazana' ),
+					'middle' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
 				],
 				'default' => 'top',
-				'prefix_class' => 'builder-vertical-align-',
+				'prefix_class' => 'qazana-vertical-align-',
 			]
 		);
 
 		$this->add_control(
 			'heading_title',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -278,7 +278,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_responsive_control(
 			'title_bottom_space',
 			[
-				'label' => __( 'Title Spacing', 'builder' ),
+				'label' => __( 'Title Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -287,7 +287,7 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-box-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -295,11 +295,11 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Title Color', 'builder' ),
+				'label' => __( 'Title Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-content .builder-image-box-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-image-box-content .qazana-image-box-title' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -312,7 +312,7 @@ class Widget_Image_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'title_typography',
-				'selector' => '{{WRAPPER}} .builder-image-box-content .builder-image-box-title',
+				'selector' => '{{WRAPPER}} .qazana-image-box-content .qazana-image-box-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
@@ -320,7 +320,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'heading_description',
 			[
-				'label' => __( 'Description', 'builder' ),
+				'label' => __( 'Description', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -329,11 +329,11 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label' => __( 'Description Color', 'builder' ),
+				'label' => __( 'Description Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .builder-image-box-content .builder-image-box-description' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-image-box-content .qazana-image-box-description' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -346,7 +346,7 @@ class Widget_Image_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'description_typography',
-				'selector' => '{{WRAPPER}} .builder-image-box-content .builder-image-box-description',
+				'selector' => '{{WRAPPER}} .qazana-image-box-content .qazana-image-box-description',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
@@ -359,15 +359,15 @@ class Widget_Image_Box extends Widget_Base {
 
 		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );
 
-		$html = '<div class="builder-image-box-wrapper">';
+		$html = '<div class="qazana-image-box-wrapper">';
 
 		if ( ! empty( $settings['image']['url'] ) ) {
-			$this->add_render_attribute( 'image', 'src', builder_maybe_ssl_url($settings['image']['url']) );
+			$this->add_render_attribute( 'image', 'src', qazana_maybe_ssl_url($settings['image']['url']) );
 			$this->add_render_attribute( 'image', 'alt', Control_Media::get_image_alt( $settings['image'] ) );
 			$this->add_render_attribute( 'image', 'title', Control_Media::get_image_title( $settings['image'] ) );
 
 			if ( $settings['hover_animation'] ) {
-				$this->add_render_attribute( 'image', 'class', 'builder-animation-' . $settings['hover_animation'] );
+				$this->add_render_attribute( 'image', 'class', 'qazana-animation-' . $settings['hover_animation'] );
 			}
 
 			$image_html = '<img ' . $this->get_render_attribute_string( 'image' ) . '>';
@@ -380,11 +380,11 @@ class Widget_Image_Box extends Widget_Base {
 				$image_html = sprintf( '<a href="%s"%s>%s</a>', $settings['link']['url'], $target, $image_html );
 			}
 
-			$html .= '<figure class="builder-image-box-img">' . $image_html . '</figure>';
+			$html .= '<figure class="qazana-image-box-img">' . $image_html . '</figure>';
 		}
 
 		if ( $has_content ) {
-			$html .= '<div class="builder-image-box-content">';
+			$html .= '<div class="qazana-image-box-content">';
 
 			if ( ! empty( $settings['title_text'] ) ) {
 				$title_html = $settings['title_text'];
@@ -399,11 +399,11 @@ class Widget_Image_Box extends Widget_Base {
 					$title_html = sprintf( '<a href="%s"%s>%s</a>', $settings['link']['url'], $target, $title_html );
 				}
 
-				$html .= sprintf( '<%1$s class="builder-image-box-title">%2$s</%1$s>', $settings['title_size'], $title_html );
+				$html .= sprintf( '<%1$s class="qazana-image-box-title">%2$s</%1$s>', $settings['title_size'], $title_html );
 			}
 
 			if ( ! empty( $settings['description_text'] ) ) {
-				$html .= sprintf( '<p class="builder-image-box-description">%s</p>', $settings['description_text'] );
+				$html .= sprintf( '<p class="qazana-image-box-description">%s</p>', $settings['description_text'] );
 			}
 
 			$html .= '</div>';
@@ -417,22 +417,22 @@ class Widget_Image_Box extends Widget_Base {
 	protected function _content_template() {
 		?>
 		<#
-		var html = '<div class="builder-image-box-wrapper">';
+		var html = '<div class="qazana-image-box-wrapper">';
 
 		if ( settings.image.url ) {
-			var imageHtml = '<img src="' + settings.image.url + '" class="builder-animation-' + settings.hover_animation + '" />';
+			var imageHtml = '<img src="' + settings.image.url + '" class="qazana-animation-' + settings.hover_animation + '" />';
 
 			if ( settings.link.url ) {
 				imageHtml = '<a href="' + settings.link.url + '">' + imageHtml + '</a>';
 			}
 
-			html += '<figure class="builder-image-box-img">' + imageHtml + '</figure>';
+			html += '<figure class="qazana-image-box-img">' + imageHtml + '</figure>';
 		}
 
 		var hasContent = !! ( settings.title_text || settings.description_text );
 
 		if ( hasContent ) {
-			html += '<div class="builder-image-box-content">';
+			html += '<div class="qazana-image-box-content">';
 
 			if ( settings.title_text ) {
 				var title_html = settings.title_text;
@@ -441,11 +441,11 @@ class Widget_Image_Box extends Widget_Base {
 					title_html = '<a href="' + settings.link.url + '">' + title_html + '</a>';
 				}
 
-				html += '<' + settings.title_size  + ' class="builder-image-box-title">' + title_html + '</' + settings.title_size  + '>';
+				html += '<' + settings.title_size  + ' class="qazana-image-box-title">' + title_html + '</' + settings.title_size  + '>';
 			}
 
 			if ( settings.description_text ) {
-				html += '<p class="builder-image-box-description">' + settings.description_text + '</p>';
+				html += '<p class="qazana-image-box-description">' + settings.description_text + '</p>';
 			}
 
 			html += '</div>';

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -19,12 +19,12 @@ class Control_Checkbox extends Base_Control {
 
 	public function content_template() {
 		?>
-		<label class="builder-control-title">
+		<label class="qazana-control-title">
 			<input type="checkbox" data-setting="{{ data.name }}" />
 			<span>{{{ data.label }}}</span>
 		</label>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

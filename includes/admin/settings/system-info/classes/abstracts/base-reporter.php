@@ -1,7 +1,7 @@
 <?php
-namespace Builder\System_Info\Classes\Abstracts;
+namespace Qazana\System_Info\Classes\Abstracts;
 
-use Builder\System_Info\Helpers\Model_Helper;
+use Qazana\System_Info\Helpers\Model_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

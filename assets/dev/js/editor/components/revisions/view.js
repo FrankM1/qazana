@@ -1,11 +1,11 @@
 module.exports =  Marionette.ItemView.extend( {
-	template: '#tmpl-builder-panel-revisions-revision-item',
+	template: '#tmpl-qazana-panel-revisions-revision-item',
 
-	className: 'builder-revision-item',
+	className: 'qazana-revision-item',
 
 	ui: {
-		detailsArea: '.builder-revision-item__details',
-		deleteButton: '.builder-revision-item__tools-delete'
+		detailsArea: '.qazana-revision-item__details',
+		deleteButton: '.qazana-revision-item__tools-delete'
 	},
 
 	triggers: {

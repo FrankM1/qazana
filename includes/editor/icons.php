@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -39,7 +39,7 @@ class Icons_Manager {
      * [__construct description]
      */
     public function __construct() {
-        self::$icons_folder =  builder()->includes_dir . 'extensions/icons/';
+        self::$icons_folder =  qazana()->includes_dir . 'extensions/icons/';
     }
 
     /**

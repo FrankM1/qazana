@@ -1,5 +1,5 @@
 <?php
-namespace Builder\Template_Library;
+namespace Qazana\Template_Library;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Source_Theme extends Source_Base {
     }
 
     public function get_title() {
-        return __( 'Theme', 'builder' );
+        return __( 'Theme', 'qazana' );
     }
 
     public function register_data() {}
@@ -19,7 +19,7 @@ class Source_Theme extends Source_Base {
 
         $templates = array();
 
-        $templates_data = apply_filters( 'builder_theme_template_presets', array() );
+        $templates_data = apply_filters( 'qazana_theme_template_presets', array() );
 
         if ( ! empty( $templates_data ) ) {
             foreach ( $templates_data as $template_data ) {
@@ -67,7 +67,7 @@ class Source_Theme extends Source_Base {
 
     public function get_content( $item_id, $context = 'display' ) {
 
-        $template_content = apply_filters( 'builder_theme_template_content', array(), $item_id );
+        $template_content = apply_filters( 'qazana_theme_template_content', array(), $item_id );
 
         if ( empty( $template_content ) || ! is_array( $template_content ) ) {
             return false;

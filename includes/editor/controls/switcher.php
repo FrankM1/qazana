@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -37,18 +37,18 @@ class Control_Switcher extends Base_Control {
 
 	public function content_template() {
 		?>
-		<div class="builder-control-field">
-			<label class="builder-control-title">{{{ data.label }}}</label>
-			<div class="builder-control-input-wrapper">
-				<label class="builder-switch">
-					<input type="checkbox" data-setting="{{ data.name }}" class="builder-switch-input" value="{{ data.return_value }}">
-					<span class="builder-switch-label" data-on="{{ data.label_on }}" data-off="{{ data.label_off }}"></span>
-					<span class="builder-switch-handle"></span>
+		<div class="qazana-control-field">
+			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<div class="qazana-control-input-wrapper">
+				<label class="qazana-switch">
+					<input type="checkbox" data-setting="{{ data.name }}" class="qazana-switch-input" value="{{ data.return_value }}">
+					<span class="qazana-switch-label" data-on="{{ data.label_on }}" data-off="{{ data.label_off }}"></span>
+					<span class="qazana-switch-handle"></span>
 				</label>
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="builder-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

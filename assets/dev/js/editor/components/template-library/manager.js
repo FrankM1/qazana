@@ -1,5 +1,5 @@
-var TemplateLibraryLayoutView = require( 'builder-templates/views/layout' ),
-	TemplateLibraryCollection = require( 'builder-templates/collections/templates' ),
+var TemplateLibraryLayoutView = require( 'qazana-templates/views/layout' ),
+	TemplateLibraryCollection = require( 'qazana-templates/collections/templates' ),
 	TemplateLibraryManager;
 
 TemplateLibraryManager = function() {
@@ -18,7 +18,7 @@ TemplateLibraryManager = function() {
 	var registerDefaultTemplateTypes = function() {
 		var data = {
 			saveDialog: {
-				description: builder.translate( 'save_your_template_description' )
+				description: qazana.translate( 'save_your_template_description' )
 			},
 			ajaxParams: {
 				success: function( data ) {
@@ -37,7 +37,7 @@ TemplateLibraryManager = function() {
 		_.each( [ 'page', 'section' ], function( type ) {
 			var safeData = Backbone.$.extend( true, {}, data, {
 				saveDialog: {
-					title: builder.translate( 'save_your_template', [ builder.translate( type ) ] )
+					title: qazana.translate( 'save_your_template', [ qazana.translate( type ) ] )
 				}
 			} );
 
@@ -65,7 +65,7 @@ TemplateLibraryManager = function() {
 		var dialog = self.getDeleteDialog();
 
 		dialog.onConfirm = function() {
-			builder.ajax.send( 'delete_template', {
+			qazana.ajax.send( 'delete_template', {
 				data: {
 					source: templateModel.get( 'source' ),
 					template_id: templateModel.get( 'template_id' )
@@ -88,7 +88,7 @@ TemplateLibraryManager = function() {
 			success: function( data ) {
 				self.closeModal();
 
-				builder.getRegion( 'sections' ).currentView.addChildModel( data );
+				qazana.getRegion( 'sections' ).currentView.addChildModel( data );
 			},
 			error: function( data ) {
 				self.showErrorDialog( data );
@@ -116,7 +116,7 @@ TemplateLibraryManager = function() {
 			_.extend( ajaxParams, templateType.ajaxParams );
 		}
 
-		builder.ajax.send( 'save_template', ajaxParams );
+		qazana.ajax.send( 'save_template', ajaxParams );
 	};
 
 	this.requestTemplateContent = function( source, id, ajaxOptions ) {
@@ -132,17 +132,17 @@ TemplateLibraryManager = function() {
 			_.extend( options, ajaxOptions );
 		}
 
-		return builder.ajax.send( 'get_template_content', options );
+		return qazana.ajax.send( 'get_template_content', options );
 	};
 
 	this.getDeleteDialog = function() {
 		if ( ! deleteDialog ) {
-			deleteDialog = builder.dialogsManager.createWidget( 'confirm', {
-				id: 'builder-template-library-delete-dialog',
-				headerMessage: builder.translate( 'delete_template' ),
-				message: builder.translate( 'delete_template_confirm' ),
+			deleteDialog = qazana.dialogsManager.createWidget( 'confirm', {
+				id: 'qazana-template-library-delete-dialog',
+				headerMessage: qazana.translate( 'delete_template' ),
+				message: qazana.translate( 'delete_template_confirm' ),
 				strings: {
-					confirm: builder.translate( 'delete' )
+					confirm: qazana.translate( 'delete' )
 				}
 			} );
 		}
@@ -152,9 +152,9 @@ TemplateLibraryManager = function() {
 
 	this.getErrorDialog = function() {
 		if ( ! errorDialog ) {
-			errorDialog = builder.dialogsManager.createWidget( 'alert', {
-				id: 'builder-template-library-error-dialog',
-				headerMessage: builder.translate( 'an_error_occurred' )
+			errorDialog = qazana.dialogsManager.createWidget( 'alert', {
+				id: 'qazana-template-library-error-dialog',
+				headerMessage: qazana.translate( 'an_error_occurred' )
 			} );
 		}
 
@@ -163,8 +163,8 @@ TemplateLibraryManager = function() {
 
 	this.getModal = function() {
 		if ( ! modal ) {
-			modal = builder.dialogsManager.createWidget( 'builder-modal', {
-				id: 'builder-template-library-modal',
+			modal = qazana.dialogsManager.createWidget( 'qazana-modal', {
+				id: 'qazana-template-library-modal',
 				closeButton: false
 			} );
 		}
@@ -189,7 +189,7 @@ TemplateLibraryManager = function() {
 			return;
 		}
 
-		builder.ajax.send( 'get_templates', {
+		qazana.ajax.send( 'get_templates', {
 			success: function( data ) {
 				templatesCollection = new TemplateLibraryCollection( data );
 
@@ -223,7 +223,7 @@ TemplateLibraryManager = function() {
 	};
 
 	this.setTemplatesSource = function( source, trigger ) {
-		var channel = builder.channels.templates;
+		var channel = qazana.channels.templates;
 
 		channel.reply( 'filter:source', source );
 
@@ -242,7 +242,7 @@ TemplateLibraryManager = function() {
 
 	this.changeFilter = function( filterValue ) {
 
-		builder.channels.templates
+		qazana.channels.templates
 			.reply( 'filter:text', filterValue )
 			.trigger( 'filter:change' );
 
@@ -250,7 +250,7 @@ TemplateLibraryManager = function() {
 
 	this.showErrorDialog = function( errorMessage ) {
 		self.getErrorDialog()
-		    .setMessage( builder.translate( 'templates_request_error' ) + '<div id="builder-template-library-error-info">' + errorMessage + '</div>' )
+		    .setMessage( qazana.translate( 'templates_request_error' ) + '<div id="qazana-template-library-error-info">' + errorMessage + '</div>' )
 		    .show();
 	};
 };

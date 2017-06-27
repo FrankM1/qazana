@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -113,7 +113,7 @@ abstract class Skin_Base {
             $controls_data[ $name ]['default'] = $presets[ $control_id ];
         }
 
-        builder()->controls_manager->set_element_stack_controls( $this->parent, $controls_data );
+        qazana()->controls_manager->set_element_stack_controls( $this->parent, $controls_data );
     }
 
 }

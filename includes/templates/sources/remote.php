@@ -1,5 +1,5 @@
 <?php
-namespace Builder\Template_Library;
+namespace Qazana\Template_Library;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Source_Remote extends Source_Base {
 	}
 
 	public function get_title() {
-		return __( 'Remote', 'builder' );
+		return __( 'Remote', 'qazana' );
 	}
 
 	public function register_data() {}

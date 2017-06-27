@@ -2,11 +2,11 @@
 // Progress Bar
 //
 
-.builder-widget-progress {
+.qazana-widget-progress {
 	text-align: $start;
 }
 
-.builder-progress-wrapper {
+.qazana-progress-wrapper {
 	position: relative;
 	background-color: $progress-bg;
 	color: $progress-text;
@@ -16,7 +16,7 @@
 
 }
 
-.builder-progress-bar {
+.qazana-progress-bar {
 	position: absolute;
 	display: inline-block;
 	background-color: $gray;
@@ -26,7 +26,7 @@
 	transition: width 1s ease-in-out;
 }
 
-.builder-progress-inner-text {
+.qazana-progress-inner-text {
 	display: inline-block;
 	position: absolute;
 	@include start(0);
@@ -35,51 +35,51 @@
 	width: 0;
 	transition: width 1s ease-in-out;
 
-	.builder-progress-percentage {
+	.qazana-progress-percentage {
 		position: relative;
 		float: $end;
 	}
 }
 
-.builder-widget-progress {
-	.builder-progress-wrapper {
+.qazana-widget-progress {
+	.qazana-progress-wrapper {
 		&.progress-info {
-			.builder-progress-bar {
+			.qazana-progress-bar {
 				background-color: $info;
 			}
 		}
 
 		&.progress-success {
-			.builder-progress-bar {
+			.qazana-progress-bar {
 				background-color: $success;
 			}
 		}
 
 		&.progress-warning {
-			.builder-progress-bar {
+			.qazana-progress-bar {
 				background-color: $warning;
 			}
 		}
 
 		&.progress-danger {
-			.builder-progress-bar {
+			.qazana-progress-bar {
 				background-color: $danger;
 			}
 		}
 	}
 }
 
-.builder-progress .builder-title {
+.qazana-progress .qazana-title {
 	display: block;
 }
 
 // Responsive mode
 @media (max-width: $screen-sm-max) {
-	.builder-progress-wrapper {
+	.qazana-progress-wrapper {
 		height: 25px;
 		line-height: 25px;
 
-		.builder-progress-inner-text {
+		.qazana-progress-inner-text {
 			padding: 0 10px;
 		}
 	}

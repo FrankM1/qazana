@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -9,7 +9,7 @@ class Frontend {
 	private $_enqueue_google_early_access_fonts = [];
 
 	private $_is_frontend_mode = false;
-	private $_has_builder_in_page = false;
+	private $_has_qazana_in_page = false;
 
 	/**
 	 * @var Stylesheet
@@ -17,25 +17,25 @@ class Frontend {
 	private $stylesheet;
 
 	public function init() {
-		if ( builder()->editor->is_edit_mode() || builder()->preview->is_preview_mode() ) {
+		if ( qazana()->editor->is_edit_mode() || qazana()->preview->is_preview_mode() ) {
 			return;
 		}
 
 		$this->_is_frontend_mode = true;
-		$this->_has_builder_in_page = builder()->db->has_builder_in_post( get_the_ID() );
+		$this->_has_qazana_in_page = qazana()->db->has_qazana_in_post( get_the_ID() );
 
 		$this->_init_stylesheet();
 
 		add_action( 'wp_head', [ $this, 'print_css' ] );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 
-		if ( $this->_has_builder_in_page ) {
+		if ( $this->_has_qazana_in_page ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999 );
 		}
 
 		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
-		// Add Edit with the Builder in Admin Bar
+		// Add Edit with the Qazana in Admin Bar
 		add_action( 'admin_bar_menu', [ $this, 'add_menu_in_admin_bar' ], 200 );
 	}
 
@@ -51,28 +51,28 @@ class Frontend {
 
 	protected function _print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
-			$element = builder()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->elements_manager->create_element_instance( $element_data );
 
 			$element->print_element();
 		}
 	}
 
 	public function body_class( $classes = [] ) {
-		if ( is_singular() && 'builder' === builder()->db->get_edit_mode( get_the_ID() ) ) {
-			$classes[] = 'builder-page';
+		if ( is_singular() && 'qazana' === qazana()->db->get_edit_mode( get_the_ID() ) ) {
+			$classes[] = 'qazana-page';
 		}
 		return $classes;
 	}
 
     public function enqueue_scripts() {
 
-		do_action( 'builder/frontend/before_enqueue_scripts' );
+		do_action( 'qazana/frontend/before_enqueue_scripts' );
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
         wp_register_script(
             'waypoints',
-            builder()->core_assets_url . 'lib/waypoints/waypoints' . $suffix . '.js',
+            qazana()->core_assets_url . 'lib/waypoints/waypoints' . $suffix . '.js',
             [
                 'jquery',
             ],
@@ -82,7 +82,7 @@ class Frontend {
 
         wp_register_script(
             'jquery-numerator',
-            builder()->core_assets_url . 'lib/jquery-numerator/jquery-numerator' . $suffix . '.js',
+            qazana()->core_assets_url . 'lib/jquery-numerator/jquery-numerator' . $suffix . '.js',
             [
                 'jquery',
             ],
@@ -92,7 +92,7 @@ class Frontend {
 
         wp_register_script(
             'jquery-slick',
-            builder()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
+            qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
             [
                 'jquery',
             ],
@@ -101,48 +101,48 @@ class Frontend {
         );
 
         wp_register_script(
-            'builder-frontend',
-            builder()->core_assets_url . 'js/frontend' . $suffix . '.js',
+            'qazana-frontend',
+            qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
                 'waypoints',
                 'jquery-numerator',
             ],
-            builder()->get_version(),
+            qazana()->get_version(),
             true
         );
 
-        wp_enqueue_script( 'builder-frontend' );
+        wp_enqueue_script( 'qazana-frontend' );
 
-		$builder_frontend_config = [
-			'isEditMode' => builder()->editor->is_edit_mode(),
-			'stretchedSectionContainer' => get_option( 'builder_stretched_section_container', '' ),
-			'google_api_key' => get_option( 'builder_google_maps_api_key', '' ),
+		$qazana_frontend_config = [
+			'isEditMode' => qazana()->editor->is_edit_mode(),
+			'stretchedSectionContainer' => get_option( 'qazana_stretched_section_container', '' ),
+			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),
 			'is_rtl' => is_rtl(),
-			'assets_url' => builder()->core_assets_url,
-			'nonce' => wp_create_nonce( 'builder-frontend' ),
+			'assets_url' => qazana()->core_assets_url,
+			'nonce' => wp_create_nonce( 'qazana-frontend' ),
 		];
 
-		$elements_manager = builder()->elements_manager;
+		$elements_manager = qazana()->elements_manager;
 
 		$elements_frontend_keys = [
 			'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
 			'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
 		];
 
-		$elements_frontend_keys += builder()->widgets_manager->get_widgets_frontend_settings_keys();
+		$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
 
-		if ( builder()->editor->is_edit_mode() ) {
-			$builder_frontend_config['elements'] = [
+		if ( qazana()->editor->is_edit_mode() ) {
+			$qazana_frontend_config['elements'] = [
 				'data' => (object) [],
 				'keys' => $elements_frontend_keys,
 			];
 		}
 
-		$builder_frontend_config = apply_filters( 'builder/frontend/localize_settings', $builder_frontend_config );
+		$qazana_frontend_config = apply_filters( 'qazana/frontend/localize_settings', $qazana_frontend_config );
 
-		wp_localize_script( 'builder-frontend', 'builderFrontendConfig', $builder_frontend_config );
+		wp_localize_script( 'qazana-frontend', 'qazanaFrontendConfig', $qazana_frontend_config );
 
-		do_action( 'builder/frontend/after_enqueue_scripts' );
+		do_action( 'qazana/frontend/after_enqueue_scripts' );
 
     }
 
@@ -152,36 +152,36 @@ class Frontend {
         $direction_suffix = is_rtl() ? '-rtl' : '';
 
         wp_enqueue_style(
-            'builder-icons',
-            builder()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
+            'qazana-icons',
+            qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
         wp_register_style(
-            'builder-frontend',
-            builder()->core_assets_url . 'css/frontend' . $direction_suffix . $suffix . '.css',
+            'qazana-frontend',
+            qazana()->core_assets_url . 'css/frontend' . $direction_suffix . $suffix . '.css',
             [
-                'builder-icons',
+                'qazana-icons',
                 'font-awesome',
             ],
-            builder()->get_version()
+            qazana()->get_version()
         );
 
-		wp_enqueue_style( 'builder-frontend' );
+		wp_enqueue_style( 'qazana-frontend' );
 
 		$css_file = new Post_CSS_File( get_the_ID() );
 		$css_file->enqueue();
 
-		do_action( 'builder/frontend/after_enqueue_styles' );
+		do_action( 'qazana/frontend/after_enqueue_styles' );
 
 	}
 
 	public function print_css() {
-		$container_width = absint( get_option( 'builder_container_width' ) );
+		$container_width = absint( get_option( 'qazana_container_width' ) );
 
 		if ( ! empty( $container_width ) ) {
-			$this->stylesheet->add_rules( '.builder-section.builder-section-boxed > .builder-container', 'max-width:' . $container_width . 'px' );
+			$this->stylesheet->add_rules( '.qazana-section.qazana-section-boxed > .qazana-container', 'max-width:' . $container_width . 'px' );
 		}
 
 		$this->_parse_schemes_css_code();
@@ -192,7 +192,7 @@ class Frontend {
 			return;
 
 		?>
-		<style id="builder-frontend-stylesheet"><?php echo $css_code; ?></style>
+		<style id="qazana-frontend-stylesheet"><?php echo $css_code; ?></style>
 		<?php
 
 		$this->print_google_fonts();
@@ -202,7 +202,7 @@ class Frontend {
 	 * Handle style that do not printed in header
 	 */
 	public function wp_footer() {
-		if ( ! $this->_has_builder_in_page ) {
+		if ( ! $this->_has_qazana_in_page ) {
 			return;
 		}
 
@@ -262,12 +262,12 @@ class Frontend {
 	}
 
 	protected function _parse_schemes_css_code() {
-		foreach ( builder()->widgets_manager->get_widget_types() as $widget ) {
+		foreach ( qazana()->widgets_manager->get_widget_types() as $widget ) {
 			$scheme_controls = $widget->get_scheme_controls();
 
 			foreach ( $scheme_controls as $control ) {
 				Post_CSS_File::add_control_rules( $this->stylesheet, $control, $widget->get_controls(), function ( $control ) {
-					$scheme_value = builder()->schemes_manager->get_scheme_value( $control['scheme']['type'], $control['scheme']['value'] );
+					$scheme_value = qazana()->schemes_manager->get_scheme_value( $control['scheme']['type'], $control['scheme']['value'] );
 
 					if ( empty( $scheme_value ) ) {
 						return null;
@@ -281,50 +281,50 @@ class Frontend {
 						return null;
 					}
 
-					$control_obj = builder()->controls_manager->get_control( $control['type'] );
+					$control_obj = qazana()->controls_manager->get_control( $control['type'] );
 
 					if ( Controls_Manager::FONT === $control_obj->get_type() ) {
 						$this->add_enqueue_font( $scheme_value );
 					}
 
 					return $scheme_value;
-				}, [ '{{WRAPPER}}' ], [ '.builder-widget-' . $widget->get_name() ] );
+				}, [ '{{WRAPPER}}' ], [ '.qazana-widget-' . $widget->get_name() ] );
 			}
 		}
 	}
 
-	public function apply_builder_in_content( $content ) {
+	public function apply_qazana_in_content( $content ) {
 		// Remove the filter itself in order to allow other `the_content` in the elements
-		remove_filter( 'the_content', [ $this, 'apply_builder_in_content' ] );
+		remove_filter( 'the_content', [ $this, 'apply_qazana_in_content' ] );
 
 		if ( ! $this->_is_frontend_mode )
 			return $content;
 
 		$post_id = get_the_ID();
-		$builder_content = $this->get_builder_content( $post_id );
+		$qazana_content = $this->get_qazana_content( $post_id );
 
-		if ( ! empty( $builder_content ) ) {
-			$content = $builder_content;
+		if ( ! empty( $qazana_content ) ) {
+			$content = $qazana_content;
 		}
 
 		// Add the filter again for other `the_content` calls
-		add_filter( 'the_content', [ $this, 'apply_builder_in_content' ] );
+		add_filter( 'the_content', [ $this, 'apply_qazana_in_content' ] );
 
 		return $content;
 	}
 
-	public function get_builder_content( $post_id, $with_css = false ) {
+	public function get_qazana_content( $post_id, $with_css = false ) {
 		if ( post_password_required( $post_id ) ) {
 			return '';
 		}
 
-		$edit_mode = builder()->db->get_edit_mode( $post_id );
-		if ( 'builder' !== $edit_mode ) {
+		$edit_mode = qazana()->db->get_edit_mode( $post_id );
+		if ( 'qazana' !== $edit_mode ) {
 			return '';
 		}
 
-		$data = builder()->db->get_plain_editor( $post_id );
-		$data = apply_filters( 'builder/frontend/builder_content_data', $data, $post_id );
+		$data = qazana()->db->get_plain_editor( $post_id );
+		$data = apply_filters( 'qazana/frontend/qazana_content_data', $data, $post_id );
 
 		if ( empty( $data ) ) {
 			return '';
@@ -345,33 +345,33 @@ class Frontend {
 		}
 
 		?>
-		<div class="builder builder-<?php echo $post_id; ?>">
-			<div class="builder-inner">
-				<div class="builder-section-wrap">
+		<div class="qazana qazana-<?php echo $post_id; ?>">
+			<div class="qazana-inner">
+				<div class="qazana-section-wrap">
 					<?php $this->_print_elements( $data ); ?>
 				</div>
 			</div>
 		</div>
 		<?php
-		return apply_filters( 'builder/frontend/the_content', ob_get_clean() );
+		return apply_filters( 'qazana/frontend/the_content', ob_get_clean() );
 	}
 
 	function add_menu_in_admin_bar( \WP_Admin_Bar $wp_admin_bar ) {
 		$post_id = get_the_ID();
-		$is_not_builder_mode = ! is_singular() || ! User::is_current_user_can_edit( $post_id ) || 'builder' !== builder()->db->get_edit_mode( $post_id );
+		$is_not_qazana_mode = ! is_singular() || ! User::is_current_user_can_edit( $post_id ) || 'qazana' !== qazana()->db->get_edit_mode( $post_id );
 
-		if ( $is_not_builder_mode ) {
+		if ( $is_not_qazana_mode ) {
 			return;
 		}
 
 		$wp_admin_bar->add_node( [
-			'id' => 'builder_edit_page',
-			'title' => __( 'Edit with Builder', 'builder' ),
+			'id' => 'qazana_edit_page',
+			'title' => __( 'Edit with Qazana', 'qazana' ),
 			'href' => Utils::get_edit_link( $post_id ),
 		] );
 	}
 
-	public function get_builder_content_for_display( $post_id ) {
+	public function get_qazana_content_for_display( $post_id ) {
 		if ( ! get_post( $post_id ) ) {
 			return '';
 		}
@@ -379,16 +379,16 @@ class Frontend {
 		// Avoid recursion
 		if ( get_the_ID() === (int) $post_id ) {
 			$content = '';
-			if ( builder()->editor->is_edit_mode() ) {
-				$content = '<div class="builder-alert builder-alert-danger">' . __( 'Invalid Data: The Template ID cannot be the same as the currently edited template. Please choose a different one.', 'builder' ) . '</div>';
+			if ( qazana()->editor->is_edit_mode() ) {
+				$content = '<div class="qazana-alert qazana-alert-danger">' . __( 'Invalid Data: The Template ID cannot be the same as the currently edited template. Please choose a different one.', 'qazana' ) . '</div>';
 			}
 
 			return $content;
 		}
 
 		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the css inline
-		$is_edit_mode = builder()->editor->is_edit_mode();
-		builder()->editor->set_edit_mode( false );
+		$is_edit_mode = qazana()->editor->is_edit_mode();
+		qazana()->editor->set_edit_mode( false );
 
 		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data
 		if ( isset( $GLOBALS['post'] ) ) {
@@ -397,10 +397,10 @@ class Frontend {
 
 		$GLOBALS['post'] = get_post( $post_id );
 
-		$content = $this->get_builder_content( $post_id, $is_edit_mode );
+		$content = $this->get_qazana_content( $post_id, $is_edit_mode );
 
 		if ( ! empty( $content ) ) {
-			$this->_has_builder_in_page = true;
+			$this->_has_qazana_in_page = true;
 		}
 
 		// Restore global post
@@ -411,7 +411,7 @@ class Frontend {
 		}
 
 		// Restore edit mode state
-		builder()->editor->set_edit_mode( $is_edit_mode );
+		qazana()->editor->set_edit_mode( $is_edit_mode );
 
 		return $content;
 	}
@@ -423,6 +423,6 @@ class Frontend {
 		}
 
 		add_action( 'template_redirect', [ $this, 'init' ] );
-		add_filter( 'the_content', [ $this, 'apply_builder_in_content' ] );
+		add_filter( 'the_content', [ $this, 'apply_qazana_in_content' ] );
 	}
 }

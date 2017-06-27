@@ -15,14 +15,14 @@ heartbeat = {
 
 		Backbone.$( document ).on( {
 			'heartbeat-send': function( event, data ) {
-				data.builder_post_lock = {
-					post_ID: builder.config.post_id
+				data.qazana_post_lock = {
+					post_ID: qazana.config.post_id
 				};
 			},
 			'heartbeat-tick': function( event, response ) {
 				if ( response.locked_user ) {
-					if ( builder.isEditorChanged() ) {
-						builder.saveEditor( { status: 'autosave' } );
+					if ( qazana.isEditorChanged() ) {
+						qazana.saveEditor( { status: 'autosave' } );
 					}
 
 					heartbeat.showLockMessage( response.locked_user );
@@ -30,23 +30,23 @@ heartbeat = {
 					heartbeat.getModal().hide();
 				}
 
-				builder.config.nonce = response.builder_nonce;
+				qazana.config.nonce = response.qazana_nonce;
 			}
 		} );
 
-		if ( builder.config.locked_user ) {
-			heartbeat.showLockMessage( builder.config.locked_user );
+		if ( qazana.config.locked_user ) {
+			heartbeat.showLockMessage( qazana.config.locked_user );
 		}
 	},
 
 	initModal: function() {
-		var modal = builder.dialogsManager.createWidget( 'options', {
-			headerMessage: builder.translate( 'take_over' )
+		var modal = qazana.dialogsManager.createWidget( 'options', {
+			headerMessage: qazana.translate( 'take_over' )
 		} );
 
 		modal.addButton( {
 			name: 'go_back',
-			text: builder.translate( 'go_back' ),
+			text: qazana.translate( 'go_back' ),
 			callback: function() {
 				parent.history.go( -1 );
 			}
@@ -54,9 +54,9 @@ heartbeat = {
 
 		modal.addButton( {
 			name: 'take_over',
-			text: builder.translate( 'take_over' ),
+			text: qazana.translate( 'take_over' ),
 			callback: function() {
-				wp.heartbeat.enqueue( 'builder_force_post_lock', true );
+				wp.heartbeat.enqueue( 'qazana_force_post_lock', true );
 				wp.heartbeat.connectNow();
 			}
 		} );
@@ -68,7 +68,7 @@ heartbeat = {
 		var modal = heartbeat.getModal();
 
 		modal
-			.setMessage( builder.translate( 'dialog_user_taken_over', [ lockedUser ] ) )
+			.setMessage( qazana.translate( 'dialog_user_taken_over', [ lockedUser ] ) )
 		    .show();
 	}
 };

@@ -28,14 +28,14 @@
  */
 
 // Project related.
-var project                 = 'builder'; // Project Name.
-var projectURL              = 'builder.dev'; // Project URL. Could be something like localhost:8888.
+var project                 = 'qazana'; // Project Name.
+var projectURL              = 'qazana.dev'; // Project URL. Could be something like localhost:8888.
 var productURL              = './'; // Theme/Plugin URL. Leave it like it is, since our gulpfile.js lives in the root folder.
 
 // Translation related.
-var text_domain             = 'builder'; // Your textdomain here.
-var destFile                = 'builder.pot'; // Name of the transalation file.
-var packageName             = 'builder'; // Package name.
+var text_domain             = 'qazana'; // Your textdomain here.
+var destFile                = 'qazana.pot'; // Name of the transalation file.
+var packageName             = 'qazana'; // Package name.
 var bugReport               = 'https://radiumthemes.com/contact/'; // Where can users report bugs.
 var lastTranslator          = 'Franklin Gitonga <frank@radiumthemes.com>'; // Last translator Email ID.
 var team                    = 'RadiumThemes <frank@radiumthemes.com>'; // Team's Email ID.

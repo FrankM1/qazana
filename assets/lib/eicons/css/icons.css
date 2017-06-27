@@ -17,10 +17,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.eicon-builder:before {
+.eicon-qazana:before {
   content: '\e800'; }
 
-.eicon-builder-square:before {
+.eicon-qazana-square:before {
   content: '\e801'; }
 
 .eicon-plus:before {
@@ -401,4 +401,4 @@
 .eicon-v-align-stretch:before {
   content: '\e928'; }
 
-/*# sourceMappingURL=builder-icons.css.map */
+/*# sourceMappingURL=qazana-icons.css.map */

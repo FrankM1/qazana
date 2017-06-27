@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Image_Gallery extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Image Gallery', 'builder' );
+		return __( 'Image Gallery', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->start_controls_section(
 			'section_gallery',
 			[
-				'label' => __( 'Image Gallery', 'builder' ),
+				'label' => __( 'Image Gallery', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'wp_gallery',
 			[
-				'label' => __( 'Add Images', 'builder' ),
+				'label' => __( 'Add Images', 'qazana' ),
 				'type' => Controls_Manager::GALLERY,
 			]
 		);
@@ -51,7 +51,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'gallery_columns',
 			[
-				'label' => __( 'Columns', 'builder' ),
+				'label' => __( 'Columns', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 4,
 				'options' => $gallery_columns,
@@ -61,13 +61,13 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'gallery_link',
 			[
-				'label' => __( 'Link to', 'builder' ),
+				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'file',
 				'options' => [
-					'file' => __( 'Media File', 'builder' ),
-					'attachment' => __( 'Attachment Page', 'builder' ),
-					'none' => __( 'None', 'builder' ),
+					'file' => __( 'Media File', 'qazana' ),
+					'attachment' => __( 'Attachment Page', 'qazana' ),
+					'none' => __( 'None', 'qazana' ),
 				],
 			]
 		);
@@ -75,11 +75,11 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'gallery_rand',
 			[
-				'label' => __( 'Ordering', 'builder' ),
+				'label' => __( 'Ordering', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'' => __( 'Default', 'builder' ),
-					'rand' => __( 'Random', 'builder' ),
+					'' => __( 'Default', 'qazana' ),
+					'rand' => __( 'Random', 'qazana' ),
 				],
 				'default' => '',
 			]
@@ -88,7 +88,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -99,7 +99,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->start_controls_section(
 			'section_gallery_images',
 			[
-				'label' => __( 'Images', 'builder' ),
+				'label' => __( 'Images', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -107,11 +107,11 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'image_spacing',
 			[
-				'label' => __( 'Spacing', 'builder' ),
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'' => __( 'Default', 'builder' ),
-					'custom' => __( 'Custom', 'builder' ),
+					'' => __( 'Default', 'qazana' ),
+					'custom' => __( 'Custom', 'qazana' ),
 				],
 				'prefix_class' => 'gallery-spacing-',
 				'default' => '',
@@ -124,7 +124,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'image_spacing_custom',
 			[
-				'label' => __( 'Image Spacing', 'builder' ),
+				'label' => __( 'Image Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'show_label' => false,
 				'range' => [
@@ -149,7 +149,7 @@ class Widget_Image_Gallery extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'label' => __( 'Image Border', 'builder' ),
+				'label' => __( 'Image Border', 'qazana' ),
 				'selector' => '{{WRAPPER}} .gallery-item img',
 			]
 		);
@@ -157,7 +157,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'image_border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
@@ -171,7 +171,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->start_controls_section(
 			'section_caption',
 			[
-				'label' => __( 'Caption', 'builder' ),
+				'label' => __( 'Caption', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -179,12 +179,12 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'gallery_display_caption',
 			[
-				'label' => __( 'Display', 'builder' ),
+				'label' => __( 'Display', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'' => __( 'Show', 'builder' ),
-					'none' => __( 'Hide', 'builder' ),
+					'' => __( 'Show', 'qazana' ),
+					'none' => __( 'Hide', 'qazana' ),
 				],
 				'selectors' => [
 					'{{WRAPPER}} .gallery-item .gallery-caption' => 'display: {{VALUE}};',
@@ -195,23 +195,23 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'builder' ),
+						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
 				],
@@ -228,7 +228,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_control(
 			'text_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
@@ -244,7 +244,7 @@ class Widget_Image_Gallery extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'typography',
-				'label' => __( 'Typography', 'builder' ),
+				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
 				'selector' => '{{WRAPPER}} .gallery-item .gallery-caption',
 				'condition' => [
@@ -280,7 +280,7 @@ class Widget_Image_Gallery extends Widget_Base {
 			$this->add_render_attribute( 'shortcode', 'orderby', $settings['gallery_rand'] );
 		}
 		?>
-		<div class="builder-image-gallery">
+		<div class="qazana-image-gallery">
 			<?php echo do_shortcode( '[gallery ' . $this->get_render_attribute_string( 'shortcode' ) . ']' ); ?>
 		</div>
 		<?php

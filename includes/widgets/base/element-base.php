@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -121,7 +121,7 @@ abstract class Element_Base {
 	abstract public function get_name();
 
 	public function get_controls( $control_id = null ) {
-		$stack = builder()->controls_manager->get_element_stack( $this );
+		$stack = qazana()->controls_manager->get_element_stack( $this );
 
 		if ( null === $stack ) {
 			$this->_init_controls();
@@ -148,19 +148,19 @@ abstract class Element_Base {
 			}
 		}
 
-		return builder()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
+		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
 	}
 
 	public function remove_control( $control_id ) {
-		return builder()->controls_manager->remove_control_from_stack( $this->get_name(), $control_id );
+		return qazana()->controls_manager->remove_control_from_stack( $this->get_name(), $control_id );
 	}
 
 	public function update_control( $control_id, array $args ) {
-		return builder()->controls_manager->update_control_in_stack( $this, $control_id, $args );
+		return qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args );
 	}
 
 	public final function add_group_control( $group_name, array $args = [] ) {
-		$group = builder()->controls_manager->get_control_groups( $group_name );
+		$group = qazana()->controls_manager->get_control_groups( $group_name );
 
 		if ( ! $group ) {
 			wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
@@ -170,7 +170,7 @@ abstract class Element_Base {
 	}
 
 	public final function get_tabs_controls() {
-		$stack = builder()->controls_manager->get_element_stack( $this );
+		$stack = qazana()->controls_manager->get_element_stack( $this );
 
 		return $stack['tabs'];
 	}
@@ -312,13 +312,13 @@ abstract class Element_Base {
 
 		$content_template = ob_get_clean();
 
-		$content_template = apply_filters( 'builder/element/print_template', $content_template, $this );
+		$content_template = apply_filters( 'qazana/element/print_template', $content_template, $this );
 
 		if ( empty( $content_template ) ) {
 			return;
 		}
 		?>
-		<script type="text/html" id="tmpl-builder-<?php echo $this->get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
+		<script type="text/html" id="tmpl-qazana-<?php echo $this->get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
 			<?php $this->_render_settings(); ?>
 			<?php echo $content_template; ?>
 		</script>
@@ -413,7 +413,7 @@ abstract class Element_Base {
 			$is_negative_condition = ! ! $condition_key_parts[3];
 
 			if ( ! isset( $values[ $pure_condition_key ] ) ) {
-				// wp_die( sprintf( 'Builder: Element conditions set incorrectly: `%s`', $control['name'] ) );
+				// wp_die( sprintf( 'Qazana: Element conditions set incorrectly: `%s`', $control['name'] ) );
 			}
 
 			$instance_value = $values[ $pure_condition_key ];
@@ -496,12 +496,12 @@ abstract class Element_Base {
 
 	public function print_element() {
 
-		if ( ! builder()->editor->is_edit_mode() ) {
+		if ( ! qazana()->editor->is_edit_mode() ) {
 			$this->load_script_dependencies();
 			$this->load_style_dependencies();
 		}
 
-		do_action( 'builder/frontend/' . static::get_type() . '/before_render', $this );
+		do_action( 'qazana/frontend/' . static::get_type() . '/before_render', $this );
 
 		$this->before_render();
 
@@ -509,7 +509,7 @@ abstract class Element_Base {
 
 		$this->after_render();
 
-		do_action( 'builder/frontend/' . static::get_type() . '/after_render', $this );
+		do_action( 'qazana/frontend/' . static::get_type() . '/after_render', $this );
 	}
 
 	public function get_raw_data( $with_html_content = false ) {
@@ -531,19 +531,19 @@ abstract class Element_Base {
 	}
 
 	public function get_unique_selector() {
-		return '.builder-element-' . $this->get_id();
+		return '.qazana-element-' . $this->get_id();
 	}
 
 	public function start_controls_section( $section_id, array $args ) {
-		do_action( 'builder/element/before_section_start', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/before_section_start', $this, $args );
+		do_action( 'qazana/element/before_section_start', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_start', $this, $args );
 
 		$args['type'] = Controls_Manager::SECTION;
 
 		$this->add_control( $section_id, $args );
 
 		if ( null !== $this->_current_section ) {
-			wp_die( sprintf( 'Builder: You can\'t start a section before the end of the previous section: `%s`', $this->_current_section['section'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`', $this->_current_section['section'] ) );
 		}
 
 		$this->_current_section = [
@@ -551,8 +551,8 @@ abstract class Element_Base {
 			'tab' => $this->get_controls( $section_id )['tab'],
 		];
 
-		do_action( 'builder/element/after_section_start', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/after_section_start', $this, $args );
+		do_action( 'qazana/element/after_section_start', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_start', $this, $args );
 	}
 
 	public function end_controls_section() {
@@ -561,18 +561,18 @@ abstract class Element_Base {
 		$section_id = $current_section['section'];
 		$args = [ 'tab' => $current_section['tab'] ];
 
-		do_action( 'builder/element/before_section_end', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/before_section_end', $this, $args );
+		do_action( 'qazana/element/before_section_end', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_end', $this, $args );
 
 		$this->_current_section = null;
 
-		do_action( 'builder/element/after_section_end', $this, $section_id, $args );
-		do_action( 'builder/element/' . $this->get_name() . '/' . $section_id . '/after_section_end', $this, $args );
+		do_action( 'qazana/element/after_section_end', $this, $section_id, $args );
+		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_end', $this, $args );
 	}
 
 	public function start_controls_tabs( $tabs_id ) {
 		if ( null !== $this->_current_tab ) {
-			wp_die( sprintf( 'Builder: You can\'t start tabs before the end of the previous tabs: `%s`', $this->_current_tab['tabs_wrapper'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`', $this->_current_tab['tabs_wrapper'] ) );
 		}
 
 		$this->add_control(
@@ -593,7 +593,7 @@ abstract class Element_Base {
 
 	public function start_controls_tab( $tab_id, $args ) {
 		if ( ! empty( $this->_current_tab['inner_tab'] ) ) {
-			wp_die( sprintf( 'Builder: You can\'t start a tab before the end of the previous tab: `%s`', $this->_current_tab['inner_tab'] ) );
+			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`', $this->_current_tab['inner_tab'] ) );
 		}
 
 		$args['type'] = Controls_Manager::TAB;
@@ -622,24 +622,24 @@ abstract class Element_Base {
 
 	protected function _render_settings() {
 		?>
-		<div class="builder-element-overlay">
-			<div class="builder-editor-element-settings builder-editor-<?php echo esc_attr( $this->get_type() ); ?>-settings builder-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
-				<ul class="builder-editor-element-settings-list">
-					<li class="builder-editor-element-setting builder-editor-element-add">
-						<a title="<?php _e( 'Add Widget', 'builder' ); ?>">
-							<span class="builder-screen-only"><?php _e( 'Add', 'builder' ); ?></span>
+		<div class="qazana-element-overlay">
+			<div class="qazana-editor-element-settings qazana-editor-<?php echo esc_attr( $this->get_type() ); ?>-settings qazana-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
+				<ul class="qazana-editor-element-settings-list">
+					<li class="qazana-editor-element-setting qazana-editor-element-add">
+						<a title="<?php _e( 'Add Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Add', 'qazana' ); ?></span>
 							<i class="fa fa-plus"></i>
 						</a>
 					</li>
-					<li class="builder-editor-element-setting builder-editor-element-duplicate">
-						<a title="<?php _e( 'Duplicate Widget', 'builder' ); ?>">
-							<span class="builder-screen-only"><?php _e( 'Duplicate', 'builder' ); ?></span>
+					<li class="qazana-editor-element-setting qazana-editor-element-duplicate">
+						<a title="<?php _e( 'Duplicate Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Duplicate', 'qazana' ); ?></span>
 							<i class="fa fa-files-o"></i>
 						</a>
 					</li>
-					<li class="builder-editor-element-setting builder-editor-element-remove">
-						<a title="<?php _e( 'Remove Widget', 'builder' ); ?>">
-							<span class="builder-screen-only"><?php _e( 'Remove', 'builder' ); ?></span>
+					<li class="qazana-editor-element-setting qazana-editor-element-remove">
+						<a title="<?php _e( 'Remove Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Remove', 'qazana' ); ?></span>
 							<i class="fa fa-trash-o"></i>
 						</a>
 					</li>
@@ -683,7 +683,7 @@ abstract class Element_Base {
 		$settings = $this->_data['settings'];
 
 		foreach ( $this->get_controls() as $control ) {
-			$control_obj = builder()->controls_manager->get_control( $control['type'] );
+			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
 
 			$settings[ $control['name'] ] = $control_obj->get_value( $control, $settings );
 		}
@@ -717,11 +717,11 @@ abstract class Element_Base {
 			return false;
 		}
 
-		return apply_filters( 'builder/element/get_child_type', $child_type, $element_data, $this );
+		return apply_filters( 'qazana/element/get_child_type', $child_type, $element_data, $this );
 	}
 
 	private function _init_controls() {
-		builder()->controls_manager->open_stack( $this );
+		qazana()->controls_manager->open_stack( $this );
 
 		$this->_register_controls();
 	}
@@ -798,6 +798,6 @@ abstract class Element_Base {
 	}
 
 	public function is_edit_mode() {
-        return builder()->editor->is_edit_mode();
+        return qazana()->editor->is_edit_mode();
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Image extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Image', 'builder' );
+		return __( 'Image', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,14 +25,14 @@ class Widget_Image extends Widget_Base {
 		$this->start_controls_section(
 			'section_image',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'image',
 			[
-				'label' => __( 'Choose Image', 'builder' ),
+				'label' => __( 'Choose Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
@@ -44,7 +44,7 @@ class Widget_Image extends Widget_Base {
 			Group_Control_Image_Size::get_type(),
 			[
 				'name' => 'image', // Actually its `image_size`
-				'label' => __( 'Image Size', 'builder' ),
+				'label' => __( 'Image Size', 'qazana' ),
 				'default' => 'large',
 			]
 		);
@@ -52,19 +52,19 @@ class Widget_Image extends Widget_Base {
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
@@ -78,24 +78,24 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'caption',
 			[
-				'label' => __( 'Caption', 'builder' ),
+				'label' => __( 'Caption', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
-				'placeholder' => __( 'Enter your caption about the image', 'builder' ),
-				'title' => __( 'Input image caption here', 'builder' ),
+				'placeholder' => __( 'Enter your caption about the image', 'qazana' ),
+				'title' => __( 'Input image caption here', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'link_to',
 			[
-				'label' => __( 'Link to', 'builder' ),
+				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'none',
 				'options' => [
-					'none' => __( 'None', 'builder' ),
-					'file' => __( 'Media File', 'builder' ),
-					'custom' => __( 'Custom URL', 'builder' ),
+					'none' => __( 'None', 'qazana' ),
+					'file' => __( 'Media File', 'qazana' ),
+					'custom' => __( 'Custom URL', 'qazana' ),
 				],
 			]
 		);
@@ -103,9 +103,9 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label' => __( 'Link to', 'builder' ),
+				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'builder' ),
+				'placeholder' => __( 'http://your-link.com', 'qazana' ),
 				'condition' => [
 					'link_to' => 'custom',
 				],
@@ -116,7 +116,7 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -127,7 +127,7 @@ class Widget_Image extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_image',
 			[
-				'label' => __( 'Image', 'builder' ),
+				'label' => __( 'Image', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -135,7 +135,7 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'space',
 			[
-				'label' => __( 'Size (%)', 'builder' ),
+				'label' => __( 'Size (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 100,
@@ -149,7 +149,7 @@ class Widget_Image extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image img' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image img' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -157,7 +157,7 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'opacity',
 			[
-				'label' => __( 'Opacity (%)', 'builder' ),
+				'label' => __( 'Opacity (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 1,
@@ -170,7 +170,7 @@ class Widget_Image extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image img' => 'opacity: {{SIZE}};',
+					'{{WRAPPER}} .qazana-image img' => 'opacity: {{SIZE}};',
 				],
 			]
 		);
@@ -178,7 +178,7 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'hover_animation',
 			[
-				'label' => __( 'Hover Animation', 'builder' ),
+				'label' => __( 'Hover Animation', 'qazana' ),
 				'type' => Controls_Manager::HOVER_ANIMATION,
 			]
 		);
@@ -187,19 +187,19 @@ class Widget_Image extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'label' => __( 'Image Border', 'builder' ),
-				'selector' => '{{WRAPPER}} .builder-image img',
+				'label' => __( 'Image Border', 'qazana' ),
+				'selector' => '{{WRAPPER}} .qazana-image img',
 			]
 		);
 
 		$this->add_control(
 			'image_border_radius',
 			[
-				'label' => __( 'Border Radius', 'builder' ),
+				'label' => __( 'Border Radius', 'qazana' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .builder-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -208,7 +208,7 @@ class Widget_Image extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'image_box_shadow',
-				'selector' => '{{WRAPPER}} .builder-image img',
+				'selector' => '{{WRAPPER}} .qazana-image img',
 			]
 		);
 
@@ -217,7 +217,7 @@ class Widget_Image extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_caption',
 			[
-				'label' => __( 'Caption', 'builder' ),
+				'label' => __( 'Caption', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -225,23 +225,23 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'caption_align',
 			[
-				'label' => __( 'Alignment', 'builder' ),
+				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'builder' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'builder' ),
+						'title' => __( 'Center', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'builder' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'builder' ),
+						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
 				],
@@ -255,7 +255,7 @@ class Widget_Image extends Widget_Base {
 		$this->add_control(
 			'text_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
@@ -289,10 +289,10 @@ class Widget_Image extends Widget_Base {
 
 		$has_caption = ! empty( $settings['caption'] );
 
-		$this->add_render_attribute( 'wrapper', 'class', 'builder-image' );
+		$this->add_render_attribute( 'wrapper', 'class', 'qazana-image' );
 
 		if ( ! empty( $settings['shape'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'builder-image-shape-' . $settings['shape'] );
+			$this->add_render_attribute( 'wrapper', 'class', 'qazana-image-shape-' . $settings['shape'] );
 		}
 
 		$link = $this->get_link_url( $settings );
@@ -342,7 +342,7 @@ class Widget_Image extends Widget_Base {
 				model: editModel
 			};
 
-			var image_url = builder.imagesManager.getImageUrl( image );
+			var image_url = qazana.imagesManager.getImageUrl( image );
 
 			if ( ! image_url ) {
 				return;
@@ -358,12 +358,12 @@ class Widget_Image extends Widget_Base {
 				link_url = settings.image.url;
 			}
 
-			#><div class="builder-image{{ settings.shape ? ' builder-image-shape-' + settings.shape : '' }}"><#
+			#><div class="qazana-image{{ settings.shape ? ' qazana-image-shape-' + settings.shape : '' }}"><#
 			var imgClass = '',
 				hasCaption = '' !== settings.caption;
 
 			if ( '' !== settings.hover_animation ) {
-				imgClass = 'builder-animation-' + settings.hover_animation;
+				imgClass = 'qazana-animation-' + settings.hover_animation;
 			}
 
 			if ( hasCaption ) {

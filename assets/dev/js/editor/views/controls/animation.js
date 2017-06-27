@@ -1,4 +1,4 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlAnimationItemView;
 
 ControlAnimationItemView = ControlBaseItemView.extend( {

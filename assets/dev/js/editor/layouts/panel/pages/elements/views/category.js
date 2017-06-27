@@ -2,11 +2,11 @@ var PanelElementsElementsCollection = require( '../collections/elements' ),
 	PanelElementsCategoryView;
 
 PanelElementsCategoryView = Marionette.CompositeView.extend( {
-	template: '#tmpl-builder-panel-elements-category',
+	template: '#tmpl-qazana-panel-elements-category',
 
-	className: 'builder-panel-category',
+	className: 'qazana-panel-category',
 
-	childView: require( 'builder-panel/pages/elements/views/element' ),
+	childView: require( 'qazana-panel/pages/elements/views/element' ),
 
 	childViewContainer: '.panel-elements-category-items',
 

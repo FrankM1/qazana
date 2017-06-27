@@ -1,11 +1,11 @@
-var TemplateLibraryTemplateView = require( 'builder-templates/views/template/base' ),
+var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
     TemplateLibraryTemplateThemeView;
 
 TemplateLibraryTemplateThemeView = TemplateLibraryTemplateView.extend( {
-    template: '#tmpl-builder-template-library-template-theme',
+    template: '#tmpl-qazana-template-library-template-theme',
 
     onPreviewButtonClick: function() {
-        builder.templates.getLayout().showPreviewView( this.model );
+        qazana.templates.getLayout().showPreviewView( this.model );
     }
 } );
 

@@ -1,13 +1,13 @@
 
 // Inner Tabs
-.builder-control-type-tabs {
+.qazana-control-type-tabs {
 	font-size: 0.8em;
 	color: $editor-light;
 	text-transform: uppercase;
 	display: flex;
 }
 
-.builder-control-type-tab {
+.qazana-control-type-tab {
 	text-align: center;
 	width: 100%;
 	padding: 0;
@@ -28,12 +28,12 @@
 		@include _dimension_side_property(border-bottom, end, radius, 3px);
 	}
 
-	&.builder-tab-active {
+	&.qazana-tab-active {
 		background-color: $editor-light;
 		color: #ffffff;
 	}
 }
 
-.builder-tab-close {
+.qazana-tab-close {
 	display: none !important;
 }

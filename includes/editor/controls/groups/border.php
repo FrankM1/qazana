@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -15,14 +15,14 @@ class Group_Control_Border extends Group_Base_Control {
 		$fields = [];
 
 		$fields['border'] = [
-			'label' => _x( 'Border Type', 'Border Control', 'builder' ),
+			'label' => _x( 'Border Type', 'Border Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'options' => [
-				'' => __( 'None', 'builder' ),
-				'solid' => _x( 'Solid', 'Border Control', 'builder' ),
-				'double' => _x( 'Double', 'Border Control', 'builder' ),
-				'dotted' => _x( 'Dotted', 'Border Control', 'builder' ),
-				'dashed' => _x( 'Dashed', 'Border Control', 'builder' ),
+				'' => __( 'None', 'qazana' ),
+				'solid' => _x( 'Solid', 'Border Control', 'qazana' ),
+				'double' => _x( 'Double', 'Border Control', 'qazana' ),
+				'dotted' => _x( 'Dotted', 'Border Control', 'qazana' ),
+				'dashed' => _x( 'Dashed', 'Border Control', 'qazana' ),
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'border-style: {{VALUE}};',
@@ -31,7 +31,7 @@ class Group_Control_Border extends Group_Base_Control {
 		];
 
 		$fields['width'] = [
-			'label' => _x( 'Width', 'Border Control', 'builder' ),
+			'label' => _x( 'Width', 'Border Control', 'qazana' ),
 			'type' => Controls_Manager::DIMENSIONS,
 			'selectors' => [
 				'{{SELECTOR}}' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -42,7 +42,7 @@ class Group_Control_Border extends Group_Base_Control {
 		];
 
 		$fields['color'] = [
-			'label' => _x( 'Color', 'Border Control', 'builder' ),
+			'label' => _x( 'Color', 'Border Control', 'qazana' ),
 			'type' => Controls_Manager::COLOR,
 			'default' => '',
 			'selectors' => [

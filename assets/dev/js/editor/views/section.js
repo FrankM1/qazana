@@ -1,40 +1,40 @@
-var BaseElementView = require( 'builder-views/base-element' ),
+var BaseElementView = require( 'qazana-views/base-element' ),
 	SectionView;
 
 SectionView = BaseElementView.extend( {
-	template: Marionette.TemplateCache.get( '#tmpl-builder-element-section-content' ),
+	template: Marionette.TemplateCache.get( '#tmpl-qazana-element-section-content' ),
 
 	className: function() {
 		var classes = BaseElementView.prototype.className.apply( this, arguments ),
 			type = this.isInner() ? 'inner' : 'top';
 
-		return classes + ' builder-section builder-' + type + '-section';
+		return classes + ' qazana-section qazana-' + type + '-section';
 	},
 
 	tagName: 'section',
 
-	childViewContainer: '> .builder-container > .builder-row',
+	childViewContainer: '> .qazana-container > .qazana-row',
 
 	behaviors: {
 		Sortable: {
-			behaviorClass: require( 'builder-behaviors/sortable' ),
+			behaviorClass: require( 'qazana-behaviors/sortable' ),
 			elChildType: 'column'
 		},
 		HandleDuplicate: {
-			behaviorClass: require( 'builder-behaviors/handle-duplicate' )
+			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
 		},
 		HandleAddMode: {
-			behaviorClass: require( 'builder-behaviors/duplicate' )
+			behaviorClass: require( 'qazana-behaviors/duplicate' )
 		}
 	},
 
 	ui: function() {
 		var ui = BaseElementView.prototype.ui.apply( this, arguments );
 
-		ui.duplicateButton = '.builder-editor-section-settings-list .builder-editor-element-duplicate';
-		ui.removeButton = '.builder-editor-section-settings-list .builder-editor-element-remove';
-		ui.saveButton = '.builder-editor-section-settings-list .builder-editor-element-save';
-		ui.triggerButton = '.builder-editor-section-settings-list .builder-editor-element-trigger';
+		ui.duplicateButton = '.qazana-editor-section-settings-list .qazana-editor-element-duplicate';
+		ui.removeButton = '.qazana-editor-section-settings-list .qazana-editor-element-remove';
+		ui.saveButton = '.qazana-editor-section-settings-list .qazana-editor-element-save';
+		ui.triggerButton = '.qazana-editor-section-settings-list .qazana-editor-element-trigger';
 
 		return ui;
 	},
@@ -57,7 +57,7 @@ SectionView = BaseElementView.extend( {
 
 	addEmptyColumn: function() {
 		this.addChildModel( {
-			id: builder.helpers.getUniqueID(),
+			id: qazana.helpers.getUniqueID(),
 			elType: 'column',
 			settings: {},
 			elements: []
@@ -78,12 +78,12 @@ SectionView = BaseElementView.extend( {
 	},
 
 	getSortableOptions: function() {
-		var sectionConnectClass = this.isInner() ? '.builder-inner-section' : '.builder-top-section';
+		var sectionConnectClass = this.isInner() ? '.qazana-inner-section' : '.qazana-top-section';
 
 		return {
-			connectWith: sectionConnectClass + ' > .builder-container > .builder-row',
-			handle: '> .builder-element-overlay .builder-editor-column-settings-list .builder-editor-element-trigger',
-			items: '> .builder-column'
+			connectWith: sectionConnectClass + ' > .qazana-container > .qazana-row',
+			handle: '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-trigger',
+			items: '> .qazana-column'
 		};
 	},
 
@@ -100,7 +100,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	setStructure: function( structure ) {
-		var parsedStructure = builder.presetsFactory.getParsedStructure( structure );
+		var parsedStructure = qazana.presetsFactory.getParsedStructure( structure );
 
 		if ( +parsedStructure.columnsCount !== this.collection.length ) {
 			throw new TypeError( 'The provided structure doesn\'t match the columns count.' );
@@ -110,7 +110,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	redefineLayout: function() {
-		var preset = builder.presetsFactory.getPresetByStructure( this.getStructure() );
+		var preset = qazana.presetsFactory.getPresetByStructure( this.getStructure() );
 
 		this.collection.each( function( model, index ) {
 			model.setSetting( '_column_size', preset.preset[ index ] );
@@ -140,7 +140,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	_checkIsFull: function() {
-		this.$el.toggleClass( 'builder-section-filled', this.isCollectionFilled() );
+		this.$el.toggleClass( 'qazana-section-filled', this.isCollectionFilled() );
 	},
 
 	_checkIsEmpty: function() {
@@ -187,7 +187,7 @@ SectionView = BaseElementView.extend( {
 
 		var $iframes = childView.$el.find( 'iframe' ).add( nextChildView.$el.find( 'iframe' ) );
 
-		builder.helpers.disableElementEvents( $iframes );
+		qazana.helpers.disableElementEvents( $iframes );
 	},
 
 	onChildviewRequestResizeStop: function( childView ) {
@@ -199,7 +199,7 @@ SectionView = BaseElementView.extend( {
 
 		var $iframes = childView.$el.find( 'iframe' ).add( nextChildView.$el.find( 'iframe' ) );
 
-		builder.helpers.enableElementEvents( $iframes );
+		qazana.helpers.enableElementEvents( $iframes );
 	},
 
 	onChildviewRequestResize: function( childView, ui ) {

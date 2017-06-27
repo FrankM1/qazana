@@ -1,5 +1,5 @@
 <?php
-namespace Builder;
+namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -10,7 +10,7 @@ class Widget_Progress extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Progress Bar', 'builder' );
+		return __( 'Progress Bar', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -25,17 +25,17 @@ class Widget_Progress extends Widget_Base {
 		$this->start_controls_section(
 			'section_progress',
 			[
-				'label' => __( 'Progress Bar', 'builder' ),
+				'label' => __( 'Progress Bar', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'title',
 			[
-				'label' => __( 'Title', 'builder' ),
+				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your title', 'builder' ),
-				'default' => __( 'My Skill', 'builder' ),
+				'placeholder' => __( 'Enter your title', 'qazana' ),
+				'default' => __( 'My Skill', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -43,15 +43,15 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'progress_type',
 			[
-				'label' => __( 'Type', 'builder' ),
+				'label' => __( 'Type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'' => __( 'Default', 'builder' ),
-					'info' => __( 'Info', 'builder' ),
-					'success' => __( 'Success', 'builder' ),
-					'warning' => __( 'Warning', 'builder' ),
-					'danger' => __( 'Danger', 'builder' ),
+					'' => __( 'Default', 'qazana' ),
+					'info' => __( 'Info', 'qazana' ),
+					'success' => __( 'Success', 'qazana' ),
+					'warning' => __( 'Warning', 'qazana' ),
+					'danger' => __( 'Danger', 'qazana' ),
 				],
 			]
 		);
@@ -59,7 +59,7 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'percent',
 			[
-				'label' => __( 'Percentage', 'builder' ),
+				'label' => __( 'Percentage', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 50,
@@ -72,7 +72,7 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'height',
 			[
-				'label' => __( 'Height', 'builder' ),
+				'label' => __( 'Height', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 4,
@@ -80,7 +80,7 @@ class Widget_Progress extends Widget_Base {
 				],
 				'label_block' => true,
 				'selectors' => [
-					'{{WRAPPER}} .builder-progress-wrapper' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-progress-wrapper' => 'height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -88,12 +88,12 @@ class Widget_Progress extends Widget_Base {
 	    $this->add_control(
 	        'display_percentage',
 	        [
-	            'label' => __( 'Display Percentage', 'builder' ),
+	            'label' => __( 'Display Percentage', 'qazana' ),
 	            'type' => Controls_Manager::SELECT,
 	            'default' => 'show',
 	            'options' => [
-	                'show' => __( 'Show', 'builder' ),
-	                'hide' => __( 'Hide', 'builder' ),
+	                'show' => __( 'Show', 'qazana' ),
+	                'hide' => __( 'Hide', 'qazana' ),
 	            ],
 	        ]
 	    );
@@ -101,10 +101,10 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'inner_text',
 			[
-				'label' => __( 'Inner Text', 'builder' ),
+				'label' => __( 'Inner Text', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'e.g. Web Designer', 'builder' ),
-				'default' => __( 'Web Designer', 'builder' ),
+				'placeholder' => __( 'e.g. Web Designer', 'qazana' ),
+				'default' => __( 'Web Designer', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -112,7 +112,7 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'builder' ),
+				'label' => __( 'View', 'qazana' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -123,7 +123,7 @@ class Widget_Progress extends Widget_Base {
 		$this->start_controls_section(
 			'section_progress_style',
 			[
-				'label' => __( 'Progress Bar', 'builder' ),
+				'label' => __( 'Progress Bar', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -131,14 +131,14 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'bar_color',
 			[
-				'label' => __( 'Color', 'builder' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_4,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .builder-progress-wrapper .builder-progress-bar' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-progress-wrapper .qazana-progress-bar' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -146,10 +146,10 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'bar_bg_color',
 			[
-				'label' => __( 'Background Color', 'builder' ),
+				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-progress-wrapper' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-progress-wrapper' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -157,10 +157,10 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'bar_inline_color',
 			[
-				'label' => __( 'Inner Text Color', 'builder' ),
+				'label' => __( 'Inner Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-progress-bar' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-progress-bar' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -170,7 +170,7 @@ class Widget_Progress extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Title Style', 'builder' ),
+				'label' => __( 'Title Style', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -178,10 +178,10 @@ class Widget_Progress extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Text Color', 'builder' ),
+				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .builder-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-title' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -194,7 +194,7 @@ class Widget_Progress extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'typography',
-				'selector' => '{{WRAPPER}} .builder-title',
+				'selector' => '{{WRAPPER}} .qazana-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
@@ -205,24 +205,24 @@ class Widget_Progress extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings();
 
-		$this->add_render_attribute( 'wrapper', 'class', 'builder-progress-wrapper' );
+		$this->add_render_attribute( 'wrapper', 'class', 'qazana-progress-wrapper' );
 
 		if ( ! empty( $settings['progress_type'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'progress-' . $settings['progress_type'] );
 		}
 
 		$this->add_render_attribute( 'progress-bar', [
-			'class' => 'builder-progress-bar',
+			'class' => 'qazana-progress-bar',
 			'data-max' => $settings['percent']['size'],
 		] );
 
 		if ( ! empty( $settings['title'] ) ) { ?>
-			<span class="builder-title"><?php echo $settings['title']; ?></span>
-			<span class="builder-progress-text"><?php echo $settings['inner_text']; ?></span>
+			<span class="qazana-title"><?php echo $settings['title']; ?></span>
+			<span class="qazana-progress-text"><?php echo $settings['inner_text']; ?></span>
 		<?php } ?>
 
 		<?php if ( 'hide' !== $settings['display_percentage'] ) { ?>
-			<span class="builder-progress-percentage"><?php echo $settings['percent']['size']; ?>%</span>
+			<span class="qazana-progress-percentage"><?php echo $settings['percent']['size']; ?>%</span>
 		<?php } ?>
 
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?> role="timer">
@@ -234,14 +234,14 @@ class Widget_Progress extends Widget_Base {
 	protected function _content_template() {
 		?>
 		<# if ( settings.title ) { #>
-		<span class="builder-title">{{{ settings.title }}}</span><#
+		<span class="qazana-title">{{{ settings.title }}}</span><#
 		} #>
-		<span class="builder-progress-text">{{{ settings.inner_text }}}</span>
+		<span class="qazana-progress-text">{{{ settings.inner_text }}}</span>
 		<# if ( 'hide' !== settings.display_percentage ) { #>
-			<span class="builder-progress-percentage">{{{ settings.percent.size }}}%</span>
+			<span class="qazana-progress-percentage">{{{ settings.percent.size }}}%</span>
 		<# } #>
-		<div class="builder-progress-wrapper progress-{{ settings.progress_type }}" role="timer">
-			<div class="builder-progress-bar" data-max="{{ settings.percent.size }}">
+		<div class="qazana-progress-wrapper progress-{{ settings.progress_type }}" role="timer">
+			<div class="qazana-progress-bar" data-max="{{ settings.percent.size }}">
 			</div>
 		</div>
 		<?php

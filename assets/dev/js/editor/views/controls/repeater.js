@@ -1,11 +1,11 @@
-var ControlBaseItemView = require( 'builder-views/controls/base' ),
-	RepeaterRowView = require( 'builder-views/controls/repeater-row' ),
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+	RepeaterRowView = require( 'qazana-views/controls/repeater-row' ),
 	ControlRepeaterItemView;
 
 ControlRepeaterItemView = ControlBaseItemView.extend( {
 	ui: {
-		btnAddRow: '.builder-repeater-add',
-		fieldContainer: '.builder-repeater-fields'
+		btnAddRow: '.qazana-repeater-add',
+		fieldContainer: '.qazana-repeater-fields'
 	},
 
 	events: {
@@ -17,7 +17,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 	childView: RepeaterRowView,
 
-	childViewContainer: '.builder-repeater-fields',
+	childViewContainer: '.qazana-repeater-fields',
 
 	templateHelpers: function() {
 		return {
@@ -40,7 +40,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 		this.collection.each( function( model ) {
 			if ( ! model.get( '_id' ) ) {
-				model.set( '_id', builder.helpers.getUniqueID() );
+				model.set( '_id', qazana.helpers.getUniqueID() );
 			}
 		} );
 
@@ -48,7 +48,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 	},
 
 	addRow: function( data, options ) {
-		var id = builder.helpers.getUniqueID();
+		var id = qazana.helpers.getUniqueID();
 
 		if ( data instanceof Backbone.Model ) {
 			data.set( '_id', id );
@@ -65,7 +65,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 			currentEditable.removeClass( 'editable' );
 
 			// If the repeater contains TinyMCE editors, fire the `hide` trigger to hide floated toolbars
-			currentEditable.find( '.builder-wp-editor' ).each( function() {
+			currentEditable.find( '.qazana-wp-editor' ).each( function() {
 				tinymce.get( this.id ).fire( 'hide' );
 			} );
 		}
@@ -87,7 +87,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 			return;
 		}
 
-		this.$el.toggleClass( 'builder-repeater-has-minimum-rows', 1 >= this.collection.length );
+		this.$el.toggleClass( 'qazana-repeater-has-minimum-rows', 1 >= this.collection.length );
 	},
 
 	updateActiveRow: function() {
@@ -109,7 +109,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 	onRender: function() {
 		ControlBaseItemView.prototype.onRender.apply( this, arguments );
 
-		this.ui.fieldContainer.sortable( { axis: 'y', handle: '.builder-repeater-row-tools' } );
+		this.ui.fieldContainer.sortable( { axis: 'y', handle: '.qazana-repeater-row-tools' } );
 
 		this.toggleMinRowsClass();
 	},
@@ -120,7 +120,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 	onSortStop: function( event, ui ) {
 		// Reload TinyMCE editors (if exist), it's a bug that TinyMCE content is missing after stop dragging
-		ui.item.find( '.builder-wp-editor' ).each( function() {
+		ui.item.find( '.qazana-wp-editor' ).each( function() {
 			var editor = tinymce.get( this.id ),
 				settings = editor.settings;
 

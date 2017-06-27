@@ -1,21 +1,21 @@
 // testimonial
-.builder-testimonial-wrapper {
+.qazana-testimonial-wrapper {
   overflow   : hidden;
   margin     : 1em;
   text-align : center;
 
-  &.builder-element-style- {
+  &.qazana-element-style- {
     &1 {}
 
     &2 {
-      .builder-testimonial-content {
+      .qazana-testimonial-content {
         padding          : 1.5em;
         background-color : #f7f7f7;
       }
     }
 
     &3 {
-      .builder-testimonial-content {
+      .qazana-testimonial-content {
         padding          : 1.5em;
         background-color : #f7f7f7;
 
@@ -26,11 +26,11 @@
     }
   }
 
-  &.builder-testimonial-text-align- {
+  &.qazana-testimonial-text-align- {
     &left {
       text-align : left;
 
-      .builder-testimonial-content {
+      .qazana-testimonial-content {
         &:after {
           left        : 42px;
           margin-left : 0;
@@ -41,7 +41,7 @@
     &right {
       text-align : right;
 
-      .builder-testimonial-content {
+      .qazana-testimonial-content {
         &:after {
           right       : 42px;
           left        : auto;
@@ -51,22 +51,22 @@
     }
   }
 
-  .builder-testimonial-image-position-aside {
-    .builder-testimonial-details,
-    .builder-testimonial-image {
+  .qazana-testimonial-image-position-aside {
+    .qazana-testimonial-details,
+    .qazana-testimonial-image {
       display        : table-cell;
       vertical-align : middle;
     }
   }
 
-  .builder-testimonial-image-position-top.builder-testimonial-meta {
-    .builder-testimonial-details,
-    .builder-testimonial-image {
+  .qazana-testimonial-image-position-top.qazana-testimonial-meta {
+    .qazana-testimonial-details,
+    .qazana-testimonial-image {
       display : block;
     }
   }
 
-  .builder-testimonial-content {
+  .qazana-testimonial-content {
     position      : relative;
     margin-bottom : 1em;
     font-size     : 1em;
@@ -86,16 +86,16 @@
     }
   }
 
-  .builder-testimonial-name {
+  .qazana-testimonial-name {
     line-height : 1.5;
   }
 
-  .builder-testimonial-job {
+  .qazana-testimonial-job {
     margin-top : 0.3em;
     font-size  : 0.85em;
   }
 
-  .builder-testimonial-meta {
+  .qazana-testimonial-meta {
     width       : 100%;
     line-height : 1;
 
@@ -103,7 +103,7 @@
       display : inline-block;
     }
 
-    .builder-testimonial-image {
+    .qazana-testimonial-image {
       img {
         width         : 60px;
         height        : 60px;
