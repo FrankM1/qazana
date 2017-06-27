@@ -106,10 +106,10 @@ function builder() {
 }
 
 /*
- * Hook Video_Central early onto the 'plugins_loaded' action.
+ * Hook Builder early onto the 'plugins_loaded' action.
  *
  * This gives all other plugins the chance to load before Video Central, to get their
- * actions, filters, and overrides setup without Video_Central being in the way.
+ * actions, filters, and overrides setup without Builder being in the way.
  */
 if ( defined( 'BUILDER_LATE_LOAD' ) ) {
     add_action( 'plugins_loaded', 'builder', (int) BUILDER_LATE_LOAD );

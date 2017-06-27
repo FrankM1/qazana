@@ -46,8 +46,6 @@ final class Manager {
             }
         }
 
-        //builder_write_log( $this->path );
-
         $this->_load_extensions();
 
         add_action( 'builder/widgets/widgets_registered', [ $this, '_load_widgets' ] );

@@ -263,15 +263,49 @@ class Group_Control_Background extends Group_Base_Control {
 			],
 		];
 
-		$fields['video_link'] = [
-			'label' => _x( 'Video Link', 'Background Control', 'builder' ),
+		$fields['video_source'] = [
+			'label' 		=> __( 'Video Source', 'energia' ),
+			'type' 			=> Controls_Manager::CHOOSE,
+			'default'		=> 'self-hosted',
+			'options' 		=> [
+				'youtube' 		=> [
+					'title' => __( 'Youtube', 'energia' ),
+					'icon' 	=> 'fa fa-youtube',
+				],
+				'self_hosted' 	=> [
+					'title' => __( 'Self Hosted', 'energia' ),
+					'icon' 	=> 'fa fa-play',
+				],
+			],
+			'condition' => [
+				'background' => [ 'video' ],
+			],
+		];
+
+		$fields['youtube_video_link'] = [
+			'label' => _x( 'Youtube Video Link', 'Background Control', 'builder' ),
 			'type' => Controls_Manager::TEXT,
 			'placeholder' => 'https://www.youtube.com/watch?v=9uOETcuFjbE',
-			'description' => __( 'Insert YouTube link or video file (mp4 is recommended)', 'builder' ),
+			'description' => __( 'Insert YouTube link', 'builder' ),
 			'label_block' => true,
 			'default' => '',
 			'condition' => [
 				'background' => [ 'video' ],
+				'video_source' => [ 'youtube' ],
+			],
+			'of_type' => 'video',
+		];
+
+		$fields['video_link'] = [
+			'label' => _x( 'Video Link', 'Background Control', 'builder' ),
+			'type' => Controls_Manager::TEXT,
+			'placeholder' => '',
+			'description' => __( 'Insert video link', 'builder' ),
+			'label_block' => true,
+			'default' => '',
+			'condition' => [
+				'background' => [ 'video' ],
+				'video_source' => [ 'self_hosted' ],
 			],
 			'of_type' => 'video',
 		];
