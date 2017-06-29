@@ -363,7 +363,7 @@ class Widget_Image extends Widget_Base {
 				hasCaption = '' !== settings.caption;
 
 			if ( '' !== settings.hover_animation ) {
-				imgClass = 'qazana-animation-' + settings.hover_animation;
+				imgClass = 'qazana-hover-animation-' + settings.hover_animation;
 			}
 
 			if ( hasCaption ) {

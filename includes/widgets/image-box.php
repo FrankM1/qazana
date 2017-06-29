@@ -367,7 +367,7 @@ class Widget_Image_Box extends Widget_Base {
 			$this->add_render_attribute( 'image', 'title', Control_Media::get_image_title( $settings['image'] ) );
 
 			if ( $settings['hover_animation'] ) {
-				$this->add_render_attribute( 'image', 'class', 'qazana-animation-' . $settings['hover_animation'] );
+				$this->add_render_attribute( 'image', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 			}
 
 			$image_html = '<img ' . $this->get_render_attribute_string( 'image' ) . '>';
@@ -420,7 +420,7 @@ class Widget_Image_Box extends Widget_Base {
 		var html = '<div class="qazana-image-box-wrapper">';
 
 		if ( settings.image.url ) {
-			var imageHtml = '<img src="' + settings.image.url + '" class="qazana-animation-' + settings.hover_animation + '" />';
+			var imageHtml = '<img src="' + settings.image.url + '" class="qazana-hover-animation-' + settings.hover_animation + '" />';
 
 			if ( settings.link.url ) {
 				imageHtml = '<a href="' + settings.link.url + '">' + imageHtml + '</a>';

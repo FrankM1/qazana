@@ -135,7 +135,7 @@ class Widget_Button extends Widget_Base {
 				'default' => '',
 			]
 		);
-		
+
 		$this->add_control(
 			'icon_align',
 			[
@@ -385,7 +385,7 @@ class Widget_Button extends Widget_Base {
     protected function _content_template() {
         ?>
         <div class="qazana-button-wrapper">
-            <a class="qazana-button qazana-button-{{ settings.button_type }} qazana-weight-{{ settings.button_weight }} qazana-size-{{ settings.size }} qazana-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}">
+            <a class="qazana-button qazana-button-{{ settings.button_type }} qazana-weight-{{ settings.button_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}">
                 <span class="qazana-button-content-wrapper">
                     <# if ( settings.icon ) { #>
                     <span class="qazana-button-icon qazana-align-icon-{{ settings.icon_align }}">

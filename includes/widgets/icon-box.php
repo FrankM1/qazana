@@ -711,7 +711,7 @@ class Widget_Icon_Box extends Widget_Base {
 
         $icon_tag = 'span';
 
-		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-animation-' . $settings['hover_animation'] ] );
+		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation'] ] );
 
         $link_attributes = $this->get_render_attribute_string( 'link' );
 

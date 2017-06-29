@@ -419,7 +419,7 @@ class Widget_Icon extends Widget_Base {
 		$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-icon' );
 
 		if ( ! empty( $settings['hover_animation'] ) ) {
-			$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-animation-' . $settings['hover_animation'] );
+			$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 		}
 
 		$icon_tag = 'div';

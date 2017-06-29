@@ -298,16 +298,16 @@ module.exports = function( grunt ) {
                 ]
             },
 
-            plugin_init: {
+            /*plugin_init: {
                 src: [ 'includes/plugin.php' ],
                 overwrite: true,
                 replacements: [
                     {
-                        from: /$this->version => "\d{1,1}\.\d{1,2}\.\d{1,2}/g,
-                        to: '$this->version => "<%= pkg.version %>'
+                        from: /$this->version = \d{1,1}\.\d{1,2}\.\d{1,2}/g,
+                        to: '$this->version = \'<%= pkg.version %>\''
                     },
                 ]
-            },
+            },*/
 
             readme: {
                 src: [ 'readme.txt' ],
@@ -403,7 +403,19 @@ module.exports = function( grunt ) {
             main: [
                 'build'
             ]
-        }
+        },
+
+        wp_deploy: {
+    		deploy: {
+    			options: {
+    				plugin_slug: 'your-plugin-slug',
+    				svn_user: 'your-wp-repo-username',
+    				build_dir: 'build', //relative path to your build directory
+    				assets_dir: 'wp-assets' //relative path to your assets directory (optional).
+    			},
+    		}
+    	},
+        
     } );
 
     // Default task(s).

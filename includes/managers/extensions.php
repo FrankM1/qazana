@@ -96,9 +96,6 @@ final class Manager {
             $class_file = "$path/$folder/extension_{$folder}.php";
 
             if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) ) {
-
-                qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true );
-
                 $this->extensions[ $folder ] = new $extension_class ( $this );
             }
 

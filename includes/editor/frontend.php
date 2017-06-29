@@ -114,6 +114,8 @@ class Frontend {
         wp_enqueue_script( 'qazana-frontend' );
 
 		$qazana_frontend_config = [
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'home_url' => home_url(),
 			'isEditMode' => qazana()->editor->is_edit_mode(),
 			'stretchedSectionContainer' => get_option( 'qazana_stretched_section_container', '' ),
 			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),

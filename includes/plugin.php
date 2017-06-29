@@ -87,7 +87,8 @@ class Plugin {
 
     public $templates_manager;
 
-    public $extensions_loader;
+    public $extensions_loader;*/
+
     public $extensions;
 
     /**
@@ -206,7 +207,7 @@ class Plugin {
 
         /* Versions **********************************************************/
 
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->db_version = '100';
 
         /* Paths *************************************************************/
@@ -238,15 +239,17 @@ class Plugin {
         $this->extend = new \StdClass(); // Plugins add data here
         $this->errors = new \WP_Error(); // Feedback
 
-        $this->widget_locations = array(
+        $this->__set( 'widget_locations', array(
             'includes/widgets',
-        );
+        ));
 
-        $this->extensions_locations = array(
+        $this->__set( 'extensions_locations', array(
             'includes/extensions/qazana/extensions',
             'includes/extensions',
-        );
+        ));
 
+        $this->widget_locations = $this->__get( 'widget_locations' ); //
+        $this->extensions_locations = $this->__get( 'extensions_locations' );
     }
 
     /**
@@ -256,6 +259,8 @@ class Plugin {
      * @since 1.0.0
      */
     public function setup_actions() {
+
+        do_action( 'qazana/loaded' );
 
         // Add actions to plugin activation and deactivation hooks
         add_action( 'activate_' . $this->basename, 'qazana_activation' );
@@ -284,6 +289,7 @@ class Plugin {
         // Add Page Templates
         add_action( 'after_setup_theme', array( 'Qazana\Page_Template_Manager', 'get_instance' ) ); // load late for filters to work
 
+        do_action( 'qazana/init' );
     }
 
     /**

@@ -82,6 +82,19 @@ class Group_Control_Typography extends Group_Base_Control {
 			],
 		];
 
+		$fields['text_decoration'] = [
+			'label' => _x( 'Decoration', 'Typography Control', 'qazana' ),
+			'type' => Controls_Manager::SELECT,
+			'default' => '',
+			'options' => [
+				'' 				=> __( 'Default', 'qazana' ),
+				'underline' 	=> _x( 'Underline', 'Typography Control', 'qazana' ),
+				'line-through' 	=> _x( 'Line through', 'Typography Control', 'qazana' ),
+				'overline' 		=> _x( 'Overline', 'Typography Control', 'qazana' ),
+				'none' 			=> _x( 'Normal', 'Typography Control', 'qazana' ),
+			],
+		];
+
 		$fields['font_style'] = [
 			'label' => _x( 'Style', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
