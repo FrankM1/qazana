@@ -17,16 +17,12 @@ class Group_Control_Animations extends Group_Base_Control {
         $fields['in'] = [
         	'label' => __( 'Entrance Animation', 'qazana' ),
         	'type' => Controls_Manager::ANIMATION_IN,
-        	'default' => '',
+        	'default' => 'fadeInUp',
         	'label_block' => true,
+            'condition' => [
+        		'animated!' => '',
+        	],
         ];
-
-        /*$fields['out'] = [
-        	'label' => __( 'Exit Animation', 'qazana' ),
-        	'type' => Controls_Manager::ANIMATION_OUT,
-        	'default' => '',
-        	'label_block' => true,
-        ];*/
 
         $fields['duration'] = [
         	'label' => __( 'Animation Duration', 'qazana' ),

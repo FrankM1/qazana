@@ -23,11 +23,11 @@ class Control_Animation_In extends Base_Control {
 		if ( is_null( self::$_animations ) ) {
 			self::$_animations = [
 				'Fading' => [
+					'fadeInUp' => 'Fade In Up',
 					'fadeIn' => 'Fade In',
 					'fadeInDown' => 'Fade In Down',
 					'fadeInLeft' => 'Fade In Left',
 					'fadeInRight' => 'Fade In Right',
-					'fadeInUp' => 'Fade In Up',
 				],
 				'Zooming' => [
 					'zoomIn' => 'Zoom In',
@@ -86,7 +86,6 @@ class Control_Animation_In extends Base_Control {
 			<label class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<select data-setting="{{ data.name }}">
-					<option value=""><?php _e( 'None', 'qazana' ); ?></option>
 					<?php foreach ( self::get_animations() as $animations_group_name => $animations_group ) : ?>
 						<optgroup label="<?php echo $animations_group_name; ?>">
 							<?php foreach ( $animations_group as $animation_name => $animation_title ) : ?>
