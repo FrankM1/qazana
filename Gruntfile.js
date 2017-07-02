@@ -403,18 +403,7 @@ module.exports = function( grunt ) {
             main: [
                 'build'
             ]
-        },
-
-        wp_deploy: {
-    		deploy: {
-    			options: {
-    				plugin_slug: 'your-plugin-slug',
-    				svn_user: 'your-wp-repo-username',
-    				build_dir: 'build', //relative path to your build directory
-    				assets_dir: 'wp-assets' //relative path to your assets directory (optional).
-    			},
-    		}
-    	},
+        }
         
     } );
 

@@ -5,13 +5,25 @@
 // Section
 .qazana-section {
 	position: relative;
+	@media (min-width: $screen-md-min) {
+
+		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
+		&.qazana-section-height-full {
+			height: 100vh;
+
+			> .qazana-container {
+				height: 100%;
+			}
+		}
+	}
 
 	// Container
 	.qazana-container {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		margin-right: auto;
 		margin-left: auto;
-		position: relative;
 	}
 
 	// Max-width of container depending on section settings
@@ -47,17 +59,6 @@
 			}
 		}
 	}
-	@media (min-width: $screen-md-min) {
-
-		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
-		&.qazana-section-height-full {
-			height: 100vh;
-
-			> .qazana-container {
-				height: 100%;
-			}
-		}
-	}
 }
 
 // In columns stretch mode
@@ -84,8 +85,8 @@
 
 // Row
 .qazana-row {
-	width: 100%;
 	display: flex;
+	width: 100%;
 
 	/* In dragging mode it's causing a columns fall */
 	@media (max-width: $screen-sm-max) {
@@ -102,8 +103,8 @@
 
 // Widget
 .qazana-column-wrap {
-	width: 100%;
 	display: flex;
+	width: 100%;
 }
 
 .qazana-widget-wrap {
@@ -118,9 +119,8 @@
 
 // Columns
 .qazana-column {
-	position: relative;
-	min-height: 1px;
 	display: flex;
+	min-height: 1px;
 
 }
 @mixin qazana-grid-classes {
@@ -211,23 +211,23 @@
 #grid {
 	position: fixed;
 	top: -20px;
-	left: 0;
 	right: 0;
 	bottom: 0;
+	left: 0;
+	z-index: 999;
+	display: none;
 	overflow-y: hidden;
 	pointer-events: none;
-	display: none;
-	z-index: 999;
 
 	.vc_col-lg-1 {
-		height: 2000px;
 		padding: 0.5rem 40px;
 		min-height: 0.125rem;
+		height: 2000px;
 	}
 
 	.shadow {
-		background: rgba(0,0,0,0.05);
 		width: 100%;
 		height: 100%;
+		background: rgba(0,0,0,0.05);
 	}
 }

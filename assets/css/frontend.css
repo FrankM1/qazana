@@ -131,19 +131,24 @@
   display: none; }
 
 .qazana-widget-container {
-  overflow: hidden;
   width: 100%; }
 
 .qazana-section {
   position: relative; }
+  @media (min-width: 768px) {
+    .qazana-section.qazana-section-height-full {
+      height: 100vh; }
+      .qazana-section.qazana-section-height-full > .qazana-container {
+        height: 100%; } }
   .qazana-section .qazana-container {
+    position: relative;
+    z-index: 1;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     margin-right: auto;
-    margin-left: auto;
-    position: relative; }
+    margin-left: auto; }
   .qazana-section.qazana-section-boxed > .qazana-container {
     max-width: 1140px; }
   .qazana-section.qazana-section-stretched {
@@ -164,11 +169,6 @@
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
             align-items: flex-end; }
-  @media (min-width: 768px) {
-    .qazana-section.qazana-section-height-full {
-      height: 100vh; }
-      .qazana-section.qazana-section-height-full > .qazana-container {
-        height: 100%; } }
 
 .qazana-section-content-top > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
   -webkit-box-align: start;
@@ -187,11 +187,11 @@
           align-items: flex-end; }
 
 .qazana-row {
-  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 100%;
   /* In dragging mode it's causing a columns fall */ }
   @media (max-width: 767px) {
     .qazana-row {
@@ -205,11 +205,11 @@
         -ms-flex-wrap: wrap;
             flex-wrap: wrap; } }
 .qazana-column-wrap {
-  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  width: 100%; }
 
 .qazana-widget-wrap {
   width: 100%; }
@@ -218,12 +218,11 @@
   margin-bottom: 20px; }
 
 .qazana-column {
-  position: relative;
-  min-height: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  min-height: 1px; }
 
 .qazana-column-gap-narrow > .qazana-row > .qazana-column > .qazana-element-populated {
   padding: 5px; }
@@ -412,21 +411,21 @@
 #grid {
   position: fixed;
   top: -20px;
-  left: 0;
   right: 0;
   bottom: 0;
-  overflow-y: hidden;
-  pointer-events: none;
+  left: 0;
+  z-index: 999;
   display: none;
-  z-index: 999; }
+  overflow-y: hidden;
+  pointer-events: none; }
   #grid .vc_col-lg-1 {
-    height: 2000px;
     padding: 0.5rem 40px;
-    min-height: 0.125rem; }
+    min-height: 0.125rem;
+    height: 2000px; }
   #grid .shadow {
-    background: rgba(0, 0, 0, 0.05);
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05); }
 
 .qazana-screen-only,
 .screen-reader-text,

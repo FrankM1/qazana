@@ -748,7 +748,6 @@ abstract class Element_Base {
 		$this->_data = array_merge( $this->get_default_data(), $data );
 		$this->_id = $data['id'];
 		$this->_settings = $this->_get_parsed_settings();
-		$this->add_element_dependencies();
 	}
 
 	/**
@@ -759,14 +758,16 @@ abstract class Element_Base {
 	public function add_element_dependencies() {}
 
 	public function add_frontend_stylesheets( array $args ) {
-		$this->_element_stylesheets = array_merge( $args, $this->_element_stylesheets );
+		return $this->_element_stylesheets = array_merge( $args, $this->_element_stylesheets );
 	}
 
 	public function add_frontend_scripts( array $args ) {
-		$this->_element_scripts = array_merge( $args, $this->_element_scripts );
+		return $this->_element_scripts = array_merge( $args, $this->_element_scripts );
 	}
 
 	public function load_script_dependencies() {
+		$this->add_element_dependencies();
+
 		if ( ! empty( $this->_element_scripts ) && is_array( $this->_element_scripts ) ) {
 			foreach ( $this->_element_scripts as $key => $value ) {
 				wp_enqueue_script( $value );

@@ -274,7 +274,7 @@ function qazana_add_activation_redirect() {
  */
 function qazana_migrate_builder_content_to_qazana(){
 
-    qazana_write_log('migration_start');
+    //qazana_write_log('migration_start');
 
     $all_posts = get_posts( array(
         'numberposts' => -1,
@@ -482,7 +482,7 @@ function qazana_migrate_builder_content_to_qazana(){
 
     qazana()->posts_css_manager->clear_cache();
 
-    qazana_write_log('migration_complete');
+    //qazana_write_log('migration_complete');
 }
 
 /**

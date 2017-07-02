@@ -248,8 +248,8 @@ class Plugin {
             'includes/extensions',
         ));
 
-        $this->widget_locations = $this->__get( 'widget_locations' ); //
-        $this->extensions_locations = $this->__get( 'extensions_locations' );
+        $this->widget_locations = apply_filters( 'qazana_widget_locations', $this->__get( 'widget_locations' )); //
+        $this->extensions_locations = apply_filters( 'qazana_extensions_locations', $this->__get( 'extensions_locations' ));
     }
 
     /**
@@ -418,6 +418,27 @@ class Plugin {
             deactivate_plugins( plugin_basename( __FILE__ ) );
             wp_die( printf( __( 'Sorry, but your version of WordPress, <strong>%s</strong>, does not meet the Qazana\'s required version of <strong>3.3.1</strong> to run properly. The plugin has been deactivated. <a href="%s">Click here to return to the Dashboard</a>', 'qazana'), $wp_version, admin_url() ) );
         }
+    }
+
+    /**
+     * Add new extension locations
+     *
+     * @since 1.0.1
+     *
+     * @param relative path to extension location | string
+     */
+    public function add_extension_location( $location ) {
+
+        $extensions_locations = $this->__get( 'extensions_locations' );
+
+        if ( is_array( $location ) ) {
+            $extensions_locations = array_merge( $location, $extensions_locations);
+        } else {
+            $extensions_locations[] = $location;
+        }
+
+        $this->__set( 'extensions_locations', $extensions_locations );
+
     }
 
     /**
