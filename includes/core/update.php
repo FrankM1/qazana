@@ -235,8 +235,8 @@ function qazana_version_updater() {
     /** 1.0.1 Branch ************************************************************/
 
     // 1.0.1
-    if ( $raw_db_version < 106 ) {
-      //qazana_migrate_builder_content_to_qazana();
+    if ( $raw_db_version < 101 ) {
+        qazana_admin_upgrade_v101();
     }
 
     // Bump the version
@@ -484,6 +484,139 @@ function qazana_migrate_builder_content_to_qazana(){
 
     //qazana_write_log('migration_complete');
 }
+
+ function qazana_admin_upgrade_v101() {
+    global $wpdb;
+
+    // Try to update PHP memory limit (so that it does not run out of it).
+    ini_set( 'memory_limit', apply_filters( 'qazana_upgrade_memory_limit', '350M' ) );
+    set_time_limit(0);
+
+    $post_ids = $wpdb->get_col(
+        $wpdb->prepare(
+            'SELECT `post_id` FROM %1$s
+                    WHERE `meta_key` = \'_qazana_version\';',
+            $wpdb->postmeta
+        )
+    );
+
+    qazana_write_log( count( $post_ids ) );
+
+    if ( empty( $post_ids ) )
+        return;
+
+    foreach ( $post_ids as $post_id ) {
+
+        $data = qazana()->db->get_plain_editor( $post_id );
+
+        if ( empty( $data ) ) {
+            continue;
+        }
+
+        $data = qazana()->db->iterate_data( $data, function( $element ) {
+
+        if ( empty( $element['widgetType'] ) ) {
+            return $element;
+        }
+
+        if ( 'button' === $element['widgetType'] || 'search' === $element['widgetType'] || 'newsletter' === $element['widgetType']  ) {
+
+                $keys = array('text', 'link', 'align', 'size', 'icon', 'icon_hover_reveal', 'icon_align', 'icon_indent', 'icon_size', 'view', 'background_color', 'border_radius', 'text_padding', 'hover_color');
+
+                foreach ( $keys as $key => $value ) {
+                    if ( isset( $element['settings'][ $value ] ) ) {
+                        $element['settings']['button_' . $value ] = $element['settings'][ $value ];
+                        unset( $element['settings'][$value] );
+                    }
+                }
+
+                if ( isset( $element['settings'][ 'button_width' ] ) ) {
+                    $element['settings']['button_column_width'] = $element['settings']['button_width'];
+                    unset( $element['settings']['button_width'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography' ] ) ) {
+                    $element['settings']['button_typography'] = $element['settings']['typography_typography'];
+                    unset( $element['settings']['typography_typography'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography' ] ) ) {
+                    $element['settings']['button_typography_font_size'] = $element['settings']['typography_typography_font_size'];
+                    unset( $element['settings']['typography_typography_font_size'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_font_size_tablet' ] ) ) {
+                    $element['settings']['button_typography_font_size_tablet'] = $element['settings']['typography_typography_font_size_tablet'];
+                    unset( $element['settings']['typography_typography_font_size_tablet'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_font_size_mobile' ] ) ) {
+                    $element['settings']['button_typography_font_size_mobile'] = $element['settings']['typography_typography_font_size_mobile'];
+                    unset( $element['settings']['typography_typography_font_size_mobile'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_font_family' ] ) ) {
+                    $element['settings']['button_typography_font_family'] = $element['settings']['typography_typography_font_family'];
+                    unset( $element['settings']['typography_typography_font_family'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_font_weight' ] ) ) {
+                    $element['settings']['button_typography_font_weight'] = $element['settings']['typography_typography_font_weight'];
+                    unset( $element['settings']['typography_typography_font_weight'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_text_transform' ] ) ) {
+                    $element['settings']['button_typography_text_transform'] = $element['settings']['typography_typography_text_transform'];
+                    unset( $element['settings']['typography_typography_text_transform'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_font_style' ] ) ) {
+                    $element['settings']['button_typography_font_style'] = $element['settings']['typography_typography_font_style'];
+                    unset( $element['settings']['typography_typography_font_style'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_line_height' ] ) ) {
+                    $element['settings']['button_typography_line_height'] = $element['settings']['typography_typography_line_height'];
+                    unset( $element['settings']['typography_typography_line_height'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_line_height_tablet' ] ) ) {
+                    $element['settings']['button_typography_line_height_tablet'] = $element['settings']['typography_typography_line_height'];
+                    unset( $element['settings']['typography_typography_line_height'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_line_height_mobile' ] ) ) {
+                    $element['settings']['button_typography_line_height_mobile'] = $element['settings']['typography_typography_line_height_mobile'];
+                    unset( $element['settings']['typography_typography_line_height_mobile'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_letter_spacing' ] ) ) {
+                    $element['settings']['button_typography_letter_spacing'] = $element['settings']['typography_typography_letter_spacing'];
+                    unset( $element['settings']['typography_typography_letter_spacing'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_letter_spacing_mobile' ] ) ) {
+                    $element['settings']['button_typography_letter_spacing_mobile'] = $element['settings']['typography_typography_letter_spacing_mobile'];
+                    unset( $element['settings']['typography_typography_letter_spacing_mobile'] );
+                }
+
+                if ( isset( $element['settings'][ 'typography_typography_letter_spacing_tablet' ] ) ) {
+                    $element['settings']['button_typography_line_height_mobile'] = $element['settings']['typography_typography_letter_spacing_tablet'];
+                    unset( $element['settings']['typography_typography_letter_spacing_tablet'] );
+                }
+            }
+
+            return $element;
+
+        } );
+
+        qazana()->db->save_editor( $post_id, $data );
+    }
+
+    qazana()->posts_css_manager->clear_cache();
+
+}
+
 
 /**
 *

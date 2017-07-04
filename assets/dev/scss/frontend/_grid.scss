@@ -20,7 +20,6 @@
 	// Container
 	.qazana-container {
 		position: relative;
-		z-index: 1;
 		display: flex;
 		margin-right: auto;
 		margin-left: auto;
@@ -119,9 +118,9 @@
 
 // Columns
 .qazana-column {
+	position: relative;
 	display: flex;
 	min-height: 1px;
-
 }
 @mixin qazana-grid-classes {
 	 @each $sizeKey, $size in $column-sizes{

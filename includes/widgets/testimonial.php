@@ -21,6 +21,10 @@ class Widget_Testimonial extends Widget_Base {
 		return [ 'general-elements' ];
 	}
 
+	public function add_element_dependencies() {
+		$this->add_frontend_scripts( ['jquery-slick'] );
+	}
+
 	protected function _register_controls() {
 		$this->_register_controls_section_testimonial_options();
 		$this->_register_controls_section_slider_options();

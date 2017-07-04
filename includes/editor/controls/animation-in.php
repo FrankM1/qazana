@@ -23,11 +23,11 @@ class Control_Animation_In extends Base_Control {
 		if ( is_null( self::$_animations ) ) {
 			self::$_animations = [
 				'Fading' => [
-					'fadeInUp' => 'Fade In Up',
 					'fadeIn' => 'Fade In',
 					'fadeInDown' => 'Fade In Down',
 					'fadeInLeft' => 'Fade In Left',
 					'fadeInRight' => 'Fade In Right',
+					'fadeInUp' => 'Fade In Up',
 				],
 				'Zooming' => [
 					'zoomIn' => 'Zoom In',

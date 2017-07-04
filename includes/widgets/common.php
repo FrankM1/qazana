@@ -46,6 +46,19 @@ class Widget_Common extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'_z_index',
+			[
+				'label' => __( 'Z-Index', 'qazana' ),
+				'type' => Controls_Manager::NUMBER,
+				'min' => 0,
+				'placeholder' => 0,
+				'selectors' => [
+					'{{WRAPPER}}' => 'z-index: {{VALUE}};',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Animations::get_type(),
 			[
@@ -81,8 +94,17 @@ class Widget_Common extends Widget_Base {
 		$this->start_controls_section(
 			'_section_background',
 			[
-				'label' => __( 'Background & Border', 'qazana' ),
+				'label' => __( 'Background', 'qazana' ),
 				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+		);
+
+		$this->start_controls_tabs( '_tabs_background' );
+
+		$this->start_controls_tab(
+			'_tab_background_normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
 
@@ -90,7 +112,65 @@ class Widget_Common extends Widget_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => '_background',
-				'selector' => '{{WRAPPER}} .qazana-widget-container',
+				'selector' => '{{WRAPPER}} > .qazana-widget-container',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'_tab_background_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name' => '_background_hover',
+				'selector' => '{{WRAPPER}}:hover .qazana-widget-container',
+			]
+		);
+
+		$this->add_control(
+			'_background_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'render_type' => 'ui',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'_section_border',
+			[
+				'label' => __( 'Border', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+		);
+
+		$this->start_controls_tabs( '_tabs_border' );
+
+		$this->start_controls_tab(
+			'_tab_border_normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
 
@@ -98,7 +178,7 @@ class Widget_Common extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => '_border',
-				'selector' => '{{WRAPPER}} .qazana-widget-container',
+				'selector' => '{{WRAPPER}} > .qazana-widget-container',
 			]
 		);
 
@@ -121,6 +201,75 @@ class Widget_Common extends Widget_Base {
 				'selector' => '{{WRAPPER}} .qazana-widget-container',
 			]
 		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'_tab_border_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
+			'_hover_animation',
+			[
+				'label' => __( 'Animation', 'qazana' ),
+				'type' => Controls_Manager::HOVER_ANIMATION,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name' => '_border_hover',
+				'selector' => '{{WRAPPER}}:hover .qazana-widget-container',
+			]
+		);
+
+		$this->add_control(
+			'_border_radius_hover',
+			[
+				'label' => __( 'Border Radius', 'qazana' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors' => [
+					'{{WRAPPER}}:hover > .qazana-widget-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => '_box_shadow_hover',
+				'selector' => '{{WRAPPER}}:hover .qazana-widget-container',
+			]
+		);
+
+		$this->add_control(
+			'_border_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-widget-container' => 'transition: background {{_background_hover_transition.SIZE}}s, border {{SIZE}}s, border-radius {{SIZE}}s, box-shadow {{SIZE}}s',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 
@@ -182,23 +331,5 @@ class Widget_Common extends Widget_Base {
 
 		$this->end_controls_section();
 
-		$this->start_controls_section(
-			'section_common_hover',
-			[
-				'label' => __( 'Element Hover', 'qazana' ),
-				'type' => Controls_Manager::SECTION,
-				'tab' => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'_hover_animation',
-			[
-				'label' => __( 'Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
-			]
-		);
-
-		$this->end_controls_section();
 	}
 }

@@ -319,7 +319,7 @@ class Controls_Manager {
 		$stack_id = $element->get_name();
 
 		if ( ! $overwrite && isset( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
-			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id, '1.0.0' );
+			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
 			return false;
 		}
 
