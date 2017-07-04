@@ -497,12 +497,19 @@ class Widget_Image_Carousel extends Widget_Base {
 
 				$link = $this->get_link_url( $attachment, $settings );
 				if ( $link ) {
-					$target = '';
+					$link_key = 'link_' . $index;
+
+					$this->add_render_attribute( $link_key, 'href', $link );
+
 					if ( ! empty( $link['is_external'] ) ) {
-						$target = ' target="_blank"';
+						$this->add_render_attribute( $link_key, 'target', '_blank' );
 					}
 
-					$image_html = sprintf( '<a href="%s"%s>%s</a>', $link['url'], $target, $image_html );
+					if ( ! empty( $link['nofollow'] ) ) {
+						$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
+					}
+
+					$image_html = '<a ' . $this->get_render_attribute_string( $link_key ) . '>' . $image_html . '</a>';
 				}
 
 				$thumbs[] = '<div class="slick-slide" data-index="'. esc_attr( $count ) .'" data-slide-id="'. esc_attr( $count ) .'"><div class="slick-slide-inner">' . $image_html . '</div></div>';

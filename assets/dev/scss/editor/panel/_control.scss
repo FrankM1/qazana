@@ -3,6 +3,32 @@
 //
 
 #qazana-panel-page-editor {
+
+	@at-root .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
+		background: $editor-lighter;
+
+		&:not(.qazana-responsive-switcher-desktop) {
+			display: none;
+		}
+	}
+
+	// Tabs Control
+	@import "controls/tabs";
+
+	// Repeater control
+	@import "controls/repeater";
+
+	// Textarea control
+	@import "controls/textarea";
+
+	// Box-shadow control
+	@import "controls/box-shadow";
+
+	// Switcher control
+	@import "controls/switcher";
+
+	// Order control
+	@import "controls/order";
 	#qazana-controls {
 		> .qazana-control {
 			&:not(.qazana-active-tab) {
@@ -12,18 +38,18 @@
 	}
 
 	.qazana-control {
-		background-color: #fff;
 		position: relative;
 		padding: 0 20px 15px;
+		background-color: #fff;
 
 		&.qazana-control-separator- {
 			&default {
 				&:before {
-					content: '';
-					height: 1px;
 					display: block;
 					margin-bottom: 15px;
+					height: 1px;
 					background-color: $editor-background;
+					content: '';
 				}
 
 				// WP Widgets
@@ -40,25 +66,25 @@
 				padding-top: 15px;
 
 				&:before {
-					content: '';
 					position: absolute;
-					height: 3px;
-					width: 100%;
 					top: 0;
 					left: 0;
+					width: 100%;
+					height: 3px;
 					background-color: $editor-lightest;
+					content: '';
 				}
 			}
 
 			&after {
 				&:after {
-					content: '';
 					position: absolute;
-					height: 3px;
-					width: 100%;
 					bottom: 0;
 					left: 0;
+					width: 100%;
+					height: 3px;
 					background-color: $editor-lightest;
+					content: '';
 				}
 
 				+ .qazana-control-type-tabs {
@@ -93,8 +119,8 @@
 
 		&.qazana-control-type-heading {
 			.qazana-control-title {
-				font-weight: bold;
 				margin: 0;
+				font-weight: bold;
 			}
 		}
 
@@ -196,10 +222,10 @@
 		display: table;
 		width: 100%;
 		height: 27px;
-		background-color: $editor-light;
-		text-align: center;
 		border-spacing: 1px;
 		border-radius: 3px;
+		background-color: $editor-light;
+		text-align: center;
 
 		input {
 			display: none;
@@ -218,41 +244,41 @@
 			display: table-cell;
 			vertical-align: middle;
 			font-size: 12px;
-			transition: all 0.5s;
 			cursor: pointer;
+			transition: all 0.5s;
 		}
 	}
 
 	.qazana-slider {
+		position: relative;
 		display: inline-block;
 		margin-top: 10px;
-		height: 4px;
-		background-color: $editor-light;
-		border-radius: 5px;
-		position: relative;
 		width: 67%;
+		height: 4px;
+		border-radius: 5px;
+		background-color: $editor-light;
 
 		.ui-slider-handle {
-			height: 16px;
-			width: 16px;
-			background-color: #fff;
-			display: inline-block;
-			top: 50%;
-			transform: translateY(-50%) translateX(-8px);
 			position: absolute;
-			box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+			top: 50%;
+			display: inline-block;
+			width: 16px;
+			height: 16px;
 			border-radius: 50%;
+			background-color: #fff;
+			box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 			cursor: pointer;
+			transform: translateY(-50%) translateX(-8px);
 		}
 	}
 
 	.qazana-slider-input {
-		width: 33%;
 		float: $end;
+		width: 33%;
 
 		input {
-			width: 80%;
 			float: $end;
+			width: 80%;
 		}
 	}
 
@@ -273,32 +299,32 @@
 		}
 
 		label {
-			cursor: pointer;
 			padding: 0 2px;
 			text-transform: uppercase;
 			font-size: 9px;
+			cursor: pointer;
 		}
 	}
 
 	.qazana-control-responsive-switchers {
-		display: flex;
 		@include margin-start(5px);
+		display: flex;
 	}
 
 	.qazana-responsive-switcher {
 		$icon-size: 18px;
+		@include margin-start(5px);
+		position: relative;
 
 		display: inline-block;
-		border-radius: 50%;
-		height: $icon-size;
 		width: $icon-size;
+		height: $icon-size;
+		border-radius: 50%;
 		background-color: $editor-light;
-		cursor: pointer;
-		position: relative;
-		@include margin-start(5px);
 		color: #fff;
-		font-size: 8px;
 		text-align: center;
+		font-size: 8px;
+		cursor: pointer;
 		transition: background-color 0.5s;
 
 		&:hover {
@@ -307,14 +333,6 @@
 
 		i {
 			line-height: $icon-size;
-		}
-	}
-
-	@at-root .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
-		background: $editor-lighter;
-
-		&:not(.qazana-responsive-switcher-desktop) {
-			display: none;
 		}
 	}
 
@@ -331,10 +349,10 @@
 	}
 
 	#qazana-update-preview {
-		margin: 15px 15px 0;
-		background-color: $editor-background;
 		display: flex;
 		align-items: center;
+		margin: 15px 15px 0;
+		background-color: $editor-background;
 	}
 
 	#qazana-update-preview-button-wrapper {
@@ -351,8 +369,8 @@
 	.qazana-control-type-media {
 		.qazana-control-media {
 			padding: 7px;
-			border: 1px solid;
 			height: 150px;
+			border: 1px solid;
 
 			&:not(:hover) {
 				border-color: $editor-lightest;
@@ -383,9 +401,9 @@
 			}
 
 			> * {
+				position: relative;
 				height: 100%;
 				cursor: pointer;
-				position: relative;
 			}
 		}
 
@@ -393,9 +411,9 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translateX(-50%) translateY(-50%);
 			color: #fff;
 			font-size: 20px;
+			transform: translateX(-50%) translateY(-50%);
 		}
 
 		.qazana-control-media-image-area {
@@ -414,15 +432,15 @@
 
 		.qazana-control-media-delete {
 			position: absolute;
+			right: 0;
 			bottom: 0;
 			left: 0;
-			right: 0;
-			text-align: center;
 			padding: 9.5px;
-			font-size: 11px;
-			color: #fff;
 			background-color: $editor-light;
+			color: #fff;
+			text-align: center;
 			text-transform: uppercase;
+			font-size: 11px;
 		}
 
 		.qazana-control-media-image {
@@ -443,24 +461,24 @@
 			.qazana-link-dimensions,
 			input {
 				display: block;
-				text-align: center;
 				width: 100%;
-				border-color: $editor-light;
 				height: 27px;
+				border-color: $editor-light;
+				text-align: center;
 			}
 
 			input {
+				padding: 4px 0;
 				border-left: none;
 				border-radius: 0;
-				padding: 4px 0;
 
 				+ span {
 					display: block;
-					text-align: center;
-					color: $editor-lightest;
-					font-size: 9px;
-					text-transform: uppercase;
 					padding-top: 5px;
+					color: $editor-lightest;
+					text-align: center;
+					text-transform: uppercase;
+					font-size: 9px;
 				}
 
 				&:focus {
@@ -471,12 +489,12 @@
 			}
 
 			.qazana-link-dimensions {
-				border: 1px solid $editor-light;
-				border-left: none;
-				background-color: #fff;
 				padding: 0;
 				outline: none;
+				border: 1px solid $editor-light;
+				border-left: none;
 				border-radius: 0 3px 3px 0;
+				background-color: #fff;
 				cursor: pointer;
 			}
 
@@ -514,13 +532,16 @@
 
 	// URL Control
 	.qazana-control-type-url {
+
 		.qazana-control-url-external-hide {
-			.qazana-control-url-target {
+
+			.qazana-control-url-more {
 				display: none;
 			}
 		}
 
 		.qazana-control-url-external-show {
+
 			input {
 				padding-right: 46px;
 			}
@@ -530,55 +551,62 @@
 			position: relative;
 		}
 
-		.qazana-control-url-target {
-			position: absolute;
-			top: 0;
-			right: 0;
-			padding: 0;
-			height: 100%;
-			width: 40px;
-			border: none;
-			border-left: 1px solid;
-			background: none;
-			cursor: pointer;
-			font-size: 10px;
-			border-radius: 0 3px 3px 0;
+		.qazana-control-url {
 
-			&.active {
-				background-color: $editor-light;
+			&-more {
+				position: absolute;
+				top: 0;
+				right: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 40px;
+				height: 26px;
+				border-left: 1px solid;
+				border-radius: 0 3px 3px 0;
+				font-size: 10px;
+				cursor: pointer;
 
-				.qazana-control-url-external {
-					color: #fff;
+				i {
+					font-size: 13px;
+				}
+
+				&-input {
+					display: none;
+
+					&:not(:checked) {
+
+						+ .qazana-control-url-more-options {
+							display: none;
+						}
+					}
+				}
+
+				&-options {
+					padding-top: 10px;
 				}
 			}
 
-			&:not(.active) {
-				.qazana-control-url-external {
-					opacity: 0.5;
-				}
+			&-option {
+				padding: 5px;
+				font-size: 12px;
 			}
 		}
 
-		input {
+		input[type=url] {
 			direction: ltr; // Force ltr also in RTL languages
 
 			&:not(:focus) {
-				+ .qazana-control-url-target {
-					border-color: $editor-lightest;
 
-					&.active {
-						background-color: $editor-lightest;
-					}
+				+ .qazana-control-url-more {
+					border-color: $editor-lightest;
 				}
 			}
 
 			&:focus {
-				+ .qazana-control-url-target {
-					border-color: $editor-light;
 
-					&.active {
-						background-color: $editor-light;
-					}
+				+ .qazana-control-url-more {
+					border-color: $editor-light;
 				}
 			}
 		}
@@ -643,21 +671,21 @@
 
 		#insert-media-button {
 			margin-top: 7px;
-			height: initial;
-			line-height: 1;
-			font-size: 10px;
 			padding: 3px 7px;
+			height: initial;
 			background-color: $editor-background;
+			font-size: 10px;
+			line-height: 1;
 		}
 
 		.ed_button {
-			height: 22px;
 			width: initial;
+			height: 22px;
 		}
 
 		.wp-media-buttons-icon {
-			height: 14px;
 			margin: 0;
+			height: 14px;
 
 			&:before {
 				font-size: 14px;
@@ -665,11 +693,11 @@
 		}
 
 		.wp-switch-editor {
+			padding: 3px 9px 4px;
 			border: none;
+			border-radius: 3px 3px 0 0;
 			color: $editor-dark;
 			font-size: 10px;
-			padding: 3px 9px 4px;
-			border-radius: 3px 3px 0 0;
 		}
 
 		.html-active {
@@ -728,8 +756,8 @@
 		}
 
 		.mce-path-item {
-			font-size: 12px;
 			color: $editor-dark;
+			font-size: 12px;
 		}
 	}
 
@@ -762,12 +790,12 @@
 		}
 
 		.qazana-control-gallery-thumbnail {
-			width: 40px;
-			height: 40px;
-			background-size: cover;
-			background-position: 50% 50%;
 			float: $start;
 			margin-bottom: 10px;
+			width: 40px;
+			height: 40px;
+			background-position: 50% 50%;
+			background-size: cover;
 
 			&:not(:nth-child(5n)) {
 				@include margin-end(10px);
@@ -775,11 +803,11 @@
 		}
 
 		.qazana-control-gallery-add {
+			margin-top: 10px;
 			width: 100%;
 			height: 30px;
-			color: #fff;
 			background-color: $editor-light;
-			margin-top: 10px;
+			color: #fff;
 			text-transform: uppercase;
 		}
 
@@ -792,14 +820,14 @@
 	// Structure control
 	.qazana-control-type-structure {
 		.qazana-control-structure-preset {
-			border: 1px solid $editor-background;
 			padding: 3px;
+			border: 1px solid $editor-background;
 			border-radius: 3px;
 
 			&:not(.qazana-control-structure-current-preset) {
 				display: inline-block;
-				cursor: pointer;
 				height: 50px;
+				cursor: pointer;
 
 				svg {
 					height: 100%;
@@ -823,9 +851,9 @@
 
 		.qazana-control-structure-reset {
 			padding: 10px 0 0 2px;
+			color: $editor-light;
 			font-size: 11px;
 			cursor: pointer;
-			color: $editor-light;
 
 			i {
 				@include margin-end(8px);
@@ -834,17 +862,17 @@
 
 		.qazana-control-structure-more-presets-title,
 		.qazana-control-structure-title {
+			position: relative;
+			padding: 13.5px 20px;
 			color: $editor-darkest;
 			font-weight: bold;
-			padding: 13.5px 20px;
-			position: relative;
 
 			&:after,
 			&:before {
-				content: '';
 				position: absolute;
-				left: 0;
 				right: 0;
+				left: 0;
+				content: '';
 			}
 
 			&:before {
@@ -900,11 +928,11 @@
 		}
 
 		.qazana-control-structure-preset-title {
-			text-align: center;
 			padding-top: 5px;
+			color: $editor-light;
+			text-align: center;
 			font-style: italic;
 			font-size: 11px;
-			color: $editor-light;
 		}
 	}
 
@@ -920,8 +948,8 @@
 		}
 
 		.qazana-image-dimensions-field {
-			width: 70px;
 			float: $start;
+			width: 70px;
 
 			input {
 				&:focus {
@@ -933,24 +961,24 @@
 		}
 
 		.qazana-image-dimensions-separator {
-			width: 20px;
-			text-align: center;
 			float: $start;
 			padding-top: 4px;
+			width: 20px;
+			text-align: center;
 		}
 
 		.qazana-image-dimensions-field-description {
-			text-transform: uppercase;
 			margin-top: 5px;
 			color: $editor-lightest;
-			font-size: 9px;
 			text-align: center;
+			text-transform: uppercase;
+			font-size: 9px;
 		}
 
 		.qazana-image-dimensions-apply-button {
 			float: $end;
-			height: 27px;
 			width: 70px;
+			height: 27px;
 		}
 	}
 
@@ -958,24 +986,6 @@
 	.qazana-control-type-code {
 		padding: 0 10px 15px;
 	}
-
-	// Tabs Control
-	@import "controls/tabs";
-
-	// Repeater control
-	@import "controls/repeater";
-
-	// Textarea control
-	@import "controls/textarea";
-
-	// Box-shadow control
-	@import "controls/box-shadow";
-
-	// Switcher control
-	@import "controls/switcher";
-
-	// Order control
-	@import "controls/order";
 
 	// Hidden control
 	.qazana-control-type-hidden {

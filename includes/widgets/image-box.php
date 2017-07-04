@@ -373,11 +373,17 @@ class Widget_Image_Box extends Widget_Base {
 			$image_html = '<img ' . $this->get_render_attribute_string( 'image' ) . '>';
 
 			if ( ! empty( $settings['link']['url'] ) ) {
-				$target = '';
-				if ( ! empty( $settings['link']['is_external'] ) ) {
-					$target = ' target="_blank"';
+				$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
+
+				if ( $settings['link']['is_external'] ) {
+					$this->add_render_attribute( 'link', 'target', '_blank' );
 				}
-				$image_html = sprintf( '<a href="%s"%s>%s</a>', $settings['link']['url'], $target, $image_html );
+
+				if ( ! empty( $settings['link']['nofollow'] ) ) {
+					$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+				}
+
+				$image_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $image_html . '</a>';
 			}
 
 			$html .= '<figure class="qazana-image-box-img">' . $image_html . '</figure>';

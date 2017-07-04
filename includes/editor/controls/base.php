@@ -51,6 +51,10 @@ abstract class Base_Control {
 		return '';
 	}
 
+	protected function get_control_uid( $input_type = 'default' ) {
+		return 'qazana-control-' . $input_type . '-{{{ data._cid }}}';
+	}
+
 	public function get_value( $control, $widget ) {
 		if ( ! isset( $control['default'] ) )
 			$control['default'] = $this->get_default_value();

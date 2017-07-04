@@ -1201,560 +1201,10 @@ select {
           font-size: 16px;
           display: block;
           margin-bottom: 6px; }
-  .qazana-panel #qazana-panel-page-editor #qazana-controls > .qazana-control:not(.qazana-active-tab) {
-    display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control {
-    background-color: #fff;
-    position: relative;
-    padding: 0 20px 15px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default:before {
-      content: '';
-      height: 1px;
-      display: block;
-      margin-bottom: 15px;
-      background-color: #EBEBEB; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default.qazana-control-wp {
-      margin-top: 15px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default.qazana-control-wp:before {
-        background-color: transparent; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-before {
-      padding-top: 15px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-before:before {
-        content: '';
-        position: absolute;
-        height: 3px;
-        width: 100%;
-        top: 0;
-        left: 0;
-        background-color: #ddd; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-after:after {
-      content: '';
-      position: absolute;
-      height: 3px;
-      width: 100%;
-      bottom: 0;
-      left: 0;
-      background-color: #ddd; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-after + .qazana-control-type-tabs {
-      padding-top: 15px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-deprecated {
-      color: #b01b1b; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-deprecated .qazana-control-description {
-        color: #b01b1b; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-hidden-label .qazana-control-title {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-hidden-control {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-under-section:not(.qazana-open) {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-heading .qazana-control-title {
-      font-weight: bold;
-      margin: 0; }
-    body:not(.qazana-device-desktop) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-desktop {
-      display: none; }
-    body:not(.qazana-device-tablet) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-tablet {
-      display: none; }
-    body:not(.qazana-device-mobile) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-mobile {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .selector-popup {
-      width: 262px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .fip-box {
-      width: 44px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .fip-box i {
-        font-size: 1em; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-wp {
-    line-height: 1.5; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-wp p {
-      margin: 15px 0; }
-  .qazana-panel #qazana-panel-page-editor .qazana-label-block > .qazana-control-content > .qazana-control-field {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
-    .qazana-panel #qazana-panel-page-editor .qazana-label-block > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
-      -webkit-flex-basis: 100%;
-          -ms-flex-preferred-size: 100%;
-              flex-basis: 100%;
-      margin-top: 10px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-label-block.qazana-control-hidden-label > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
-    margin-top: 0; }
-  .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field {
-    display: table;
-    width: 100%; }
-    .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field > * {
-      display: table-cell;
-      vertical-align: middle; }
-    .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-title {
-      width: 45%; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-description {
-    margin-top: 10px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-choices {
-    display: table;
-    width: 100%;
-    height: 27px;
-    background-color: #a0a5aa;
-    text-align: center;
-    border-spacing: 1px;
-    border-radius: 3px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-choices input {
-      display: none; }
-      .qazana-panel #qazana-panel-page-editor .qazana-choices input:checked + .qazana-choices-label {
-        color: #fff; }
-      .qazana-panel #qazana-panel-page-editor .qazana-choices input:not(:checked) + .qazana-choices-label {
-        background-color: #fff;
-        color: #a0a5aa; }
-    .qazana-panel #qazana-panel-page-editor .qazana-choices .qazana-choices-label {
-      display: table-cell;
-      vertical-align: middle;
-      font-size: 12px;
-      -webkit-transition: all 0.5s;
-      transition: all 0.5s;
-      cursor: pointer; }
-  .qazana-panel #qazana-panel-page-editor .qazana-slider {
-    display: inline-block;
-    margin-top: 10px;
-    height: 4px;
-    background-color: #a0a5aa;
-    border-radius: 5px;
-    position: relative;
-    width: 67%; }
-    .qazana-panel #qazana-panel-page-editor .qazana-slider .ui-slider-handle {
-      height: 16px;
-      width: 16px;
-      background-color: #fff;
-      display: inline-block;
-      top: 50%;
-      -webkit-transform: translateY(-50%) translateX(-8px);
-              transform: translateY(-50%) translateX(-8px);
-      position: absolute;
-      -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-              box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-      border-radius: 50%;
-      cursor: pointer; }
-  .qazana-panel #qazana-panel-page-editor .qazana-slider-input {
-    width: 33%;
-    float: right; }
-    .qazana-panel #qazana-panel-page-editor .qazana-slider-input input {
-      width: 80%;
-      float: right; }
-  .qazana-panel #qazana-panel-page-editor .qazana-units-choices {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    text-align: right; }
-    .qazana-panel #qazana-panel-page-editor .qazana-units-choices input {
-      display: none; }
-      .qazana-panel #qazana-panel-page-editor .qazana-units-choices input:not(:checked) + label {
-        color: #A7A7AA; }
-      .qazana-panel #qazana-panel-page-editor .qazana-units-choices input:checked + label {
-        text-decoration: underline; }
-    .qazana-panel #qazana-panel-page-editor .qazana-units-choices label {
-      cursor: pointer;
-      padding: 0 2px;
-      text-transform: uppercase;
-      font-size: 9px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-responsive-switchers {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    margin-left: 5px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher {
-    display: inline-block;
-    border-radius: 50%;
-    height: 18px;
-    width: 18px;
-    background-color: #a0a5aa;
-    cursor: pointer;
-    position: relative;
-    margin-left: 5px;
-    color: #fff;
-    font-size: 8px;
-    text-align: center;
-    -webkit-transition: background-color 0.5s;
-    transition: background-color 0.5s; }
-    .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher:hover {
-      background-color: #A7A7AA; }
-    .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher i {
-      line-height: 18px; }
   .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
     background: #A7A7AA; }
     .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher:not(.qazana-responsive-switcher-desktop) {
       display: none; }
-  .qazana-device-mobile .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher-mobile {
-    background-color: #008EFF; }
-  .qazana-device-tablet .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher-tablet {
-    background-color: #008EFF; }
-  .qazana-panel #qazana-panel-page-editor #qazana-update-preview {
-    margin: 15px 15px 0;
-    background-color: #EBEBEB;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
-  .qazana-panel #qazana-panel-page-editor #qazana-update-preview-button-wrapper {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    text-align: right; }
-  .qazana-panel #qazana-panel-page-editor #qazana-update-preview-button {
-    padding: 8px 15px;
-    text-transform: uppercase; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media {
-    padding: 7px;
-    border: 1px solid;
-    height: 150px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(:hover) {
-      border-color: #ddd; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(:hover) .qazana-control-media-upload-button {
-        background-color: #ddd; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:hover {
-      border-color: #a0a5aa; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:hover .qazana-control-media-upload-button {
-        background-color: #a0a5aa; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media.media-empty .qazana-control-media-image-area {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(.media-empty) .qazana-control-media-upload-button {
-      display: none; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media > * {
-      height: 100%;
-      cursor: pointer;
-      position: relative; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .fa-plus-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translateX(-50%) translateY(-50%);
-            transform: translateX(-50%) translateY(-50%);
-    color: #fff;
-    font-size: 20px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image-area:not(:hover) .qazana-control-media-delete {
-    display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image-area:hover .qazana-control-media-image {
-    opacity: 0.5; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-delete {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding: 9.5px;
-    font-size: 11px;
-    color: #fff;
-    background-color: #a0a5aa;
-    text-transform: uppercase; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image {
-    height: 100%;
-    background-size: cover; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-control-dimensions {
-    overflow: hidden; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li {
-    float: left;
-    width: 20%; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li .qazana-link-dimensions,
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input {
-      display: block;
-      text-align: center;
-      width: 100%;
-      border-color: #a0a5aa;
-      height: 27px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input {
-      border-left: none;
-      border-radius: 0;
-      padding: 4px 0; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input + span {
-        display: block;
-        text-align: center;
-        color: #ddd;
-        font-size: 9px;
-        text-transform: uppercase;
-        padding-top: 5px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input:focus + span {
-        color: #a0a5aa; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li .qazana-link-dimensions {
-      border: 1px solid #a0a5aa;
-      border-left: none;
-      background-color: #fff;
-      padding: 0;
-      outline: none;
-      border-radius: 0 3px 3px 0;
-      cursor: pointer; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li:first-child input {
-      border-left: 1px solid #a0a5aa;
-      border-radius: 3px 0 0 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions.unlinked {
-    background-color: #fff; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions.unlinked .qazana-linked {
-      display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions:not(.unlinked) {
-    background-color: #a0a5aa; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions:not(.unlinked) .qazana-unlinked {
-      display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions .qazana-linked {
-    color: #fff; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-external-hide .qazana-control-url-target {
-    display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-external-show input {
-    padding-right: 46px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-input-wrapper {
-    position: relative; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-target {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0;
-    height: 100%;
-    width: 40px;
-    border: none;
-    border-left: 1px solid;
-    background: none;
-    cursor: pointer;
-    font-size: 10px;
-    border-radius: 0 3px 3px 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-target.active {
-      background-color: #a0a5aa; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-target.active .qazana-control-url-external {
-        color: #fff; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-target:not(.active) .qazana-control-url-external {
-      opacity: 0.5; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input {
-    direction: ltr; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input:not(:focus) + .qazana-control-url-target {
-      border-color: #ddd; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input:not(:focus) + .qazana-control-url-target.active {
-        background-color: #ddd; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input:focus + .qazana-control-url-target {
-      border-color: #a0a5aa; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input:focus + .qazana-control-url-target.active {
-        background-color: #a0a5aa; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-align .qazana-choices,
-  .qazana-panel #qazana-panel-page-editor .qazana-control-position .qazana-choices,
-  .qazana-panel #qazana-panel-page-editor .qazana-control-text_align .qazana-choices {
-    direction: ltr; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-section {
-    margin-top: 10px;
-    padding: 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-section + .qazana-control:not(.qazana-control-type-section) {
-      padding-top: 15px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-section + .qazana-control:not(.qazana-control-type-section):before {
-        display: none; }
-  .qazana-panel #qazana-panel-page-editor .wp-picker-container:not(.wp-picker-active) {
-    float: right; }
-  .qazana-panel #qazana-panel-page-editor .wp-picker-container.wp-picker-active {
-    -webkit-transform: translateY(6px);
-            transform: translateY(6px); }
-    .qazana-panel #qazana-panel-page-editor .wp-picker-container.wp-picker-active .wp-color-result {
-      margin-right: 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg.qazana-rich-editing-disabled .wp-editor-container {
-    margin-top: 10px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg * {
-    -webkit-box-sizing: content-box;
-            box-sizing: content-box; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-editor-container {
-    border: 1px solid #EBEBEB;
-    border-radius: 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg #insert-media-button {
-    margin-top: 7px;
-    height: initial;
-    line-height: 1;
-    font-size: 10px;
-    padding: 3px 7px;
-    background-color: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .ed_button {
-    height: 22px;
-    width: initial; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-media-buttons-icon {
-    height: 14px;
-    margin: 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-media-buttons-icon:before {
-      font-size: 14px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-switch-editor {
-    border: none;
-    color: #444;
-    font-size: 10px;
-    padding: 3px 9px 4px;
-    border-radius: 3px 3px 0 0; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .html-active .switch-tmce {
-    background-color: transparent; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .html-active .switch-html {
-    background-color: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .tmce-active .switch-tmce {
-    background-color: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .tmce-active .switch-html {
-    background-color: transparent; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-toolbar-grp,
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .quicktags-toolbar {
-    background-color: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-toolbar-grp > div {
-    padding: 0 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .qazana-wp-editor {
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-ico {
-    color: #444;
-    font-size: 16px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn {
-    margin-right: 0;
-    margin-left: 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn.mce-active, .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn:active, .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn:hover {
-      border-color: #ddd; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-path {
-    padding: 5px 10px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-path-item {
-    font-size: 12px;
-    color: #444; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-icon .select2-selection__rendered .fa {
-    margin-right: 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery.qazana-gallery-empty .qazana-control-gallery-clear,
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery.qazana-gallery-empty .qazana-control-gallery-thumbnails {
-    display: none; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnails {
-    overflow: hidden;
-    margin-top: 20px;
-    cursor: pointer; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnail {
-    width: 40px;
-    height: 40px;
-    background-size: cover;
-    background-position: 50% 50%;
-    float: left;
-    margin-bottom: 10px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnail:not(:nth-child(5n)) {
-      margin-right: 10px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-add {
-    width: 100%;
-    height: 30px;
-    color: #fff;
-    background-color: #a0a5aa;
-    margin-top: 10px;
-    text-transform: uppercase; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-clear {
-    color: #b01b1b;
-    cursor: pointer; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset {
-    border: 1px solid #EBEBEB;
-    padding: 3px;
-    border-radius: 3px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset:not(.qazana-control-structure-current-preset) {
-      display: inline-block;
-      cursor: pointer;
-      height: 50px; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset:not(.qazana-control-structure-current-preset) svg {
-        height: 100%; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset path {
-      fill: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-current-preset {
-    margin-top: 15px; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-current-preset svg {
-      display: block;
-      width: 100%; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-reset {
-    padding: 10px 0 0 2px;
-    font-size: 11px;
-    cursor: pointer;
-    color: #a0a5aa; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-reset i {
-      margin-right: 8px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title,
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title {
-    color: #23282d;
-    font-weight: bold;
-    padding: 13.5px 20px;
-    position: relative; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:after, .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before,
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:after,
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before,
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
-      top: 0;
-      background-color: #EBEBEB;
-      -webkit-transform: translateY(-100%);
-              transform: translateY(-100%); }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:after,
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:after {
-      bottom: 0;
-      height: 1px;
-      background-color: #EBEBEB; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title {
-    margin: 10px -20px 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
-      height: 10px;
-      -webkit-box-shadow: inset 0 2px 4px rgba(127, 127, 127, 0.1);
-              box-shadow: inset 0 2px 4px rgba(127, 127, 127, 0.1); }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title {
-    margin: 15px -20px 0; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before {
-      height: 3px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-        -ms-flex-pack: justify;
-            justify-content: space-between; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input {
-      display: none; }
-      .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input:checked + .qazana-control-structure-preset {
-        border: 1px solid #a0a5aa; }
-        .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input:checked + .qazana-control-structure-preset path {
-          fill: #a0a5aa; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset-wrapper {
-    margin-top: 15px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset-title {
-    text-align: center;
-    padding-top: 5px;
-    font-style: italic;
-    font-size: 11px;
-    color: #a0a5aa; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-control-description {
-    margin: 0 0 15px;
-    line-height: 1.4; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-control-input-wrapper {
-    overflow: hidden; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field {
-    width: 70px;
-    float: left; }
-    .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field input:focus + .qazana-image-dimensions-field-description {
-      color: #a0a5aa; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-separator {
-    width: 20px;
-    text-align: center;
-    float: left;
-    padding-top: 4px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field-description {
-    text-transform: uppercase;
-    margin-top: 5px;
-    color: #ddd;
-    font-size: 9px;
-    text-align: center; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-apply-button {
-    float: right;
-    height: 27px;
-    width: 70px; }
-  .qazana-panel #qazana-panel-page-editor .qazana-control-type-code {
-    padding: 0 10px 15px; }
   .qazana-panel #qazana-panel-page-editor .qazana-control-type-tabs {
     font-size: 0.8em;
     color: #a0a5aa;
@@ -1952,6 +1402,566 @@ select {
       left: 50%;
       -webkit-transform: translateX(-50%) translateY(-50%);
               transform: translateX(-50%) translateY(-50%); }
+  .qazana-panel #qazana-panel-page-editor #qazana-controls > .qazana-control:not(.qazana-active-tab) {
+    display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control {
+    position: relative;
+    padding: 0 20px 15px;
+    background-color: #fff; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default:before {
+      display: block;
+      margin-bottom: 15px;
+      height: 1px;
+      background-color: #EBEBEB;
+      content: ''; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default.qazana-control-wp {
+      margin-top: 15px; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-default.qazana-control-wp:before {
+        background-color: transparent; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-before {
+      padding-top: 15px; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-before:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #ddd;
+        content: ''; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-after:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #ddd;
+      content: ''; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-separator-after + .qazana-control-type-tabs {
+      padding-top: 15px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-deprecated {
+      color: #b01b1b; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-deprecated .qazana-control-description {
+        color: #b01b1b; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-hidden-label .qazana-control-title {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-hidden-control {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-under-section:not(.qazana-open) {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-heading .qazana-control-title {
+      margin: 0;
+      font-weight: bold; }
+    body:not(.qazana-device-desktop) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-desktop {
+      display: none; }
+    body:not(.qazana-device-tablet) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-tablet {
+      display: none; }
+    body:not(.qazana-device-mobile) .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-responsive-mobile {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .selector-popup {
+      width: 262px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .fip-box {
+      width: 44px; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control.qazana-control-type-icon .icons-selector .fip-box i {
+        font-size: 1em; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-wp {
+    line-height: 1.5; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-wp p {
+      margin: 15px 0; }
+  .qazana-panel #qazana-panel-page-editor .qazana-label-block > .qazana-control-content > .qazana-control-field {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .qazana-panel #qazana-panel-page-editor .qazana-label-block > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
+      -webkit-flex-basis: 100%;
+          -ms-flex-preferred-size: 100%;
+              flex-basis: 100%;
+      margin-top: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-label-block.qazana-control-hidden-label > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
+    margin-top: 0; }
+  .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field {
+    display: table;
+    width: 100%; }
+    .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field > * {
+      display: table-cell;
+      vertical-align: middle; }
+    .qazana-panel #qazana-panel-page-editor .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-title {
+      width: 45%; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-description {
+    margin-top: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-choices {
+    display: table;
+    width: 100%;
+    height: 27px;
+    border-spacing: 1px;
+    border-radius: 3px;
+    background-color: #a0a5aa;
+    text-align: center; }
+    .qazana-panel #qazana-panel-page-editor .qazana-choices input {
+      display: none; }
+      .qazana-panel #qazana-panel-page-editor .qazana-choices input:checked + .qazana-choices-label {
+        color: #fff; }
+      .qazana-panel #qazana-panel-page-editor .qazana-choices input:not(:checked) + .qazana-choices-label {
+        background-color: #fff;
+        color: #a0a5aa; }
+    .qazana-panel #qazana-panel-page-editor .qazana-choices .qazana-choices-label {
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 12px;
+      cursor: pointer;
+      -webkit-transition: all 0.5s;
+      transition: all 0.5s; }
+  .qazana-panel #qazana-panel-page-editor .qazana-slider {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    width: 67%;
+    height: 4px;
+    border-radius: 5px;
+    background-color: #a0a5aa; }
+    .qazana-panel #qazana-panel-page-editor .qazana-slider .ui-slider-handle {
+      position: absolute;
+      top: 50%;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: #fff;
+      -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+              box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      -webkit-transform: translateY(-50%) translateX(-8px);
+              transform: translateY(-50%) translateX(-8px); }
+  .qazana-panel #qazana-panel-page-editor .qazana-slider-input {
+    float: right;
+    width: 33%; }
+    .qazana-panel #qazana-panel-page-editor .qazana-slider-input input {
+      float: right;
+      width: 80%; }
+  .qazana-panel #qazana-panel-page-editor .qazana-units-choices {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    text-align: right; }
+    .qazana-panel #qazana-panel-page-editor .qazana-units-choices input {
+      display: none; }
+      .qazana-panel #qazana-panel-page-editor .qazana-units-choices input:not(:checked) + label {
+        color: #A7A7AA; }
+      .qazana-panel #qazana-panel-page-editor .qazana-units-choices input:checked + label {
+        text-decoration: underline; }
+    .qazana-panel #qazana-panel-page-editor .qazana-units-choices label {
+      padding: 0 2px;
+      text-transform: uppercase;
+      font-size: 9px;
+      cursor: pointer; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-responsive-switchers {
+    margin-left: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher {
+    margin-left: 5px;
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #a0a5aa;
+    color: #fff;
+    text-align: center;
+    font-size: 8px;
+    cursor: pointer;
+    -webkit-transition: background-color 0.5s;
+    transition: background-color 0.5s; }
+    .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher:hover {
+      background-color: #A7A7AA; }
+    .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher i {
+      line-height: 18px; }
+  .qazana-device-mobile .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher-mobile {
+    background-color: #008EFF; }
+  .qazana-device-tablet .qazana-panel #qazana-panel-page-editor .qazana-responsive-switcher-tablet {
+    background-color: #008EFF; }
+  .qazana-panel #qazana-panel-page-editor #qazana-update-preview {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin: 15px 15px 0;
+    background-color: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor #qazana-update-preview-button-wrapper {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    text-align: right; }
+  .qazana-panel #qazana-panel-page-editor #qazana-update-preview-button {
+    padding: 8px 15px;
+    text-transform: uppercase; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media {
+    padding: 7px;
+    height: 150px;
+    border: 1px solid; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(:hover) {
+      border-color: #ddd; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(:hover) .qazana-control-media-upload-button {
+        background-color: #ddd; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:hover {
+      border-color: #a0a5aa; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:hover .qazana-control-media-upload-button {
+        background-color: #a0a5aa; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media.media-empty .qazana-control-media-image-area {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media:not(.media-empty) .qazana-control-media-upload-button {
+      display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media > * {
+      position: relative;
+      height: 100%;
+      cursor: pointer; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .fa-plus-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    font-size: 20px;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%); }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image-area:not(:hover) .qazana-control-media-delete {
+    display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image-area:hover .qazana-control-media-image {
+    opacity: 0.5; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-delete {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 9.5px;
+    background-color: #a0a5aa;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-media .qazana-control-media-image {
+    height: 100%;
+    background-size: cover; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-control-dimensions {
+    overflow: hidden; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li {
+    float: left;
+    width: 20%; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li .qazana-link-dimensions,
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input {
+      display: block;
+      width: 100%;
+      height: 27px;
+      border-color: #a0a5aa;
+      text-align: center; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input {
+      padding: 4px 0;
+      border-left: none;
+      border-radius: 0; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input + span {
+        display: block;
+        padding-top: 5px;
+        color: #ddd;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 9px; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li input:focus + span {
+        color: #a0a5aa; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li .qazana-link-dimensions {
+      padding: 0;
+      outline: none;
+      border: 1px solid #a0a5aa;
+      border-left: none;
+      border-radius: 0 3px 3px 0;
+      background-color: #fff;
+      cursor: pointer; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions li:first-child input {
+      border-left: 1px solid #a0a5aa;
+      border-radius: 3px 0 0 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions.unlinked {
+    background-color: #fff; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions.unlinked .qazana-linked {
+      display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions:not(.unlinked) {
+    background-color: #a0a5aa; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions:not(.unlinked) .qazana-unlinked {
+      display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-dimensions .qazana-link-dimensions .qazana-linked {
+    color: #fff; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-external-hide .qazana-control-url-more {
+    display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-external-show input {
+    padding-right: 46px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-input-wrapper {
+    position: relative; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-more {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 40px;
+    height: 26px;
+    border-left: 1px solid;
+    border-radius: 0 3px 3px 0;
+    font-size: 10px;
+    cursor: pointer; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-more i {
+      font-size: 13px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-more-input {
+      display: none; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-more-input:not(:checked) + .qazana-control-url-more-options {
+        display: none; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-more-options {
+      padding-top: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url .qazana-control-url-option {
+    padding: 5px;
+    font-size: 12px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input[type=url] {
+    direction: ltr; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input[type=url]:not(:focus) + .qazana-control-url-more {
+      border-color: #ddd; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-url input[type=url]:focus + .qazana-control-url-more {
+      border-color: #a0a5aa; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-align .qazana-choices,
+  .qazana-panel #qazana-panel-page-editor .qazana-control-position .qazana-choices,
+  .qazana-panel #qazana-panel-page-editor .qazana-control-text_align .qazana-choices {
+    direction: ltr; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-section {
+    margin-top: 10px;
+    padding: 0; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-section + .qazana-control:not(.qazana-control-type-section) {
+      padding-top: 15px; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-section + .qazana-control:not(.qazana-control-type-section):before {
+        display: none; }
+  .qazana-panel #qazana-panel-page-editor .wp-picker-container:not(.wp-picker-active) {
+    float: right; }
+  .qazana-panel #qazana-panel-page-editor .wp-picker-container.wp-picker-active {
+    -webkit-transform: translateY(6px);
+            transform: translateY(6px); }
+    .qazana-panel #qazana-panel-page-editor .wp-picker-container.wp-picker-active .wp-color-result {
+      margin-right: 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg.qazana-rich-editing-disabled .wp-editor-container {
+    margin-top: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg * {
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-editor-container {
+    border: 1px solid #EBEBEB;
+    border-radius: 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg #insert-media-button {
+    margin-top: 7px;
+    padding: 3px 7px;
+    height: initial;
+    background-color: #EBEBEB;
+    font-size: 10px;
+    line-height: 1; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .ed_button {
+    width: initial;
+    height: 22px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-media-buttons-icon {
+    margin: 0;
+    height: 14px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-media-buttons-icon:before {
+      font-size: 14px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .wp-switch-editor {
+    padding: 3px 9px 4px;
+    border: none;
+    border-radius: 3px 3px 0 0;
+    color: #444;
+    font-size: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .html-active .switch-tmce {
+    background-color: transparent; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .html-active .switch-html {
+    background-color: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .tmce-active .switch-tmce {
+    background-color: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .tmce-active .switch-html {
+    background-color: transparent; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-toolbar-grp,
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .quicktags-toolbar {
+    background-color: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-toolbar-grp > div {
+    padding: 0 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .qazana-wp-editor {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-ico {
+    color: #444;
+    font-size: 16px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn {
+    margin-right: 0;
+    margin-left: 0; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn.mce-active, .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn:active, .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-btn:hover {
+      border-color: #ddd; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-path {
+    padding: 5px 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-wysiwyg .mce-path-item {
+    color: #444;
+    font-size: 12px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-icon .select2-selection__rendered .fa {
+    margin-right: 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery.qazana-gallery-empty .qazana-control-gallery-clear,
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery.qazana-gallery-empty .qazana-control-gallery-thumbnails {
+    display: none; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnails {
+    overflow: hidden;
+    margin-top: 20px;
+    cursor: pointer; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnail {
+    float: left;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 40px;
+    background-position: 50% 50%;
+    background-size: cover; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-thumbnail:not(:nth-child(5n)) {
+      margin-right: 10px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-add {
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    background-color: #a0a5aa;
+    color: #fff;
+    text-transform: uppercase; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-gallery .qazana-control-gallery-clear {
+    color: #b01b1b;
+    cursor: pointer; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset {
+    padding: 3px;
+    border: 1px solid #EBEBEB;
+    border-radius: 3px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset:not(.qazana-control-structure-current-preset) {
+      display: inline-block;
+      height: 50px;
+      cursor: pointer; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset:not(.qazana-control-structure-current-preset) svg {
+        height: 100%; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset path {
+      fill: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-current-preset {
+    margin-top: 15px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-current-preset svg {
+      display: block;
+      width: 100%; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-reset {
+    padding: 10px 0 0 2px;
+    color: #a0a5aa;
+    font-size: 11px;
+    cursor: pointer; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-reset i {
+      margin-right: 8px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title,
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title {
+    position: relative;
+    padding: 13.5px 20px;
+    color: #23282d;
+    font-weight: bold; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:after, .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before,
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:after,
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
+      position: absolute;
+      right: 0;
+      left: 0;
+      content: ''; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before,
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
+      top: 0;
+      background-color: #EBEBEB;
+      -webkit-transform: translateY(-100%);
+              transform: translateY(-100%); }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:after,
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:after {
+      bottom: 0;
+      height: 1px;
+      background-color: #EBEBEB; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title {
+    margin: 10px -20px 0; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-title:before {
+      height: 10px;
+      -webkit-box-shadow: inset 0 2px 4px rgba(127, 127, 127, 0.1);
+              box-shadow: inset 0 2px 4px rgba(127, 127, 127, 0.1); }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title {
+    margin: 15px -20px 0; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets-title:before {
+      height: 3px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input {
+      display: none; }
+      .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input:checked + .qazana-control-structure-preset {
+        border: 1px solid #a0a5aa; }
+        .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-more-presets input:checked + .qazana-control-structure-preset path {
+          fill: #a0a5aa; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset-wrapper {
+    margin-top: 15px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-structure .qazana-control-structure-preset-title {
+    padding-top: 5px;
+    color: #a0a5aa;
+    text-align: center;
+    font-style: italic;
+    font-size: 11px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-control-description {
+    margin: 0 0 15px;
+    line-height: 1.4; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-control-input-wrapper {
+    overflow: hidden; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field {
+    float: left;
+    width: 70px; }
+    .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field input:focus + .qazana-image-dimensions-field-description {
+      color: #a0a5aa; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-separator {
+    float: left;
+    padding-top: 4px;
+    width: 20px;
+    text-align: center; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-field-description {
+    margin-top: 5px;
+    color: #ddd;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 9px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-image_dimensions .qazana-image-dimensions-apply-button {
+    float: right;
+    width: 70px;
+    height: 27px; }
+  .qazana-panel #qazana-panel-page-editor .qazana-control-type-code {
+    padding: 0 10px 15px; }
   .qazana-panel #qazana-panel-page-editor .qazana-control-type-hidden {
     display: none !important; }
   .qazana-panel .wp-picker-container.wp-picker-active {

@@ -25,8 +25,9 @@ class Control_URL extends Base_Control_Multiple {
 
 	public function get_default_value() {
 		return [
-			'is_external' => '',
 			'url' => '',
+			'is_external' => '',
+			'nofollow' => '',
 		];
 	}
 
@@ -38,18 +39,37 @@ class Control_URL extends Base_Control_Multiple {
 	}
 
 	public function content_template() {
+
+		$control_uid = $this->get_control_uid();
+
+		$more_input_control_uid = $this->get_control_uid( 'more-input' );
+
+		$is_external_control_uid = $this->get_control_uid( 'is_external' );
+
+		$nofollow_control_uid = $this->get_control_uid( 'nofollow' );
 		?>
 		<div class="qazana-control-field qazana-control-url-external-{{{ data.show_external ? 'show' : 'hide' }}}">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<input type="url" data-setting="url" placeholder="{{ data.placeholder }}" />
-				<button class="qazana-control-url-target tooltip-target" data-tooltip="<?php _e( 'Open Link in new Tab', 'qazana' ); ?>" title="<?php esc_attr_e( 'Open Link in new Tab', 'qazana' ); ?>">
-					<span class="qazana-control-url-external" title="<?php esc_attr_e( 'New Window', 'qazana' ); ?>"><i class="fa fa-external-link"></i></span>
-				</button>
+				<input id="<?php echo $control_uid; ?>" type="url" data-setting="url" placeholder="{{ data.placeholder }}" />
+				<label for="<?php echo $more_input_control_uid; ?>" class="qazana-control-url-more tooltip-target" data-tooltip="<?php _e( 'Link Options', 'qazana' ); ?>">
+					<i class="fa fa-cog"></i>
+				</label>
+				<input id="<?php echo $more_input_control_uid; ?>" type="checkbox" class="qazana-control-url-more-input">
+				<div class="qazana-control-url-more-options">
+					<div class="qazana-control-url-option">
+						<input id="<?php echo $is_external_control_uid; ?>" type="checkbox" class="qazana-control-url-option-input" data-setting="is_external">
+						<label for="<?php echo $is_external_control_uid; ?>"><?php echo __( 'Open in new window', 'qazana' ); ?></label>
+					</div>
+					<div class="qazana-control-url-option">
+						<input id="<?php echo $nofollow_control_uid; ?>" type="checkbox" class="qazana-control-url-option-input" data-setting="nofollow">
+						<label for="<?php echo $nofollow_control_uid; ?>"><?php echo __( 'Add nofollow', 'qazana' ); ?></label>
+					</div>
+				</div>
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="qazana-control-description">{{{ data.description }}}</div>
+		<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

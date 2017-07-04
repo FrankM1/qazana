@@ -202,16 +202,22 @@ class Widget_Heading extends Widget_Base {
 		}
 
 		if ( ! empty( $settings['link']['url'] ) ) {
-			$target = $settings['link']['is_external'] ? ' target="_blank"' : '';
+			$this->add_render_attribute( 'url', 'href', $settings['link']['url'] );
 
-			$url = sprintf( '<a href="%s"%s>%s</a>', $settings['link']['url'], $target, $settings['title'] );
+			if ( $settings['link']['is_external'] ) {
+				$this->add_render_attribute( 'url', 'target', '_blank' );
+			}
 
-			$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $url );
-		} else {
-			$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $settings['title'] );
-		} ?>
+			if ( ! empty( $settings['link']['nofollow'] ) ) {
+				$this->add_render_attribute( 'url', 'rel', 'nofollow' );
+			}
 
-        <div <?php echo $this->get_render_attribute_string( 'heading-wrapper' ); ?>>
+			$title = sprintf( '<a %1$s>%2$s</a>', $this->get_render_attribute_string( 'url' ), $title );
+		}
+
+		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $title );
+
+		?><div <?php echo $this->get_render_attribute_string( 'heading-wrapper' ); ?>>
             <?php echo $title_html; ?>
         </div><?php
 

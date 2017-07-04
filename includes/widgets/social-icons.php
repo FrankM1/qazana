@@ -282,13 +282,31 @@ class Widget_Social_Icons extends Widget_Base {
 	}
 
 	protected function render() {
+
+		$class_animation = '';
+		if ( ! empty( $settings['hover_animation'] ) ) {
+			$class_animation = ' qazana-animation-' . $settings['hover_animation'];
+		}
+
 		?>
 		<div class="qazana-social-icons-wrapper">
 			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $item ) :
 				$social = str_replace( 'fa fa-', '', $item['social'] );
-				$target = $item['link']['is_external'] ? ' target="_blank"' : '';
+
+				$link_key = 'link_' . $index;
+
+				$this->add_render_attribute( $link_key, 'href', $item['link']['url'] );
+
+				if ( $item['link']['is_external'] ) {
+					$this->add_render_attribute( $link_key, 'target', '_blank' );
+				}
+
+				if ( $item['link']['nofollow'] ) {
+					$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
+				}
+
 				?>
-				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo esc_attr( $social ); ?>" href="<?php echo esc_attr( $item['link']['url'] ); ?>"<?php echo $target; ?>>
+				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo $social . $class_animation; ?>" <?php echo $this->get_render_attribute_string( $link_key ); ?>>
 					<i class="<?php echo $item['social']; ?>"></i>
 				</a>
 			<?php endforeach; ?>
@@ -302,7 +320,7 @@ class Widget_Social_Icons extends Widget_Base {
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
 					social = item.social.replace( 'fa fa-', '' ); #>
-				<a class="qazana-icon qazana-social-icon qazana-social-icon-{{ social }}" href="{{ link }}">
+				<a class="qazana-icon qazana-social-icon qazana-social-icon-{{ social }} qazana-animation-{{ settings.hover_animation }}" href="{{ link }}">
 					<i class="{{ item.social }}"></i>
 				</a>
 			<# } ); #>

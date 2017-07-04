@@ -763,6 +763,10 @@ class Widget_Icon_Box extends Widget_Base {
 			if ( ! empty( $settings['link']['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
 			}
+
+			if ( $settings['link']['nofollow'] ) {
+				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			}
 		}
 
 		$this->add_render_attribute( 'i', 'class', $settings['icon'] );
