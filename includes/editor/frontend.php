@@ -52,7 +52,6 @@ class Frontend {
 	protected function _print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
 			$element = qazana()->elements_manager->create_element_instance( $element_data );
-			$element->load_script_dependencies();
 			$element->print_element();
 		}
 	}

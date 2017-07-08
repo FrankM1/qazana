@@ -2,124 +2,210 @@
 // Button
 //
 
+// Alignment Classes
+.qazana-align- {
+  &center {
+    .qazana-button {
+      width: auto;
+    }
+  }
+
+  &right {
+    .qazana-button {
+      width: auto;
+    }
+  }
+
+  &left {
+    .qazana-button {
+      width: auto;
+    }
+  }
+
+  &justify {
+    .qazana-button {
+      width: 100%;
+    }
+  }
+}
+
+// Alignment for Tablet
+
+@media (max-width: $screen-md-max) {
+  .qazana-tablet-align- {
+    &center {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &right {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &left {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &justify {
+      .qazana-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+@media (max-width: $screen-sm-max) {
+  .qazana-mobile-align- {
+    &center {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &right {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &left {
+      .qazana-button {
+        width: auto;
+      }
+    }
+
+    &justify {
+      .qazana-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
 .qazana-button {
-	display: inline-block;
-	line-height: 1;
-	background-color: $gray;
-	color: #fff;
-	text-align: center;
-	transition: $transition-hover;
-	border: none;
+  display: inline-block;
 
-	&:focus,
-	&:hover,
-	&:visited {
-		color: #fff;
-		opacity: 0.9;
-	}
+  .qazana-button-content-wrapper {
+    border: none;
+    background-color: $gray;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1;
+    transition: $transition-hover;
+  }
 
-	&.qazana-size- {
-		&xs {
-			font-size: 13px;
-			padding: 10px 20px;
-		}
+  &.qazana-size- {
+    &xs .qazana-button-content-wrapper {
+      padding: 10px 20px;
+      font-size: 13px;
+    }
 
-		&sm {
-			font-size: 15px;
-			padding: 12px 24px;
-		}
+    &sm .qazana-button-content-wrapper {
+      padding: 12px 24px;
+      font-size: 15px;
+    }
 
-		&md {
-			font-size: 16px;
-			padding: 15px 30px;
-		}
+    &md .qazana-button-content-wrapper {
+      padding: 15px 30px;
+      font-size: 16px;
+    }
 
-		&lg {
-			font-size: 18px;
-			padding: 20px 40px;
-		}
+    &lg .qazana-button-content-wrapper {
+      padding: 20px 40px;
+      font-size: 18px;
+    }
 
-		&xl {
-			font-size: 20px;
-			padding: 25px 50px;
-		}
-	}
+    &xl .qazana-button-content-wrapper {
+      padding: 25px 50px;
+      font-size: 20px;
+    }
+  }
 
-	.qazana-align-icon- {
-		&right {
-			float: right;
-			margin-left: 5px;
-		}
+  .qazana-align-icon- {
+    &right {
+      margin-left: 5px;
+    }
 
-		&left {
-			float: left;
-			margin-right: 5px;
-		}
-	}
-
-	.qazana-button-text {
-		display: inline-block;
-	}
+    &left {
+      margin-right: 5px;
+    }
+  }
 }
 
 .qazana-widget-button {
-	.qazana-button {
-		&.qazana-button- {
-			&info {
-				background-color: $info;
-			}
+  .qazana-button {
+    &.qazana-button- {
+      &info .qazana-button-content-wrapper {
+        border-color: $info;
+        background-color: $info;
+      }
 
-			&success {
-				background-color: $success;
-			}
+      &success .qazana-button-content-wrapper {
+        border-color: $success;
+        background-color: $success;
+      }
 
-			&warning {
-				background-color: $warning;
-			}
+      &warning .qazana-button-content-wrapper {
+        border-color: $warning;
+        background-color: $warning;
+      }
 
-			&danger {
-				background-color: $danger;
-			}
+      &danger .qazana-button-content-wrapper {
+        border-color: $warning;
+        background-color: $warning;
+      }
 
-			&clear {
-				background-color: transparent;
-				color: inherit;
-				padding: 0;
-				opacity: 1;
-			}
-		}
-	}
+      &clear .qazana-button-content-wrapper {
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        color: inherit;
+        opacity: 1;
+      }
+    }
+  }
 }
 
+// Icon Hover
 .qazana-icon-hover-reveal-yes {
-	.qazana-button {
-		transition: all 0.5s cubic-bezier(.3,.95,.3,.95);
-	}
+  .qazana-button {
+    transition: all .5s cubic-bezier(.3,.95,.3,.95);
+  }
 
-	.qazana-button-icon {
-		max-width: 0;
-		transition: all 0.5s cubic-bezier(.3,.95,.3,.95);
-		overflow: hidden;
+  .qazana-align-icon-right .qazana-button-content-wrapper {
+    flex-direction: row-reverse;
+  }
 
-		&.qazana-align-icon-right {
-			margin-left: 0;
-		}
+  .qazana-button-icon {
+    overflow: hidden;
+    max-width: 0;
+    transition: all .5s cubic-bezier(.3,.95,.3,.95);
 
-		&.qazana-align-icon-left {
-			margin-right: 0;
-		}
-	}
+    &.qazana-align-icon-right {
+      margin-left: 0;
+    }
 
-	.qazana-button:hover .qazana-button-icon,
-	button:hover .qazana-button-icon {
-		max-width: 100px;
+    &.qazana-align-icon-left {
+      margin-right: 0;
+    }
+  }
 
-		&.qazana-align-icon-right {
-			margin-left: 10px;
-		}
+  .qazana-button:hover .qazana-button-icon,
+  button:hover .qazana-button-icon {
+    max-width: 100px;
 
-		&.qazana-align-icon-left {
-			margin-right: 10px;
-		}
-	}
+    &.qazana-align-icon-right {
+      margin-left: 10px;
+    }
+
+    &.qazana-align-icon-left {
+      margin-right: 10px;
+    }
+  }
 }

@@ -290,7 +290,7 @@ class Widget_Social_Icons extends Widget_Base {
 
 		?>
 		<div class="qazana-social-icons-wrapper">
-			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $item ) :
+			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $index => $item ) :
 				$social = str_replace( 'fa fa-', '', $item['social'] );
 
 				$link_key = 'link_' . $index;

@@ -413,7 +413,7 @@ abstract class Element_Base {
 			$is_negative_condition = ! ! $condition_key_parts[3];
 
 			if ( ! isset( $values[ $pure_condition_key ] ) ) {
-				// wp_die( sprintf( 'Qazana: Element conditions set incorrectly: `%s`', $control['name'] ) );
+				wp_die( sprintf( 'Qazana: Element conditions set incorrectly: `%s` in ' . $this->get_name(), $control['name'] ) );
 			}
 
 			$instance_value = $values[ $pure_condition_key ];
@@ -477,6 +477,9 @@ abstract class Element_Base {
 	public function set_render_attribute( $element, $key = null, $value = null ) {
 		return $this->add_render_attribute( $element, $key, $value, true );
 	}
+	public function unset_render_attribute( $element, $key = null, $value = null ) {
+		unset( $this->_render_attributes[ $element ][ $key ] );
+	}
 
 	public function get_render_attribute_string( $element ) {
 		if ( empty( $this->_render_attributes[ $element ] ) ) {
@@ -496,10 +499,9 @@ abstract class Element_Base {
 
 	public function print_element() {
 
-		if ( ! qazana()->editor->is_edit_mode() ) {
-			$this->load_script_dependencies();
-			$this->load_style_dependencies();
-		}
+		$this->add_element_dependencies();
+		$this->load_script_dependencies();
+		$this->load_style_dependencies();
 
 		do_action( 'qazana/frontend/' . static::get_type() . '/before_render', $this );
 
@@ -766,8 +768,6 @@ abstract class Element_Base {
 	}
 
 	public function load_script_dependencies() {
-		$this->add_element_dependencies();
-
 		if ( ! empty( $this->_element_scripts ) && is_array( $this->_element_scripts ) ) {
 			foreach ( $this->_element_scripts as $key => $value ) {
 				wp_enqueue_script( $value );

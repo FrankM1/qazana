@@ -10,7 +10,7 @@
 
 #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
   margin-top: 5px;
-  content: "\e800";
+  content: '\e800';
   font-size: 12px;
   font-family: eicon; }
 
@@ -81,53 +81,29 @@
   text-align: center; }
   .qazana-align-center .qazana-wrapper {
     margin: 0 auto; }
-  .qazana-align-center .qazana-button {
-    width: auto; }
 .qazana-align-right {
   text-align: right; }
   .qazana-align-right .qazana-wrapper {
     margin-left: auto; }
-  .qazana-align-right .qazana-button {
-    width: auto; }
 .qazana-align-left {
   text-align: left; }
   .qazana-align-left .qazana-wrapper {
     margin-right: auto; }
-  .qazana-align-left .qazana-button {
-    width: auto; }
-.qazana-align-justify .qazana-button {
-  width: 100%; }
 
 @media (max-width: 1024px) {
   .qazana-tablet-align-center {
     text-align: center; }
-    .qazana-tablet-align-center .qazana-button {
-      width: auto; }
   .qazana-tablet-align-right {
     text-align: right; }
-    .qazana-tablet-align-right .qazana-button {
-      width: auto; }
   .qazana-tablet-align-left {
-    text-align: left; }
-    .qazana-tablet-align-left .qazana-button {
-      width: auto; }
-  .qazana-tablet-align-justify .qazana-button {
-    width: 100%; } }
+    text-align: left; } }
 @media (max-width: 767px) {
   .qazana-mobile-align-center {
     text-align: center; }
-    .qazana-mobile-align-center .qazana-button {
-      width: auto; }
   .qazana-mobile-align-right {
     text-align: right; }
-    .qazana-mobile-align-right .qazana-button {
-      width: auto; }
   .qazana-mobile-align-left {
-    text-align: left; }
-    .qazana-mobile-align-left .qazana-button {
-      width: auto; }
-  .qazana-mobile-align-justify .qazana-button {
-    width: 100%; } }
+    text-align: left; } }
 #qazana-select-preset {
   display: none; }
 
@@ -754,64 +730,96 @@
   .qazana-image-gallery .gallery.gallery-columns-2 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-3 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-4 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-5 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-6 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-7 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-8 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-9 .gallery-item, .qazana-image-gallery .gallery.gallery-columns-10 .gallery-item {
     max-width: 100%; } }
 
+.qazana-align-center .qazana-button {
+  width: auto; }
+.qazana-align-right .qazana-button {
+  width: auto; }
+.qazana-align-left .qazana-button {
+  width: auto; }
+.qazana-align-justify .qazana-button {
+  width: 100%; }
+
+@media (max-width: 1024px) {
+  .qazana-tablet-align-center .qazana-button {
+    width: auto; }
+  .qazana-tablet-align-right .qazana-button {
+    width: auto; }
+  .qazana-tablet-align-left .qazana-button {
+    width: auto; }
+  .qazana-tablet-align-justify .qazana-button {
+    width: 100%; } }
+@media (max-width: 767px) {
+  .qazana-mobile-align-center .qazana-button {
+    width: auto; }
+  .qazana-mobile-align-right .qazana-button {
+    width: auto; }
+  .qazana-mobile-align-left .qazana-button {
+    width: auto; }
+  .qazana-mobile-align-justify .qazana-button {
+    width: 100%; } }
 .qazana-button {
-  display: inline-block;
-  line-height: 1;
-  background-color: #818a91;
-  color: #fff;
-  text-align: center;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
-  border: none; }
-  .qazana-button:focus, .qazana-button:hover, .qazana-button:visited {
-    color: #fff;
-    opacity: 0.9; }
-  .qazana-button.qazana-size-xs {
-    font-size: 13px;
-    padding: 10px 20px; }
-  .qazana-button.qazana-size-sm {
-    font-size: 15px;
-    padding: 12px 24px; }
-  .qazana-button.qazana-size-md {
-    font-size: 16px;
-    padding: 15px 30px; }
-  .qazana-button.qazana-size-lg {
-    font-size: 18px;
-    padding: 20px 40px; }
-  .qazana-button.qazana-size-xl {
-    font-size: 20px;
-    padding: 25px 50px; }
+  display: inline-block; }
+  .qazana-button .qazana-button-content-wrapper {
+    border: none;
+    background-color: #818a91;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s; }
+  .qazana-button.qazana-size-xs .qazana-button-content-wrapper {
+    padding: 10px 20px;
+    font-size: 13px; }
+  .qazana-button.qazana-size-sm .qazana-button-content-wrapper {
+    padding: 12px 24px;
+    font-size: 15px; }
+  .qazana-button.qazana-size-md .qazana-button-content-wrapper {
+    padding: 15px 30px;
+    font-size: 16px; }
+  .qazana-button.qazana-size-lg .qazana-button-content-wrapper {
+    padding: 20px 40px;
+    font-size: 18px; }
+  .qazana-button.qazana-size-xl .qazana-button-content-wrapper {
+    padding: 25px 50px;
+    font-size: 20px; }
   .qazana-button .qazana-align-icon-right {
-    float: right;
     margin-left: 5px; }
   .qazana-button .qazana-align-icon-left {
-    float: left;
     margin-right: 5px; }
-  .qazana-button .qazana-button-text {
-    display: inline-block; }
 
-.qazana-widget-button .qazana-button.qazana-button-info {
+.qazana-widget-button .qazana-button.qazana-button-info .qazana-button-content-wrapper {
+  border-color: #5bc0de;
   background-color: #5bc0de; }
-.qazana-widget-button .qazana-button.qazana-button-success {
+.qazana-widget-button .qazana-button.qazana-button-success .qazana-button-content-wrapper {
+  border-color: #5cb85c;
   background-color: #5cb85c; }
-.qazana-widget-button .qazana-button.qazana-button-warning {
+.qazana-widget-button .qazana-button.qazana-button-warning .qazana-button-content-wrapper {
+  border-color: #f0ad4e;
   background-color: #f0ad4e; }
-.qazana-widget-button .qazana-button.qazana-button-danger {
-  background-color: #d9534f; }
-.qazana-widget-button .qazana-button.qazana-button-clear {
+.qazana-widget-button .qazana-button.qazana-button-danger .qazana-button-content-wrapper {
+  border-color: #f0ad4e;
+  background-color: #f0ad4e; }
+.qazana-widget-button .qazana-button.qazana-button-clear .qazana-button-content-wrapper {
+  padding: 0;
+  border: none;
   background-color: transparent;
   color: inherit;
-  padding: 0;
   opacity: 1; }
 
 .qazana-icon-hover-reveal-yes .qazana-button {
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
+.qazana-icon-hover-reveal-yes .qazana-align-icon-right .qazana-button-content-wrapper {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -webkit-flex-direction: row-reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse; }
 .qazana-icon-hover-reveal-yes .qazana-button-icon {
+  overflow: hidden;
   max-width: 0;
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  overflow: hidden; }
+  transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
   .qazana-icon-hover-reveal-yes .qazana-button-icon.qazana-align-icon-right {
     margin-left: 0; }
   .qazana-icon-hover-reveal-yes .qazana-button-icon.qazana-align-icon-left {
