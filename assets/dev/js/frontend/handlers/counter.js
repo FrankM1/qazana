@@ -1,14 +1,20 @@
 module.exports = function( $scope, $ ) {
+
+	var $counter = $scope.find( '.qazana-counter-number' );
+	var animation = $counter.data('animation-type');
+
+	if ( animation === 'none' ) {
+		return;
+	}
+
+	if ( 'count' == animation ){
+		var odometer = new Odometer({el: $counter[0], animation: 'count' } );
+	} else {
+		var odometer = new Odometer({ el: $counter[0] });
+	}
+
 	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
-		var $number = $( this ),
-			data = $number.data();
-
-		var decimalDigits = data.toValue.toString().match( /\.(.*)/ );
-
-		if ( decimalDigits ) {
-			data.rounding = decimalDigits[1].length;
-		}
-
-		$number.numerator( data );
+			odometer.update( $(this).data('to-value') );
 	}, { offset: '90%' } );
+
 };

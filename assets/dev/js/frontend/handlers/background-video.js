@@ -76,53 +76,7 @@ module.exports = function( $scope, $ ) {
 					}, 1 );
 				} );
 
-				/*// slider reaches top of screen
-				qazanaFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
-
-					// slider scrolled into view
-					if ( direction === 'up' ) {
-						if ( typeof player.playVideo === "function" ) {
-							player.playVideo();
-						}
-					}
-
-					// slider scolled out of view
-					else {
-						if ( typeof player.playVideo === "function" ) {
-							player.pauseVideo();
-						}
-					}
-
-				}, { offset: function() {
-
-					return -elements.$backgroundVideo.height();
-
-					// slider reaches bottom of screen
-				}});
-
-				 qazanaFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
-
-					// slider scrolled into view
-					if ( direction === 'down' ) {
-						if ( typeof player.playVideo === "function" ) {
-							player.playVideo();
-						}
-					}
-
-					// slider scrolled out of view
-					else {
-
-						if ( typeof player.playVideo === "function" ) {
-							player.pauseVideo();
-						}
-					}
-
-				}, { offset: function() {
-					return jQuery(window).height();
-				}}); */
-
 	        } else if ( videoID && videoHost === 'vimeo' ) {
-	            console.log(videoHost);
 			} else {
 				elements.$backgroundVideo.one( 'canplay', changeVideoSize );
 			}

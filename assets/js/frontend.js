@@ -301,53 +301,7 @@ module.exports = function( $scope, $ ) {
 					}, 1 );
 				} );
 
-				/*// slider reaches top of screen
-				qazanaFrontend.utils.waypoint( elements.$backgroundVideo,  function( direction ) {
-
-					// slider scrolled into view
-					if ( direction === 'up' ) {
-						if ( typeof player.playVideo === "function" ) {
-							player.playVideo();
-						}
-					}
-
-					// slider scolled out of view
-					else {
-						if ( typeof player.playVideo === "function" ) {
-							player.pauseVideo();
-						}
-					}
-
-				}, { offset: function() {
-
-					return -elements.$backgroundVideo.height();
-
-					// slider reaches bottom of screen
-				}});
-
-				 qazanaFrontend.utils.waypoint(elements.$backgroundVideo, function( direction ) {
-
-					// slider scrolled into view
-					if ( direction === 'down' ) {
-						if ( typeof player.playVideo === "function" ) {
-							player.playVideo();
-						}
-					}
-
-					// slider scrolled out of view
-					else {
-
-						if ( typeof player.playVideo === "function" ) {
-							player.pauseVideo();
-						}
-					}
-
-				}, { offset: function() {
-					return jQuery(window).height();
-				}}); */
-
 	        } else if ( videoID && videoHost === 'vimeo' ) {
-	            console.log(videoHost);
 			} else {
 				elements.$backgroundVideo.one( 'canplay', changeVideoSize );
 			}
@@ -370,18 +324,24 @@ module.exports = function( $scope, $ ) {
 
 },{}],6:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
+
+	var $counter = $scope.find( '.qazana-counter-number' );
+	var animation = $counter.data('animation-type');
+
+	if ( animation === 'none' ) {
+		return;
+	}
+
+	if ( 'count' == animation ){
+		var odometer = new Odometer({el: $counter[0], animation: 'count' } );
+	} else {
+		var odometer = new Odometer({ el: $counter[0] });
+	}
+
 	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
-		var $number = $( this ),
-			data = $number.data();
-
-		var decimalDigits = data.toValue.toString().match( /\.(.*)/ );
-
-		if ( decimalDigits ) {
-			data.rounding = decimalDigits[1].length;
-		}
-
-		$number.numerator( data );
+			odometer.update( $(this).data('to-value') );
 	}, { offset: '90%' } );
+
 };
 
 },{}],7:[function(require,module,exports){

@@ -34,6 +34,7 @@
     "fontIconPicker": "^2.0.0",
     "dialogs-manager": "https://github.com/cobicarmel/dialogs-manager/archive/master.zip",
     "backbone": "^1.3.3",
-    "backbone.marionette": "marionette#^3.1.0"
+    "backbone.marionette": "marionette#^3.1.0",
+    "odometer": "^0.4.8"
   }
 }

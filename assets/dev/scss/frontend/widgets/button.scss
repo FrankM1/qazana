@@ -138,8 +138,7 @@
   }
 }
 
-.qazana-widget-button {
-  .qazana-button {
+.qazana-widget {
     &.qazana-button- {
       &info .qazana-button-content-wrapper {
         border-color: $info;
@@ -169,7 +168,6 @@
         opacity: 1;
       }
     }
-  }
 }
 
 // Icon Hover

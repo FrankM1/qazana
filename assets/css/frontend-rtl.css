@@ -787,19 +787,19 @@
   .qazana-button .qazana-align-icon-left {
     margin-right: 5px; }
 
-.qazana-widget-button .qazana-button.qazana-button-info .qazana-button-content-wrapper {
+.qazana-widget.qazana-button-info .qazana-button-content-wrapper {
   border-color: #5bc0de;
   background-color: #5bc0de; }
-.qazana-widget-button .qazana-button.qazana-button-success .qazana-button-content-wrapper {
+.qazana-widget.qazana-button-success .qazana-button-content-wrapper {
   border-color: #5cb85c;
   background-color: #5cb85c; }
-.qazana-widget-button .qazana-button.qazana-button-warning .qazana-button-content-wrapper {
+.qazana-widget.qazana-button-warning .qazana-button-content-wrapper {
   border-color: #f0ad4e;
   background-color: #f0ad4e; }
-.qazana-widget-button .qazana-button.qazana-button-danger .qazana-button-content-wrapper {
+.qazana-widget.qazana-button-danger .qazana-button-content-wrapper {
   border-color: #f0ad4e;
   background-color: #f0ad4e; }
-.qazana-widget-button .qazana-button.qazana-button-clear .qazana-button-content-wrapper {
+.qazana-widget.qazana-button-clear .qazana-button-content-wrapper {
   padding: 0;
   border: none;
   background-color: transparent;
@@ -848,7 +848,6 @@
   padding: 0; }
 
 .qazana-counter .qazana-counter-number-wrapper {
-  text-align: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -861,9 +860,10 @@
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  font-size: 69px;
-  font-weight: 600;
   color: #222;
+  text-align: center;
+  font-weight: 600;
+  font-size: 69px;
   line-height: 1; }
 .qazana-counter .qazana-counter-number-prefix {
   -webkit-box-flex: 1;
@@ -878,11 +878,17 @@
           flex-grow: 1;
   text-align: right; }
 .qazana-counter .qazana-counter-title {
-  text-align: center;
-  font-size: 19px;
-  font-weight: 400;
   color: #666666;
+  text-align: center;
+  font-weight: 400;
+  font-size: 19px;
   line-height: 2.5; }
+.qazana-counter .qazana-counter-subtitle {
+  color: #666666;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5; }
 
 .qazana-alert {
   padding: 15px;

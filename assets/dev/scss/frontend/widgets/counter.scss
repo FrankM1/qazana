@@ -6,13 +6,13 @@
 	.qazana-counter- {
 		&number- {
 			&wrapper {
-				text-align: center;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 69px;
-				font-weight: 600;
 				color: #222;
+				text-align: center;
+				font-weight: 600;
+				font-size: 69px;
 				line-height: 1;
 			}
 
@@ -28,11 +28,18 @@
 		}
 
 		&title {
-			text-align: center;
-			font-size: 19px;
-			font-weight: 400;
 			color: #666666;
+			text-align: center;
+			font-weight: 400;
+			font-size: 19px;
 			line-height: 2.5;
+		}
+		&subtitle {
+			color: #666666;
+			text-align: center;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 1.5;
 		}
 	}
 }

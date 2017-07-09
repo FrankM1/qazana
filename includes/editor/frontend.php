@@ -80,12 +80,10 @@ class Frontend {
         );
 
         wp_register_script(
-            'jquery-numerator',
-            qazana()->core_assets_url . 'lib/jquery-numerator/jquery-numerator' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '0.2.0',
+            'odometer',
+            qazana()->core_assets_url . 'lib/odometer/odometer' . $suffix . '.js',
+            [],
+            '0.4.8',
             true
         );
 
@@ -103,8 +101,8 @@ class Frontend {
             'qazana-frontend',
             qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
-                'waypoints',
-                'jquery-numerator',
+				'waypoints',
+				'odometer',
             ],
             qazana()->get_version(),
             true
@@ -153,6 +151,13 @@ class Frontend {
         $direction_suffix = is_rtl() ? '-rtl' : '';
 
         wp_enqueue_style(
+            'odometer-theme-default',
+            qazana()->core_assets_url . 'lib/odometer/themes/odometer-theme-default' . $suffix . '.css',
+            [],
+            qazana()->get_version()
+        );
+
+		wp_enqueue_style(
             'qazana-icons',
             qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],

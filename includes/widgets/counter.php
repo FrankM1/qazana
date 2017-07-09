@@ -21,11 +21,36 @@ class Widget_Counter extends Widget_Base {
 		return [ 'general-elements' ];
 	}
 
+	public function add_element_dependencies() {
+		$this->add_frontend_scripts(['jquery-numerator']);
+    }
+
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_counter',
 			[
 				'label' => __( 'Counter', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
+			'animation_type',
+			[
+				'label' => __( 'Animation Type', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'count' => [
+						'title' => __( 'Count', 'qazana' ),
+					],
+					'odometer' => [
+						'title' => __( 'Odometer', 'qazana' ),
+					],
+					'none' => [
+						'title' => __( 'No Animation', 'qazana' ),
+					],
+				],
+				'prefix_class' => 'qazana-counter-animation-type-',
+				'default' => 'odometer',
 			]
 		);
 
@@ -79,18 +104,18 @@ class Widget_Counter extends Widget_Base {
 		);
 
 		$this->add_control(
-			'thousand_separator',
+			'title',
 			[
-				'label' => __( 'Thousand Separator', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'yes',
-				'label_on' => __( 'Show', 'qazana' ),
-				'label_off' => __( 'Hide', 'qazana' ),
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::TEXT,
+				'label_block' => true,
+				'default' => __( 'Cool Number', 'qazana' ),
+				'placeholder' => __( 'Cool Number', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
-			'title',
+			'subtitle',
 			[
 				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -143,6 +168,23 @@ class Widget_Counter extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'number_spacing',
+			[
+				'label' => __( 'Spacing', 'energia' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-number-wrapper' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -156,7 +198,7 @@ class Widget_Counter extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Text Color', 'qazana' ),
+				'label' => __( 'Title Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -164,6 +206,23 @@ class Widget_Counter extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-counter-title' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'title_spacing',
+			[
+				'label' => __( 'Title Spacing', 'energia' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -178,35 +237,132 @@ class Widget_Counter extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_subtitle',
+			[
+				'label' => __( 'Sub Title', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'subtitle_color',
+			[
+				'label' => __( 'Sub Title Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-subtitle' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'typography_subtitle',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
+				'selector' => '{{WRAPPER}} .qazana-counter-subtitle',
+			]
+		);
+
+		$this->add_control(
+			'subtitle_spacing',
+			[
+				'label' => __( 'Sub Title Spacing', 'energia' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-subtitle' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_prefix_style',
+			[
+				'label' => __( 'Prefix Style', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'prefix_color',
+			[
+				'label' => __( 'Prefix Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-number-prefix' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'typography_prefix',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
+				'selector' => '{{WRAPPER}} .qazana-counter-number-prefix',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_suffix_style',
+			[
+				'label' => __( 'Suffix Style', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'suffix_color',
+			[
+				'label' => __( 'Suffix Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-number-suffix' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'typography_suffix',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
+				'selector' => '{{WRAPPER}} .qazana-counter-number-suffix',
+			]
+		);
+
+		$this->end_controls_section();
+
 	}
 
-	protected function _content_template() {
-		?>
-		<div class="qazana-counter">
-			<div class="qazana-counter-number-wrapper">
-				<span class="qazana-counter-number-prefix">{{{ settings.prefix }}}</span>
-				<span class="qazana-counter-number" data-duration="{{ settings.duration }}" data-to-value="{{ settings.ending_number }}" data-delimiter="{{ settings.thousand_separator ? ',' : '' }}">{{{ settings.starting_number }}}</span>
-				<span class="qazana-counter-number-suffix">{{{ settings.suffix }}}</span>
-			</div>
-			<# if ( settings.title ) {
-				#><div class="qazana-counter-title">{{{ settings.title }}}</div><#
-			} #>
-		</div>
-		<?php
-	}
+	public function style_1() {
 
-	public function render() {
 		$settings = $this->get_settings();
 
-		$this->add_render_attribute( 'counter', [
-			'class' => 'qazana-counter-number',
-			'data-duration' => $settings['duration'],
-			'data-to-value' => $settings['ending_number'],
-		] );
-
-		if ( ! empty( $settings['thousand_separator'] ) ) {
-			$this->add_render_attribute( 'counter', 'data-delimiter', ',' );
-		}
 		?>
 		<div class="qazana-counter">
 			<div class="qazana-counter-number-wrapper">
@@ -217,7 +373,50 @@ class Widget_Counter extends Widget_Base {
 			<?php if ( $settings['title'] ) : ?>
 				<div class="qazana-counter-title"><?php echo $settings['title']; ?></div>
 			<?php endif; ?>
+
+			<?php if ( $settings['subtitle'] ) : ?>
+				<div class="qazana-counter-subtitle"><?php echo $settings['subtitle']; ?></div>
+			<?php endif; ?>
+		</div>
+		<?php
+
+	}
+
+	public function render() {
+		$settings = $this->get_settings();
+
+		$this->add_render_attribute( 'counter', [
+			'class' => 'qazana-counter-number',
+			'data-animation-type' => $settings['animation_type'],
+			'data-duration' => $settings['duration'],
+			'data-to-value' => $settings['ending_number'],
+		] );
+
+		if ( ! empty( $settings['thousand_separator'] ) ) {
+			$this->add_render_attribute( 'counter', 'data-delimiter', '' );
+		}
+
+		$this->style_1();
+
+	}
+
+	protected function _content_template() {
+		?>
+		<div class="qazana-counter">
+			<div class="qazana-counter-number-wrapper">
+				<span class="qazana-counter-number-prefix">{{{ settings.prefix }}}</span>
+				<span class="qazana-counter-number" data-animation-type="{{ settings.animation_type }}" data-duration="{{ settings.duration }}" data-to-value="{{ settings.ending_number }}" data-delimiter="{{ settings.thousand_separator ? '' : '' }}">{{{ settings.starting_number }}}</span>
+				<span class="qazana-counter-number-suffix">{{{ settings.suffix }}}</span>
+			</div>
+			<# if ( settings.title ) {
+				#><div class="qazana-counter-title">{{{ settings.title }}}</div><#
+			} #>
+			<# if ( settings.subtitle ) {
+				#><div class="qazana-counter-subtitle">{{{ settings.subtitle }}}</div><#
+			} #>
 		</div>
 		<?php
 	}
+
+
 }
