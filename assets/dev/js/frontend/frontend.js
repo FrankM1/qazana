@@ -43,6 +43,7 @@
 			'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
 			'alert.default': require( 'qazana-frontend/handlers/alert' ),
 			'counter.default': require( 'qazana-frontend/handlers/counter' ),
+			'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 			'progress.default': require( 'qazana-frontend/handlers/progress' ),
 			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
 			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),

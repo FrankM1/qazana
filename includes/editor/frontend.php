@@ -87,6 +87,14 @@ class Frontend {
             true
         );
 
+		wp_register_script(
+            'jquery-circle-progress',
+            qazana()->core_assets_url . 'lib/jquery-circle-progress/circle-progress' . $suffix . '.js',
+            [],
+            '1.2.2',
+            true
+        );
+
         wp_register_script(
             'jquery-slick',
             qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
@@ -103,6 +111,7 @@ class Frontend {
             [
 				'waypoints',
 				'odometer',
+				'jquery-circle-progress',
             ],
             qazana()->get_version(),
             true

@@ -38,6 +38,7 @@ class Widgets_Manager {
             'image-carousel',
             'icon-list',
             'counter',
+			'piechart',
             'progress',
             'testimonial',
             'tabs',

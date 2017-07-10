@@ -88,6 +88,7 @@ module.exports = ElementsHandler;
 			'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
 			'alert.default': require( 'qazana-frontend/handlers/alert' ),
 			'counter.default': require( 'qazana-frontend/handlers/counter' ),
+			'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 			'progress.default': require( 'qazana-frontend/handlers/progress' ),
 			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
 			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
@@ -181,7 +182,7 @@ jQuery( function() {
 	}
 });
 
-},{"../utils/hooks":16,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":3,"qazana-frontend/handlers/alert":4,"qazana-frontend/handlers/counter":6,"qazana-frontend/handlers/global":7,"qazana-frontend/handlers/menu-anchor":8,"qazana-frontend/handlers/progress":9,"qazana-frontend/handlers/section":10,"qazana-frontend/handlers/tabs":11,"qazana-frontend/handlers/toggle":12,"qazana-frontend/handlers/video":13,"qazana-frontend/handlers/widget":14,"qazana-frontend/utils":15}],3:[function(require,module,exports){
+},{"../utils/hooks":17,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":3,"qazana-frontend/handlers/alert":4,"qazana-frontend/handlers/counter":6,"qazana-frontend/handlers/global":7,"qazana-frontend/handlers/menu-anchor":8,"qazana-frontend/handlers/piechart":9,"qazana-frontend/handlers/progress":10,"qazana-frontend/handlers/section":11,"qazana-frontend/handlers/tabs":12,"qazana-frontend/handlers/toggle":13,"qazana-frontend/handlers/video":14,"qazana-frontend/handlers/widget":15,"qazana-frontend/utils":16}],3:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -393,6 +394,47 @@ module.exports = function( $scope, $ ) {
 
 },{}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
+
+    var $chart = $scope.find('.qazana-piechart');
+    var $piechart_progress = $chart.find('.qazana-piechart-number-count');
+
+    var animation = {
+        duration: $chart.data('duration')
+    };
+
+    if ( $chart.closest('.qazana-element').hasClass('qazana-piechart-animation-type-none') ) {
+        animation = {
+            duration: 0
+        };
+    }
+
+    if ( false == animation ){
+        $piechart_progress.html($piechart_progress.data('value') );
+        $chart.addClass('animated');
+    }
+
+    qazanaFrontend.utils.waypoint( $chart, function() {
+
+    if ( ! $chart.hasClass('animated') ) {
+
+        $chart.circleProgress({
+                startAngle: -Math.PI / 4 * 2,
+                emptyFill: $chart.data('emptyfill'),
+                animation: animation
+        }).on('circle-animation-progress', function (event, progress) {
+            $piechart_progress.html( parseInt( ( $piechart_progress.data('value') ) * progress ) );
+        }).on('circle-animation-end', function (event) {
+            $chart.addClass('animated');
+        });
+
+    }
+
+    }, { offset: '90%' } );
+
+};
+
+},{}],10:[function(require,module,exports){
+module.exports = function( $scope, $ ) {
 	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
 		var $progressbar = $( this );
 
@@ -400,7 +442,7 @@ module.exports = function( $scope, $ ) {
 	}, { offset: '90%' } );
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var BackgroundVideo = require( 'qazana-frontend/handlers/background-video' );
 
 var StretchedSection = function( $section, $ ) {
@@ -480,7 +522,7 @@ module.exports = function( $scope, $ ) {
 	new BackgroundVideo( $scope, $ );
 };
 
-},{"qazana-frontend/handlers/background-video":5}],11:[function(require,module,exports){
+},{"qazana-frontend/handlers/background-video":5}],12:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
 		$tabsTitles = $scope.find( '.qazana-tab-title' ),
@@ -515,7 +557,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
@@ -533,7 +575,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
 		$videoFrame = $scope.find( 'iframe' );
@@ -552,7 +594,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -567,7 +609,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function( $ ) {
     var self = this;
 
@@ -598,7 +640,7 @@ module.exports = function( $ ) {
     
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 /**

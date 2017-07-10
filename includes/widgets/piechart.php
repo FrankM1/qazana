@@ -3,18 +3,18 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Widget_Counter extends Widget_Base {
+class Widget_Piechart extends Widget_Base {
 
 	public function get_name() {
-		return 'counter';
+		return 'piechart';
 	}
 
 	public function get_title() {
-		return __( 'Number Counter', 'qazana' );
+		return __( 'Pie chart', 'qazana' );
 	}
 
 	public function get_icon() {
-		return 'eicon-counter';
+		return 'eicon-piechart';
 	}
 
 	public function get_categories() {
@@ -22,12 +22,12 @@ class Widget_Counter extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
-		$this->add_frontend_scripts(['jquery-numerator']);
+		$this->add_frontend_scripts(['jquery-circle-progress']);
     }
 
 	protected function _register_controls() {
 		$this->start_controls_section(
-			'section_counter',
+			'section_piechart',
 			[
 				'label' => __( 'Counter', 'qazana' ),
 			]
@@ -39,18 +39,27 @@ class Widget_Counter extends Widget_Base {
 				'label' => __( 'Animation Type', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
-					'count' => [
-						'title' => __( 'Count', 'qazana' ),
-					],
-					'odometer' => [
-						'title' => __( 'Odometer', 'qazana' ),
+					'' => [
+						'title' => __( 'Default', 'qazana' ),
 					],
 					'none' => [
 						'title' => __( 'No Animation', 'qazana' ),
 					],
 				],
-				'prefix_class' => 'qazana-counter-animation-type-',
-				'default' => 'odometer',
+				'prefix_class' => 'qazana-piechart-animation-type-',
+			]
+		);
+
+		$this->add_control(
+			'counterclock',
+			[
+				'label' => __( 'Counterclock', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'label_on' => __( 'Yes', 'qazana' ),
+				'label_off' => __( 'No', 'qazana' ),
+				'prefix_class' => 'qazana-piechart-counterclockwise-',
+				'description' => __( 'Reverse chart animation direction', 'qazana' )
 			]
 		);
 
@@ -58,8 +67,13 @@ class Widget_Counter extends Widget_Base {
 			'starting_number',
 			[
 				'label' => __( 'Starting Number', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 0,
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 10,
+						'max' => 100,
+					],
+				],
 			]
 		);
 
@@ -67,8 +81,16 @@ class Widget_Counter extends Widget_Base {
 			'ending_number',
 			[
 				'label' => __( 'Ending Number', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 100,
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 10,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'size' => 75
+				]
 			]
 		);
 
@@ -97,7 +119,7 @@ class Widget_Counter extends Widget_Base {
 			[
 				'label' => __( 'Animation Duration', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
-				'default' => 2000,
+				'default' => 1700,
 				'min' => 100,
 				'step' => 100,
 			]
@@ -109,8 +131,8 @@ class Widget_Counter extends Widget_Base {
 				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-				'default' => __( 'Cool Number Title', 'qazana' ),
-				'placeholder' => __( 'Cool Number Title', 'qazana' ),
+				'default' => __( 'Cool Chart', 'qazana' ),
+				'placeholder' => __( 'Cool Chart', 'qazana' ),
 			]
 		);
 
@@ -120,8 +142,8 @@ class Widget_Counter extends Widget_Base {
 				'label' => __( 'Sub Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-				'default' => __( 'Cool number subtitle', 'qazana' ),
-				'placeholder' => __( 'Cool number subtitle', 'qazana' ),
+				'default' => __( 'Cool chart subtitle', 'qazana' ),
+				'placeholder' => __( 'Cool chart Subtitle', 'qazana' ),
 			]
 		);
 
@@ -137,34 +159,87 @@ class Widget_Counter extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_number',
+			'section_circle',
 			[
-				'label' => __( 'Number', 'qazana' ),
+				'label' => __( 'Circle', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
-			'number_color',
+			'circle_start_color',
 			[
-				'label' => __( 'Text Color', 'qazana' ),
+				'label' => __( 'Start Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_1,
+			]
+		);
+
+		$this->add_control(
+			'circle_end_color',
+			[
+				'label' => __( 'End Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+			]
+		);
+
+		$this->add_control(
+			'circle_size',
+			[
+				'label' => __( 'Circle Size', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'force_render' => true,
+				'range' => [
+					'px' => [
+						'min' => 10,
+						'max' => 450, // There is a bug with larger values. Circle goes out of sync with border
+					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .piechart-number' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+		$this->add_control(
+			'circle_width',
 			[
-				'name' => 'typography_number',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .qazana-counter-number-wrapper',
+				'label' => __( 'Circle Width', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+
+			]
+		);
+
+		$this->add_control(
+			'circle_border_width',
+			[
+				'label' => __( 'Circle Border Width', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 20,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .piechart-number:before' => 'border-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'circle_border_color',
+			[
+				'label' => __( 'Border Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .piechart-number:before' => 'border-color: {{VALUE}};',
+				],
 			]
 		);
 
@@ -180,7 +255,7 @@ class Widget_Counter extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-wrapper' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .piechart-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -205,7 +280,7 @@ class Widget_Counter extends Widget_Base {
 					'value' => Scheme_Color::COLOR_2,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart-title' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -222,7 +297,7 @@ class Widget_Counter extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-piechart-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -232,7 +307,7 @@ class Widget_Counter extends Widget_Base {
 			[
 				'name' => 'typography_title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-title',
+				'selector' => '{{WRAPPER}} .qazana-piechart-title',
 			]
 		);
 
@@ -256,7 +331,7 @@ class Widget_Counter extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-subtitle' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart-subtitle' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -266,7 +341,7 @@ class Widget_Counter extends Widget_Base {
 			[
 				'name' => 'typography_subtitle',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-subtitle',
+				'selector' => '{{WRAPPER}} .qazana-piechart-subtitle',
 			]
 		);
 
@@ -282,7 +357,7 @@ class Widget_Counter extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-subtitle' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-piechart-subtitle' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -307,7 +382,7 @@ class Widget_Counter extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-prefix' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart-number-prefix' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -317,7 +392,7 @@ class Widget_Counter extends Widget_Base {
 			[
 				'name' => 'typography_prefix',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-number-prefix',
+				'selector' => '{{WRAPPER}} .qazana-piechart-number-prefix',
 			]
 		);
 
@@ -341,7 +416,7 @@ class Widget_Counter extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-suffix' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart-number-suffix' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -351,7 +426,7 @@ class Widget_Counter extends Widget_Base {
 			[
 				'name' => 'typography_suffix',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-number-suffix',
+				'selector' => '{{WRAPPER}} .qazana-piechart-number-suffix',
 			]
 		);
 
@@ -363,33 +438,38 @@ class Widget_Counter extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		?>
-		<div class="qazana-counter">
-			<div class="qazana-counter-number-wrapper">
-				<span class="qazana-counter-number-prefix"><?php echo $settings['prefix']; ?></span>
-				<span <?php echo $this->get_render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
-				<span class="qazana-counter-number-suffix"><?php echo $settings['suffix']; ?></span>
+		?><div <?php echo $this->get_render_attribute_string( 'piechart' ); ?>>
+			<div class="piechart-number">
+				<span class="qazana-piechart-number-progress">
+					<span class="qazana-piechart-number-prefix"><?php echo $settings['prefix']; ?></span>
+					<span class="qazana-piechart-number-count" data-value="<?php echo $settings['ending_number']['size']; ?>">0</span>
+					<span class="qazana-piechart-number-suffix"><?php echo $settings['suffix']; ?></span>
+				</span>
 			</div>
 			<?php if ( $settings['title'] ) : ?>
-				<div class="qazana-counter-title"><?php echo $settings['title']; ?></div>
+				<div class="qazana-piechart-title"><?php echo $settings['title']; ?></div>
 			<?php endif; ?>
 
 			<?php if ( $settings['subtitle'] ) : ?>
-				<div class="qazana-counter-subtitle"><?php echo $settings['subtitle']; ?></div>
+				<div class="qazana-piechart-subtitle"><?php echo $settings['subtitle']; ?></div>
 			<?php endif; ?>
-		</div>
-		<?php
+  		</div><?php
 
 	}
 
 	public function render() {
 		$settings = $this->get_settings();
 
-		$this->add_render_attribute( 'counter', [
-			'class' => 'qazana-counter-number',
-			'data-animation-type' => $settings['animation_type'],
+		$this->add_render_attribute( 'piechart', [
+			'class' => 'qazana-piechart',
 			'data-duration' => $settings['duration'],
-			'data-to-value' => $settings['ending_number'],
+			'data-emptyfill' => "transparent",
+			'data-animation-start-value' => $settings['starting_number']['size'],
+			'data-value' => ( $settings['ending_number']['size'] / 100 ),
+			'data-size' => $settings['circle_size']['size'],
+			'data-thickness' => $settings['circle_width']['size'],
+			'data-fill' => "{&quot;gradient&quot;: [&quot;". $settings['circle_start_color'] ."&quot;,&quot;". $settings['circle_end_color'] ."&quot;]}",
+			'data-reverse' => "true",
 		] );
 
 		$this->style_1();
@@ -398,19 +478,33 @@ class Widget_Counter extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-counter">
-			<div class="qazana-counter-number-wrapper">
-				<span class="qazana-counter-number-prefix">{{{ settings.prefix }}}</span>
-				<span class="qazana-counter-number" data-animation-type="{{ settings.animation_type }}" data-duration="{{ settings.duration }}" data-to-value="{{ settings.ending_number }}">{{{ settings.starting_number }}}</span>
-				<span class="qazana-counter-number-suffix">{{{ settings.suffix }}}</span>
+
+		<div class="qazana-piechart"
+			data-duration="{{{ settings.duration }}}"
+			data-emptyfill="transparent"
+			data-animation-start-value="{{{ settings.starting_number.size }}}"
+			data-value="{{ ( settings.ending_number.size / 100 ) }}"
+			data-size="{{{ settings.circle_size.size }}}"
+			data-thickness="{{{ settings.circle_width.size }}}"
+			data-reverse="true"
+			data-fill = "{&quot;gradient&quot;: [&quot;{{{ settings.circle_start_color }}}&quot;,&quot;{{{ settings.circle_end_color }}}&quot;]}"
+		>
+			<div class="piechart-number">
+				<div class="qazana-piechart-number-progress">
+					<span class="qazana-piechart-number-prefix">{{{ settings.prefix }}}</span>
+					<span class="qazana-piechart-number-count" data-value="{{ settings.ending_number.size }}">0</span>
+					<span class="qazana-piechart-number-suffix">{{{ settings.suffix }}}</span>
+				</div>
 			</div>
+
 			<# if ( settings.title ) {
-				#><div class="qazana-counter-title">{{{ settings.title }}}</div><#
+				#><div class="qazana-piechart-title">{{{ settings.title }}}</div><#
 			} #>
 			<# if ( settings.subtitle ) {
-				#><div class="qazana-counter-subtitle">{{{ settings.subtitle }}}</div><#
+				#><div class="qazana-piechart-subtitle">{{{ settings.subtitle }}}</div><#
 			} #>
-		</div>
+
+  		</div>
 		<?php
 	}
 
