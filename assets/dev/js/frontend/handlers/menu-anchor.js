@@ -23,4 +23,5 @@ module.exports = function( $scope, $ ) {
 			scrollTop: $anchor.offset().top - adminBarHeight
 		}, 1000 );
 	} );
+	
 };

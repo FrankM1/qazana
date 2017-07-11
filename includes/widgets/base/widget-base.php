@@ -193,7 +193,9 @@ abstract class Widget_Base extends Element_Base {
 			$skin = $this->get_current_skin();
 			if ( $skin ) {
 				$skin->set_parent( $this );
+				$skin->before_render();
 				$skin->render();
+				$skin->after_render();
 			} else {
 				$this->render();
 			}
@@ -208,7 +210,7 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-	protected function _add_render_attributes() {
+	public function _add_render_attributes() {
 		$this->add_render_attribute( '_wrapper', 'class', [
 			'qazana-widget',
 			'qazana-element',
@@ -240,6 +242,7 @@ abstract class Widget_Base extends Element_Base {
 
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
 
+		$this->add_render_attribute( '_wrapper', 'class', $this->get_name() . '-skin-' . $skin_type );
 		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
 	}
 

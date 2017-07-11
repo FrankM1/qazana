@@ -71,6 +71,14 @@ abstract class Skin_Base {
 		return $this->parent->get_render_attribute_string( $element );
 	}
 
+	public function before_render() {
+		$this->parent->before_render();
+	}
+
+	public function after_render() {
+		$this->parent->after_render();
+	}
+
 	public function bool( $value ) {
 		return $this->parent->bool( $value );
 	}
@@ -81,29 +89,13 @@ abstract class Skin_Base {
 
 	public function get_presets() {}
 
-    public function register_presets( ) {
+    public function register_presets() {
 
         $presets = $this->get_presets();
 
         if ( ! is_array( $presets ) || empty( $presets ) ) return;
 
         $controls_data = $this->parent->get_controls();
-
-		/* Modify controls and add defaults
-		$presets_filtered = array();
-
-        foreach ( $presets as $name => $control ) {
-
-			if ( 0 === strpos( $name, '_' ) ||  0 === strpos( $name, str_replace( '-', '_', $this->get_id() ) ) ) {
-				$control_id = $name;
-			} else {
-				$control_id = $this->get_control_id( $name );
-			}
-
-			$presets_filtered[ $control_id ] = $control;
-
-		} */
-
 
         // Modify controls and add defaults
         foreach ( $this->parent->get_controls() as $name => $control ) {

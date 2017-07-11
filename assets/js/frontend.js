@@ -390,6 +390,7 @@ module.exports = function( $scope, $ ) {
 			scrollTop: $anchor.offset().top - adminBarHeight
 		}, 1000 );
 	} );
+	
 };
 
 },{}],9:[function(require,module,exports){

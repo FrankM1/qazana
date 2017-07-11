@@ -35,7 +35,7 @@ abstract class Source_Base {
 
 		$supported = apply_filters( 'qazana_templates_add_template_support', array('all') );
 
-		return array_unique( $supported );
+		return array_flip( array_flip( $supported ) );
 	}
 
 	protected function filter_supported_templates( $list, $args ) {

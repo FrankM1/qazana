@@ -74,6 +74,9 @@ class Widget_Piechart extends Widget_Base {
 						'max' => 100,
 					],
 				],
+				'default' => [
+					'size' => 0
+				]
 			]
 		);
 
@@ -109,7 +112,7 @@ class Widget_Piechart extends Widget_Base {
 			[
 				'label' => __( 'Number Suffix', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => '',
+				'default' => '%',
 				'placeholder' => __( 'Plus', 'qazana' ),
 			]
 		);
@@ -171,6 +174,7 @@ class Widget_Piechart extends Widget_Base {
 			[
 				'label' => __( 'Start Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
+				'default' => 'green',
 			]
 		);
 
@@ -179,6 +183,7 @@ class Widget_Piechart extends Widget_Base {
 			[
 				'label' => __( 'End Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
+				'default' => 'blue',
 			]
 		);
 
@@ -193,6 +198,9 @@ class Widget_Piechart extends Widget_Base {
 						'min' => 10,
 						'max' => 450, // There is a bug with larger values. Circle goes out of sync with border
 					],
+				],
+				'default' => [
+					'size' => 160
 				],
 				'selectors' => [
 					'{{WRAPPER}} .piechart-number' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
@@ -211,6 +219,9 @@ class Widget_Piechart extends Widget_Base {
 						'max' => 50,
 					],
 				],
+				'default' => [
+					'size' => 5
+				],
 
 			]
 		);
@@ -226,6 +237,9 @@ class Widget_Piechart extends Widget_Base {
 						'max' => 20,
 					],
 				],
+				'default' => [
+					'size' => 1
+				],
 				'selectors' => [
 					'{{WRAPPER}} .piechart-number:before' => 'border-width: {{SIZE}}{{UNIT}};',
 				],
@@ -237,6 +251,7 @@ class Widget_Piechart extends Widget_Base {
 			[
 				'label' => __( 'Border Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
+				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .piechart-number:before' => 'border-color: {{VALUE}};',
 				],

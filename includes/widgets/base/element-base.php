@@ -491,6 +491,11 @@ abstract class Element_Base {
 		$attributes = [];
 
 		foreach ( $render_attributes as $attribute_key => $attribute_values ) {
+
+			if ( is_array( $attribute_values ) ) {
+				$attribute_values = array_flip( array_flip( $attribute_values ) );
+			}
+
 			$attributes[] = sprintf( '%s="%s"', $attribute_key, esc_attr( implode( ' ', $attribute_values ) ) );
 		}
 
