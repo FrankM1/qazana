@@ -190,9 +190,6 @@
 .qazana-widget-wrap {
   width: 100%; }
 
-.qazana-widget:not(:last-child) {
-  margin-bottom: 20px; }
-
 .qazana-column {
   position: relative;
   display: -webkit-box;
@@ -731,11 +728,14 @@
     max-width: 100%; } }
 
 .qazana-align-center .qazana-button {
-  width: auto; }
+  width: auto;
+  margin: 0 auto; }
 .qazana-align-right .qazana-button {
-  width: auto; }
+  width: auto;
+  margin-left: auto; }
 .qazana-align-left .qazana-button {
-  width: auto; }
+  width: auto;
+  margin-right: auto; }
 .qazana-align-justify .qazana-button {
   width: 100%; }
 
@@ -1534,76 +1534,359 @@
 
 .qazana-social-icons-wrapper {
   font-size: 0; }
+  .qazana-social-icons-wrapper .qazana-social-icon {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;
+    margin-left: 4px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid; }
+    .qazana-social-icons-wrapper .qazana-social-icon:last-child {
+      margin: 0; }
 
-.qazana-social-icon {
-  color: white;
-  font-size: 25px;
-  text-align: center;
-  padding: 0.5em;
-  margin-left: 5px;
-  cursor: pointer; }
-  .qazana-social-icon:last-child {
-    margin: 0; }
-  .qazana-social-icon:hover {
-    opacity: .5;
-    color: white; }
-  .qazana-social-icon-behance {
+.qazana-social-icons-default .qazana-social-icon {
+  background-color: grey;
+  color: white; }
+  .qazana-social-icons-default .qazana-social-icon:hover {
+    background-color: white; }
+  .qazana-social-icons-default .qazana-social-icon-behance {
     background-color: #1769ff; }
-  .qazana-social-icon-bitbucket {
+    .qazana-social-icons-default .qazana-social-icon-behance:hover {
+      border-color: #1769ff;
+      color: #1769ff; }
+  .qazana-social-icons-default .qazana-social-icon-bitbucket {
     background-color: #205081; }
-  .qazana-social-icon-codepen {
+    .qazana-social-icons-default .qazana-social-icon-bitbucket:hover {
+      border-color: #205081;
+      color: #205081; }
+  .qazana-social-icons-default .qazana-social-icon-codepen {
     background-color: #000000; }
-  .qazana-social-icon-delicious {
+    .qazana-social-icons-default .qazana-social-icon-codepen:hover {
+      border-color: #000000;
+      color: #000000; }
+  .qazana-social-icons-default .qazana-social-icon-delicious {
     background-color: #3399ff; }
-  .qazana-social-icon-digg {
+    .qazana-social-icons-default .qazana-social-icon-delicious:hover {
+      border-color: #3399ff;
+      color: #3399ff; }
+  .qazana-social-icons-default .qazana-social-icon-digg {
     background-color: #005be2; }
-  .qazana-social-icon-dribbble {
+    .qazana-social-icons-default .qazana-social-icon-digg:hover {
+      border-color: #005be2;
+      color: #005be2; }
+  .qazana-social-icons-default .qazana-social-icon-dribbble {
     background-color: #ea4c89; }
-  .qazana-social-icon-facebook {
+    .qazana-social-icons-default .qazana-social-icon-dribbble:hover {
+      border-color: #ea4c89;
+      color: #ea4c89; }
+  .qazana-social-icons-default .qazana-social-icon-facebook {
     background-color: #3b5998; }
-  .qazana-social-icon-flickr {
+    .qazana-social-icons-default .qazana-social-icon-facebook:hover {
+      border-color: #3b5998;
+      color: #3b5998; }
+  .qazana-social-icons-default .qazana-social-icon-flickr {
     background-color: #0063dc; }
-  .qazana-social-icon-foursquare {
-    background-color: #2d5be3; }
-  .qazana-social-icon-github {
-    background-color: #333333; }
-  .qazana-social-icon-google-plus {
+    .qazana-social-icons-default .qazana-social-icon-flickr:hover {
+      border-color: #0063dc;
+      color: #0063dc; }
+  .qazana-social-icons-default .qazana-social-icon-foursquare {
+    background-color: #25a0ca; }
+    .qazana-social-icons-default .qazana-social-icon-foursquare:hover {
+      border-color: #25a0ca;
+      color: #25a0ca; }
+  .qazana-social-icons-default .qazana-social-icon-github {
+    background-color: #171515; }
+    .qazana-social-icons-default .qazana-social-icon-github:hover {
+      border-color: #171515;
+      color: #171515; }
+  .qazana-social-icons-default .qazana-social-icon-google-plus {
     background-color: #dd4b39; }
-  .qazana-social-icon-instagram {
-    background-color: #262626; }
-  .qazana-social-icon-jsfiddle {
-    background-color: #487AA2; }
-  .qazana-social-icon-linkedin {
-    background-color: #0077b5; }
-  .qazana-social-icon-medium {
+    .qazana-social-icons-default .qazana-social-icon-google-plus:hover {
+      border-color: #dd4b39;
+      color: #dd4b39; }
+  .qazana-social-icons-default .qazana-social-icon-instagram {
+    background-color: #3f729b; }
+    .qazana-social-icons-default .qazana-social-icon-instagram:hover {
+      border-color: #3f729b;
+      color: #3f729b; }
+  .qazana-social-icons-default .qazana-social-icon-jsfiddle {
+    background-color: #487aa2; }
+    .qazana-social-icons-default .qazana-social-icon-jsfiddle:hover {
+      border-color: #487aa2;
+      color: #487aa2; }
+  .qazana-social-icons-default .qazana-social-icon-linkedin {
+    background-color: #007fb1; }
+    .qazana-social-icons-default .qazana-social-icon-linkedin:hover {
+      border-color: #007fb1;
+      color: #007fb1; }
+  .qazana-social-icons-default .qazana-social-icon-medium {
     background-color: #00ab6b; }
-  .qazana-social-icon-pinterest {
+    .qazana-social-icons-default .qazana-social-icon-medium:hover {
+      border-color: #00ab6b;
+      color: #00ab6b; }
+  .qazana-social-icons-default .qazana-social-icon-pinterest {
     background-color: #bd081c; }
-  .qazana-social-icon-product-hunt {
+    .qazana-social-icons-default .qazana-social-icon-pinterest:hover {
+      border-color: #bd081c;
+      color: #bd081c; }
+  .qazana-social-icons-default .qazana-social-icon-product-hunt {
     background-color: #da552f; }
-  .qazana-social-icon-reddit {
+    .qazana-social-icons-default .qazana-social-icon-product-hunt:hover {
+      border-color: #da552f;
+      color: #da552f; }
+  .qazana-social-icons-default .qazana-social-icon-reddit {
     background-color: #ff4500; }
-  .qazana-social-icon-snapchat {
+    .qazana-social-icons-default .qazana-social-icon-reddit:hover {
+      border-color: #ff4500;
+      color: #ff4500; }
+  .qazana-social-icons-default .qazana-social-icon-snapchat {
     background-color: #fffc00; }
-  .qazana-social-icon-soundcloud {
-    background-color: #ff8800; }
-  .qazana-social-icon-stack-overflow {
+    .qazana-social-icons-default .qazana-social-icon-snapchat:hover {
+      border-color: #fffc00;
+      color: #fffc00; }
+  .qazana-social-icons-default .qazana-social-icon-soundcloud {
+    background-color: #ff7700; }
+    .qazana-social-icons-default .qazana-social-icon-soundcloud:hover {
+      border-color: #ff7700;
+      color: #ff7700; }
+  .qazana-social-icons-default .qazana-social-icon-stack-overflow {
     background-color: #fe7a15; }
-  .qazana-social-icon-tumblr {
-    background-color: #35465c; }
-  .qazana-social-icon-twitch {
-    background-color: #6441A5; }
-  .qazana-social-icon-twitter {
-    background-color: #55acee; }
-  .qazana-social-icon-vimeo {
-    background-color: #1ab7ea; }
-  .qazana-social-icon-wordpress {
+    .qazana-social-icons-default .qazana-social-icon-stack-overflow:hover {
+      border-color: #fe7a15;
+      color: #fe7a15; }
+  .qazana-social-icons-default .qazana-social-icon-tumblr {
+    background-color: #34526f; }
+    .qazana-social-icons-default .qazana-social-icon-tumblr:hover {
+      border-color: #34526f;
+      color: #34526f; }
+  .qazana-social-icons-default .qazana-social-icon-twitch {
+    background-color: #6441a5; }
+    .qazana-social-icons-default .qazana-social-icon-twitch:hover {
+      border-color: #6441a5;
+      color: #6441a5; }
+  .qazana-social-icons-default .qazana-social-icon-twitter {
+    background-color: #00acee; }
+    .qazana-social-icons-default .qazana-social-icon-twitter:hover {
+      border-color: #00acee;
+      color: #00acee; }
+  .qazana-social-icons-default .qazana-social-icon-vimeo {
+    background-color: #43baff; }
+    .qazana-social-icons-default .qazana-social-icon-vimeo:hover {
+      border-color: #43baff;
+      color: #43baff; }
+  .qazana-social-icons-default .qazana-social-icon-wordpress {
     background-color: #21759b; }
-  .qazana-social-icon-youtube {
-    background-color: #cd201f; }
+    .qazana-social-icons-default .qazana-social-icon-wordpress:hover {
+      border-color: #21759b;
+      color: #21759b; }
+  .qazana-social-icons-default .qazana-social-icon-youtube {
+    background-color: #c4302b; }
+    .qazana-social-icons-default .qazana-social-icon-youtube:hover {
+      border-color: #c4302b;
+      color: #c4302b; }
+  .qazana-social-icons-default .qazana-social-icon-apple {
+    background-color: #555555; }
+    .qazana-social-icons-default .qazana-social-icon-apple:hover {
+      border-color: #555555;
+      color: #555555; }
+  .qazana-social-icons-default .qazana-social-icon-houzz {
+    background-color: #55a32a; }
+    .qazana-social-icons-default .qazana-social-icon-houzz:hover {
+      border-color: #55a32a;
+      color: #55a32a; }
+  .qazana-social-icons-default .qazana-social-icon-spotify {
+    background-color: #1db954; }
+    .qazana-social-icons-default .qazana-social-icon-spotify:hover {
+      border-color: #1db954;
+      color: #1db954; }
+
+.qazana-social-icons-transparent .qazana-social-icon-behance {
+  border-color: #1769ff;
+  color: #1769ff; }
+  .qazana-social-icons-transparent .qazana-social-icon-behance:hover {
+    color: white;
+    background-color: #1769ff; }
+.qazana-social-icons-transparent .qazana-social-icon-bitbucket {
+  border-color: #205081;
+  color: #205081; }
+  .qazana-social-icons-transparent .qazana-social-icon-bitbucket:hover {
+    color: white;
+    background-color: #205081; }
+.qazana-social-icons-transparent .qazana-social-icon-codepen {
+  border-color: #000000;
+  color: #000000; }
+  .qazana-social-icons-transparent .qazana-social-icon-codepen:hover {
+    color: white;
+    background-color: #000000; }
+.qazana-social-icons-transparent .qazana-social-icon-delicious {
+  border-color: #3399ff;
+  color: #3399ff; }
+  .qazana-social-icons-transparent .qazana-social-icon-delicious:hover {
+    color: white;
+    background-color: #3399ff; }
+.qazana-social-icons-transparent .qazana-social-icon-digg {
+  border-color: #005be2;
+  color: #005be2; }
+  .qazana-social-icons-transparent .qazana-social-icon-digg:hover {
+    color: white;
+    background-color: #005be2; }
+.qazana-social-icons-transparent .qazana-social-icon-dribbble {
+  border-color: #ea4c89;
+  color: #ea4c89; }
+  .qazana-social-icons-transparent .qazana-social-icon-dribbble:hover {
+    color: white;
+    background-color: #ea4c89; }
+.qazana-social-icons-transparent .qazana-social-icon-facebook {
+  border-color: #3b5998;
+  color: #3b5998; }
+  .qazana-social-icons-transparent .qazana-social-icon-facebook:hover {
+    color: white;
+    background-color: #3b5998; }
+.qazana-social-icons-transparent .qazana-social-icon-flickr {
+  border-color: #0063dc;
+  color: #0063dc; }
+  .qazana-social-icons-transparent .qazana-social-icon-flickr:hover {
+    color: white;
+    background-color: #0063dc; }
+.qazana-social-icons-transparent .qazana-social-icon-foursquare {
+  border-color: #25a0ca;
+  color: #25a0ca; }
+  .qazana-social-icons-transparent .qazana-social-icon-foursquare:hover {
+    color: white;
+    background-color: #25a0ca; }
+.qazana-social-icons-transparent .qazana-social-icon-github {
+  border-color: #171515;
+  color: #171515; }
+  .qazana-social-icons-transparent .qazana-social-icon-github:hover {
+    color: white;
+    background-color: #171515; }
+.qazana-social-icons-transparent .qazana-social-icon-google-plus {
+  border-color: #dd4b39;
+  color: #dd4b39; }
+  .qazana-social-icons-transparent .qazana-social-icon-google-plus:hover {
+    color: white;
+    background-color: #dd4b39; }
+.qazana-social-icons-transparent .qazana-social-icon-instagram {
+  border-color: #3f729b;
+  color: #3f729b; }
+  .qazana-social-icons-transparent .qazana-social-icon-instagram:hover {
+    color: white;
+    background-color: #3f729b; }
+.qazana-social-icons-transparent .qazana-social-icon-jsfiddle {
+  border-color: #487aa2;
+  color: #487aa2; }
+  .qazana-social-icons-transparent .qazana-social-icon-jsfiddle:hover {
+    color: white;
+    background-color: #487aa2; }
+.qazana-social-icons-transparent .qazana-social-icon-linkedin {
+  border-color: #007fb1;
+  color: #007fb1; }
+  .qazana-social-icons-transparent .qazana-social-icon-linkedin:hover {
+    color: white;
+    background-color: #007fb1; }
+.qazana-social-icons-transparent .qazana-social-icon-medium {
+  border-color: #00ab6b;
+  color: #00ab6b; }
+  .qazana-social-icons-transparent .qazana-social-icon-medium:hover {
+    color: white;
+    background-color: #00ab6b; }
+.qazana-social-icons-transparent .qazana-social-icon-pinterest {
+  border-color: #bd081c;
+  color: #bd081c; }
+  .qazana-social-icons-transparent .qazana-social-icon-pinterest:hover {
+    color: white;
+    background-color: #bd081c; }
+.qazana-social-icons-transparent .qazana-social-icon-product-hunt {
+  border-color: #da552f;
+  color: #da552f; }
+  .qazana-social-icons-transparent .qazana-social-icon-product-hunt:hover {
+    color: white;
+    background-color: #da552f; }
+.qazana-social-icons-transparent .qazana-social-icon-reddit {
+  border-color: #ff4500;
+  color: #ff4500; }
+  .qazana-social-icons-transparent .qazana-social-icon-reddit:hover {
+    color: white;
+    background-color: #ff4500; }
+.qazana-social-icons-transparent .qazana-social-icon-snapchat {
+  border-color: #fffc00;
+  color: #fffc00; }
+  .qazana-social-icons-transparent .qazana-social-icon-snapchat:hover {
+    color: white;
+    background-color: #fffc00; }
+.qazana-social-icons-transparent .qazana-social-icon-soundcloud {
+  border-color: #ff7700;
+  color: #ff7700; }
+  .qazana-social-icons-transparent .qazana-social-icon-soundcloud:hover {
+    color: white;
+    background-color: #ff7700; }
+.qazana-social-icons-transparent .qazana-social-icon-stack-overflow {
+  border-color: #fe7a15;
+  color: #fe7a15; }
+  .qazana-social-icons-transparent .qazana-social-icon-stack-overflow:hover {
+    color: white;
+    background-color: #fe7a15; }
+.qazana-social-icons-transparent .qazana-social-icon-tumblr {
+  border-color: #34526f;
+  color: #34526f; }
+  .qazana-social-icons-transparent .qazana-social-icon-tumblr:hover {
+    color: white;
+    background-color: #34526f; }
+.qazana-social-icons-transparent .qazana-social-icon-twitch {
+  border-color: #6441a5;
+  color: #6441a5; }
+  .qazana-social-icons-transparent .qazana-social-icon-twitch:hover {
+    color: white;
+    background-color: #6441a5; }
+.qazana-social-icons-transparent .qazana-social-icon-twitter {
+  border-color: #00acee;
+  color: #00acee; }
+  .qazana-social-icons-transparent .qazana-social-icon-twitter:hover {
+    color: white;
+    background-color: #00acee; }
+.qazana-social-icons-transparent .qazana-social-icon-vimeo {
+  border-color: #43baff;
+  color: #43baff; }
+  .qazana-social-icons-transparent .qazana-social-icon-vimeo:hover {
+    color: white;
+    background-color: #43baff; }
+.qazana-social-icons-transparent .qazana-social-icon-wordpress {
+  border-color: #21759b;
+  color: #21759b; }
+  .qazana-social-icons-transparent .qazana-social-icon-wordpress:hover {
+    color: white;
+    background-color: #21759b; }
+.qazana-social-icons-transparent .qazana-social-icon-youtube {
+  border-color: #c4302b;
+  color: #c4302b; }
+  .qazana-social-icons-transparent .qazana-social-icon-youtube:hover {
+    color: white;
+    background-color: #c4302b; }
+.qazana-social-icons-transparent .qazana-social-icon-apple {
+  border-color: #555555;
+  color: #555555; }
+  .qazana-social-icons-transparent .qazana-social-icon-apple:hover {
+    color: white;
+    background-color: #555555; }
+.qazana-social-icons-transparent .qazana-social-icon-houzz {
+  border-color: #55a32a;
+  color: #55a32a; }
+  .qazana-social-icons-transparent .qazana-social-icon-houzz:hover {
+    color: white;
+    background-color: #55a32a; }
+.qazana-social-icons-transparent .qazana-social-icon-spotify {
+  border-color: #1db954;
+  color: #1db954; }
+  .qazana-social-icons-transparent .qazana-social-icon-spotify:hover {
+    color: white;
+    background-color: #1db954; }
+
+.qazana-shape-square .qazana-icon.qazana-social-icon {
+  border-radius: 0; }
 
 .qazana-shape-rounded .qazana-icon.qazana-social-icon {
-  border-radius: 10%; }
+  border-radius: 5px; }
 
 .qazana-shape-circle .qazana-icon.qazana-social-icon {
   border-radius: 50%; }

@@ -1,75 +1,111 @@
-//
 // Social Icons
-//
+$social: (
+'behance': #1769ff,
+'bitbucket': #205081,
+'codepen': #000000,
+'delicious': #3399ff,
+'digg': #005be2,
+'dribbble': #ea4c89,
+'facebook': #3b5998,
+'flickr': #0063dc,
+'foursquare': #25a0ca,
+'github': #171515,
+'google-plus': #dd4b39,
+'instagram': #3f729b,
+'jsfiddle': #487aa2,
+'linkedin': #007fb1,
+'medium': #00ab6b,
+'pinterest': #bd081c,
+'product-hunt': #da552f,
+'reddit': #ff4500,
+'snapchat': #fffc00,
+'soundcloud': #ff7700,
+'stack-overflow': #fe7a15,
+'tumblr': #34526f,
+'twitch': #6441a5,
+'twitter': #00acee,
+'vimeo': #43baff,
+'wordpress': #21759b,
+'youtube': #c4302b,
+'apple': #555555,
+'houzz': #55a32a,
+'spotify': #1db954
+);
 
 .qazana-social-icons-wrapper {
-	font-size: 0;
+  font-size: 0;
+
+  .qazana-social-icon {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;;
+    @include margin-end(4px);
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid;
+    &:last-child {
+      margin: 0;
+    }
+  }
 }
 
-.qazana-social-icon {
-	color: white;
-	font-size: 25px;
-	text-align: center;
-	padding: 0.5em;
-	@include margin-end(5px);
-	cursor: pointer;
+.qazana-social-icons-default .qazana-social-icon {
+  background-color: grey;
+  color: white;
 
-	&:last-child {
-		margin: 0;
-	}
+  &:hover {
+    background-color: white;
+  }
 
-	&:hover {
-		opacity: .5;
-		color: white; //for override .qazana-icon class
-	}
+  &- {
+    @each $name, $color in $social {
+      &#{$name} {
+        background-color: $color;
 
-	&- {
-		&behance		{ background-color: $behance; }
-		&bitbucket		{ background-color: $bitbucket; }
-		&codepen		{ background-color: $codepen; }
-		&delicious		{ background-color: $delicious; }
-		&digg			{ background-color: $digg; }
-		&dribbble		{ background-color: $dribbble; }
-		&facebook		{ background-color: $facebook; }
-		&flickr			{ background-color: $flickr; }
-		&foursquare		{ background-color: $foursquare; }
-		&github			{ background-color: $github; }
-		&google-plus	{ background-color: $google-plus; }
-		&instagram		{ background-color: $instagram; }
-		&jsfiddle		{ background-color: $jsfiddle; }
-		&linkedin		{ background-color: $linkedin; }
-		&medium			{ background-color: $medium; }
-		&pinterest		{ background-color: $pinterest; }
-		&product-hunt	{ background-color: $product-hunt; }
-		&reddit			{ background-color: $reddit; }
-		&snapchat		{ background-color: $snapchat; }
-		&soundcloud		{ background-color: $soundcloud; }
-		&stack-overflow { background-color: $stack-overflow; }
-		&tumblr			{ background-color: $tumblr; }
-		&twitch			{ background-color: $twitch; }
-		&twitter		{ background-color: $twitter; }
-		&vimeo			{ background-color: $vimeo; }
-		&wordpress		{ background-color: $wordpress; }
-		&youtube		{ background-color: $youtube; }
-	}
+        &:hover {
+          border-color: $color;
+          color: $color;
+        }
+      }
+    }
+  }
+}
+
+.qazana-social-icons-transparent .qazana-social-icon {
+  &- {
+    @each $name, $color in $social {
+      &#{$name} {
+        border-color: $color;
+        color: $color;
+        &:hover {
+            color: white;
+          background-color: $color;
+        }
+      }
+    }
+  }
+}
+
+.qazana-shape-square {
+  .qazana-icon {
+    &.qazana-social-icon {
+      border-radius: 0;
+    }
+  }
 }
 
 .qazana-shape-rounded {
-
-	.qazana-icon {
-
-		&.qazana-social-icon {
-			border-radius: 10%;
-		}
-	}
+  .qazana-icon {
+    &.qazana-social-icon {
+      border-radius: 5px;
+    }
+  }
 }
 
 .qazana-shape-circle {
-
-	.qazana-icon {
-
-		&.qazana-social-icon {
-			border-radius: 50%;
-		}
-	}
+  .qazana-icon {
+    &.qazana-social-icon {
+      border-radius: 50%;
+    }
+  }
 }

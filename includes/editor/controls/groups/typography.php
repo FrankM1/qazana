@@ -111,7 +111,7 @@ class Group_Control_Typography extends Group_Base_Control {
 			'label' => _x( 'Line-Height', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SLIDER,
 			'default' => [
-				'unit' => 'em',
+				'unit' => 'px',
 			],
 			'range' => [
 				'px' => [

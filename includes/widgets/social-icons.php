@@ -36,16 +36,26 @@ class Widget_Social_Icons extends Widget_Base {
 				'type' => Controls_Manager::REPEATER,
 				'default' => [
 					[
+						'heading' => __( 'Facebook', 'energia' ),
 						'social' => 'fa fa-facebook',
 					],
 					[
+						'heading' => __( 'Twitter', 'energia' ),
 						'social' => 'fa fa-twitter',
 					],
 					[
+						'heading' => __( 'Google Plus', 'energia' ),
 						'social' => 'fa fa-google-plus',
 					],
 				],
 				'fields' => [
+					[
+						'name' => 'heading',
+						'label' => __( 'Heading', 'qazana' ),
+						'type' => Controls_Manager::TEXT,
+						'label_block' => true,
+						'placeholder' => __( 'Social account name', 'qazana' ),
+					],
 					[
 						'name' => 'social',
 						'label' => __( 'Icon', 'qazana' ),
@@ -97,7 +107,7 @@ class Widget_Social_Icons extends Widget_Base {
 						'placeholder' => __( 'http://your-link.com', 'qazana' ),
 					],
 				],
-				'title_field' => '<i class="{{ social }}"></i> {{{ social.replace( \'fa fa-\', \'\' ).replace( \'-\', \' \' ).replace( /\b\w/g, function( letter ){ return letter.toUpperCase() } ) }}}',
+				'title_field' => '{{{ heading }}}',
 			]
 		);
 
@@ -169,6 +179,7 @@ class Widget_Social_Icons extends Widget_Base {
 				'default' => 'default',
 				'options' => [
 					'default' => __( 'Official Color', 'qazana' ),
+					'transparent' => __( 'Official Color - Transparent', 'qazana' ),
 					'custom' => __( 'Custom', 'qazana' ),
 				],
 			]
@@ -289,7 +300,7 @@ class Widget_Social_Icons extends Widget_Base {
 		}
 
 		?>
-		<div class="qazana-social-icons-wrapper">
+		<div class="qazana-social-icons-wrapper qazana-social-icons-<?php echo $this->get_settings('icon_color'); ?>">
 			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $index => $item ) :
 				$social = str_replace( 'fa fa-', '', $item['social'] );
 
@@ -316,7 +327,7 @@ class Widget_Social_Icons extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-social-icons-wrapper">
+		<div class="qazana-social-icons-wrapper qazana-social-icons-{{ settings.icon_color }}">
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
 					social = item.social.replace( 'fa fa-', '' ); #>

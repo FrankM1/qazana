@@ -31,9 +31,14 @@ class Conditions {
 	}
 
 	public static function check( array $conditions, array $comparison ) {
+
 		$is_or_condition = isset( $conditions['relation'] ) && 'or' === $conditions['relation'];
 
 		$condition_succeed = ! $is_or_condition;
+
+		if ( empty( $conditions['terms'] ) ) {
+			return;
+		}
 
 		foreach ( $conditions['terms'] as $term ) {
 			if ( ! empty( $term['terms'] ) ) {
@@ -61,4 +66,5 @@ class Conditions {
 
 		return $condition_succeed;
 	}
+
 }

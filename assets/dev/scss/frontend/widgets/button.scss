@@ -1,24 +1,25 @@
-//
 // Button
-//
 
 // Alignment Classes
 .qazana-align- {
   &center {
     .qazana-button {
       width: auto;
+      margin: 0 auto;
     }
   }
 
   &right {
     .qazana-button {
       width: auto;
+          margin-left: auto;
     }
   }
 
   &left {
     .qazana-button {
       width: auto;
+      margin-right: auto;
     }
   }
 

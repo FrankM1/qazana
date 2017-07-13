@@ -190,7 +190,7 @@ class Widget_Tabs extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tab-content' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tab-content *' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -229,7 +229,7 @@ class Widget_Tabs extends Widget_Base {
 			$counter = 1; ?>
 			<div class="qazana-tabs-content-wrapper">
 				<?php foreach ( $tabs as $item ) : ?>
-					<div class="qazana-tab-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
+					<div class="qazana-tab-content entry-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 				<?php
 					$counter++;
 				endforeach; ?>
@@ -257,7 +257,7 @@ class Widget_Tabs extends Widget_Base {
 				<div class="qazana-tabs-content-wrapper">
 					<#
 					_.each( settings.tabs, function( item ) { #>
-						<div class="qazana-tab-content qazana-clearfix qazana-repeater-item-{{ item._id }}" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
+						<div class="qazana-tab-content entry-content qazana-clearfix qazana-repeater-item-{{ item._id }}" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
 					<#
 					counter++;
 					} ); #>
