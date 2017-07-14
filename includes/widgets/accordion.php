@@ -106,13 +106,20 @@ class Widget_Accordion extends Widget_Base {
 		$this->add_control(
 			'icon_type',
 			[
-				'label' => __( 'Icon type', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'icon',
+				'label' => __( 'Icon Type', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'label_block' => false,
 				'options' => [
-					'icon' => __( 'Icon', 'qazana' ),
-					'image' => __( 'Image File', 'qazana' ),
+					'image' => [
+						'title' => __( 'Image', 'qazana' ),
+						'icon' => 'fa fa-picture-o',
+					],
+					'icon' => [
+						'title' => __( 'Icon', 'qazana' ),
+						'icon' => 'fa fa-star',
+					],
 				],
+				'default' => 'icon',
 			]
 		);
 

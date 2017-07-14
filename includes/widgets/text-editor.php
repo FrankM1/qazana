@@ -77,9 +77,7 @@ class Widget_Text_Editor extends Widget_Base {
 					],
 				],
 				'prefix_class' => 'qazana-align-',
-				'selectors' => [
-					'{{WRAPPER}} .qazana-wrapper' => 'text-align: {{VALUE}};',
-				],
+				'force_render' => true,
 			]
 		);
 
@@ -129,7 +127,9 @@ class Widget_Text_Editor extends Widget_Base {
 
 		$editor_content = $this->parse_text_editor( $settings['editor'] );
 
-		?><div <?php echo $this->get_render_attribute_string( 'heading' ); ?>><div class="qazana-wrapper"><?php echo $settings['editor']; ?></div></div><?php
+		?><div <?php echo $this->get_render_attribute_string( 'heading' ); ?>>
+			<div class="qazana-wrapper"><?php echo $settings['editor']; ?></div>
+		</div><?php
 
 	}
 
@@ -139,9 +139,12 @@ class Widget_Text_Editor extends Widget_Base {
 	}
 
 	protected function _content_template() {
-		?>
 
-		<div class="qazana-text-editor entry-content qazana-clearfix"><div class="qazana-wrapper">{{{ settings.editor }}}</div></div>
+		?>
+		<div class="qazana-text-editor entry-content qazana-clearfix">
+			<div class="qazana-wrapper">{{{ settings.editor }}}</div>
+		</div>
 		<?php
+
 	}
 }

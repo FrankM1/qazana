@@ -1,46 +1,6 @@
 //
 // Counter
 //
-/*
-.qazana-piechart {
-  .qazana-piechart- {
-    &number- {
-      &prefix {
-        flex-grow: 1;
-        text-align: $end;
-      }
-
-      &suffix {
-        flex-grow: 1;
-        text-align: $start;
-      }
-    }
-
-  }
-}
-
-.qazana-piechart-number {
-  position: relative;
-  border: 1px solid grey;
-  border-radius: 50%;
-  text-align: center;
-
-  canvas {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .qazana-piechart-piechart-number {
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-    margin-bottom: 22px;
-    width: 160px;
-    height: 160px;
-    line-height: 160px;
-  }
-}*/
-
 .qazana-piechart {
   position: relative;
   text-align: center;

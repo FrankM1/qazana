@@ -35,6 +35,16 @@ $social: (
 .qazana-social-icons-wrapper {
   font-size: 0;
 
+  &.qazana-social-icons-align-justify {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    .qazana-social-icon {
+      flex: 1;
+    }
+  }
+
   .qazana-social-icon {
     font-size: 16px;
     text-align: center;
@@ -78,7 +88,7 @@ $social: (
         border-color: $color;
         color: $color;
         &:hover {
-            color: white;
+          color: white;
           background-color: $color;
         }
       }

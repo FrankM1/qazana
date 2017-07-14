@@ -36,15 +36,15 @@ class Widget_Social_Icons extends Widget_Base {
 				'type' => Controls_Manager::REPEATER,
 				'default' => [
 					[
-						'heading' => __( 'Facebook', 'energia' ),
+						'heading' => __( 'Facebook', 'qazana' ),
 						'social' => 'fa fa-facebook',
 					],
 					[
-						'heading' => __( 'Twitter', 'energia' ),
+						'heading' => __( 'Twitter', 'qazana' ),
 						'social' => 'fa fa-twitter',
 					],
 					[
-						'heading' => __( 'Google Plus', 'energia' ),
+						'heading' => __( 'Google Plus', 'qazana' ),
 						'social' => 'fa fa-google-plus',
 					],
 				],
@@ -143,6 +143,10 @@ class Widget_Social_Icons extends Widget_Base {
 					'right' => [
 						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
+					],
+					'justify' => [
+						'title' => __( 'Justified', 'qazana' ),
+						'icon' => 'fa fa-align-justify',
 					],
 				],
 				'default' => 'center',
@@ -300,7 +304,7 @@ class Widget_Social_Icons extends Widget_Base {
 		}
 
 		?>
-		<div class="qazana-social-icons-wrapper qazana-social-icons-<?php echo $this->get_settings('icon_color'); ?>">
+		<div class="qazana-social-icons-wrapper qazana-social-icons-<?php echo $this->get_settings('icon_color'); ?> qazana-social-icons-align-<?php echo $this->get_settings('align'); ?>">
 			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $index => $item ) :
 				$social = str_replace( 'fa fa-', '', $item['social'] );
 
@@ -327,7 +331,7 @@ class Widget_Social_Icons extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-social-icons-wrapper qazana-social-icons-{{ settings.icon_color }}">
+		<div class="qazana-social-icons-wrapper qazana-social-icons-{{ settings.icon_color }} qazana-social-icons-align-{{ settings.align }}">
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
 					social = item.social.replace( 'fa fa-', '' ); #>
