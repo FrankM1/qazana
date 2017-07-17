@@ -64,7 +64,7 @@ class Widgets_Manager {
         $build_widgets_filename = apply_filters( 'qazana/widgets/widget_filenames', $build_widgets_filename );
 
         // remove duplicates
-        $build_widgets_filename = array_flip( array_flip( $build_widgets_filename ) );
+        $build_widgets_filename = array_unique( $build_widgets_filename );
 
         foreach ( $build_widgets_filename as $widget_filename ) {
 

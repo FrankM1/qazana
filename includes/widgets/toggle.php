@@ -221,7 +221,7 @@ class Widget_Toggle extends Widget_Base {
 					</span>
 					<?php echo $item['tab_title']; ?>
 				</div>
-				<div class="qazana-toggle-content entry-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
+				<div class="qazana-toggle-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 			<?php
 				$counter++;
 			endforeach; ?>
@@ -242,7 +242,7 @@ class Widget_Toggle extends Widget_Base {
 					</span>
 						{{{ item.tab_title }}}
 					</div>
-					<div class="qazana-toggle-content entry-content qazana-clearfix" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
+					<div class="qazana-toggle-content qazana-clearfix" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
 				<#
 					counter++;
 				} );

@@ -176,4 +176,6 @@
 
 .qazana-widget-container {
   width: 100%;
+  position: relative;
+  z-index: 1;
 }

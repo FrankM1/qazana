@@ -105,7 +105,9 @@
   display: none; }
 
 .qazana-widget-container {
-  width: 100%; }
+  width: 100%;
+  position: relative;
+  z-index: 1; }
 
 .qazana-section {
   position: relative; }

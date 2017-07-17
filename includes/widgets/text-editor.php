@@ -98,7 +98,7 @@ class Widget_Text_Editor extends Widget_Base {
 	            'type' => Controls_Manager::COLOR,
 	            'default' => '',
 	            'selectors' => [
-	                '{{WRAPPER}} *' => 'color: {{VALUE}};',
+	                '{{WRAPPER}}' => 'color: {{VALUE}};',
 	            ],
 	            'scheme' => [
 		            'type' => Scheme_Color::get_type(),
@@ -112,7 +112,7 @@ class Widget_Text_Editor extends Widget_Base {
 			[
 				'name' => 'typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} *',
+				'selector' => '{{WRAPPER}}',
 			]
 		);
 
@@ -123,11 +123,11 @@ class Widget_Text_Editor extends Widget_Base {
 
         $settings = $this->get_settings();
 
-        $this->add_render_attribute( 'heading', 'class', 'qazana-text-editor entry-content qazana-clearfix' );
+        $this->add_render_attribute( 'text-editor', 'class', 'qazana-text-editor qazana-clearfix' );
 
 		$editor_content = $this->parse_text_editor( $settings['editor'] );
 
-		?><div <?php echo $this->get_render_attribute_string( 'heading' ); ?>>
+		?><div <?php echo $this->get_render_attribute_string( 'text-editor' ); ?>>
 			<div class="qazana-wrapper"><?php echo $settings['editor']; ?></div>
 		</div><?php
 
@@ -141,7 +141,7 @@ class Widget_Text_Editor extends Widget_Base {
 	protected function _content_template() {
 
 		?>
-		<div class="qazana-text-editor entry-content qazana-clearfix">
+		<div class="qazana-text-editor qazana-clearfix">
 			<div class="qazana-wrapper">{{{ settings.editor }}}</div>
 		</div>
 		<?php

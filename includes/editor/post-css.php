@@ -120,7 +120,7 @@ class Post_CSS_File {
 
 		$meta = [
 			'time' => time(),
-			'fonts' => array_flip( array_flip( $this->fonts ) ),
+			'fonts' => array_unique( $this->fonts ),
 		];
 
 		if ( empty( $this->css ) ) {

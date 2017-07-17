@@ -396,7 +396,7 @@ class Widget_Accordion extends Widget_Base {
 						</span>
 						<?php echo $item['tab_title']; ?>
 					</div>
-					<div class="qazana-accordion-content entry-content qazana-clearfix" data-section="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
+					<div class="qazana-accordion-content qazana-clearfix" data-section="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 				</div>
 			<?php
 				$counter++;
@@ -419,7 +419,7 @@ class Widget_Accordion extends Widget_Base {
 							</span>
 							{{{ item.tab_title }}}
 						</div>
-						<div class="qazana-accordion-content entry-content  qazana-clearfix" data-section="{{ counter }}">{{{ item.tab_content }}}</div>
+						<div class="qazana-accordion-content qazana-clearfix" data-section="{{ counter }}">{{{ item.tab_content }}}</div>
 					</div>
 				<#
 					counter++;
