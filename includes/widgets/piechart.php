@@ -22,7 +22,7 @@ class Widget_Piechart extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
-		$this->add_frontend_scripts(['jquery-circle-progress']);
+		$this->add_frontend_script('jquery-circle-progress');
     }
 
 	protected function _register_controls() {

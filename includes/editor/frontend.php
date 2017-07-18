@@ -12,6 +12,18 @@ class Frontend {
 	private $_has_qazana_in_page = false;
 
 	/**
+	 * [$scripts description]
+	 * @var array
+	 */
+	private $element_stylesheets = array();
+
+	/**
+	 * [$scripts description]
+	 * @var array
+	 */
+	private $element_scripts = array();
+
+	/**
 	 * @var Stylesheet
 	 */
 	private $stylesheet;
@@ -24,6 +36,7 @@ class Frontend {
 		$this->_is_frontend_mode = true;
 		$this->_has_qazana_in_page = qazana()->db->has_qazana_in_post( get_the_ID() );
 
+		$this->get_dependencies();
 		$this->_init_stylesheet();
 
 		add_action( 'wp_head', [ $this, 'print_css' ] );
@@ -31,12 +44,70 @@ class Frontend {
 
 		if ( $this->_has_qazana_in_page ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_scripts' ], 999 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_stylesheets' ], 999 );
 		}
 
 		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
 		// Add Edit with the Qazana in Admin Bar
 		add_action( 'admin_bar_menu', [ $this, 'add_menu_in_admin_bar' ], 200 );
+	}
+
+	/**
+	 * @param array $data a set of elements
+	 * @param string $method (on_export|on_import)
+	 *
+	 * @return mixed
+	 */
+	protected function get_dependencies() {
+
+		$data = qazana()->db->get_plain_editor( get_the_ID() );
+		$data = apply_filters( 'qazana/frontend/qazana_content_data', $data, get_the_ID() );
+
+		qazana()->db->iterate_data( $data, function( $element ) {
+
+			$element_instance = qazana()->elements_manager->create_element_instance( $element );
+
+			// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
+			if ( ! $element_instance ) {
+				return $element;
+			}
+
+			$element_instance->add_element_dependencies();
+
+			if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
+				foreach ( $element_instance->_element_stylesheets as $key ) {
+					$this->element_stylesheets[] = $key;
+				}
+			}
+
+			if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
+				foreach ( $element_instance->_element_scripts as $key ) {
+					$this->element_scripts[] = $key;
+
+				}
+			}
+
+			return $element;
+		} );
+
+	}
+
+	public function load_widget_scripts() {
+		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
+			foreach ( $this->element_scripts as $key ) {
+				wp_enqueue_script( $key );
+			}
+		}
+	}
+
+	public function load_widget_stylesheets() {
+		if ( ! empty( $this->element_stylesheets ) && is_array( $this->element_stylesheets ) ) {
+			foreach ( $this->element_stylesheets as $key ) {
+				wp_enqueue_style( $key );
+			}
+		}
 	}
 
 	private function _init_stylesheet() {
@@ -47,6 +118,8 @@ class Frontend {
 		$this->stylesheet
 			->add_device( 'mobile', $breakpoints['md'] - 1 )
 			->add_device( 'tablet', $breakpoints['lg'] - 1 );
+
+
 	}
 
 	protected function _print_elements( $elements_data ) {
@@ -110,8 +183,6 @@ class Frontend {
             qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
 				'waypoints',
-				'odometer',
-				'jquery-circle-progress',
             ],
             qazana()->get_version(),
             true
@@ -159,14 +230,14 @@ class Frontend {
 
         $direction_suffix = is_rtl() ? '-rtl' : '';
 
-        wp_enqueue_style(
+        wp_register_style(
             'odometer-theme-default',
             qazana()->core_assets_url . 'lib/odometer/themes/odometer-theme-default' . $suffix . '.css',
             [],
             qazana()->get_version()
         );
 
-		wp_enqueue_style(
+		wp_register_style(
             'qazana-icons',
             qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
@@ -214,7 +285,7 @@ class Frontend {
 	}
 
 	/**
-	 * Handle style that do not printed in header
+	 * Handle style that are not printed in the header
 	 */
 	public function wp_footer() {
 		if ( ! $this->_has_qazana_in_page ) {

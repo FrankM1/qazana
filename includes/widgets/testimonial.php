@@ -22,7 +22,7 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
-		$this->add_frontend_scripts( ['jquery-slick'] );
+		$this->add_frontend_script('jquery-slick');
 	}
 
 	protected function _register_controls() {

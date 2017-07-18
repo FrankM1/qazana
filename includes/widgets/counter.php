@@ -22,7 +22,8 @@ class Widget_Counter extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
-		$this->add_frontend_scripts(['jquery-numerator']);
+		$this->add_frontend_script('odometer');
+		$this->add_frontend_stylesheet('odometer-theme-default');
     }
 
 	protected function _register_controls() {

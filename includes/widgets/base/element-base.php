@@ -40,14 +40,14 @@ abstract class Element_Base {
 	 *
 	 * @var null|array
 	 */
-	private $_element_scripts = array();
+	public $_element_scripts = array();
 
 	/**
 	 * Holds the current element stylesheets
 	 *
 	 * @var null|array
 	 */
-	private $_element_stylesheets = array();
+	public $_element_stylesheets = array();
 
 	/**
 	 * Holds the current tab while render a set of controls tabs
@@ -504,10 +504,6 @@ abstract class Element_Base {
 
 	public function print_element() {
 
-		$this->add_element_dependencies();
-		$this->load_script_dependencies();
-		$this->load_style_dependencies();
-
 		do_action( 'qazana/frontend/' . static::get_type() . '/before_render', $this );
 
 		$this->before_render();
@@ -517,6 +513,7 @@ abstract class Element_Base {
 		$this->after_render();
 
 		do_action( 'qazana/frontend/' . static::get_type() . '/after_render', $this );
+
 	}
 
 	public function get_raw_data( $with_html_content = false ) {
@@ -764,28 +761,12 @@ abstract class Element_Base {
 	 */
 	public function add_element_dependencies() {}
 
-	public function add_frontend_stylesheets( array $args ) {
-		return $this->_element_stylesheets = array_merge( $args, $this->_element_stylesheets );
+	public function add_frontend_stylesheet( $args ) {
+		$this->_element_stylesheets[] = $args;
 	}
 
-	public function add_frontend_scripts( array $args ) {
-		return $this->_element_scripts = array_merge( $args, $this->_element_scripts );
-	}
-
-	public function load_script_dependencies() {
-		if ( ! empty( $this->_element_scripts ) && is_array( $this->_element_scripts ) ) {
-			foreach ( $this->_element_scripts as $key => $value ) {
-				wp_enqueue_script( $value );
-			}
-		}
-	}
-
-	public function load_style_dependencies() {
-		if ( ! empty( $this->_element_stylesheets ) && is_array( $this->_element_stylesheets ) ) {
-			foreach ( $this->_element_stylesheets as $key => $value ) {
-				wp_enqueue_style( $value );
-			}
-		}
+	public function add_frontend_script( $args ) {
+		$this->_element_scripts[] = $args;
 	}
 
 	public function __construct( array $data = [], array $args = null ) {
@@ -795,7 +776,6 @@ abstract class Element_Base {
 		} elseif ( $args ) {
 			$this->_default_args = $args;
 		}
-
 	}
 
 	public function bool( $var ) {
