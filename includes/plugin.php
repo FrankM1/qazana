@@ -330,8 +330,8 @@ class Plugin {
         require_once( $this->includes_dir . 'editor/stylesheet.php' );
         require_once( $this->includes_dir . 'editor/user.php' );
         require_once( $this->includes_dir . 'editor/conditions.php' );
-        require_once( $this->includes_dir . 'editor/post-css.php' );
         require_once( $this->includes_dir . 'editor/icons.php' );
+        require_once( $this->includes_dir . 'editor/css/post-css.php' );
 
         require_once( $this->includes_dir . 'managers/controls.php' );
         require_once( $this->includes_dir . 'managers/schemes.php' );

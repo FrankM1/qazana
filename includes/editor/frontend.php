@@ -28,7 +28,15 @@ class Frontend {
 	 */
 	private $stylesheet;
 
+	/**
+	 * Initialize
+	 *
+	 * @method init
+	 *
+	 * @return void
+	 */
 	public function init() {
+
 		if ( qazana()->editor->is_edit_mode() || qazana()->preview->is_preview_mode() ) {
 			return;
 		}
@@ -69,7 +77,7 @@ class Frontend {
 
 			$element_instance = qazana()->elements_manager->create_element_instance( $element );
 
-			// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
+			// Exit if the widget/element doesn't exist
 			if ( ! $element_instance ) {
 				return $element;
 			}
@@ -90,7 +98,7 @@ class Frontend {
 			}
 
 			return $element;
-		} );
+		});
 
 	}
 
@@ -118,8 +126,6 @@ class Frontend {
 		$this->stylesheet
 			->add_device( 'mobile', $breakpoints['md'] - 1 )
 			->add_device( 'tablet', $breakpoints['lg'] - 1 );
-
-
 	}
 
 	protected function _print_elements( $elements_data ) {
@@ -277,9 +283,7 @@ class Frontend {
 		if ( empty( $css_code ) )
 			return;
 
-		?>
-		<style id="qazana-frontend-stylesheet"><?php echo $css_code; ?></style>
-		<?php
+		?><style id="qazana-frontend-stylesheet"><?php echo $css_code; ?></style><?php
 
 		$this->print_google_fonts();
 	}
@@ -333,6 +337,7 @@ class Frontend {
 			$this->_enqueue_google_early_access_fonts = [];
 		}
 	}
+
 	public function add_enqueue_font( $font ) {
 		switch ( Fonts::get_font_type( $font ) ) {
 			case Fonts::GOOGLE :
