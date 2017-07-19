@@ -37,7 +37,13 @@ class Frontend {
 	 */
 	public function init() {
 
-		if ( qazana()->editor->is_edit_mode() || qazana()->preview->is_preview_mode() ) {
+		if ( qazana()->editor->is_edit_mode() ) {
+			return;
+		}
+
+		add_filter( 'body_class', [ $this, 'body_class' ] );
+
+		if ( qazana()->preview->is_preview_mode() ) {
 			return;
 		}
 
@@ -48,7 +54,6 @@ class Frontend {
 		$this->_init_stylesheet();
 
 		add_action( 'wp_head', [ $this, 'print_css' ] );
-		add_filter( 'body_class', [ $this, 'body_class' ] );
 
 		if ( $this->_has_qazana_in_page ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'widgets_register_script' ] );
@@ -137,9 +142,15 @@ class Frontend {
 	}
 
 	public function body_class( $classes = [] ) {
-		if ( is_singular() && 'qazana' === qazana()->db->get_edit_mode( get_the_ID() ) ) {
-			$classes[] = 'qazana-page';
+
+		$classes[] = 'qazana-default';
+
+		$id = get_the_ID();
+
+		if ( is_singular() && qazana()->db->is_built_with_qazana( $id ) ) {
+			$classes[] = 'qazana-page qazana-page-' . $id;
 		}
+
 		return $classes;
 	}
 
@@ -207,7 +218,7 @@ class Frontend {
     }
 
 	public function widgets_register_script() {
-		
+
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
         wp_register_script(
@@ -311,6 +322,11 @@ class Frontend {
 	}
 
 	public function print_google_fonts() {
+
+		if ( ! apply_filters( 'qazana/frontend/print_google_fonts', true ) ) {
+			return;
+		}
+
 		// Enqueue used fonts
 		if ( ! empty( $this->_enqueue_google_fonts ) ) {
 			foreach ( $this->_enqueue_google_fonts as &$font ) {
