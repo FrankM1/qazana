@@ -51,6 +51,7 @@ class Frontend {
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 
 		if ( $this->_has_qazana_in_page ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'widgets_register_script' ] );
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999 );
 			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_scripts' ], 999 );
 			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_stylesheets' ], 999 );
@@ -159,32 +160,6 @@ class Frontend {
         );
 
         wp_register_script(
-            'odometer',
-            qazana()->core_assets_url . 'lib/odometer/odometer' . $suffix . '.js',
-            [],
-            '0.4.8',
-            true
-        );
-
-		wp_register_script(
-            'jquery-circle-progress',
-            qazana()->core_assets_url . 'lib/jquery-circle-progress/circle-progress' . $suffix . '.js',
-            [],
-            '1.2.2',
-            true
-        );
-
-        wp_register_script(
-            'jquery-slick',
-            qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '1.6.0',
-            true
-        );
-
-        wp_register_script(
             'qazana-frontend',
             qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
@@ -230,6 +205,38 @@ class Frontend {
 		do_action( 'qazana/frontend/after_enqueue_scripts' );
 
     }
+
+	public function widgets_register_script() {
+		
+		$suffix = Utils::is_script_debug() ? '' : '.min';
+
+        wp_register_script(
+            'jquery-slick',
+            qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
+            [
+                'jquery',
+            ],
+            '1.6.0',
+            true
+        );
+
+        wp_register_script(
+            'odometer',
+            qazana()->core_assets_url . 'lib/odometer/odometer' . $suffix . '.js',
+            [],
+            '0.4.8',
+            true
+        );
+
+		wp_register_script(
+            'jquery-circle-progress',
+            qazana()->core_assets_url . 'lib/jquery-circle-progress/circle-progress' . $suffix . '.js',
+            [],
+            '1.2.2',
+            true
+        );
+
+	}
 
     public function enqueue_styles() {
         $suffix = Utils::is_script_debug() ? '' : '.min';
