@@ -53,7 +53,7 @@ class Global_CSS_File extends CSS_File {
 	protected function is_update_required() {
 		$file_last_updated = $this->get_meta( 'time' );
 
-		$schemes_last_update = get_option( Scheme_Base::LAST_UPDATED_META );
+		$schemes_last_update = get_option( '_qazana_scheme_last_updated' );
 
 		if ( $file_last_updated < $schemes_last_update ) {
 			return true;
