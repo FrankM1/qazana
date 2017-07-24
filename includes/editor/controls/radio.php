@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Radio extends Base_Control {
+class Control_Radio extends Base_Data_Control {
 
 	public function get_type() {
 		return 'radio';

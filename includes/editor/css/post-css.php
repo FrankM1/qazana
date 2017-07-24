@@ -1,207 +1,119 @@
 <?php
 namespace Qazana;
 
+//use Qazana\PageSettings\Manager as PageSettingsManager;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Post_CSS_File extends CSS_Base {
+class Post_CSS_File extends CSS_File {
 
-	protected $fonts = [];
+	const META_KEY = '_qazana_css';
+
+	const FILE_PREFIX = 'post-';
+
+	/*
+	 * @var int
+	 */
+	private $post_id;
 
 	/**
-	 * [$_columns_width description]
-	 * @var [type]
+	 * Post_CSS_File constructor.
+	 *
+	 * @param int $post_id
 	 */
-	public $_columns_width;
-
 	public function __construct( $post_id ) {
 		$this->post_id = $post_id;
 
-		// Check if it's a Qazana post
-		$this->is_built_with_qazana = qazana()->db->is_built_with_qazana( $post_id );
-
-		if ( ! $this->is_built_with_qazana ) {
-			return;
-		}
-
-		$this->set_path_and_url();
-		$this->init_stylesheet();
+		parent::__construct();
 	}
 
-	public static function add_control_rules( Stylesheet $stylesheet, array $control, array $controls_stack, callable $value_callback, array $placeholders, array $replacements ) {
-		$value = call_user_func( $value_callback, $control );
-
-		if ( null === $value ) {
-			return;
-		}
-
-		foreach ( $control['selectors'] as $selector => $css_property ) {
-			try {
-				$output_css_property = preg_replace_callback( '/\{\{(?:([^.}]+)\.)?([^}]*)}}/', function( $matches ) use ( $control, $value_callback, $controls_stack, $value, $css_property ) {
-					$parser_control = $control;
-
-					$value_to_insert = $value;
-
-					if ( ! empty( $matches[1] ) ) {
-						$parser_control = $controls_stack[ $matches[1] ];
-
-						$value_to_insert = call_user_func( $value_callback, $parser_control );
-					}
-
-					$control_obj = qazana()->controls_manager->get_control( $parser_control['type'] );
-
-					$parsed_value = $control_obj->get_style_value( strtolower( $matches[2] ), $value_to_insert );
-
-					if ( '' === $parsed_value ) {
-						throw new \Exception();
-					}
-
-					return $parsed_value;
-				}, $css_property );
-			} catch ( \Exception $e ) {
-				return;
-			}
-
-			if ( ! $output_css_property ) {
-				continue;
-			}
-
-			$device_pattern = '/^\(([^\)]+)\)/';
-
-			preg_match( $device_pattern, $selector, $device_rule );
-
-			if ( $device_rule ) {
-				$selector = preg_replace( $device_pattern, '', $selector );
-
-				$device_rule = $device_rule[1];
-			}
-
-			$parsed_selector = str_replace( $placeholders, $replacements, $selector );
-
-			$device = $device_rule;
-
-			if ( ! $device ) {
-				$device = ! empty( $control['responsive'] ) ? $control['responsive'] : Element_Base::RESPONSIVE_DESKTOP;
-			}
-
-			$stylesheet->add_rules( $parsed_selector, $output_css_property, $device );
-		}
+	/**
+	 * @return int
+	 */
+	public function get_post_id() {
+		return $this->post_id;
 	}
 
-	public function update() {
-		if ( ! $this->is_built_with_qazana() ) {
-			return;
-		}
-
-		$this->parse_elements_css();
-
-		$meta = [
-			'time' => time(),
-			'fonts' => array_unique( $this->fonts ),
-		];
-
-		if ( empty( $this->css ) ) {
-			$this->delete();
-
-			$meta['status'] = self::CSS_STATUS_EMPTY;
-			$meta['css'] = '';
-		} else {
-			$file_created = false;
-
-			if ( wp_is_writable( dirname( $this->path ) ) ) {
-				$file_created = file_put_contents( $this->path, $this->css );
-			}
-
-			if ( $file_created ) {
-				$meta['status'] = self::CSS_STATUS_FILE;
-			} else {
-				$meta['status'] = self::CSS_STATUS_INLINE;
-				$meta['css'] = $this->css;
-			}
-		}
-
-		$this->update_meta( $meta );
-	}
-
+	/**
+	 * @param Element_Base $element
+	 *
+	 * @return string
+	 */
 	public function get_element_unique_selector( Element_Base $element ) {
 		return '.qazana-' . $this->post_id . ' .qazana-element' . $element->get_unique_selector();
 	}
 
-	public function get_css() {
-		if ( empty( $this->css ) ) {
-			$this->parse_elements_css();
-		}
-
-		return $this->css;
+	/**
+	 * @return array
+	 */
+	protected function load_meta() {
+		return get_post_meta( $this->post_id, self::META_KEY, true );
 	}
 
-	protected function init_stylesheet() {
-		$this->stylesheet_obj = new Stylesheet();
-
-		$breakpoints = Responsive::get_breakpoints();
-
-		$this->stylesheet_obj
-			->add_device( 'mobile', $breakpoints['md'] - 1 )
-			->add_device( 'tablet', $breakpoints['lg'] - 1 );
-	}
-
-	protected function get_meta() {
-		$meta = get_post_meta( $this->post_id, self::META_KEY_CSS, true );
-
-		$defaults = [
-			'status'  => '',
-		];
-
-		$meta = wp_parse_args( $meta, $defaults );
-
-		return $meta;
-	}
-
+	/**
+	 * @param string $meta
+	 */
 	protected function update_meta( $meta ) {
-		return update_post_meta( $this->post_id, '_qazana_css', $meta );
+		update_post_meta( $this->post_id, '_qazana_css', $meta );
 	}
 
-	protected function parse_elements_css() {
-		if ( ! $this->is_built_with_qazana() ) {
-			return;
-		}
+	protected function render_css() {
+		//$this->add_page_settings_rules();
 
 		$data = qazana()->db->get_plain_editor( $this->post_id );
 
-		$css = '';
+		if ( ! empty( $data ) ) {
+			foreach ( $data as $element_data ) {
+				$element = qazana()->elements_manager->create_element_instance( $element_data );
 
-		foreach ( $data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
-			$this->render_styles( $element );
-		}
+				if ( ! $element ) {
+					continue;
+				}
 
-		$css .= $this->stylesheet_obj;
-
-		if ( ! empty( $this->_columns_width ) ) {
-			$css .= '@media (min-width: 768px) {';
-			foreach ( $this->_columns_width as $column_width ) {
-				$css .= $column_width;
+				$this->render_styles( $element );
 			}
-			$css .= '}';
 		}
 
-		if ( is_ssl() ) {
-			$css = str_replace(array('http://','https://'), '//', $css);
-		}
-
-		$this->css = apply_filters( 'qazana/element/parse_elements_css', $css, $this );
+		do_action( 'qazana/post-css-file/parse', $this );
 	}
 
-	private function add_element_style_rules( Element_Base $element, $controls, $values, $placeholders, $replacements ) {
+	public function enqueue() {
+		if ( ! qazana()->db->is_built_with_qazana( $this->post_id ) ) {
+			return;
+		}
+
+		parent::enqueue();
+	}
+
+	protected function get_enqueue_dependencies() {
+		return [ 'qazana-frontend' ];
+	}
+
+	protected function get_inline_dependency() {
+		return 'qazana-frontend';
+	}
+
+	protected function get_file_handle_id() {
+		return 'qazana-post-' . $this->post_id;
+	}
+
+	protected function get_file_name() {
+		return self::FILE_PREFIX . $this->post_id;
+	}
+
+	/**
+	 * @param Controls_Stack $controls_stack
+	 * @param array          $controls
+	 * @param array          $values
+	 * @param array          $placeholders
+	 * @param array          $replacements
+	 */
+	private function add_element_style_rules( Controls_Stack $controls_stack, array $controls, array $values, array $placeholders, array $replacements ) {
 		foreach ( $controls as $control ) {
 			if ( ! empty( $control['style_fields'] ) ) {
 				foreach ( $values[ $control['name'] ] as $field_value ) {
-
-					if ( empty( $field_value['_id'] ) ) {
-						$field_value['_id'] = '';
-					}
-
 					$this->add_element_style_rules(
-						$element,
+						$controls_stack,
 						$control['style_fields'],
 						$field_value,
 						array_merge( $placeholders, [ '{{CURRENT_ITEM}}' ] ),
@@ -210,31 +122,40 @@ class Post_CSS_File extends CSS_Base {
 				}
 			}
 
-			if ( ! $element->is_control_visible( $control, $values ) || empty( $control['selectors'] ) ) {
+			if ( empty( $control['selectors'] ) ) {
 				continue;
 			}
 
-			$this->add_control_style_rules( $control, $values, $element->get_controls(), $placeholders, $replacements );
+			$this->add_control_style_rules( $control, $values, $controls_stack->get_controls(), $placeholders, $replacements );
 		}
 
-		foreach ( $element->get_children() as $child_element ) {
-			$this->render_styles( $child_element );
+		if ( $controls_stack instanceof Element_Base ) {
+			foreach ( $controls_stack->get_children() as $child_element ) {
+				$this->render_styles( $child_element );
+			}
 		}
 	}
 
-	private function add_control_style_rules( $control, $values, $controls_stack, $placeholders, $replacements ) {
-		self::add_control_rules( $this->stylesheet_obj, $control, $controls_stack, function( $control ) use ( $values ) {
-			$value = $this->get_style_control_value( $control, $values );
-
-			if ( Controls_Manager::FONT === $control['type'] ) {
-				$this->fonts[] = $value;
-			}
-
-			return $value;
+	/**
+	 * @param array $control
+	 * @param array $values
+	 * @param array $controls_stack
+	 * @param array $placeholders
+	 * @param array $replacements
+	 */
+	private function add_control_style_rules( array $control, array $values, array $controls_stack, array $placeholders, array $replacements ) {
+		$this->add_control_rules( $control, $controls_stack, function( $control ) use ( $values ) {
+			return $this->get_style_control_value( $control, $values );
 		}, $placeholders, $replacements );
 	}
 
-	private function get_style_control_value( $control, $values ) {
+	/**
+	 * @param array $control
+	 * @param array $values
+	 *
+	 * @return mixed
+	 */
+	private function get_style_control_value( array $control, array $values ) {
 		$value = $values[ $control['name'] ];
 
 		if ( isset( $control['selectors_dictionary'][ $value ] ) ) {
@@ -248,17 +169,26 @@ class Post_CSS_File extends CSS_Base {
 		return $value;
 	}
 
+	/**
+	 * @param Element_Base $element
+	 */
 	private function render_styles( Element_Base $element ) {
 		$element_settings = $element->get_settings();
-
-		$this->add_element_style_rules( $element, $element->get_style_controls(), $element_settings,  [ '{{WRAPPER}}' ], [ $this->get_element_unique_selector( $element ) ] );
-
-		if ( 'column' === $element->get_name() ) {
-			if ( ! empty( $element_settings['_inline_size'] ) ) {
-				$this->_columns_width[] = $this->get_element_unique_selector( $element ) . '{width:' . $element_settings['_inline_size'] . '%;}';
-			}
-		}
+		
+		$this->add_element_style_rules( $element, $element->get_style_controls(), $element_settings,  [ '{{ID}}', '{{WRAPPER}}' ], [ $element->get_id(), $this->get_element_unique_selector( $element ) ] );
 
 		do_action( 'qazana/element/parse_css', $this, $element );
+	}
+
+	private function add_page_settings_rules() {
+		$page_settings_instance = PageSettingsManager::get_page( $this->post_id );
+
+		$this->add_element_style_rules(
+			$page_settings_instance,
+			$page_settings_instance->get_style_controls(),
+			$page_settings_instance->get_settings(),
+			[ '{{WRAPPER}}' ],
+			[ 'body.qazana-page-' . $this->post_id ]
+		);
 	}
 }

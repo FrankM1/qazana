@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Media extends Base_Control_Multiple {
+class Control_Media extends Control_Base_Multiple {
 
 	public function get_type() {
 		return 'media';
@@ -103,15 +103,11 @@ class Control_Media extends Base_Control_Multiple {
 		];
 	}
 
-	public static function get_image_title( $instance ) {
-		if ( empty( $instance['id'] ) )
+	public static function get_image_title( $attachment ) {
+		if ( empty( $attachment['id'] ) )
 			return '';
 
-		$attachment_id = $instance['id'];
-		if ( ! $attachment_id )
-			return '';
-
-		return get_the_title( $attachment_id );
+		return get_the_title( $attachment['id'] );
 	}
 
 	public static function get_image_alt( $instance ) {

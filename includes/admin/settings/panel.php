@@ -26,6 +26,20 @@ class Settings_Panel {
             qazana()->slug
         );
 
+        $field_id = 'qazana_settings_update_time';
+        add_settings_field(
+            $field_id,
+            __( 'Post Types', 'qazana' ),
+            [ $controls_class_name, 'render' ],
+            qazana()->slug,
+            $main_section,
+            [
+                'id' => $field_id,
+                'type' => 'hidden',
+                'sanitize_callback' => 'time',
+            ]
+        );
+
         $field_id = 'qazana_cpt_support';
         add_settings_field(
             $field_id,

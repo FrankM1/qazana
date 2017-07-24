@@ -37,37 +37,21 @@ abstract class Base_Control {
 
 	private $_settings = [];
 
+	public static function get_features() {
+		return [];
+	}
+
 	abstract public function content_template();
 
 	abstract public function get_type();
 
 	public function __construct() {
 		$this->_settings = array_merge( $this->_base_settings, $this->get_default_settings() );
+
+		$this->_settings['features'] = static::get_features();
 	}
 
 	public function enqueue() {}
-
-	public function get_default_value() {
-		return '';
-	}
-
-	protected function get_control_uid( $input_type = 'default' ) {
-		return 'qazana-control-' . $input_type . '-{{{ data._cid }}}';
-	}
-
-	public function get_value( $control, $widget ) {
-		if ( ! isset( $control['default'] ) )
-			$control['default'] = $this->get_default_value();
-
-		if ( ! isset( $widget[ $control['name'] ] ) )
-			return $control['default'];
-
-		return $widget[ $control['name'] ];
-	}
-
-	public function get_style_value( $css_property, $control_value ) {
-		return $control_value;
-	}
 
 	/**
 	 * @param string $setting_key
@@ -85,6 +69,16 @@ abstract class Base_Control {
 		}
 
 		return $this->_settings;
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 *
+	 * @since    1.5.0
+	 */
+	final public function set_settings( $key, $value ) {
+		$this->_settings[ $key ] = $value;
 	}
 
 	/**

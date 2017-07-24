@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Font extends Base_Control {
+class Control_Font extends Base_Data_Control {
 
 	public function get_type() {
 		return 'font';
@@ -25,11 +25,12 @@ class Control_Font extends Base_Control {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<select class="qazana-control-font-family" data-setting="{{ data.name }}">
+				<select id="<?php echo $control_uid; ?>" class="qazana-control-font-family" data-setting="{{ data.name }}">
 					<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
 					<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
 						<# _.each( getFontsByGroups( 'system' ), function( fontType, fontName ) { #>

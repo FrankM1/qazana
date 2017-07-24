@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_URL extends Base_Control_Multiple {
+class Control_URL extends Control_Base_Multiple {
 
 	public function get_type() {
 		return 'url';
@@ -39,7 +39,6 @@ class Control_URL extends Base_Control_Multiple {
 	}
 
 	public function content_template() {
-
 		$control_uid = $this->get_control_uid();
 
 		$more_input_control_uid = $this->get_control_uid( 'more-input' );

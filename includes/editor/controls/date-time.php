@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *                                  Default empty array
  * @since 1.0.0
  */
-class Control_Date_Time extends Base_Control {
+class Control_Date_Time extends Base_Data_Control {
 
 	public function get_type() {
 		return 'date_time';
@@ -26,11 +26,12 @@ class Control_Date_Time extends Base_Control {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<input class="qazana-date-time-picker" type="text" data-setting="{{ data.name }}">
+				<input id="<?php echo $control_uid; ?>" class="qazana-date-time-picker" type="text" data-setting="{{ data.name }}">
 			</div>
 		</div>
 		<# if ( data.description ) { #>

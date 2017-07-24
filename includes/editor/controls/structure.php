@@ -8,13 +8,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Structure extends Base_Control {
+class Control_Structure extends Base_Data_Control {
 
 	public function get_type() {
 		return 'structure';
 	}
 
 	public function content_template() {
+		$preset_control_uid = $this->get_control_uid( '{{ preset.key }}' );
 		?>
 		<div class="qazana-control-field">
 			<div class="qazana-control-input-wrapper">
@@ -32,8 +33,8 @@ class Control_Structure extends Base_Control {
 					<div class="qazana-control-structure-more-presets">
 						<# _.each( morePresets, function( preset ) { #>
 							<div class="qazana-control-structure-preset-wrapper">
-								<input id="qazana-control-structure-preset-{{ data._cid }}-{{ preset.key }}" type="radio" name="qazana-control-structure-preset-{{ data._cid }}" data-setting="structure" value="{{ preset.key }}">
-								<label class="qazana-control-structure-preset" for="qazana-control-structure-preset-{{ data._cid }}-{{ preset.key }}">
+								<input id="<?php echo $preset_control_uid; ?>" type="radio" name="qazana-control-structure-preset-{{ data._cid }}" data-setting="structure" value="{{ preset.key }}">
+								<label for="<?php echo $preset_control_uid; ?>" class="qazana-control-structure-preset">
 									{{{ qazana.presetsFactory.getPresetSVG( preset.preset, 102, 42 ).outerHTML }}}
 								</label>
 								<div class="qazana-control-structure-preset-title">{{{ preset.preset.join( ', ' ) }}}</div>
@@ -53,6 +54,7 @@ class Control_Structure extends Base_Control {
 	protected function get_default_settings() {
 		return [
 			'separator' => 'none',
+			'label_block' => true,
 		];
 	}
 }

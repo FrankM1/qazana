@@ -3,7 +3,7 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Group_Control_Background extends Group_Base_Control {
+class Group_Control_Background extends Group_Control_Base {
 
 	protected static $fields;
 
@@ -48,7 +48,8 @@ class Group_Control_Background extends Group_Base_Control {
 		$fields['background'] = [
 			'label' => _x( 'Background Type', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::CHOOSE,
-			'label_block' => true,
+			'label_block' => false,
+			'render_type' => 'ui',
 		];
 
 		$fields['color'] = [
@@ -328,7 +329,7 @@ class Group_Control_Background extends Group_Base_Control {
 
 	protected function get_child_default_args() {
 		return [
-			'types' => [ 'none', 'classic' ],
+			'types' => [ 'classic', 'gradient' ],
 		];
 	}
 

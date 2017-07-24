@@ -29,19 +29,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	);
 ?>```
  */
-class Control_Switcher extends Base_Control {
+class Control_Switcher extends Base_Data_Control {
 
 	public function get_type() {
 		return 'switcher';
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<label class="qazana-switch">
-					<input type="checkbox" data-setting="{{ data.name }}" class="qazana-switch-input" value="{{ data.return_value }}">
+					<input id="<?php echo $control_uid; ?>" type="checkbox" data-setting="{{ data.name }}" class="qazana-switch-input" value="{{ data.return_value }}">
 					<span class="qazana-switch-label" data-on="{{ data.label_on }}" data-off="{{ data.label_off }}"></span>
 					<span class="qazana-switch-handle"></span>
 				</label>

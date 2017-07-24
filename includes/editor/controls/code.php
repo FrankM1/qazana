@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Code extends Base_Control {
+class Control_Code extends Base_Data_Control {
 
 	public function get_type() {
 		return 'code';
@@ -26,11 +26,12 @@ class Control_Code extends Base_Control {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<textarea rows="10" class="qazana-input-style qazana-code-editor" data-setting="{{ data.name }}"></textarea>
+				<textarea id="<?php echo $control_uid; ?>" rows="10" class="qazana-input-style qazana-code-editor" data-setting="{{ data.name }}"></textarea>
 			</div>
 		</div>
 		<# if ( data.description ) { #>

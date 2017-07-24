@@ -37,6 +37,8 @@ abstract class Scheme_Base implements Scheme_Interface {
 		$scheme_value = $this->get_scheme_value();
 
 		update_option( 'qazana_scheme_' . static::get_type(), array_replace( $scheme_value, array_intersect_key( $posted, $scheme_value ) ) );
+
+		update_option( '_qazana_scheme_last_updated', time() );
 	}
 
 	public function get_scheme() {

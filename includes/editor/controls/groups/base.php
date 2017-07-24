@@ -3,7 +3,7 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-abstract class Group_Base_Control implements Group_Control_Interface {
+abstract class Group_Control_Base implements Group_Control_Interface {
 
 	private $args = [];
 
@@ -14,6 +14,10 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 		$filtered_fields = $this->filter_fields();
 
 		$filtered_fields = $this->prepare_fields( $filtered_fields );
+
+		if ( isset( $this->args['separator'] ) ) {
+			$filtered_fields[ key( $filtered_fields ) ]['separator'] = $this->args['separator'];
+		}
 
 		foreach ( $filtered_fields as $field_id => $field_args ) {
 
@@ -51,7 +55,7 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 	}
 
 	public function get_controls_prefix() {
-		return $this->get_args()['name'] . '_';
+		return $this->args['name'] . '_';
 	}
 
 	public function get_base_group_classes() {
@@ -70,24 +74,31 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 
 		$fields = $this->get_fields();
 
-		if ( ! is_array( $args['fields'] ) ) {
-			return $fields;
+		if ( ! empty( $args['include'] ) ) {
+			$fields = array_intersect_key( $fields, array_flip( $args['include'] ) );
 		}
 
-		$filtered_fields = array_intersect_key( $fields, array_flip( $args['fields'] ) );
+		if ( ! empty( $args['exclude'] ) ) {
+			$fields = array_diff_key( $fields, array_flip( $args['exclude'] ) );
+		}
 
-		// Include all condition depended controls
-		foreach ( $filtered_fields as $field ) {
+		foreach ( $fields as $field_key => $field ) {
 			if ( empty( $field['condition'] ) ) {
 				continue;
 			}
 
-			$depended_controls = array_intersect_key( $fields, $field['condition'] );
-			$filtered_fields = array_merge( $filtered_fields, $depended_controls );
-			$filtered_fields = array_intersect_key( $fields, $filtered_fields );
+			foreach ( $field['condition'] as $condition_key => $condition_value ) {
+				preg_match( '/^\w+/', $condition_key, $matches );
+
+				if ( empty( $fields[ $matches[0] ] ) ) {
+					unset( $fields[ $field_key ] );
+
+					continue 2;
+				}
+			}
 		}
 
-		return $filtered_fields;
+		return $fields;
 	}
 
 	protected function add_group_args_to_field( $control_id, $field_args ) {
@@ -119,7 +130,7 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 	}
 
 	protected function prepare_fields( $fields ) {
-		foreach ( $fields as &$field ) {
+		foreach ( $fields as $field_key => &$field ) {
 			if ( ! empty( $field['condition'] ) ) {
 				$field = $this->add_conditions_prefix( $field );
 			}
@@ -128,6 +139,13 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 				$field['selectors'] = $this->handle_selectors( $field['selectors'] );
 			}
 
+			if ( isset( $this->args['fields_options']['__all'] ) ) {
+				$field = array_merge( $field, $this->args['fields_options']['__all'] );
+			}
+
+			if ( isset( $this->args['fields_options'][ $field_key ] ) ) {
+				$field = array_merge( $field, $this->args['fields_options'][ $field_key ] );
+			}
 		}
 
 		return $fields;
@@ -141,14 +159,16 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 		return [
 			'default' => '',
 			'selector' => '{{WRAPPER}}',
-			'fields' => 'all',
+			'fields_options' => [],
 		];
 	}
 
 	private function add_conditions_prefix( $field ) {
+		$controls_prefix = $this->get_controls_prefix();
+
 		$prefixed_condition_keys = array_map(
-			function ( $key ) {
-				return $this->get_controls_prefix() . $key;
+			function( $key ) use ( $controls_prefix ) {
+				return $controls_prefix . $key;
 			},
 			array_keys( $field['condition'] )
 		);
@@ -165,15 +185,21 @@ abstract class Group_Base_Control implements Group_Control_Interface {
 		$args = $this->get_args();
 
 		$selectors = array_combine(
-			array_map( function ( $key ) use ( $args ) {
+			array_map( function( $key ) use ( $args ) {
 				return str_replace( '{{SELECTOR}}', $args['selector'], $key );
 			}, array_keys( $selectors ) ),
 			$selectors
 		);
 
+		if ( ! $selectors ) {
+			return $selectors;
+		}
+
+		$controls_prefix = $this->get_controls_prefix();
+
 		foreach ( $selectors as &$selector ) {
-			$selector = preg_replace_callback( '/(?:\{\{)\K[^.}]+(?=\.[^}]*}})/', function ( $matches ) {
-				return $this->get_controls_prefix() . $matches[0];
+			$selector = preg_replace_callback( '/(?:\{\{)\K[^.}]+(?=\.[^}]*}})/', function( $matches ) use ( $controls_prefix ) {
+				return $controls_prefix . $matches[0];
 			}, $selector );
 		}
 

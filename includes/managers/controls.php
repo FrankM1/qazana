@@ -55,10 +55,10 @@ class Controls_Manager {
 	/**
 	 * @var Base_Control[]
 	 */
-	private $_controls = [];
+	private $_controls = null;
 
 	/**
-	 * @var Group_Base_Control[]
+	 * @var Group_Control_Base[]
 	 */
 	private $_control_groups = [];
 
@@ -87,6 +87,8 @@ class Controls_Manager {
 	 */
 	public function register_controls() {
 		require( qazana()->includes_dir  . 'editor/controls/base.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-data.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-ui.php' );
 		require( qazana()->includes_dir  . 'editor/controls/base-multiple.php' );
 		require( qazana()->includes_dir  . 'editor/controls/base-units.php' );
 
@@ -139,7 +141,8 @@ class Controls_Manager {
 			require( $control_filename );
 
 			$class_name = __NAMESPACE__ . '\Control_' . ucwords( $control_id );
-			$this->register_control( $control_id, $class_name );
+
+			$this->register_control( $control_id, new $class_name() );
 		}
 
 		// Group Controls
@@ -161,27 +164,19 @@ class Controls_Manager {
 		$this->_control_groups['box-shadow'] = new Group_Control_Box_Shadow();
 		$this->_control_groups['animations'] = new Group_Control_Animations();
 		$this->_control_groups['icon'] 		 = new Group_Control_Icon();
+
+		do_action( 'qazana/controls/controls_registered', $this );
+
 	}
 
 	/**
 	 * @since 1.0.0
-	 * @param $control_id
-	 * @param $class_name
 	 *
-	 * @return bool|\WP_Error
+	 * @param $control_id
+	 * @param Base_Control $control_instance
 	 */
-	public function register_control( $control_id, $class_name ) {
-		if ( ! class_exists( $class_name ) ) {
-			return new \WP_Error( 'element_class_name_not_exists' );
-		}
-		$instance_control = new $class_name();
-
-		if ( ! $instance_control instanceof Base_Control ) {
-			return new \WP_Error( 'wrong_instance_control' );
-		}
-		$this->_controls[ $control_id ] = $instance_control;
-
-		return true;
+	public function register_control( $control_id, Base_Control $control_instance ) {
+		$this->_controls[ $control_id ] = $control_instance;
 	}
 
 	/**
@@ -194,7 +189,9 @@ class Controls_Manager {
 		if ( ! isset( $this->_controls[ $control_id ] ) ) {
 			return false;
 		}
+
 		unset( $this->_controls[ $control_id ] );
+
 		return true;
 	}
 
@@ -203,6 +200,10 @@ class Controls_Manager {
 	 * @return Base_Control[]
 	 */
 	public function get_controls() {
+		if ( null === $this->_controls ) {
+			$this->register_controls();
+		}
+
 		return $this->_controls;
 	}
 
@@ -227,7 +228,10 @@ class Controls_Manager {
 
 		foreach ( $this->get_controls() as $name => $control ) {
 			$controls_data[ $name ] = $control->get_settings();
-			$controls_data[ $name ]['default_value'] = $control->get_default_value();
+
+			if ( $control instanceof Base_Data_Control ) {
+				$controls_data[ $name ]['default_value'] = $control->get_default_value();
+			}
 		}
 
 		return $controls_data;
@@ -248,7 +252,7 @@ class Controls_Manager {
 	 *
 	 * @param string $id
 	 *
-	 * @return Group_Base_Control|Group_Base_Control[]
+	 * @return Group_Control_Base|Group_Control_Base[]
 	 */
 	public function get_control_groups( $id = null ) {
 		if ( $id ) {
@@ -264,7 +268,7 @@ class Controls_Manager {
 	 * @param $id
 	 * @param $instance
 	 *
-	 * @return Group_Base_Control[]
+	 * @return Group_Control_Base[]
 	 */
 	public function add_group_control( $id, $instance ) {
 		$this->_control_groups[ $id ] = $instance;
@@ -282,7 +286,7 @@ class Controls_Manager {
 		}
 	}
 
-	public function open_stack( Element_Base $element ) {
+	public function open_stack( Controls_Stack $element ) {
 		$stack_id = $element->get_name();
 
 		$this->_controls_stack[ $stack_id ] = [
@@ -291,7 +295,7 @@ class Controls_Manager {
 		];
 	}
 
-	public function add_control_to_stack( Element_Base $element, $control_id, $control_data, $overwrite = false ) {
+	public function add_control_to_stack( Controls_Stack $element, $control_id, $control_data, $overwrite = false ) {
 		$default_args = [
 			'type' => self::TEXT,
 			'tab' => self::TAB_CONTENT,
@@ -308,12 +312,14 @@ class Controls_Manager {
 			return false;
 		}
 
-		$control_default_value = $control_type_instance->get_default_value();
+		if ( $control_type_instance instanceof Base_Data_Control ) {
+			$control_default_value = $control_type_instance->get_default_value();
 
-		if ( is_array( $control_default_value ) && ! empty( $control_data['default'] ) && is_array( $control_data['default'] ) ) {
-			$control_data['default'] = isset( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
-		} else {
-			$control_data['default'] = isset( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
+			if ( is_array( $control_default_value ) ) {
+				$control_data['default'] = isset( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
+			} else {
+				$control_data['default'] = isset( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
+			}
 		}
 
 		$stack_id = $element->get_name();
@@ -328,6 +334,9 @@ class Controls_Manager {
 		if ( ! isset( $available_tabs[ $control_data['tab'] ] ) ) {
 			$control_data['tab'] = $default_args['tab'];
 		}
+
+		// Add the default settings from control instance
+		$control_data = array_merge( $control_type_instance->get_settings(), $control_data );
 
 		$this->_controls_stack[ $stack_id ]['tabs'][ $control_data['tab'] ] = $available_tabs[ $control_data['tab'] ];
 
@@ -346,7 +355,7 @@ class Controls_Manager {
 		}
 
 		if ( empty( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
-			return new \WP_Error( 'Cannot remove not-exists control.' );
+			return new \WP_Error( 'Cannot remove non-existent control.' );
 		}
 
 		unset( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] );
@@ -354,15 +363,21 @@ class Controls_Manager {
 		return true;
 	}
 
+	/**
+	 * @param string $stack_id
+	 * @param string $control_id
+	 *
+	 * @return array|\WP_Error
+	 */
 	public function get_control_from_stack( $stack_id, $control_id ) {
 		if ( empty( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
-			return new \WP_Error( 'Cannot get a not-exists control.' );
+			return new \WP_Error( 'Cannot get a non-existent control.' );
 		}
 
 		return $this->_controls_stack[ $stack_id ]['controls'][ $control_id ];
 	}
 
-	public function update_control_in_stack( Element_Base $element, $control_id, $control_data ) {
+	public function update_control_in_stack( Controls_Stack $element, $control_id, $control_data ) {
 		$old_control_data = $this->get_control_from_stack( $element->get_name(), $control_id );
 		if ( is_wp_error( $old_control_data ) ) {
 			return false;
@@ -373,8 +388,8 @@ class Controls_Manager {
 		return $this->add_control_to_stack( $element, $control_id, $control_data, true );
 	}
 
-	public function get_element_stack( Element_Base $element ) {
-		$stack_id = $element->get_name();
+	public function get_element_stack( Controls_Stack $controls_stack ) {
+		$stack_id = $controls_stack->get_name();
 
 		if ( ! isset( $this->_controls_stack[ $stack_id ] ) ) {
 			return null;
@@ -382,7 +397,7 @@ class Controls_Manager {
 
 		$stack = $this->_controls_stack[ $stack_id ];
 
-		if ( 'widget' === $element->get_type() && 'common' !== $stack_id ) {
+		if ( 'widget' === $controls_stack->get_type() && 'common' !== $stack_id ) {
 			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
 
 			$stack['controls'] = array_merge( $stack['controls'], $common_widget->get_controls() );
@@ -391,20 +406,6 @@ class Controls_Manager {
 		}
 
 		return $stack;
-	}
-
-	public function set_element_stack_controls( Element_Base $element, $controls) {
-		$stack_id = $element->get_name();
-
-		if ( empty( $controls ) ) {
-			return null;
-		}
-
-		if ( 'widget' === $element->get_type() && 'common' !== $stack_id ) {
-			$this->_controls_stack[ $stack_id ]['controls'] = $controls;
-		}
-
-		return true;
 	}
 
 	/**

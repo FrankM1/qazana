@@ -3,7 +3,7 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Group_Control_Image_Size extends Group_Base_Control {
+class Group_Control_Image_Size extends Group_Control_Base {
 
 	protected static $fields;
 
@@ -47,9 +47,11 @@ class Group_Control_Image_Size extends Group_Base_Control {
 				$image_src = $settings[ $setting_key ]['url'] ;
 			}
 
-			$image_class_html = ! empty( $image_class ) ? ' class="' . $image_class . '"' : '';
+			if ( ! empty( $image_src ) ) {
+				$image_class_html = ! empty( $image_class ) ? ' class="' . $image_class . '"' : '';
 
-			$html .= sprintf( '<img src="%s" title="%s" alt="%s"%s />', esc_attr( $image_src ), Control_Media::get_image_title( $settings[ $setting_key ] ), Control_Media::get_image_alt( $settings[ $setting_key ] ), $image_class_html );
+				$html .= sprintf( '<img src="%s" title="%s" alt="%s"%s />', esc_attr( $image_src ), Control_Media::get_image_title( $settings[ $setting_key ] ), Control_Media::get_image_alt( $settings[ $setting_key ] ), $image_class_html );
+			}
 		}
 
 		return $html;
@@ -61,6 +63,7 @@ class Group_Control_Image_Size extends Group_Base_Control {
 		$default_image_sizes = [ 'thumbnail', 'medium', 'medium_large', 'large' ];
 
 		$image_sizes = [];
+
 		foreach ( $default_image_sizes as $size ) {
 			$image_sizes[ $size ] = [
 				'width' => (int) get_option( $size . '_size_w' ),
@@ -73,7 +76,8 @@ class Group_Control_Image_Size extends Group_Base_Control {
 			$image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
 		}
 
-		return $image_sizes;
+		/** This filter is documented in wp-admin/includes/media.php */
+		return apply_filters( 'image_size_names_choose', $image_sizes );
 	}
 
 	protected function get_child_default_args() {
@@ -95,12 +99,20 @@ class Group_Control_Image_Size extends Group_Base_Control {
 		}
 
 		$image_sizes = [];
+
 		foreach ( $wp_image_sizes as $size_key => $size_attributes ) {
-			$image_sizes[ $size_key ] = ucwords( str_replace( '_', ' ', $size_key ) ) . sprintf( ' - %d x %d', $size_attributes['width'], $size_attributes['height'] );
+			$control_title = ucwords( str_replace( '_', ' ', $size_key ) );
+			if ( is_array( $size_attributes ) ) {
+				$control_title .= sprintf( ' - %d x %d', $size_attributes['width'], $size_attributes['height'] );
+			}
+
+			$image_sizes[ $size_key ] = $control_title;
 		}
 
 		$image_sizes['full'] = _x( 'Full', 'Image Size Control', 'qazana' );
-		$image_sizes['custom'] = _x( 'Custom', 'Image Size Control', 'qazana' );
+		if ( ! empty( $args['include']['custom'] ) || ! in_array( 'custom', $args['exclude'] ) ) {
+			$image_sizes['custom'] = _x( 'Custom', 'Image Size Control', 'qazana' );
+		}
 
 		return $image_sizes;
 	}
@@ -155,7 +167,7 @@ class Group_Control_Image_Size extends Group_Base_Control {
 		if ( empty( $attachment_id ) )
 			return false;
 
-		$size = ! empty( $instance[ $group_name . '_size' ] ) ? $instance[ $group_name . '_size' ] : '';
+		$size = $instance[ $group_name . '_size' ];
 
 		if ( 'custom' !== $size ) {
 			$attachment_size = $size;
@@ -167,6 +179,10 @@ class Group_Control_Image_Size extends Group_Base_Control {
 			$custom_dimension = $instance[ $group_name . '_custom_dimension' ];
 
 			$attachment_size = [
+				// Defaults sizes
+				0 => null, // Width
+				1 => null, // Height
+
 				'bfi_thumb' => true,
 				'crop' => true,
 			];

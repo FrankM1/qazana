@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Heading extends Base_Control {
+class Control_Heading extends Base_UI_Control {
 
 	public function get_type() {
 		return 'heading';

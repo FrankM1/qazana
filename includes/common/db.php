@@ -10,7 +10,12 @@ class DB {
 	const STATUS_AUTOSAVE = 'autosave';
 
 	/**
-	 * Save qazana method.
+	 * @var array
+	 */
+	protected $switched_post_data = [];
+
+	/**
+	 * Save builder method.
 	 *
 	 * @since 1.0.0
 	 * @param int    $post_id
@@ -22,11 +27,7 @@ class DB {
 	public function save_editor( $post_id, $posted, $status = self::STATUS_PUBLISH, $save_state = 'save' ) {
 
 		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data
-		if ( isset( $GLOBALS['post'] ) ) {
-			$global_post = $GLOBALS['post'];
-		}
-
-		$GLOBALS['post'] = get_post( $post_id );
+		$this->switch_to_post( $post_id );
 
 		$editor_data = $this->_get_editor_data( $posted );
 
@@ -75,14 +76,10 @@ class DB {
 		update_post_meta( $post_id, '_qazana_version', qazana_get_db_version() );
 
 		// Restore global post
-		if ( isset( $global_post ) ) {
-			$GLOBALS['post'] = $global_post;
-		} else {
-			unset( $GLOBALS['post'] );
-		}
+		$this->restore_current_post();
 
-		$css_file = new Post_CSS_File( $post_id );
-		$css_file->update();
+		// Remove Post CSS
+		delete_post_meta( $post_id, Post_CSS_File::META_KEY );
 
 		do_action( 'qazana/editor/after_save', $post_id, $editor_data );
 	}
@@ -99,7 +96,11 @@ class DB {
 	public function get_qazana( $post_id, $status = self::STATUS_PUBLISH ) {
 		$data = $this->get_plain_editor( $post_id, $status );
 
-		return $this->_get_editor_data( $data, true );
+		$this->switch_to_post( $post_id );
+		$editor_data = $this->_get_editor_data( $data, true );
+		$this->restore_current_post();
+
+		return $editor_data;
 	}
 
 	protected function _get_json_meta( $post_id, $key ) {
@@ -116,7 +117,7 @@ class DB {
 
 		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
 
-		if ( self::STATUS_DRAFT === $status && isset( $_GET['qazana'] ) ) {
+		if ( self::STATUS_DRAFT === $status ) {
 			$draft_data = $this->_get_json_meta( $post_id, '_qazana_draft_data' );
 
 			if ( ! empty( $draft_data ) ) {
@@ -298,20 +299,20 @@ class DB {
 			return $callback( $data_container );
 		}
 
-        if ( is_array( $data_container ) ) {
-    		foreach ( $data_container as $element_key => $element_value ) {
-    			$data_container[ $element_key ] = $this->iterate_data( $data_container[ $element_key ], $callback );
-    		}
-        }
+		foreach ( $data_container as $element_key => $element_value ) {
+			$element_data = $this->iterate_data( $data_container[ $element_key ], $callback );
+
+			if ( null === $element_data ) {
+				continue;
+			}
+
+			$data_container[ $element_key ] = $element_data;
+		}
 
 		return $data_container;
 	}
 
 	public function copy_qazana_meta( $from_post_id, $to_post_id ) {
-
-		if ( ! $this->is_built_with_qazana( $from_post_id ) ) {
-			return;
-		}
 
 		$from_post_meta = get_post_meta( $from_post_id );
 
@@ -331,17 +332,44 @@ class DB {
 	}
 
 	public function is_built_with_qazana( $post_id ) {
-		$data = $this->get_plain_editor( $post_id );
-
-		$edit_mode = $this->get_edit_mode( $post_id );
-
-		return ( ! empty( $data ) && 'qazana' === $edit_mode );
+		return ! ! get_post_meta( $post_id, '_qazana_edit_mode', true );
 	}
 
 	public function has_qazana_in_post( $post_id ) {
-		$data = $this->get_plain_editor( $post_id );
-		$edit_mode = $this->get_edit_mode( $post_id );
+		return $this->is_built_with_qazana( $post_id );
+	}
 
-		return ( ! empty( $data ) && 'qazana' === $edit_mode );
+	public function switch_to_post( $post_id ) {
+		// If is already switched, or is the same post, return.
+		if ( get_the_ID() === $post_id ) {
+			$this->switched_post_data[] = false;
+			return;
+		}
+
+		$this->switched_post_data[] = [
+			'switched_id' => $post_id,
+			'original_id' => get_the_ID(),// Note, it can be false if the global isn't set
+		];
+
+		$GLOBALS['post'] = get_post( $post_id );
+		setup_postdata( $GLOBALS['post'] );
+	}
+
+	public function restore_current_post() {
+		$data = array_pop( $this->switched_post_data );
+
+		// If not switched, return.
+		if ( ! $data ) {
+			return;
+		}
+
+		// It was switched from an empty global post, restore this state and unset the global post
+		if ( false === $data['original_id'] ) {
+			unset( $GLOBALS['post'] );
+			return;
+		}
+
+		$GLOBALS['post'] = get_post( $data['original_id'] );
+		setup_postdata( $GLOBALS['post'] );
 	}
 }

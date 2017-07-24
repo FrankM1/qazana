@@ -62,6 +62,7 @@ class Editor {
         add_action( 'wp_head', 'wp_enqueue_scripts', 1 );
         add_action( 'wp_head', 'wp_print_styles', 8 );
         add_action( 'wp_head', 'wp_print_head_scripts', 9 );
+		add_action( 'wp_head', 'wp_site_icon' );
         add_action( 'wp_head', [ $this, 'editor_head_trigger' ], 30 );
 
         // Handle `wp_footer`
@@ -70,6 +71,7 @@ class Editor {
         add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
         // Handle `wp_enqueue_scripts`
+		remove_all_actions( 'wp_enqueue_scripts' );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 999999 );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
@@ -173,6 +175,9 @@ class Editor {
 
         $post_id = get_the_ID();
 
+		// Set the global data like $authordata and etc
+		setup_postdata( $post_id );
+
         $editor_data = qazana()->db->get_qazana( $post_id, DB::STATUS_DRAFT );
 
         // Reset global variable
@@ -193,6 +198,7 @@ class Editor {
 		);
 
         // Enqueue frontend scripts too
+		qazana()->frontend->register_scripts();
         qazana()->frontend->enqueue_scripts();
 
         wp_register_script(
@@ -437,10 +443,13 @@ class Editor {
 
         qazana()->controls_manager->enqueue_control_scripts();
 
-        do_action( 'qazana/editor/scripts', qazana() );
+        do_action( 'qazana/editor/after_enqueue_scripts' );
     }
 
     public function enqueue_styles() {
+
+		do_action( 'qazana/editor/before_enqueue_styles' );
+
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
         $direction_suffix = is_rtl() ? '-rtl' : '';
@@ -505,8 +514,6 @@ class Editor {
 
         wp_enqueue_style( 'qazana-editor' );
 
-        do_action( 'qazana/editor/styles', qazana() );
-
 		do_action( 'qazana/editor/after_enqueue_styles' );
     }
 
@@ -543,6 +550,8 @@ class Editor {
 		foreach ( $this->_editor_templates as $editor_template ) {
 			include $editor_template;
 		}
+
+		do_action( 'qazana/editor/footer' );
 	}
 
 	/**

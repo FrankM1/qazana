@@ -30,11 +30,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *    ...
  * }
  *
- * The range param is default populated with ranges for px|em|rem|%|deg @see Base_Control_Units::get_default_settings()
+ * The range param is default populated with ranges for px|em|rem|%|deg @see Control_Base_Units::get_default_settings()
  *
  * @since                         1.0.0
  */
-abstract class Base_Control_Units extends Base_Control_Multiple {
+abstract class Control_Base_Units extends Control_Base_Multiple {
 
 	public function get_default_value() {
 		return [

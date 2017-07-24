@@ -68,9 +68,9 @@ abstract class Controls_Stack {
 	public function get_active_controls() {
 		$controls = $this->get_controls();
 
-		$settings = $this->get_settings();
+		$settings = $this->get_controls_settings();
 
-		$active_controls = array_reduce( array_keys( $controls ), function ( $active_controls, $control_key ) use ( $controls, $settings ) {
+		$active_controls = array_reduce( array_keys( $controls ), function( $active_controls, $control_key ) use ( $controls, $settings ) {
 			$control = $controls[ $control_key ];
 
 			if ( $this->is_control_visible( $control, $settings ) ) {
@@ -81,6 +81,10 @@ abstract class Controls_Stack {
 		}, [] );
 
 		return $active_controls;
+	}
+
+	public function get_controls_settings() {
+		return array_intersect_key( $this->get_settings(), $this->get_controls() );
 	}
 
 	public function add_control( $id, array $args, $overwrite = false ) {
@@ -167,8 +171,22 @@ abstract class Controls_Stack {
 			self::RESPONSIVE_MOBILE,
 		];
 
+		if ( isset( $args['default'] ) ) {
+			$args['desktop_default'] = $args['default'];
+
+			unset( $args['default'] );
+		}
+
 		foreach ( $devices as $device_name ) {
 			$control_args = $args;
+
+			if ( isset( $control_args['device_args'] ) ) {
+				if ( ! empty( $control_args['device_args'][ $device_name ] ) ) {
+					$control_args = array_merge( $control_args, $control_args['device_args'][ $device_name ] );
+				}
+
+				unset( $control_args['device_args'] );
+			}
 
 			if ( ! empty( $args['prefix_class'] ) ) {
 				$device_to_replace = self::RESPONSIVE_DESKTOP === $device_name ? '' : '-' . $device_name;
@@ -177,6 +195,14 @@ abstract class Controls_Stack {
 			}
 
 			$control_args['responsive'] = [ 'max' => $device_name ];
+
+			if ( isset( $control_args['min_affected_device'] ) ) {
+				if ( ! empty( $control_args['min_affected_device'][ $device_name ] ) ) {
+					$control_args['responsive']['min'] = $control_args['min_affected_device'][ $device_name ];
+				}
+
+				unset( $control_args['min_affected_device'] );
+			}
 
 			if ( isset( $control_args[ $device_name . '_default' ] ) ) {
 				$control_args['default'] = $control_args[ $device_name . '_default' ];
@@ -240,6 +266,28 @@ abstract class Controls_Stack {
 		return array_merge( $settings_mask, $active_settings );
 	}
 
+	public function filter_controls_settings( callable $callback, array $settings = [], array $controls = [] ) {
+		if ( ! $settings ) {
+			$settings = $this->get_settings();
+		}
+
+		if ( ! $controls ) {
+			$controls = $this->get_controls();
+		}
+
+		return array_reduce( array_keys( $settings ), function( $filtered_settings, $setting_key ) use ( $controls, $settings, $callback ) {
+			if ( isset( $controls[ $setting_key ] ) ) {
+				$result = $callback( $settings[ $setting_key ], $controls[ $setting_key ] );
+
+				if ( null !== $result ) {
+					$filtered_settings[ $setting_key ] = $result;
+				}
+			}
+
+			return $filtered_settings;
+		}, [] );
+	}
+
 	public function is_control_visible( $control, $values = null ) {
 		if ( null === $values ) {
 			$values = $this->get_settings();
@@ -261,7 +309,7 @@ abstract class Controls_Stack {
 			$condition_sub_key = $condition_key_parts[2];
 			$is_negative_condition = ! ! $condition_key_parts[3];
 
-			$instance_value = $values[ $pure_condition_key ];
+			$instance_value = isset( $values[ $pure_condition_key ] ) ? $values[ $pure_condition_key ] : null;
 
 			if ( null === $instance_value ) {
 				return false;
@@ -368,7 +416,8 @@ abstract class Controls_Stack {
 	}
 
 	final public function set_settings( $key, $value = null ) {
-		if ( null === $value ) {
+		// strict check if override all settings
+		if ( is_array( $key ) ) {
 			$this->_settings = $key;
 		} else {
 			$this->_settings[ $key ] = $value;
@@ -389,6 +438,11 @@ abstract class Controls_Stack {
 
 		foreach ( $this->get_controls() as $control ) {
 			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+	if ( ! $control_obj instanceof Base_Data_Control ) {
+				continue;
+			}
+
+			$control = array_merge( $control, $control_obj->get_settings() );
 
 			$settings[ $control['name'] ] = $control_obj->get_value( $control, $settings );
 		}
@@ -424,9 +478,21 @@ abstract class Controls_Stack {
 		$this->_settings = $this->_get_parsed_settings();
 	}
 
+	/**
+	 * @param array $data - Required for a normal instance, It's optional only for internal `type instance`
+	 **/
 	public function __construct( array $data = [] ) {
 		if ( $data ) {
 			$this->_init( $data );
 		}
+	}
+
+	public function bool( $var ) {
+		$falsey = array( 'false', '0', 'no', 'n' );
+        return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
+	}
+
+	public function is_edit_mode() {
+        return qazana()->editor->is_edit_mode();
 	}
 }

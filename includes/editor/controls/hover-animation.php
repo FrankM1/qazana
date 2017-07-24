@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Hover_Animation extends Base_Control {
+class Control_Hover_Animation extends Base_Data_Control {
 
 	private static $_animations;
 
@@ -59,11 +59,12 @@ class Control_Hover_Animation extends Base_Control {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<select data-setting="{{ data.name }}">
+				<select id="<?php echo $control_uid; ?>" data-setting="{{ data.name }}">
 					<option value=""><?php _e( 'None', 'qazana' ); ?></option>
 					<?php foreach ( self::get_animations() as $animation_name => $animation_title ) : ?>
 						<option value="<?php echo $animation_name; ?>"><?php echo $animation_title; ?></option>

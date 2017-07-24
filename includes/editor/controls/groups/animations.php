@@ -3,7 +3,7 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Group_Control_Animations extends Group_Base_Control {
+class Group_Control_Animations extends Group_Control_Base {
 
     protected static $fields;
 

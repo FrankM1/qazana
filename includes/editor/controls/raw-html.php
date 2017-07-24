@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Raw_Html extends Base_Control {
+class Control_Raw_Html extends Base_UI_Control {
 
 	public function get_type() {
 		return 'raw_html';
@@ -24,13 +24,13 @@ class Control_Raw_Html extends Base_Control {
 		<# if ( data.label ) { #>
 		<span class="qazana-control-title">{{{ data.label }}}</span>
 		<# } #>
-		<div class="qazana-control-raw-html {{ data.classes }}">{{{ data.raw }}}</div>
+		<div class="qazana-control-raw-html {{ data.content_classes }}">{{{ data.raw }}}</div>
 		<?php
 	}
 
 	public function get_default_settings() {
 		return [
-			'classes' => '',
+			'content_classes' => '',
 		];
 	}
 }

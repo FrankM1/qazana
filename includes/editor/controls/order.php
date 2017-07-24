@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Order extends Base_Control_Multiple {
+class Control_Order extends Control_Base_Multiple {
 
 	public function get_type() {
 		return 'order';
@@ -32,18 +32,21 @@ class Control_Order extends Base_Control_Multiple {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
+
+		$reverse_order_control_uid = $this->get_control_uid( 'reverse_order' );
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<div class="qazana-control-oreder-wrapper">
-					<select data-setting="order_by">
+					<select id="<?php echo $control_uid; ?>" data-setting="order_by">
 						<# _.each( data.options, function( option_title, option_value ) { #>
 							<option value="{{ option_value }}">{{{ option_title }}}</option>
 							<# } ); #>
 					</select>
-					<input id="qazana-control-order-input-{{ data._cid }}" type="checkbox" data-setting="reverse_order">
-					<label for="qazana-control-order-input-{{ data._cid }}" class="qazana-control-order-label">
+					<input id="<?php echo $reverse_order_control_uid; ?>" type="checkbox" data-setting="reverse_order">
+					<label for="<?php echo $reverse_order_control_uid; ?>" class="qazana-control-order-label">
 						<i class="fa fa-sort-amount-desc"></i>
 					</label>
 				</div>

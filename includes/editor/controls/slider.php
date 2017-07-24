@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since              1.0.0
  */
-class Control_Slider extends Base_Control_Units {
+class Control_Slider extends Control_Base_Units {
 
 	public function get_type() {
 		return 'slider';
@@ -33,14 +33,15 @@ class Control_Slider extends Base_Control_Units {
 	}
 
 	public function content_template() {
+		$control_uid = $this->get_control_uid();
 		?>
 		<div class="qazana-control-field">
-			<label class="qazana-control-title">{{{ data.label }}}</label>
+			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<?php $this->print_units_template(); ?>
 			<div class="qazana-control-input-wrapper qazana-clearfix">
 				<div class="qazana-slider"></div>
 				<div class="qazana-slider-input">
-					<input type="number" min="{{ data.min }}" max="{{ data.max }}" step="{{ data.step }}" data-setting="size" />
+					<input id="<?php echo $control_uid; ?>" type="number" min="{{ data.min }}" max="{{ data.max }}" step="{{ data.step }}" data-setting="size" />
 				</div>
 			</div>
 		</div>

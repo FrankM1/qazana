@@ -129,7 +129,7 @@ abstract class Widget_Base extends Element_Base {
 		] );
 	}
 
-	public final function print_template() {
+	final public function print_template() {
 		ob_start();
 
 		$this->_content_template();

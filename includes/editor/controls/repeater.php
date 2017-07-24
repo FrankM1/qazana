@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Repeater extends Base_Control {
+class Control_Repeater extends Base_Data_Control {
 
 	public function get_type() {
 		return 'repeater';
@@ -23,6 +23,7 @@ class Control_Repeater extends Base_Control {
 	protected function get_default_settings() {
 		return [
 			'prevent_empty' => true,
+			'is_repeater' => true,
 		];
 	}
 
@@ -33,7 +34,7 @@ class Control_Repeater extends Base_Control {
 			foreach ( $value as &$item ) {
 				foreach ( $control['fields'] as $field ) {
 					$control_obj = qazana()->controls_manager->get_control( $field['type'] );
-					if ( ! $control_obj )
+					if ( ! $control_obj instanceof Base_Data_Control )
 						continue;
 
 					$item[ $field['name'] ] = $control_obj->get_value( $field, $item );

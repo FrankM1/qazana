@@ -41,28 +41,65 @@ abstract class Skin_Base {
 		return $this->parent->get_settings( $control_id );
 	}
 
-	public function add_control( $id, $args ) {
-		return $this->parent->add_control( $this->get_control_id( $id ), $args );
-	}
-
 	public function start_controls_section( $id, $args ) {
-		return $this->parent->start_controls_section( $this->get_control_id( $id ), $args );
+		$args['condition']['_skin'] = $this->get_id();
+		$this->parent->start_controls_section( $this->get_control_id( $id ), $args );
 	}
 
 	public function end_controls_section() {
-		return $this->parent->end_controls_section();
+		$this->parent->end_controls_section();
+	}
+
+	public function add_control( $id, $args ) {
+		$args['condition']['_skin'] = $this->get_id();
+		return $this->parent->add_control( $this->get_control_id( $id ), $args );
+	}
+
+	public function update_control( $id, $args ) {
+		$this->parent->update_control( $this->get_control_id( $id ), $args );
+	}
+
+	public function remove_control( $id ) {
+		$this->parent->remove_control( $this->get_control_id( $id ) );
 	}
 
 	public function add_responsive_control( $id, $args ) {
+		$args['condition']['_skin'] = $this->get_id();
 		$this->parent->add_responsive_control( $this->get_control_id( $id ), $args );
 	}
 
-	public final function add_group_control( $group_name, $args = [] ) {
-		$args['name'] = $this->get_control_id( $args['name'] );
-
-		$this->parent->add_group_control( $group_name, $args );
+	public function update_responsive_control( $id, $args ) {
+		$this->parent->update_responsive_control( $this->get_control_id( $id ), $args );
 	}
 
+	public function remove_responsive_control( $id ) {
+		$this->parent->remove_responsive_control( $this->get_control_id( $id ) );
+	}
+
+	public function start_controls_tab( $id, $args ) {
+		$args['condition']['_skin'] = $this->get_id();
+		$this->parent->start_controls_tab( $this->get_control_id( $id ), $args );
+	}
+
+	public function end_controls_tab() {
+		$this->parent->end_controls_tab();
+	}
+
+	public function start_controls_tabs( $id ) {
+		$args['condition']['_skin'] = $this->get_id();
+		$this->parent->start_controls_tabs( $this->get_control_id( $id ) );
+	}
+
+	public function end_controls_tabs() {
+		$this->parent->end_controls_tabs();
+	}
+
+	final public function add_group_control( $group_name, $args = [] ) {
+		$args['name'] = $this->get_control_id( $args['name'] );
+		$args['condition']['_skin'] = $this->get_id();
+		$this->parent->add_group_control( $group_name, $args );
+	}
+	
 	public function add_render_attribute( $element, $key = null, $value = null, $overwrite = false ) {
 		return $this->parent->add_render_attribute( $element, $key, $value, $overwrite );
 	}
@@ -70,6 +107,7 @@ abstract class Skin_Base {
 	public function get_render_attribute_string( $element ) {
 		return $this->parent->get_render_attribute_string( $element );
 	}
+
 
 	public function before_render() {
 		$this->parent->before_render();

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Control_Image_Dimensions extends Base_Control_Multiple {
+class Control_Image_Dimensions extends Control_Base_Multiple {
 
 	public function get_type() {
 		return 'image_dimensions';
@@ -35,9 +35,9 @@ class Control_Image_Dimensions extends Base_Control_Multiple {
 
 	public function content_template() {
 		if ( ! $this->_is_image_editor_supports() ) : ?>
-		<div class="panel-alert panel-alert-danger">
-			<?php _e( 'The server does not have ImageMagick or GD installed and/or enabled! Any of these libraries are required for WordPress to be able to resize images. Please contact your server administrator to enable this before continuing.', 'qazana' ); ?>
-		</div>
+			<div class="qazana-panel-alert qazana-panel-alert-danger">
+				<?php _e( 'The server does not have ImageMagick or GD installed and/or enabled! Any of these libraries are required for WordPress to be able to resize images. Please contact your server administrator to enable this before continuing.', 'qazana' ); ?>
+			</div>
 		<?php
 			return;
 		endif;
@@ -49,13 +49,15 @@ class Control_Image_Dimensions extends Base_Control_Multiple {
 			<label class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<div class="qazana-image-dimensions-field">
-					<input type="text" data-setting="width" />
-					<div class="qazana-image-dimensions-field-description"><?php _e( 'Width', 'qazana' ); ?></div>
+					<?php $control_uid = $this->get_control_uid( 'width' );  ?>
+					<input id="<?php echo $control_uid; ?>" type="text" data-setting="width" />
+					<label for="<?php echo $control_uid; ?>" class="qazana-image-dimensions-field-description"><?php _e( 'Width', 'qazana' ); ?></label>
 				</div>
 				<div class="qazana-image-dimensions-separator">x</div>
 				<div class="qazana-image-dimensions-field">
-					<input type="text" data-setting="height" />
-					<div class="qazana-image-dimensions-field-description"><?php _e( 'Height', 'qazana' ); ?></div>
+					<?php $control_uid = $this->get_control_uid( 'height' );  ?>
+					<input id="<?php echo $control_uid; ?>" type="text" data-setting="height" />
+					<label for="<?php echo $control_uid; ?>" class="qazana-image-dimensions-field-description"><?php _e( 'Height', 'qazana' ); ?></label>
 				</div>
 				<button class="qazana-button qazana-button-success qazana-image-dimensions-apply-button"><?php _e( 'Apply', 'qazana' ); ?></button>
 			</div>
