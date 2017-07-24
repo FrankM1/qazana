@@ -5,8 +5,9 @@ Introduction = function() {
 		modal;
 
 	var initModal = function() {
-		modal = qazana.dialogsManager.createWidget( 'qazana-modal', {
-			id: 'qazana-introduction'
+		modal = qazana.dialogsManager.createWidget( 'lightbox', {
+			id: 'qazana-introduction',
+			closeButton: true
 		} );
 
 		modal.getElements( 'closeButton' ).on( 'click', function() {

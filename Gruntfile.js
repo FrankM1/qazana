@@ -101,7 +101,12 @@ module.exports = function( grunt ) {
                             expose: 'qazana-components'
                         },
                         {
-                            cwd: 'assets/dev/js/editor/utils',
+							cwd: 'assets/dev/js/editor/utils',
+							src: '**/*.js',
+							expose: 'qazana-editor-utils'
+						},
+                        {
+                            cwd: 'assets/dev/js/utils',
                             src: '**/*.js',
                             expose: 'qazana-utils'
                         },
@@ -404,7 +409,7 @@ module.exports = function( grunt ) {
                 'build'
             ]
         }
-        
+
     } );
 
     // Default task(s).

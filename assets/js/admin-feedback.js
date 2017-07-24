@@ -5,7 +5,7 @@
 
 	var QazanaAdminDialogApp = {
 
-		qazanaModals: require( 'qazana-utils/modals' ),
+		qazanaModals: require( 'qazana-editor-utils/modals' ),
 
 		dialogsManager: new DialogsManager.Instance(),
 
@@ -91,7 +91,7 @@
 
 }( jQuery ) );
 
-},{"qazana-utils/modals":2}],2:[function(require,module,exports){
+},{"qazana-editor-utils/modals":2}],2:[function(require,module,exports){
 var Modals;
 
 Modals = {

@@ -51,14 +51,17 @@ ElementModel = Backbone.Model.extend( {
 
 	initSettings: function() {
 		var elType = this.get( 'elType' ),
+			settings = this.get( 'settings' ),
 			settingModels = {
 				widget: WidgetSettingsModel,
 				column: ColumnSettingsModel,
 				section: SectionSettingsModel
-			};
+			},
+			SettingsModel = settingModels[ elType ] || BaseSettingsModel;
 
-		var SettingsModel = settingModels[ elType ] || BaseSettingsModel,
-			settings = this.get( 'settings' ) || {};
+		if ( Backbone.$.isEmptyObject( settings ) ) {
+			settings = qazana.helpers.cloneObject( settings );
+		}
 
 		if ( 'widget' === elType ) {
 			settings.widgetType = this.get( 'widgetType' );
@@ -72,7 +75,6 @@ ElementModel = Backbone.Model.extend( {
 		this.set( 'settings', settings );
 
 		qazanaFrontend.config.elements.data[ this.cid ] = settings;
-
 	},
 
 	initEditSettings: function() {
@@ -103,20 +105,8 @@ ElementModel = Backbone.Model.extend( {
 		}
 	},
 
-	setSetting: function( key, value, triggerChange ) {
-		triggerChange = triggerChange || false;
-
-		var settings = this.get( 'settings' );
-
-		settings.set( key, value );
-
-		this.set( 'settings', settings );
-
-		if ( triggerChange ) {
-			this.trigger( 'change', this );
-			this.trigger( 'change:settings', this );
-			this.trigger( 'change:settings:' + key, this );
-		}
+	setSetting: function( key, value ) {
+		this.get( 'settings' ).setExternalChange( key, value );
 	},
 
 	getSetting: function( key ) {
@@ -149,7 +139,7 @@ ElementModel = Backbone.Model.extend( {
 		return ( elementData ) ? elementData.icon : 'unknown';
 	},
 
-	getRemoteRenderRequest: function() {
+	createRemoteRenderRequest: function() {
 		var data = this.toJSON();
 
 		return qazana.ajax.send( 'render_widget', {
@@ -171,11 +161,15 @@ ElementModel = Backbone.Model.extend( {
 
 		this.trigger( 'before:remote:render' );
 
-		if ( this._jqueryXhr && 4 !== this._jqueryXhr ) {
+		if ( this.isRemoteRequestActive() ) {
 			this._jqueryXhr.abort();
 		}
 
-		this._jqueryXhr = this.getRemoteRenderRequest();
+		this._jqueryXhr = this.createRemoteRenderRequest();
+	},
+
+	isRemoteRequestActive: function() {
+		return this._jqueryXhr && 4 !== this._jqueryXhr.readyState;
 	},
 
 	onRemoteGetHtml: function( data ) {
@@ -184,20 +178,16 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		var newModel = Backbone.Model.prototype.clone.apply( this, arguments );
+		var newModel = new this.constructor( qazana.helpers.cloneObject( this.attributes ) );
+
 		newModel.set( 'id', qazana.helpers.getUniqueID() );
 
 		newModel.setHtmlCache( this.getHtmlCache() );
 
-		var elements = this.get( 'elements' ),
-			settings = this.get( 'settings' );
+		var elements = this.get( 'elements' );
 
 		if ( ! _.isEmpty( elements ) ) {
 			newModel.set( 'elements', elements.clone() );
-		}
-
-		if ( settings instanceof BaseSettingsModel ) {
-			newModel.set( 'settings', settings.clone() );
 		}
 
 		return newModel;
@@ -260,9 +250,11 @@ ElementCollection = Backbone.Collection.extend( {
 ElementCollection.prototype.sync = function() {
 	return null;
 };
+
 ElementCollection.prototype.fetch = function() {
 	return null;
 };
+
 ElementCollection.prototype.save = function() {
 	return null;
 };

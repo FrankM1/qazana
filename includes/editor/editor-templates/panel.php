@@ -174,18 +174,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <script type="text/template" id="tmpl-editor-content">
 	<div class="qazana-panel-navigation">
 		<# _.each( elementData.tabs_controls, function( tabTitle, tabSlug ) { #>
-		<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}">
-			<a data-tab="{{ tabSlug }}">
-				{{{ tabTitle }}}
-			</a>
+		<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
+			<a href="#">{{{ tabTitle }}}</a>
 		</div>
 		<# } ); #>
 	</div>
 	<# if ( elementData.reload_preview ) { #>
-		<div id="qazana-update-preview">
-			<div id="qazana-update-preview-title"><?php echo __( 'Update changes to page', 'qazana' ); ?></div>
-			<div id="qazana-update-preview-button-wrapper">
-				<button id="qazana-update-preview-button" class="qazana-button qazana-button-success"><?php echo __( 'Apply', 'qazana' ); ?></button>
+		<div class="qazana-update-preview">
+			<div class="qazana-update-preview-title"><?php echo __( 'Update changes to page', 'qazana' ); ?></div>
+			<div class="qazana-update-preview-button-wrapper">
+				<button class="qazana-update-preview-button qazana-button qazana-button-success"><?php echo __( 'Apply', 'qazana' ); ?></button>
 			</div>
 		</div>
 	<# } #>
@@ -222,6 +220,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		$scheme_fields = array_intersect_key( $typography_fields, array_flip( $scheme_fields_keys ) );
 
+		$system_fonts = Fonts::get_fonts_by_groups( [ Fonts::SYSTEM ] );
+
+		$google_fonts = Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] );
+
 		foreach ( $scheme_fields as $option_name => $option ) : ?>
 			<div class="qazana-panel-scheme-typography-item">
 				<div class="qazana-panel-scheme-item-title qazana-control-title"><?php echo $option['label']; ?></div>
@@ -237,13 +239,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 							<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
 
 							<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
-								<?php foreach ( Fonts::get_fonts_by_groups( [ Fonts::SYSTEM ] ) as $font_title => $font_type ) : ?>
+								<?php foreach ( $system_fonts as $font_title => $font_type ) : ?>
 									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
 								<?php endforeach; ?>
 							</optgroup>
 
 							<optgroup label="<?php _e( 'Google', 'qazana' ); ?>">
-								<?php foreach ( Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] ) as $font_title => $font_type ) : ?>
+								<?php foreach ( $google_fonts as $font_title => $font_type ) : ?>
 									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
 								<?php endforeach; ?>
 							</optgroup>
@@ -290,6 +292,17 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		</div>
 		<div id="qazana-revisions-list" class="qazana-panel-box-content"></div>
 	</div>
+</script>
+
+<script type="text/template" id="tmpl-qazana-panel-page-settings">
+	<div class="qazana-panel-navigation">
+		<# _.each( qazana.config.page_settings.tabs, function( tabTitle, tabSlug ) { #>
+			<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
+				<a href="#">{{{ tabTitle }}}</a>
+			</div>
+			<# } ); #>
+	</div>
+	<div id="qazana-panel-page-settings-controls"></div>
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-revisions-no-revisions">

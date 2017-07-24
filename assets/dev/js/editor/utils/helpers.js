@@ -105,10 +105,6 @@ helpers = {
 		} );
 	},
 
-	cloneObject: function( object ) {
-		return JSON.parse( JSON.stringify( object ) );
-	},
-
 	getYoutubeIDFromURL: function( url ) {
 		var videoIDParts = url.match( /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/ );
 
@@ -147,7 +143,7 @@ helpers = {
 				isNegativeCondition = !! conditionNameParts[3],
 				controlValue = values[ conditionRealName ];
 
-			if ( conditionSubKey && _.isArray( controlValue ) ) {
+			if ( conditionSubKey ) {
 				controlValue = controlValue[ conditionSubKey ];
 			}
 
@@ -167,6 +163,10 @@ helpers = {
 		} );
 
 		return _.isEmpty( hasFields );
+	},
+
+	cloneObject: function( object ) {
+		return JSON.parse( JSON.stringify( object ) );
 	},
 
 	disableElementEvents: function( $element ) {

@@ -130,6 +130,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <div class="qazana-template-library-blank-title">{{{ title }}}</div>
     <div class="qazana-template-library-blank-excerpt">{{{ description }}}</div>
     <form id="qazana-template-library-save-template-form">
+	<input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>">
         <input id="qazana-template-library-save-template-name" name="title" placeholder="<?php _e( 'Enter Template Name', 'qazana' ); ?>" required>
         <button id="qazana-template-library-save-template-submit" class="qazana-button qazana-button-success">
             <span class="qazana-state-icon">

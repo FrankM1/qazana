@@ -34,52 +34,6 @@ HandleAddDuplicateBehavior = Marionette.Behavior.extend( {
 module.exports = HandleAddDuplicateBehavior;
 
 },{}],2:[function(require,module,exports){
-var EditToolsBehavior;
-
-EditToolsBehavior = Marionette.Behavior.extend( {
-
-    config : {
-        class : 'qazana-section-tools-active'
-    },
-
-    initialize: function() {
-        this.listenTo( qazana.channels.dataEditMode, 'switch', this.onEditModeSwitched );
-    },
-
-    onEditModeSwitched: function() {
-        var activeMode = qazana.channels.dataEditMode.request( 'activeMode' );
-        this.view.$el.removeClass( this.config.class, 'edit' === activeMode );
-    },
-
-    handleSectionHover: function() {
-
-        var $this = this;
-
-        var hoverConfig = {
-            sensitivity: 1, // number = sensitivity threshold (must be 1 or higher)
-            interval: 10, // number = milliseconds for onMouseOver polling interval
-            timeout: 500, // number = milliseconds delay before onMouseOut
-            over: function() {
-                $this.view.$el.addClass( $this.config.class );
-            },
-            out: function() {
-                $this.view.$el.removeClass( $this.config.class );
-            }
-        };
-
-        $this.view.$el.hoverIntent(hoverConfig);
-
-    },
-
-    onRender: function() {
-        this.onEditModeSwitched();
-        this.handleSectionHover();
-    }
-} );
-
-module.exports = EditToolsBehavior;
-
-},{}],3:[function(require,module,exports){
 var HandleDuplicateBehavior;
 
 HandleDuplicateBehavior = Marionette.Behavior.extend( {
@@ -98,12 +52,12 @@ HandleDuplicateBehavior = Marionette.Behavior.extend( {
 
 module.exports = HandleDuplicateBehavior;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var InnerTabsBehavior;
 
 InnerTabsBehavior = Marionette.Behavior.extend( {
 
-	onRender: function() {
+	onRenderCollection: function() {
 		this.handleInnerTabs( this.view );
 	},
 
@@ -172,16 +126,12 @@ InnerTabsBehavior = Marionette.Behavior.extend( {
 
 module.exports = InnerTabsBehavior;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var ResizableBehavior;
 
 ResizableBehavior = Marionette.Behavior.extend( {
 	defaults: {
 		handles: qazana.config.is_rtl ? 'w' : 'e'
-	},
-
-	ui: {
-		columnTitle: '.column-title'
 	},
 
 	events: {
@@ -197,6 +147,8 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
+		this.deactivate();
+
 		var options = _.clone( this.options );
 
 		delete options.behaviorClass;
@@ -237,7 +189,9 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	onResizeStart: function( event ) {
 		event.stopPropagation();
 
-		this.view.triggerMethod( 'request:resize:start' );
+		this.view.$el.data( 'originalWidth', this.view.el.getBoundingClientRect().width );
+
+		this.view.triggerMethod( 'request:resize:start', event );
 	},
 
 	onResizeStop: function( event ) {
@@ -249,7 +203,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	onResize: function( event, ui ) {
 		event.stopPropagation();
 
-		this.view.triggerMethod( 'request:resize', ui );
+		this.view.triggerMethod( 'request:resize', ui, event );
 	},
 
 	getChildViewContainer: function() {
@@ -259,7 +213,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 
 module.exports = ResizableBehavior;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var SortableBehavior;
 
 SortableBehavior = Marionette.Behavior.extend( {
@@ -319,8 +273,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		var $childViewContainer = this.getChildViewContainer(),
 			defaultSortableOptions = {
 				connectWith: $childViewContainer.selector,
-				cursor: 'move',
-				placeholder: 'qazana-sortable-placeholder',
+				placeholder: 'qazana-sortable-placeholder qazana-' + this.getOption( 'elChildType' ) + '-placeholder',
 				cursorAt: {
 					top: 20,
 					left: 25
@@ -354,9 +307,6 @@ SortableBehavior = Marionette.Behavior.extend( {
 		} );
 
 		if ( 'column' === this.options.elChildType ) {
-			// the following code is just for touch
-			ui.placeholder.addClass( 'qazana-column' );
-
 			var uiData = ui.item.data( 'sortableItem' ),
 				uiItems = uiData.items,
 				itemHeight = 0;
@@ -369,19 +319,19 @@ SortableBehavior = Marionette.Behavior.extend( {
 			} );
 
 			ui.placeholder.height( itemHeight );
-
-			// ui.placeholder.addClass( 'qazana-column qazana-col-' + model.getSetting( 'size' ) );
 		}
 
 		qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:start' );
 
-		qazana.channels.data.reply( 'cache:' + model.cid, model );
+		qazana.channels.data
+			.reply( 'dragging:model', model )
+			.reply( 'dragging:parent:view', this.view );
 	},
 
-	onSortOver: function( event, ui ) {
+	onSortOver: function( event ) {
 		event.stopPropagation();
 
-		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) );
+		var model = qazana.channels.data.request( 'dragging:model' );
 
 		Backbone.$( event.target )
 			.addClass( 'qazana-draggable-over' )
@@ -411,56 +361,48 @@ SortableBehavior = Marionette.Behavior.extend( {
 			return;
 		}
 
-		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) ),
+		var model = qazana.channels.data.request( 'dragging:model' ),
 			draggedElType = model.get( 'elType' ),
 			draggedIsInnerSection = 'section' === draggedElType && model.get( 'isInner' ),
 			targetIsInnerColumn = 'column' === this.view.getElementType() && this.view.isInner();
 
 		if ( draggedIsInnerSection && targetIsInnerColumn ) {
 			Backbone.$( ui.sender ).sortable( 'cancel' );
+
 			return;
 		}
 
-		var newIndex = ui.item.parent().children().index( ui.item ),
-			newModel = new this.view.collection.model( model.toJSON( { copyHtmlCache: true } ) );
+		var newIndex = ui.item.parent().children().index( ui.item );
 
-		this.view.addChildModel( newModel, { at: newIndex } );
+		this.view.addChildElement( model.toJSON( { copyHtmlCache: true } ), { at: newIndex } );
 
-		qazana.channels.data.trigger( draggedElType + ':drag:end' );
+		var senderSection = qazana.channels.data.request( 'dragging:parent:view' );
+
+		senderSection.isManualRemoving = true;
 
 		model.destroy();
+
+		senderSection.isManualRemoving = false;
 	},
 
 	onSortUpdate: function( event, ui ) {
 		event.stopPropagation();
 
-		var model = this.view.collection.get( ui.item.attr( 'data-model-cid' ) );
-		if ( model ) {
-			qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
-		}
-	},
-
-	onSortStop: function( event, ui ) {
-		event.stopPropagation();
-
-		var $childElement = ui.item,
-			collection = this.view.collection,
-			model = collection.get( $childElement.attr( 'data-model-cid' ) ),
-			newIndex = $childElement.parent().children().index( $childElement );
-
 		if ( this.getChildViewContainer()[0] === ui.item.parent()[0] ) {
-			if ( null === ui.sender && model ) {
-				var oldIndex = collection.indexOf( model );
+			var model = qazana.channels.data.request( 'dragging:model' ),
+				$childElement = ui.item,
+				collection = this.view.collection,
+				newIndex = $childElement.parent().children().index( $childElement );
 
-				if ( oldIndex !== newIndex ) {
-					collection.remove( model );
-					this.view.addChildModel( model, { at: newIndex } );
+			var child = this.view.children.findByModelCid( model.cid );
 
-					qazana.setFlagEditorChange( true );
-				}
+			child._isRendering = true;
 
-				qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
-			}
+			collection.remove( model );
+
+			this.view.addChildElement( model, { at: newIndex } );
+
+			qazana.setFlagEditorChange( true );
 		}
 	},
 
@@ -469,26 +411,20 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	getChildViewContainer: function() {
-		if ( 'function' === typeof this.view.getChildViewContainer ) {
-			// CompositeView
-			return this.view.getChildViewContainer( this.view );
-		} else {
-			// CollectionView
-			return this.$el;
-		}
+		return this.view.getChildViewContainer( this.view );
 	}
 } );
 
 module.exports = SortableBehavior;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var RevisionModel = require( './model' );
 
 module.exports = Backbone.Collection.extend( {
 	model: RevisionModel
 } );
 
-},{"./model":10}],8:[function(require,module,exports){
+},{"./model":9}],7:[function(require,module,exports){
 module.exports = Marionette.ItemView.extend( {
 	template: '#tmpl-qazana-panel-revisions-no-revisions',
 
@@ -497,7 +433,7 @@ module.exports = Marionette.ItemView.extend( {
 	className: 'qazana-panel-nerd-box'
 } );
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var RevisionsCollection = require( './collection' ),
 	RevisionsPageView = require( './panel-page' ),
 	RevisionsEmptyView = require( './empty-view' ),
@@ -513,6 +449,7 @@ RevisionsManager = function() {
 				if ( revisions.length ) {
 					return RevisionsPageView;
 				}
+
 				return RevisionsEmptyView;
 			},
 			title: qazana.translate( 'revision_history' ),
@@ -622,7 +559,7 @@ RevisionsManager = function() {
 
 module.exports = new RevisionsManager();
 
-},{"./collection":7,"./empty-view":8,"./panel-page":11}],10:[function(require,module,exports){
+},{"./collection":6,"./empty-view":7,"./panel-page":10}],9:[function(require,module,exports){
 var RevisionModel;
 
 RevisionModel = Backbone.Model.extend();
@@ -633,7 +570,7 @@ RevisionModel.prototype.sync = function() {
 
 module.exports = RevisionModel;
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = Marionette.CompositeView.extend( {
 	id: 'qazana-panel-revisions',
 
@@ -761,7 +698,7 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	onApplyClick: function() {
-		qazana.getPanelView().getChildView( 'footer' )._publishQazana();
+		qazana.getPanelView().getChildView( 'footer' )._publishBuilder();
 
 		this.isRevisionApplied = true;
 
@@ -861,7 +798,7 @@ module.exports = Marionette.CompositeView.extend( {
 	}
 } );
 
-},{"./view":12}],12:[function(require,module,exports){
+},{"./view":11}],11:[function(require,module,exports){
 module.exports =  Marionette.ItemView.extend( {
 	template: '#tmpl-qazana-panel-revisions-revision-item',
 
@@ -878,7 +815,7 @@ module.exports =  Marionette.ItemView.extend( {
 	}
 } );
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var TemplateLibraryTemplateModel = require( 'qazana-templates/models/template' ),
 	TemplateLibraryCollection;
 
@@ -888,7 +825,7 @@ TemplateLibraryCollection = Backbone.Collection.extend( {
 
 module.exports = TemplateLibraryCollection;
 
-},{"qazana-templates/models/template":15}],14:[function(require,module,exports){
+},{"qazana-templates/models/template":14}],13:[function(require,module,exports){
 var TemplateLibraryLayoutView = require( 'qazana-templates/views/layout' ),
 	TemplateLibraryCollection = require( 'qazana-templates/collections/templates' ),
 	TemplateLibraryManager;
@@ -1148,7 +1085,7 @@ TemplateLibraryManager = function() {
 
 module.exports = new TemplateLibraryManager();
 
-},{"qazana-templates/collections/templates":13,"qazana-templates/views/layout":16}],15:[function(require,module,exports){
+},{"qazana-templates/collections/templates":12,"qazana-templates/views/layout":15}],14:[function(require,module,exports){
 var TemplateLibraryTemplateModel;
 
 TemplateLibraryTemplateModel = Backbone.Model.extend( {
@@ -1170,7 +1107,7 @@ TemplateLibraryTemplateModel = Backbone.Model.extend( {
 
 module.exports = TemplateLibraryTemplateModel;
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var TemplateLibraryHeaderLogoView = require( 'qazana-templates/views/parts/header/logo' ),
 	TemplateLibraryHeaderSaveView = require( 'qazana-templates/views/parts/header/save' ),
 	TemplateLibraryHeaderMenuView = require( 'qazana-templates/views/parts/header/menu' ),
@@ -1254,7 +1191,7 @@ TemplateLibraryLayoutView = Marionette.LayoutView.extend( {
 
 module.exports = TemplateLibraryLayoutView;
 
-},{"qazana-templates/views/parts/header/back":17,"qazana-templates/views/parts/header/logo":18,"qazana-templates/views/parts/header/menu":19,"qazana-templates/views/parts/header/preview":20,"qazana-templates/views/parts/header/save":21,"qazana-templates/views/parts/header/search":22,"qazana-templates/views/parts/panel/header":23,"qazana-templates/views/parts/panel/import":24,"qazana-templates/views/parts/panel/loading":25,"qazana-templates/views/parts/panel/preview":26,"qazana-templates/views/parts/panel/save-template":27,"qazana-templates/views/parts/panel/templates":29}],17:[function(require,module,exports){
+},{"qazana-templates/views/parts/header/back":16,"qazana-templates/views/parts/header/logo":17,"qazana-templates/views/parts/header/menu":18,"qazana-templates/views/parts/header/preview":19,"qazana-templates/views/parts/header/save":20,"qazana-templates/views/parts/header/search":21,"qazana-templates/views/parts/panel/header":22,"qazana-templates/views/parts/panel/import":23,"qazana-templates/views/parts/panel/loading":24,"qazana-templates/views/parts/panel/preview":25,"qazana-templates/views/parts/panel/save-template":26,"qazana-templates/views/parts/panel/templates":28}],16:[function(require,module,exports){
 var TemplateLibraryHeaderBackView;
 
 TemplateLibraryHeaderBackView = Marionette.ItemView.extend( {
@@ -1273,7 +1210,7 @@ TemplateLibraryHeaderBackView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderBackView;
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var TemplateLibraryHeaderLogoView;
 
 TemplateLibraryHeaderLogoView = Marionette.ItemView.extend( {
@@ -1293,7 +1230,7 @@ TemplateLibraryHeaderLogoView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderLogoView;
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var TemplateLibraryHeaderMenuView;
 
 TemplateLibraryHeaderMenuView = Marionette.ItemView.extend( {
@@ -1349,7 +1286,7 @@ TemplateLibraryHeaderMenuView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderMenuView;
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var TemplateLibraryHeaderPreviewView;
 
 TemplateLibraryHeaderPreviewView = Marionette.ItemView.extend( {
@@ -1372,7 +1309,7 @@ TemplateLibraryHeaderPreviewView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderPreviewView;
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var TemplateLibraryHeaderSaveView;
 
 TemplateLibraryHeaderSaveView = Marionette.ItemView.extend( {
@@ -1393,7 +1330,7 @@ TemplateLibraryHeaderSaveView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderSaveView;
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var TemplateLibraryHeaderSearchView;
 
 TemplateLibraryHeaderSearchView = Marionette.ItemView.extend( {
@@ -1440,7 +1377,7 @@ TemplateLibraryHeaderSearchView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryHeaderSearchView;
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var TemplateLibraryHeaderView;
 
 TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
@@ -1471,7 +1408,7 @@ TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
 
 module.exports = TemplateLibraryHeaderView;
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var TemplateLibraryImportView;
 
 TemplateLibraryImportView = Marionette.ItemView.extend( {
@@ -1510,7 +1447,7 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryImportView;
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var TemplateLibraryLoadingView;
 
 TemplateLibraryLoadingView = Marionette.ItemView.extend( {
@@ -1521,7 +1458,7 @@ TemplateLibraryLoadingView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryLoadingView;
 
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var TemplateLibraryPreviewView;
 
 TemplateLibraryPreviewView = Marionette.ItemView.extend( {
@@ -1540,7 +1477,7 @@ TemplateLibraryPreviewView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryPreviewView;
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var TemplateLibrarySaveTemplateView;
 
 TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
@@ -1584,7 +1521,7 @@ TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibrarySaveTemplateView;
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var TemplateLibraryTemplatesEmptyView;
 
 TemplateLibraryTemplatesEmptyView = Marionette.ItemView.extend( {
@@ -1595,7 +1532,7 @@ TemplateLibraryTemplatesEmptyView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryTemplatesEmptyView;
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var TemplateLibraryTemplateLocalView = require( 'qazana-templates/views/template/local' ),
     TemplateLibraryTemplateRemoteView = require( 'qazana-templates/views/template/remote' ),
     TemplateLibraryTemplateThemeView = require( 'qazana-templates/views/template/theme' ),
@@ -1672,7 +1609,7 @@ TemplateLibraryCollectionView = Marionette.CompositeView.extend( {
 
 module.exports = TemplateLibraryCollectionView;
 
-},{"qazana-templates/views/parts/panel/templates-empty":28,"qazana-templates/views/template/local":31,"qazana-templates/views/template/remote":32,"qazana-templates/views/template/theme":33}],30:[function(require,module,exports){
+},{"qazana-templates/views/parts/panel/templates-empty":27,"qazana-templates/views/template/local":30,"qazana-templates/views/template/remote":31,"qazana-templates/views/template/theme":32}],29:[function(require,module,exports){
 var TemplateLibraryTemplateView;
 
 TemplateLibraryTemplateView = Marionette.ItemView.extend( {
@@ -1701,7 +1638,7 @@ TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 
 module.exports = TemplateLibraryTemplateView;
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
 	TemplateLibraryTemplateLocalView;
 
@@ -1731,7 +1668,7 @@ TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
 
 module.exports = TemplateLibraryTemplateLocalView;
 
-},{"qazana-templates/views/template/base":30}],32:[function(require,module,exports){
+},{"qazana-templates/views/template/base":29}],31:[function(require,module,exports){
 var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
 	TemplateLibraryTemplateRemoteView;
 
@@ -1745,7 +1682,7 @@ TemplateLibraryTemplateRemoteView = TemplateLibraryTemplateView.extend( {
 
 module.exports = TemplateLibraryTemplateRemoteView;
 
-},{"qazana-templates/views/template/base":30}],33:[function(require,module,exports){
+},{"qazana-templates/views/template/base":29}],32:[function(require,module,exports){
 var TemplateLibraryTemplateView = require( 'qazana-templates/views/template/base' ),
     TemplateLibraryTemplateThemeView;
 
@@ -1759,32 +1696,33 @@ TemplateLibraryTemplateThemeView = TemplateLibraryTemplateView.extend( {
 
 module.exports = TemplateLibraryTemplateThemeView;
 
-},{"qazana-templates/views/template/base":30}],34:[function(require,module,exports){
+},{"qazana-templates/views/template/base":29}],33:[function(require,module,exports){
 /* global QazanaConfig */
 var App;
 
 Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
 	options = {
 		evaluate: /<#([\s\S]+?)#>/g,
-		interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
-		escape: /\{\{([^\}]+?)\}\}(?!\})/g
+		interpolate: /{{{([\s\S]+?)}}}/g,
+		escape: /{{([^}]+?)}}(?!})/g
 	};
 
 	return _.template( rawTemplate, options );
 };
 
 App = Marionette.Application.extend( {
-	helpers: require( 'qazana-utils/helpers' ),
-	heartbeat: require( 'qazana-utils/heartbeat' ),
-	imagesManager: require( 'qazana-utils/images-manager' ),
-	schemes: require( 'qazana-utils/schemes' ),
-	presetsFactory: require( 'qazana-utils/presets-factory' ),
-	modals: require( 'qazana-utils/modals' ),
+	helpers: require( 'qazana-editor-utils/helpers' ),
+	heartbeat: require( 'qazana-editor-utils/heartbeat' ),
+	imagesManager: require( 'qazana-editor-utils/images-manager' ),
+	debug: require( 'qazana-editor-utils/debug' ),
+	schemes: require( 'qazana-editor-utils/schemes' ),
+	presetsFactory: require( 'qazana-editor-utils/presets-factory' ),
+	modals: require( 'qazana-editor-utils/modals' ),
 	templates: require( 'qazana-templates/manager' ),
-	ajax: require( 'qazana-utils/ajax' ),
-	conditions: require( 'qazana-utils/conditions' ),
+	ajax: require( 'qazana-editor-utils/ajax' ),
+	conditions: require( 'qazana-editor-utils/conditions' ),
 	revisions:  require( 'qazana-revisions/manager' ),
-	hotKeys: require( 'qazana-utils/hot-keys' ),
+	hotKeys: require( 'qazana-editor-utils/hot-keys' ),
 
 	channels: {
 		editor: Backbone.Radio.channel( 'BUILDER:editor' ),
@@ -1798,15 +1736,45 @@ App = Marionette.Application.extend( {
 	modules: {
 		element: require( 'qazana-models/element' ),
 		WidgetView: require( 'qazana-views/widget' ),
+		controls: {
+			Base: require( 'qazana-views/controls/base' ),
+			BaseMultiple: require( 'qazana-views/controls/base-multiple' ),
+			Color: require( 'qazana-views/controls/color' ),
+			Dimensions: require( 'qazana-views/controls/dimensions' ),
+			Image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
+			Media: require( 'qazana-views/controls/media' ),
+			Slider: require( 'qazana-views/controls/slider' ),
+			Wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
+			Choose: require( 'qazana-views/controls/choose' ),
+			Url: require( 'qazana-views/controls/base-multiple' ),
+			Font: require( 'qazana-views/controls/font' ),
+			Section: require( 'qazana-views/controls/section' ),
+			Tab: require( 'qazana-views/controls/tab' ),
+			Repeater: require( 'qazana-views/controls/repeater' ),
+			Wp_widget: require( 'qazana-views/controls/wp_widget' ),
+			Icon: require( 'qazana-views/controls/icon' ),
+			Gallery: require( 'qazana-views/controls/gallery' ),
+			Select2: require( 'qazana-views/controls/select2' ),
+			Date_time: require( 'qazana-views/controls/date-time' ),
+			Code: require( 'qazana-views/controls/code' ),
+			Box_shadow: require( 'qazana-views/controls/box-shadow' ),
+			Structure: require( 'qazana-views/controls/structure' ),
+			Animation: require( 'qazana-views/controls/select2' ),
+			Hover_animation: require( 'qazana-views/controls/select2' ),
+			Order: require( 'qazana-views/controls/order' ),
+			//Switcher: require( 'qazana-views/controls/switcher' ),
+			Number: require( 'qazana-views/controls/number' )
+		},
 		templateLibrary: {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
 
-	// Private Members
-	_controlsItemView: null,
-
 	_defaultDeviceMode: 'desktop',
+
+	addControlView: function( controlID, ControlView ) {
+		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
+	},
 
 	getElementData: function( modelElement ) {
 		var elType = modelElement.get( 'elType' );
@@ -1829,58 +1797,30 @@ App = Marionette.Application.extend( {
 	},
 
 	getElementControls: function( modelElement ) {
-		var elementData = this.getElementData( modelElement );
+		var self = this,
+			elementData = self.getElementData( modelElement );
 
 		if ( ! elementData ) {
 			return false;
 		}
 
-		var elType = modelElement.get( 'elType' );
+		var elType = modelElement.get( 'elType' ),
+			isInner = modelElement.get( 'isInner' ),
+			controls = {};
 
-		if ( 'widget' === elType ) {
-			return elementData.controls;
-		}
+		_.each( elementData.controls, function( controlData, controlKey ) {
+			if ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top ) {
+				return;
+			}
 
-		var isInner = modelElement.get( 'isInner' );
-
-		return _.filter( elementData.controls, function( controlData ) {
-			return ! ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top );
+			controls[ controlKey ] = _.extend( {}, self.config.controls[ controlData.type ], controlData  );
 		} );
+
+		return controls;
 	},
 
-	getControlItemView: function( controlType ) {
-		if ( null === this._controlsItemView ) {
-			this._controlsItemView = {
-				color: require( 'qazana-views/controls/color' ),
-				dimensions: require( 'qazana-views/controls/dimensions' ),
-				image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
-				media: require( 'qazana-views/controls/media' ),
-				slider: require( 'qazana-views/controls/slider' ),
-				wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
-				choose: require( 'qazana-views/controls/choose' ),
-				url: require( 'qazana-views/controls/url' ),
-				font: require( 'qazana-views/controls/font' ),
-				section: require( 'qazana-views/controls/section' ),
-				tab: require( 'qazana-views/controls/tab' ),
-				repeater: require( 'qazana-views/controls/repeater' ),
-				wp_widget: require( 'qazana-views/controls/wp_widget' ),
-				icon: require( 'qazana-views/controls/icon' ),
-				gallery: require( 'qazana-views/controls/gallery' ),
-				select2: require( 'qazana-views/controls/select2' ),
-				date_time: require( 'qazana-views/controls/date-time' ),
-				code: require( 'qazana-views/controls/code' ),
-				box_shadow: require( 'qazana-views/controls/box-shadow' ),
-				structure: require( 'qazana-views/controls/structure' ),
-				animation: require( 'qazana-views/controls/animation' ),
-				hover_animation: require( 'qazana-views/controls/animation' ),
-				order: require( 'qazana-views/controls/order' ),
-				number: require( 'qazana-views/controls/number' )
-			};
-
-			this.channels.editor.trigger( 'controls:initialize' );
-		}
-
-		return this._controlsItemView[ controlType ] || require( 'qazana-views/controls/base' );
+	getControlView: function( controlID ) {
+		return this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] || this.modules.controls.Base;
 	},
 
 	getPanelView: function() {
@@ -1939,6 +1879,8 @@ App = Marionette.Application.extend( {
 		qazanaFrontend.setScopeWindow( this.$preview[0].contentWindow );
 
 		qazanaFrontend.init();
+
+		//qazanaFrontend.elementsHandler.initHandlers();
 	},
 
 	initClearPageDialog: function() {
@@ -1983,6 +1925,8 @@ App = Marionette.Application.extend( {
 		Backbone.Radio.tuneIn( 'BUILDER' );
 
 		this.initComponents();
+
+		this.channels.dataEditMode.reply( 'activeMode', 'edit' );
 
 		this.listenTo( this.channels.dataEditMode, 'switch', this.onEditModeSwitched );
 
@@ -2076,11 +2020,14 @@ App = Marionette.Application.extend( {
 		} );
 
 		this.enqueueTypographyFonts();
+		this.onEditModeSwitched();
 
 		this.trigger( 'preview:loaded' );
 	},
 
-	onEditModeSwitched: function( activeMode ) {
+	onEditModeSwitched: function() {
+		var activeMode = this.channels.dataEditMode.request( 'activeMode' );
+
 		if ( 'edit' === activeMode ) {
 			this.exitPreviewMode();
 		} else {
@@ -2115,12 +2062,12 @@ App = Marionette.Application.extend( {
 
 	setFlagEditorChange: function( status ) {
 		qazana.channels.editor
-			.reply( 'change', status )
-			.trigger( 'change', status );
+			.reply( 'status', status )
+			.trigger( 'status:change', status );
 	},
 
 	isEditorChanged: function() {
-		return ( true === qazana.channels.editor.request( 'change' ) );
+		return ( true === qazana.channels.editor.request( 'status' ) );
 	},
 
 	setWorkSaver: function() {
@@ -2208,7 +2155,7 @@ App = Marionette.Application.extend( {
         }
 
 		var self = this,
-			newData = qazana.elements.toJSON();
+			newData = qazana.elements.toJSON( { removeDefault: true } );
 
 		return this.ajax.send( 'save_qazana', {
 	        data: {
@@ -2290,7 +2237,7 @@ App = Marionette.Application.extend( {
 
 module.exports = ( window.qazana = new App() ).start();
 
-},{"../utils/hooks":111,"qazana-layouts/panel/panel":59,"qazana-models/element":62,"qazana-panel/pages/elements/views/elements":46,"qazana-revisions/manager":9,"qazana-templates/manager":14,"qazana-utils/ajax":65,"qazana-utils/conditions":66,"qazana-utils/heartbeat":67,"qazana-utils/helpers":68,"qazana-utils/hot-keys":69,"qazana-utils/images-manager":70,"qazana-utils/modals":73,"qazana-utils/presets-factory":74,"qazana-utils/schemes":75,"qazana-views/controls/animation":80,"qazana-views/controls/base":83,"qazana-views/controls/box-shadow":84,"qazana-views/controls/choose":85,"qazana-views/controls/code":86,"qazana-views/controls/color":87,"qazana-views/controls/date-time":88,"qazana-views/controls/dimensions":89,"qazana-views/controls/font":90,"qazana-views/controls/gallery":91,"qazana-views/controls/icon":92,"qazana-views/controls/image-dimensions":93,"qazana-views/controls/media":94,"qazana-views/controls/number":95,"qazana-views/controls/order":96,"qazana-views/controls/repeater":98,"qazana-views/controls/section":99,"qazana-views/controls/select2":100,"qazana-views/controls/slider":101,"qazana-views/controls/structure":102,"qazana-views/controls/tab":103,"qazana-views/controls/url":104,"qazana-views/controls/wp_widget":105,"qazana-views/controls/wysiwyg":106,"qazana-views/preview":108,"qazana-views/widget":110}],35:[function(require,module,exports){
+},{"../utils/hooks":116,"qazana-editor-utils/ajax":64,"qazana-editor-utils/conditions":65,"qazana-editor-utils/debug":67,"qazana-editor-utils/heartbeat":68,"qazana-editor-utils/helpers":69,"qazana-editor-utils/hot-keys":70,"qazana-editor-utils/images-manager":71,"qazana-editor-utils/modals":74,"qazana-editor-utils/presets-factory":75,"qazana-editor-utils/schemes":76,"qazana-layouts/panel/panel":58,"qazana-models/element":61,"qazana-panel/pages/elements/views/elements":45,"qazana-revisions/manager":8,"qazana-templates/manager":13,"qazana-views/controls/base":89,"qazana-views/controls/base-multiple":87,"qazana-views/controls/box-shadow":90,"qazana-views/controls/choose":91,"qazana-views/controls/code":92,"qazana-views/controls/color":93,"qazana-views/controls/date-time":94,"qazana-views/controls/dimensions":95,"qazana-views/controls/font":96,"qazana-views/controls/gallery":97,"qazana-views/controls/icon":98,"qazana-views/controls/image-dimensions":99,"qazana-views/controls/media":100,"qazana-views/controls/number":101,"qazana-views/controls/order":102,"qazana-views/controls/repeater":104,"qazana-views/controls/section":105,"qazana-views/controls/select2":106,"qazana-views/controls/slider":107,"qazana-views/controls/structure":108,"qazana-views/controls/tab":109,"qazana-views/controls/wp_widget":110,"qazana-views/controls/wysiwyg":111,"qazana-views/preview":113,"qazana-views/widget":115}],34:[function(require,module,exports){
 var EditModeItemView;
 
 EditModeItemView = Marionette.ItemView.extend( {
@@ -2327,15 +2274,16 @@ EditModeItemView = Marionette.ItemView.extend( {
 	},
 
 	onRender: function() {
-		this.onPreviewButtonChange();
+		this.onEditModeChanged();
 	},
 
 	onPreviewButtonChange: function() {
 		qazana.changeEditMode( this.getCurrentMode() );
 	},
 
-	onEditModeChanged: function( activeMode ) {
-		var title = qazana.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
+	onEditModeChanged: function() {
+		var activeMode = qazana.channels.dataEditMode.request( 'activeMode' ),
+			title = qazana.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
 
 		this.ui.previewLabel.attr( 'title', title );
 		this.ui.previewLabelA11y.text( title );
@@ -2344,7 +2292,7 @@ EditModeItemView = Marionette.ItemView.extend( {
 
 module.exports = EditModeItemView;
 
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var PanelFooterItemView;
 
 PanelFooterItemView = Marionette.ItemView.extend( {
@@ -2522,7 +2470,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 
 module.exports = PanelFooterItemView;
 
-},{}],37:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var PanelHeaderItemView;
 
 PanelHeaderItemView = Marionette.ItemView.extend( {
@@ -2656,51 +2604,16 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
 
 module.exports = PanelHeaderItemView;
 
-},{}],38:[function(require,module,exports){
-var EditorCompositeView;
+},{}],37:[function(require,module,exports){
+var ControlsStack = require( 'qazana-views/controls-stack' ),
+	EditorView;
 
-EditorCompositeView = Marionette.CompositeView.extend( {
+EditorView = ControlsStack.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-editor-content' ),
 
 	id: 'qazana-panel-page-editor',
 
-	templateHelpers: function() {
-		return {
-			elementData: qazana.getElementData( this.model )
-		};
-	},
-
-	behaviors: {
-		HandleInnerTabs: {
-			behaviorClass: require( 'qazana-behaviors/inner-tabs' )
-		}
-	},
-
 	childViewContainer: '#qazana-controls',
-
-	modelEvents: {
-		'destroy': 'onModelDestroy'
-	},
-
-	ui: {
-		tabs: '.qazana-panel-navigation-tab',
-		reloadButton: '#qazana-update-preview-button'
-	},
-
-	events: {
-		'click @ui.tabs a': 'onClickTabControl',
-		'click @ui.reloadButton': 'onReloadButtonClick'
-	},
-
-	initialize: function() {
-		this.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
-	},
-
-	getChildView: function( item ) {
-		var controlType = item.get( 'type' );
-
-		return qazana.getControlItemView( controlType );
-	},
 
 	childViewOptions: function() {
 		return {
@@ -2709,14 +2622,14 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		};
 	},
 
-	onDestroy: function() {
-		if ( this.editedElementView ) {
-			this.editedElementView.$el.removeClass( 'qazana-element-editable' );
-		}
+	openActiveSection: function() {
+		ControlsStack.prototype.openActiveSection.apply( this, arguments );
 
-		this.model.trigger( 'editor:close' );
+		qazana.channels.editor.trigger( 'section:activated', this.activeSection, this );
+	},
 
-		this.triggerMethod( 'editor:destroy' );
+	isVisibleSectionControl: function( sectionControlModel ) {
+		return ControlsStack.prototype.isVisibleSectionControl.apply( this, arguments ) && qazana.helpers.isActiveControl( sectionControlModel, this.model.get( 'settings' ).attributes );
 	},
 
 	onBeforeRender: function() {
@@ -2730,54 +2643,30 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		this.collection = new Backbone.Collection( _.values( controls ) );
 	},
 
-	onRender: function() {
-		if ( this.editedElementView ) {
-			this.editedElementView.$el.addClass( 'qazana-element-editable' );
+	onDestroy: function() {
+		var editedElementView = this.getOption( 'editedElementView' );
+
+		if ( editedElementView ) {
+			editedElementView.$el.removeClass( 'qazana-element-editable' );
 		}
 
-		// Set the first tab as active
-		this.ui.tabs.eq( 0 ).find( 'a' ).trigger( 'click' );
+		this.model.trigger( 'editor:close' );
 
-		// Create tooltip on controls
-		this.$( '.tooltip-target' ).tipsy( {
-			gravity: function() {
-				// `n` for down, `s` for up
-				var gravity = Backbone.$( this ).data( 'tooltip-pos' );
-
-				if ( undefined !== gravity ) {
-					return gravity;
-				} else {
-					return 'n';
-				}
-			},
-			title: function() {
-				return this.getAttribute( 'data-tooltip' );
-			}
-		} );
+		this.triggerMethod( 'editor:destroy' );
 	},
 
-	onModelDestroy: function() {
-		this.destroy();
-	},
+	onRender: function() {
+		var editedElementView = this.getOption( 'editedElementView' );
 
-	onClickTabControl: function( event ) {
-		event.preventDefault();
-
-		var $thisTab = this.$( event.target );
-
-		this.ui.tabs.removeClass( 'active' );
-
-		$thisTab.closest( '.qazana-panel-navigation-tab' ).addClass( 'active' );
-
-		this.model.get( 'settings' ).trigger( 'control:switch:tab', $thisTab.data( 'tab' ) );
-
-		this.openFirstSectionInCurrentTab( $thisTab.data( 'tab' ) );
+		if ( editedElementView ) {
+			editedElementView.$el.addClass( 'qazana-element-editable' );
+		}
 	},
 
 	onDeviceModeChange: function() {
-		var self = this;
+		ControlsStack.prototype.onDeviceModeChange.apply( this, arguments );
 
-		self.$el.removeClass( 'qazana-responsive-switchers-open' );
+		var self = this;
 
 		// Timeout according to preview resize css animation duration
 		setTimeout( function() {
@@ -2787,78 +2676,24 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		}, 500 );
 	},
 
-	/**
-	 * It's a temp method.
-	 *
-	 * TODO: Rewrite this method later.
-	 */
-	openFirstSectionInCurrentTab: function( currentTab ) {
-		var openedClass = 'qazana-open',
+	onChildviewSettingsChange: function( childView ) {
+		var editedElementView = this.getOption( 'editedElementView' ),
+			editedElementType = editedElementView.model.get( 'elType' );
 
-			childrenUnderSection = this.children.filter( function( view ) {
-				return ( ! _.isEmpty( view.model.get( 'section' ) ) );
-			} ),
-
-			firstSectionControlView = this.children.filter( function( view ) {
-				return ( 'section' === view.model.get( 'type' ) ) && ( currentTab === view.model.get( 'tab' ) );
-			} );
-
-		// Check if found any section controls
-		if ( _.isEmpty( firstSectionControlView ) ) {
-			return;
+		if ( 'widget' === editedElementType ) {
+			editedElementType = editedElementView.model.get( 'widgetType' );
 		}
 
-		firstSectionControlView = firstSectionControlView[0];
-		firstSectionControlView.ui.heading.addClass( openedClass );
-
-		_.each( childrenUnderSection, function( view ) {
-			if ( view.model.get( 'section' ) !== firstSectionControlView.model.get( 'name' ) ) {
-				view.$el.removeClass( openedClass );
-				return;
-			}
-
-			view.$el.addClass( openedClass );
-		} );
-	},
-
-	onChildviewControlSectionClicked: function( childView ) {
-		var openedClass = 'qazana-open',
-			sectionClicked = childView.model.get( 'name' ),
-			isSectionOpen = childView.ui.heading.hasClass( openedClass ),
-
-			childrenUnderSection = this.children.filter( function( view ) {
-				return ( ! _.isEmpty( view.model.get( 'section' ) ) );
-			} );
-
-		this.$( '.qazana-control.qazana-control-type-section .qazana-panel-heading' ).removeClass( openedClass );
-
-		if ( isSectionOpen ) {
-			// Close all open sections
-			sectionClicked = '';
-		} else {
-			childView.ui.heading.addClass( openedClass );
-		}
-
-		_.each( childrenUnderSection, function( view ) {
-			if ( view.model.get( 'section' ) !== sectionClicked ) {
-				view.$el.removeClass( openedClass );
-				return;
-			}
-
-			view.$el.addClass( openedClass );
-		} );
-
-		qazana.channels.data.trigger( 'scrollbar:update' );
-	},
-
-	onReloadButtonClick: function() {
-		qazana.reloadPreview();
+		qazana.channels.editor
+			.trigger( 'change', childView, editedElementView )
+			.trigger( 'change:' + editedElementType, childView, editedElementView )
+			.trigger( 'change:' + editedElementType + ':' + childView.model.get( 'name' ), childView, editedElementView );
 	}
 } );
 
-module.exports = EditorCompositeView;
+module.exports = EditorView;
 
-},{"qazana-behaviors/inner-tabs":4}],39:[function(require,module,exports){
+},{"qazana-views/controls-stack":86}],38:[function(require,module,exports){
 var PanelElementsCategory = require( '../models/element' ),
 	PanelElementsCategoriesCollection;
 
@@ -2868,17 +2703,18 @@ PanelElementsCategoriesCollection = Backbone.Collection.extend( {
 
 module.exports = PanelElementsCategoriesCollection;
 
-},{"../models/element":42}],40:[function(require,module,exports){
+},{"../models/element":41}],39:[function(require,module,exports){
 var PanelElementsElementModel = require( '../models/element' ),
 	PanelElementsElementsCollection;
 
 PanelElementsElementsCollection = Backbone.Collection.extend( {
-	model: PanelElementsElementModel
+	model: PanelElementsElementModel/*,
+	comparator: 'title'*/
 } );
 
 module.exports = PanelElementsElementsCollection;
 
-},{"../models/element":42}],41:[function(require,module,exports){
+},{"../models/element":41}],40:[function(require,module,exports){
 var PanelElementsCategoriesCollection = require( './collections/categories' ),
 	PanelElementsElementsCollection = require( './collections/elements' ),
 	PanelElementsCategoriesView = require( './views/categories' ),
@@ -3062,7 +2898,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend( {
 
 module.exports = PanelElementsLayoutView;
 
-},{"./collections/categories":39,"./collections/elements":40,"./views/categories":43,"./views/global":47,"./views/search":48}],42:[function(require,module,exports){
+},{"./collections/categories":38,"./collections/elements":39,"./views/categories":42,"./views/global":46,"./views/search":47}],41:[function(require,module,exports){
 var PanelElementsElementModel;
 
 PanelElementsElementModel = Backbone.Model.extend( {
@@ -3078,7 +2914,7 @@ PanelElementsElementModel = Backbone.Model.extend( {
 
 module.exports = PanelElementsElementModel;
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 var PanelElementsCategoryView = require( './category' ),
 	PanelElementsCategoriesView;
 
@@ -3102,7 +2938,7 @@ PanelElementsCategoriesView = Marionette.CompositeView.extend( {
 
 module.exports = PanelElementsCategoriesView;
 
-},{"./category":44}],44:[function(require,module,exports){
+},{"./category":43}],43:[function(require,module,exports){
 var PanelElementsElementsCollection = require( '../collections/elements' ),
 	PanelElementsCategoryView;
 
@@ -3122,7 +2958,7 @@ PanelElementsCategoryView = Marionette.CompositeView.extend( {
 
 module.exports = PanelElementsCategoryView;
 
-},{"../collections/elements":40,"qazana-panel/pages/elements/views/element":45}],45:[function(require,module,exports){
+},{"../collections/elements":39,"qazana-panel/pages/elements/views/element":44}],44:[function(require,module,exports){
 var PanelElementsElementView;
 
 PanelElementsElementView = Marionette.ItemView.extend( {
@@ -3152,7 +2988,7 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 
 module.exports = PanelElementsElementView;
 
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var PanelElementsElementsView;
 
 PanelElementsElementsView = Marionette.CollectionView.extend( {
@@ -3199,7 +3035,7 @@ PanelElementsElementsView = Marionette.CollectionView.extend( {
 
 module.exports = PanelElementsElementsView;
 
-},{"qazana-panel/pages/elements/views/element":45}],47:[function(require,module,exports){
+},{"qazana-panel/pages/elements/views/element":44}],46:[function(require,module,exports){
 module.exports = Marionette.ItemView.extend( {
 	template: '#tmpl-qazana-panel-global',
 
@@ -3214,7 +3050,7 @@ module.exports = Marionette.ItemView.extend( {
 	}
 } );
 
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var PanelElementsSearchView;
 
 PanelElementsSearchView = Marionette.ItemView.extend( {
@@ -3247,7 +3083,7 @@ PanelElementsSearchView = Marionette.ItemView.extend( {
 
 module.exports = PanelElementsSearchView;
 
-},{}],49:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var PanelMenuItemView = require( 'qazana-panel/pages/menu/views/item' ),
 	PanelMenuPageView;
 
@@ -3341,7 +3177,7 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 
 module.exports = PanelMenuPageView;
 
-},{"qazana-panel/pages/menu/views/item":50}],50:[function(require,module,exports){
+},{"qazana-panel/pages/menu/views/item":49}],49:[function(require,module,exports){
 var PanelMenuItemView;
 
 PanelMenuItemView = Marionette.ItemView.extend( {
@@ -3356,7 +3192,7 @@ PanelMenuItemView = Marionette.ItemView.extend( {
 
 module.exports = PanelMenuItemView;
 
-},{}],51:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 var childViewTypes = {
 		color: require( 'qazana-panel/pages/schemes/items/color' ),
 		typography: require( 'qazana-panel/pages/schemes/items/typography' )
@@ -3492,7 +3328,7 @@ PanelSchemeBaseView = Marionette.CompositeView.extend( {
 
 module.exports = PanelSchemeBaseView;
 
-},{"qazana-panel/pages/schemes/items/color":56,"qazana-panel/pages/schemes/items/typography":57}],52:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/items/color":55,"qazana-panel/pages/schemes/items/typography":56}],51:[function(require,module,exports){
 var PanelSchemeColorsView = require( 'qazana-panel/pages/schemes/colors' ),
 	PanelSchemeColorPickerView;
 
@@ -3518,7 +3354,7 @@ PanelSchemeColorPickerView = PanelSchemeColorsView.extend( {
 
 module.exports = PanelSchemeColorPickerView;
 
-},{"qazana-panel/pages/schemes/colors":53}],53:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/colors":52}],52:[function(require,module,exports){
 var PanelSchemeBaseView = require( 'qazana-panel/pages/schemes/base' ),
 	PanelSchemeColorsView;
 
@@ -3554,7 +3390,7 @@ PanelSchemeColorsView = PanelSchemeBaseView.extend( {
 
 module.exports = PanelSchemeColorsView;
 
-},{"qazana-panel/pages/schemes/base":51}],54:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/base":50}],53:[function(require,module,exports){
 var PanelSchemeDisabledView;
 
 PanelSchemeDisabledView = Marionette.ItemView.extend( {
@@ -3575,7 +3411,7 @@ PanelSchemeDisabledView = Marionette.ItemView.extend( {
 
 module.exports = PanelSchemeDisabledView;
 
-},{}],55:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 var PanelSchemeItemView;
 
 PanelSchemeItemView = Marionette.ItemView.extend( {
@@ -3590,7 +3426,7 @@ PanelSchemeItemView = Marionette.ItemView.extend( {
 
 module.exports = PanelSchemeItemView;
 
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var PanelSchemeItemView = require( 'qazana-panel/pages/schemes/items/base' ),
 	PanelSchemeColorView;
 
@@ -3624,7 +3460,7 @@ PanelSchemeColorView = PanelSchemeItemView.extend( {
 
 module.exports = PanelSchemeColorView;
 
-},{"qazana-panel/pages/schemes/items/base":55}],57:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/items/base":54}],56:[function(require,module,exports){
 var PanelSchemeItemView = require( 'qazana-panel/pages/schemes/items/base' ),
 	PanelSchemeTypographyView;
 
@@ -3700,7 +3536,7 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 
 module.exports = PanelSchemeTypographyView;
 
-},{"qazana-panel/pages/schemes/items/base":55}],58:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/items/base":54}],57:[function(require,module,exports){
 var PanelSchemeBaseView = require( 'qazana-panel/pages/schemes/base' ),
 	PanelSchemeTypographyView;
 
@@ -3712,7 +3548,7 @@ PanelSchemeTypographyView = PanelSchemeBaseView.extend( {
 
 module.exports = PanelSchemeTypographyView;
 
-},{"qazana-panel/pages/schemes/base":51}],59:[function(require,module,exports){
+},{"qazana-panel/pages/schemes/base":50}],58:[function(require,module,exports){
 var EditModeItemView = require( 'qazana-layouts/edit-mode' ),
 	PanelLayoutView;
 
@@ -3924,44 +3760,75 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 
 module.exports = PanelLayoutView;
 
-},{"qazana-layouts/edit-mode":35,"qazana-layouts/panel/footer":36,"qazana-layouts/panel/header":37,"qazana-panel/pages/editor":38,"qazana-panel/pages/elements/elements":41,"qazana-panel/pages/menu/menu":49,"qazana-panel/pages/schemes/color-picker":52,"qazana-panel/pages/schemes/colors":53,"qazana-panel/pages/schemes/disabled":54,"qazana-panel/pages/schemes/typography":58}],60:[function(require,module,exports){
+},{"qazana-layouts/edit-mode":34,"qazana-layouts/panel/footer":35,"qazana-layouts/panel/header":36,"qazana-panel/pages/editor":37,"qazana-panel/pages/elements/elements":40,"qazana-panel/pages/menu/menu":48,"qazana-panel/pages/schemes/color-picker":51,"qazana-panel/pages/schemes/colors":52,"qazana-panel/pages/schemes/disabled":53,"qazana-panel/pages/schemes/typography":57}],59:[function(require,module,exports){
 var BaseSettingsModel;
 
 BaseSettingsModel = Backbone.Model.extend( {
+	options: {},
 
 	initialize: function( data, options ) {
-		this.controls = ( options && options.controls ) ? options.controls : qazana.getElementControls( this );
+		var self = this;
 
-		if ( ! this.controls ) {
+		if ( options ) {
+			// Keep the options for cloning
+			self.options = options;
+		}
+
+		self.controls = ( options && options.controls ) ? options.controls : qazana.getElementControls( self );
+
+		self.validators = {};
+
+		if ( ! self.controls ) {
 			return;
 		}
 
 		var attrs = data || {},
 			defaults = {};
 
-		_.each( this.controls, function( field ) {
-			var control = qazana.config.controls[ field.type ];
+		_.each( self.controls, function( field ) {
+			var control = qazana.config.controls[ field.type ],
+				isUIControl = -1 !== control.features.indexOf( 'ui' );
 
-			if ( _.isObject( control.default_value )  ) {
+			if ( isUIControl ) {
+				return;
+			}
+
+			// Check if the value is a plain object ( and not an array )
+			var isMultipleControl = jQuery.isPlainObject( control.default_value );
+
+			if ( isMultipleControl  ) {
 				defaults[ field.name ] = _.extend( {}, control.default_value, field['default'] || {} );
 			} else {
 				defaults[ field.name ] = field['default'] || control.default_value;
 			}
+
+			if ( undefined !== attrs[ field.name ] ) {
+				if ( isMultipleControl && ! _.isObject( attrs[ field.name ] ) ) {
+					qazana.debug.addCustomError(
+						new TypeError( 'An invalid argument supplied as multiple control value' ),
+						'InvalidElementData',
+						'Element `' + ( self.get( 'widgetType' ) || self.get( 'elType' ) ) + '` got <' + attrs[ field.name ] + '> as `' + field.name + '` value. Expected array or object.'
+					);
+
+					delete attrs[ field.name ];
+				}
+			}
+
+			if ( undefined === attrs[ field.name ] ) {
+				attrs[ field.name ] = defaults[ field.name ];
+			}
 		} );
 
-		this.defaults = defaults;
+		self.defaults = defaults;
 
-		// TODO: Change method to recursive
-		attrs = _.defaults( {}, attrs, defaults );
+		self.handleRepeaterData( attrs );
 
-		this.handleRepeaterData( attrs );
-
-		this.set( attrs );
+		self.set( attrs );
 	},
 
 	handleRepeaterData: function( attrs ) {
 		_.each( this.controls, function( field ) {
-			if ( 'repeater' === field.type ) {
+			if ( field.is_repeater ) {
 				// TODO: Apply defaults on each field in repeater fields
 				if ( ! ( attrs[ field.name ] instanceof Backbone.Collection ) ) {
 					attrs[ field.name ] = new Backbone.Collection( attrs[ field.name ], {
@@ -3969,6 +3836,10 @@ BaseSettingsModel = Backbone.Model.extend( {
 							options = options || {};
 
 							options.controls = field.fields;
+
+							if ( ! attrs._id ) {
+								attrs._id = qazana.helpers.getUniqueID();
+							}
 
 							return new BaseSettingsModel( attrs, options );
 						}
@@ -4010,6 +3881,14 @@ BaseSettingsModel = Backbone.Model.extend( {
 		return currentControl && ! _.isEmpty( currentControl.selectors );
 	},
 
+	getClassControls: function( controls ) {
+		controls = controls || this.controls;
+
+		return _.filter( controls, function( control ) {
+			return ! _.isUndefined( control.prefix_class );
+		} );
+	},
+
 	isClassControl: function( attribute ) {
 		var currentControl = _.find( this.controls, function( control ) {
 			return attribute === control.name;
@@ -4038,11 +3917,20 @@ BaseSettingsModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		return new BaseSettingsModel( qazana.helpers.cloneObject( this.attributes ) );
+		return new BaseSettingsModel( qazana.helpers.cloneObject( this.attributes ), qazana.helpers.cloneObject( this.options ) );
 	},
 
-	toJSON: function() {
+	setExternalChange: function( key, value ) {
+		this.set( key, value );
+
+		this.trigger( 'change:external', key, value )
+			.trigger( 'change:external:' + key, value );
+	},
+
+	toJSON: function( options ) {
 		var data = Backbone.Model.prototype.toJSON.call( this );
+
+		options = options || {};
 
 		delete data.widgetType;
 		delete data.elType;
@@ -4054,26 +3942,63 @@ BaseSettingsModel = Backbone.Model.extend( {
 			}
 		} );
 
+		if ( options.removeDefault ) {
+			var controls = this.controls;
+
+			_.each( data, function( value, key ) {
+				var control = controls[ key ];
+
+				if ( control ) {
+					if ( ( 'text' === control.type || 'textarea' === control.type ) && data[ key ] ) {
+						return;
+					}
+
+					if ( data[ key ] && 'object' === typeof data[ key ] ) {
+						// First check length difference
+						if ( Object.keys( data[ key ] ).length !== Object.keys( control[ 'default' ] ).length ) {
+							return;
+						}
+
+						// If it's equal length, loop over value
+						var isEqual = true;
+
+						_.each( data[ key ], function( propertyValue, propertyKey ) {
+							if ( data[ key ][ propertyKey ] !== control[ 'default' ][ propertyKey ] ) {
+								return isEqual = false;
+							}
+						} );
+
+						if ( isEqual ) {
+							delete data[ key ];
+						}
+					} else {
+						if ( data[ key ] === control[ 'default' ] ) {
+							delete data[ key ];
+						}
+					}
+				}
+			} );
+		}
+
 		return data;
 	}
 } );
 
 module.exports = BaseSettingsModel;
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	ColumnSettingsModel;
 
 ColumnSettingsModel = BaseSettingsModel.extend( {
 	defaults: {
-		_inline_size: '',
 		_column_size: 100
 	}
 } );
 
 module.exports = ColumnSettingsModel;
 
-},{"qazana-models/base-settings":60}],62:[function(require,module,exports){
+},{"qazana-models/base-settings":59}],61:[function(require,module,exports){
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	WidgetSettingsModel = require( 'qazana-models/widget-settings' ),
 	ColumnSettingsModel = require( 'qazana-models/column-settings' ),
@@ -4127,14 +4052,17 @@ ElementModel = Backbone.Model.extend( {
 
 	initSettings: function() {
 		var elType = this.get( 'elType' ),
+			settings = this.get( 'settings' ),
 			settingModels = {
 				widget: WidgetSettingsModel,
 				column: ColumnSettingsModel,
 				section: SectionSettingsModel
-			};
+			},
+			SettingsModel = settingModels[ elType ] || BaseSettingsModel;
 
-		var SettingsModel = settingModels[ elType ] || BaseSettingsModel,
-			settings = this.get( 'settings' ) || {};
+		if ( Backbone.$.isEmptyObject( settings ) ) {
+			settings = qazana.helpers.cloneObject( settings );
+		}
 
 		if ( 'widget' === elType ) {
 			settings.widgetType = this.get( 'widgetType' );
@@ -4148,7 +4076,6 @@ ElementModel = Backbone.Model.extend( {
 		this.set( 'settings', settings );
 
 		qazanaFrontend.config.elements.data[ this.cid ] = settings;
-
 	},
 
 	initEditSettings: function() {
@@ -4179,20 +4106,8 @@ ElementModel = Backbone.Model.extend( {
 		}
 	},
 
-	setSetting: function( key, value, triggerChange ) {
-		triggerChange = triggerChange || false;
-
-		var settings = this.get( 'settings' );
-
-		settings.set( key, value );
-
-		this.set( 'settings', settings );
-
-		if ( triggerChange ) {
-			this.trigger( 'change', this );
-			this.trigger( 'change:settings', this );
-			this.trigger( 'change:settings:' + key, this );
-		}
+	setSetting: function( key, value ) {
+		this.get( 'settings' ).setExternalChange( key, value );
 	},
 
 	getSetting: function( key ) {
@@ -4225,7 +4140,7 @@ ElementModel = Backbone.Model.extend( {
 		return ( elementData ) ? elementData.icon : 'unknown';
 	},
 
-	getRemoteRenderRequest: function() {
+	createRemoteRenderRequest: function() {
 		var data = this.toJSON();
 
 		return qazana.ajax.send( 'render_widget', {
@@ -4247,11 +4162,15 @@ ElementModel = Backbone.Model.extend( {
 
 		this.trigger( 'before:remote:render' );
 
-		if ( this._jqueryXhr && 4 !== this._jqueryXhr ) {
+		if ( this.isRemoteRequestActive() ) {
 			this._jqueryXhr.abort();
 		}
 
-		this._jqueryXhr = this.getRemoteRenderRequest();
+		this._jqueryXhr = this.createRemoteRenderRequest();
+	},
+
+	isRemoteRequestActive: function() {
+		return this._jqueryXhr && 4 !== this._jqueryXhr.readyState;
 	},
 
 	onRemoteGetHtml: function( data ) {
@@ -4260,20 +4179,16 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		var newModel = Backbone.Model.prototype.clone.apply( this, arguments );
+		var newModel = new this.constructor( qazana.helpers.cloneObject( this.attributes ) );
+
 		newModel.set( 'id', qazana.helpers.getUniqueID() );
 
 		newModel.setHtmlCache( this.getHtmlCache() );
 
-		var elements = this.get( 'elements' ),
-			settings = this.get( 'settings' );
+		var elements = this.get( 'elements' );
 
 		if ( ! _.isEmpty( elements ) ) {
 			newModel.set( 'elements', elements.clone() );
-		}
-
-		if ( settings instanceof BaseSettingsModel ) {
-			newModel.set( 'settings', settings.clone() );
 		}
 
 		return newModel;
@@ -4336,9 +4251,11 @@ ElementCollection = Backbone.Collection.extend( {
 ElementCollection.prototype.sync = function() {
 	return null;
 };
+
 ElementCollection.prototype.fetch = function() {
 	return null;
 };
+
 ElementCollection.prototype.save = function() {
 	return null;
 };
@@ -4358,7 +4275,7 @@ module.exports = {
 	Collection: ElementCollection
 };
 
-},{"qazana-models/base-settings":60,"qazana-models/column-settings":61,"qazana-models/section-settings":63,"qazana-models/widget-settings":64}],63:[function(require,module,exports){
+},{"qazana-models/base-settings":59,"qazana-models/column-settings":60,"qazana-models/section-settings":62,"qazana-models/widget-settings":63}],62:[function(require,module,exports){
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	SectionSettingsModel;
 
@@ -4368,7 +4285,7 @@ SectionSettingsModel = BaseSettingsModel.extend( {
 
 module.exports = SectionSettingsModel;
 
-},{"qazana-models/base-settings":60}],64:[function(require,module,exports){
+},{"qazana-models/base-settings":59}],63:[function(require,module,exports){
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	WidgetSettingsModel;
 
@@ -4378,7 +4295,7 @@ WidgetSettingsModel = BaseSettingsModel.extend( {
 
 module.exports = WidgetSettingsModel;
 
-},{"qazana-models/base-settings":60}],65:[function(require,module,exports){
+},{"qazana-models/base-settings":59}],64:[function(require,module,exports){
 var Ajax;
 
 Ajax = {
@@ -4443,7 +4360,7 @@ Ajax = {
 
 module.exports = Ajax;
 
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 var Conditions;
 
 Conditions = function() {
@@ -4516,7 +4433,320 @@ Conditions = function() {
 
 module.exports = new Conditions();
 
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
+var ViewModule = require( 'qazana-utils/view-module' ),
+	Stylesheet = require( 'qazana-editor-utils/stylesheet' ),
+	ControlsCSSParser;
+
+ControlsCSSParser = ViewModule.extend( {
+	stylesheet: null,
+
+	getDefaultSettings: function() {
+		return {
+			id: 0
+		};
+	},
+
+	getDefaultElements: function() {
+		return {
+			$stylesheetElement: Backbone.$( '<style>', { id: 'qazana-style-' + this.getSettings( 'id' ) } )
+		};
+	},
+
+	initStylesheet: function() {
+		var viewportBreakpoints = qazana.config.viewportBreakpoints;
+
+		this.stylesheet = new Stylesheet();
+
+		this.stylesheet
+			.addDevice( 'mobile', 0 )
+			.addDevice( 'tablet', viewportBreakpoints.md )
+			.addDevice( 'desktop', viewportBreakpoints.lg );
+	},
+
+	addStyleRules: function( controls, values, controlsStack, placeholders, replacements ) {
+		var self = this;
+
+		_.each( controls, function( control ) {
+			if ( control.styleFields ) {
+				values[ control.name ].each( function( itemModel ) {
+					self.addStyleRules(
+						control.styleFields,
+						itemModel.attributes,
+						controlsStack,
+						placeholders.concat( [ '{{CURRENT_ITEM}}' ] ),
+						replacements.concat( [ '.qazana-repeater-item-' + itemModel.get( '_id' ) ] )
+					);
+				} );
+			}
+
+			self.addControlStyleRules( control, values, controlsStack, placeholders, replacements );
+		} );
+	},
+
+	addControlStyleRules: function( control, values, controlsStack, placeholders, replacements ) {
+		var self = this;
+
+		ControlsCSSParser.addControlStyleRules( self.stylesheet, control, controlsStack, function( control ) {
+			return self.getStyleControlValue( control, values );
+		}, placeholders, replacements );
+	},
+
+	getStyleControlValue: function( control, values ) {
+		var value = values[ control.name ];
+
+		if ( control.selectors_dictionary ) {
+			value = control.selectors_dictionary[ value ] || value;
+		}
+
+		if ( ! _.isNumber( value ) && _.isEmpty( value ) ) {
+			return;
+		}
+
+		return value;
+	},
+
+	addStyleToDocument: function() {
+		qazana.$previewContents.find( 'head' ).append( this.elements.$stylesheetElement );
+
+		this.elements.$stylesheetElement.text( this.stylesheet );
+	},
+
+	removeStyleFromDocument: function() {
+		this.elements.$stylesheetElement.remove();
+	},
+
+	onInit: function() {
+		ViewModule.prototype.onInit.apply( this, arguments );
+
+		this.initStylesheet();
+	}
+} );
+
+ControlsCSSParser.addControlStyleRules = function( stylesheet, control, controlsStack, valueCallback, placeholders, replacements ) {
+	var value = valueCallback( control );
+
+	if ( undefined === value ) {
+		return;
+	}
+
+	_.each( control.selectors, function( cssProperty, selector ) {
+		var outputCssProperty;
+
+		try {
+			outputCssProperty = cssProperty.replace( /{{(?:([^.}]+)\.)?([^}]*)}}/g, function( originalPhrase, controlName, placeholder ) {
+				var parserControl = control,
+					valueToInsert = value;
+
+				if ( controlName ) {
+					parserControl = _.findWhere( controlsStack, { name: controlName } );
+
+					valueToInsert = valueCallback( parserControl );
+				}
+
+				var parsedValue = qazana.getControlView( parserControl.type ).getStyleValue( placeholder.toLowerCase(), valueToInsert );
+
+				if ( '' === parsedValue ) {
+					throw '';
+				}
+
+				return parsedValue;
+			} );
+		} catch ( e ) {
+			return;
+		}
+
+		if ( _.isEmpty( outputCssProperty ) ) {
+			return;
+		}
+
+		var devicePattern = /^(?:\([^)]+\)){1,2}/,
+			deviceRules = selector.match( devicePattern ),
+			query = {};
+
+		if ( deviceRules ) {
+			deviceRules = deviceRules[0];
+
+			selector = selector.replace( devicePattern, '' );
+
+			var pureDevicePattern = /\(([^)]+)\)/g,
+				pureDeviceRules = [],
+				matches;
+
+			while ( matches = pureDevicePattern.exec( deviceRules ) ) {
+				pureDeviceRules.push( matches[1] );
+			}
+
+			_.each( pureDeviceRules, function( deviceRule ) {
+				if ( 'desktop' === deviceRule ) {
+					return;
+				}
+
+				var device = deviceRule.replace( /\+$/, '' ),
+					endPoint = device === deviceRule ? 'max' : 'min';
+
+				query[ endPoint ] = device;
+			} );
+		}
+
+		_.each( placeholders, function( placeholder, index ) {
+			var placeholderPattern = new RegExp( placeholder, 'g' );
+
+			selector = selector.replace( placeholderPattern, replacements[ index ] );
+		} );
+
+		if ( ! Object.keys( query ).length && control.responsive ) {
+			query = qazana.helpers.cloneObject( control.responsive );
+
+			if ( 'desktop' === query.max ) {
+				delete query.max;
+			}
+		}
+
+		stylesheet.addRules( selector, outputCssProperty, query );
+	} );
+};
+
+module.exports = ControlsCSSParser;
+
+},{"qazana-editor-utils/stylesheet":77,"qazana-utils/view-module":118}],67:[function(require,module,exports){
+var Debug = function() {
+	var self = this,
+		errorStack = [],
+		settings = {},
+		elements = {};
+
+	var initSettings = function() {
+		settings = {
+			debounceDelay: 500,
+			urlsToWatch: [
+				'qazana/assets'
+			]
+		};
+	};
+
+	var initElements = function() {
+		elements.$window = jQuery( window );
+	};
+
+	var onError = function( event ) {
+		var originalEvent = event.originalEvent,
+			error = originalEvent.error;
+
+		if ( ! error ) {
+			return;
+		}
+
+		var isInWatchList = false,
+			urlsToWatch = settings.urlsToWatch;
+
+		jQuery.each( urlsToWatch, function() {
+			if ( -1 !== error.stack.indexOf( this ) ) {
+				isInWatchList = true;
+
+				return false;
+			}
+		} );
+
+		if ( ! isInWatchList ) {
+			return;
+		}
+
+		self.addError( {
+			type: error.name,
+			message: error.message,
+			url: originalEvent.filename,
+			line: originalEvent.lineno,
+			column: originalEvent.colno
+		} );
+	};
+
+	var bindEvents = function() {
+		elements.$window.on( 'error', onError );
+	};
+
+	var init = function() {
+		initSettings();
+
+		initElements();
+
+		bindEvents();
+
+		self.sendErrors = _.debounce( self.sendErrors, settings.debounceDelay );
+	};
+
+	this.addURLToWatch = function( url ) {
+		settings.urlsToWatch.push( url );
+	};
+
+	this.addCustomError = function( error, category, tag ) {
+		var errorInfo = {
+			type: error.name,
+			message: error.message,
+			url: error.fileName || error.sourceURL,
+			line: error.lineNumber || error.line,
+			column: error.columnNumber || error.column,
+			customFields: {
+				category: category || 'general',
+				tag: tag
+			}
+		};
+
+		if ( ! errorInfo.url ) {
+			var stackInfo =  error.stack.match( /\n {4}at (.*?(?=:(\d+):(\d+)))/ );
+
+			if ( stackInfo ) {
+				errorInfo.url = stackInfo[1];
+				errorInfo.line = stackInfo[2];
+				errorInfo.column = stackInfo[3];
+			}
+		}
+
+		this.addError( errorInfo );
+	};
+
+	this.addError = function( errorParams ) {
+		var defaultParams = {
+			type: 'Error',
+			timestamp: Math.floor( new Date().getTime() / 1000 ),
+			message: null,
+			url: null,
+			line: null,
+			column: null,
+			customFields: {}
+		};
+
+		errorStack.push( jQuery.extend( true, defaultParams, errorParams ) );
+
+		self.sendErrors();
+	};
+
+	this.sendErrors = function() {
+		// Avoid recursions on errors in ajax
+		elements.$window.off( 'error', onError );
+
+		jQuery.ajax( {
+			url: QazanaConfig.ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'qazana_debug_log',
+				data: errorStack
+			},
+			success: function() {
+				errorStack = [];
+
+				// Restore error handler
+				elements.$window.on( 'error', onError );
+			}
+		} );
+	};
+
+	init();
+};
+
+module.exports = new Debug();
+
+},{}],68:[function(require,module,exports){
 var heartbeat;
 
 heartbeat = {
@@ -4594,7 +4824,7 @@ heartbeat = {
 
 module.exports = heartbeat;
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var helpers;
 
 helpers = {
@@ -4702,10 +4932,6 @@ helpers = {
 		} );
 	},
 
-	cloneObject: function( object ) {
-		return JSON.parse( JSON.stringify( object ) );
-	},
-
 	getYoutubeIDFromURL: function( url ) {
 		var videoIDParts = url.match( /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/ );
 
@@ -4744,7 +4970,7 @@ helpers = {
 				isNegativeCondition = !! conditionNameParts[3],
 				controlValue = values[ conditionRealName ];
 
-			if ( conditionSubKey && _.isArray( controlValue ) ) {
+			if ( conditionSubKey ) {
 				controlValue = controlValue[ conditionSubKey ];
 			}
 
@@ -4764,6 +4990,10 @@ helpers = {
 		} );
 
 		return _.isEmpty( hasFields );
+	},
+
+	cloneObject: function( object ) {
+		return JSON.parse( JSON.stringify( object ) );
 	},
 
 	disableElementEvents: function( $element ) {
@@ -4820,7 +5050,7 @@ helpers = {
 
 module.exports = helpers;
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var HotKeys = function( $ ) {
 	var self = this,
 		hotKeysHandlers = {};
@@ -4921,7 +5151,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event );
 				},
 				handle: function() {
-					qazana.getPanelView().getFooterView()._publishQazana();
+					qazana.getPanelView().getFooterView()._publishBuilder();
 				}
 			}
 		};
@@ -4936,6 +5166,11 @@ var HotKeys = function( $ ) {
 
 		_.each( handlers, function( handler ) {
 			if ( handler.isWorthHandling && ! handler.isWorthHandling( event ) ) {
+				return;
+			}
+
+			// Fix for some keyboard sources that consider alt key as ctrl key
+			if ( ! handler.allowAltKey && event.altKey ) {
 				return;
 			}
 
@@ -4974,7 +5209,7 @@ var HotKeys = function( $ ) {
 
 module.exports = new HotKeys( jQuery );
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 var ImagesManager;
 
 ImagesManager = function() {
@@ -5132,7 +5367,7 @@ ImagesManager = function() {
 
 module.exports = new ImagesManager();
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 /**
  * HTML5 - Drag and Drop
  */
@@ -5223,11 +5458,17 @@ module.exports = new ImagesManager();
 		var self = this,
 			settings = {},
 			elementsCache = {},
+			currentElement,
+			currentSide,
 			defaultSettings = {
 				element: '',
 				items: '>',
 				horizontalSensitivity: '10%',
 				axis: [ 'vertical', 'horizontal' ],
+				placeholder: true,
+				currentElementClass: 'html5dnd-current-element',
+				placeholderClass: 'html5dnd-placeholder',
+				hasDraggingOnChildClass: 'html5dnd-has-dragging-on-child',
 				groups: null,
 				isDroppingAllowed: null,
 				onDragEnter: null,
@@ -5242,6 +5483,8 @@ module.exports = new ImagesManager();
 
 		var initElementsCache = function() {
 			elementsCache.$element = $( settings.element );
+
+			elementsCache.$placeholder = $( '<div>', { 'class': settings.placeholderClass } );
 		};
 
 		var hasHorizontalDetection = function() {
@@ -5270,7 +5513,7 @@ module.exports = new ImagesManager();
 				return false;
 			}
 
-			sensitivity = sensitivity[ 0 ];
+			sensitivity = sensitivity[0];
 
 			isPercentValue = /%$/.test( settings.horizontalSensitivity );
 
@@ -5287,47 +5530,50 @@ module.exports = new ImagesManager();
 			return false;
 		};
 
-		var getSide = function( element, event ) {
-			var $element,
-				thisHeight,
-				thisWidth,
-				side;
+		var setSide = function( event ) {
+			var $element = $( currentElement ),
+				elementHeight = $element.outerHeight() - elementsCache.$placeholder.outerHeight(),
+				elementWidth = $element.outerWidth();
 
 			event = event.originalEvent;
 
-			$element = $( element );
-			thisHeight = $element.outerHeight();
-			thisWidth = $element.outerWidth();
-
-			if ( side = checkHorizontal( event.offsetX, thisWidth ) ) {
-				return side;
+			if ( currentSide = checkHorizontal( event.offsetX, elementWidth ) ) {
+				return;
 			}
 
 			if ( ! hasVerticalDetection() ) {
-				return false;
+				currentSide = null;
+
+				return;
 			}
 
-			if ( event.offsetY > thisHeight / 2 ) {
-				side = 'bottom';
-			} else {
-				side = 'top';
-			}
+			var elementPosition = currentElement.getBoundingClientRect();
 
-			return side;
+			currentSide = event.clientY > elementPosition.top + elementHeight / 2 ? 'bottom' : 'top';
 		};
 
-		var isDroppingAllowed = function( element, side, event ) {
+		var insertPlaceholder = function() {
+			if ( ! settings.placeholder ) {
+				return;
+			}
+
+			var insertMethod = 'top' === currentSide ? 'prependTo' : 'appendTo';
+
+			elementsCache.$placeholder[ insertMethod ]( currentElement );
+		};
+
+		var isDroppingAllowed = function( event ) {
 			var dataTransferTypes,
 				draggableGroups,
 				isGroupMatch,
 				isDroppingAllowed;
 
 			if ( settings.groups && hasFullDataTransferSupport( event ) ) {
-
 				dataTransferTypes = event.originalEvent.dataTransfer.types;
+
 				isGroupMatch = false;
 
-				dataTransferTypes = Array.prototype.slice.apply( dataTransferTypes ); // Convert to array, since Firefox hold him as DOMStringList
+				dataTransferTypes = Array.prototype.slice.apply( dataTransferTypes ); // Convert to array, since Firefox hold it as DOMStringList
 
 				dataTransferTypes.forEach( function( type ) {
 					try {
@@ -5341,6 +5587,7 @@ module.exports = new ImagesManager();
 
 							if ( -1 !== draggableGroups.groups.indexOf( groupName ) ) {
 								isGroupMatch = true;
+
 								return false; // stops the forEach from extra loops
 							}
 						} );
@@ -5355,7 +5602,7 @@ module.exports = new ImagesManager();
 
 			if ( $.isFunction( settings.isDroppingAllowed ) ) {
 
-				isDroppingAllowed = settings.isDroppingAllowed.call( element, side, event, self );
+				isDroppingAllowed = settings.isDroppingAllowed.call( currentElement, currentSide, event, self );
 
 				if ( ! isDroppingAllowed ) {
 					return false;
@@ -5366,79 +5613,95 @@ module.exports = new ImagesManager();
 		};
 
 		var onDragEnter = function( event ) {
-			if ( event.target !== this ) {
+			event.stopPropagation();
+
+			if ( currentElement ) {
 				return;
 			}
 
-			// Avoid internal elements event firing
-			$( this ).children().each( function() {
-				var currentPointerEvents = this.style.pointerEvents;
+			currentElement = this;
 
-				if ( 'none' === currentPointerEvents ) {
+			elementsCache.$element.parents().each( function() {
+				var droppableInstance = $( this ).data( 'html5Droppable' );
+
+				if ( ! droppableInstance ) {
 					return;
 				}
 
-				$( this )
-					.data( 'backup-pointer-events', currentPointerEvents )
-					.css( 'pointer-events', 'none' );
+				droppableInstance.doDragLeave();
 			} );
 
-			var side = getSide( this, event );
+			setSide( event );
 
-			if ( ! isDroppingAllowed( this, side, event ) ) {
+			if ( ! isDroppingAllowed( event ) ) {
 				return;
 			}
 
+			insertPlaceholder();
+
+			elementsCache.$element.addClass( settings.hasDraggingOnChildClass );
+
+			$( currentElement ).addClass( settings.currentElementClass );
+
 			if ( $.isFunction( settings.onDragEnter ) ) {
-				settings.onDragEnter.call( this, side, event, self );
+				settings.onDragEnter.call( currentElement, currentSide, event, self );
 			}
 		};
 
 		var onDragOver = function( event ) {
-			var side = getSide( this, event );
+			event.stopPropagation();
 
-			if ( ! isDroppingAllowed( this, side, event ) ) {
+			if ( ! currentElement ) {
+				onDragEnter.call( this, event );
+			}
+
+			var oldSide = currentSide;
+
+			setSide( event );
+
+			if ( ! isDroppingAllowed( event ) ) {
 				return;
 			}
 
 			event.preventDefault();
 
+			if ( oldSide !== currentSide ) {
+				insertPlaceholder();
+			}
+
 			if ( $.isFunction( settings.onDragging ) ) {
-				settings.onDragging.call( this, side, event, self );
+				settings.onDragging.call( this, currentSide, event, self );
 			}
 		};
 
-		var onDrop = function( event ) {
-			var side = getSide( this, event );
+		var onDragLeave = function( event ) {
+			var elementPosition = this.getBoundingClientRect();
 
-			if ( ! isDroppingAllowed( this, side, event ) ) {
+			if ( 'dragleave' === event.type && ! (
+				event.clientX < elementPosition.left ||
+				event.clientX >= elementPosition.right ||
+				event.clientY < elementPosition.top ||
+				event.clientY >= elementPosition.bottom
+			) ) {
+				return;
+			}
+
+			$( currentElement ).removeClass( settings.currentElementClass );
+
+			self.doDragLeave();
+		};
+
+		var onDrop = function( event ) {
+			setSide( event );
+
+			if ( ! isDroppingAllowed( event ) ) {
 				return;
 			}
 
 			event.preventDefault();
 
 			if ( $.isFunction( settings.onDropping ) ) {
-				settings.onDropping.call( this, side, event, self );
-			}
-		};
-
-		var onDragLeave = function( event ) {
-			// Avoid internal elements event firing
-			$( this ).children().each( function() {
-				var $this = $( this ),
-					backupPointerEvents = $this.data( 'backup-pointer-events' );
-
-				if ( undefined === backupPointerEvents ) {
-					return;
-				}
-
-				$this
-					.removeData( 'backup-pointer-events' )
-					.css( 'pointer-events', backupPointerEvents );
-			} );
-
-			if ( $.isFunction( settings.onDragLeave ) ) {
-				settings.onDragLeave.call( this, event, self );
+				settings.onDropping.call( this, currentSide, event, self );
 			}
 		};
 
@@ -5456,6 +5719,20 @@ module.exports = new ImagesManager();
 			initElementsCache();
 
 			attachEvents();
+		};
+
+		this.doDragLeave = function() {
+			if ( settings.placeholder ) {
+				elementsCache.$placeholder.remove();
+			}
+
+			elementsCache.$element.removeClass( settings.hasDraggingOnChildClass );
+
+			if ( $.isFunction( settings.onDragLeave ) ) {
+				settings.onDragLeave.call( currentElement, event, self );
+			}
+
+			currentElement = currentSide = null;
 		};
 
 		this.destroy = function() {
@@ -5504,7 +5781,7 @@ module.exports = new ImagesManager();
 	} );
 })( jQuery );
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 /*!
  * jQuery Serialize Object v1.0.1
  */
@@ -5552,7 +5829,7 @@ module.exports = new ImagesManager();
 	};
 })( jQuery );
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 var Modals;
 
 Modals = {
@@ -5613,7 +5890,7 @@ Modals = {
 
 module.exports = Modals;
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 var presetsFactory;
 
 presetsFactory = {
@@ -5730,10 +6007,10 @@ presetsFactory = {
 
 module.exports = presetsFactory;
 
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 var Schemes,
-	Stylesheet = require( 'qazana-utils/stylesheet' ),
-	BaseElementView = require( 'qazana-views/base-element' );
+	Stylesheet = require( 'qazana-editor-utils/stylesheet' ),
+	ControlsCSSParser = require( 'qazana-editor-utils/controls-css-parser' );
 
 Schemes = function() {
 	var self = this,
@@ -5761,7 +6038,7 @@ Schemes = function() {
 	};
 
 	var fetchControlStyles = function( control, controlsStack, widgetType ) {
-		BaseElementView.addControlStyleRules( stylesheet, control, controlsStack, function( control ) {
+		ControlsCSSParser.addControlStyleRules( stylesheet, control, controlsStack, function( control ) {
 			return self.getSchemeValue( control.scheme.type, control.scheme.value, control.scheme.key ).value;
 		}, [ '{{WRAPPER}}' ], [ settings.selectorWrapperPrefix + widgetType ] );
 	};
@@ -5866,12 +6143,13 @@ Schemes = function() {
 
 module.exports = new Schemes();
 
-},{"qazana-utils/stylesheet":76,"qazana-views/base-element":77}],76:[function(require,module,exports){
+},{"qazana-editor-utils/controls-css-parser":66,"qazana-editor-utils/stylesheet":77}],77:[function(require,module,exports){
 ( function( $ ) {
 
 	var Stylesheet = function() {
 		var self = this,
 			rules = {},
+			rawCSS = {},
 			devices = {};
 
 		var getDeviceMaxValue = function( deviceName ) {
@@ -5982,10 +6260,14 @@ module.exports = new Schemes();
 			return self;
 		};
 
+		this.addRawCSS = function( key, css ) {
+			rawCSS[ key ] = css;
+		};
+
 		this.addRules = function( selector, styleRules, query ) {
 			var queryHash = 'all';
 
-			if ( query ) {
+			if ( ! _.isEmpty( query ) ) {
 				queryHash = queryToHash( query );
 			}
 
@@ -5994,12 +6276,14 @@ module.exports = new Schemes();
 			}
 
 			if ( ! styleRules ) {
-				var parsedRules = selector.match( /[^\s\\].+?(?=\{)\{.+?(?=})}/g );
+				var parsedRules = selector.match( /[^{]+\{[^}]+}/g );
 
 				$.each( parsedRules, function() {
-					var parsedRule = this.match( /(.+?(?=\{))\{(.+?(?=}))}/ );
+					var parsedRule = this.match( /([^{]+)\{([^}]+)}/ );
 
-					self.addRules( parsedRule[1], parsedRule[2], query );
+					if ( parsedRule ) {
+						self.addRules( parsedRule[1].trim(), parsedRule[2].trim(), query );
+					}
 				} );
 
 				return;
@@ -6014,11 +6298,15 @@ module.exports = new Schemes();
 
 				var orderedRules = {};
 
-				$.each( styleRules, function() {
-					var property = this.split( /:(.*)?/ );
+				try {
+					$.each( styleRules, function() {
+						var property = this.split( /:(.*)?/ );
 
-					orderedRules[ property[0].trim() ] = property[1].trim().replace( ';', '' );
-				} );
+						orderedRules[ property[0].trim() ] = property[1].trim().replace( ';', '' );
+					} );
+				} catch ( error ) { // At least one of the properties is incorrect
+					return;
+				}
 
 				styleRules = orderedRules;
 			}
@@ -6034,6 +6322,7 @@ module.exports = new Schemes();
 
 		this.empty = function() {
 			rules = {};
+			rawCSS = {};
 		};
 
 		this.toString = function() {
@@ -6047,6 +6336,10 @@ module.exports = new Schemes();
 				}
 
 				styleText += deviceText;
+			} );
+
+			$.each( rawCSS, function() {
+				styleText += this;
 			} );
 
 			return styleText;
@@ -6082,15 +6375,254 @@ module.exports = new Schemes();
 	module.exports = Stylesheet;
 } )( jQuery );
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
+var Module = require( 'qazana-utils/module' ),
+	Validator;
+
+Validator = Module.extend( {
+	errors: [],
+
+	__construct: function( settings ) {
+		var customValidationMethod = settings.customValidationMethod;
+
+		if ( customValidationMethod ) {
+			this.validationMethod = customValidationMethod;
+		}
+	},
+
+	isValid: function() {
+		var validationErrors = this.validationMethod.apply( this, arguments );
+
+		if ( validationErrors.length ) {
+			this.errors = validationErrors;
+
+			return false;
+		}
+
+		return true;
+	},
+
+	validationMethod: function() {
+		return [];
+	}
+} );
+
+module.exports = Validator;
+
+},{"qazana-utils/module":117}],79:[function(require,module,exports){
+var AddSectionView;
+
+AddSectionView = Marionette.ItemView.extend( {
+	template: Marionette.TemplateCache.get( '#tmpl-qazana-add-section' ),
+
+	attributes: {
+		'data-view': 'choose-action'
+	},
+
+	ui: {
+		addNewSection: '.qazana-add-new-section',
+		closeButton: '.qazana-add-section-close',
+		addSectionButton: '.qazana-add-section-button',
+		addTemplateButton: '.qazana-add-template-button',
+		selectPreset: '.qazana-select-preset',
+		presets: '.qazana-preset'
+	},
+
+	events: {
+		'click @ui.addSectionButton': 'onAddSectionButtonClick',
+		'click @ui.addTemplateButton': 'onAddTemplateButtonClick',
+		'click @ui.closeButton': 'onCloseButtonClick',
+		'click @ui.presets': 'onPresetSelected'
+	},
+
+	className: function() {
+		return 'qazana-add-section qazana-visible-desktop';
+	},
+
+	addSection: function( properties, options ) {
+		return qazana.sections.currentView.addSection( properties, options );
+	},
+
+	setView: function( view ) {
+		this.$el.attr( 'data-view', view );
+	},
+
+	showSelectPresets: function() {
+		this.setView( 'select-preset' );
+	},
+
+	closeSelectPresets: function() {
+		this.setView( 'choose-action' );
+	},
+
+	getTemplatesModalOptions: function() {
+		return {
+			onReady: function() {
+				qazana.templates.showTemplates();
+			}
+		};
+	},
+
+	onAddSectionButtonClick: function() {
+		this.showSelectPresets();
+	},
+
+	onAddTemplateButtonClick: function() {
+		qazana.templates.startModal( this.getTemplatesModalOptions() );
+	},
+
+	onRender: function() {
+		this.$el.html5Droppable( {
+			axis: [ 'vertical' ],
+			groups: [ 'qazana-element' ],
+			placeholder: false,
+			currentElementClass: 'qazana-html5dnd-current-element',
+			hasDraggingOnChildClass: 'qazana-dragging-on-child',
+			onDropping: _.bind( this.onDropping, this )
+		} );
+	},
+
+	onPresetSelected: function( event ) {
+		this.closeSelectPresets();
+
+		var selectedStructure = event.currentTarget.dataset.structure,
+			parsedStructure = qazana.presetsFactory.getParsedStructure( selectedStructure ),
+			elements = [],
+			loopIndex;
+
+		for ( loopIndex = 0; loopIndex < parsedStructure.columnsCount; loopIndex++ ) {
+			elements.push( {
+				id: qazana.helpers.getUniqueID(),
+				elType: 'column',
+				settings: {},
+				elements: []
+			} );
+		}
+
+		var newSection = this.addSection( { elements: elements } );
+
+		newSection.setStructure( selectedStructure );
+		newSection.redefineLayout();
+	},
+
+	onDropping: function() {
+		this.addSection().addElementFromPanel();
+	}
+} );
+
+module.exports = AddSectionView;
+
+},{}],80:[function(require,module,exports){
+var BaseAddSectionView = require( 'qazana-views/add-section/base' );
+
+module.exports = BaseAddSectionView.extend( {
+	id: 'qazana-add-new-section',
+
+	onCloseButtonClick: function() {
+		this.closeSelectPresets();
+	}
+} );
+
+},{"qazana-views/add-section/base":79}],81:[function(require,module,exports){
+var BaseAddSectionView = require( 'qazana-views/add-section/base' );
+
+module.exports = BaseAddSectionView.extend( {
+	options: {
+		atIndex: null
+	},
+
+	className: function() {
+		return BaseAddSectionView.prototype.className.apply( this, arguments ) + ' qazana-add-section-inline';
+	},
+
+	addSection: function( properties, options ) {
+		options = options || {};
+
+		options.at = this.getOption( 'atIndex' );
+
+		return BaseAddSectionView.prototype.addSection.call( this, properties, options );
+	},
+
+	getTemplatesModalOptions: function() {
+		return _.extend( BaseAddSectionView.prototype.getTemplatesModalOptions.apply( this, arguments ), {
+			importOptions: {
+				at: this.getOption( 'atIndex' )
+			}
+		} );
+	},
+
+	fadeToDeath: function() {
+		var self = this;
+
+		self.$el.slideUp( function() {
+			self.destroy();
+		} );
+	},
+
+	onCloseButtonClick: function() {
+		this.fadeToDeath();
+	},
+
+	onPresetSelected: function() {
+		BaseAddSectionView.prototype.onPresetSelected.apply( this, arguments );
+
+		this.destroy();
+	},
+
+	onAddTemplateButtonClick: function() {
+		BaseAddSectionView.prototype.onAddTemplateButtonClick.apply( this, arguments );
+
+		this.destroy();
+	},
+
+	onDropping: function() {
+		BaseAddSectionView.prototype.onDropping.apply( this, arguments );
+
+		this.destroy();
+	}
+} );
+
+},{"qazana-views/add-section/base":79}],82:[function(require,module,exports){
+module.exports = Marionette.CompositeView.extend( {
+
+	addChildModel: function( model, options ) {
+		return this.collection.add( model, options, true );
+	},
+
+	addChildElement: function( itemData, options ) {
+		options = options || {};
+
+		var myChildType = this.getChildType(),
+			elType = itemData.get ? itemData.get( 'elType' ) : itemData.elType;
+
+		if ( -1 === myChildType.indexOf( elType ) ) {
+			delete options.at;
+
+			return this.children.last().addChildElement( itemData, options );
+		}
+
+		var newModel = this.addChildModel( itemData, options ),
+			newView = this.children.findByModel( newModel );
+
+		newView.edit();
+
+		return newView;
+	}
+} );
+
+},{}],83:[function(require,module,exports){
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
-	Stylesheet = require( 'qazana-utils/stylesheet' ),
+	ControlsCSSParser = require( 'qazana-editor-utils/controls-css-parser' ),
+	Validator = require( 'qazana-editor-utils/validator' ),
+	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseElementView;
 
-BaseElementView = Marionette.CompositeView.extend( {
+BaseElementView = BaseContainer.extend( {
 	tagName: 'div',
 
-	stylesheet: null,
+	controlsCSSParser: null,
+
+	toggleEditTools: true,
 
 	className: function() {
 		return this.getElementUniqueID();
@@ -6102,16 +6634,21 @@ BaseElementView = Marionette.CompositeView.extend( {
 		if ( 'widget'  === type ) {
 			type = this.model.get( 'widgetType' );
 		}
+
 		return {
+			'data-id': this.getID(),
 			'data-element_type': type
 		};
 	},
 
 	ui: function() {
 		return {
-			duplicateButton: '> .qazana-editor-element-settings .qazana-editor-element-duplicate',
-			removeButton: '> .qazana-editor-element-settings .qazana-editor-element-remove',
-			saveButton: '> .qazana-editor-element-settings .qazana-editor-element-save'
+			triggerButton: '> .qazana-element-overlay .qazana-editor-element-trigger',
+			duplicateButton: '> .qazana-element-overlay .qazana-editor-element-duplicate',
+			removeButton: '> .qazana-element-overlay .qazana-editor-element-remove',
+			saveButton: '> .qazana-element-overlay .qazana-editor-element-save',
+			settingsList: '> .qazana-element-overlay .qazana-editor-element-settings',
+			addButton: '> .qazana-element-overlay .qazana-editor-element-add'
 		};
 	},
 
@@ -6119,11 +6656,10 @@ BaseElementView = Marionette.CompositeView.extend( {
 		return {
 			'click @ui.removeButton': 'onClickRemove',
 			'click @ui.saveButton': 'onClickSave',
-			'click @ui.duplicateButton': 'duplicate'
+			'click @ui.duplicateButton': 'onClickDuplicate',
+			'click @ui.triggerButton': 'onClickEdit'
 		};
 	},
-
-	$stylesheetElement: null,
 
 	getElementType: function() {
 		return this.model.get( 'elType' );
@@ -6177,16 +6713,11 @@ BaseElementView = Marionette.CompositeView.extend( {
 		var editModel = this.getEditModel();
 
 		this.listenTo( editModel.get( 'settings' ), 'change', this.onSettingsChanged, this );
-		this.listenTo( editModel.get( 'editSettings' ), 'change', this.onSettingsChanged, this );
-
-		this.on( 'render', function() {
-			this.renderUI();
-			this.runReadyTrigger();
-		} );
+		this.listenTo( editModel.get( 'editSettings' ), 'change', this.onEditSettingsChanged, this );
 
 		this.initRemoveDialog();
 
-		this.initStylesheet();
+		this.initControlsCSSParser();
 	},
 
     handleElementHover: function( ) {
@@ -6217,33 +6748,6 @@ BaseElementView = Marionette.CompositeView.extend( {
 		qazana.getPanelView().openEditor( this.getEditModel(), this );
 	},
 
-	addChildModel: function( model, options ) {
-		return this.collection.add( model, options, true );
-	},
-
-	addChildElement: function( itemData, options ) {
-		options = options || {};
-
-		var myChildType = this.getChildType();
-
-		if ( -1 === myChildType.indexOf( itemData.elType ) ) {
-			delete options.at;
-
-			return this.children.last().addChildElement( itemData, options );
-		}
-
-		var newModel = this.addChildModel( itemData, options ),
-			newView = this.children.findByModel( newModel );
-
-		if ( 'section' === newView.getElementType() && newView.isInner() ) {
-			newView.addEmptyColumn();
-		}
-
-		newView.edit();
-
-		return newView;
-	},
-
 	addElementFromPanel: function( options ) {
 		var elementView = qazana.channels.panelElements.request( 'element:selected' );
 
@@ -6267,7 +6771,25 @@ BaseElementView = Marionette.CompositeView.extend( {
 			_.extend( itemData, customData );
 		}
 
-		this.addChildElement( itemData, options );
+		var newView = this.addChildElement( itemData, options );
+
+		if ( 'section' === newView.getElementType() && newView.isInner() ) {
+			newView.addEmptyColumn();
+		}
+
+	},
+
+	addControlValidator: function( controlName, validationCallback ) {
+		validationCallback = _.bind( validationCallback, this );
+
+		var validator = new Validator( { customValidationMethod: validationCallback } ),
+			validators = this.getEditModel().get( 'settings' ).validators;
+
+		if ( ! validators[ controlName ] ) {
+			validators[ controlName ] = [];
+		}
+
+		validators[ controlName ].push( validator );
 	},
 
 	isCollectionFilled: function() {
@@ -6294,7 +6816,13 @@ BaseElementView = Marionette.CompositeView.extend( {
 					},
 					defaultOption: 'confirm',
 					onConfirm: _.bind( function() {
+						var parent = this._parent;
+
+						parent.isManualRemoving = true;
+
 						this.model.destroy();
+
+						parent.isManualRemoving = false;
 					}, this )
 				} );
 			}
@@ -6303,21 +6831,8 @@ BaseElementView = Marionette.CompositeView.extend( {
 		};
 	},
 
-	initStylesheet: function() {
-		var viewportBreakpoints = qazana.config.viewportBreakpoints;
-
-		this.stylesheet = new Stylesheet();
-
-		this.stylesheet
-			.addDevice( 'mobile', 0 )
-			.addDevice( 'tablet', viewportBreakpoints.md )
-			.addDevice( 'desktop', viewportBreakpoints.lg );
-	},
-
-	createStylesheetElement: function() {
-		this.$stylesheetElement = Backbone.$( '<style>', { id: 'qazana-style-' + this.model.cid } );
-
-		qazana.$previewContents.find( 'head' ).append( this.$stylesheetElement );
+	initControlsCSSParser: function() {
+		this.controlsCSSParser = new ControlsCSSParser( { id: this.model.cid } );
 	},
 
 	enqueueFonts: function() {
@@ -6335,122 +6850,75 @@ BaseElementView = Marionette.CompositeView.extend( {
 		}, this ) );
 	},
 
-	addStyleRules: function( controls, values, placeholders, replacements ) {
-		var self = this;
-
-		_.each( controls, function( control ) {
-			if ( control.styleFields ) {
-				values[ control.name ].each( function( itemModel ) {
-					self.addStyleRules(
-						control.styleFields,
-						itemModel.attributes,
-						placeholders.concat( [ '{{CURRENT_ITEM}}' ] ),
-						replacements.concat( [ '.qazana-repeater-item-' + itemModel.get( '_id' ) ] )
-					);
-				} );
-			}
-
-			self.addControlStyleRules( control, values, self.getEditModel().get( 'settings' ).controls, placeholders, replacements );
-		} );
-	},
-
-	addControlStyleRules: function( control, values, controlsStack, placeholders, replacements ) {
-		var self = this;
-
-		BaseElementView.addControlStyleRules( self.stylesheet, control, controlsStack, function( control ) {
-			return self.getStyleControlValue( control, values );
-		}, placeholders, replacements );
-	},
-
-	addStyleToDocument: function() {
-		var styleText = this.stylesheet.toString();
-
-		styleText = qazana.hooks.applyFilters( 'editor/style/styleText', styleText, this );
-
-		if ( _.isEmpty( styleText ) && ! this.$stylesheetElement ) {
-			return;
-		}
-
-		if ( ! this.$stylesheetElement ) {
-			this.createStylesheetElement();
-		}
-
-		this.$stylesheetElement.text( styleText );
-	},
-
-	getStyleControlValue: function( control, values ) {
-		var value = values[ control.name ];
-
-		if ( control.selectors_dictionary ) {
-			value = control.selectors_dictionary[ value ] || value;
-		}
-
-		if ( ! _.isNumber( value ) && _.isEmpty( value ) ) {
-			return;
-		}
-
-		return value;
-	},
-
 	renderStyles: function() {
 		var self = this,
 			settings = self.getEditModel().get( 'settings' );
 
-		self.stylesheet.empty();
+		self.controlsCSSParser.stylesheet.empty();
 
-		self.addStyleRules( settings.getStyleControls(), settings.attributes, [ /\{\{WRAPPER}}/g ], [ '#qazana .' + self.getElementUniqueID() ] );
+		self.controlsCSSParser.addStyleRules( settings.getStyleControls(), settings.attributes, self.getEditModel().get( 'settings' ).controls, [ /{{ID}}/g, /{{WRAPPER}}/g ], [ self.getID(), '#qazana .' + self.getElementUniqueID() ] );
 
-		if ( 'column' === self.model.get( 'elType' ) ) {
-			var inlineSize = settings.get( '_inline_size' );
+		self.controlsCSSParser.addStyleToDocument();
 
-			if ( ! _.isEmpty( inlineSize ) ) {
-				self.stylesheet.addRules( '#qazana .' + self.getElementUniqueID(), { width: inlineSize + '%' }, { min: 'tablet' } );
-			}
+		var extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
+
+		if ( extraCSS ) {
+			self.controlsCSSParser.elements.$stylesheetElement.append( extraCSS );
 		}
-
-		self.addStyleToDocument();
 	},
 
 	renderCustomClasses: function() {
-
 		var self = this;
 
 		self.$el.addClass( 'qazana-element' );
 
-		var settings = self.getEditModel().get( 'settings' );
+		var settings = self.getEditModel().get( 'settings' ),
+			classControls = settings.getClassControls();
 
-		_.each( settings.attributes, function( value, attribute ) {
-			if ( settings.isClassControl( attribute ) ) {
-				var currentControl = settings.getControl( attribute ),
-					previousClassValue = settings.previous( attribute ),
-					classValue = value;
+		// Remove all previous classes
+		_.each( classControls, function( control ) {
+			var previousClassValue = settings.previous( control.name );
 
-				if ( currentControl.classes_dictionary ) {
-					if ( undefined !== currentControl.classes_dictionary[ previousClassValue ] ) {
-						previousClassValue = currentControl.classes_dictionary[ previousClassValue ];
-					}
-
-					if ( undefined !== currentControl.classes_dictionary[ value ] ) {
-						classValue = currentControl.classes_dictionary[ value ];
-					}
-				}
-
-				self.$el.removeClass( currentControl.prefix_class + previousClassValue );
-
-				var isVisible = qazana.helpers.isActiveControl( currentControl, settings.attributes );
-
-				if ( isVisible && ! _.isEmpty( classValue ) ) {
-					self.$el
-						.addClass( currentControl.prefix_class + classValue )
-						.addClass( _.result( self, 'className' ) );
+			if ( control.classes_dictionary ) {
+				if ( undefined !== control.classes_dictionary[ previousClassValue ] ) {
+					previousClassValue = control.classes_dictionary[ previousClassValue ];
 				}
 			}
+
+			self.$el.removeClass( control.prefix_class + previousClassValue );
 		} );
+
+		// Add new classes
+		_.each( classControls, function( control ) {
+			var value = settings.attributes[ control.name ],
+				classValue = value;
+
+			if ( control.classes_dictionary ) {
+				if ( undefined !== control.classes_dictionary[ value ] ) {
+					classValue = control.classes_dictionary[ value ];
+				}
+			}
+
+			var isVisible = qazana.helpers.isActiveControl( control, settings.attributes );
+
+			if ( isVisible && ! _.isEmpty( classValue ) ) {
+				self.$el
+					.addClass( control.prefix_class + classValue )
+					.addClass( _.result( self, 'className' ) );
+			}
+		} );
+	},
+
+	renderCustomElementID: function() {
+		var customElementID = this.getEditModel().get( 'settings' ).get( '_element_id' );
+
+		this.$el.attr( 'id', customElementID );
 	},
 
 	renderUI: function() {
 		this.renderStyles();
 		this.renderCustomClasses();
+		this.renderCustomElementID();
 		this.enqueueFonts();
 	},
 
@@ -6460,17 +6928,102 @@ BaseElementView = Marionette.CompositeView.extend( {
 		}, this ) );
 	},
 
-	getElementUniqueID: function() {
-		return 'qazana-element-' + this.model.get( 'id' );
+	getID: function() {
+		return this.model.get( 'id' );
 	},
 
-	duplicate: function( event ) {
-		event.preventDefault();
+	getElementUniqueID: function() {
+		return 'qazana-element-' + this.getID();
+	},
+
+	duplicate: function() {
 		this.trigger( 'request:duplicate' );
 	},
 
 	confirmRemove: function() {
 		this.getRemoveDialog().show();
+	},
+
+	renderOnChange: function( settings ) {
+		// Make sure is correct model
+		if ( settings instanceof BaseSettingsModel ) {
+			var hasChanged = settings.hasChanged(),
+				isContentChanged = ! hasChanged,
+				isRenderRequired = ! hasChanged;
+
+			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
+				var control = settings.getControl( settingKey );
+
+				if ( ! control ) {
+					isRenderRequired = true;
+
+					return;
+				}
+
+				if ( 'none' !== control.render_type ) {
+					isRenderRequired = true;
+				}
+
+				if ( -1 !== [ 'none', 'ui' ].indexOf( control.render_type ) ) {
+					return;
+				}
+
+				if ( 'template' === control.render_type || ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) && '_element_id' !== settingKey ) {
+					isContentChanged = true;
+				}
+			} );
+
+			if ( ! isRenderRequired ) {
+				return;
+			}
+
+			if ( ! isContentChanged ) {
+				this.renderUI();
+				return;
+			}
+		}
+
+		// Re-render the template
+		var templateType = this.getTemplateType(),
+			editModel = this.getEditModel();
+
+		if ( 'js' === templateType ) {
+			this.getEditModel().setHtmlCache();
+			this.render();
+			editModel.renderOnLeave = true;
+		} else {
+			editModel.renderRemoteServer();
+		}
+	},
+
+	onRender: function() {
+		var self = this;
+
+		self.renderUI();
+
+		self.runReadyTrigger();
+
+		if ( self.toggleEditTools ) {
+			self.ui.settingsList.hoverIntent( function() {
+				self.ui.triggerButton.addClass( 'qazana-active' );
+			}, function() {
+				self.ui.triggerButton.removeClass( 'qazana-active' );
+			}, { timeout: 500 } );
+		}
+	},
+
+	onCollectionChanged: function() {
+		qazana.setFlagEditorChange( true );
+	},
+
+	onEditSettingsChanged: function( changedModel ) {
+		this.renderOnChange( changedModel );
+	},
+
+	onSettingsChanged: function( changedModel ) {
+		qazana.setFlagEditorChange( true );
+
+		this.renderOnChange( changedModel );
 	},
 
 	onClickEdit: function( event ) {
@@ -6486,50 +7039,11 @@ BaseElementView = Marionette.CompositeView.extend( {
 		this.edit();
 	},
 
-	onCollectionChanged: function() {
-		qazana.setFlagEditorChange( true );
-	},
+	onClickDuplicate: function( event ) {
+		event.preventDefault();
+		event.stopPropagation();
 
-	onSettingsChanged: function( settings ) {
-		var editModel = this.getEditModel();
-
-		if ( editModel.get( 'editSettings' ) !== settings ) {
-			// Change flag only if server settings was changed
-			qazana.setFlagEditorChange( true );
-		}
-
-		// Make sure is correct model
-		if ( settings instanceof BaseSettingsModel ) {
-			var isContentChanged = false;
-
-			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
-				var control = settings.getControl( settingKey );
-
-				if ( ! control ) {
-					return;
-				}
-
-				if ( control.force_render || ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) ) {
-					isContentChanged = true;
-				}
-			} );
-
-			if ( ! isContentChanged ) {
-				this.renderUI();
-				return;
-			}
-		}
-
-		// Re-render the template
-		var templateType = this.getTemplateType();
-
-		if ( 'js' === templateType ) {
-			this.getEditModel().setHtmlCache();
-			this.render();
-			editModel.renderOnLeave = true;
-		} else {
-			editModel.renderRemoteServer();
-		}
+		this.duplicate();
 	},
 
 	onClickRemove: function( event ) {
@@ -6544,90 +7058,26 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		var model = this.model;
 
-		qazana.templates.startModal( function() {
-			qazana.templates.getLayout().showSaveTemplateView( model );
+		qazana.templates.startModal( {
+			onReady: function() {
+				qazana.templates.getLayout().showSaveTemplateView( model );
+			}
 		} );
 	},
 
 	onDestroy: function() {
-		if ( this.$stylesheetElement ) {
-			this.$stylesheetElement.remove();
-		}
-	}
-}, {
-	addControlStyleRules: function( stylesheet, control, controlsStack, valueCallback, placeholders, replacements ) {
-		var value = valueCallback( control );
-
-		if ( undefined === value ) {
-			return;
-		}
-
-		_.each( control.selectors, function( cssProperty, selector ) {
-			var outputCssProperty;
-
-			try {
-				outputCssProperty = cssProperty.replace( /\{\{(?:([^.}]+)\.)?([^}]*)}}/g, function( originalPhrase, controlName, placeholder ) {
-					var parserControl = control,
-						valueToInsert = value;
-
-					if ( controlName ) {
-						parserControl = _.findWhere( controlsStack, { name: controlName } );
-
-						valueToInsert = valueCallback( parserControl );
-					}
-
-					var parsedValue = qazana.getControlItemView( parserControl.type ).getStyleValue( placeholder.toLowerCase(), valueToInsert );
-
-					if ( '' === parsedValue ) {
-						throw '';
-					}
-
-					return parsedValue;
-				} );
-			} catch ( e ) {
-				return;
-			}
-
-			if ( _.isEmpty( outputCssProperty ) ) {
-				return;
-			}
-
-			var devicePattern = /^\(([^)]+)\)/,
-				deviceRule = selector.match( devicePattern );
-
-			if ( deviceRule ) {
-				selector = selector.replace( devicePattern, '' );
-
-				deviceRule = deviceRule[1];
-			}
-
-			_.each( placeholders, function( placeholder, index ) {
-				selector = selector.replace( placeholder, replacements[ index ] );
-			} );
-
-			var device = deviceRule,
-				query;
-
-			if ( ! device && control.responsive ) {
-				device = control.responsive;
-			}
-
-			if ( device && 'desktop' !== device ) {
-				query = { max: device };
-			}
-
-			stylesheet.addRules( selector, outputCssProperty, query );
-		} );
+		this.controlsCSSParser.removeStyleFromDocument();
 	}
 } );
 
 module.exports = BaseElementView;
 
-},{"qazana-models/base-settings":60,"qazana-utils/stylesheet":76,"qazana-views/column":79,"qazana-views/section":109}],78:[function(require,module,exports){
+},{"qazana-editor-utils/controls-css-parser":66,"qazana-editor-utils/validator":78,"qazana-models/base-settings":59,"qazana-views/base-container":82,"qazana-views/column":85,"qazana-views/section":114}],84:[function(require,module,exports){
 var SectionView = require( 'qazana-views/section' ),
+	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseSectionsContainerView;
 
-BaseSectionsContainerView = Marionette.CompositeView.extend( {
+BaseSectionsContainerView = BaseContainer.extend( {
 	childView: SectionView,
 
 	behaviors: {
@@ -6645,7 +7095,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 	getSortableOptions: function() {
 		return {
-			handle: '> .qazana-container > .qazana-row > .qazana-column > .qazana-element-overlay .qazana-editor-section-settings-list .qazana-editor-element-trigger',
+			handle: '> .qazana-element-overlay .qazana-editor-section-settings .qazana-editor-element-trigger',
 			items: '> .qazana-section'
 		};
 	},
@@ -6665,11 +7115,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 			.listenTo( qazana.channels.panelElements, 'element:drag:end', this.onPanelElementDragEnd );
 	},
 
-	addChildModel: function( model, options ) {
-		return this.collection.add( model, options, true );
-	},
-
-	addSection: function( properties ) {
+	addSection: function( properties, options ) {
 		var newSection = {
 			id: qazana.helpers.getUniqueID(),
 			elType: 'section',
@@ -6681,7 +7127,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 			_.extend( newSection, properties );
 		}
 
-		var newModel = this.addChildModel( newSection );
+		var newModel = this.addChildModel( newSection, options );
 
 		return this.children.findByModelCid( newModel.cid );
 	},
@@ -6701,7 +7147,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 module.exports = BaseSectionsContainerView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/section":109}],79:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/base-container":82,"qazana-views/section":114}],85:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	ElementEmptyView = require( 'qazana-views/element-empty' ),
 	ColumnView;
@@ -6724,9 +7170,6 @@ ColumnView = BaseElementView.extend( {
 		HandleDuplicate: {
 			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
 		},
-		HandleEditToolsSection: {
-			behaviorClass: require( 'qazana-behaviors/edit-tools-section' )
-		},
 		HandleAddMode: {
 			behaviorClass: require( 'qazana-behaviors/duplicate' )
 		}
@@ -6739,17 +7182,16 @@ ColumnView = BaseElementView.extend( {
 		return classes + ' qazana-column qazana-' + type + '-column';
 	},
 
+	tagName: function() {
+		return this.model.getSetting( 'html_tag' );
+	},
+
 	ui: function() {
 		var ui = BaseElementView.prototype.ui.apply( this, arguments );
 
-		ui.duplicateButton = '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-duplicate';
-		ui.removeButton = '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-remove';
-		ui.saveButton = '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-save';
-		ui.triggerButton = '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-trigger';
-		ui.addButton = '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-add';
-		ui.columnTitle = '.column-title';
 		ui.columnInner = '> .qazana-column-wrap';
-		ui.listTriggers = '> .qazana-element-overlay .qazana-editor-element-trigger';
+
+		ui.percentsTooltip = '> .qazana-element-overlay .qazana-column-percents-tooltip';
 
 		return ui;
 	},
@@ -6758,20 +7200,10 @@ ColumnView = BaseElementView.extend( {
 		'click @ui.addButton': 'click:new'
 	},
 
-	events: function() {
-		var events = BaseElementView.prototype.events.apply( this, arguments );
-
-		events[ 'click @ui.listTriggers' ] = 'onClickTrigger';
-		events[ 'click @ui.triggerButton' ] = 'onClickEdit';
-
-		return events;
-	},
-
 	initialize: function() {
 		BaseElementView.prototype.initialize.apply( this, arguments );
 
-		this.listenTo( qazana.channels.data, 'widget:drag:start', this.onWidgetDragStart );
-		this.listenTo( qazana.channels.data, 'widget:drag:end', this.onWidgetDragEnd );
+		this.addControlValidator( '_inline_size', this.onEditorInlineSizeInputChange );
 	},
 
 	isDroppingAllowed: function() {
@@ -6785,14 +7217,29 @@ ColumnView = BaseElementView.extend( {
 		return 'widget' === elType;
 	},
 
+	getPercentsForDisplay: function() {
+		var inlineSize = +this.model.getSetting( '_inline_size' ) || this.getPercentSize();
+
+		return inlineSize.toFixed( 1 ) + '%';
+	},
+
 	changeSizeUI: function() {
-		var columnSize = this.model.getSetting( '_column_size' ),
-			inlineSize = this.model.getSetting( '_inline_size' ),
-			columnSizeTitle = parseFloat( inlineSize || columnSize ).toFixed( 1 ) + '%';
+		var self = this,
+			columnSize = self.model.getSetting( '_column_size' );
 
-		this.$el.attr( 'data-col', columnSize );
+		self.$el.attr( 'data-col', columnSize );
 
-		this.ui.columnTitle.html( columnSizeTitle );
+		_.defer( function() { // Wait for the column size to be applied
+			self.ui.percentsTooltip.text( self.getPercentsForDisplay() );
+		} );
+	},
+
+	getPercentSize: function( size ) {
+		if ( ! size ) {
+			size = this.el.getBoundingClientRect().width;
+		}
+
+		return +( size / this.$el.parent().width() * 100 ).toFixed( 3 );
 	},
 
 	getSortableOptions: function() {
@@ -6800,13 +7247,6 @@ ColumnView = BaseElementView.extend( {
 			connectWith: '.qazana-widget-wrap',
 			items: '> .qazana-element'
 		};
-	},
-
-	// Events
-	onCollectionChanged: function() {
-		BaseElementView.prototype.onCollectionChanged.apply( this, arguments );
-
-		this.changeChildContainerClasses();
 	},
 
 	changeChildContainerClasses: function() {
@@ -6820,10 +7260,20 @@ ColumnView = BaseElementView.extend( {
 		}
 	},
 
+	// Events
+	onCollectionChanged: function() {
+		BaseElementView.prototype.onCollectionChanged.apply( this, arguments );
+
+		this.changeChildContainerClasses();
+	},
+
 	onRender: function() {
 		var self = this;
 
+		BaseElementView.prototype.onRender.apply( self, arguments );
+
 		self.changeChildContainerClasses();
+
 		self.changeSizeUI();
 
 		self.$el.html5Droppable( {
@@ -6831,21 +7281,9 @@ ColumnView = BaseElementView.extend( {
 			axis: [ 'vertical' ],
 			groups: [ 'qazana-element' ],
 			isDroppingAllowed: _.bind( self.isDroppingAllowed, self ),
-			onDragEnter: function() {
-				self.$el.addClass( 'qazana-dragging-on-child' );
-			},
-			onDragging: function( side, event ) {
-				event.stopPropagation();
-
-				if ( this.dataset.side !== side ) {
-					Backbone.$( this ).attr( 'data-side', side );
-				}
-			},
-			onDragLeave: function() {
-				self.$el.removeClass( 'qazana-dragging-on-child' );
-
-				Backbone.$( this ).removeAttr( 'data-side' );
-			},
+			currentElementClass: 'qazana-html5dnd-current-element',
+			placeholderClass: 'qazana-sortable-placeholder qazana-widget-placeholder',
+			hasDraggingOnChildClass: 'qazana-dragging-on-child',
 			onDropping: function( side, event ) {
 				event.stopPropagation();
 
@@ -6860,44 +7298,214 @@ ColumnView = BaseElementView.extend( {
 		} );
 	},
 
-	onClickTrigger: function( event ) {
-		event.preventDefault();
+	onSettingsChanged: function( settings ) {
+		BaseElementView.prototype.onSettingsChanged.apply( this, arguments );
 
-		var $trigger = this.$( event.currentTarget ),
-			isTriggerActive = $trigger.hasClass( 'qazana-active' );
+		var changedAttributes = settings.changedAttributes();
 
-		this.ui.listTriggers.removeClass( 'qazana-active' );
-
-		if ( ! isTriggerActive ) {
-			$trigger.addClass( 'qazana-active' );
+		if ( '_column_size' in changedAttributes || '_inline_size' in changedAttributes ) {
+			this.changeSizeUI();
 		}
 	},
 
-	onWidgetDragStart: function() {
-		this.$el.addClass( 'qazana-dragging' );
-	},
+	onEditorInlineSizeInputChange: function( newValue, oldValue ) {
+		var errors = [],
+			columnSize = this.model.getSetting( '_column_size' );
 
-	onWidgetDragEnd: function() {
-		this.$el.removeClass( 'qazana-dragging' );
+		// If there's only one column
+		if ( 100 === columnSize ) {
+			errors.push( 'Could not resize one column' );
+
+			return errors;
+		}
+
+		if ( ! oldValue ) {
+			oldValue = columnSize;
+		}
+
+		try {
+			this._parent.resizeChild( this, +oldValue, +newValue );
+		} catch ( e ) {
+			if ( e.message === this._parent.errors.columnWidthTooLarge ) {
+				errors.push( e.message );
+			}
+		}
+
+		return errors;
 	}
 } );
 
 module.exports = ColumnView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/edit-tools-section":2,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/resizable":5,"qazana-behaviors/sortable":6,"qazana-views/base-element":77,"qazana-views/element-empty":107}],80:[function(require,module,exports){
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
-	ControlAnimationItemView;
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/resizable":4,"qazana-behaviors/sortable":5,"qazana-views/base-element":83,"qazana-views/element-empty":112}],86:[function(require,module,exports){
+var ControlsStack;
 
-ControlAnimationItemView = ControlBaseItemView.extend( {
+ControlsStack = Marionette.CompositeView.extend( {
+	className: 'qazana-panel-controls-stack',
 
-	onReady: function() {
-		this.ui.select.select2();
+	activeTab: null,
+
+	activeSection: null,
+
+	templateHelpers: function() {
+		return {
+			elementData: qazana.getElementData( this.model )
+		};
+	},
+
+	ui: function() {
+		return {
+			tabs: '.qazana-panel-navigation-tab',
+			reloadButton: '.qazana-update-preview-button'
+		};
+	},
+
+	events: function() {
+		return {
+			'click @ui.tabs': 'onClickTabControl',
+			'click @ui.reloadButton': 'onReloadButtonClick'
+		};
+	},
+
+	modelEvents: {
+		'destroy': 'onModelDestroy'
+	},
+
+	behaviors: {
+		HandleInnerTabs: {
+			behaviorClass: require( 'qazana-behaviors/inner-tabs' )
+		}
+	},
+
+	initialize: function() {
+		this.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
+	},
+
+	filter: function( controlModel ) {
+		if ( controlModel.get( 'tab' ) !== this.activeTab ) {
+			return false;
+		}
+
+		if ( 'section' === controlModel.get( 'type' ) ) {
+			return true;
+		}
+
+		var section = controlModel.get( 'section' );
+
+		return ! section || section === this.activeSection;
+	},
+
+	isVisibleSectionControl: function( sectionControlModel ) {
+		return this.activeTab === sectionControlModel.get( 'tab' );
+	},
+
+	activateTab: function( $tab ) {
+		var self = this,
+			activeTab = this.activeTab = $tab.data( 'tab' );
+
+		this.ui.tabs.removeClass( 'active' );
+
+		$tab.addClass( 'active' );
+
+		var sectionControls = this.collection.filter( function( controlModel ) {
+			return 'section' === controlModel.get( 'type' ) && self.isVisibleSectionControl( controlModel );
+		} );
+
+		if ( sectionControls[0] ) {
+			this.activateSection( sectionControls[0].get( 'name' ) );
+		}
+	},
+
+	activateSection: function( sectionName ) {
+		this.activeSection = sectionName;
+	},
+
+	getChildView: function( item ) {
+		var controlType = item.get( 'type' );
+
+		return qazana.getControlView( controlType );
+	},
+
+	openActiveSection: function() {
+		var activeSection = this.activeSection,
+			activeSectionView = this.children.filter( function( view ) {
+				return activeSection === view.model.get( 'name' );
+			} );
+
+		if ( activeSectionView[0] ) {
+			activeSectionView[0].ui.heading.addClass( 'qazana-open' );
+		}
+	},
+
+	onRenderCollection: function() {
+		// Create tooltip on controls
+		this.$( '.tooltip-target' ).tipsy( {
+			gravity: function() {
+				// `n` for down, `s` for up
+				var gravity = Backbone.$( this ).data( 'tooltip-pos' );
+
+				if ( undefined !== gravity ) {
+					return gravity;
+				} else {
+					return 'n';
+				}
+			},
+			title: function() {
+				return this.getAttribute( 'data-tooltip' );
+			}
+		} );
+
+		this.openActiveSection();
+	},
+
+	onRenderTemplate: function() {
+		this.activateTab( this.ui.tabs.eq( 0 ) );
+	},
+
+	onModelDestroy: function() {
+		this.destroy();
+	},
+
+	onClickTabControl: function( event ) {
+		event.preventDefault();
+
+		var $tab = this.$( event.currentTarget );
+
+		if ( this.activeTab === $tab.data( 'tab' ) ) {
+			return;
+		}
+
+		this.activateTab( $tab );
+
+		this._renderChildren();
+	},
+
+	onReloadButtonClick: function() {
+		qazana.reloadPreview();
+	},
+
+	onDeviceModeChange: function() {
+		this.$el.removeClass( 'qazana-responsive-switchers-open' );
+	},
+
+	onChildviewControlSectionClicked: function( childView ) {
+		var isSectionOpen = childView.ui.heading.hasClass( 'qazana-open' );
+
+		this.activateSection( isSectionOpen ? null : childView.model.get( 'name' ) );
+
+		this._renderChildren();
+	},
+
+	onChildviewResponsiveSwitcherClick: function( childView, device ) {
+		if ( 'desktop' === device ) {
+			this.$el.toggleClass( 'qazana-responsive-switchers-open' );
+		}
 	}
 } );
 
-module.exports = ControlAnimationItemView;
+module.exports = ControlsStack;
 
-},{"qazana-views/controls/base":83}],81:[function(require,module,exports){
+},{"qazana-behaviors/inner-tabs":3}],87:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlBaseMultipleItemView;
 
@@ -6945,11 +7553,10 @@ ControlBaseMultipleItemView = ControlBaseItemView.extend( {
 		this.setSettingsModel( values );
 	},
 
-	updateElementModel: function( event ) {
-		var inputValue = this.getInputValue( event.currentTarget ),
-			key = event.currentTarget.dataset.setting;
+	updateElementModel: function( value, input ) {
+		var key = input.dataset.setting;
 
-		this.setValue( key, inputValue );
+		this.setValue( key, value );
 	}
 }, {
 	// Static methods
@@ -6964,7 +7571,7 @@ ControlBaseMultipleItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlBaseMultipleItemView;
 
-},{"qazana-views/controls/base":83}],82:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],88:[function(require,module,exports){
 var ControlBaseMultipleItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlBaseUnitsItemView;
 
@@ -6987,7 +7594,7 @@ ControlBaseUnitsItemView = ControlBaseMultipleItemView.extend( {
 
 module.exports = ControlBaseUnitsItemView;
 
-},{"qazana-views/controls/base-multiple":81}],83:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":87}],89:[function(require,module,exports){
 var ControlBaseItemView;
 
 ControlBaseItemView = Marionette.CompositeView.extend( {
@@ -6999,8 +7606,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			select: 'select[data-setting]',
 			textarea: 'textarea[data-setting]',
 			controlTitle: '.qazana-control-title',
-			responsiveSwitchers: '.qazana-responsive-switcher',
-			switcherDesktop: '.qazana-responsive-switcher-desktop'
+			responsiveSwitchers: '.qazana-responsive-switcher'
 		};
 	},
 
@@ -7019,7 +7625,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		}
 
 		if ( ! _.isEmpty( responsive ) ) {
-			classes += ' qazana-control-responsive-' + responsive;
+			classes += ' qazana-control-responsive-' + responsive.max;
 		}
 
 		return classes;
@@ -7064,16 +7670,12 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 
 		this.model.set( controlSettings );
 
-		this.listenTo( this.elementSettingsModel, 'change', this.toggleControlVisibility );
-		this.listenTo( this.elementSettingsModel, 'control:switch:tab', this.onControlSwitchTab );
+		this.listenTo( this.elementSettingsModel, 'change', this.toggleControlVisibility )
+			.listenTo( this.elementSettingsModel, 'change:external:' + this.model.get( 'name' ), this.onSettingsExternalChange );
 	},
 
 	getControlValue: function() {
 		return this.elementSettingsModel.get( this.model.get( 'name' ) );
-	},
-
-	isValidValue: function( value ) {
-		return true;
 	},
 
 	setValue: function( value ) {
@@ -7081,27 +7683,9 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	setSettingsModel: function( value ) {
-		if ( true !== this.isValidValue( value ) ) {
-			this.triggerMethod( 'settings:error' );
-			return;
-		}
-
 		this.elementSettingsModel.set( this.model.get( 'name' ), value );
 
 		this.triggerMethod( 'settings:change' );
-
-		var elementType = this.elementSettingsModel.get( 'elType' );
-		if ( 'widget' === elementType ) {
-			elementType = this.elementSettingsModel.get( 'widgetType' );
-		}
-
-		if ( undefined === elementType ) {
-			return;
-		}
-
-		// Do not use with this action
-		// It's here for tests and maybe later will be publish
-		qazana.hooks.doAction( 'panel/editor/element/' + elementType + '/' + this.model.get( 'name' ) + '/changed' );
 	},
 
 	applySavedValue: function() {
@@ -7133,6 +7717,10 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			return $input.prop( 'checked' ) ? inputValue : '';
 		}
 
+		if ( 'number' === inputType && _.isFinite( inputValue ) ) {
+			return +inputValue;
+		}
+
 		// Temp fix for jQuery (< 3.0) that return null instead of empty array
 		if ( 'SELECT' === input.tagName && $input.prop( 'multiple' ) && null === inputValue ) {
 			inputValue = [];
@@ -7149,8 +7737,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			$input.prop( 'checked', !! value );
 		} else if ( 'radio' === inputType ) {
 			$input.filter( '[value="' + value + '"]' ).prop( 'checked', true );
-		} else if ( 'select2' === inputType ) {
-			// don't touch
 		} else {
 			$input.val( value );
 		}
@@ -7185,7 +7771,25 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	onBaseInputChange: function( event ) {
-		this.updateElementModel( event );
+		var input = event.currentTarget,
+			value = this.getInputValue( input ),
+			validators = this.elementSettingsModel.validators[ this.model.get( 'name' ) ];
+
+		if ( validators ) {
+			var oldValue = this.getControlValue();
+
+			var isValidValue = validators.every( function( validator ) {
+				return validator.isValid( value, oldValue );
+			} );
+
+			if ( ! isValidValue ) {
+				this.setInputValue( input, oldValue );
+
+				return;
+			}
+		}
+
+		this.updateElementModel( value, input );
 
 		this.triggerMethod( 'input:change', event );
 	},
@@ -7198,8 +7802,8 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		this.triggerMethod( 'responsive:switcher:click', device );
 	},
 
-	onSwitcherDesktopClick: function() {
-		qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
+	onSettingsExternalChange: function() {
+		this.applySavedValue();
 	},
 
 	renderResponsiveSwitchers: function() {
@@ -7220,16 +7824,10 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		qazana.channels.data.trigger( 'scrollbar:update' );
 	},
 
-	onControlSwitchTab: function( activeTab ) {
-		this.$el.toggleClass( 'qazana-active-tab', ( activeTab === this.model.get( 'tab' ) ) );
-
-		qazana.channels.data.trigger( 'scrollbar:update' );
-	},
-
 	onReady: function() {},
 
-	updateElementModel: function( event ) {
-		this.setValue( this.getInputValue( event.currentTarget ) );
+	updateElementModel: function( value ) {
+		this.setValue( value );
 	}
 }, {
 	// Static methods
@@ -7240,7 +7838,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 
 module.exports = ControlBaseItemView;
 
-},{}],84:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlBoxShadowItemView;
 
@@ -7325,7 +7923,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlBoxShadowItemView;
 
-},{"qazana-views/controls/base-multiple":81}],85:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":87}],91:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlChooseItemView;
 
@@ -7341,7 +7939,7 @@ ControlChooseItemView = ControlBaseItemView.extend( {
 	childEvents: {
 		'mousedown label': 'onMouseDownLabel',
 		'click @ui.inputs': 'onClickInput',
-		'change @ui.inputs': 'updateElementModel'
+		'change @ui.inputs': 'onBaseInputChange'
 	},
 
 	onMouseDownLabel: function( event ) {
@@ -7378,7 +7976,7 @@ ControlChooseItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlChooseItemView;
 
-},{"qazana-views/controls/base":83}],86:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],92:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlCodeEditorItemView;
 
@@ -7442,44 +8040,38 @@ ControlCodeEditorItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlCodeEditorItemView;
 
-},{"qazana-views/controls/base":83}],87:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],93:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlColorItemView;
 
 ControlColorItemView = ControlBaseItemView.extend( {
-	ui: function() {
-		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
-
-		ui.picker = '.color-picker-hex';
-
-		return ui;
-	},
-
 	onReady: function() {
-		qazana.helpers.wpColorPicker( this.ui.picker, {
-			change: _.bind( function() {
-				this.setValue( this.ui.picker.wpColorPicker( 'color' ) );
-			}, this ),
+		var self = this;
 
-			clear: _.bind( function() {
-				this.setValue( '' );
-			}, this )
+		qazana.helpers.wpColorPicker( self.ui.input, {
+			change: function() {
+				self.ui.input.val( self.ui.input.wpColorPicker( 'color' ) ).trigger( 'input' );
+			},
+			clear: function() {
+				self.setValue( '' );
+			}
 		} ).wpColorPicker( 'instance' )
 			.wrap.find( '> .wp-picker-input-wrap > .wp-color-picker' )
 			.removeAttr( 'maxlength' );
 	},
 
 	onBeforeDestroy: function() {
-		if ( this.ui.picker.wpColorPicker( 'instance' ) ) {
-			this.ui.picker.wpColorPicker( 'close' );
+		if ( this.ui.input.wpColorPicker( 'instance' ) ) {
+			this.ui.input.wpColorPicker( 'close' );
 		}
+
 		this.$el.remove();
 	}
 } );
 
 module.exports = ControlColorItemView;
 
-},{"qazana-views/controls/base":83}],88:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],94:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlDateTimePickerItemView;
 
@@ -7516,7 +8108,7 @@ ControlDateTimePickerItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlDateTimePickerItemView;
 
-},{"qazana-views/controls/base":83}],89:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],95:[function(require,module,exports){
 var ControlBaseUnitsItemView = require( 'qazana-views/controls/base-units' ),
 	ControlDimensionsItemView;
 
@@ -7680,19 +8272,18 @@ ControlDimensionsItemView = ControlBaseUnitsItemView.extend( {
 
 module.exports = ControlDimensionsItemView;
 
-},{"qazana-views/controls/base-units":82}],90:[function(require,module,exports){
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
-	ControlFontItemView;
+},{"qazana-views/controls/base-units":88}],96:[function(require,module,exports){
+var ControlSelect2View = require( 'qazana-views/controls/select2' );
 
-ControlFontItemView = ControlBaseItemView.extend( {
-	onReady: function() {
-		this.ui.select.select2( {
+module.exports = ControlSelect2View.extend( {
+	getSelect2Options: function() {
+		return {
 			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
-		} );
+		};
 	},
 
 	templateHelpers: function() {
-		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
+		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments );
 
 		helpers.getFontsByGroups = _.bind( function( groups ) {
 			var fonts = this.model.get( 'fonts' ),
@@ -7711,9 +8302,7 @@ ControlFontItemView = ControlBaseItemView.extend( {
 	}
 } );
 
-module.exports = ControlFontItemView;
-
-},{"qazana-views/controls/base":83}],91:[function(require,module,exports){
+},{"qazana-views/controls/select2":106}],97:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlMediaItemView;
 
@@ -7879,14 +8468,14 @@ ControlMediaItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlMediaItemView;
 
-},{"qazana-views/controls/base":83}],92:[function(require,module,exports){
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
-	ControlIconItemView;
+},{"qazana-views/controls/base":89}],98:[function(require,module,exports){
+var ControlSelect2View = require( 'qazana-views/controls/select2' ),
+	ControlIconView;
 
-ControlIconItemView = ControlBaseItemView.extend( {
+ControlIconView = ControlSelect2View.extend( {
 
 	initialize: function() {
-		ControlBaseItemView.prototype.initialize.apply( this, arguments );
+		ControlSelect2View.prototype.initialize.apply( this, arguments );
 
 		this.filterIcons();
 	},
@@ -7924,36 +8513,18 @@ ControlIconItemView = ControlBaseItemView.extend( {
 		);
 	},
 
-	onReady: function() {
-		this.ui.select.fontIconPicker({
-	       theme: 'fip-grey'
-        }); // Load with default options
-	},
-
-	templateHelpers: function() {
-		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
-
-		helpers.getIconsByGroups = _.bind( function( groups ) {
-			var icons = this.model.get( 'icons' ),
-				filterIcons = {};
-
-			_.each( icons, function( iconType, iconName ) {
-				if ( _.isArray( groups ) && _.contains( groups, iconType ) || iconType === groups ) {
-					filterIcons[ iconName ] = iconType;
-				}
-			} );
-
-			return filterIcons;
-		}, this );
-
-		return helpers;
+	getSelect2Options: function() {
+		return {
+			allowClear: true,
+			templateResult: _.bind( this.iconsList, this ),
+			templateSelection: _.bind( this.iconsList, this )
+		};
 	}
-
 } );
 
-module.exports = ControlIconItemView;
+module.exports = ControlIconView;
 
-},{"qazana-views/controls/base":83}],93:[function(require,module,exports){
+},{"qazana-views/controls/select2":106}],99:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlImageDimensionsItemView;
 
@@ -7984,7 +8555,7 @@ ControlImageDimensionsItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlImageDimensionsItemView;
 
-},{"qazana-views/controls/base-multiple":81}],94:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":87}],100:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlMediaItemView;
 
@@ -8074,7 +8645,7 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlMediaItemView;
 
-},{"qazana-views/controls/base-multiple":81}],95:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":87}],101:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlNumberItemView;
 
@@ -8082,7 +8653,6 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 	correctionTimeOut: 0,
 
 	getInputValue: function( input ) {
-
 		var self = this,
 			inputValue = ControlBaseItemView.prototype.getInputValue.apply( self, arguments ),
 			validValue = inputValue,
@@ -8104,10 +8674,8 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 		return validValue;
 	},
 
-	updateElementModel: function( event ) {
+	updateElementModel: function( value, input ) {
 		var self = this,
-			input = event.currentTarget,
-			value = this.getInputValue( event.currentTarget ),
 			originalInputValue = ControlBaseItemView.prototype.getInputValue.call( self, input );
 
 		if ( originalInputValue !== value ) {
@@ -8119,7 +8687,7 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 		ControlBaseItemView.prototype.updateElementModel.apply( this, arguments );
 	},
 
-	onBaseInputChange: function( event ) {
+	onBaseInputChange: function() {
 		if ( this.correctionTimeOut ) {
 			clearTimeout( this.correctionTimeOut );
 		}
@@ -8130,7 +8698,7 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlNumberItemView;
 
-},{"qazana-views/controls/base":83}],96:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],102:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlOrderItemView;
 
@@ -8162,7 +8730,7 @@ ControlOrderItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlOrderItemView;
 
-},{"qazana-views/controls/base-multiple":81}],97:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":87}],103:[function(require,module,exports){
 var RepeaterRowView;
 
 RepeaterRowView = Marionette.CompositeView.extend( {
@@ -8200,7 +8768,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 	getChildView: function( item ) {
 		var controlType = item.get( 'type' );
 
-		return qazana.getControlItemView( controlType );
+		return qazana.getControlView( controlType );
 	},
 
 	childViewOptions: function() {
@@ -8279,12 +8847,18 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 	onRender: function() {
 		this.setTitle();
 		this.checkConditions();
+	},
+
+	onChildviewResponsiveSwitcherClick: function( childView, device ) {
+		if ( 'desktop' === device ) {
+			qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
+		}
 	}
 } );
 
 module.exports = RepeaterRowView;
 
-},{"qazana-behaviors/inner-tabs":4}],98:[function(require,module,exports){
+},{"qazana-behaviors/inner-tabs":3}],104:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	RepeaterRowView = require( 'qazana-views/controls/repeater-row' ),
 	ControlRepeaterItemView;
@@ -8325,13 +8899,8 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 		this.collection = this.elementSettingsModel.get( this.model.get( 'name' ) );
 
-		this.collection.each( function( model ) {
-			if ( ! model.get( '_id' ) ) {
-				model.set( '_id', qazana.helpers.getUniqueID() );
-			}
-		} );
-
-		this.listenTo( this.collection, 'change add remove reset', this.onCollectionChanged, this );
+		this.listenTo( this.collection, 'change', this.onRowControlChange );
+		this.listenTo( this.collection, 'add remove reset', this.onRowChange, this );
 	},
 
 	addRow: function( data, options ) {
@@ -8441,10 +9010,18 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 		this.updateActiveRow();
 	},
 
-	onCollectionChanged: function() {
-		this.elementSettingsModel.trigger( 'change' );
+	onRowChange: function() {
+		var model = this.elementSettingsModel;
+
+		model.changed = {};
+
+		model.trigger( 'change', model, model._pending );
 
 		this.toggleMinRowsClass();
+	},
+
+	onRowControlChange: function( model ) {
+		this.elementSettingsModel.trigger( 'change', model, model._pending );
 	},
 
 	onButtonAddRowClick: function() {
@@ -8474,7 +9051,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlRepeaterItemView;
 
-},{"qazana-views/controls/base":83,"qazana-views/controls/repeater-row":97}],99:[function(require,module,exports){
+},{"qazana-views/controls/base":89,"qazana-views/controls/repeater-row":103}],105:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlSectionItemView;
 
@@ -8494,43 +9071,36 @@ ControlSectionItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlSectionItemView;
 
-},{"qazana-views/controls/base":83}],100:[function(require,module,exports){
-// Attention: DO NOT use this control since it has bugs
-// TODO: This control is unused
+},{"qazana-views/controls/base":89}],106:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlSelect2ItemView;
 
 ControlSelect2ItemView = ControlBaseItemView.extend( {
-	ui: function() {
-		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
+	getSelect2Options: function() {
+		var placeholder = this.ui.select.children( 'option:first[value=""]' ).text();
 
-		ui.select = '.qazana-select2';
-
-		return ui;
+		return {
+			allowClear: true,
+			placeholder: placeholder
+		};
 	},
 
 	onReady: function() {
-		var options = {
-			allowClear: true,
-			placeholder: { // The `allowClear` must be used with the `placeholder` option
-				id: ''
-			}
-		};
-
-		this.ui.select.select2( options );
+		this.ui.select.select2( this.getSelect2Options() );
 	},
 
 	onBeforeDestroy: function() {
 		if ( this.ui.select.data( 'select2' ) ) {
 			this.ui.select.select2( 'destroy' );
 		}
+
 		this.$el.remove();
 	}
 } );
 
 module.exports = ControlSelect2ItemView;
 
-},{"qazana-views/controls/base":83}],101:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],107:[function(require,module,exports){
 var ControlBaseUnitsItemView = require( 'qazana-views/controls/base-units' ),
 	ControlSliderItemView;
 
@@ -8551,13 +9121,9 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 		var size = this.getControlValue( 'size' ),
 			unitRange = this.getCurrentRange();
 
-		if ( size && unitRange ) {
-			this.ui.input.attr( unitRange ).val( size );
-		}
+		this.ui.input.attr( unitRange ).val( size );
 
-		if ( this.ui.slider ) {
-			this.ui.slider.slider( _.extend( {}, unitRange, { value: size } ) );
-		}
+		this.ui.slider.slider( _.extend( {}, unitRange, { value: size } ) );
 	},
 
 	resetSize: function() {
@@ -8587,19 +9153,14 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 	},
 
 	onBeforeDestroy: function() {
-
-		if ( this.ui.slider ) {
-			this.ui.slider.slider( 'destroy' );
-		}
+		this.ui.slider.slider( 'destroy' );
 		this.$el.remove();
-
 	}
-
 } );
 
 module.exports = ControlSliderItemView;
 
-},{"qazana-views/controls/base-units":82}],102:[function(require,module,exports){
+},{"qazana-views/controls/base-units":88}],108:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlStructureItemView;
 
@@ -8649,7 +9210,7 @@ ControlStructureItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlStructureItemView;
 
-},{"qazana-views/controls/base":83}],103:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],109:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlTabItemView;
 
@@ -8661,45 +9222,7 @@ ControlTabItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlTabItemView;
 
-},{"qazana-views/controls/base":83}],104:[function(require,module,exports){
-var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
-	ControlUrlItemView;
-
-ControlUrlItemView = ControlMultipleBaseItemView.extend( {
-	ui: function() {
-		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
-
-		ui.btnExternal = 'button.qazana-control-url-target';
-
-		return ui;
-	},
-
-	// Override the base events
-	childEvents: {
-		'click @ui.btnExternal': 'onExternalClicked'
-	},
-
-	onReady: function() {
-		if ( this.getControlValue( 'is_external' ) ) {
-			this.ui.btnExternal.addClass( 'active' );
-		}
-	},
-
-	onExternalClicked: function( event ) {
-		event.preventDefault();
-
-		this.ui.btnExternal.toggleClass( 'active' );
-		this.setValue( 'is_external', this.isExternal() );
-	},
-
-	isExternal: function() {
-		return this.ui.btnExternal.hasClass( 'active' );
-	}
-} );
-
-module.exports = ControlUrlItemView;
-
-},{"qazana-views/controls/base-multiple":81}],105:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],110:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWPWidgetItemView;
 
@@ -8728,11 +9251,19 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 	onReady: function() {
 		qazana.ajax.send( 'editor_get_wp_widget_form', {
 			data: {
+				// Fake Widget ID
+				id: this.model.cid,
 				widget_type: this.model.get( 'widget' ),
 				data: JSON.stringify( this.elementSettingsModel.toJSON() )
 			},
 			success: _.bind( function( data ) {
 				this.ui.form.html( data );
+				// WP >= 4.8
+				if ( wp.textWidgets ) {
+					var event = new jQuery.Event( 'widget-added' );
+					wp.textWidgets.handleWidgetAdded( event, this.ui.form );
+					wp.mediaWidgets.handleWidgetAdded( event, this.ui.form );
+				}
 			}, this )
 		} );
 	}
@@ -8740,13 +9271,13 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWPWidgetItemView;
 
-},{"qazana-views/controls/base":83}],106:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],111:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWysiwygItemView;
 
 ControlWysiwygItemView = ControlBaseItemView.extend( {
 	childEvents: {
-		'keyup textarea.qazana-wp-editor': 'updateElementModel'
+		'keyup textarea.qazana-wp-editor': 'onBaseInputChange'
 	},
 
 	// List of buttons to move {buttonToMove: afterButton}
@@ -8794,17 +9325,23 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 			id: self.editorID,
 			selector: '#' + self.editorID,
 			setup: function( editor ) {
-				editor.on( 'keyup change undo redo SetContent', function() {
-					editor.save();
-
-					self.setValue( editor.getContent() );
-				} );
+				// Save the bind callback to allow overwrite it externally
+				self.saveEditor = _.bind( self.saveEditor, self, editor );
+				editor.on( 'keyup change undo redo SetContent', self.saveEditor );
 			}
 		};
 
 		tinyMCEPreInit.mceInit[ self.editorID ] = _.extend( _.clone( tinyMCEPreInit.mceInit.qazanawpeditor ), editorConfig );
 
-		self.rearrangeButtons();
+		if ( ! qazana.config.tinymceHasCustomConfig ) {
+			self.rearrangeButtons();
+		}
+	},
+
+	saveEditor: function( editor ) {
+		editor.save();
+
+		this.setValue( editor.getContent() );
 	},
 
 	attachElContent: function() {
@@ -8869,7 +9406,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWysiwygItemView;
 
-},{"qazana-views/controls/base":83}],107:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],112:[function(require,module,exports){
 var ElementEmptyView;
 
 ElementEmptyView = Marionette.ItemView.extend( {
@@ -8888,8 +9425,9 @@ ElementEmptyView = Marionette.ItemView.extend( {
 
 module.exports = ElementEmptyView;
 
-},{}],108:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 var BaseSectionsContainerView = require( 'qazana-views/base-sections-container' ),
+	AddSectionView = require( 'qazana-views/add-section/independent' ),
 	Preview;
 
 Preview = BaseSectionsContainerView.extend( {
@@ -8899,102 +9437,28 @@ Preview = BaseSectionsContainerView.extend( {
 
 	childViewContainer: '.qazana-section-wrap',
 
-	ui: {
-		addSectionArea: '#qazana-add-section',
-		addNewSection: '#qazana-add-new-section',
-		closePresetsIcon: '#qazana-select-preset-close',
-		addSectionButton: '#qazana-add-section-button',
-		addTemplateButton: '#qazana-add-template-button',
-		selectPreset: '#qazana-select-preset',
-		presets: '.qazana-preset'
-	},
-
-	events: {
-		'click @ui.addSectionButton': 'onAddSectionButtonClick',
-		'click @ui.addTemplateButton': 'onAddTemplateButtonClick',
-		'click @ui.closePresetsIcon': 'closeSelectPresets',
-		'click @ui.presets': 'onPresetSelected'
-	},
-
-	closeSelectPresets: function() {
-		this.ui.addNewSection.show();
-		this.ui.selectPreset.hide();
-	},
-
-	fixBlankPageOffset: function() {
-		var sectionHandleHeight = 27,
-			elTopOffset = this.$el.offset().top,
-			elTopOffsetRange = sectionHandleHeight - elTopOffset;
-
-		if ( 0 < elTopOffsetRange ) {
-			var $style = Backbone.$( '<style>' ).text( '.qazana-editor-active .qazana-inner{margin-top: ' + elTopOffsetRange + 'px}' );
-			qazana.$previewContents.children().children( 'head' ).append( $style );
-		}
-	},
-
-	onAddSectionButtonClick: function() {
-		this.ui.addNewSection.hide();
-		this.ui.selectPreset.show();
-	},
-
-	onAddTemplateButtonClick: function() {
-		qazana.templates.startModal( function() {
-			qazana.templates.showTemplates();
-		} );
-	},
-
 	onRender: function() {
-		var self = this;
+		var addNewSectionView = new AddSectionView();
 
-		self.ui.addSectionArea.html5Droppable( {
-			axis: [ 'vertical' ],
-			groups: [ 'qazana-element' ],
-			onDragEnter: function( side ) {
-				self.ui.addSectionArea.attr( 'data-side', side );
-			},
-			onDragLeave: function() {
-				self.ui.addSectionArea.removeAttr( 'data-side' );
-			},
-			onDropping: function() {
-				self.addSection().addElementFromPanel();
-			}
-		} );
+		addNewSectionView.render();
 
-		_.defer( _.bind( self.fixBlankPageOffset, this ) );
-	},
-
-	onPresetSelected: function( event ) {
-		this.closeSelectPresets();
-
-		var selectedStructure = event.currentTarget.dataset.structure,
-			parsedStructure = qazana.presetsFactory.getParsedStructure( selectedStructure ),
-			elements = [],
-			loopIndex;
-
-		for ( loopIndex = 0; loopIndex < parsedStructure.columnsCount; loopIndex++ ) {
-			elements.push( {
-				id: qazana.helpers.getUniqueID(),
-				elType: 'column',
-				settings: {},
-				elements: []
-			} );
-		}
-
-		var newSection = this.addSection( { elements: elements } );
-
-		newSection.setStructure( selectedStructure );
-		newSection.redefineLayout();
+		this.$el.append( addNewSectionView.$el );
 	}
 } );
 
 module.exports = Preview;
 
-},{"qazana-views/base-sections-container":78}],109:[function(require,module,exports){
+},{"qazana-views/add-section/independent":80,"qazana-views/base-sections-container":84}],114:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
+	AddSectionView = require( 'qazana-views/add-section/inline' ),
 	SectionView;
 
 SectionView = BaseElementView.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-qazana-element-section-content' ),
+
+	addSectionView: null,
+
+	toggleEditTools: false,
 
 	className: function() {
 		var classes = BaseElementView.prototype.className.apply( this, arguments ),
@@ -9003,7 +9467,9 @@ SectionView = BaseElementView.extend( {
 		return classes + ' qazana-section qazana-' + type + '-section';
 	},
 
-	tagName: 'section',
+	tagName: function() {
+		return this.model.getSetting( 'html_tag' );
+	},
 
 	childViewContainer: '> .qazana-container > .qazana-row',
 
@@ -9020,21 +9486,15 @@ SectionView = BaseElementView.extend( {
 		}
 	},
 
-	ui: function() {
-		var ui = BaseElementView.prototype.ui.apply( this, arguments );
-
-		ui.duplicateButton = '.qazana-editor-section-settings-list .qazana-editor-element-duplicate';
-		ui.removeButton = '.qazana-editor-section-settings-list .qazana-editor-element-remove';
-		ui.saveButton = '.qazana-editor-section-settings-list .qazana-editor-element-save';
-		ui.triggerButton = '.qazana-editor-section-settings-list .qazana-editor-element-trigger';
-
-		return ui;
+	errors: {
+		columnWidthTooLarge: 'New column width is too large',
+		columnWidthTooSmall: 'New column width is too small'
 	},
 
 	events: function() {
 		var events = BaseElementView.prototype.events.apply( this, arguments );
 
-		events[ 'click @ui.triggerButton' ] = 'onClickEdit';
+		events[ 'click @ui.addButton' ] = 'onClickAdd';
 
 		return events;
 	},
@@ -9042,9 +9502,7 @@ SectionView = BaseElementView.extend( {
 	initialize: function() {
 		BaseElementView.prototype.initialize.apply( this, arguments );
 
-		this.listenTo( this.collection, 'add remove reset', this._checkIsFull )
-			.listenTo( this.collection, 'remove', this.onCollectionRemove )
-			.listenTo( this.model, 'change:settings:structure', this.onStructureChanged );
+		this.listenTo( this.collection, 'add remove reset', this._checkIsFull );
 	},
 
 	addEmptyColumn: function() {
@@ -9074,13 +9532,15 @@ SectionView = BaseElementView.extend( {
 
 		return {
 			connectWith: sectionConnectClass + ' > .qazana-container > .qazana-row',
-			handle: '> .qazana-element-overlay .qazana-editor-column-settings-list .qazana-editor-element-trigger',
-			items: '> .qazana-column'
+			handle: '> .qazana-element-overlay .qazana-editor-column-settings .qazana-editor-element-trigger',
+			items: '> .qazana-column',
+			forcePlaceholderSize: true,
+			tolerance: 'pointer'
 		};
 	},
 
 	getColumnPercentSize: function( element, size ) {
-		return size / element.parent().width() * 100;
+		return +( size / element.parent().width() * 100 ).toFixed( 3 );
 	},
 
 	getDefaultStructure: function() {
@@ -9098,7 +9558,9 @@ SectionView = BaseElementView.extend( {
 			throw new TypeError( 'The provided structure doesn\'t match the columns count.' );
 		}
 
-		this.model.setSetting( 'structure', structure, true );
+		this.model.setSetting( 'structure', structure );
+
+		this.redefineLayout();
 	},
 
 	redefineLayout: function() {
@@ -9108,8 +9570,6 @@ SectionView = BaseElementView.extend( {
 			model.setSetting( '_column_size', preset.preset[ index ] );
 			model.setSetting( '_inline_size', null );
 		} );
-
-		this.children.invoke( 'changeSizeUI' );
 	},
 
 	resetLayout: function() {
@@ -9120,8 +9580,6 @@ SectionView = BaseElementView.extend( {
 		this.collection.each( function( model ) {
 			model.setSetting( '_inline_size', null );
 		} );
-
-		this.children.invoke( 'changeSizeUI' );
 	},
 
 	isCollectionFilled: function() {
@@ -9141,11 +9599,65 @@ SectionView = BaseElementView.extend( {
 		}
 	},
 
-	getNextColumn: function( columnView ) {
-		var modelIndex = this.collection.indexOf( columnView.model ),
-			nextModel = this.collection.at( modelIndex + 1 );
+	getColumnAt: function( index ) {
+		var model = this.collection.at( index );
 
-		return this.children.findByModelCid( nextModel.cid );
+		return model ? this.children.findByModelCid( model.cid ) : null;
+	},
+
+	getNextColumn: function( columnView ) {
+		return this.getColumnAt( this.collection.indexOf( columnView.model ) + 1 );
+	},
+
+	getPreviousColumn: function( columnView ) {
+		return this.getColumnAt( this.collection.indexOf( columnView.model ) - 1 );
+	},
+
+	showChildrenPercentsTooltip: function( columnView, nextColumnView ) {
+		columnView.ui.percentsTooltip.show();
+
+		columnView.ui.percentsTooltip.attr( 'data-side', qazana.config.is_rtl ? 'right' : 'left' );
+
+		nextColumnView.ui.percentsTooltip.show();
+
+		nextColumnView.ui.percentsTooltip.attr( 'data-side', qazana.config.is_rtl ? 'left' : 'right' );
+	},
+
+	hideChildrenPercentsTooltip: function( columnView, nextColumnView ) {
+		columnView.ui.percentsTooltip.hide();
+
+		nextColumnView.ui.percentsTooltip.hide();
+	},
+
+	resizeChild: function( childView, currentSize, newSize ) {
+		var nextChildView = this.getNextColumn( childView ) || this.getPreviousColumn( childView );
+
+		if ( ! nextChildView ) {
+			throw new ReferenceError( 'There is not any next column' );
+		}
+
+		var minColumnSize = 10,
+			$nextElement = nextChildView.$el,
+			nextElementCurrentSize = +nextChildView.model.getSetting( '_inline_size' ) || this.getColumnPercentSize( $nextElement, $nextElement[0].getBoundingClientRect().width ),
+			nextElementNewSize = +( currentSize + nextElementCurrentSize - newSize ).toFixed( 3 );
+
+		if ( nextElementNewSize < minColumnSize ) {
+			throw new RangeError( this.errors.columnWidthTooLarge );
+		}
+
+		if ( newSize < minColumnSize ) {
+			throw new RangeError( this.errors.columnWidthTooSmall );
+		}
+
+		nextChildView.model.setSetting( '_inline_size', nextElementNewSize );
+
+		return true;
+	},
+
+	destroyAddSectionView: function() {
+		if ( this.addSectionView && ! this.addSectionView.isDestroyed ) {
+			this.addSectionView.destroy();
+		}
 	},
 
 	onBeforeRender: function() {
@@ -9153,7 +9665,35 @@ SectionView = BaseElementView.extend( {
 	},
 
 	onRender: function() {
+		BaseElementView.prototype.onRender.apply( this, arguments );
+
 		this._checkIsFull();
+	},
+
+	onClickAdd: function() {
+		if ( this.addSectionView && ! this.addSectionView.isDestroyed ) {
+			this.addSectionView.fadeToDeath();
+
+			return;
+		}
+
+		var myIndex = this.model.collection.indexOf( this.model ),
+			addSectionView = new AddSectionView( {
+				atIndex: myIndex
+			} );
+
+		addSectionView.render();
+
+		this.$el.before( addSectionView.$el );
+
+		addSectionView.$el.hide();
+
+		// Delaying the slide down for slow-render browsers (such as FF)
+		setTimeout( function() {
+			addSectionView.$el.slideDown();
+		} );
+
+		this.addSectionView = addSectionView;
 	},
 
 	onAddChild: function() {
@@ -9163,88 +9703,75 @@ SectionView = BaseElementView.extend( {
 		}
 	},
 
-	onCollectionRemove: function() {
+	onRemoveChild: function() {
+		if ( ! this.isManualRemoving ) {
+			return;
+		}
+
 		// If it's the last column, please create new one.
 		this._checkIsEmpty();
 
 		this.resetLayout();
 	},
 
-	onChildviewRequestResizeStart: function( childView ) {
-		var nextChildView = this.getNextColumn( childView );
+	onChildviewRequestResizeStart: function( columnView ) {
+		var nextColumnView = this.getNextColumn( columnView );
 
-		if ( ! nextChildView ) {
+		if ( ! nextColumnView ) {
 			return;
 		}
 
-		var $iframes = childView.$el.find( 'iframe' ).add( nextChildView.$el.find( 'iframe' ) );
+		this.showChildrenPercentsTooltip( columnView, nextColumnView );
+
+		var $iframes = columnView.$el.find( 'iframe' ).add( nextColumnView.$el.find( 'iframe' ) );
 
 		qazana.helpers.disableElementEvents( $iframes );
 	},
 
-	onChildviewRequestResizeStop: function( childView ) {
-		var nextChildView = this.getNextColumn( childView );
+	onChildviewRequestResizeStop: function( columnView ) {
+		var nextColumnView = this.getNextColumn( columnView );
 
-		if ( ! nextChildView ) {
+		if ( ! nextColumnView ) {
 			return;
 		}
 
-		var $iframes = childView.$el.find( 'iframe' ).add( nextChildView.$el.find( 'iframe' ) );
+		this.hideChildrenPercentsTooltip( columnView, nextColumnView );
+
+		var $iframes = columnView.$el.find( 'iframe' ).add( nextColumnView.$el.find( 'iframe' ) );
 
 		qazana.helpers.enableElementEvents( $iframes );
 	},
 
-	onChildviewRequestResize: function( childView, ui ) {
+	onChildviewRequestResize: function( columnView, ui, event ) {
 		// Get current column details
-		var currentSize = childView.model.getSetting( '_inline_size' );
-
-		if ( ! currentSize ) {
-			currentSize = this.getColumnPercentSize( ui.element, ui.originalSize.width );
-		}
-
-		var newSize = this.getColumnPercentSize( ui.element, ui.size.width ),
-			difference = newSize - currentSize;
+		var currentSize = +columnView.model.getSetting( '_inline_size' ) || this.getColumnPercentSize( columnView.$el, columnView.$el.data( 'originalWidth' ) );
 
 		ui.element.css( {
-			//width: currentSize + '%',
 			width: '',
 			left: 'initial' // Fix for RTL resizing
 		} );
 
-		// Get next column details
-		var nextChildView = this.getNextColumn( childView );
+		var newSize = this.getColumnPercentSize( ui.element, ui.size.width );
 
-		if ( ! nextChildView ) {
+		try {
+			this.resizeChild( columnView, currentSize, newSize );
+		} catch ( e ) {
 			return;
 		}
 
-		var MINIMUM_COLUMN_SIZE = 10,
-
-			$nextElement = nextChildView.$el,
-			nextElementCurrentSize = this.getColumnPercentSize( $nextElement, $nextElement.width() ),
-			nextElementNewSize = nextElementCurrentSize - difference;
-
-		if ( newSize < MINIMUM_COLUMN_SIZE || newSize > 100 || ! difference || nextElementNewSize < MINIMUM_COLUMN_SIZE || nextElementNewSize > 100 ) {
-			return;
-		}
-
-		// Set the current column size
-		childView.model.setSetting( '_inline_size', newSize.toFixed( 3 ) );
-		childView.changeSizeUI();
-
-		// Set the next column size
-		nextChildView.model.setSetting( '_inline_size', nextElementNewSize.toFixed( 3 ) );
-		nextChildView.changeSizeUI();
+		columnView.model.setSetting( '_inline_size', newSize );
 	},
 
-	onStructureChanged: function() {
-		this.redefineLayout();
+	onDestroy: function() {
+		BaseElementView.prototype.onDestroy.apply( this, arguments );
+
+		this.destroyAddSectionView();
 	}
 } );
 
 module.exports = SectionView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/base-element":77}],110:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/add-section/inline":81,"qazana-views/base-element":83}],115:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	WidgetView;
 
@@ -9278,14 +9805,40 @@ WidgetView = BaseElementView.extend( {
 
 		var editModel = this.getEditModel();
 
-		if ( 'remote' === this.getTemplateType() && ! this.getEditModel().getHtmlCache() ) {
-			editModel.renderRemoteServer();
-		}
-
 		editModel.on( {
 			'before:remote:render': _.bind( this.onModelBeforeRemoteRender, this ),
 			'remote:render': _.bind( this.onModelRemoteRender, this )
 		} );
+
+		if ( 'remote' === this.getTemplateType() && ! this.getEditModel().getHtmlCache() ) {
+			editModel.renderRemoteServer();
+		}
+
+		var onRenderMethod = this.onRender;
+
+		this.onRender = function() {
+			_.defer( _.bind( onRenderMethod, this ) );
+		};
+	},
+
+	render: function() {
+		if ( this.model.isRemoteRequestActive() ) {
+			this.handleEmptyWidget();
+
+			this.$el.addClass( 'qazana-element' );
+
+			return;
+		}
+
+		Marionette.CompositeView.prototype.render.apply( this, arguments );
+	},
+
+	handleEmptyWidget: function() {
+		// TODO: REMOVE THIS !!
+		// TEMP CODING !!
+		this.$el
+			.addClass( 'qazana-widget-empty' )
+			.append( '<i class="qazana-widget-empty-icon ' + this.getEditModel().getIcon() + '"></i>' );
 	},
 
 	getTemplateType: function() {
@@ -9324,19 +9877,32 @@ WidgetView = BaseElementView.extend( {
 	},
 
 	attachElContent: function( html ) {
-		var htmlContent = this.getHTMLContent( html ),
-			el = this.$el[0];
+		var self = this,
+			htmlContent = self.getHTMLContent( html );
 
 		_.defer( function() {
-			qazanaFrontend.getScopeWindow().jQuery( el ).html( htmlContent );
+			qazanaFrontend.getScopeWindow().jQuery( self.el ).html( htmlContent );
+
+			self.bindUIElements(); // Build again the UI elements since the content attached just now
 		} );
 
 		return this;
 	},
 
+	onClickEdit: function( event ) {
+		if ( Backbone.$( event.target ).closest( '.qazana-event-save-default' ).length ) {
+			return;
+		}
+
+		BaseElementView.prototype.onClickEdit.apply( this, arguments );
+	},
+
 	onRender: function() {
-        var self = this,
-	        editModel = self.getEditModel(),
+        var self = this;
+
+		BaseElementView.prototype.onRender.apply( self, arguments );
+
+	    var editModel = self.getEditModel(),
 	        skinType = editModel.getSetting( '_skin' ) || 'default';
 
         self.$el
@@ -9346,51 +9912,21 @@ WidgetView = BaseElementView.extend( {
             .children( '.qazana-widget-empty-icon' )
             .remove();
 
-        self.$el.imagesLoaded().always( function() {
-            setTimeout( function() {
-                if ( 1 > self.$el.height() ) {
-                    self.$el.addClass( 'qazana-widget-empty' );
-
-                    // TODO: REMOVE THIS !!
-                    // TEMP CODING !!
-                    self.$el.append( '<i class="qazana-widget-empty-icon ' + editModel.getIcon() + '"></i>' );
-                }
-            }, 200 );
-            // Is element empty?
-        } );
-
-        self.handleElementHover();
-
-	},
-
-    handleElementHover: function( ) {
-
-        var self = this,
-            config = {
-                class : 'qazana-widget-settings-active'
-            };
-
-        var hoverConfig = {
-            sensitivity: 1, // number = sensitivity threshold (must be 1 or higher)
-            interval: 10, // number = milliseconds for onMouseOver polling interval
-            timeout: 500, // number = milliseconds delay before onMouseOut
-            over: function() {
-                self.$el.addClass( config.class );
-            },
-            out: function() {
-                self.$el.removeClass(config.class );
-            }
-        };
-
-        self.$el.hoverIntent(hoverConfig);
-
-    },
-
+		// TODO: Find better way to detect if all images are loaded
+		self.$el.imagesLoaded().always( function() {
+			setTimeout( function() {
+				if ( 1 > self.$el.height() ) {
+					self.handleEmptyWidget();
+				}
+			}, 200 );
+			// Is element empty?
+		} );
+	}
 } );
 
 module.exports = WidgetView;
 
-},{"qazana-views/base-element":77}],111:[function(require,module,exports){
+},{"qazana-views/base-element":83}],116:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9635,5 +10171,217 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}]},{},[71,72,34])
+},{}],117:[function(require,module,exports){
+var Module = function() {
+	var $ = jQuery,
+		instanceParams = arguments,
+		self = this,
+		settings,
+		events = {};
+
+	var ensureClosureMethods = function() {
+		$.each( self, function( methodName ) {
+			var oldMethod = self[ methodName ];
+
+			if ( 'function' !== typeof oldMethod ) {
+				return;
+			}
+
+			self[ methodName ] = function() {
+				return oldMethod.apply( self, arguments );
+			};
+		});
+	};
+
+	var initSettings = function() {
+		settings = self.getDefaultSettings();
+
+		var instanceSettings = instanceParams[0];
+
+		if ( instanceSettings ) {
+			$.extend( settings, instanceSettings );
+		}
+	};
+
+	var init = function() {
+		self.__construct.apply( self, instanceParams );
+
+		ensureClosureMethods();
+
+		initSettings();
+
+		self.trigger( 'init' );
+	};
+
+	this.getItems = function( items, itemKey ) {
+		if ( itemKey ) {
+			var keyStack = itemKey.split( '.' ),
+				currentKey = keyStack.splice( 0, 1 );
+
+			if ( ! keyStack.length ) {
+				return items[ currentKey ];
+			}
+
+			if ( ! items[ currentKey ] ) {
+				return;
+			}
+
+			return this.getItems(  items[ currentKey ], keyStack.join( '.' ) );
+		}
+
+		return items;
+	};
+
+	this.getSettings = function( setting ) {
+		return this.getItems( settings, setting );
+	};
+
+	this.setSettings = function( settingKey, value, settingsContainer ) {
+		if ( ! settingsContainer ) {
+			settingsContainer = settings;
+		}
+
+		if ( 'object' === typeof settingKey ) {
+			$.extend( settingsContainer, settingKey );
+
+			return self;
+		}
+
+		var keyStack = settingKey.split( '.' ),
+			currentKey = keyStack.splice( 0, 1 );
+
+		if ( ! keyStack.length ) {
+			settingsContainer[ currentKey ] = value;
+
+			return self;
+		}
+
+		if ( ! settingsContainer[ currentKey ] ) {
+			settingsContainer[ currentKey ] = {};
+		}
+
+		return self.setSettings( keyStack.join( '.' ), value, settingsContainer[ currentKey ] );
+	};
+
+	this.on = function( eventName, callback ) {
+		if ( ! events[ eventName ] ) {
+			events[ eventName ] = [];
+		}
+
+		events[ eventName ].push( callback );
+
+		return self;
+	};
+
+	this.off = function( eventName, callback ) {
+		if ( ! events[ eventName ] ) {
+			return self;
+		}
+
+		if ( ! callback ) {
+			delete events[ eventName ];
+
+			return self;
+		}
+
+		var callbackIndex = events[ eventName ].indexOf( callback );
+
+		if ( -1 !== callbackIndex ) {
+			delete events[ eventName ][ callbackIndex ];
+		}
+
+		return self;
+	};
+
+	this.trigger = function( eventName ) {
+		var methodName = 'on' + eventName[ 0 ].toUpperCase() + eventName.slice( 1 ),
+			params = Array.prototype.slice.call( arguments, 1 );
+
+		if ( self[ methodName ] ) {
+			self[ methodName ].apply( self, params );
+		}
+
+		var callbacks = events[ eventName ];
+
+		if ( ! callbacks ) {
+			return;
+		}
+
+		$.each( callbacks, function( index, callback ) {
+			callback.apply( self, params );
+		} );
+	};
+
+	init();
+};
+
+Module.prototype.__construct = function() {};
+
+Module.prototype.getDefaultSettings = function() {
+	return {};
+};
+
+Module.extendsCount = 0;
+
+Module.extend = function( properties ) {
+	var $ = jQuery,
+		parent = this;
+
+	var child = function() {
+		return parent.apply( this, arguments );
+	};
+
+	$.extend( child, parent );
+
+	child.prototype = Object.create( $.extend( {}, parent.prototype, properties ) );
+
+	child.prototype.constructor = child;
+
+	/*
+	 * Constructor ID is used to set an unique ID
+     * to every extend of the Module.
+     *
+	 * It's useful in some cases such as unique
+	 * listener for frontend handlers.
+	 */
+	var constructorID = ++Module.extendsCount;
+
+	child.prototype.getConstructorID = function() {
+		return constructorID;
+	};
+
+	child.__super__ = parent.prototype;
+
+	return child;
+};
+
+module.exports = Module;
+
+},{}],118:[function(require,module,exports){
+var Module = require( 'qazana-utils/module' ),
+	ViewModule;
+
+ViewModule = Module.extend( {
+	elements: null,
+
+	getDefaultElements: function() {
+		return {};
+	},
+
+	bindEvents: function() {},
+
+	onInit: function() {
+		this.initElements();
+
+		this.bindEvents();
+	},
+
+	initElements: function() {
+		this.elements = this.getDefaultElements();
+	}
+} );
+
+module.exports = ViewModule;
+
+},{"qazana-utils/module":117}]},{},[72,73,33])
 //# sourceMappingURL=editor.js.map

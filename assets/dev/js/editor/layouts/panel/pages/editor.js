@@ -1,47 +1,12 @@
-var EditorCompositeView;
+var ControlsStack = require( 'qazana-views/controls-stack' ),
+	EditorView;
 
-EditorCompositeView = Marionette.CompositeView.extend( {
+EditorView = ControlsStack.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-editor-content' ),
 
 	id: 'qazana-panel-page-editor',
 
-	templateHelpers: function() {
-		return {
-			elementData: qazana.getElementData( this.model )
-		};
-	},
-
-	behaviors: {
-		HandleInnerTabs: {
-			behaviorClass: require( 'qazana-behaviors/inner-tabs' )
-		}
-	},
-
 	childViewContainer: '#qazana-controls',
-
-	modelEvents: {
-		'destroy': 'onModelDestroy'
-	},
-
-	ui: {
-		tabs: '.qazana-panel-navigation-tab',
-		reloadButton: '#qazana-update-preview-button'
-	},
-
-	events: {
-		'click @ui.tabs a': 'onClickTabControl',
-		'click @ui.reloadButton': 'onReloadButtonClick'
-	},
-
-	initialize: function() {
-		this.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
-	},
-
-	getChildView: function( item ) {
-		var controlType = item.get( 'type' );
-
-		return qazana.getControlItemView( controlType );
-	},
 
 	childViewOptions: function() {
 		return {
@@ -50,14 +15,14 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		};
 	},
 
-	onDestroy: function() {
-		if ( this.editedElementView ) {
-			this.editedElementView.$el.removeClass( 'qazana-element-editable' );
-		}
+	openActiveSection: function() {
+		ControlsStack.prototype.openActiveSection.apply( this, arguments );
 
-		this.model.trigger( 'editor:close' );
+		qazana.channels.editor.trigger( 'section:activated', this.activeSection, this );
+	},
 
-		this.triggerMethod( 'editor:destroy' );
+	isVisibleSectionControl: function( sectionControlModel ) {
+		return ControlsStack.prototype.isVisibleSectionControl.apply( this, arguments ) && qazana.helpers.isActiveControl( sectionControlModel, this.model.get( 'settings' ).attributes );
 	},
 
 	onBeforeRender: function() {
@@ -71,54 +36,30 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		this.collection = new Backbone.Collection( _.values( controls ) );
 	},
 
-	onRender: function() {
-		if ( this.editedElementView ) {
-			this.editedElementView.$el.addClass( 'qazana-element-editable' );
+	onDestroy: function() {
+		var editedElementView = this.getOption( 'editedElementView' );
+
+		if ( editedElementView ) {
+			editedElementView.$el.removeClass( 'qazana-element-editable' );
 		}
 
-		// Set the first tab as active
-		this.ui.tabs.eq( 0 ).find( 'a' ).trigger( 'click' );
+		this.model.trigger( 'editor:close' );
 
-		// Create tooltip on controls
-		this.$( '.tooltip-target' ).tipsy( {
-			gravity: function() {
-				// `n` for down, `s` for up
-				var gravity = Backbone.$( this ).data( 'tooltip-pos' );
-
-				if ( undefined !== gravity ) {
-					return gravity;
-				} else {
-					return 'n';
-				}
-			},
-			title: function() {
-				return this.getAttribute( 'data-tooltip' );
-			}
-		} );
+		this.triggerMethod( 'editor:destroy' );
 	},
 
-	onModelDestroy: function() {
-		this.destroy();
-	},
+	onRender: function() {
+		var editedElementView = this.getOption( 'editedElementView' );
 
-	onClickTabControl: function( event ) {
-		event.preventDefault();
-
-		var $thisTab = this.$( event.target );
-
-		this.ui.tabs.removeClass( 'active' );
-
-		$thisTab.closest( '.qazana-panel-navigation-tab' ).addClass( 'active' );
-
-		this.model.get( 'settings' ).trigger( 'control:switch:tab', $thisTab.data( 'tab' ) );
-
-		this.openFirstSectionInCurrentTab( $thisTab.data( 'tab' ) );
+		if ( editedElementView ) {
+			editedElementView.$el.addClass( 'qazana-element-editable' );
+		}
 	},
 
 	onDeviceModeChange: function() {
-		var self = this;
+		ControlsStack.prototype.onDeviceModeChange.apply( this, arguments );
 
-		self.$el.removeClass( 'qazana-responsive-switchers-open' );
+		var self = this;
 
 		// Timeout according to preview resize css animation duration
 		setTimeout( function() {
@@ -128,73 +69,19 @@ EditorCompositeView = Marionette.CompositeView.extend( {
 		}, 500 );
 	},
 
-	/**
-	 * It's a temp method.
-	 *
-	 * TODO: Rewrite this method later.
-	 */
-	openFirstSectionInCurrentTab: function( currentTab ) {
-		var openedClass = 'qazana-open',
+	onChildviewSettingsChange: function( childView ) {
+		var editedElementView = this.getOption( 'editedElementView' ),
+			editedElementType = editedElementView.model.get( 'elType' );
 
-			childrenUnderSection = this.children.filter( function( view ) {
-				return ( ! _.isEmpty( view.model.get( 'section' ) ) );
-			} ),
-
-			firstSectionControlView = this.children.filter( function( view ) {
-				return ( 'section' === view.model.get( 'type' ) ) && ( currentTab === view.model.get( 'tab' ) );
-			} );
-
-		// Check if found any section controls
-		if ( _.isEmpty( firstSectionControlView ) ) {
-			return;
+		if ( 'widget' === editedElementType ) {
+			editedElementType = editedElementView.model.get( 'widgetType' );
 		}
 
-		firstSectionControlView = firstSectionControlView[0];
-		firstSectionControlView.ui.heading.addClass( openedClass );
-
-		_.each( childrenUnderSection, function( view ) {
-			if ( view.model.get( 'section' ) !== firstSectionControlView.model.get( 'name' ) ) {
-				view.$el.removeClass( openedClass );
-				return;
-			}
-
-			view.$el.addClass( openedClass );
-		} );
-	},
-
-	onChildviewControlSectionClicked: function( childView ) {
-		var openedClass = 'qazana-open',
-			sectionClicked = childView.model.get( 'name' ),
-			isSectionOpen = childView.ui.heading.hasClass( openedClass ),
-
-			childrenUnderSection = this.children.filter( function( view ) {
-				return ( ! _.isEmpty( view.model.get( 'section' ) ) );
-			} );
-
-		this.$( '.qazana-control.qazana-control-type-section .qazana-panel-heading' ).removeClass( openedClass );
-
-		if ( isSectionOpen ) {
-			// Close all open sections
-			sectionClicked = '';
-		} else {
-			childView.ui.heading.addClass( openedClass );
-		}
-
-		_.each( childrenUnderSection, function( view ) {
-			if ( view.model.get( 'section' ) !== sectionClicked ) {
-				view.$el.removeClass( openedClass );
-				return;
-			}
-
-			view.$el.addClass( openedClass );
-		} );
-
-		qazana.channels.data.trigger( 'scrollbar:update' );
-	},
-
-	onReloadButtonClick: function() {
-		qazana.reloadPreview();
+		qazana.channels.editor
+			.trigger( 'change', childView, editedElementView )
+			.trigger( 'change:' + editedElementType, childView, editedElementView )
+			.trigger( 'change:' + editedElementType + ':' + childView.model.get( 'name' ), childView, editedElementView );
 	}
 } );
 
-module.exports = EditorCompositeView;
+module.exports = EditorView;

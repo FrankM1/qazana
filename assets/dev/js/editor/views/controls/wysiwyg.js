@@ -3,7 +3,7 @@ var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 
 ControlWysiwygItemView = ControlBaseItemView.extend( {
 	childEvents: {
-		'keyup textarea.qazana-wp-editor': 'updateElementModel'
+		'keyup textarea.qazana-wp-editor': 'onBaseInputChange'
 	},
 
 	// List of buttons to move {buttonToMove: afterButton}
@@ -51,17 +51,23 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 			id: self.editorID,
 			selector: '#' + self.editorID,
 			setup: function( editor ) {
-				editor.on( 'keyup change undo redo SetContent', function() {
-					editor.save();
-
-					self.setValue( editor.getContent() );
-				} );
+				// Save the bind callback to allow overwrite it externally
+				self.saveEditor = _.bind( self.saveEditor, self, editor );
+				editor.on( 'keyup change undo redo SetContent', self.saveEditor );
 			}
 		};
 
 		tinyMCEPreInit.mceInit[ self.editorID ] = _.extend( _.clone( tinyMCEPreInit.mceInit.qazanawpeditor ), editorConfig );
 
-		self.rearrangeButtons();
+		if ( ! qazana.config.tinymceHasCustomConfig ) {
+			self.rearrangeButtons();
+		}
+	},
+
+	saveEditor: function( editor ) {
+		editor.save();
+
+		this.setValue( editor.getContent() );
 	},
 
 	attachElContent: function() {

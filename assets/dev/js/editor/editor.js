@@ -4,25 +4,26 @@ var App;
 Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
 	options = {
 		evaluate: /<#([\s\S]+?)#>/g,
-		interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
-		escape: /\{\{([^\}]+?)\}\}(?!\})/g
+		interpolate: /{{{([\s\S]+?)}}}/g,
+		escape: /{{([^}]+?)}}(?!})/g
 	};
 
 	return _.template( rawTemplate, options );
 };
 
 App = Marionette.Application.extend( {
-	helpers: require( 'qazana-utils/helpers' ),
-	heartbeat: require( 'qazana-utils/heartbeat' ),
-	imagesManager: require( 'qazana-utils/images-manager' ),
-	schemes: require( 'qazana-utils/schemes' ),
-	presetsFactory: require( 'qazana-utils/presets-factory' ),
-	modals: require( 'qazana-utils/modals' ),
+	helpers: require( 'qazana-editor-utils/helpers' ),
+	heartbeat: require( 'qazana-editor-utils/heartbeat' ),
+	imagesManager: require( 'qazana-editor-utils/images-manager' ),
+	debug: require( 'qazana-editor-utils/debug' ),
+	schemes: require( 'qazana-editor-utils/schemes' ),
+	presetsFactory: require( 'qazana-editor-utils/presets-factory' ),
+	modals: require( 'qazana-editor-utils/modals' ),
 	templates: require( 'qazana-templates/manager' ),
-	ajax: require( 'qazana-utils/ajax' ),
-	conditions: require( 'qazana-utils/conditions' ),
+	ajax: require( 'qazana-editor-utils/ajax' ),
+	conditions: require( 'qazana-editor-utils/conditions' ),
 	revisions:  require( 'qazana-revisions/manager' ),
-	hotKeys: require( 'qazana-utils/hot-keys' ),
+	hotKeys: require( 'qazana-editor-utils/hot-keys' ),
 
 	channels: {
 		editor: Backbone.Radio.channel( 'BUILDER:editor' ),
@@ -36,15 +37,45 @@ App = Marionette.Application.extend( {
 	modules: {
 		element: require( 'qazana-models/element' ),
 		WidgetView: require( 'qazana-views/widget' ),
+		controls: {
+			Base: require( 'qazana-views/controls/base' ),
+			BaseMultiple: require( 'qazana-views/controls/base-multiple' ),
+			Color: require( 'qazana-views/controls/color' ),
+			Dimensions: require( 'qazana-views/controls/dimensions' ),
+			Image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
+			Media: require( 'qazana-views/controls/media' ),
+			Slider: require( 'qazana-views/controls/slider' ),
+			Wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
+			Choose: require( 'qazana-views/controls/choose' ),
+			Url: require( 'qazana-views/controls/base-multiple' ),
+			Font: require( 'qazana-views/controls/font' ),
+			Section: require( 'qazana-views/controls/section' ),
+			Tab: require( 'qazana-views/controls/tab' ),
+			Repeater: require( 'qazana-views/controls/repeater' ),
+			Wp_widget: require( 'qazana-views/controls/wp_widget' ),
+			Icon: require( 'qazana-views/controls/icon' ),
+			Gallery: require( 'qazana-views/controls/gallery' ),
+			Select2: require( 'qazana-views/controls/select2' ),
+			Date_time: require( 'qazana-views/controls/date-time' ),
+			Code: require( 'qazana-views/controls/code' ),
+			Box_shadow: require( 'qazana-views/controls/box-shadow' ),
+			Structure: require( 'qazana-views/controls/structure' ),
+			Animation: require( 'qazana-views/controls/select2' ),
+			Hover_animation: require( 'qazana-views/controls/select2' ),
+			Order: require( 'qazana-views/controls/order' ),
+			//Switcher: require( 'qazana-views/controls/switcher' ),
+			Number: require( 'qazana-views/controls/number' )
+		},
 		templateLibrary: {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
 
-	// Private Members
-	_controlsItemView: null,
-
 	_defaultDeviceMode: 'desktop',
+
+	addControlView: function( controlID, ControlView ) {
+		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
+	},
 
 	getElementData: function( modelElement ) {
 		var elType = modelElement.get( 'elType' );
@@ -67,58 +98,30 @@ App = Marionette.Application.extend( {
 	},
 
 	getElementControls: function( modelElement ) {
-		var elementData = this.getElementData( modelElement );
+		var self = this,
+			elementData = self.getElementData( modelElement );
 
 		if ( ! elementData ) {
 			return false;
 		}
 
-		var elType = modelElement.get( 'elType' );
+		var elType = modelElement.get( 'elType' ),
+			isInner = modelElement.get( 'isInner' ),
+			controls = {};
 
-		if ( 'widget' === elType ) {
-			return elementData.controls;
-		}
+		_.each( elementData.controls, function( controlData, controlKey ) {
+			if ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top ) {
+				return;
+			}
 
-		var isInner = modelElement.get( 'isInner' );
-
-		return _.filter( elementData.controls, function( controlData ) {
-			return ! ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top );
+			controls[ controlKey ] = _.extend( {}, self.config.controls[ controlData.type ], controlData  );
 		} );
+
+		return controls;
 	},
 
-	getControlItemView: function( controlType ) {
-		if ( null === this._controlsItemView ) {
-			this._controlsItemView = {
-				color: require( 'qazana-views/controls/color' ),
-				dimensions: require( 'qazana-views/controls/dimensions' ),
-				image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
-				media: require( 'qazana-views/controls/media' ),
-				slider: require( 'qazana-views/controls/slider' ),
-				wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
-				choose: require( 'qazana-views/controls/choose' ),
-				url: require( 'qazana-views/controls/url' ),
-				font: require( 'qazana-views/controls/font' ),
-				section: require( 'qazana-views/controls/section' ),
-				tab: require( 'qazana-views/controls/tab' ),
-				repeater: require( 'qazana-views/controls/repeater' ),
-				wp_widget: require( 'qazana-views/controls/wp_widget' ),
-				icon: require( 'qazana-views/controls/icon' ),
-				gallery: require( 'qazana-views/controls/gallery' ),
-				select2: require( 'qazana-views/controls/select2' ),
-				date_time: require( 'qazana-views/controls/date-time' ),
-				code: require( 'qazana-views/controls/code' ),
-				box_shadow: require( 'qazana-views/controls/box-shadow' ),
-				structure: require( 'qazana-views/controls/structure' ),
-				animation: require( 'qazana-views/controls/animation' ),
-				hover_animation: require( 'qazana-views/controls/animation' ),
-				order: require( 'qazana-views/controls/order' ),
-				number: require( 'qazana-views/controls/number' )
-			};
-
-			this.channels.editor.trigger( 'controls:initialize' );
-		}
-
-		return this._controlsItemView[ controlType ] || require( 'qazana-views/controls/base' );
+	getControlView: function( controlID ) {
+		return this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] || this.modules.controls.Base;
 	},
 
 	getPanelView: function() {
@@ -177,6 +180,8 @@ App = Marionette.Application.extend( {
 		qazanaFrontend.setScopeWindow( this.$preview[0].contentWindow );
 
 		qazanaFrontend.init();
+
+		//qazanaFrontend.elementsHandler.initHandlers();
 	},
 
 	initClearPageDialog: function() {
@@ -221,6 +226,8 @@ App = Marionette.Application.extend( {
 		Backbone.Radio.tuneIn( 'BUILDER' );
 
 		this.initComponents();
+
+		this.channels.dataEditMode.reply( 'activeMode', 'edit' );
 
 		this.listenTo( this.channels.dataEditMode, 'switch', this.onEditModeSwitched );
 
@@ -314,11 +321,14 @@ App = Marionette.Application.extend( {
 		} );
 
 		this.enqueueTypographyFonts();
+		this.onEditModeSwitched();
 
 		this.trigger( 'preview:loaded' );
 	},
 
-	onEditModeSwitched: function( activeMode ) {
+	onEditModeSwitched: function() {
+		var activeMode = this.channels.dataEditMode.request( 'activeMode' );
+
 		if ( 'edit' === activeMode ) {
 			this.exitPreviewMode();
 		} else {
@@ -353,12 +363,12 @@ App = Marionette.Application.extend( {
 
 	setFlagEditorChange: function( status ) {
 		qazana.channels.editor
-			.reply( 'change', status )
-			.trigger( 'change', status );
+			.reply( 'status', status )
+			.trigger( 'status:change', status );
 	},
 
 	isEditorChanged: function() {
-		return ( true === qazana.channels.editor.request( 'change' ) );
+		return ( true === qazana.channels.editor.request( 'status' ) );
 	},
 
 	setWorkSaver: function() {
@@ -446,7 +456,7 @@ App = Marionette.Application.extend( {
         }
 
 		var self = this,
-			newData = qazana.elements.toJSON();
+			newData = qazana.elements.toJSON( { removeDefault: true } );
 
 		return this.ajax.send( 'save_qazana', {
 	        data: {

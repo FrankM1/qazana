@@ -1,7 +1,8 @@
 var SectionView = require( 'qazana-views/section' ),
+	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseSectionsContainerView;
 
-BaseSectionsContainerView = Marionette.CompositeView.extend( {
+BaseSectionsContainerView = BaseContainer.extend( {
 	childView: SectionView,
 
 	behaviors: {
@@ -19,7 +20,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 	getSortableOptions: function() {
 		return {
-			handle: '> .qazana-container > .qazana-row > .qazana-column > .qazana-element-overlay .qazana-editor-section-settings-list .qazana-editor-element-trigger',
+			handle: '> .qazana-element-overlay .qazana-editor-section-settings .qazana-editor-element-trigger',
 			items: '> .qazana-section'
 		};
 	},
@@ -39,11 +40,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 			.listenTo( qazana.channels.panelElements, 'element:drag:end', this.onPanelElementDragEnd );
 	},
 
-	addChildModel: function( model, options ) {
-		return this.collection.add( model, options, true );
-	},
-
-	addSection: function( properties ) {
+	addSection: function( properties, options ) {
 		var newSection = {
 			id: qazana.helpers.getUniqueID(),
 			elType: 'section',
@@ -55,7 +52,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 			_.extend( newSection, properties );
 		}
 
-		var newModel = this.addChildModel( newSection );
+		var newModel = this.addChildModel( newSection, options );
 
 		return this.children.findByModelCid( newModel.cid );
 	},

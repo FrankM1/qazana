@@ -125,7 +125,7 @@ module.exports = Marionette.CompositeView.extend( {
 	},
 
 	onApplyClick: function() {
-		qazana.getPanelView().getChildView( 'footer' )._publishQazana();
+		qazana.getPanelView().getChildView( 'footer' )._publishBuilder();
 
 		this.isRevisionApplied = true;
 

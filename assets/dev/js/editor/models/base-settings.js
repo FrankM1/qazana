@@ -1,40 +1,71 @@
 var BaseSettingsModel;
 
 BaseSettingsModel = Backbone.Model.extend( {
+	options: {},
 
 	initialize: function( data, options ) {
-		this.controls = ( options && options.controls ) ? options.controls : qazana.getElementControls( this );
+		var self = this;
 
-		if ( ! this.controls ) {
+		if ( options ) {
+			// Keep the options for cloning
+			self.options = options;
+		}
+
+		self.controls = ( options && options.controls ) ? options.controls : qazana.getElementControls( self );
+
+		self.validators = {};
+
+		if ( ! self.controls ) {
 			return;
 		}
 
 		var attrs = data || {},
 			defaults = {};
 
-		_.each( this.controls, function( field ) {
-			var control = qazana.config.controls[ field.type ];
+		_.each( self.controls, function( field ) {
+			var control = qazana.config.controls[ field.type ],
+				isUIControl = -1 !== control.features.indexOf( 'ui' );
 
-			if ( _.isObject( control.default_value )  ) {
+			if ( isUIControl ) {
+				return;
+			}
+
+			// Check if the value is a plain object ( and not an array )
+			var isMultipleControl = jQuery.isPlainObject( control.default_value );
+
+			if ( isMultipleControl  ) {
 				defaults[ field.name ] = _.extend( {}, control.default_value, field['default'] || {} );
 			} else {
 				defaults[ field.name ] = field['default'] || control.default_value;
 			}
+
+			if ( undefined !== attrs[ field.name ] ) {
+				if ( isMultipleControl && ! _.isObject( attrs[ field.name ] ) ) {
+					qazana.debug.addCustomError(
+						new TypeError( 'An invalid argument supplied as multiple control value' ),
+						'InvalidElementData',
+						'Element `' + ( self.get( 'widgetType' ) || self.get( 'elType' ) ) + '` got <' + attrs[ field.name ] + '> as `' + field.name + '` value. Expected array or object.'
+					);
+
+					delete attrs[ field.name ];
+				}
+			}
+
+			if ( undefined === attrs[ field.name ] ) {
+				attrs[ field.name ] = defaults[ field.name ];
+			}
 		} );
 
-		this.defaults = defaults;
+		self.defaults = defaults;
 
-		// TODO: Change method to recursive
-		attrs = _.defaults( {}, attrs, defaults );
+		self.handleRepeaterData( attrs );
 
-		this.handleRepeaterData( attrs );
-
-		this.set( attrs );
+		self.set( attrs );
 	},
 
 	handleRepeaterData: function( attrs ) {
 		_.each( this.controls, function( field ) {
-			if ( 'repeater' === field.type ) {
+			if ( field.is_repeater ) {
 				// TODO: Apply defaults on each field in repeater fields
 				if ( ! ( attrs[ field.name ] instanceof Backbone.Collection ) ) {
 					attrs[ field.name ] = new Backbone.Collection( attrs[ field.name ], {
@@ -42,6 +73,10 @@ BaseSettingsModel = Backbone.Model.extend( {
 							options = options || {};
 
 							options.controls = field.fields;
+
+							if ( ! attrs._id ) {
+								attrs._id = qazana.helpers.getUniqueID();
+							}
 
 							return new BaseSettingsModel( attrs, options );
 						}
@@ -83,6 +118,14 @@ BaseSettingsModel = Backbone.Model.extend( {
 		return currentControl && ! _.isEmpty( currentControl.selectors );
 	},
 
+	getClassControls: function( controls ) {
+		controls = controls || this.controls;
+
+		return _.filter( controls, function( control ) {
+			return ! _.isUndefined( control.prefix_class );
+		} );
+	},
+
 	isClassControl: function( attribute ) {
 		var currentControl = _.find( this.controls, function( control ) {
 			return attribute === control.name;
@@ -111,11 +154,20 @@ BaseSettingsModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		return new BaseSettingsModel( qazana.helpers.cloneObject( this.attributes ) );
+		return new BaseSettingsModel( qazana.helpers.cloneObject( this.attributes ), qazana.helpers.cloneObject( this.options ) );
 	},
 
-	toJSON: function() {
+	setExternalChange: function( key, value ) {
+		this.set( key, value );
+
+		this.trigger( 'change:external', key, value )
+			.trigger( 'change:external:' + key, value );
+	},
+
+	toJSON: function( options ) {
 		var data = Backbone.Model.prototype.toJSON.call( this );
+
+		options = options || {};
 
 		delete data.widgetType;
 		delete data.elType;
@@ -126,6 +178,44 @@ BaseSettingsModel = Backbone.Model.extend( {
 				data[ key ] = attribute.toJSON();
 			}
 		} );
+
+		if ( options.removeDefault ) {
+			var controls = this.controls;
+
+			_.each( data, function( value, key ) {
+				var control = controls[ key ];
+
+				if ( control ) {
+					if ( ( 'text' === control.type || 'textarea' === control.type ) && data[ key ] ) {
+						return;
+					}
+
+					if ( data[ key ] && 'object' === typeof data[ key ] ) {
+						// First check length difference
+						if ( Object.keys( data[ key ] ).length !== Object.keys( control[ 'default' ] ).length ) {
+							return;
+						}
+
+						// If it's equal length, loop over value
+						var isEqual = true;
+
+						_.each( data[ key ], function( propertyValue, propertyKey ) {
+							if ( data[ key ][ propertyKey ] !== control[ 'default' ][ propertyKey ] ) {
+								return isEqual = false;
+							}
+						} );
+
+						if ( isEqual ) {
+							delete data[ key ];
+						}
+					} else {
+						if ( data[ key ] === control[ 'default' ] ) {
+							delete data[ key ];
+						}
+					}
+				}
+			} );
+		}
 
 		return data;
 	}

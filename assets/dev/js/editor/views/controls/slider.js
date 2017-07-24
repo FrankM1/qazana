@@ -18,13 +18,9 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 		var size = this.getControlValue( 'size' ),
 			unitRange = this.getCurrentRange();
 
-		if ( size && unitRange ) {
-			this.ui.input.attr( unitRange ).val( size );
-		}
+		this.ui.input.attr( unitRange ).val( size );
 
-		if ( this.ui.slider ) {
-			this.ui.slider.slider( _.extend( {}, unitRange, { value: size } ) );
-		}
+		this.ui.slider.slider( _.extend( {}, unitRange, { value: size } ) );
 	},
 
 	resetSize: function() {
@@ -54,14 +50,9 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 	},
 
 	onBeforeDestroy: function() {
-
-		if ( this.ui.slider ) {
-			this.ui.slider.slider( 'destroy' );
-		}
+		this.ui.slider.slider( 'destroy' );
 		this.$el.remove();
-
 	}
-
 } );
 
 module.exports = ControlSliderItemView;

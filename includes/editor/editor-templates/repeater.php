@@ -3,7 +3,8 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-?><script type="text/template" id="tmpl-qazana-repeater-row">
+?>
+<script type="text/template" id="tmpl-qazana-repeater-row">
 	<div class="qazana-repeater-row-tools">
 		<div class="qazana-repeater-row-handle-sortable">
 			<i class="fa fa-ellipsis-v"></i>

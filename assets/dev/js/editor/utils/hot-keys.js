@@ -98,7 +98,7 @@ var HotKeys = function( $ ) {
 					return self.isControlEvent( event );
 				},
 				handle: function() {
-					qazana.getPanelView().getFooterView()._publishQazana();
+					qazana.getPanelView().getFooterView()._publishBuilder();
 				}
 			}
 		};
@@ -113,6 +113,11 @@ var HotKeys = function( $ ) {
 
 		_.each( handlers, function( handler ) {
 			if ( handler.isWorthHandling && ! handler.isWorthHandling( event ) ) {
+				return;
+			}
+
+			// Fix for some keyboard sources that consider alt key as ctrl key
+			if ( ! handler.allowAltKey && event.altKey ) {
 				return;
 			}
 

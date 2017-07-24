@@ -1,11 +1,15 @@
 var BaseSettingsModel = require( 'qazana-models/base-settings' ),
-	Stylesheet = require( 'qazana-utils/stylesheet' ),
+	ControlsCSSParser = require( 'qazana-editor-utils/controls-css-parser' ),
+	Validator = require( 'qazana-editor-utils/validator' ),
+	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseElementView;
 
-BaseElementView = Marionette.CompositeView.extend( {
+BaseElementView = BaseContainer.extend( {
 	tagName: 'div',
 
-	stylesheet: null,
+	controlsCSSParser: null,
+
+	toggleEditTools: true,
 
 	className: function() {
 		return this.getElementUniqueID();
@@ -17,16 +21,21 @@ BaseElementView = Marionette.CompositeView.extend( {
 		if ( 'widget'  === type ) {
 			type = this.model.get( 'widgetType' );
 		}
+
 		return {
+			'data-id': this.getID(),
 			'data-element_type': type
 		};
 	},
 
 	ui: function() {
 		return {
-			duplicateButton: '> .qazana-editor-element-settings .qazana-editor-element-duplicate',
-			removeButton: '> .qazana-editor-element-settings .qazana-editor-element-remove',
-			saveButton: '> .qazana-editor-element-settings .qazana-editor-element-save'
+			triggerButton: '> .qazana-element-overlay .qazana-editor-element-trigger',
+			duplicateButton: '> .qazana-element-overlay .qazana-editor-element-duplicate',
+			removeButton: '> .qazana-element-overlay .qazana-editor-element-remove',
+			saveButton: '> .qazana-element-overlay .qazana-editor-element-save',
+			settingsList: '> .qazana-element-overlay .qazana-editor-element-settings',
+			addButton: '> .qazana-element-overlay .qazana-editor-element-add'
 		};
 	},
 
@@ -34,11 +43,10 @@ BaseElementView = Marionette.CompositeView.extend( {
 		return {
 			'click @ui.removeButton': 'onClickRemove',
 			'click @ui.saveButton': 'onClickSave',
-			'click @ui.duplicateButton': 'duplicate'
+			'click @ui.duplicateButton': 'onClickDuplicate',
+			'click @ui.triggerButton': 'onClickEdit'
 		};
 	},
-
-	$stylesheetElement: null,
 
 	getElementType: function() {
 		return this.model.get( 'elType' );
@@ -92,16 +100,11 @@ BaseElementView = Marionette.CompositeView.extend( {
 		var editModel = this.getEditModel();
 
 		this.listenTo( editModel.get( 'settings' ), 'change', this.onSettingsChanged, this );
-		this.listenTo( editModel.get( 'editSettings' ), 'change', this.onSettingsChanged, this );
-
-		this.on( 'render', function() {
-			this.renderUI();
-			this.runReadyTrigger();
-		} );
+		this.listenTo( editModel.get( 'editSettings' ), 'change', this.onEditSettingsChanged, this );
 
 		this.initRemoveDialog();
 
-		this.initStylesheet();
+		this.initControlsCSSParser();
 	},
 
     handleElementHover: function( ) {
@@ -132,33 +135,6 @@ BaseElementView = Marionette.CompositeView.extend( {
 		qazana.getPanelView().openEditor( this.getEditModel(), this );
 	},
 
-	addChildModel: function( model, options ) {
-		return this.collection.add( model, options, true );
-	},
-
-	addChildElement: function( itemData, options ) {
-		options = options || {};
-
-		var myChildType = this.getChildType();
-
-		if ( -1 === myChildType.indexOf( itemData.elType ) ) {
-			delete options.at;
-
-			return this.children.last().addChildElement( itemData, options );
-		}
-
-		var newModel = this.addChildModel( itemData, options ),
-			newView = this.children.findByModel( newModel );
-
-		if ( 'section' === newView.getElementType() && newView.isInner() ) {
-			newView.addEmptyColumn();
-		}
-
-		newView.edit();
-
-		return newView;
-	},
-
 	addElementFromPanel: function( options ) {
 		var elementView = qazana.channels.panelElements.request( 'element:selected' );
 
@@ -182,7 +158,25 @@ BaseElementView = Marionette.CompositeView.extend( {
 			_.extend( itemData, customData );
 		}
 
-		this.addChildElement( itemData, options );
+		var newView = this.addChildElement( itemData, options );
+
+		if ( 'section' === newView.getElementType() && newView.isInner() ) {
+			newView.addEmptyColumn();
+		}
+
+	},
+
+	addControlValidator: function( controlName, validationCallback ) {
+		validationCallback = _.bind( validationCallback, this );
+
+		var validator = new Validator( { customValidationMethod: validationCallback } ),
+			validators = this.getEditModel().get( 'settings' ).validators;
+
+		if ( ! validators[ controlName ] ) {
+			validators[ controlName ] = [];
+		}
+
+		validators[ controlName ].push( validator );
 	},
 
 	isCollectionFilled: function() {
@@ -209,7 +203,13 @@ BaseElementView = Marionette.CompositeView.extend( {
 					},
 					defaultOption: 'confirm',
 					onConfirm: _.bind( function() {
+						var parent = this._parent;
+
+						parent.isManualRemoving = true;
+
 						this.model.destroy();
+
+						parent.isManualRemoving = false;
 					}, this )
 				} );
 			}
@@ -218,21 +218,8 @@ BaseElementView = Marionette.CompositeView.extend( {
 		};
 	},
 
-	initStylesheet: function() {
-		var viewportBreakpoints = qazana.config.viewportBreakpoints;
-
-		this.stylesheet = new Stylesheet();
-
-		this.stylesheet
-			.addDevice( 'mobile', 0 )
-			.addDevice( 'tablet', viewportBreakpoints.md )
-			.addDevice( 'desktop', viewportBreakpoints.lg );
-	},
-
-	createStylesheetElement: function() {
-		this.$stylesheetElement = Backbone.$( '<style>', { id: 'qazana-style-' + this.model.cid } );
-
-		qazana.$previewContents.find( 'head' ).append( this.$stylesheetElement );
+	initControlsCSSParser: function() {
+		this.controlsCSSParser = new ControlsCSSParser( { id: this.model.cid } );
 	},
 
 	enqueueFonts: function() {
@@ -250,122 +237,75 @@ BaseElementView = Marionette.CompositeView.extend( {
 		}, this ) );
 	},
 
-	addStyleRules: function( controls, values, placeholders, replacements ) {
-		var self = this;
-
-		_.each( controls, function( control ) {
-			if ( control.styleFields ) {
-				values[ control.name ].each( function( itemModel ) {
-					self.addStyleRules(
-						control.styleFields,
-						itemModel.attributes,
-						placeholders.concat( [ '{{CURRENT_ITEM}}' ] ),
-						replacements.concat( [ '.qazana-repeater-item-' + itemModel.get( '_id' ) ] )
-					);
-				} );
-			}
-
-			self.addControlStyleRules( control, values, self.getEditModel().get( 'settings' ).controls, placeholders, replacements );
-		} );
-	},
-
-	addControlStyleRules: function( control, values, controlsStack, placeholders, replacements ) {
-		var self = this;
-
-		BaseElementView.addControlStyleRules( self.stylesheet, control, controlsStack, function( control ) {
-			return self.getStyleControlValue( control, values );
-		}, placeholders, replacements );
-	},
-
-	addStyleToDocument: function() {
-		var styleText = this.stylesheet.toString();
-
-		styleText = qazana.hooks.applyFilters( 'editor/style/styleText', styleText, this );
-
-		if ( _.isEmpty( styleText ) && ! this.$stylesheetElement ) {
-			return;
-		}
-
-		if ( ! this.$stylesheetElement ) {
-			this.createStylesheetElement();
-		}
-
-		this.$stylesheetElement.text( styleText );
-	},
-
-	getStyleControlValue: function( control, values ) {
-		var value = values[ control.name ];
-
-		if ( control.selectors_dictionary ) {
-			value = control.selectors_dictionary[ value ] || value;
-		}
-
-		if ( ! _.isNumber( value ) && _.isEmpty( value ) ) {
-			return;
-		}
-
-		return value;
-	},
-
 	renderStyles: function() {
 		var self = this,
 			settings = self.getEditModel().get( 'settings' );
 
-		self.stylesheet.empty();
+		self.controlsCSSParser.stylesheet.empty();
 
-		self.addStyleRules( settings.getStyleControls(), settings.attributes, [ /\{\{WRAPPER}}/g ], [ '#qazana .' + self.getElementUniqueID() ] );
+		self.controlsCSSParser.addStyleRules( settings.getStyleControls(), settings.attributes, self.getEditModel().get( 'settings' ).controls, [ /{{ID}}/g, /{{WRAPPER}}/g ], [ self.getID(), '#qazana .' + self.getElementUniqueID() ] );
 
-		if ( 'column' === self.model.get( 'elType' ) ) {
-			var inlineSize = settings.get( '_inline_size' );
+		self.controlsCSSParser.addStyleToDocument();
 
-			if ( ! _.isEmpty( inlineSize ) ) {
-				self.stylesheet.addRules( '#qazana .' + self.getElementUniqueID(), { width: inlineSize + '%' }, { min: 'tablet' } );
-			}
+		var extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
+
+		if ( extraCSS ) {
+			self.controlsCSSParser.elements.$stylesheetElement.append( extraCSS );
 		}
-
-		self.addStyleToDocument();
 	},
 
 	renderCustomClasses: function() {
-
 		var self = this;
 
 		self.$el.addClass( 'qazana-element' );
 
-		var settings = self.getEditModel().get( 'settings' );
+		var settings = self.getEditModel().get( 'settings' ),
+			classControls = settings.getClassControls();
 
-		_.each( settings.attributes, function( value, attribute ) {
-			if ( settings.isClassControl( attribute ) ) {
-				var currentControl = settings.getControl( attribute ),
-					previousClassValue = settings.previous( attribute ),
-					classValue = value;
+		// Remove all previous classes
+		_.each( classControls, function( control ) {
+			var previousClassValue = settings.previous( control.name );
 
-				if ( currentControl.classes_dictionary ) {
-					if ( undefined !== currentControl.classes_dictionary[ previousClassValue ] ) {
-						previousClassValue = currentControl.classes_dictionary[ previousClassValue ];
-					}
-
-					if ( undefined !== currentControl.classes_dictionary[ value ] ) {
-						classValue = currentControl.classes_dictionary[ value ];
-					}
-				}
-
-				self.$el.removeClass( currentControl.prefix_class + previousClassValue );
-
-				var isVisible = qazana.helpers.isActiveControl( currentControl, settings.attributes );
-
-				if ( isVisible && ! _.isEmpty( classValue ) ) {
-					self.$el
-						.addClass( currentControl.prefix_class + classValue )
-						.addClass( _.result( self, 'className' ) );
+			if ( control.classes_dictionary ) {
+				if ( undefined !== control.classes_dictionary[ previousClassValue ] ) {
+					previousClassValue = control.classes_dictionary[ previousClassValue ];
 				}
 			}
+
+			self.$el.removeClass( control.prefix_class + previousClassValue );
 		} );
+
+		// Add new classes
+		_.each( classControls, function( control ) {
+			var value = settings.attributes[ control.name ],
+				classValue = value;
+
+			if ( control.classes_dictionary ) {
+				if ( undefined !== control.classes_dictionary[ value ] ) {
+					classValue = control.classes_dictionary[ value ];
+				}
+			}
+
+			var isVisible = qazana.helpers.isActiveControl( control, settings.attributes );
+
+			if ( isVisible && ! _.isEmpty( classValue ) ) {
+				self.$el
+					.addClass( control.prefix_class + classValue )
+					.addClass( _.result( self, 'className' ) );
+			}
+		} );
+	},
+
+	renderCustomElementID: function() {
+		var customElementID = this.getEditModel().get( 'settings' ).get( '_element_id' );
+
+		this.$el.attr( 'id', customElementID );
 	},
 
 	renderUI: function() {
 		this.renderStyles();
 		this.renderCustomClasses();
+		this.renderCustomElementID();
 		this.enqueueFonts();
 	},
 
@@ -375,17 +315,102 @@ BaseElementView = Marionette.CompositeView.extend( {
 		}, this ) );
 	},
 
-	getElementUniqueID: function() {
-		return 'qazana-element-' + this.model.get( 'id' );
+	getID: function() {
+		return this.model.get( 'id' );
 	},
 
-	duplicate: function( event ) {
-		event.preventDefault();
+	getElementUniqueID: function() {
+		return 'qazana-element-' + this.getID();
+	},
+
+	duplicate: function() {
 		this.trigger( 'request:duplicate' );
 	},
 
 	confirmRemove: function() {
 		this.getRemoveDialog().show();
+	},
+
+	renderOnChange: function( settings ) {
+		// Make sure is correct model
+		if ( settings instanceof BaseSettingsModel ) {
+			var hasChanged = settings.hasChanged(),
+				isContentChanged = ! hasChanged,
+				isRenderRequired = ! hasChanged;
+
+			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
+				var control = settings.getControl( settingKey );
+
+				if ( ! control ) {
+					isRenderRequired = true;
+
+					return;
+				}
+
+				if ( 'none' !== control.render_type ) {
+					isRenderRequired = true;
+				}
+
+				if ( -1 !== [ 'none', 'ui' ].indexOf( control.render_type ) ) {
+					return;
+				}
+
+				if ( 'template' === control.render_type || ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) && '_element_id' !== settingKey ) {
+					isContentChanged = true;
+				}
+			} );
+
+			if ( ! isRenderRequired ) {
+				return;
+			}
+
+			if ( ! isContentChanged ) {
+				this.renderUI();
+				return;
+			}
+		}
+
+		// Re-render the template
+		var templateType = this.getTemplateType(),
+			editModel = this.getEditModel();
+
+		if ( 'js' === templateType ) {
+			this.getEditModel().setHtmlCache();
+			this.render();
+			editModel.renderOnLeave = true;
+		} else {
+			editModel.renderRemoteServer();
+		}
+	},
+
+	onRender: function() {
+		var self = this;
+
+		self.renderUI();
+
+		self.runReadyTrigger();
+
+		if ( self.toggleEditTools ) {
+			self.ui.settingsList.hoverIntent( function() {
+				self.ui.triggerButton.addClass( 'qazana-active' );
+			}, function() {
+				self.ui.triggerButton.removeClass( 'qazana-active' );
+			}, { timeout: 500 } );
+		}
+	},
+
+	onCollectionChanged: function() {
+		qazana.setFlagEditorChange( true );
+	},
+
+	onEditSettingsChanged: function( changedModel ) {
+		this.renderOnChange( changedModel );
+	},
+
+	onSettingsChanged: function( changedModel ) {
+		qazana.setFlagEditorChange( true );
+
+		this.renderOnChange( changedModel );
 	},
 
 	onClickEdit: function( event ) {
@@ -401,50 +426,11 @@ BaseElementView = Marionette.CompositeView.extend( {
 		this.edit();
 	},
 
-	onCollectionChanged: function() {
-		qazana.setFlagEditorChange( true );
-	},
+	onClickDuplicate: function( event ) {
+		event.preventDefault();
+		event.stopPropagation();
 
-	onSettingsChanged: function( settings ) {
-		var editModel = this.getEditModel();
-
-		if ( editModel.get( 'editSettings' ) !== settings ) {
-			// Change flag only if server settings was changed
-			qazana.setFlagEditorChange( true );
-		}
-
-		// Make sure is correct model
-		if ( settings instanceof BaseSettingsModel ) {
-			var isContentChanged = false;
-
-			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
-				var control = settings.getControl( settingKey );
-
-				if ( ! control ) {
-					return;
-				}
-
-				if ( control.force_render || ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) ) {
-					isContentChanged = true;
-				}
-			} );
-
-			if ( ! isContentChanged ) {
-				this.renderUI();
-				return;
-			}
-		}
-
-		// Re-render the template
-		var templateType = this.getTemplateType();
-
-		if ( 'js' === templateType ) {
-			this.getEditModel().setHtmlCache();
-			this.render();
-			editModel.renderOnLeave = true;
-		} else {
-			editModel.renderRemoteServer();
-		}
+		this.duplicate();
 	},
 
 	onClickRemove: function( event ) {
@@ -459,80 +445,15 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 		var model = this.model;
 
-		qazana.templates.startModal( function() {
-			qazana.templates.getLayout().showSaveTemplateView( model );
+		qazana.templates.startModal( {
+			onReady: function() {
+				qazana.templates.getLayout().showSaveTemplateView( model );
+			}
 		} );
 	},
 
 	onDestroy: function() {
-		if ( this.$stylesheetElement ) {
-			this.$stylesheetElement.remove();
-		}
-	}
-}, {
-	addControlStyleRules: function( stylesheet, control, controlsStack, valueCallback, placeholders, replacements ) {
-		var value = valueCallback( control );
-
-		if ( undefined === value ) {
-			return;
-		}
-
-		_.each( control.selectors, function( cssProperty, selector ) {
-			var outputCssProperty;
-
-			try {
-				outputCssProperty = cssProperty.replace( /\{\{(?:([^.}]+)\.)?([^}]*)}}/g, function( originalPhrase, controlName, placeholder ) {
-					var parserControl = control,
-						valueToInsert = value;
-
-					if ( controlName ) {
-						parserControl = _.findWhere( controlsStack, { name: controlName } );
-
-						valueToInsert = valueCallback( parserControl );
-					}
-
-					var parsedValue = qazana.getControlItemView( parserControl.type ).getStyleValue( placeholder.toLowerCase(), valueToInsert );
-
-					if ( '' === parsedValue ) {
-						throw '';
-					}
-
-					return parsedValue;
-				} );
-			} catch ( e ) {
-				return;
-			}
-
-			if ( _.isEmpty( outputCssProperty ) ) {
-				return;
-			}
-
-			var devicePattern = /^\(([^)]+)\)/,
-				deviceRule = selector.match( devicePattern );
-
-			if ( deviceRule ) {
-				selector = selector.replace( devicePattern, '' );
-
-				deviceRule = deviceRule[1];
-			}
-
-			_.each( placeholders, function( placeholder, index ) {
-				selector = selector.replace( placeholder, replacements[ index ] );
-			} );
-
-			var device = deviceRule,
-				query;
-
-			if ( ! device && control.responsive ) {
-				device = control.responsive;
-			}
-
-			if ( device && 'desktop' !== device ) {
-				query = { max: device };
-			}
-
-			stylesheet.addRules( selector, outputCssProperty, query );
-		} );
+		this.controlsCSSParser.removeStyleFromDocument();
 	}
 } );
 

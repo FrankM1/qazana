@@ -34,15 +34,16 @@ EditModeItemView = Marionette.ItemView.extend( {
 	},
 
 	onRender: function() {
-		this.onPreviewButtonChange();
+		this.onEditModeChanged();
 	},
 
 	onPreviewButtonChange: function() {
 		qazana.changeEditMode( this.getCurrentMode() );
 	},
 
-	onEditModeChanged: function( activeMode ) {
-		var title = qazana.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
+	onEditModeChanged: function() {
+		var activeMode = qazana.channels.dataEditMode.request( 'activeMode' ),
+			title = qazana.translate( 'preview' === activeMode ? 'back_to_editor' : 'preview' );
 
 		this.ui.previewLabel.attr( 'title', title );
 		this.ui.previewLabelA11y.text( title );

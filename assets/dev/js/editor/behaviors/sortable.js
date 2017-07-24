@@ -57,8 +57,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		var $childViewContainer = this.getChildViewContainer(),
 			defaultSortableOptions = {
 				connectWith: $childViewContainer.selector,
-				cursor: 'move',
-				placeholder: 'qazana-sortable-placeholder',
+				placeholder: 'qazana-sortable-placeholder qazana-' + this.getOption( 'elChildType' ) + '-placeholder',
 				cursorAt: {
 					top: 20,
 					left: 25
@@ -92,9 +91,6 @@ SortableBehavior = Marionette.Behavior.extend( {
 		} );
 
 		if ( 'column' === this.options.elChildType ) {
-			// the following code is just for touch
-			ui.placeholder.addClass( 'qazana-column' );
-
 			var uiData = ui.item.data( 'sortableItem' ),
 				uiItems = uiData.items,
 				itemHeight = 0;
@@ -107,19 +103,19 @@ SortableBehavior = Marionette.Behavior.extend( {
 			} );
 
 			ui.placeholder.height( itemHeight );
-
-			// ui.placeholder.addClass( 'qazana-column qazana-col-' + model.getSetting( 'size' ) );
 		}
 
 		qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:start' );
 
-		qazana.channels.data.reply( 'cache:' + model.cid, model );
+		qazana.channels.data
+			.reply( 'dragging:model', model )
+			.reply( 'dragging:parent:view', this.view );
 	},
 
-	onSortOver: function( event, ui ) {
+	onSortOver: function( event ) {
 		event.stopPropagation();
 
-		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) );
+		var model = qazana.channels.data.request( 'dragging:model' );
 
 		Backbone.$( event.target )
 			.addClass( 'qazana-draggable-over' )
@@ -149,56 +145,48 @@ SortableBehavior = Marionette.Behavior.extend( {
 			return;
 		}
 
-		var model = qazana.channels.data.request( 'cache:' + ui.item.data( 'model-cid' ) ),
+		var model = qazana.channels.data.request( 'dragging:model' ),
 			draggedElType = model.get( 'elType' ),
 			draggedIsInnerSection = 'section' === draggedElType && model.get( 'isInner' ),
 			targetIsInnerColumn = 'column' === this.view.getElementType() && this.view.isInner();
 
 		if ( draggedIsInnerSection && targetIsInnerColumn ) {
 			Backbone.$( ui.sender ).sortable( 'cancel' );
+
 			return;
 		}
 
-		var newIndex = ui.item.parent().children().index( ui.item ),
-			newModel = new this.view.collection.model( model.toJSON( { copyHtmlCache: true } ) );
+		var newIndex = ui.item.parent().children().index( ui.item );
 
-		this.view.addChildModel( newModel, { at: newIndex } );
+		this.view.addChildElement( model.toJSON( { copyHtmlCache: true } ), { at: newIndex } );
 
-		qazana.channels.data.trigger( draggedElType + ':drag:end' );
+		var senderSection = qazana.channels.data.request( 'dragging:parent:view' );
+
+		senderSection.isManualRemoving = true;
 
 		model.destroy();
+
+		senderSection.isManualRemoving = false;
 	},
 
 	onSortUpdate: function( event, ui ) {
 		event.stopPropagation();
 
-		var model = this.view.collection.get( ui.item.attr( 'data-model-cid' ) );
-		if ( model ) {
-			qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
-		}
-	},
-
-	onSortStop: function( event, ui ) {
-		event.stopPropagation();
-
-		var $childElement = ui.item,
-			collection = this.view.collection,
-			model = collection.get( $childElement.attr( 'data-model-cid' ) ),
-			newIndex = $childElement.parent().children().index( $childElement );
-
 		if ( this.getChildViewContainer()[0] === ui.item.parent()[0] ) {
-			if ( null === ui.sender && model ) {
-				var oldIndex = collection.indexOf( model );
+			var model = qazana.channels.data.request( 'dragging:model' ),
+				$childElement = ui.item,
+				collection = this.view.collection,
+				newIndex = $childElement.parent().children().index( $childElement );
 
-				if ( oldIndex !== newIndex ) {
-					collection.remove( model );
-					this.view.addChildModel( model, { at: newIndex } );
+			var child = this.view.children.findByModelCid( model.cid );
 
-					qazana.setFlagEditorChange( true );
-				}
+			child._isRendering = true;
 
-				qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:end' );
-			}
+			collection.remove( model );
+
+			this.view.addChildElement( model, { at: newIndex } );
+
+			qazana.setFlagEditorChange( true );
 		}
 	},
 
@@ -207,13 +195,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	getChildViewContainer: function() {
-		if ( 'function' === typeof this.view.getChildViewContainer ) {
-			// CompositeView
-			return this.view.getChildViewContainer( this.view );
-		} else {
-			// CollectionView
-			return this.$el;
-		}
+		return this.view.getChildViewContainer( this.view );
 	}
 } );
 

@@ -1,15 +1,14 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
-	ControlFontItemView;
+var ControlSelect2View = require( 'qazana-views/controls/select2' );
 
-ControlFontItemView = ControlBaseItemView.extend( {
-	onReady: function() {
-		this.ui.select.select2( {
+module.exports = ControlSelect2View.extend( {
+	getSelect2Options: function() {
+		return {
 			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
-		} );
+		};
 	},
 
 	templateHelpers: function() {
-		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
+		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments );
 
 		helpers.getFontsByGroups = _.bind( function( groups ) {
 			var fonts = this.model.get( 'fonts' ),
@@ -27,5 +26,3 @@ ControlFontItemView = ControlBaseItemView.extend( {
 		return helpers;
 	}
 } );
-
-module.exports = ControlFontItemView;

@@ -226,7 +226,7 @@ class Source_Local extends Source_Base {
 
 		// TODO: Valid the data (in JS too!)
 		if ( 'display' === $context ) {
-			$data = $db->get_qazana( $item_id );
+			$data = $db->get_builder( $item_id );
 		} else {
 			$data = $db->get_plain_editor( $item_id );
 		}

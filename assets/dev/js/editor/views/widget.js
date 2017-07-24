@@ -31,14 +31,40 @@ WidgetView = BaseElementView.extend( {
 
 		var editModel = this.getEditModel();
 
-		if ( 'remote' === this.getTemplateType() && ! this.getEditModel().getHtmlCache() ) {
-			editModel.renderRemoteServer();
-		}
-
 		editModel.on( {
 			'before:remote:render': _.bind( this.onModelBeforeRemoteRender, this ),
 			'remote:render': _.bind( this.onModelRemoteRender, this )
 		} );
+
+		if ( 'remote' === this.getTemplateType() && ! this.getEditModel().getHtmlCache() ) {
+			editModel.renderRemoteServer();
+		}
+
+		var onRenderMethod = this.onRender;
+
+		this.onRender = function() {
+			_.defer( _.bind( onRenderMethod, this ) );
+		};
+	},
+
+	render: function() {
+		if ( this.model.isRemoteRequestActive() ) {
+			this.handleEmptyWidget();
+
+			this.$el.addClass( 'qazana-element' );
+
+			return;
+		}
+
+		Marionette.CompositeView.prototype.render.apply( this, arguments );
+	},
+
+	handleEmptyWidget: function() {
+		// TODO: REMOVE THIS !!
+		// TEMP CODING !!
+		this.$el
+			.addClass( 'qazana-widget-empty' )
+			.append( '<i class="qazana-widget-empty-icon ' + this.getEditModel().getIcon() + '"></i>' );
 	},
 
 	getTemplateType: function() {
@@ -77,19 +103,32 @@ WidgetView = BaseElementView.extend( {
 	},
 
 	attachElContent: function( html ) {
-		var htmlContent = this.getHTMLContent( html ),
-			el = this.$el[0];
+		var self = this,
+			htmlContent = self.getHTMLContent( html );
 
 		_.defer( function() {
-			qazanaFrontend.getScopeWindow().jQuery( el ).html( htmlContent );
+			qazanaFrontend.getScopeWindow().jQuery( self.el ).html( htmlContent );
+
+			self.bindUIElements(); // Build again the UI elements since the content attached just now
 		} );
 
 		return this;
 	},
 
+	onClickEdit: function( event ) {
+		if ( Backbone.$( event.target ).closest( '.qazana-event-save-default' ).length ) {
+			return;
+		}
+
+		BaseElementView.prototype.onClickEdit.apply( this, arguments );
+	},
+
 	onRender: function() {
-        var self = this,
-	        editModel = self.getEditModel(),
+        var self = this;
+
+		BaseElementView.prototype.onRender.apply( self, arguments );
+
+	    var editModel = self.getEditModel(),
 	        skinType = editModel.getSetting( '_skin' ) || 'default';
 
         self.$el
@@ -99,46 +138,16 @@ WidgetView = BaseElementView.extend( {
             .children( '.qazana-widget-empty-icon' )
             .remove();
 
-        self.$el.imagesLoaded().always( function() {
-            setTimeout( function() {
-                if ( 1 > self.$el.height() ) {
-                    self.$el.addClass( 'qazana-widget-empty' );
-
-                    // TODO: REMOVE THIS !!
-                    // TEMP CODING !!
-                    self.$el.append( '<i class="qazana-widget-empty-icon ' + editModel.getIcon() + '"></i>' );
-                }
-            }, 200 );
-            // Is element empty?
-        } );
-
-        self.handleElementHover();
-
-	},
-
-    handleElementHover: function( ) {
-
-        var self = this,
-            config = {
-                class : 'qazana-widget-settings-active'
-            };
-
-        var hoverConfig = {
-            sensitivity: 1, // number = sensitivity threshold (must be 1 or higher)
-            interval: 10, // number = milliseconds for onMouseOver polling interval
-            timeout: 500, // number = milliseconds delay before onMouseOut
-            over: function() {
-                self.$el.addClass( config.class );
-            },
-            out: function() {
-                self.$el.removeClass(config.class );
-            }
-        };
-
-        self.$el.hoverIntent(hoverConfig);
-
-    },
-
+		// TODO: Find better way to detect if all images are loaded
+		self.$el.imagesLoaded().always( function() {
+			setTimeout( function() {
+				if ( 1 > self.$el.height() ) {
+					self.handleEmptyWidget();
+				}
+			}, 200 );
+			// Is element empty?
+		} );
+	}
 } );
 
 module.exports = WidgetView;

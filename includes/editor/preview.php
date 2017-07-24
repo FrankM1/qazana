@@ -19,12 +19,9 @@ class Preview {
 		// Disable the WP admin bar in preview mode.
 		add_filter( 'show_admin_bar', '__return_false' );
 
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-        add_action( 'wp_head', [ $this, 'print_custom_css' ] );
-        add_action( 'radium_after_loop', [ $this, 'preview_grid' ] );
-
-		add_filter( 'body_class', [ $this, 'body_class' ] );
-		add_filter( 'the_content', [ $this, 'qazana_wrapper' ], 999999 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_head', [ $this, 'print_custom_css' ] );
+		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
 		Utils::do_not_cache();
@@ -49,38 +46,37 @@ class Preview {
 	}
 
 	/**
-	 * Add custom class in `<body>` element.
-	 *
-	 * @since 1.0.0
-	 * @param array $classes
-	 *
-	 * @return array
-	 */
-	public function body_class( $classes = [] ) {
-		$classes[] = 'qazana-body';
-		return $classes;
-	}
-
-	/**
-	 * Do not show the conent from the page. Just print empty start HTML.
+	 * Do not show the content from the page. Just print empty start HTML.
 	 * The Javascript will add the content later.
 	 *
 	 * @since 1.0.0
-	 * @param string $content
 	 *
 	 * @return string
 	 */
-	public function qazana_wrapper( $content ) {
+	public function builder_wrapper() {
 		return '<div id="qazana" class="qazana qazana-edit-mode"></div>';
 	}
 
 	public function print_custom_css() {
+		$stylesheet = new Stylesheet();
+
 		$container_width = absint( get_option( 'qazana_container_width' ) );
-		if ( empty( $container_width ) ) {
-			return;
+
+		if ( $container_width ) {
+			$stylesheet->add_rules( '.qazana-section.qazana-section-boxed > .qazana-container', [ 'max-width' => $container_width . 'px' ] );
 		}
 
-		?><style>.qazana-section.qazana-section-boxed > .qazana-container{max-width: <?php echo esc_html( $container_width ); ?>px</style><?php
+		$space_between_widgets = get_option( 'qazana_space_between_widgets' );
+
+		if ( is_numeric( $space_between_widgets ) ) {
+			$stylesheet->add_rules( '.qazana-widget:not(:last-child)', [ 'margin-bottom' => $space_between_widgets . 'px' ] );
+		}
+
+		$style_text = $stylesheet->__toString();
+
+		if ( $style_text ) {
+			echo '<style id="qazana-preview-custom-css">' . $style_text . '</style>';
+		}
 	}
 
 	/**
@@ -111,8 +107,8 @@ class Preview {
 
         wp_enqueue_style( 'editor-preview' );
 
-        do_action( 'qazana/preview/enqueue_styles' );
-    }
+		do_action( 'qazana/preview/enqueue_styles' );
+	}
 
     public function preview_grid() {
 

@@ -5,7 +5,6 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 	correctionTimeOut: 0,
 
 	getInputValue: function( input ) {
-
 		var self = this,
 			inputValue = ControlBaseItemView.prototype.getInputValue.apply( self, arguments ),
 			validValue = inputValue,
@@ -27,10 +26,8 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 		return validValue;
 	},
 
-	updateElementModel: function( event ) {
+	updateElementModel: function( value, input ) {
 		var self = this,
-			input = event.currentTarget,
-			value = this.getInputValue( event.currentTarget ),
 			originalInputValue = ControlBaseItemView.prototype.getInputValue.call( self, input );
 
 		if ( originalInputValue !== value ) {
@@ -42,7 +39,7 @@ ControlNumberItemView = ControlBaseItemView.extend( {
 		ControlBaseItemView.prototype.updateElementModel.apply( this, arguments );
 	},
 
-	onBaseInputChange: function( event ) {
+	onBaseInputChange: function() {
 		if ( this.correctionTimeOut ) {
 			clearTimeout( this.correctionTimeOut );
 		}

@@ -45,59 +45,59 @@ class Editor {
     }
 
 	public function init() {
-
 		if ( is_admin() || ! $this->is_edit_mode() ) {
 			return;
 		}
 
-        add_filter( 'show_admin_bar', '__return_false' );
+		add_filter( 'show_admin_bar', '__return_false' );
 
-        // Remove all WordPress actions
-        remove_all_actions( 'wp_head' );
-        remove_all_actions( 'wp_print_styles' );
-        remove_all_actions( 'wp_print_head_scripts' );
-        remove_all_actions( 'wp_footer' );
+		// Remove all WordPress actions
+		remove_all_actions( 'wp_head' );
+		remove_all_actions( 'wp_print_styles' );
+		remove_all_actions( 'wp_print_head_scripts' );
+		remove_all_actions( 'wp_footer' );
 
-        // Handle `wp_head`
-        add_action( 'wp_head', 'wp_enqueue_scripts', 1 );
-        add_action( 'wp_head', 'wp_print_styles', 8 );
-        add_action( 'wp_head', 'wp_print_head_scripts', 9 );
+		// Handle `wp_head`
+		add_action( 'wp_head', 'wp_enqueue_scripts', 1 );
+		add_action( 'wp_head', 'wp_print_styles', 8 );
+		add_action( 'wp_head', 'wp_print_head_scripts', 9 );
 		add_action( 'wp_head', 'wp_site_icon' );
-        add_action( 'wp_head', [ $this, 'editor_head_trigger' ], 30 );
+		add_action( 'wp_head', [ $this, 'editor_head_trigger' ], 30 );
 
-        // Handle `wp_footer`
-        add_action( 'wp_footer', 'wp_print_footer_scripts', 20 );
-        add_action( 'wp_footer', 'wp_auth_check_html', 30 );
-        add_action( 'wp_footer', [ $this, 'wp_footer' ] );
+		// Handle `wp_footer`
+		add_action( 'wp_footer', 'wp_print_footer_scripts', 20 );
+		add_action( 'wp_footer', 'wp_auth_check_html', 30 );
+		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
-        // Handle `wp_enqueue_scripts`
+		// Handle `wp_enqueue_scripts`
 		remove_all_actions( 'wp_enqueue_scripts' );
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 999999 );
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
-        $post_id = get_the_ID();
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 999999 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
-        // Change mode to Qazana
-        qazana()->db->set_edit_mode( $post_id );
+		$post_id = get_the_ID();
 
-        // Post Lock
-        if ( ! $this->get_locked_user( $post_id ) ) {
-            $this->lock_post( $post_id );
-        }
+		// Change mode to Builder
+		qazana()->db->set_is_qazana_page( $post_id );
 
-        // Setup default heartbeat options
-        add_filter( 'heartbeat_settings', function( $settings ) {
-            $settings['interval'] = 15;
-            return $settings;
-        } );
+		// Post Lock
+		if ( ! $this->get_locked_user( $post_id ) ) {
+			$this->lock_post( $post_id );
+		}
 
-        // Tell to WP Cache plugins do not cache this request.
-        Utils::do_not_cache();
+		// Setup default heartbeat options
+		add_filter( 'heartbeat_settings', function( $settings ) {
+			$settings['interval'] = 15;
+			return $settings;
+		} );
 
-        // Print the panel
-        $this->print_panel_html();
-        die;
-    }
+		// Tell to WP Cache plugins do not cache this request.
+		Utils::do_not_cache();
+
+		// Print the panel
+		$this->print_panel_html();
+		die;
+	}
 
 	public function is_edit_mode() {
 		if ( null !== $this->_is_edit_mode ) {
@@ -108,9 +108,9 @@ class Editor {
 			return false;
 		}
 
-        if ( isset( $_GET['qazana'] ) ) {
-            return true;
-        }
+		if ( isset( $_GET['qazana'] ) ) {
+			return true;
+		}
 
 		// In some Apache configurations, in the Home page, the $_GET['qazana'] is not set
 		if ( '/?qazana' === $_SERVER['REQUEST_URI'] ) {
@@ -121,64 +121,64 @@ class Editor {
 		$actions = [
 			'qazana_render_widget',
 
-            // Templates
-            'qazana_get_templates',
-            'qazana_save_template',
-            'qazana_get_template',
-            'qazana_delete_template',
-            'qazana_export_template',
-            'qazana_import_template',
-        ];
+			// Templates
+			'qazana_get_templates',
+			'qazana_save_template',
+			'qazana_get_template',
+			'qazana_delete_template',
+			'qazana_export_template',
+			'qazana_import_template',
+		];
 
-        if ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $actions ) ) {
-            return true;
-        }
+		if ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $actions ) ) {
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * @param $post_id
-     */
-    public function lock_post( $post_id ) {
-        if ( ! function_exists( 'wp_set_post_lock' ) ) {
-            require_once( ABSPATH . 'wp-admin/includes/post.php' );
-        }
+	/**
+	 * @param $post_id
+	 */
+	public function lock_post( $post_id ) {
+		if ( ! function_exists( 'wp_set_post_lock' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/post.php' );
+		}
 
-        wp_set_post_lock( $post_id );
-    }
+		wp_set_post_lock( $post_id );
+	}
 
-    /**
-     * @param $post_id
-     *
-     * @return bool|\WP_User
-     */
-    public function get_locked_user( $post_id ) {
-        if ( ! function_exists( 'wp_check_post_lock' ) ) {
-            require_once( ABSPATH . 'wp-admin/includes/post.php' );
-        }
+	/**
+	 * @param $post_id
+	 *
+	 * @return bool|\WP_User
+	 */
+	public function get_locked_user( $post_id ) {
+		if ( ! function_exists( 'wp_check_post_lock' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/post.php' );
+		}
 
-        $locked_user = wp_check_post_lock( $post_id );
-        if ( ! $locked_user ) {
-            return false;
-        }
+		$locked_user = wp_check_post_lock( $post_id );
+		if ( ! $locked_user ) {
+			return false;
+		}
 
-        return get_user_by( 'id', $locked_user );
-    }
+		return get_user_by( 'id', $locked_user );
+	}
 
-    public function print_panel_html() {
-        include( qazana()->includes_dir . 'editor/editor-templates/editor-wrapper.php' );
-    }
+	public function print_panel_html() {
+		include( 'editor-templates/editor-wrapper.php' );
+	}
 
-    public function enqueue_scripts() {
-        global $wp_styles, $wp_scripts;
+	public function enqueue_scripts() {
+		global $wp_styles, $wp_scripts;
 
-        $post_id = get_the_ID();
+		$post_id = get_the_ID();
 
 		// Set the global data like $authordata and etc
 		setup_postdata( $post_id );
 
-        $editor_data = qazana()->db->get_qazana( $post_id, DB::STATUS_DRAFT );
+        $editor_data = qazana()->db->get_builder( $post_id, DB::STATUS_DRAFT );
 
         // Reset global variable
         $wp_styles = new \WP_Styles();
@@ -357,6 +357,7 @@ class Editor {
         }
 
         $this->add_localize_settings( [
+		'version' => qazana_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'home_url' => home_url(),
             'nonce' => wp_create_nonce( 'qazana-editing' ),
@@ -388,6 +389,8 @@ class Editor {
             'introduction' => User::get_introduction(),
             'viewportBreakpoints' => Responsive::get_breakpoints(),
         	'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
+	'page_title_selector' => $page_title_selector,
+	   'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
             'i18n' => [
                 'qazana' => __( 'Qazana', 'qazana' ),
                 'dialog_confirm_delete' => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
@@ -415,7 +418,7 @@ class Editor {
                 'preview_el_not_found_message' => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
                 'learn_more' => __( 'Learn More', 'qazana' ),
                 'an_error_occurred' => __( 'An error occurred', 'qazana' ),
-                'templates_request_error' => __( 'The following error occurred when processing the request:', 'qazana' ),
+                'templates_request_error' => __( 'The following error(s) occurred while processing the request:', 'qazana' ),
                 'save_your_template' => __( 'Save Your {0} to Library', 'qazana' ),
         		'save_your_template_description' => __( 'Your designs will be available for export and reuse on any page or website', 'qazana' ),
                 'page' => __( 'Page', 'qazana' ),

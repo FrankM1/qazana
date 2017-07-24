@@ -9,8 +9,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			select: 'select[data-setting]',
 			textarea: 'textarea[data-setting]',
 			controlTitle: '.qazana-control-title',
-			responsiveSwitchers: '.qazana-responsive-switcher',
-			switcherDesktop: '.qazana-responsive-switcher-desktop'
+			responsiveSwitchers: '.qazana-responsive-switcher'
 		};
 	},
 
@@ -29,7 +28,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		}
 
 		if ( ! _.isEmpty( responsive ) ) {
-			classes += ' qazana-control-responsive-' + responsive;
+			classes += ' qazana-control-responsive-' + responsive.max;
 		}
 
 		return classes;
@@ -74,16 +73,12 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 
 		this.model.set( controlSettings );
 
-		this.listenTo( this.elementSettingsModel, 'change', this.toggleControlVisibility );
-		this.listenTo( this.elementSettingsModel, 'control:switch:tab', this.onControlSwitchTab );
+		this.listenTo( this.elementSettingsModel, 'change', this.toggleControlVisibility )
+			.listenTo( this.elementSettingsModel, 'change:external:' + this.model.get( 'name' ), this.onSettingsExternalChange );
 	},
 
 	getControlValue: function() {
 		return this.elementSettingsModel.get( this.model.get( 'name' ) );
-	},
-
-	isValidValue: function( value ) {
-		return true;
 	},
 
 	setValue: function( value ) {
@@ -91,27 +86,9 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	setSettingsModel: function( value ) {
-		if ( true !== this.isValidValue( value ) ) {
-			this.triggerMethod( 'settings:error' );
-			return;
-		}
-
 		this.elementSettingsModel.set( this.model.get( 'name' ), value );
 
 		this.triggerMethod( 'settings:change' );
-
-		var elementType = this.elementSettingsModel.get( 'elType' );
-		if ( 'widget' === elementType ) {
-			elementType = this.elementSettingsModel.get( 'widgetType' );
-		}
-
-		if ( undefined === elementType ) {
-			return;
-		}
-
-		// Do not use with this action
-		// It's here for tests and maybe later will be publish
-		qazana.hooks.doAction( 'panel/editor/element/' + elementType + '/' + this.model.get( 'name' ) + '/changed' );
 	},
 
 	applySavedValue: function() {
@@ -143,6 +120,10 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			return $input.prop( 'checked' ) ? inputValue : '';
 		}
 
+		if ( 'number' === inputType && _.isFinite( inputValue ) ) {
+			return +inputValue;
+		}
+
 		// Temp fix for jQuery (< 3.0) that return null instead of empty array
 		if ( 'SELECT' === input.tagName && $input.prop( 'multiple' ) && null === inputValue ) {
 			inputValue = [];
@@ -159,8 +140,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			$input.prop( 'checked', !! value );
 		} else if ( 'radio' === inputType ) {
 			$input.filter( '[value="' + value + '"]' ).prop( 'checked', true );
-		} else if ( 'select2' === inputType ) {
-			// don't touch
 		} else {
 			$input.val( value );
 		}
@@ -195,7 +174,25 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	onBaseInputChange: function( event ) {
-		this.updateElementModel( event );
+		var input = event.currentTarget,
+			value = this.getInputValue( input ),
+			validators = this.elementSettingsModel.validators[ this.model.get( 'name' ) ];
+
+		if ( validators ) {
+			var oldValue = this.getControlValue();
+
+			var isValidValue = validators.every( function( validator ) {
+				return validator.isValid( value, oldValue );
+			} );
+
+			if ( ! isValidValue ) {
+				this.setInputValue( input, oldValue );
+
+				return;
+			}
+		}
+
+		this.updateElementModel( value, input );
 
 		this.triggerMethod( 'input:change', event );
 	},
@@ -208,8 +205,8 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		this.triggerMethod( 'responsive:switcher:click', device );
 	},
 
-	onSwitcherDesktopClick: function() {
-		qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
+	onSettingsExternalChange: function() {
+		this.applySavedValue();
 	},
 
 	renderResponsiveSwitchers: function() {
@@ -230,16 +227,10 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		qazana.channels.data.trigger( 'scrollbar:update' );
 	},
 
-	onControlSwitchTab: function( activeTab ) {
-		this.$el.toggleClass( 'qazana-active-tab', ( activeTab === this.model.get( 'tab' ) ) );
-
-		qazana.channels.data.trigger( 'scrollbar:update' );
-	},
-
 	onReady: function() {},
 
-	updateElementModel: function( event ) {
-		this.setValue( this.getInputValue( event.currentTarget ) );
+	updateElementModel: function( value ) {
+		this.setValue( value );
 	}
 }, {
 	// Static methods

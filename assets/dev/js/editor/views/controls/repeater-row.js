@@ -35,7 +35,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 	getChildView: function( item ) {
 		var controlType = item.get( 'type' );
 
-		return qazana.getControlItemView( controlType );
+		return qazana.getControlView( controlType );
 	},
 
 	childViewOptions: function() {
@@ -114,6 +114,12 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 	onRender: function() {
 		this.setTitle();
 		this.checkConditions();
+	},
+
+	onChildviewResponsiveSwitcherClick: function( childView, device ) {
+		if ( 'desktop' === device ) {
+			qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
+		}
 	}
 } );
 

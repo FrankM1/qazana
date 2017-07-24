@@ -4,7 +4,7 @@
 
 	var QazanaAdminDialogApp = {
 
-		qazanaModals: require( 'qazana-utils/modals' ),
+		qazanaModals: require( 'qazana-editor-utils/modals' ),
 
 		dialogsManager: new DialogsManager.Instance(),
 

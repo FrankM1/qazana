@@ -77,6 +77,7 @@ class Fonts {
 			'Archivo Black' => self::GOOGLE,
 			'Archivo Narrow' => self::GOOGLE,
 			'Aref Ruqaa' => self::GOOGLE,
+			'Arsenal' => self::GOOGLE,
 			'Arima Madurai' => self::GOOGLE,
 			'Arimo' => self::GOOGLE,
 			'Arizonia' => self::GOOGLE,
@@ -838,10 +839,12 @@ class Fonts {
 	}
 
 	public static function get_font_type( $name ) {
-		if ( empty( self::get_fonts()[ $name ] ) )
+		$fonts = self::get_fonts();
+
+		if ( empty( $fonts[ $name ] ) )
 			return false;
 
-		return self::get_fonts()[ $name ];
+		return $fonts[ $name ];
 	}
 
 	public static function get_fonts_by_groups( $groups = [] ) {

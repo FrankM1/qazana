@@ -85,7 +85,7 @@ class DB {
 	}
 
 	/**
-	 * Get & Parse the qazana from DB.
+	 * Get & Parse the builder from DB.
 	 *
 	 * @since 1.0.0
 	 * @param int $post_id
@@ -93,7 +93,7 @@ class DB {
 	 *
 	 * @return array
 	 */
-	public function get_qazana( $post_id, $status = self::STATUS_PUBLISH ) {
+	public function get_builder( $post_id, $status = self::STATUS_PUBLISH ) {
 		$data = $this->get_plain_editor( $post_id, $status );
 
 		$this->switch_to_post( $post_id );
@@ -114,7 +114,6 @@ class DB {
 	}
 
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
-
 		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
 
 		if ( self::STATUS_DRAFT === $status ) {
@@ -211,6 +210,25 @@ class DB {
 		}
 	}
 
+	/**
+	 * Set whether the page is qazana page or not
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param int $post_id
+	 * @param bool $is_qazana
+	 *
+	 */
+	public function set_is_qazana_page( $post_id, $is_qazana = true ) {
+		if ( $is_qazana ) {
+			// Use the string `builder` and not a boolean for rollback compatibility
+			update_post_meta( $post_id, '_qazana_edit_mode', 'builder' );
+		} else {
+			delete_post_meta( $post_id, '_qazana_edit_mode' );
+		}
+	}
+
+
 	private function _render_element_plain_content( $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
@@ -273,19 +291,15 @@ class DB {
 	private function _get_editor_data( $data, $with_html_content = false ) {
 		$editor_data = [];
 
-        if ( empty ( $data ) ) {
-            return false;
-        }
-
 		foreach ( $data as $element_data ) {
 			$element = qazana()->elements_manager->create_element_instance( $element_data );
 
+			if ( ! $element ) {
+				continue;
+			}
+
 			$editor_data[] = $element->get_raw_data( $with_html_content );
 		} // End Section
-
-        if ( empty ( $editor_data ) ) {
-            return false;
-        }
 
 		return $editor_data;
 	}
@@ -313,7 +327,6 @@ class DB {
 	}
 
 	public function copy_qazana_meta( $from_post_id, $to_post_id ) {
-
 		$from_post_meta = get_post_meta( $from_post_id );
 
 		foreach ( $from_post_meta as $meta_key => $values ) {
@@ -326,6 +339,7 @@ class DB {
 					$value = wp_slash( $value );
 				}
 
+				// Don't use `update_post_meta` that can't handle `revision` post type
 				update_metadata( 'post', $to_post_id, $meta_key, $value );
 			}
 		}
@@ -335,6 +349,9 @@ class DB {
 		return ! ! get_post_meta( $post_id, '_qazana_edit_mode', true );
 	}
 
+	/**
+	 * @deprecated 1.4.0
+	 */
 	public function has_qazana_in_post( $post_id ) {
 		return $this->is_built_with_qazana( $post_id );
 	}
