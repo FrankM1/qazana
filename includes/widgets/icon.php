@@ -153,7 +153,7 @@ class Widget_Icon extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'svg_animation',
 			[
 				'label' => __( 'Enable animation', 'qazana' ),
@@ -162,20 +162,13 @@ class Widget_Icon extends Widget_Base {
 				'label_on' => __( 'Yes', 'qazana' ),
 				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'true',
+				'force_render' => true,
+				'prefix_class' => 'icon-svg-animation-'
 			]
 		);
 
 		$this->add_control(
-            'icon_animation',
-            [
-                'type' => Controls_Manager::ANIMATION_IN,
-                'label' => __( "Css Animation", 'qazana'),
-                'default' => "FadeIn",
-            ]
-        );
-
-		$this->add_control(
-			'animation_delay',
+			'svg_animation_delay',
 			[
 				'label' => __( 'Animation Delay', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -188,7 +181,7 @@ class Widget_Icon extends Widget_Base {
 		);
 
 		$this->add_control(
-			'animation_speed',
+			'svg_animation_speed',
 			[
 				'label' => __( 'Animation Speed', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -401,8 +394,8 @@ class Widget_Icon extends Widget_Base {
 
 			if ( $filetype['ext'] === 'svg' ) {
 				$this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
-				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['animation_speed'] );
-				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['animation_delay'] );
+				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['svg_animation_speed'] );
+				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['svg_animation_delay'] );
 				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
 				$this->add_render_attribute( 'image', 'data-icon',  qazana_maybe_ssl_url( $settings['image']['url'] ) );
 			}

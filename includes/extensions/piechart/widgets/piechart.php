@@ -1,9 +1,16 @@
 <?php
-namespace Qazana;
+namespace Qazana\Extensions\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Widget_Piechart extends Widget_Base {
+use Qazana\Controls_Manager;
+use Qazana\Scheme_Typography;
+use Qazana\Scheme_Color;
+use Qazana\Group_Control_Typography;
+
+use Qazana\Widget_Base as Widget_Base;
+
+class Piechart extends Widget_Base {
 
 	public function get_name() {
 		return 'piechart';

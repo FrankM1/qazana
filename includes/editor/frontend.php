@@ -231,35 +231,12 @@ class Frontend {
             true
         );
 
-        wp_register_script(
-            'odometer',
-            qazana()->core_assets_url . 'lib/odometer/odometer' . $suffix . '.js',
-            [],
-            '0.4.8',
-            true
-        );
-
-		wp_register_script(
-            'jquery-circle-progress',
-            qazana()->core_assets_url . 'lib/jquery-circle-progress/circle-progress' . $suffix . '.js',
-            [],
-            '1.2.2',
-            true
-        );
-
 	}
 
     public function enqueue_styles() {
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
         $direction_suffix = is_rtl() ? '-rtl' : '';
-
-        wp_register_style(
-            'odometer-theme-default',
-            qazana()->core_assets_url . 'lib/odometer/themes/odometer-theme-default' . $suffix . '.css',
-            [],
-            qazana()->get_version()
-        );
 
 		wp_register_style(
             'qazana-icons',

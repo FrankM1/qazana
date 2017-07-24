@@ -209,72 +209,58 @@ abstract class Element_Base {
 		} );
 	}
 
-	public final function add_responsive_control( $id, $args = [] ) {
-		// Desktop
-		$control_args = $args;
+	final public function add_responsive_control( $id, array $args, $overwrite = false ) {
+		$devices = [
+			self::RESPONSIVE_DESKTOP,
+			self::RESPONSIVE_TABLET,
+			self::RESPONSIVE_MOBILE,
+		];
 
-		if ( ! empty( $args['prefix_class'] ) ) {
-			$control_args['prefix_class'] = sprintf( $args['prefix_class'], '' );
+		if ( isset( $args['default'] ) ) {
+			$args['desktop_default'] = $args['default'];
+
+			unset( $args['default'] );
 		}
 
-		$control_args['responsive'] = self::RESPONSIVE_DESKTOP;
+		foreach ( $devices as $device_name ) {
+			$control_args = $args;
 
-		if ( isset( $control_args['desktop_default'] ) ) {
-			$control_args['default'] = $control_args['desktop_default'];
+			if ( isset( $control_args['device_args'] ) ) {
+				if ( ! empty( $control_args['device_args'][ $device_name ] ) ) {
+					$control_args = array_merge( $control_args, $control_args['device_args'][ $device_name ] );
+				}
+
+				unset( $control_args['device_args'] );
+			}
+
+			if ( ! empty( $args['prefix_class'] ) ) {
+				$device_to_replace = self::RESPONSIVE_DESKTOP === $device_name ? '' : '-' . $device_name;
+
+				$control_args['prefix_class'] = sprintf( $args['prefix_class'], $device_to_replace );
+			}
+
+			$control_args['responsive'] = [ 'max' => $device_name ];
+
+			if ( isset( $control_args['min_affected_device'] ) ) {
+				if ( ! empty( $control_args['min_affected_device'][ $device_name ] ) ) {
+					$control_args['responsive']['min'] = $control_args['min_affected_device'][ $device_name ];
+				}
+
+				unset( $control_args['min_affected_device'] );
+			}
+
+			if ( isset( $control_args[ $device_name . '_default' ] ) ) {
+				$control_args['default'] = $control_args[ $device_name . '_default' ];
+			}
+
+			unset( $control_args['desktop_default'] );
+			unset( $control_args['tablet_default'] );
+			unset( $control_args['mobile_default'] );
+
+			$id_suffix = self::RESPONSIVE_DESKTOP === $device_name ? '' : '_' . $device_name;
+
+			$this->add_control( $id . $id_suffix, $control_args, $overwrite );
 		}
-
-		unset( $control_args['desktop_default'] );
-		unset( $control_args['tablet_default'] );
-		unset( $control_args['mobile_default'] );
-
-		$this->add_control(
-			$id,
-			$control_args
-		);
-
-		// Tablet
-		$control_args = $args;
-
-		if ( ! empty( $args['prefix_class'] ) ) {
-			$control_args['prefix_class'] = sprintf( $args['prefix_class'], '-' . self::RESPONSIVE_TABLET );
-		}
-
-		$control_args['responsive'] = self::RESPONSIVE_TABLET;
-
-		if ( isset( $control_args['tablet_default'] ) ) {
-			$control_args['default'] = $control_args['tablet_default'];
-		}
-
-		unset( $control_args['desktop_default'] );
-		unset( $control_args['tablet_default'] );
-		unset( $control_args['mobile_default'] );
-
-		$this->add_control(
-			$id . '_tablet',
-			$control_args
-		);
-
-		// Mobile
-		$control_args = $args;
-
-		if ( ! empty( $args['prefix_class'] ) ) {
-			$control_args['prefix_class'] = sprintf( $args['prefix_class'], '-' . self::RESPONSIVE_MOBILE );
-		}
-
-		$control_args['responsive'] = self::RESPONSIVE_MOBILE;
-
-		if ( isset( $control_args['mobile_default'] ) ) {
-			$control_args['default'] = $control_args['mobile_default'];
-		}
-
-		unset( $control_args['desktop_default'] );
-		unset( $control_args['tablet_default'] );
-		unset( $control_args['mobile_default'] );
-
-		$this->add_control(
-			$id . '_mobile',
-			$control_args
-		);
 	}
 
 	public final function get_class_name() {

@@ -485,7 +485,7 @@ function qazana_migrate_builder_content_to_qazana(){
     //qazana_write_log('migration_complete');
 }
 
- function qazana_admin_upgrade_v101() {
+function qazana_admin_upgrade_v101() {
     global $wpdb;
 
     // Try to update PHP memory limit (so that it does not run out of it).

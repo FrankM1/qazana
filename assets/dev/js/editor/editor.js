@@ -111,7 +111,8 @@ App = Marionette.Application.extend( {
 				structure: require( 'qazana-views/controls/structure' ),
 				animation: require( 'qazana-views/controls/animation' ),
 				hover_animation: require( 'qazana-views/controls/animation' ),
-				order: require( 'qazana-views/controls/order' )
+				order: require( 'qazana-views/controls/order' ),
+				number: require( 'qazana-views/controls/number' )
 			};
 
 			this.channels.editor.trigger( 'controls:initialize' );

@@ -1873,7 +1873,8 @@ App = Marionette.Application.extend( {
 				structure: require( 'qazana-views/controls/structure' ),
 				animation: require( 'qazana-views/controls/animation' ),
 				hover_animation: require( 'qazana-views/controls/animation' ),
-				order: require( 'qazana-views/controls/order' )
+				order: require( 'qazana-views/controls/order' ),
+				number: require( 'qazana-views/controls/number' )
 			};
 
 			this.channels.editor.trigger( 'controls:initialize' );
@@ -2289,7 +2290,7 @@ App = Marionette.Application.extend( {
 
 module.exports = ( window.qazana = new App() ).start();
 
-},{"../utils/hooks":110,"qazana-layouts/panel/panel":59,"qazana-models/element":62,"qazana-panel/pages/elements/views/elements":46,"qazana-revisions/manager":9,"qazana-templates/manager":14,"qazana-utils/ajax":65,"qazana-utils/conditions":66,"qazana-utils/heartbeat":67,"qazana-utils/helpers":68,"qazana-utils/hot-keys":69,"qazana-utils/images-manager":70,"qazana-utils/modals":73,"qazana-utils/presets-factory":74,"qazana-utils/schemes":75,"qazana-views/controls/animation":80,"qazana-views/controls/base":83,"qazana-views/controls/box-shadow":84,"qazana-views/controls/choose":85,"qazana-views/controls/code":86,"qazana-views/controls/color":87,"qazana-views/controls/date-time":88,"qazana-views/controls/dimensions":89,"qazana-views/controls/font":90,"qazana-views/controls/gallery":91,"qazana-views/controls/icon":92,"qazana-views/controls/image-dimensions":93,"qazana-views/controls/media":94,"qazana-views/controls/order":95,"qazana-views/controls/repeater":97,"qazana-views/controls/section":98,"qazana-views/controls/select2":99,"qazana-views/controls/slider":100,"qazana-views/controls/structure":101,"qazana-views/controls/tab":102,"qazana-views/controls/url":103,"qazana-views/controls/wp_widget":104,"qazana-views/controls/wysiwyg":105,"qazana-views/preview":107,"qazana-views/widget":109}],35:[function(require,module,exports){
+},{"../utils/hooks":111,"qazana-layouts/panel/panel":59,"qazana-models/element":62,"qazana-panel/pages/elements/views/elements":46,"qazana-revisions/manager":9,"qazana-templates/manager":14,"qazana-utils/ajax":65,"qazana-utils/conditions":66,"qazana-utils/heartbeat":67,"qazana-utils/helpers":68,"qazana-utils/hot-keys":69,"qazana-utils/images-manager":70,"qazana-utils/modals":73,"qazana-utils/presets-factory":74,"qazana-utils/schemes":75,"qazana-views/controls/animation":80,"qazana-views/controls/base":83,"qazana-views/controls/box-shadow":84,"qazana-views/controls/choose":85,"qazana-views/controls/code":86,"qazana-views/controls/color":87,"qazana-views/controls/date-time":88,"qazana-views/controls/dimensions":89,"qazana-views/controls/font":90,"qazana-views/controls/gallery":91,"qazana-views/controls/icon":92,"qazana-views/controls/image-dimensions":93,"qazana-views/controls/media":94,"qazana-views/controls/number":95,"qazana-views/controls/order":96,"qazana-views/controls/repeater":98,"qazana-views/controls/section":99,"qazana-views/controls/select2":100,"qazana-views/controls/slider":101,"qazana-views/controls/structure":102,"qazana-views/controls/tab":103,"qazana-views/controls/url":104,"qazana-views/controls/wp_widget":105,"qazana-views/controls/wysiwyg":106,"qazana-views/preview":108,"qazana-views/widget":110}],35:[function(require,module,exports){
 var EditModeItemView;
 
 EditModeItemView = Marionette.ItemView.extend( {
@@ -6622,7 +6623,7 @@ BaseElementView = Marionette.CompositeView.extend( {
 
 module.exports = BaseElementView;
 
-},{"qazana-models/base-settings":60,"qazana-utils/stylesheet":76,"qazana-views/column":79,"qazana-views/section":108}],78:[function(require,module,exports){
+},{"qazana-models/base-settings":60,"qazana-utils/stylesheet":76,"qazana-views/column":79,"qazana-views/section":109}],78:[function(require,module,exports){
 var SectionView = require( 'qazana-views/section' ),
 	BaseSectionsContainerView;
 
@@ -6700,7 +6701,7 @@ BaseSectionsContainerView = Marionette.CompositeView.extend( {
 
 module.exports = BaseSectionsContainerView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/section":108}],79:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/section":109}],79:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	ElementEmptyView = require( 'qazana-views/element-empty' ),
 	ColumnView;
@@ -6883,7 +6884,7 @@ ColumnView = BaseElementView.extend( {
 
 module.exports = ColumnView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/edit-tools-section":2,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/resizable":5,"qazana-behaviors/sortable":6,"qazana-views/base-element":77,"qazana-views/element-empty":106}],80:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/edit-tools-section":2,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/resizable":5,"qazana-behaviors/sortable":6,"qazana-views/base-element":77,"qazana-views/element-empty":107}],80:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlAnimationItemView;
 
@@ -7193,6 +7194,8 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		var device = Backbone.$( event.currentTarget ).data( 'device' );
 
 		qazana.changeDeviceMode( device );
+
+		this.triggerMethod( 'responsive:switcher:click', device );
 	},
 
 	onSwitcherDesktopClick: function() {
@@ -8072,6 +8075,62 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 module.exports = ControlMediaItemView;
 
 },{"qazana-views/controls/base-multiple":81}],95:[function(require,module,exports){
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+	ControlNumberItemView;
+
+ControlNumberItemView = ControlBaseItemView.extend( {
+	correctionTimeOut: 0,
+
+	getInputValue: function( input ) {
+
+		var self = this,
+			inputValue = ControlBaseItemView.prototype.getInputValue.apply( self, arguments ),
+			validValue = inputValue,
+			min = self.model.get( 'min' ),
+			max = self.model.get( 'max' );
+
+		if ( ! _.isFinite( inputValue ) && self.model.get( 'nullable' ) ) {
+			return inputValue;
+		}
+
+		if ( _.isFinite( min ) && inputValue < min ) {
+			validValue = min;
+		}
+
+		if ( _.isFinite( max ) && inputValue > max ) {
+			validValue = max;
+		}
+
+		return validValue;
+	},
+
+	updateElementModel: function( event ) {
+		var self = this,
+			input = event.currentTarget,
+			value = this.getInputValue( event.currentTarget ),
+			originalInputValue = ControlBaseItemView.prototype.getInputValue.call( self, input );
+
+		if ( originalInputValue !== value ) {
+			self.correctionTimeOut = setTimeout( function() {
+				self.setInputValue( input, value );
+			}, 1200 );
+		}
+
+		ControlBaseItemView.prototype.updateElementModel.apply( this, arguments );
+	},
+
+	onBaseInputChange: function( event ) {
+		if ( this.correctionTimeOut ) {
+			clearTimeout( this.correctionTimeOut );
+		}
+
+		ControlBaseItemView.prototype.onBaseInputChange.apply( this, arguments );
+	}
+} );
+
+module.exports = ControlNumberItemView;
+
+},{"qazana-views/controls/base":83}],96:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlOrderItemView;
 
@@ -8103,7 +8162,7 @@ ControlOrderItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlOrderItemView;
 
-},{"qazana-views/controls/base-multiple":81}],96:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":81}],97:[function(require,module,exports){
 var RepeaterRowView;
 
 RepeaterRowView = Marionette.CompositeView.extend( {
@@ -8225,7 +8284,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 
 module.exports = RepeaterRowView;
 
-},{"qazana-behaviors/inner-tabs":4}],97:[function(require,module,exports){
+},{"qazana-behaviors/inner-tabs":4}],98:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	RepeaterRowView = require( 'qazana-views/controls/repeater-row' ),
 	ControlRepeaterItemView;
@@ -8415,7 +8474,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlRepeaterItemView;
 
-},{"qazana-views/controls/base":83,"qazana-views/controls/repeater-row":96}],98:[function(require,module,exports){
+},{"qazana-views/controls/base":83,"qazana-views/controls/repeater-row":97}],99:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlSectionItemView;
 
@@ -8435,7 +8494,7 @@ ControlSectionItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlSectionItemView;
 
-},{"qazana-views/controls/base":83}],99:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],100:[function(require,module,exports){
 // Attention: DO NOT use this control since it has bugs
 // TODO: This control is unused
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
@@ -8471,7 +8530,7 @@ ControlSelect2ItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlSelect2ItemView;
 
-},{"qazana-views/controls/base":83}],100:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],101:[function(require,module,exports){
 var ControlBaseUnitsItemView = require( 'qazana-views/controls/base-units' ),
 	ControlSliderItemView;
 
@@ -8540,7 +8599,7 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend( {
 
 module.exports = ControlSliderItemView;
 
-},{"qazana-views/controls/base-units":82}],101:[function(require,module,exports){
+},{"qazana-views/controls/base-units":82}],102:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlStructureItemView;
 
@@ -8590,7 +8649,7 @@ ControlStructureItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlStructureItemView;
 
-},{"qazana-views/controls/base":83}],102:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],103:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlTabItemView;
 
@@ -8602,7 +8661,7 @@ ControlTabItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlTabItemView;
 
-},{"qazana-views/controls/base":83}],103:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],104:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlUrlItemView;
 
@@ -8640,7 +8699,7 @@ ControlUrlItemView = ControlMultipleBaseItemView.extend( {
 
 module.exports = ControlUrlItemView;
 
-},{"qazana-views/controls/base-multiple":81}],104:[function(require,module,exports){
+},{"qazana-views/controls/base-multiple":81}],105:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWPWidgetItemView;
 
@@ -8681,7 +8740,7 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWPWidgetItemView;
 
-},{"qazana-views/controls/base":83}],105:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],106:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWysiwygItemView;
 
@@ -8810,7 +8869,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWysiwygItemView;
 
-},{"qazana-views/controls/base":83}],106:[function(require,module,exports){
+},{"qazana-views/controls/base":83}],107:[function(require,module,exports){
 var ElementEmptyView;
 
 ElementEmptyView = Marionette.ItemView.extend( {
@@ -8829,7 +8888,7 @@ ElementEmptyView = Marionette.ItemView.extend( {
 
 module.exports = ElementEmptyView;
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 var BaseSectionsContainerView = require( 'qazana-views/base-sections-container' ),
 	Preview;
 
@@ -8930,7 +8989,7 @@ Preview = BaseSectionsContainerView.extend( {
 
 module.exports = Preview;
 
-},{"qazana-views/base-sections-container":78}],108:[function(require,module,exports){
+},{"qazana-views/base-sections-container":78}],109:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	SectionView;
 
@@ -9185,7 +9244,7 @@ SectionView = BaseElementView.extend( {
 
 module.exports = SectionView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/base-element":77}],109:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":3,"qazana-behaviors/sortable":6,"qazana-views/base-element":77}],110:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	WidgetView;
 
@@ -9331,7 +9390,7 @@ WidgetView = BaseElementView.extend( {
 
 module.exports = WidgetView;
 
-},{"qazana-views/base-element":77}],110:[function(require,module,exports){
+},{"qazana-views/base-element":77}],111:[function(require,module,exports){
 'use strict';
 
 /**

@@ -50,7 +50,7 @@ $danger-border: darken($danger-bg, 7%);
 
 // Progress Bar
 $progress-bg: #eeeeee;
-$progress-text: #ffffff; 
+$progress-text: #ffffff;
 
 // Editor colors
 $editor-darkest: #23282d;
@@ -85,6 +85,7 @@ $transition-hover: all 0.5s;
 // Layers (Z-indexes)
 $under-layer: -1;
 $ground-layer: 0;
+$ground-layer-overlay: 1;
 $first-layer: 80;
 $second-layer: 90;
 $third-layer: 100;

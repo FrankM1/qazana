@@ -204,6 +204,8 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		var device = Backbone.$( event.currentTarget ).data( 'device' );
 
 		qazana.changeDeviceMode( device );
+
+		this.triggerMethod( 'responsive:switcher:click', device );
 	},
 
 	onSwitcherDesktopClick: function() {

@@ -48,7 +48,7 @@ class Widget_Heading extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'size',
 			[
 				'label' => __( 'Size', 'qazana' ),
@@ -212,10 +212,10 @@ class Widget_Heading extends Widget_Base {
 				$this->add_render_attribute( 'url', 'rel', 'nofollow' );
 			}
 
-			$title = sprintf( '<a %1$s>%2$s</a>', $this->get_render_attribute_string( 'url' ), $title );
+			$settings['title'] = sprintf( '<a %1$s>%2$s</a>', $this->get_render_attribute_string( 'url' ), $settings['title'] );
 		}
 
-		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $title );
+		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $settings['title'] );
 
 		?><div <?php echo $this->get_render_attribute_string( 'heading-wrapper' ); ?>>
             <?php echo $title_html; ?>
