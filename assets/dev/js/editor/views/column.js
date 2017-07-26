@@ -33,7 +33,8 @@ ColumnView = BaseElementView.extend( {
 	},
 
 	tagName: function() {
-		return this.model.getSetting( 'html_tag' );
+		var html_tag = this.model.getSetting( 'html_tag' ) ? this.model.getSetting( 'html_tag' ) : 'div';
+		return html_tag;
 	},
 
 	ui: function() {
