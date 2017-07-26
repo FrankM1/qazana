@@ -66,6 +66,7 @@ class Counter extends Widget_Base {
 			'starting_number',
 			[
 				'label' => __( 'Starting Number', 'qazana' ),
+				'label_block' => true,
 				'type' => Controls_Manager::NUMBER,
 				'default' => 0,
 			]
@@ -75,6 +76,7 @@ class Counter extends Widget_Base {
 			'ending_number',
 			[
 				'label' => __( 'Ending Number', 'qazana' ),
+				'label_block' => true,
 				'type' => Controls_Manager::NUMBER,
 				'default' => 100,
 			]
@@ -84,6 +86,7 @@ class Counter extends Widget_Base {
 			'prefix',
 			[
 				'label' => __( 'Number Prefix', 'qazana' ),
+				'label_block' => true,
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => 1,
@@ -94,6 +97,7 @@ class Counter extends Widget_Base {
 			'suffix',
 			[
 				'label' => __( 'Number Suffix', 'qazana' ),
+				'label_block' => true,
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => __( 'Plus', 'qazana' ),
@@ -104,6 +108,7 @@ class Counter extends Widget_Base {
 			'duration',
 			[
 				'label' => __( 'Animation Duration', 'qazana' ),
+				'label_block' => true,
 				'type' => Controls_Manager::NUMBER,
 				'default' => 2000,
 				'min' => 100,

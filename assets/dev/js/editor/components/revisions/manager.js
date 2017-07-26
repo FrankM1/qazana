@@ -13,7 +13,6 @@ RevisionsManager = function() {
 				if ( revisions.length ) {
 					return RevisionsPageView;
 				}
-
 				return RevisionsEmptyView;
 			},
 			title: qazana.translate( 'revision_history' ),

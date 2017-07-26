@@ -33,8 +33,8 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 	initialize: function() {
 		this._initDialog();
 
-		this.listenTo( qazana.channels.editor, 'change', this.onEditorChanged )
-			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
+		this.listenTo( qazana.channels.editor, 'status:change', this.onEditorChanged )
+			.listenTo( qazana.channels.deviceMode, 'status:change', this.onDeviceModeChange );
 	},
 
 	_initDialog: function() {
@@ -68,7 +68,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		};
 	},
 
-	_publishQazana: function() {
+	_publishBuilder: function() {
 		var self = this;
 
 		var options = {
@@ -87,7 +87,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		qazana.saveEditor( options );
 	},
 
-	_saveQazanaDraft: function() {
+	_saveBuilderDraft: function() {
 		qazana.saveEditor();
 	},
 
@@ -130,15 +130,15 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 	},
 
 	onClickButtonSave: function() {
-		//this._saveQazanaDraft();
-		this._publishQazana();
+		//this._saveBuilderDraft();
+		this._publishBuilder();
 	},
 
 	onClickButtonPublish: function( event ) {
 		// Prevent click on save button
 		event.stopPropagation();
 
-		this._publishQazana();
+		this._publishBuilder();
 	},
 
 	onClickResponsiveButtons: function( event ) {

@@ -198,6 +198,8 @@ class Editor {
         // Enqueue frontend scripts too
 		qazana()->frontend->register_scripts();
         qazana()->frontend->enqueue_scripts();
+		qazana()->frontend->register_widget_scripts();
+		qazana()->frontend->enqueue_widget_scripts();
 
         wp_register_script(
             'backbone-marionette',
@@ -354,8 +356,14 @@ class Editor {
             $locked_user = $locked_user->display_name;
         }
 
+		$page_title_selector = get_option( 'qazana_page_title_selector' );
+
+		if ( empty( $page_title_selector ) ) {
+			$page_title_selector = '.page-header';
+		}
+
         $this->add_localize_settings( [
-		'version' => qazana_version(),
+			'version' => qazana_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'home_url' => home_url(),
             'nonce' => wp_create_nonce( 'qazana-editing' ),
@@ -387,7 +395,7 @@ class Editor {
             'introduction' => User::get_introduction(),
             'viewportBreakpoints' => Responsive::get_breakpoints(),
         	'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
-			//'page_title_selector' => $page_title_selector,
+			'page_title_selector' => $page_title_selector,
 	   		'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
             'i18n' => [
                 'qazana' => __( 'Qazana', 'qazana' ),

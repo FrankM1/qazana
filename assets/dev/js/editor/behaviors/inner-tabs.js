@@ -2,7 +2,7 @@ var InnerTabsBehavior;
 
 InnerTabsBehavior = Marionette.Behavior.extend( {
 
-	onRenderCollection: function() {
+	onRender: function() {
 		this.handleInnerTabs( this.view );
 	},
 

@@ -3,994 +3,977 @@
 //
 
 .qazana-control {
-	background-color: #fff;
-	position: relative;
-	padding: 0 20px 15px;
+  background-color: #ffffff;
+  position: relative;
+  padding: 0 20px 15px;
 
-		&.qazana-control-separator- {
-			&default {
-				&:before {
-					display: block;
-					margin-bottom: 15px;
-					height: 1px;
-					background-color: $editor-background;
-					content: '';
-				}
+  &.qazana-control-separator- {
+    &default {
+      &:before {
+        display: block;
+        margin-bottom: 15px;
+        height: 1px;
+        background-color: $editor-background;
+        content: '';
+      }
 
-				// WP Widgets
-				&.qazana-control-wp {
-					margin-top: 15px;
+      // WP Widgets
+      &.qazana-control-wp {
+        margin-top: 15px;
 
-					&:before {
-						background-color: transparent;
-					}
-				}
-			}
+        &:before {
+          background-color: transparent;
+        }
+      }
+    }
 
-			&before {
-				padding-top: 15px;
+    &before {
+      padding-top: 15px;
 
-				&:before {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 3px;
-					background-color: $editor-lightest;
-					content: '';
-				}
-			}
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: $editor-lightest;
+        content: '';
+      }
+    }
 
-			&after {
-				&:after {
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					width: 100%;
-					height: 3px;
-					background-color: $editor-lightest;
-					content: '';
-				}
+    &after {
+      &:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: $editor-lightest;
+        content: '';
+      }
 
-				+ .qazana-control-type-tabs {
-					padding-top: 15px;
-				}
-			}
-		}
+       + .qazana-control-type-tabs {
+        padding-top: 15px;
+      }
+    }
+  }
 
-		&.qazana-control-deprecated {
-			color: $editor-warning;
+  &.qazana-control-deprecated {
+    color: $editor-warning;
 
-			.qazana-control-description {
-				color: $editor-warning;
-			}
-		}
+    .qazana-control-description {
+      color: $editor-warning;
+    }
+  }
 
-	&.qazana-control-hidden-label {
+  &.qazana-control-hidden-label {
+     > * > .qazana-control-title,
+     > * > * > .qazana-control-title {
+      // Avoid repeater titles to be affected from above
+      display: none;
+    }
+  }
 
-		> * > .qazana-control-title, > * > * > .qazana-control-title { // Avoid repeater titles to be affected from above
-			display: none;
-		}
-	}
+  &.qazana-hidden-control {
+    display: none;
+  }
 
-		&.qazana-hidden-control {
-			display: none;
-		}
+  &.qazana-control-type-heading {
+    .qazana-control-title {
+      font-weight: bold;
+      margin: 0;
+    }
+  }
 
-	&.qazana-control-type-heading {
+  &.qazana-control-responsive- {
+    &desktop {
+      body:not(.qazana-device-desktop) & {
+        display: none;
+      }
+    }
 
-		.qazana-control-title {
-			font-weight: bold;
-			margin: 0;
-		}
-	}
+    &tablet {
+      body:not(.qazana-device-tablet) & {
+        display: none;
+      }
+    }
 
-		&.qazana-control-responsive- {
-			&desktop {
-				body:not(.qazana-device-desktop) & {
-					display: none;
-				}
-			}
+    &mobile {
+      body:not(.qazana-device-mobile) & {
+        display: none;
+      }
+    }
+  }
 
-			&tablet {
-				body:not(.qazana-device-tablet) & {
-					display: none;
-				}
-			}
+  &.qazana-control-type-icon {
+    .icons-selector .selector-popup {
+      width: 262px;
+    }
 
-			&mobile {
-				body:not(.qazana-device-mobile) & {
-					display: none;
-				}
-			}
-		}
+    .icons-selector .fip-box {
+      width: 44px;
 
-		&.qazana-control-type-icon {
-			.icons-selector .selector-popup {
-				width: 262px;
-			}
+      i {
+        font-size: 1em;
+      }
+    }
+  }
+}
 
-			.icons-selector .fip-box {
-				width: 44px;
+// WP Widgets
+.qazana-control-wp {
+  line-height: 1.5;
 
-				i {
-					font-size: 1em;
-				}
-			}
+  p {
+    margin: 15px 0;
+  }
+}
 
-		}
-	}
+.qazana-label-block {
+   > .qazana-control-content {
+     > .qazana-control-field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
 
-	// WP Widgets
-	.qazana-control-wp {
-		line-height: 1.5;
+       > .qazana-control-input-wrapper {
+        flex-basis: 100%;
+        margin-top: 10px;
+      }
+    }
+  }
 
-		p {
-			margin: 15px 0;
-		}
-	}
-
-	.qazana-label-block {
-		> .qazana-control-content {
-			> .qazana-control-field {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-
-				> .qazana-control-input-wrapper {
-					flex-basis: 100%;
-					margin-top: 10px;
-				}
-			}
-		}
-
-		&.qazana-control-hidden-label {
-			> .qazana-control-content {
-				> .qazana-control-field {
-					> .qazana-control-input-wrapper {
-						margin-top: 0;
-					}
-				}
-			}
-		}
-	}
+  &.qazana-control-hidden-label {
+     > .qazana-control-content {
+       > .qazana-control-field {
+         > .qazana-control-input-wrapper {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
 
 .qazana-label-inline {
+   > .qazana-control-content {
+     > .qazana-control-field {
+       > .qazana-control-title {
+        width: 45%;
+        flex-shrink: 0;
+      }
 
-	> .qazana-control-content {
-
-		> .qazana-control-field {
-
-			> .qazana-control-title {
-				width: 45%;
-				flex-shrink: 0;
-			}
-
-			> .qazana-control-input-wrapper {
-				width: 55%;
-			}
-		}
-	}
+       > .qazana-control-input-wrapper {
+        width: 55%;
+      }
+    }
+  }
 }
 
 .qazana-control-field-description {
-	@extend .qazana-descriptor;
-
-		margin-top: 10px;
-	}
-
-	.qazana-choices {
-		display: table;
-		width: 100%;
-		height: 27px;
-		border-spacing: 1px;
-		border-radius: 3px;
-		background-color: $editor-light;
-		text-align: center;
-
-		input {
-			display: none;
-
-			&:checked + .qazana-choices-label {
-				color: #fff;
-			}
-
-			&:not(:checked) + .qazana-choices-label {
-				background-color: #fff;
-				color: $editor-light;
-			}
-		}
-
-		.qazana-choices-label {
-			display: table-cell;
-			vertical-align: middle;
-			font-size: 12px;
-			cursor: pointer;
-			transition: all 0.5s;
-		}
-	}
-
-	.qazana-slider {
-		position: relative;
-		display: inline-block;
-		margin-top: 10px;
-		width: 67%;
-		height: 4px;
-		border-radius: 5px;
-		background-color: $editor-light;
-
-		.ui-slider-handle {
-			position: absolute;
-			top: 50%;
-			display: inline-block;
-			width: 16px;
-			height: 16px;
-			border-radius: 50%;
-			background-color: #fff;
-			box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-			cursor: pointer;
-			transform: translateY(-50%) translateX(-8px);
-		}
-	}
-
-	.qazana-slider-input {
-		float: $end;
-		width: 33%;
-
-		input {
-			float: $end;
-			width: 80%;
-		}
-	}
-
-	.qazana-units-choices {
-		flex-grow: 1;
-		text-align: $end;
-
-		input {
-			display: none;
-
-			&:not(:checked) + label {
-				color: $editor-lighter;
-			}
-
-			&:checked + label {
-				text-decoration: underline;
-			}
-		}
-
-		label {
-			padding: 0 2px;
-			text-transform: uppercase;
-			font-size: 9px;
-			cursor: pointer;
-		}
-	}
-
-.qazana-control-responsive-switchers {
-	display: flex;
-	margin: 0 5px;
+  @extend .qazana-descriptor;
+  margin-top: 10px;
 }
 
-	.qazana-responsive-switcher {
-		$icon-size: 18px;
-		@include margin-start(5px);
-		position: relative;
+.qazana-required {
+  color: $editor-warning;
+}
 
-		display: inline-block;
-		width: $icon-size;
-		height: $icon-size;
-		border-radius: 50%;
-		background-color: $editor-light;
-		color: #fff;
-		text-align: center;
-		font-size: 8px;
-		cursor: pointer;
-		transition: background-color 0.5s;
+.qazana-choices {
+  display: table;
+  width: 100%;
+  height: 27px;
+  background-color: $editor-light;
+  text-align: center;
+  border-spacing: 1px;
+  border-radius: 3px;
 
-		&:hover {
-			background-color: $editor-lighter;
-		}
+  input {
+    display: none;
 
-		i {
-			line-height: $icon-size;
-		}
-	}
+    &:checked + .qazana-choices-label {
+      color: #ffffff;
+    }
+
+    &:not(:checked) + .qazana-choices-label {
+      background-color: #ffffff;
+      color: $editor-light;
+    }
+  }
+
+  .qazana-choices-label {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .5s;
+  }
+}
+
+.qazana-slider {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+  width: 67%;
+  height: 4px;
+  border-radius: 5px;
+  background-color: $editor-light;
+
+  .ui-slider-handle {
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, .3);
+    cursor: pointer;
+    transform: translateY(-50%) translateX(-8px);
+  }
+}
+
+.qazana-slider-input {
+  float: $end;
+  width: 33%;
+
+  input {
+    float: $end;
+    width: 80%;
+  }
+}
+
+.qazana-units-choices {
+  flex-grow: 1;
+  text-align: $end;
+
+  input {
+    display: none;
+
+    &:not(:checked) + label {
+      color: $editor-lighter;
+    }
+
+    &:checked + label {
+      text-decoration: underline;
+    }
+  }
+
+  label {
+    padding: 0 2px;
+    text-transform: uppercase;
+    font-size: 9px;
+    cursor: pointer;
+  }
+}
+
+.qazana-control-responsive-switchers {
+  display: flex;
+  margin: 0 5px;
+}
+
+.qazana-responsive-switcher {
+  $icon-size: 18px;
+  display: inline-block;
+  border-radius: 50%;
+  height: $icon-size;
+  width: $icon-size;
+  background-color: $editor-light;
+  cursor: pointer;
+  position: relative;
+  @include margin-start(5px);
+  color: #ffffff;
+  font-size: 8px;
+  text-align: center;
+  transition: background-color .5s;
+
+  &:hover {
+    background-color: $editor-lighter;
+  }
+
+  i {
+    line-height: $icon-size;
+  }
+}
 
 @at-root .qazana-device-desktop #qazana-panel .qazana-panel-controls-stack:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
-	background: $editor-lighter;
+  background: $editor-lighter;
 
-	&:not(.qazana-responsive-switcher-desktop) {
-		display: none;
-	}
+  &:not(.qazana-responsive-switcher-desktop) {
+    display: none;
+  }
 }
 
 .qazana-responsive-switcher-mobile {
-
-	.qazana-device-mobile & {
-		background-color: $editor-info;
-	}
+  .qazana-device-mobile & {
+    background-color: $editor-info;
+  }
 }
 
-	.qazana-responsive-switcher-tablet {
-		.qazana-device-tablet & {
-			background-color: $editor-info;
-		}
-	}
+.qazana-responsive-switcher-tablet {
+  .qazana-device-tablet & {
+    background-color: $editor-info;
+  }
+}
 
-	#qazana-update-preview {
-		display: flex;
-		align-items: center;
-		margin: 15px 15px 0;
-		background-color: $editor-background;
-	}
+.qazana-update-preview {
+  margin: 15px 15px 0;
+  background-color: $editor-background;
+  display: flex;
+  align-items: center;
+}
 
-	#qazana-update-preview-button-wrapper {
-		flex-grow: 1;
-		text-align: $end;
-	}
+.qazana-update-preview-button-wrapper {
+  flex-grow: 1;
+  text-align: $end;
+}
 
-	#qazana-update-preview-button {
-		padding: 8px 15px;
-		text-transform: uppercase;
-	}
+.qazana-update-preview-button {
+  padding: 8px 15px;
+  text-transform: uppercase;
+}
 
-	// Media Control
-	.qazana-control-type-media {
-		.qazana-control-media {
-			padding: 7px;
-			height: 150px;
-			border: 1px solid;
+// Media Control
+.qazana-control-type-media {
+  .qazana-control-media {
+    padding: 7px;
+    height: 150px;
+    border: 1px solid;
 
-			&:not(:hover) {
-				border-color: $editor-lightest;
+    &:not(:hover) {
+      border-color: $editor-lightest;
 
-				.qazana-control-media-upload-button {
-					background-color: $editor-lightest;
-				}
-			}
+      .qazana-control-media-upload-button {
+        background-color: $editor-lightest;
+      }
+    }
 
-			&:hover {
-				border-color: $editor-light;
+    &:hover {
+      border-color: $editor-light;
 
-				.qazana-control-media-upload-button {
-					background-color: $editor-light;
-				}
-			}
+      .qazana-control-media-upload-button {
+        background-color: $editor-light;
+      }
+    }
 
-			&.media-empty {
-				.qazana-control-media-image-area {
-					display: none;
-				}
-			}
+    &.media-empty {
+      .qazana-control-media-image-area {
+        display: none;
+      }
+    }
 
-			&:not(.media-empty) {
-				.qazana-control-media-upload-button {
-					display: none;
-				}
-			}
+    &:not(.media-empty) {
+      .qazana-control-media-upload-button {
+        display: none;
+      }
+    }
 
-			> * {
-				position: relative;
-				height: 100%;
-				cursor: pointer;
-			}
-		}
+     > * {
+      position: relative;
+      height: 100%;
+      cursor: pointer;
+    }
+  }
 
-		.fa-plus-circle {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			color: #fff;
-			font-size: 20px;
-			transform: translateX(-50%) translateY(-50%);
-		}
+  .fa-plus-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #ffffff;
+    font-size: 20px;
+    transform: translateX(-50%) translateY(-50%);
+  }
 
-		.qazana-control-media-image-area {
-			&:not(:hover) {
-				.qazana-control-media-delete {
-					display: none;
-				}
-			}
+  .qazana-control-media-image-area {
+    &:not(:hover) {
+      .qazana-control-media-delete {
+        display: none;
+      }
+    }
 
-			&:hover {
-				.qazana-control-media-image {
-					opacity: 0.5;
-				}
-			}
-		}
+    &:hover {
+      .qazana-control-media-image {
+        opacity: .5;
+      }
+    }
+  }
 
-		.qazana-control-media-delete {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			padding: 9.5px;
-			background-color: $editor-light;
-			color: #fff;
-			text-align: center;
-			text-transform: uppercase;
-			font-size: 11px;
-		}
+  .qazana-control-media-delete {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 9.5px;
+    background-color: $editor-light;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
 
-		.qazana-control-media-image {
-			height: 100%;
-			background-size: cover;
-		}
-	}
-	// Dimensions Control
-	// Dimensions Control
-	.qazana-control-type-dimensions {
+  .qazana-control-media-image {
+    height: 100%;
+    background-size: cover;
+  }
+}
+// Dimensions Control
+// Dimensions Control
+.qazana-control-type-dimensions {
+  .qazana-control-dimensions {
+    overflow: hidden;
+  }
 
-		.qazana-control-dimensions {
-			overflow: hidden;
-		}
+  li {
+    float: left;
+    width: 20%;
 
-		li {
-			float: left;
-			width: 20%;
+    input,
+    .qazana-link-dimensions {
+      display: block;
+      text-align: center;
+      width: 100%;
+      border-color: $editor-light;
+      height: 27px;
+    }
 
-			input,
-			.qazana-link-dimensions {
-				display: block;
-				text-align: center;
-				width: 100%;
-				border-color: $editor-light;
-				height: 27px;
-			}
+    input {
+      border-left: none;
+      border-radius: 0;
+      padding: 4px 0;
 
-			input {
-				border-left: none;
-				border-radius: 0;
-				padding: 4px 0;
 
-				+ span {
-				}
 
-				&:focus {
+      &:focus {
+         + .qazana-control-dimension-label {
+          color: $editor-light;
+        }
+      }
+    }
 
-					+ .qazana-control-dimension-label {
-						color: $editor-light;
-					}
-				}
-			}
+    .qazana-link-dimensions {
+      border: 1px solid $editor-light;
+      border-left: none;
+      background-color: #ffffff;
+      padding: 0;
+      outline: none;
+      border-radius: 0 3px 3px 0;
+      cursor: pointer;
+    }
 
-			.qazana-link-dimensions {
-				border: 1px solid $editor-light;
-				border-left: none;
-				background-color: #fff;
-				padding: 0;
-				outline: none;
-				border-radius: 0 3px 3px 0;
-				cursor: pointer;
-			}
+    &:first-child {
+      input {
+        border-left: 1px solid $editor-light;
+        border-radius: 3px 0 0 3px;
+      }
+    }
+  }
 
-			&:first-child {
+  .qazana-control-dimension-label {
+    display: block;
+    text-align: center;
+    color: $editor-lightest;
+    font-size: 9px;
+    text-transform: uppercase;
+    padding-top: 5px;
+  }
 
-				input {
-					border-left: 1px solid $editor-light;
-					border-radius: 3px 0 0 3px;
-				}
-			}
-		}
+  .qazana-link-dimensions {
+    &.unlinked {
+      background-color: #ffffff;
 
-		.qazana-control-dimension-label {
-			display: block;
-			text-align: center;
-			color: $editor-lightest;
-			font-size: 9px;
-			text-transform: uppercase;
-			padding-top: 5px;
-		}
+      .qazana-linked {
+        display: none;
+      }
+    }
 
-		.qazana-link-dimensions {
+    &:not(.unlinked) {
+      background-color: $editor-light;
 
-			&.unlinked {
-				background-color: #fff;
+      .qazana-unlinked {
+        display: none;
+      }
+    }
 
-				.qazana-linked {
-					display: none;
-				}
-			}
+    .qazana-linked {
+      color: #ffffff;
+    }
+  }
+}
 
-			&:not(.unlinked) {
-				background-color: $editor-light;
+// URL Control
+.qazana-control-type-url {
+  .qazana-control-url-external-hide {
+    .qazana-control-url-more {
+      display: none;
+    }
+  }
 
-				.qazana-unlinked {
-					display: none;
-				}
-			}
+  .qazana-control-url-external-show {
+    input {
+      padding-right: 46px;
+    }
+  }
 
-			.qazana-linked {
-				color: #fff;
-			}
+  .qazana-control-input-wrapper {
+    position: relative;
+  }
 
-		}
-	}
+  .qazana-control-url {
+    &-more {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 26px;
+      border-left: 1px solid;
+      border-radius: 0 3px 3px 0;
+      font-size: 10px;
+      cursor: pointer;
 
-	// URL Control
-	.qazana-control-type-url {
+      i {
+        font-size: 13px;
+      }
 
-		.qazana-control-url-external-hide {
+      &-input {
+        display: none;
 
-			.qazana-control-url-more {
-				display: none;
-			}
-		}
+        &:not(:checked) {
+           + .qazana-control-url-more-options {
+            display: none;
+          }
+        }
+      }
 
-		.qazana-control-url-external-show {
+      &-options {
+        padding-top: 10px;
+      }
+    }
 
-			input {
-				padding-right: 46px;
-			}
-		}
+    &-option {
+      padding: 5px;
+      font-size: 12px;
+    }
+  }
 
-		.qazana-control-input-wrapper {
-			position: relative;
-		}
+  input[type=url] {
+    direction: ltr; // Force ltr also in RTL languages
 
-		.qazana-control-url {
+    &:not(:focus) {
+       + .qazana-control-url-more {
+        border-color: $editor-lightest;
+      }
+    }
 
-			&-more {
-				position: absolute;
-				top: 0;
-				right: 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				width: 40px;
-				height: 26px;
-				border-left: 1px solid;
-				border-radius: 0 3px 3px 0;
-				font-size: 10px;
-				cursor: pointer;
+    &:focus {
+       + .qazana-control-url-more {
+        border-color: $editor-light;
+      }
+    }
+  }
+}
 
-				i {
-					font-size: 13px;
-				}
+// = Choices control for alignment
+.qazana-control-align,
+.qazana-control-position,
+.qazana-control-text_align {
+  .qazana-choices {
+    direction: ltr; // Force ltr also in RTL languages
+  }
+}
 
-				&-input {
-					display: none;
+// Section control
+.qazana-control-type-section {
+  margin-top: 10px;
+  padding: 0;
 
-					&:not(:checked) {
+  & + .qazana-control {
+    &:not(.qazana-control-type-section) {
+      padding-top: 15px;
 
-						+ .qazana-control-url-more-options {
-							display: none;
-						}
-					}
-				}
-
-				&-options {
-					padding-top: 10px;
-				}
-			}
-
-			&-option {
-				padding: 5px;
-				font-size: 12px;
-			}
-		}
-
-		input[type=url] {
-			direction: ltr; // Force ltr also in RTL languages
-
-			&:not(:focus) {
-
-				+ .qazana-control-url-more {
-					border-color: $editor-lightest;
-				}
-			}
-
-			&:focus {
-
-				+ .qazana-control-url-more {
-					border-color: $editor-light;
-				}
-			}
-		}
-	}
-
-	// = Choices control for alignment
-	.qazana-control-align,
-	.qazana-control-position,
-	.qazana-control-text_align {
-		.qazana-choices {
-			direction: ltr; // Force ltr also in RTL languages
-		}
-	}
-
-	// Section control
-	.qazana-control-type-section {
-		margin-top: 10px;
-		padding: 0;
-
-		& + .qazana-control {
-			&:not(.qazana-control-type-section) {
-				padding-top: 15px;
-
-				&:before {
-					display: none;
-				}
-			}
-		}
-	}
+      &:before {
+        display: none;
+      }
+    }
+  }
+}
 
 // Color Picker control
 .qazana-control-type-color {
-
-	.qazana-control-input-wrapper {
-		height: 27px; //Fix jumping of panel when the wp-picker is active
-	}
+  .qazana-control-input-wrapper {
+    height: 27px; //Fix jumping of panel when the wp-picker is active
+  }
 }
 
-	// Wysiwyg control
-	.qazana-control-type-wysiwyg {
-		&.qazana-rich-editing-disabled {
-			.wp-editor-container {
-				margin-top: 10px;
-			}
-		}
+// Wysiwyg control
+.qazana-control-type-wysiwyg {
+  &.qazana-rich-editing-disabled {
+    .wp-editor-container {
+      margin-top: 10px;
+    }
+  }
 
-		* {
-			box-sizing: content-box;
-		}
+  * {
+    box-sizing: content-box;
+  }
 
-		.wp-editor-container {
-			border: 1px solid $editor-background;
-			border-radius: 3px;
-		}
+  .wp-editor-container {
+    border: 1px solid $editor-background;
+    border-radius: 3px;
+  }
 
-		#insert-media-button {
-			margin-top: 7px;
-			padding: 3px 7px;
-			height: initial;
-			background-color: $editor-background;
-			font-size: 10px;
-			line-height: 1;
-		}
+  #insert-media-button {
+    margin-top: 7px;
+    padding: 3px 7px;
+    height: initial;
+    background-color: $editor-background;
+    font-size: 10px;
+    line-height: 1;
+  }
 
-		.ed_button {
-			width: initial;
-			height: 22px;
-		}
+  .ed_button {
+    width: initial;
+    height: 22px;
+  }
 
-		.wp-media-buttons-icon {
-			margin: 0;
-			height: 14px;
+  .wp-media-buttons-icon {
+    margin: 0;
+    height: 14px;
 
-			&:before {
-				font-size: 14px;
-			}
-		}
+    &:before {
+      font-size: 14px;
+    }
+  }
 
-		.wp-switch-editor {
-			padding: 3px 9px 4px;
-			border: none;
-			border-radius: 3px 3px 0 0;
-			color: $editor-dark;
-			font-size: 10px;
-		}
+  .wp-switch-editor {
+    padding: 3px 9px 4px;
+    border: none;
+    border-radius: 3px 3px 0 0;
+    color: $editor-dark;
+    font-size: 10px;
+  }
 
-		.html-active {
-			.switch-tmce {
-				background-color: transparent;
-			}
+  .html-active {
+    .switch-tmce {
+      background-color: transparent;
+    }
 
-			.switch-html {
-				background-color: $editor-background;
-			}
-		}
+    .switch-html {
+      background-color: $editor-background;
+    }
+  }
 
-		.tmce-active {
-			.switch-tmce {
-				background-color: $editor-background;
-			}
+  .tmce-active {
+    .switch-tmce {
+      background-color: $editor-background;
+    }
 
-			.switch-html {
-				background-color: transparent;
-			}
-		}
+    .switch-html {
+      background-color: transparent;
+    }
+  }
 
-		.mce-toolbar-grp,
-		.quicktags-toolbar {
-			background-color: $editor-background;
-		}
+  .mce-toolbar-grp,
+  .quicktags-toolbar {
+    background-color: $editor-background;
+  }
 
-		.mce-toolbar-grp {
-			> div {
-				padding: 0 3px;
-			}
-		}
+  .mce-toolbar-grp {
+     > div {
+      padding: 0 3px;
+    }
+  }
 
-		.qazana-wp-editor {
-			box-sizing: border-box;
-		}
+  .qazana-wp-editor {
+    box-sizing: border-box;
+  }
 
-		.mce-ico {
-			color: $editor-dark;
-			font-size: 16px;
-		}
+  .mce-ico {
+    color: $editor-dark;
+    font-size: 16px;
+  }
 
-		.mce-btn {
-			margin-right: 0;
-			margin-left: 0;
+  .mce-btn {
+    margin-right: 0;
+    margin-left: 0;
 
-			&.mce-active,
-			&:active,
-			&:hover {
-				border-color: $editor-lightest;
-			}
-		}
+    &.mce-active,
+    &:active,
+    &:hover {
+      border-color: $editor-lightest;
+    }
+  }
 
-		.mce-path {
-			padding: 5px 10px;
-		}
+  .mce-path {
+    padding: 5px 10px;
+  }
 
-		.mce-path-item {
-			color: $editor-dark;
-			font-size: 12px;
-		}
-	}
+  .mce-path-item {
+    color: $editor-dark;
+    font-size: 12px;
+  }
+}
 
-	// Icon control
-	.qazana-control-type-icon {
-		.select2-selection__rendered {
-			.fa {
-				margin-right: 3px;
-			}
-		}
-	}
+// Icon control
+.qazana-control-type-icon {
+  .select2-selection__rendered {
+    .fa {
+      margin-right: 3px;
+    }
+  }
+}
 
-	// Gallery control
-	.qazana-control-type-gallery {
-		&.qazana-gallery-empty {
-			.qazana-control-gallery-clear,
-			.qazana-control-gallery-thumbnails {
-				display: none;
-			}
-		}
+// Gallery control
+.qazana-control-type-gallery {
+  &.qazana-gallery-empty {
+    .qazana-control-gallery-clear,
+    .qazana-control-gallery-thumbnails {
+      display: none;
+    }
+  }
 
-		.qazana-control-media {
-			//	padding-top: 20px; //temp remove for some space in gallery widget
-		}
+  .qazana-control-media {
+    //	padding-top: 20px; //temp remove for some space in gallery widget
+  }
 
-		.qazana-control-gallery-thumbnails {
-			overflow: hidden;
-			margin-top: 20px;
-			cursor: pointer;
-		}
+  .qazana-control-gallery-thumbnails {
+    overflow: hidden;
+    margin-top: 20px;
+    cursor: pointer;
+  }
 
-		.qazana-control-gallery-thumbnail {
-			float: $start;
-			margin-bottom: 10px;
-			width: 40px;
-			height: 40px;
-			background-position: 50% 50%;
-			background-size: cover;
+  .qazana-control-gallery-thumbnail {
+    float: $start;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 40px;
+    background-position: 50% 50%;
+    background-size: cover;
 
-			&:not(:nth-child(5n)) {
-				@include margin-end(10px);
-			}
-		}
+    &:not(:nth-child(5n)) {
+      @include margin-end(10px);
+    }
+  }
 
-		.qazana-control-gallery-add {
-			margin-top: 10px;
-			width: 100%;
-			height: 30px;
-			background-color: $editor-light;
-			color: #fff;
-			text-transform: uppercase;
-		}
+  .qazana-control-gallery-add {
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    background-color: $editor-light;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
 
-		.qazana-control-gallery-clear {
-			color: $editor-warning;
-			cursor: pointer;
-		}
-	}
+  .qazana-control-gallery-clear {
+    color: $editor-warning;
+    cursor: pointer;
+  }
+}
 
-	// Structure control
-	.qazana-control-type-structure {
-		.qazana-control-structure-preset {
-			padding: 3px;
-			border: 1px solid $editor-background;
-			border-radius: 3px;
+// Structure control
+.qazana-control-type-structure {
+  .qazana-control-structure-preset {
+    padding: 3px;
+    border: 1px solid $editor-background;
+    border-radius: 3px;
 
-			&:not(.qazana-control-structure-current-preset) {
-				display: inline-block;
-				height: 50px;
-				cursor: pointer;
+    &:not(.qazana-control-structure-current-preset) {
+      display: inline-block;
+      height: 50px;
+      cursor: pointer;
 
-				svg {
-					height: 100%;
-				}
-			}
+      svg {
+        height: 100%;
+      }
+    }
 
-			path {
-				fill: $editor-background;
-			}
-		}
+    path {
+      fill: $editor-background;
+    }
+  }
 
-		.qazana-control-structure-current-preset {
-			margin-top: 15px;
+  .qazana-control-structure-current-preset {
+    margin-top: 15px;
 
-			// For Safari
-			svg {
-				display: block;
-				width: 100%;
-			}
-		}
+    // For Safari
+    svg {
+      display: block;
+      width: 100%;
+    }
+  }
 
-		.qazana-control-structure-reset {
-			padding: 10px 0 0 2px;
-			color: $editor-light;
-			font-size: 11px;
-			cursor: pointer;
+  .qazana-control-structure-reset {
+    padding: 10px 0 0 2px;
+    color: $editor-light;
+    font-size: 11px;
+    cursor: pointer;
 
-			i {
-				@include margin-end(8px);
-			}
-		}
+    i {
+      @include margin-end(8px);
+    }
+  }
 
-	.qazana-control-structure-title, .qazana-control-structure-more-presets-title {
-		color: $editor-darkest;
-		font-weight: bold;
-		padding: 13.5px 20px;
-		position: relative;
+  .qazana-control-structure-title,
+  .qazana-control-structure-more-presets-title {
+    color: $editor-darkest;
+    font-weight: bold;
+    padding: 13.5px 20px;
+    position: relative;
 
-			&:after,
-			&:before {
-				position: absolute;
-				right: 0;
-				left: 0;
-				content: '';
-			}
+    &:after,
+    &:before {
+      position: absolute;
+      right: 0;
+      left: 0;
+      content: '';
+    }
 
-			&:before {
-				top: 0;
-				background-color: $editor-background;
-				transform: translateY(-100%);
-			}
+    &:before {
+      top: 0;
+      background-color: $editor-background;
+      transform: translateY(-100%);
+    }
 
-			&:after {
-				bottom: 0;
-				height: 1px;
-				background-color: $editor-background;
-			}
-		}
+    &:after {
+      bottom: 0;
+      height: 1px;
+      background-color: $editor-background;
+    }
+  }
 
-		.qazana-control-structure-title {
-			margin: 10px -20px 0;
+  .qazana-control-structure-title {
+    margin: 10px -20px 0;
 
-			&:before {
-				height: 10px;
-				box-shadow: inset 0 2px 4px rgba(127,127,127,.1);
-			}
-		}
+    &:before {
+      height: 10px;
+      box-shadow: inset 0 2px 4px rgba(127,127,127,.1);
+    }
+  }
 
-		.qazana-control-structure-more-presets-title {
-			margin: 15px -20px 0;
+  .qazana-control-structure-more-presets-title {
+    margin: 15px -20px 0;
 
-			&:before {
-				height: 3px;
-			}
-		}
+    &:before {
+      height: 3px;
+    }
+  }
 
-		.qazana-control-structure-more-presets {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
+  .qazana-control-structure-more-presets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-			input {
-				display: none;
+    input {
+      display: none;
 
-				&:checked + .qazana-control-structure-preset {
-					border: 1px solid $editor-light;
+      &:checked + .qazana-control-structure-preset {
+        border: 1px solid $editor-light;
 
-					path {
-						fill: $editor-light;
-					}
-				}
-			}
-		}
+        path {
+          fill: $editor-light;
+        }
+      }
+    }
+  }
 
-		.qazana-control-structure-preset-wrapper {
-			margin-top: 15px;
-		}
+  .qazana-control-structure-preset-wrapper {
+    margin-top: 15px;
+  }
 
-		.qazana-control-structure-preset-title {
-			padding-top: 5px;
-			color: $editor-light;
-			text-align: center;
-			font-style: italic;
-			font-size: 11px;
-		}
-	}
+  .qazana-control-structure-preset-title {
+    padding-top: 5px;
+    color: $editor-light;
+    text-align: center;
+    font-style: italic;
+    font-size: 11px;
+  }
+}
 
 // Image dimensions control
 .qazana-control-type-image_dimensions {
+  .qazana-control-field-description {
+    margin: 0 0 15px;
+    line-height: 1.4;
+  }
 
-	.qazana-control-field-description {
-		margin: 0 0 15px;
-		line-height: 1.4;
-	}
+  .qazana-control-input-wrapper {
+    overflow: hidden;
+  }
 
-		.qazana-control-input-wrapper {
-			overflow: hidden;
-		}
+  .qazana-image-dimensions-field {
+    float: $start;
+    width: 70px;
 
-		.qazana-image-dimensions-field {
-			float: $start;
-			width: 70px;
+    input {
+      &:focus {
+         + .qazana-image-dimensions-field-description {
+          color: $editor-light;
+        }
+      }
+    }
+  }
 
-			input {
-				&:focus {
-					+ .qazana-image-dimensions-field-description {
-						color: $editor-light;
-					}
-				}
-			}
-		}
+  .qazana-image-dimensions-separator {
+    float: $start;
+    padding-top: 4px;
+    width: 20px;
+    text-align: center;
+  }
 
-		.qazana-image-dimensions-separator {
-			float: $start;
-			padding-top: 4px;
-			width: 20px;
-			text-align: center;
-		}
+  .qazana-image-dimensions-field-description {
+    margin-top: 5px;
+    color: $editor-lightest;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 9px;
+  }
 
-		.qazana-image-dimensions-field-description {
-			margin-top: 5px;
-			color: $editor-lightest;
-			text-align: center;
-			text-transform: uppercase;
-			font-size: 9px;
-		}
+  .qazana-image-dimensions-apply-button {
+    float: $end;
+    width: 70px;
+    height: 27px;
+  }
+}
 
-		.qazana-image-dimensions-apply-button {
-			float: $end;
-			width: 70px;
-			height: 27px;
-		}
-	}
-
-	// Code Editor
-	.qazana-control-type-code {
-		padding: 0 10px 15px;
-	}
+// Code Editor
+.qazana-control-type-code {
+  padding: 0 10px 15px;
+}
 
 // WP Widgets
 .qazana-control-type-wp_widget {
-	.widget-inside {
-		// Overwrite WP Default
-		display: block;
-	}
+  .widget-inside {
+    // Overwrite WP Default
+    display: block;
+  }
 
-	.quicktags-toolbar {
-		input {
-			width: auto;
-		}
-	}
+  .quicktags-toolbar {
+    input {
+      width: auto;
+    }
+  }
 }
 
 // Tabs Control
-@import "controls/tabs";
+@import 'controls/tabs';
 
 // Repeater control
-@import "controls/repeater";
+@import 'controls/repeater';
 
 // Textarea control
-@import "controls/textarea";
+@import 'controls/textarea';
 
 // Box-shadow control
-@import "controls/box-shadow";
+@import 'controls/box-shadow';
 
 // Switcher control
-@import "controls/switcher";
+@import 'controls/switcher';
 
 // Order control
-@import "controls/order";
+@import 'controls/order';
 
 // Hidden control
 .qazana-control-type-hidden {
-	display: none !important;
+  display: none !important;
 }

@@ -2,9 +2,9 @@
 @import "dialog";
 
 // Responsive video
-
 .qazana-video-wrapper {
 	position: relative;
+	height: 0;
 
 	iframe {
 		position: absolute;

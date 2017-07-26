@@ -62,16 +62,6 @@ class Widget_WordPress extends Widget_Base {
 		return $this->_widget_instance;
 	}
 
-	protected function _get_parsed_settings() {
-		$settings = parent::_get_parsed_settings();
-
-		if ( ! empty( $settings['wp'] ) ) {
-			$settings['wp'] = $this->get_widget_instance()->update( $settings['wp'], [] );
-		}
-
-		return $settings;
-	}
-
 	protected function _register_controls() {
 		$this->add_control(
 			'wp',

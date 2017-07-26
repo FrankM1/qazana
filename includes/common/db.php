@@ -114,7 +114,7 @@ class DB {
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
 		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
 
-		if ( self::STATUS_DRAFT === $status ) {
+		if ( self::STATUS_DRAFT === $status && isset( $_GET['qazana'] ) ) {
 			$draft_data = $this->_get_json_meta( $post_id, '_qazana_draft_data' );
 
 			if ( ! empty( $draft_data ) ) {
@@ -231,7 +231,7 @@ class DB {
 			/** @var Widget_Base $widget */
 			$widget = qazana()->elements_manager->create_element_instance( $element_data );
 
-			if ( $widget ) {
+			if ( is_object( $widget ) ) {
 				$widget->render_plain_content();
 			}
 		}
@@ -288,15 +288,19 @@ class DB {
 	private function _get_editor_data( $data, $with_html_content = false ) {
 		$editor_data = [];
 
+        if ( empty ( $data ) ) {
+            return false;
+        }
+
 		foreach ( $data as $element_data ) {
 			$element = qazana()->elements_manager->create_element_instance( $element_data );
 
-			if ( ! $element ) {
-				continue;
-			}
-
 			$editor_data[] = $element->get_raw_data( $with_html_content );
 		} // End Section
+
+        if ( empty ( $editor_data ) ) {
+            return false;
+        }
 
 		return $editor_data;
 	}
@@ -309,7 +313,8 @@ class DB {
 
 			return $callback( $data_container );
 		}
-
+		
+		if ( is_array( $data_container ) ) {
 		foreach ( $data_container as $element_key => $element_value ) {
 			$element_data = $this->iterate_data( $data_container[ $element_key ], $callback );
 
@@ -318,6 +323,7 @@ class DB {
 			}
 
 			$data_container[ $element_key ] = $element_data;
+			}
 		}
 
 		return $data_container;

@@ -87,7 +87,8 @@
     opacity: 1; }
 
 .qazana-video-wrapper {
-  position: relative; }
+  position: relative;
+  height: 0; }
   .qazana-video-wrapper iframe {
     position: absolute;
     top: 0;

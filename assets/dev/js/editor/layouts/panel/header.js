@@ -26,8 +26,8 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         this._initDialog();
         this.onClickMenuDrop();
 
-        this.listenTo( qazana.channels.editor, 'change', this.onEditorChanged )
-			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
+        this.listenTo( qazana.channels.editor, 'status:change', this.onEditorChanged )
+			.listenTo( qazana.channels.deviceMode, 'status:change', this.onDeviceModeChange );
     },
 
     _initDialog: function() {
@@ -61,7 +61,7 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         };
     },
 
-    _publishQazana: function() {
+    _publishBuilder: function() {
         var self = this;
 
         var options = {
@@ -80,7 +80,7 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
         qazana.saveEditor( options );
     },
 
-    _saveQazanaDraft: function() {
+    _saveBuilderDraft: function() {
         qazana.saveEditor();
     },
 
@@ -116,15 +116,15 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
     },
 
     onClickButtonSave: function() {
-        //this._saveQazanaDraft();
-        this._publishQazana();
+        //this._saveBuilderDraft();
+        this._publishBuilder();
     },
 
     onClickButtonPublish: function( event ) {
         // Prevent click on save button
         event.stopPropagation();
 
-        this._publishQazana();
+        this._publishBuilder();
     }
 
 } );

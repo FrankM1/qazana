@@ -129,8 +129,13 @@ App = Marionette.Application.extend( {
 	},
 
 	initComponents: function() {
-		var EventManager = require( '../utils/hooks' );
+		var EventManager = require( 'qazana-utils/hooks' )/*,
+			PageSettings = require( 'qazana-editor-utils/page-settings' )*/;
+
 		this.hooks = new EventManager();
+
+		//this.pageSettings = new PageSettings();
+
 		this.templates.init();
 
 		this.initDialogsManager();

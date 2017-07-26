@@ -9,45 +9,51 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 	initialize: function() {
 		this.collection = new Backbone.Collection( [
             {
-                icon: 'paint-brush',
+                icon: 'fa fa-paint-brush',
                 title: qazana.translate( 'global_colors' ),
 				type: 'page',
                 pageName: 'colorScheme'
             },
             {
-                icon: 'font',
+                icon: 'fa fa-font',
                 title: qazana.translate( 'global_fonts' ),
 				type: 'page',
                 pageName: 'typographyScheme'
             },
 			{
-				icon: 'eyedropper',
+				icon: 'fa fa-eyedropper',
 				title: qazana.translate( 'color_picker' ),
 				type: 'page',
 				pageName: 'colorPickerScheme'
 			},
 			{
-				icon: 'history',
+				icon: 'fa fa-history',
 				title: qazana.translate( 'revision_history' ),
 				type: 'page',
 				pageName: 'revisionsPage'
 			},
 			{
-				icon: 'cog',
-				title: qazana.translate( 'qazana_settings' ),
-				type: 'link',
-				link: qazana.config.settings_page_link,
-				newTab: true
+				icon: 'fa fa-cog',
+				title: qazana.translate( 'page_settings' ),
+				type: 'page',
+				pageName: 'settingsPage'
 			},
             {
-                icon: 'eraser',
+                icon: 'fa fa-eraser',
                 title: qazana.translate( 'clear_page' ),
                 callback: function() {
                     qazana.clearPage();
                 }
             },
 			{
-				icon: 'info-circle',
+				/*icon: 'eicon-qazana',
+				title: qazana.translate( 'qazana_settings' ),
+				type: 'link',
+				link: qazana.config.settings_page_link,
+				newTab: true
+			},
+			{*/
+				icon: 'fa fa-info-circle',
 				title: qazana.translate( 'about_qazana' ),
 				type: 'link',
 				link: qazana.config.qazana_site,
@@ -60,14 +66,14 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 		var menuItemType = childView.model.get( 'type' );
 
 		switch ( menuItemType ) {
-			case 'page' :
+			case 'page':
 				var pageName = childView.model.get( 'pageName' ),
 					pageTitle = childView.model.get( 'title' );
 
 				qazana.getPanelView().setPage( pageName, pageTitle );
 				break;
 
-			case 'link' :
+			case 'link':
 				var link = childView.model.get( 'link' ),
 					isNewTab = childView.model.get( 'newTab' );
 

@@ -49,7 +49,7 @@ class Frontend {
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 
 		if ( qazana()->preview->is_preview_mode() ) {
-			return;
+			//return;
 		}
 
 		$this->_is_frontend_mode = true;
@@ -58,16 +58,16 @@ class Frontend {
 		$this->get_dependencies();
 
 		if ( $this->_has_qazana_in_page ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'widgets_register_script' ] );
 			add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ], 5 );
-			add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_scripts' ], 999 );
-			add_action( 'wp_enqueue_scripts', [ $this, 'load_widget_stylesheets' ], 999 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
 		}
 
 		add_action( 'wp_head', [ $this, 'print_google_fonts' ] );
-		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
+
+		if ( $this->_has_qazana_in_page ) {
+			add_action( 'wp_footer', [ $this, 'wp_footer' ] );
+		}
 
 		// Add Edit with Qazana in Admin Bar
 		add_action( 'admin_bar_menu', [ $this, 'add_menu_in_admin_bar' ], 200 );
@@ -104,7 +104,6 @@ class Frontend {
 			if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
 				foreach ( $element_instance->_element_scripts as $key ) {
 					$this->element_scripts[] = $key;
-
 				}
 			}
 
@@ -113,30 +112,23 @@ class Frontend {
 
 	}
 
-	public function load_widget_scripts() {
+	public function enqueue_widget_scripts() {
+
 		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
 			foreach ( $this->element_scripts as $key ) {
+				qazana_write_log( $key . ' '. wp_script_is( $key, 'registered' ) . ' registered ' );
+
 				wp_enqueue_script( $key );
 			}
 		}
 	}
 
-	public function load_widget_stylesheets() {
+	public function enqueue_widget_styles() {
 		if ( ! empty( $this->element_stylesheets ) && is_array( $this->element_stylesheets ) ) {
 			foreach ( $this->element_stylesheets as $key ) {
 				wp_enqueue_style( $key );
 			}
 		}
-	}
-
-	private function _init_stylesheet() {
-		$this->stylesheet = new Stylesheet();
-
-		$breakpoints = Responsive::get_breakpoints();
-
-		$this->stylesheet
-			->add_device( 'mobile', $breakpoints['md'] - 1 )
-			->add_device( 'tablet', $breakpoints['lg'] - 1 );
 	}
 
 	protected function _print_elements( $elements_data ) {
@@ -238,9 +230,9 @@ class Frontend {
 		do_action( 'qazana/frontend/after_enqueue_scripts' );
 	}
 
-	public function widgets_register_script() {
+	public function register_widget_scripts() {
 
-		do_action( 'qazana/frontend/before_widgets_register_script' );
+		do_action( 'qazana/frontend/before_register_widget_scripts' );
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
@@ -254,7 +246,7 @@ class Frontend {
             true
         );
 
-		do_action( 'qazana/frontend/after_widgets_register_script' );
+		do_action( 'qazana/frontend/after_register_widget_scripts' );
 
 	}
 
@@ -306,9 +298,6 @@ class Frontend {
 	 * Handle style that are not printed in the header
 	 */
 	public function wp_footer() {
-		if ( ! $this->_has_qazana_in_page ) {
-			return;
-		}
 
 		$this->enqueue_styles();
 		$this->enqueue_scripts();
@@ -545,6 +534,7 @@ class Frontend {
 	}
 
 	public function __construct() {
+
 		// We don't need this class in admin side, but in AJAX requests
 		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			return;
@@ -556,5 +546,10 @@ class Frontend {
 		// Hack to avoid enqueue post css while it's a `the_excerpt` call
 		add_filter( 'get_the_excerpt', [ $this, 'start_excerpt_flag' ], 1 );
 		add_filter( 'get_the_excerpt', [ $this, 'end_excerpt_flag' ], 20 );
+
+		add_action( 'qazana/frontend/after_register_scripts', 	[ $this, 'register_widget_scripts' ] );
+		add_action( 'qazana/frontend/after_register_scripts', 	[ $this, 'enqueue_widget_scripts' ] );
+		add_action( 'qazana/frontend/after_register_styles', 	[ $this, 'enqueue_widget_styles' ] );
+
 	}
 }

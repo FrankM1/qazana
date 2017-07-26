@@ -438,7 +438,7 @@ abstract class Controls_Stack {
 
 		foreach ( $this->get_controls() as $control ) {
 			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
-	if ( ! $control_obj instanceof Base_Data_Control ) {
+			if ( ! $control_obj instanceof Base_Data_Control ) {
 				continue;
 			}
 
