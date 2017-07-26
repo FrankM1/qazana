@@ -12,17 +12,15 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	protected static function get_default_edit_tools() {
+		$widget_label = __( 'Widget', 'qazana' );
+
 		return [
-			'edit' => [
-				'title' => __( 'Edit', 'qazana' ),
-				'icon' => 'pencil',
-			],
 			'duplicate' => [
-				'title' => __( 'Duplicate', 'qazana' ),
-				'icon' => 'files-o',
+				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $widget_label ),
+				'icon' => 'clone',
 			],
 			'remove' => [
-				'title' => __( 'Remove', 'qazana' ),
+				'title' => sprintf( __( 'Remove %s', 'qazana' ), $widget_label ),
 				'icon' => 'times',
 			],
 		];
@@ -143,7 +141,7 @@ abstract class Widget_Base extends Element_Base {
 		}
 		?>
 		<script type="text/html" id="tmpl-qazana-<?php echo static::get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
-			<?php self::_render_settings(); ?>
+			<?php $this->_render_settings(); ?>
 			<div class="qazana-widget-container">
 				<?php echo $content_template; ?>
 			</div>
@@ -153,14 +151,15 @@ abstract class Widget_Base extends Element_Base {
 
 	protected function _render_settings() {
 		?>
-		<div class="qazana-editor-element-settings qazana-editor-<?php echo esc_attr( static::get_type() ); ?>-settings qazana-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
-			<ul class="qazana-editor-element-settings-list">
+		<div class="qazana-element-overlay">
+			<ul class="qazana-editor-element-settings qazana-editor-widget-settings">
+				<li class="qazana-editor-element-setting qazana-editor-element-trigger" title="<?php printf( __( 'Edit %s', 'qazana' ), __( 'Widget', 'qazana' ) ); ?>">
+					<i class="fa fa-pencil"></i>
+				</li>
 				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
-					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>">
-						<a title="<?php echo $edit_tool['title']; ?>">
-							<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-							<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
-						</a>
+					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
+						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
+						<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -210,7 +209,9 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-	public function _add_render_attributes() {
+	protected function _add_render_attributes() {
+		parent::_add_render_attributes();
+
 		$this->add_render_attribute( '_wrapper', 'class', [
 			'qazana-widget',
 			'qazana-element',

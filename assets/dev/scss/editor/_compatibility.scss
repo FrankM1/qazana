@@ -1,9 +1,11 @@
 // Compatibility qazana editor for themes and plugins
 
+
 body.qazana-editor-active {
 
 	// Hack for pojo.me themes
 	&.layout-section {
+
 		.entry-content {
 			overflow: visible;
 		}
@@ -16,7 +18,8 @@ body.qazana-editor-active {
 
 	// Hack for Zerif Pro theme
 	.qazana-element-overlay {
-		.qazana-editor-element-settings-list {
+
+		.qazana-editor-element-settings {
 			clear: unset;
 		}
 	}
@@ -24,8 +27,13 @@ body.qazana-editor-active {
 
 #qazana {
 
+	// Prevent external animate.css embed which causing elements overlay issue
+	.animated {
+		animation-fill-mode: none !important;
+	}
+
 	// Fixes Make theme issue
-	.qazana-editor-element-settings-list {
+	.qazana-editor-element-settings {
 		word-break: normal;
 	}
 

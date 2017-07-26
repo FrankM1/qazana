@@ -270,34 +270,7 @@ abstract class Element_Base extends Controls_Stack {
 
 	protected function _content_template() {}
 
-	protected function _render_settings() {
-		?>
-		<div class="qazana-element-overlay">
-			<div class="qazana-editor-element-settings qazana-editor-<?php echo esc_attr( $this->get_type() ); ?>-settings qazana-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
-				<ul class="qazana-editor-element-settings-list">
-					<li class="qazana-editor-element-setting qazana-editor-element-add">
-						<a title="<?php _e( 'Add Widget', 'qazana' ); ?>">
-							<span class="qazana-screen-only"><?php _e( 'Add', 'qazana' ); ?></span>
-							<i class="fa fa-plus"></i>
-						</a>
-					</li>
-					<li class="qazana-editor-element-setting qazana-editor-element-duplicate">
-						<a title="<?php _e( 'Duplicate Widget', 'qazana' ); ?>">
-							<span class="qazana-screen-only"><?php _e( 'Duplicate', 'qazana' ); ?></span>
-							<i class="fa fa-files-o"></i>
-						</a>
-					</li>
-					<li class="qazana-editor-element-setting qazana-editor-element-remove">
-						<a title="<?php _e( 'Remove Widget', 'qazana' ); ?>">
-							<span class="qazana-screen-only"><?php _e( 'Remove', 'qazana' ); ?></span>
-							<i class="fa fa-trash-o"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<?php
-	}
+	protected function _render_settings() {}
 
 	/**
 	 * @return boolean
@@ -316,6 +289,49 @@ abstract class Element_Base extends Controls_Stack {
 		}
 
 		return $controls;
+	}
+
+	protected function _add_render_attributes() {
+		$id = $this->get_id();
+
+		$this->add_render_attribute( '_wrapper', 'data-id', $id );
+
+		$this->add_render_attribute( '_wrapper', 'class', [
+			'qazana-element',
+			'qazana-element-' . $id,
+		] );
+
+		$settings = $this->get_active_settings();
+
+		foreach ( self::get_class_controls() as $control ) {
+			if ( empty( $settings[ $control['name'] ] ) )
+				continue;
+
+			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
+		}
+
+		if ( ! empty( $settings['animation'] ) || ! empty( $settings['_animation'] ) ) {
+			// Hide the element until the animation begins
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-invisible' );
+		}
+
+		if ( ! empty( $settings['_element_id'] ) ) {
+			$this->add_render_attribute( '_wrapper', 'id', trim( $settings['_element_id'] ) );
+		}
+
+		if ( ! qazana()->editor->is_edit_mode() ) {
+			$frontend_settings = array_intersect_key( $settings, array_flip( $this->get_frontend_settings_keys() ) );
+
+			foreach ( $frontend_settings as $key => $setting ) {
+				if ( in_array( $setting, [ null, '' ], true ) ) {
+					unset( $frontend_settings[ $key ] );
+				}
+			}
+
+			if ( $frontend_settings ) {
+				$this->add_render_attribute( '_wrapper', 'data-settings', wp_json_encode( $frontend_settings ) );
+			}
+		}
 	}
 
 	protected function render() {}

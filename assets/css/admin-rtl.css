@@ -341,6 +341,14 @@ button.qazana-button-spinner.success:before {
   font-family: eicon;
   font-size: 17px; }
 
+.qazana-settings-form-page {
+  padding-top: 30px; }
+  .qazana-settings-form-page:not(.qazana-active) {
+    display: none; }
+
+._qazana_settings_update_time {
+  display: none; }
+
 /*= Qazana Message
 ---------------------------------------*/
 .notice.qazana-message {

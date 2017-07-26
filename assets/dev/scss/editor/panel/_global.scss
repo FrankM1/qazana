@@ -117,7 +117,7 @@
 }
 
 // Alert
-.panel-alert {
+.qazana-panel-alert {
 	padding: 15px;
 	border-left: 5px solid transparent;
 	position: relative;
@@ -125,28 +125,31 @@
 	line-height: 1.5;
 	text-align: $start;
 
-	&.panel-alert-info {
-		color: $info-text;
-		background-color: $info-bg;
-		border-color: $info-border;
-	}
+	&.qazana-panel-alert- {
 
-	&.panel-alert-success {
-		color: $success-text;
-		background-color: $success-bg;
-		border-color: $success-border;
-	}
+		&info {
+			color: $info-text;
+			background-color: $info-bg;
+			border-color: $info-border;
+		}
 
-	&.panel-alert-warning {
-		color: $warning-text;
-		background-color: $warning-bg;
-		border-color: $warning-border;
-	}
+		&success {
+			color: $success-text;
+			background-color: $success-bg;
+			border-color: $success-border;
+		}
 
-	&.panel-alert-danger {
-		color: $danger-text;
-		background-color: $danger-bg;
-		border-color: $danger-border;
+		&warning {
+			color: $warning-text;
+			background-color: $warning-bg;
+			border-color: $warning-border;
+		}
+
+		&danger {
+			color: $danger-text;
+			background-color: $danger-bg;
+			border-color: $danger-border;
+		}
 	}
 }
 
@@ -230,23 +233,5 @@
 #qazana-panel-global {
 	.qazana-panel-nerd-box {
 		padding: 30px 25px;
-	}
-}
-
-#qazana-panel-get-pro-elements {
-	&.qazana-panel-nerd-box {
-		padding: 40px 0;
-
-		.qazana-panel-nerd-box-title {
-			margin-top: 0;
-		}
-
-		.qazana-panel-nerd-box-message {
-			margin-top: 0;
-		}
-
-		.qazana-button.qazana-panel-nerd-box-link {
-			margin-top: 0;
-		}
 	}
 }

@@ -1,4 +1,91 @@
 @charset "UTF-8";
+.dialog-widget {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999; }
+
+.dialog-widget-content {
+  background-color: #fff;
+  position: absolute;
+  border-radius: 3px;
+  -webkit-box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+  overflow: hidden; }
+
+.dialog-widget-header, .dialog-message {
+  text-align: center; }
+
+.dialog-message {
+  font-size: 12px;
+  line-height: 1.5; }
+
+.dialog-buttons-wrapper {
+  border-top: 1px solid #EBEBEB;
+  text-align: center; }
+  .dialog-buttons-wrapper > button {
+    border: none;
+    background: none;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 13px 0;
+    outline: 0; }
+    .dialog-buttons-wrapper > button:first-child {
+      color: #444; }
+    .dialog-buttons-wrapper > button.dialog-ok {
+      color: #b01b1b; }
+    .dialog-buttons-wrapper > button.dialog-take_over {
+      color: #39b54a; }
+    .dialog-buttons-wrapper > button:active {
+      background-color: rgba(235, 235, 235, 0.5); }
+    .dialog-buttons-wrapper > button::-moz-focus-inner {
+      border: 0; }
+
+.dialog-widget-header {
+  padding: 20px 0;
+  font-weight: 500; }
+
+.dialog-options-widget .dialog-widget-header,
+.dialog-confirm-widget .dialog-widget-header {
+  font-size: 15px;
+  color: #23282d; }
+.dialog-options-widget .dialog-buttons-wrapper > button,
+.dialog-confirm-widget .dialog-buttons-wrapper > button {
+  width: 50%; }
+  .dialog-options-widget .dialog-buttons-wrapper > button:first-child,
+  .dialog-confirm-widget .dialog-buttons-wrapper > button:first-child {
+    border-left: 1px solid #EBEBEB; }
+  .dialog-options-widget .dialog-buttons-wrapper > button:hover,
+  .dialog-confirm-widget .dialog-buttons-wrapper > button:hover {
+    background-color: #f8f8f8; }
+
+.dialog-options-widget, .dialog-confirm-widget, .dialog-alert-widget {
+  -webkit-user-select: none;
+  -moz-user-select: none; }
+  .dialog-options-widget .dialog-widget-content, .dialog-confirm-widget .dialog-widget-content, .dialog-alert-widget .dialog-widget-content {
+    margin: auto;
+    width: 375px; }
+  .dialog-options-widget .dialog-message, .dialog-confirm-widget .dialog-message, .dialog-alert-widget .dialog-message {
+    padding: 0 20px;
+    min-height: 50px; }
+
+.dialog-alert-widget .dialog-buttons-wrapper > button {
+  width: 100%; }
+
+.dialog-lightbox-close-button {
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  font-size: 16px;
+  color: #ffffff;
+  opacity: .65; }
+  .dialog-lightbox-close-button:hover {
+    opacity: 1; }
+
 .qazana-video-wrapper {
   position: relative; }
   .qazana-video-wrapper iframe {
@@ -7,6 +94,9 @@
     left: 0;
     height: 100%;
     width: 100%; }
+
+.qazana-hidden {
+  display: none; }
 
 #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
   margin-top: 5px;
@@ -145,6 +235,11 @@
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
             align-items: flex-end; }
+  @media (min-width: 768px) {
+    .qazana-section.qazana-section-height-full {
+      height: 100vh; }
+      .qazana-section.qazana-section-height-full > .qazana-container {
+        height: 100%; } }
 
 .qazana-section-content-top > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
   -webkit-box-align: start;
@@ -2900,8 +2995,8 @@ body.qazana-page .qazana-widget-menu-anchor {
             transform: rotate(180deg); }
   .qazana-shape svg {
     display: block;
-    width: -webkit-calc(100% + 1px);
-    width: calc(100% + 1px);
+    width: -webkit-calc(100% + 1.3px);
+    width: calc(100% + 1.3px);
     position: relative;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -2909,7 +3004,9 @@ body.qazana-page .qazana-widget-menu-anchor {
   .qazana-shape .qazana-shape-fill {
     fill: #fff;
     -webkit-transform-origin: center;
-            transform-origin: center; }
+            transform-origin: center;
+    -webkit-transform: rotateY(0deg);
+            transform: rotateY(0deg); }
 
 @media (max-width: 767px) {
   body:not(.qazana-editor-active) .qazana-hidden-phone {

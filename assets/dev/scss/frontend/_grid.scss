@@ -58,6 +58,18 @@
 			}
 		}
 	}
+
+	@media (min-width: $screen-md-min) {
+
+		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
+		&.qazana-section-height-full {
+			height: 100vh;
+
+			> .qazana-container {
+				height: 100%;
+			}
+		}
+	}
 }
 
 // In columns stretch mode

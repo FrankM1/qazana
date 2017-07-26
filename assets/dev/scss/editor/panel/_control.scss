@@ -2,45 +2,10 @@
 // Panel Controls
 //
 
-#qazana-panel-page-editor {
-
-	@at-root .qazana-device-desktop #qazana-panel #qazana-panel-page-editor:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
-		background: $editor-lighter;
-
-		&:not(.qazana-responsive-switcher-desktop) {
-			display: none;
-		}
-	}
-
-	// Tabs Control
-	@import "controls/tabs";
-
-	// Repeater control
-	@import "controls/repeater";
-
-	// Textarea control
-	@import "controls/textarea";
-
-	// Box-shadow control
-	@import "controls/box-shadow";
-
-	// Switcher control
-	@import "controls/switcher";
-
-	// Order control
-	@import "controls/order";
-	#qazana-controls {
-		> .qazana-control {
-			&:not(.qazana-active-tab) {
-				display: none;
-			}
-		}
-	}
-
-	.qazana-control {
-		position: relative;
-		padding: 0 20px 15px;
-		background-color: #fff;
+.qazana-control {
+	background-color: #fff;
+	position: relative;
+	padding: 0 20px 15px;
 
 		&.qazana-control-separator- {
 			&default {
@@ -101,28 +66,24 @@
 			}
 		}
 
-		&.qazana-control-hidden-label {
-			.qazana-control-title {
-				display: none;
-			}
+	&.qazana-control-hidden-label {
+
+		> * > .qazana-control-title, > * > * > .qazana-control-title { // Avoid repeater titles to be affected from above
+			display: none;
 		}
+	}
 
 		&.qazana-hidden-control {
 			display: none;
 		}
 
-		&.qazana-control-under-section {
-			&:not(.qazana-open) {
-				display: none;
-			}
-		}
+	&.qazana-control-type-heading {
 
-		&.qazana-control-type-heading {
-			.qazana-control-title {
-				margin: 0;
-				font-weight: bold;
-			}
+		.qazana-control-title {
+			font-weight: bold;
+			margin: 0;
 		}
+	}
 
 		&.qazana-control-responsive- {
 			&desktop {
@@ -194,26 +155,26 @@
 		}
 	}
 
-	.qazana-label-inline {
-		> .qazana-control-content {
-			> .qazana-control-field {
-				display: table;
-				width: 100%;
+.qazana-label-inline {
 
-				> * {
-					display: table-cell;
-					vertical-align: middle;
-				}
+	> .qazana-control-content {
 
-				> .qazana-control-title {
-					width: 45%;
-				}
+		> .qazana-control-field {
+
+			> .qazana-control-title {
+				width: 45%;
+				flex-shrink: 0;
+			}
+
+			> .qazana-control-input-wrapper {
+				width: 55%;
 			}
 		}
 	}
+}
 
-	.qazana-control-description {
-		@extend .qazana-descriptor;
+.qazana-control-field-description {
+	@extend .qazana-descriptor;
 
 		margin-top: 10px;
 	}
@@ -306,10 +267,10 @@
 		}
 	}
 
-	.qazana-control-responsive-switchers {
-		@include margin-start(5px);
-		display: flex;
-	}
+.qazana-control-responsive-switchers {
+	display: flex;
+	margin: 0 5px;
+}
 
 	.qazana-responsive-switcher {
 		$icon-size: 18px;
@@ -336,11 +297,20 @@
 		}
 	}
 
-	.qazana-responsive-switcher-mobile {
-		.qazana-device-mobile & {
-			background-color: $editor-info;
-		}
+@at-root .qazana-device-desktop #qazana-panel .qazana-panel-controls-stack:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
+	background: $editor-lighter;
+
+	&:not(.qazana-responsive-switcher-desktop) {
+		display: none;
 	}
+}
+
+.qazana-responsive-switcher-mobile {
+
+	.qazana-device-mobile & {
+		background-color: $editor-info;
+	}
+}
 
 	.qazana-responsive-switcher-tablet {
 		.qazana-device-tablet & {
@@ -645,20 +615,13 @@
 		}
 	}
 
-	// Color Picker control
-	.wp-picker-container {
-		&:not(.wp-picker-active) {
-			float: $end;
-		}
+// Color Picker control
+.qazana-control-type-color {
 
-		&.wp-picker-active {
-			transform: translateY(6px);
-
-			.wp-color-result {
-				margin-right: 3px;
-			}
-		}
+	.qazana-control-input-wrapper {
+		height: 27px; //Fix jumping of panel when the wp-picker is active
 	}
+}
 
 	// Wysiwyg control
 	.qazana-control-type-wysiwyg {
@@ -868,12 +831,11 @@
 			}
 		}
 
-		.qazana-control-structure-more-presets-title,
-		.qazana-control-structure-title {
-			position: relative;
-			padding: 13.5px 20px;
-			color: $editor-darkest;
-			font-weight: bold;
+	.qazana-control-structure-title, .qazana-control-structure-more-presets-title {
+		color: $editor-darkest;
+		font-weight: bold;
+		padding: 13.5px 20px;
+		position: relative;
 
 			&:after,
 			&:before {
@@ -944,12 +906,13 @@
 		}
 	}
 
-	// Image dimensions control
-	.qazana-control-type-image_dimensions {
-		.qazana-control-description {
-			margin: 0 0 15px;
-			line-height: 1.4;
-		}
+// Image dimensions control
+.qazana-control-type-image_dimensions {
+
+	.qazana-control-field-description {
+		margin: 0 0 15px;
+		line-height: 1.4;
+	}
 
 		.qazana-control-input-wrapper {
 			overflow: hidden;
@@ -995,8 +958,39 @@
 		padding: 0 10px 15px;
 	}
 
-	// Hidden control
-	.qazana-control-type-hidden {
-		display: none !important;
+// WP Widgets
+.qazana-control-type-wp_widget {
+	.widget-inside {
+		// Overwrite WP Default
+		display: block;
 	}
+
+	.quicktags-toolbar {
+		input {
+			width: auto;
+		}
+	}
+}
+
+// Tabs Control
+@import "controls/tabs";
+
+// Repeater control
+@import "controls/repeater";
+
+// Textarea control
+@import "controls/textarea";
+
+// Box-shadow control
+@import "controls/box-shadow";
+
+// Switcher control
+@import "controls/switcher";
+
+// Order control
+@import "controls/order";
+
+// Hidden control
+.qazana-control-type-hidden {
+	display: none !important;
 }

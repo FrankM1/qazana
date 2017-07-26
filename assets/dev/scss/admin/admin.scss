@@ -188,6 +188,21 @@ button.qazana-button-spinner {
 	font-family: eicon;
 	font-size: 17px;
 }
+
+
+// Settings
+.qazana-settings-form-page {
+	padding-top: 30px;
+
+	&:not(.qazana-active) {
+		display: none;
+	}
+}
+
+._qazana_settings_update_time {
+	display: none;
+}
+
 @import "message";
 @import "system_info";
 @import "feedback";
