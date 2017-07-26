@@ -31,13 +31,11 @@ class Editor {
     public function add_localize_settings( $setting_key, $setting_value = null ) {
         if ( is_array( $setting_key ) ) {
             $this->_localize_settings = array_replace_recursive( $this->_localize_settings, $setting_key );
-
             return;
         }
 
         if ( ! is_array( $setting_value ) || ! isset( $this->_localize_settings[ $setting_key ] ) || ! is_array( $this->_localize_settings[ $setting_key ] ) ) {
             $this->_localize_settings[ $setting_key ] = $setting_value;
-
             return;
         }
 

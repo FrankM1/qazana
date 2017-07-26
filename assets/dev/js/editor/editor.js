@@ -63,7 +63,7 @@ App = Marionette.Application.extend( {
 			Animation: require( 'qazana-views/controls/select2' ),
 			Hover_animation: require( 'qazana-views/controls/select2' ),
 			Order: require( 'qazana-views/controls/order' ),
-			//Switcher: require( 'qazana-views/controls/switcher' ),
+			Switcher: require( 'qazana-views/controls/switcher' ),
 			Number: require( 'qazana-views/controls/number' )
 		},
 		templateLibrary: {

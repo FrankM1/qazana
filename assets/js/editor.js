@@ -1762,7 +1762,7 @@ App = Marionette.Application.extend( {
 			Animation: require( 'qazana-views/controls/select2' ),
 			Hover_animation: require( 'qazana-views/controls/select2' ),
 			Order: require( 'qazana-views/controls/order' ),
-			//Switcher: require( 'qazana-views/controls/switcher' ),
+			Switcher: require( 'qazana-views/controls/switcher' ),
 			Number: require( 'qazana-views/controls/number' )
 		},
 		templateLibrary: {
@@ -2237,7 +2237,7 @@ App = Marionette.Application.extend( {
 
 module.exports = ( window.qazana = new App() ).start();
 
-},{"../utils/hooks":116,"qazana-editor-utils/ajax":64,"qazana-editor-utils/conditions":65,"qazana-editor-utils/debug":67,"qazana-editor-utils/heartbeat":68,"qazana-editor-utils/helpers":69,"qazana-editor-utils/hot-keys":70,"qazana-editor-utils/images-manager":71,"qazana-editor-utils/modals":74,"qazana-editor-utils/presets-factory":75,"qazana-editor-utils/schemes":76,"qazana-layouts/panel/panel":58,"qazana-models/element":61,"qazana-panel/pages/elements/views/elements":45,"qazana-revisions/manager":8,"qazana-templates/manager":13,"qazana-views/controls/base":89,"qazana-views/controls/base-multiple":87,"qazana-views/controls/box-shadow":90,"qazana-views/controls/choose":91,"qazana-views/controls/code":92,"qazana-views/controls/color":93,"qazana-views/controls/date-time":94,"qazana-views/controls/dimensions":95,"qazana-views/controls/font":96,"qazana-views/controls/gallery":97,"qazana-views/controls/icon":98,"qazana-views/controls/image-dimensions":99,"qazana-views/controls/media":100,"qazana-views/controls/number":101,"qazana-views/controls/order":102,"qazana-views/controls/repeater":104,"qazana-views/controls/section":105,"qazana-views/controls/select2":106,"qazana-views/controls/slider":107,"qazana-views/controls/structure":108,"qazana-views/controls/tab":109,"qazana-views/controls/wp_widget":110,"qazana-views/controls/wysiwyg":111,"qazana-views/preview":113,"qazana-views/widget":115}],34:[function(require,module,exports){
+},{"../utils/hooks":117,"qazana-editor-utils/ajax":64,"qazana-editor-utils/conditions":65,"qazana-editor-utils/debug":67,"qazana-editor-utils/heartbeat":68,"qazana-editor-utils/helpers":69,"qazana-editor-utils/hot-keys":70,"qazana-editor-utils/images-manager":71,"qazana-editor-utils/modals":74,"qazana-editor-utils/presets-factory":75,"qazana-editor-utils/schemes":76,"qazana-layouts/panel/panel":58,"qazana-models/element":61,"qazana-panel/pages/elements/views/elements":45,"qazana-revisions/manager":8,"qazana-templates/manager":13,"qazana-views/controls/base":89,"qazana-views/controls/base-multiple":87,"qazana-views/controls/box-shadow":90,"qazana-views/controls/choose":91,"qazana-views/controls/code":92,"qazana-views/controls/color":93,"qazana-views/controls/date-time":94,"qazana-views/controls/dimensions":95,"qazana-views/controls/font":96,"qazana-views/controls/gallery":97,"qazana-views/controls/icon":98,"qazana-views/controls/image-dimensions":99,"qazana-views/controls/media":100,"qazana-views/controls/number":101,"qazana-views/controls/order":102,"qazana-views/controls/repeater":104,"qazana-views/controls/section":105,"qazana-views/controls/select2":106,"qazana-views/controls/slider":107,"qazana-views/controls/structure":108,"qazana-views/controls/switcher":109,"qazana-views/controls/tab":110,"qazana-views/controls/wp_widget":111,"qazana-views/controls/wysiwyg":112,"qazana-views/preview":114,"qazana-views/widget":116}],34:[function(require,module,exports){
 var EditModeItemView;
 
 EditModeItemView = Marionette.ItemView.extend( {
@@ -4609,7 +4609,7 @@ ControlsCSSParser.addControlStyleRules = function( stylesheet, control, controls
 
 module.exports = ControlsCSSParser;
 
-},{"qazana-editor-utils/stylesheet":77,"qazana-utils/view-module":118}],67:[function(require,module,exports){
+},{"qazana-editor-utils/stylesheet":77,"qazana-utils/view-module":119}],67:[function(require,module,exports){
 var Debug = function() {
 	var self = this,
 		errorStack = [],
@@ -6409,7 +6409,7 @@ Validator = Module.extend( {
 
 module.exports = Validator;
 
-},{"qazana-utils/module":117}],79:[function(require,module,exports){
+},{"qazana-utils/module":118}],79:[function(require,module,exports){
 var AddSectionView;
 
 AddSectionView = Marionette.ItemView.extend( {
@@ -7072,7 +7072,7 @@ BaseElementView = BaseContainer.extend( {
 
 module.exports = BaseElementView;
 
-},{"qazana-editor-utils/controls-css-parser":66,"qazana-editor-utils/validator":78,"qazana-models/base-settings":59,"qazana-views/base-container":82,"qazana-views/column":85,"qazana-views/section":114}],84:[function(require,module,exports){
+},{"qazana-editor-utils/controls-css-parser":66,"qazana-editor-utils/validator":78,"qazana-models/base-settings":59,"qazana-views/base-container":82,"qazana-views/column":85,"qazana-views/section":115}],84:[function(require,module,exports){
 var SectionView = require( 'qazana-views/section' ),
 	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseSectionsContainerView;
@@ -7147,7 +7147,7 @@ BaseSectionsContainerView = BaseContainer.extend( {
 
 module.exports = BaseSectionsContainerView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/base-container":82,"qazana-views/section":114}],85:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/base-container":82,"qazana-views/section":115}],85:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	ElementEmptyView = require( 'qazana-views/element-empty' ),
 	ColumnView;
@@ -7338,7 +7338,7 @@ ColumnView = BaseElementView.extend( {
 
 module.exports = ColumnView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/resizable":4,"qazana-behaviors/sortable":5,"qazana-views/base-element":83,"qazana-views/element-empty":112}],86:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/resizable":4,"qazana-behaviors/sortable":5,"qazana-views/base-element":83,"qazana-views/element-empty":113}],86:[function(require,module,exports){
 var ControlsStack;
 
 ControlsStack = Marionette.CompositeView.extend( {
@@ -9212,6 +9212,19 @@ ControlStructureItemView = ControlBaseItemView.extend( {
 module.exports = ControlStructureItemView;
 
 },{"qazana-views/controls/base":89}],109:[function(require,module,exports){
+var ControlBaseItemView = require( 'qazana-views/controls/base' );
+
+module.exports = ControlBaseItemView.extend( {
+	setInputValue: function( input, value ) {
+		// Make sure is string value
+		// TODO: Remove in v1.6
+		value = '' + value;
+
+		this.$( input ).prop( 'checked', this.model.get( 'return_value' ) === value );
+	}
+} );
+
+},{"qazana-views/controls/base":89}],110:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlTabItemView;
 
@@ -9223,7 +9236,7 @@ ControlTabItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlTabItemView;
 
-},{"qazana-views/controls/base":89}],110:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],111:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWPWidgetItemView;
 
@@ -9272,7 +9285,7 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWPWidgetItemView;
 
-},{"qazana-views/controls/base":89}],111:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],112:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlWysiwygItemView;
 
@@ -9407,7 +9420,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlWysiwygItemView;
 
-},{"qazana-views/controls/base":89}],112:[function(require,module,exports){
+},{"qazana-views/controls/base":89}],113:[function(require,module,exports){
 var ElementEmptyView;
 
 ElementEmptyView = Marionette.ItemView.extend( {
@@ -9426,7 +9439,7 @@ ElementEmptyView = Marionette.ItemView.extend( {
 
 module.exports = ElementEmptyView;
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 var BaseSectionsContainerView = require( 'qazana-views/base-sections-container' ),
 	AddSectionView = require( 'qazana-views/add-section/independent' ),
 	Preview;
@@ -9449,7 +9462,7 @@ Preview = BaseSectionsContainerView.extend( {
 
 module.exports = Preview;
 
-},{"qazana-views/add-section/independent":80,"qazana-views/base-sections-container":84}],114:[function(require,module,exports){
+},{"qazana-views/add-section/independent":80,"qazana-views/base-sections-container":84}],115:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	AddSectionView = require( 'qazana-views/add-section/inline' ),
 	SectionView;
@@ -9773,7 +9786,7 @@ SectionView = BaseElementView.extend( {
 
 module.exports = SectionView;
 
-},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/add-section/inline":81,"qazana-views/base-element":83}],115:[function(require,module,exports){
+},{"qazana-behaviors/duplicate":1,"qazana-behaviors/handle-duplicate":2,"qazana-behaviors/sortable":5,"qazana-views/add-section/inline":81,"qazana-views/base-element":83}],116:[function(require,module,exports){
 var BaseElementView = require( 'qazana-views/base-element' ),
 	WidgetView;
 
@@ -9928,7 +9941,7 @@ WidgetView = BaseElementView.extend( {
 
 module.exports = WidgetView;
 
-},{"qazana-views/base-element":83}],116:[function(require,module,exports){
+},{"qazana-views/base-element":83}],117:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10173,7 +10186,7 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -10359,7 +10372,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -10385,5 +10398,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":117}]},{},[72,73,33])
+},{"qazana-utils/module":118}]},{},[72,73,33])
 //# sourceMappingURL=editor.js.map
