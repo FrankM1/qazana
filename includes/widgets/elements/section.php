@@ -10,17 +10,23 @@ class Element_Section extends Element_Base {
 	private static $presets = [];
 
 	protected static function get_default_edit_tools() {
+		$section_label = __( 'Section', 'qazana' );
+
 		return [
 			'duplicate' => [
-				'title' => __( 'Duplicate', 'qazana' ),
-				'icon' => 'files-o',
+				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $section_label ),
+				'icon' => 'clone',
+			],
+			'add' => [
+				'title' => sprintf( __( 'Add %s', 'qazana' ), $section_label ),
+				'icon' => 'plus',
 			],
 			'save' => [
-				'title' => __( 'Save', 'qazana' ),
+				'title' => sprintf( __( 'Save %s', 'qazana' ), $section_label ),
 				'icon' => 'floppy-o',
 			],
 			'remove' => [
-				'title' => __( 'Remove', 'qazana' ),
+				'title' => sprintf( __( 'Remove %s', 'qazana' ), $section_label ),
 				'icon' => 'times',
 			],
 		];
@@ -133,9 +139,9 @@ class Element_Section extends Element_Base {
 				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'section-stretched',
 				'prefix_class' => 'qazana-',
-				'force_render' => true,
+				'render_type' => 'template',
 				'hide_in_inner' => true,
-				'description' => __( 'Stretch the section to the full width of the page using JS.', 'qazana' ) . sprintf( ' <a href="%s" target="_blank">%s</a>', 'https://radiumthemes.com/plugins/qazana/stretch-section/', __( 'Learn more.', 'qazana' ) ),
+				'description' => __( 'Stretch the section to the full width of the page using JS.', 'qazana' ) . sprintf( ' <a href="%s" target="_blank">%s</a>', 'https://go.qazana.com/stretch-section/', __( 'Learn more.', 'qazana' ) ),
 			]
 		);
 
@@ -208,7 +214,7 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'custom_height',
 			[
 				'label' => __( 'Minimum Height', 'qazana' ),
@@ -311,15 +317,33 @@ class Element_Section extends Element_Base {
 			]
 		);
 
+		$possible_tags = [
+			'section',
+			'header',
+			'footer',
+			'aside',
+			'article',
+			'nav',
+			'div',
+		];
+
+		$this->add_control(
+			'html_tag',
+			[
+				'label' => __( 'HTML Tag', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'section',
+				'options' => array_combine( $possible_tags, $possible_tags ),
+			]
+		);
+
 		$this->add_control(
 			'structure',
 			[
 				'label' => __( 'Structure', 'qazana' ),
 				'type' => Controls_Manager::STRUCTURE,
 				'default' => '10',
-				'selectors' => [
-					'' => '',
-				], // Hack to define it as a styleControl. @FIXME
+				'render_type' => 'none',
 			]
 		);
 
@@ -720,7 +744,23 @@ class Element_Section extends Element_Base {
 
 	protected function _render_settings() {
 		?>
-		<div class="qazana-element-overlay"></div>
+		<div class="qazana-element-overlay">
+			<ul class="qazana-editor-element-settings qazana-editor-section-settings">
+				<li class="qazana-editor-element-setting qazana-editor-element-trigger qazana-active" title="<?php printf( __( 'Edit %s', 'qazana' ),  __( 'Section', 'qazana' ) ); ?>"><i class="fa fa-bars"></i></li>
+				<?php foreach ( Element_Section::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
+					<?php if ( 'add' === $edit_tool_name ) : ?>
+						<# if ( ! isInner ) { #>
+					<?php endif; ?>
+					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
+						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
+						<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
+					</li>
+					<?php if ( 'add' === $edit_tool_name ) : ?>
+						<# } #>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 		<?php
 	}
 

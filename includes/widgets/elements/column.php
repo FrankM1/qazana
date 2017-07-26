@@ -8,17 +8,19 @@ class Element_Column extends Element_Base {
 	protected static $_edit_tools;
 
 	protected static function get_default_edit_tools() {
+		$column_label = __( 'Column', 'qazana' );
+
 		return [
 			'duplicate' => [
-				'title' => __( 'Duplicate', 'qazana' ),
-				'icon' => 'files-o',
+				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $column_label ),
+				'icon' => 'clone',
 			],
 			'add' => [
-				'title' => __( 'Add', 'qazana' ),
+				'title' => sprintf( __( 'Add %s', 'qazana' ), $column_label ),
 				'icon' => 'plus',
 			],
 			'remove' => [
-				'title' => __( 'Remove', 'qazana' ),
+				'title' => sprintf( __( 'Remove %s', 'qazana' ), $column_label ),
 				'icon' => 'times',
 			],
 		];
