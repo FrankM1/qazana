@@ -270,7 +270,34 @@ abstract class Element_Base extends Controls_Stack {
 
 	protected function _content_template() {}
 
-	protected function _render_settings() {}
+	protected function _render_settings() {
+		?>
+		<div class="qazana-element-overlay">
+			<div class="qazana-editor-element-settings qazana-editor-<?php echo esc_attr( $this->get_type() ); ?>-settings qazana-editor-<?php echo esc_attr( $this->get_name() ); ?>-settings">
+				<ul class="qazana-editor-element-settings-list">
+					<li class="qazana-editor-element-setting qazana-editor-element-add">
+						<a title="<?php _e( 'Add Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Add', 'qazana' ); ?></span>
+							<i class="fa fa-plus"></i>
+						</a>
+					</li>
+					<li class="qazana-editor-element-setting qazana-editor-element-duplicate">
+						<a title="<?php _e( 'Duplicate Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Duplicate', 'qazana' ); ?></span>
+							<i class="fa fa-files-o"></i>
+						</a>
+					</li>
+					<li class="qazana-editor-element-setting qazana-editor-element-remove">
+						<a title="<?php _e( 'Remove Widget', 'qazana' ); ?>">
+							<span class="qazana-screen-only"><?php _e( 'Remove', 'qazana' ); ?></span>
+							<i class="fa fa-trash-o"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<?php
+	}
 
 	/**
 	 * @return boolean

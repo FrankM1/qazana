@@ -34,6 +34,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 
 		// If is the new version - with image size
 		$image_sizes   = get_intermediate_image_sizes();
+
 		$image_sizes[] = 'full';
 
 		if ( ! empty( $id ) && in_array( $size, $image_sizes ) ) {
@@ -92,9 +93,9 @@ class Group_Control_Image_Size extends Group_Control_Base {
 
 		$args = $this->get_args();
 
-		if ( ! empty( $args['include'] ) ) {
+		if ( $args['include'] ) {
 			$wp_image_sizes = array_intersect_key( $wp_image_sizes, array_flip( $args['include'] ) );
-		} elseif ( ! empty( $args['exclude'] ) ) {
+		} elseif ( $args['exclude'] ) {
 			$wp_image_sizes = array_diff_key( $wp_image_sizes, array_flip( $args['exclude'] ) );
 		}
 
@@ -110,6 +111,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 		}
 
 		$image_sizes['full'] = _x( 'Full', 'Image Size Control', 'qazana' );
+
 		if ( ! empty( $args['include']['custom'] ) || ! in_array( 'custom', $args['exclude'] ) ) {
 			$image_sizes['custom'] = _x( 'Custom', 'Image Size Control', 'qazana' );
 		}

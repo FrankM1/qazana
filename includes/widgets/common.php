@@ -286,7 +286,7 @@ class Widget_Common extends Widget_Base {
 			[
 				'raw' => __( 'Attention: The display settings (show/hide for mobile, tablet or desktop) will only take effect once you are on the preview or live page, and not while you\'re in editing mode in Qazana.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
-				'classes' => 'qazana-descriptor',
+				'content_classes' => 'qazana-descriptor',
 			]
 		);
 

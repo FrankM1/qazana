@@ -18,8 +18,9 @@ class DB {
 	 * Save builder method.
 	 *
 	 * @since 1.0.0
-	 * @param int    $post_id
-	 * @param array  $posted
+	 *
+	 * @param int $post_id
+	 * @param array $posted
 	 * @param string $status
 	 *
 	 * @return void
@@ -43,16 +44,14 @@ class DB {
 
 			$this->remove_draft( $post_id );
 
-			$is_meta_updated = update_post_meta( $post_id, '_qazana_data', $json_value );
+			$is_meta_updated = update_metadata( 'post', $post_id, '_qazana_data', $json_value );
 
 			if ( $is_meta_updated ) {
 				Revisions_Manager::handle_revision();
 			}
 
 			$this->_save_plain_text( $post_id );
-
 		} elseif ( self::STATUS_AUTOSAVE === $status ) {
-
 			Revisions_Manager::handle_revision();
 
 			$old_autosave = wp_get_post_autosave( $post_id, get_current_user_id() );
@@ -70,7 +69,6 @@ class DB {
 			if ( $autosave_id ) {
 				update_metadata( 'post',  $autosave_id, '_qazana_data', $json_value );
 			}
-
 		}
 
 		update_post_meta( $post_id, '_qazana_version', qazana_get_db_version() );
@@ -219,7 +217,7 @@ class DB {
 	 * @param bool $is_qazana
 	 *
 	 */
-	public function set_is_qazana_page( $post_id, $is_qazana = true ) {
+	public function set_is_builder_page( $post_id, $is_qazana = true ) {
 		if ( $is_qazana ) {
 			// Use the string `builder` and not a boolean for rollback compatibility
 			update_post_meta( $post_id, '_qazana_edit_mode', 'builder' );
@@ -228,13 +226,12 @@ class DB {
 		}
 	}
 
-
 	private function _render_element_plain_content( $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
 			$widget = qazana()->elements_manager->create_element_instance( $element_data );
 
-			if ( is_object( $widget ) ) {
+			if ( $widget ) {
 				$widget->render_plain_content();
 			}
 		}

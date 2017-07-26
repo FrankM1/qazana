@@ -70,6 +70,7 @@ class Widget_Social_Icons extends Widget_Base {
 							'fa fa-delicious',
 							'fa fa-digg',
 							'fa fa-dribbble',
+							'fa fa-envelope',
 							'fa fa-facebook',
 							'fa fa-flickr',
 							'fa fa-foursquare',
@@ -83,15 +84,22 @@ class Widget_Social_Icons extends Widget_Base {
 							'fa fa-pinterest',
 							'fa fa-product-hunt',
 							'fa fa-reddit',
+							'fa fa-shopping-cart',
+							'fa fa-slideshare',
 							'fa fa-snapchat',
 							'fa fa-soundcloud',
 							'fa fa-spotify',
 							'fa fa-stack-overflow',
+							'fa fa-tripadvisor',
 							'fa fa-tumblr',
 							'fa fa-twitch',
 							'fa fa-twitter',
 							'fa fa-vimeo',
+							'fa fa-vk',
+							'fa fa-whatsapp',
 							'fa fa-wordpress',
+							'fa fa-xing',
+							'fa fa-yelp',
 							'fa fa-youtube',
 						],
 					],
@@ -101,7 +109,6 @@ class Widget_Social_Icons extends Widget_Base {
 						'type' => Controls_Manager::URL,
 						'label_block' => true,
 						'default' => [
-							'url' => '',
 							'is_external' => 'true',
 						],
 						'placeholder' => __( 'http://your-link.com', 'qazana' ),
@@ -294,6 +301,70 @@ class Widget_Social_Icons extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_social_hover',
+			[
+				'label' => __( 'Icon Hover', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'hover_primary_color',
+			[
+				'label' => __( 'Primary Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'condition' => [
+					'icon_color' => 'custom',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-social-icon:hover' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'hover_secondary_color',
+			[
+				'label' => __( 'Secondary Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'condition' => [
+					'icon_color' => 'custom',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-social-icon:hover i' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'hover_border_color',
+			[
+				'label' => __( 'Border Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'condition' => [
+					'image_border_border!' => '',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-social-icon:hover' => 'border-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'hover_animation',
+			[
+				'label' => __( 'Animation', 'qazana' ),
+				'type' => Controls_Manager::HOVER_ANIMATION,
+			]
+		);
+
+		$this->end_controls_section();
+
 	}
 
 	protected function render() {

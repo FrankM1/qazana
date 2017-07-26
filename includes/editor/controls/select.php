@@ -25,7 +25,7 @@ class Control_Select extends Base_Data_Control {
 		<div class="qazana-control-field">
 			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<select for="<?php echo $control_uid; ?>" data-setting="{{ data.name }}">
+				<select id="<?php echo $control_uid; ?>" data-setting="{{ data.name }}">
 				<<#
 				_.each( data.options, function( option_title, option_value ) {
 					if( typeof option_title == 'object' ) {

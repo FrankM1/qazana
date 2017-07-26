@@ -99,6 +99,9 @@ class Widget_Testimonial extends Widget_Base {
 					'aside' => __( 'Aside', 'qazana' ),
 					'top' => __( 'Top', 'qazana' ),
 				],
+				'condition' => [
+					'testimonial_image[url]!' => '',
+				],
 				'separator' => 'before',
 			]
 		);

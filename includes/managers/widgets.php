@@ -49,7 +49,6 @@ class Widgets_Manager {
             'html',
             'menu-anchor',
             'sidebar',
-
         ];
 
         /**
@@ -142,32 +141,32 @@ class Widgets_Manager {
 
     }
 
-    public function register_widget_type( Widget_Base $widget ) {
-        if ( is_null( $this->_widget_types ) ) {
-            $this->_init_widgets();
-        }
+	public function register_widget_type( Widget_Base $widget ) {
+		if ( is_null( $this->_widget_types ) ) {
+			$this->_init_widgets();
+		}
 
         $this->_widget_types[ $widget->get_name() ] = $widget;
 
         $this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
 
-        return true;
-    }
+		return true;
+	}
 
-    public function unregister_widget_type( $name ) {
-        if ( ! isset( $this->_widget_types[ $name ] ) ) {
-            return false;
-        }
+	public function unregister_widget_type( $name ) {
+		if ( ! isset( $this->_widget_types[ $name ] ) ) {
+			return false;
+		}
 
-        unset( $this->_widget_types[ $name ] );
+		unset( $this->_widget_types[ $name ] );
 
-        return true;
-    }
+		return true;
+	}
 
-    public function get_widget_types( $widget_name = null ) {
-        if ( is_null( $this->_widget_types ) ) {
-            $this->_init_widgets();
-        }
+	public function get_widget_types( $widget_name = null ) {
+		if ( is_null( $this->_widget_types ) ) {
+			$this->_init_widgets();
+		}
 
 		//sort alphabetically
 		ksort( $this->_widget_types );
@@ -176,11 +175,11 @@ class Widgets_Manager {
 			return isset( $this->_widget_types[ $widget_name ] ) ? $this->_widget_types[ $widget_name ] : null;
 		}
 
-        return $this->_widget_types;
-    }
+		return $this->_widget_types;
+	}
 
-    public function get_widget_types_config() {
-        $config = [];
+	public function get_widget_types_config() {
+		$config = [];
 
 		foreach ( $this->get_widget_types() as $widget_key => $widget ) {
 			if ( ! $widget->show_in_panel() ) {
@@ -190,66 +189,88 @@ class Widgets_Manager {
 			$config[ $widget_key ] = $widget->get_config();
 		}
 
-        return $config;
-    }
+		return $config;
+	}
 
-    public function ajax_render_widget() {
-        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
-            wp_send_json_error( new \WP_Error( 'token_expired' ) );
-        }
+	public function ajax_render_widget() {
+		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+			wp_send_json_error( new \WP_Error( 'token_expired' ) );
+		}
 
-        if ( empty( $_POST['post_id'] ) ) {
-            wp_send_json_error( new \WP_Error( 'no_post_id', 'No post_id' ) );
-        }
+		if ( empty( $_POST['post_id'] ) ) {
+			wp_send_json_error( new \WP_Error( 'no_post_id', 'No post_id' ) );
+		}
 
-        if ( ! User::is_current_user_can_edit( $_POST['post_id'] ) ) {
-            wp_send_json_error( new \WP_Error( 'no_access' ) );
-        }
+		if ( ! User::is_current_user_can_edit( $_POST['post_id'] ) ) {
+			wp_send_json_error( new \WP_Error( 'no_access' ) );
+		}
 
-        // Override the global $post for the render
-        $GLOBALS['post'] = get_post( (int) $_POST['post_id'] );
+		// Override the global $post for the render
+		$GLOBALS['post'] = get_post( (int) $_POST['post_id'] );
 
-        $data = json_decode( stripslashes( html_entity_decode( $_POST['data'] ) ), true );
+		$data = json_decode( stripslashes( $_POST['data'] ), true );
 
-        // Start buffering
-        ob_start();
+		// Start buffering
+		ob_start();
 
 		$widget = qazana()->elements_manager->create_element_instance( $data );
 
-		if ( ! is_object( $widget ) ) {
-			wp_send_json_error( new \WP_Error( 'no_widget', 'Widget not found' ) );
+		if ( ! $widget ) {
+			wp_send_json_error();
+
+			return;
 		}
 
-        $widget->render_content();
+		$widget->render_content();
 
-        $render_html = ob_get_clean();
+		$render_html = ob_get_clean();
 
-        wp_send_json_success([ 'render' => $render_html ]);
-    }
+		wp_send_json_success(
+			[
+				'render' => $render_html,
+			]
+		);
+	}
 
-    public function ajax_get_wp_widget_form() {
-        if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
-            die;
-        }
+	public function ajax_get_wp_widget_form() {
+		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+			die;
+		}
 
-        $widget_type = $_POST['widget_type'];
+		if ( empty( $_POST['widget_type'] ) ) {
+			wp_send_json_error();
+		}
 
-        $widget_obj = $this->get_widget_types( $widget_type );
+		if ( empty( $_POST['data'] ) ) {
+			$_POST['data'] = [];
+		}
 
-        if ( ! $widget_obj instanceof Widget_WordPress ) {
-            wp_send_json_error();
-        }
+		$data = json_decode( stripslashes( $_POST['data'] ), true );
 
-        $data = json_decode( stripslashes( html_entity_decode( $_POST['data'] ) ), true );
+		$element_data = [
+			'id' => $_POST['id'],
+			'elType' => 'widget',
+			'widgetType' => $_POST['widget_type'],
+			'settings' => $data,
+		];
 
-        wp_send_json_success( $widget_obj->get_form( $data ) );
-    }
+		/**
+		 * @var $widget_obj Widget_WordPress
+		 */
+		$widget_obj = qazana()->elements_manager->create_element_instance( $element_data );
 
-    public function render_widgets_content() {
-        foreach ( $this->get_widget_types() as $widget ) {
-            $widget->print_template();
-        }
-    }
+		if ( ! $widget_obj ) {
+			wp_send_json_error();
+		}
+
+		wp_send_json_success( $widget_obj->get_form() );
+	}
+
+	public function render_widgets_content() {
+		foreach ( $this->get_widget_types() as $widget ) {
+			$widget->print_template();
+		}
+	}
 
 	public function get_widgets_frontend_settings_keys() {
 		$keys = [];

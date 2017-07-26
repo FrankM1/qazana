@@ -73,7 +73,7 @@ class Control_Color extends Base_Data_Control {
 				<# } #>
 			</label>
 			<div class="qazana-control-input-wrapper">
-				<input data-setting="{{ name }}" class="color-picker-hex" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" {{ defaultValue }}{{ dataAlpha }} />
+				<input data-setting="{{ name }}" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" {{ defaultValue }}{{ dataAlpha }} />
 			</div>
 		</div>
 		<?php

@@ -19,8 +19,9 @@ class Preview {
 		// Disable the WP admin bar in preview mode.
 		add_filter( 'show_admin_bar', '__return_false' );
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-		add_action( 'wp_head', [ $this, 'print_custom_css' ] );
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+        add_action( 'wp_head', [ $this, 'print_custom_css' ] );
+        add_action( 'radium_after_loop', [ $this, 'preview_grid' ] );
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
@@ -107,8 +108,8 @@ class Preview {
 
         wp_enqueue_style( 'editor-preview' );
 
-		do_action( 'qazana/preview/enqueue_styles' );
-	}
+        do_action( 'qazana/preview/enqueue_styles' );
+    }
 
     public function preview_grid() {
 

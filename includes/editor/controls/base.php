@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since 1.0.0
  */
 abstract class Base_Control {
-
 	private $_base_settings = [
 		'label' => '',
 		'separator' => 'default',
