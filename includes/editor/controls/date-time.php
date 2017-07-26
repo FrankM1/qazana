@@ -35,7 +35,7 @@ class Control_Date_Time extends Base_Data_Control {
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-			<div class="qazana-control-description">{{{ data.description }}}</div>
+			<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

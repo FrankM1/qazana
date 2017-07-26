@@ -69,7 +69,7 @@ class Control_Color extends Base_Data_Control {
 					{{{ data.label }}}
 				<# } #>
 				<# if ( data.description ) { #>
-					<span class="qazana-control-description">{{{ data.description }}}</span>
+					<span class="qazana-control-field-description">{{{ data.description }}}</span>
 				<# } #>
 			</label>
 			<div class="qazana-control-input-wrapper">

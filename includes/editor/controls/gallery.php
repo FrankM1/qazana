@@ -36,7 +36,7 @@ class Control_Gallery extends Base_Data_Control {
 		<div class="qazana-control-field">
 			<div class="qazana-control-input-wrapper">
 				<# if ( data.description ) { #>
-				<div class="qazana-control-description">{{{ data.description }}}</div>
+				<div class="qazana-control-field-description">{{{ data.description }}}</div>
 				<# } #>
 				<div class="qazana-control-media">
 					<div class="qazana-control-gallery-status">

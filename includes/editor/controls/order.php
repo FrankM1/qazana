@@ -53,7 +53,7 @@ class Control_Order extends Control_Base_Multiple {
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-			<div class="qazana-control-description">{{{ data.description }}}</div>
+			<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

@@ -43,7 +43,7 @@ class Control_Image_Dimensions extends Control_Base_Multiple {
 		endif;
 		?>
 		<# if ( data.description ) { #>
-			<div class="qazana-control-description">{{{ data.description }}}</div>
+			<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<div class="qazana-control-field">
 			<label class="qazana-control-title">{{{ data.label }}}</label>
