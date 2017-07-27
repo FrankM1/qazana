@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 <script type="text/template" id="tmpl-qazana-panel-menu-item">
 	<div class="qazana-panel-menu-item-icon">
-		<i class="fa fa-{{ icon }}"></i>
+		<i class="{{ icon }}"></i>
 	</div>
 	<div class="qazana-panel-menu-item-title">{{{ title }}}</div>
 </script>

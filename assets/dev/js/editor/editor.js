@@ -153,7 +153,6 @@ App = Marionette.Application.extend( {
 
 	initElements: function() {
 		var ElementModel = qazana.modules.element;
-
 		this.elements = new ElementModel.Collection( this.config.data );
 	},
 
@@ -185,8 +184,6 @@ App = Marionette.Application.extend( {
 		qazanaFrontend.setScopeWindow( this.$preview[0].contentWindow );
 
 		qazanaFrontend.init();
-
-		//qazanaFrontend.elementsHandler.initHandlers();
 	},
 
 	initClearPageDialog: function() {
