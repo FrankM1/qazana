@@ -15,7 +15,7 @@ class Source_Theme extends Source_Base {
 
     public function register_data() {}
 
-    public function get_items() {
+    public function get_items( $args = [] ) {
 
         $templates = array();
 
@@ -65,31 +65,43 @@ class Source_Theme extends Source_Base {
 		return false;
 	}
 
-    public function get_content( $item_id, $context = 'display' ) {
+    public function get_data( array $args, $context = 'display' ) {
 
-        $template_content = apply_filters( 'qazana_theme_template_content', array(), $item_id );
+        $data = apply_filters( 'qazana_theme_template_content', array(), $item_id );
 
-        if ( empty( $template_content ) || ! is_array( $template_content ) ) {
+        if ( empty( $data ) || ! is_array( $data ) ) {
             return false;
         }
 
-        if ( empty( $template_content['data'] ) ) {
+        if ( empty( $data['data'] ) ) {
             return false;
         }
 
-        $data = $template_content['data'];
+        $data = $data['data'];
+
+        // TODO: since 1.5.0 to content container named `content` instead of `data`
+		if ( ! empty( $data['data'] ) ) {
+			$data['content'] = $data['data'];
+			unset( $data['data'] );
+		}
 
         if ( ! $data ) {
-            return false;
-        }
-
-       if ( ! $data ) {
 			return false;
 		}
 
-		$data = $this->replace_elements_ids( $data );
-		$data = $this->process_export_import_data( $data, 'on_import' );
+        $data['content'] = $this->replace_elements_ids( $data['content'] );
+        $data['content'] = $this->process_export_import_content( $data['content'], 'on_import' );
+
+        if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
+			$page = new Page( [
+				'settings' => $data['page_settings'],
+			] );
+
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_import' );
+			$data['page_settings'] = $page_settings_data['settings'];
+		}
 
 		return $data;
 	}
+
 }

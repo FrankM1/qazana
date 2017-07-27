@@ -1,6 +1,8 @@
 <?php
 namespace Qazana\Template_Library;
 
+use Qazana\PageSettings\Page;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Source_Remote extends Source_Base {
@@ -63,23 +65,38 @@ class Source_Remote extends Source_Base {
 		return false;
 	}
 
-	public function delete_template( $item_id ) {
+	public function delete_template( $template_id ) {
 		return false;
 	}
 
-	public function export_template( $item_id ) {
+	public function export_template( $template_id ) {
 		return false;
 	}
 
-	public function get_content( $item_id, $context = 'display' ) {
-		$data = Template_Api::get_template_content( $item_id );
+	public function get_data( array $args, $context = 'display' ) {
+		$data = Template_Api::get_template_content( $args['template_id'] );
 
 		if ( is_wp_error( $data ) ) {
 			return $data;
 		}
 
-		$data = $this->replace_elements_ids( $data );
-		$data = $this->process_export_import_data( $data, 'on_import' );
+		// TODO: since 1.5.0 to content container named `content` instead of `data`
+		if ( ! empty( $data['data'] ) ) {
+			$data['content'] = $data['data'];
+			unset( $data['data'] );
+		}
+
+		$data['content'] = $this->replace_elements_ids( $data['content'] );
+		$data['content'] = $this->process_export_import_content( $data['content'], 'on_import' );
+
+		if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
+			$page = new Page( [
+				'settings' => $data['page_settings'],
+			] );
+
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_import' );
+			$data['page_settings'] = $page_settings_data['settings'];
+		}
 
 		return $data;
 	}

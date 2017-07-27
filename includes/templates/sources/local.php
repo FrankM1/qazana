@@ -2,6 +2,8 @@
 namespace Qazana\Template_Library;
 
 use Qazana\DB;
+//use Qazana\PageSettings\Manager as PageSettingsManager;
+//use Qazana\PageSettings\Page;
 use Qazana\Plugin;
 use Qazana\User;
 
@@ -206,6 +208,8 @@ class Source_Local extends Source_Base {
 
 		$user = get_user_by( 'id', $post->post_author );
 
+		//$page_settings = get_post_meta( $post->ID, PageSettingsManager::META_KEY, true );
+
 		$data = [
 			'template_id' => $post->ID,
 			'source' => $this->get_id(),
@@ -217,7 +221,7 @@ class Source_Local extends Source_Base {
 			'categories' => [],
 			'tags' => [],
 			'keywords' => [],
-			'export_link' => $this->_get_export_link( $item_id ),
+			'export_link' => $this->_get_export_link( $template_id ),
 			'url' => get_permalink( $post->ID ),
 		];
 

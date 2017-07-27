@@ -11,20 +11,20 @@ abstract class Source_Base {
 	abstract public function get_id();
 	abstract public function get_title();
 	abstract public function register_data();
-	abstract public function get_items();
-	abstract public function get_item( $item_id );
-	abstract public function get_content( $item_id );
-	abstract public function delete_template( $item_id );
+	abstract public function get_items( $args = [] );
+	abstract public function get_item( $template_id );
+	abstract public function get_data( array $args );
+	abstract public function delete_template( $template_id );
 	abstract public function save_item( $template_data );
 	abstract public function update_item( $new_data );
-	abstract public function export_template( $item_id );
+	abstract public function export_template( $template_id );
 
 	public function __construct() {
 		$this->register_data();
 	}
 
-	protected function replace_elements_ids( $data ) {
-		return qazana()->db->iterate_data( $data, function( $element ) {
+	protected function replace_elements_ids( $content ) {
+		return qazana()->db->iterate_data( $content, function( $element ) {
 			$element['id'] = Utils::generate_random_string();
 
 			return $element;
