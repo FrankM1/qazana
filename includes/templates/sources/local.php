@@ -172,21 +172,24 @@ class Source_Local extends Source_Base {
 			return $template_id;
 		}
 
-		qazana()->db->set_edit_mode( $template_id );
+		qazana()->db->set_is_builder_page( $template_id );
 
-		qazana()->db->save_editor( $template_id, $template_data['data'] );
+		qazana()->db->save_editor( $template_id, $template_data['content'] );
 
 		$this->save_item_type( $template_id, $template_data['type'] );
 
-		do_action( 'qazana/template-library/after_save_template', $template_id, $template_data );
+		if ( ! empty( $template_data['page_settings'] ) ) {
+			//PageSettingsManager::save_page_settings( $template_id, $template_data['page_settings'] );
+		}
 
+		do_action( 'qazana/template-library/after_save_template', $template_id, $template_data );
 		do_action( 'qazana/template-library/after_update_template', $template_id, $template_data );
 
 		return $template_id;
 	}
 
 	public function update_item( $new_data ) {
-		qazana()->db->save_editor( $new_data['id'], $new_data['data'] );
+		qazana()->db->save_editor( $new_data['id'], $new_data['content'] );
 
 		do_action( 'qazana/template-library/after_update_template', $new_data['id'], $new_data );
 
@@ -194,12 +197,12 @@ class Source_Local extends Source_Base {
 	}
 
 	/**
-	 * @param int $item_id
+	 * @param int $template_id
 	 *
 	 * @return array
 	 */
-	public function get_item( $item_id ) {
-		$post = get_post( $item_id );
+	public function get_item( $template_id ) {
+		$post = get_post( $template_id );
 
 		$user = get_user_by( 'id', $post->post_author );
 
@@ -221,42 +224,66 @@ class Source_Local extends Source_Base {
 		return apply_filters( 'qazana/template-library/get_template', $data );
 	}
 
-	public function get_content( $item_id, $context = 'display' ) {
+	public function get_data( array $args, $context = 'display' ) {
 		$db = qazana()->db;
 
-		// TODO: Valid the data (in JS too!)
+		$template_id = $args['template_id'];
+
+		// TODO: Validate the data (in JS too!)
 		if ( 'display' === $context ) {
-			$data = $db->get_builder( $item_id );
+			$content = $db->get_builder( $template_id );
 		} else {
-			$data = $db->get_plain_editor( $item_id );
+			$content = $db->get_plain_editor( $template_id );
 		}
 
-		$data = $this->replace_elements_ids( $data );
+		$data = [
+			'content' => $this->replace_elements_ids( $content ),
+		];
+
+		if ( ! empty( $args['page_settings'] ) ) {
+			$page = PageSettingsManager::get_page( $args['template_id'] );
+			$data['page_settings'] = $page->get_data( 'settings' );
+		}
 
 		return $data;
 	}
 
-	public function delete_template( $item_id ) {
-		wp_delete_post( $item_id, true );
+	public function delete_template( $template_id ) {
+		wp_delete_post( $template_id, true );
 	}
 
-	public function export_template( $item_id ) {
-		$template_data = $this->get_content( $item_id, 'raw' );
+	public function export_template( $template_id ) {
+		$template_type = self::get_template_type( $template_id );
 
-		$template_data = $this->process_export_import_data( $template_data, 'on_export' );
+		$template_data = $this->get_data( [
+			'template_id' => $template_id,
+			//'page_settings' => 'page' === $template_type,
+		], 'raw' );
 
-		if ( empty( $template_data ) )
+		if ( empty( $template_data['content'] ) )
 			return new \WP_Error( '404', 'The template does not exist' );
+
+		// TODO: since 1.5.0 to content container named `content` instead of `data`
+		$template_data['data'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+
+		if ( 'page' === $template_type ) {
+			$page = PageSettingsManager::get_page( $template_id );
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_export' );
+			if ( ! empty( $page_settings_data['settings'] ) ) {
+				$template_data['page_settings'] = $page_settings_data['settings'];
+			}
+		}
 
 		// TODO: More fields to export?
 		$export_data = [
 			'version' => qazana_get_db_version(),
-			'title' => get_the_title( $item_id ),
-			'type' => self::get_template_type( $item_id ),
-			'data' => $template_data,
+			'title' => get_the_title( $template_id ),
+			'type' => self::get_template_type( $template_id ),
 		];
 
-		$filename = 'qazana-' . $item_id . '-' . date( 'Y-m-d' ) . '.json';
+		$export_data += $template_data;
+
+		$filename = 'qazana-' . $template_id . '-' . date( 'Y-m-d' ) . '.json';
 		$template_contents = wp_json_encode( $export_data );
 		$filesize = strlen( $template_contents );
 
@@ -285,24 +312,46 @@ class Source_Local extends Source_Base {
 		if ( empty( $import_file ) )
 			return new \WP_Error( 'file_error', 'Please upload a file to import' );
 
-		$content = json_decode( file_get_contents( $import_file ), true );
-		$is_invalid_file = empty( $content ) || empty( $content['data'] ) || ! is_array( $content['data'] );
+		$data = json_decode( file_get_contents( $import_file ), true );
 
+		if ( ! empty( $data ) ) {
+			// TODO: since 1.5.0 to content container named `content` instead of `data`
+			if ( ! empty( $data['data'] ) ) {
+				$content = $data['data'];
+			} else {
+				$content = $data['content'];
+			}
+		}
+
+		$is_invalid_file = empty( $content ) || ! is_array( $content );
 		if ( $is_invalid_file )
 			return new \WP_Error( 'file_error', 'Invalid File' );
 
-		$content_data = $this->process_export_import_data( $content['data'], 'on_import' );
+		$content = $this->process_export_import_content( $content, 'on_import' );
 
-		$item_id = $this->save_item( [
-			'data' => $content_data,
-			'title' => $content['title'],
-			'type' => $content['type'],
+		$page_settings = [];
+		if ( ! empty( $data['page_settings'] ) ) {
+			$page = new Page( [
+				'settings' => $data['page_settings'],
+			] );
+
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_import' );
+			if ( ! empty( $page_settings_data['settings'] ) ) {
+				$page_settings = $page_settings_data['settings'];
+			}
+		}
+
+		$template_id = $this->save_item( [
+			'content' => $content,
+			'title' => $data['title'],
+			'type' => $data['type'],
+			'page_settings' => $page_settings,
 		] );
 
-		if ( is_wp_error( $item_id ) )
-			return $item_id;
+		if ( is_wp_error( $template_id ) )
+			return $template_id;
 
-		return $this->get_item( $item_id );
+		return $this->get_item( $template_id );
 	}
 
 	public function post_row_actions( $actions, \WP_Post $post ) {
@@ -349,12 +398,12 @@ class Source_Local extends Source_Base {
 		return apply_filters( 'qazana/template_library/is_template_supports_export', true, $template_id );
 	}
 
-	private function _get_export_link( $item_id ) {
+	private function _get_export_link( $template_id ) {
 		return add_query_arg(
 			[
 				'action' => 'qazana_export_template',
 				'source' => $this->get_id(),
-				'template_id' => $item_id,
+				'template_id' => $template_id,
 			],
 			admin_url( 'admin-ajax.php' )
 		);

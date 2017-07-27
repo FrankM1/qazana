@@ -1,4 +1,5 @@
-var TemplateLibraryTemplateView;
+var TemplateLibraryInsertTemplateBehavior = require( 'qazana-templates/behaviors/insert-template' ),
+	TemplateLibraryTemplateView;
 
 TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 	className: function() {
@@ -19,8 +20,10 @@ TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 		};
 	},
 
-	onInsertButtonClick: function() {
-		qazana.templates.importTemplate( this.model );
+	behaviors: {
+		insertTemplate: {
+			behaviorClass: TemplateLibraryInsertTemplateBehavior
+		}
 	}
 } );
 

@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Revisions_Manager {
 
+	const MAX_REVISIONS_TO_DISPLAY = 100;
+
+	private static $authors = [];
+
 	public function __construct() {
 		self::register_actions();
 	}
@@ -23,7 +27,12 @@ class Revisions_Manager {
 
 		$revisions = [];
 
-		$query_args['meta_key'] = '_qazana_data';
+		$default_query_args = [
+			'posts_per_page' => self::MAX_REVISIONS_TO_DISPLAY,
+			'meta_key' => '_qazana_data',
+		];
+
+		$query_args = array_merge( $default_query_args, $query_args );
 
 		$posts = wp_get_post_revisions( $post->ID, $query_args );
 
@@ -31,11 +40,13 @@ class Revisions_Manager {
 			return $posts;
 		}
 
+		$current_time = current_time( 'timestamp' );
+
 		/** @var \WP_Post $revision */
 		foreach ( $posts as $revision ) {
-			$date = date_i18n( _x( 'M j @ H:i', 'revision date format', 'qazana' ), strtotime( $revision->post_date ) );
+			$date = date_i18n( _x( 'M j @ H:i', 'revision date format', 'qazana' ), strtotime( $revision->post_modified ) );
 
-			$human_time = human_time_diff( strtotime( $revision->post_date ), current_time( 'timestamp' ) );
+			$human_time = human_time_diff( strtotime( $revision->post_modified ), $current_time );
 
 			if ( false !== strpos( $revision->post_name, 'autosave' ) ) {
 				$type = 'autosave';
@@ -43,12 +54,19 @@ class Revisions_Manager {
 				$type = 'revision';
 			}
 
+			if ( ! isset( self::$authors[ $revision->post_author ] ) ) {
+				self::$authors[ $revision->post_author ] = [
+					'avatar' => get_avatar( $revision->post_author, 22 ),
+					'display_name' => get_the_author_meta( 'display_name' , $revision->post_author ),
+				];
+			}
+
 			$revisions[] = [
 				'id' => $revision->ID,
-				'author' => get_the_author_meta( 'display_name' , $revision->post_author ),
+				'author' => self::$authors[ $revision->post_author ]['display_name'],
 				'date' => sprintf( __( '%1$s ago (%2$s)', 'qazana' ), $human_time, $date ),
 				'type' => $type,
-				'gravatar' => get_avatar( $revision->post_author, 22 ),
+				'gravatar' => self::$authors[ $revision->post_author ]['avatar'],
 			];
 		}
 
@@ -58,7 +76,7 @@ class Revisions_Manager {
 	public static function save_revision( $revision_id ) {
 		$parent_id = wp_is_post_revision( $revision_id );
 
-		if ( ! $parent_id ) {
+		if ( ! $parent_id || ! qazana()->db->is_built_with_qazana( $parent_id ) ) {
 			return;
 		}
 
@@ -66,21 +84,27 @@ class Revisions_Manager {
 	}
 
 	public static function restore_revision( $parent_id, $revision_id ) {
+		$is_built_with_qazana = qazana()->db->is_built_with_qazana( $revision_id );
+
+		qazana()->db->set_is_builder_page( $parent_id, $is_built_with_qazana );
+
+		if ( ! $is_built_with_qazana ) {
+			return;
+		}
+
 		qazana()->db->copy_qazana_meta( $revision_id, $parent_id );
 
 		$post_css = new Post_CSS_File( $parent_id );
 
 		$post_css->update();
-
 	}
 
 	public static function on_revision_data_request() {
-
-		if ( empty( $_REQUEST['id'] ) ) {
+		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( 'You must set the revision ID' );
 		}
 
-		$revision = qazana()->db->get_plain_editor( $_REQUEST['id'] );
+		$revision = qazana()->db->get_plain_editor( $_POST['id'] );
 
 		if ( empty( $revision ) ) {
 			wp_send_json_error( 'Invalid Revision' );
@@ -91,17 +115,17 @@ class Revisions_Manager {
 
 	public static function on_delete_revision_request() {
 
-		if ( empty( $_REQUEST['id'] ) ) {
+		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( __( 'You must set the id', 'qazana' ) );
 		}
 
-		$revision = qazana()->db->get_plain_editor( $_REQUEST['id'] );
+		$revision = qazana()->db->get_plain_editor( $_POST['id'] );
 
 		if ( empty( $revision ) ) {
 			wp_send_json_error( __( 'Invalid Revision', 'qazana' ) );
 		}
 
-		$deleted = wp_delete_post_revision( $_REQUEST['id'] );
+		$deleted = wp_delete_post_revision( $_POST['id'] );
 
 		if ( $deleted && ! is_wp_error( $deleted ) ) {
 			wp_send_json_success();
@@ -110,8 +134,16 @@ class Revisions_Manager {
 		}
 	}
 
+	public static function add_revision_support_for_all_post_types() {
+		$post_types = get_post_types_by_support( 'qazana' );
+		foreach ( $post_types as $post_type ) {
+			add_post_type_support( $post_type, 'revisions' );
+		}
+	}
+
 	private static function register_actions() {
 		add_action( 'wp_restore_post_revision', [ __CLASS__, 'restore_revision' ], 10, 2 );
+		add_action( 'init', [ __CLASS__, 'add_revision_support_for_all_post_types' ], 9999 );
 
 		if ( Utils::is_ajax() ) {
 			add_action( 'wp_ajax_qazana_get_revision_data', [ __CLASS__, 'on_revision_data_request' ] );

@@ -18,7 +18,6 @@ App = Marionette.Application.extend( {
 	debug: require( 'qazana-editor-utils/debug' ),
 	schemes: require( 'qazana-editor-utils/schemes' ),
 	presetsFactory: require( 'qazana-editor-utils/presets-factory' ),
-	modals: require( 'qazana-editor-utils/modals' ),
 	templates: require( 'qazana-templates/manager' ),
 	ajax: require( 'qazana-editor-utils/ajax' ),
 	conditions: require( 'qazana-editor-utils/conditions' ),
@@ -141,7 +140,6 @@ App = Marionette.Application.extend( {
 		this.initDialogsManager();
 
 		this.heartbeat.init();
-		this.modals.init();
 		this.ajax.init();
 		this.revisions.init();
 		this.hotKeys.init();
@@ -460,7 +458,7 @@ App = Marionette.Application.extend( {
 		var self = this,
 			newData = qazana.elements.toJSON( { removeDefault: true } );
 
-		return this.ajax.send( 'save_qazana', {
+		return this.ajax.send( 'save_builder', {
 	        data: {
 		        post_id: this.config.post_id,
 		        status: options.status,

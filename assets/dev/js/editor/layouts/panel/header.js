@@ -31,35 +31,41 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
     },
 
     _initDialog: function() {
-        var dialog;
+		var dialog;
 
-        this.getDialog = function() {
-            if ( ! dialog ) {
-                var $ = Backbone.$,
-                    $dialogMessage = $( '<div>', {
-                        'class': 'qazana-dialog-message'
-                    } ),
-                    $messageIcon = $( '<i>', {
-                        'class': 'fa fa-check-circle'
-                    } ),
-                    $messageText = $( '<div>', {
-                        'class': 'qazana-dialog-message-text'
-                    } ).text( qazana.translate( 'saved' ) );
+		this.getDialog = function() {
+			if ( ! dialog ) {
+				var $ = Backbone.$,
+					$dialogMessage = $( '<div>', {
+						'class': 'qazana-dialog-message'
+					} ),
+					$messageIcon = $( '<i>', {
+						'class': 'fa fa-check-circle'
+					} ),
+					$messageText = $( '<div>', {
+						'class': 'qazana-dialog-message-text'
+					} ).text( qazana.translate( 'saved' ) );
 
-                $dialogMessage.append( $messageIcon, $messageText );
+				$dialogMessage.append( $messageIcon, $messageText );
 
-                dialog = qazana.dialogsManager.createWidget( 'popup', {
-                    hide: {
-                        delay: 1500
-                    }
-                } );
+				dialog = qazana.dialogsManager.createWidget( 'simple', {
+					id: 'qazana-saved-popup',
+					position: {
+						element: 'message',
+						of: 'widget'
+					},
+					hide: {
+						auto: true,
+						autoDelay: 1500
+					}
+				} );
 
-                dialog.setMessage( $dialogMessage );
-            }
+				dialog.setMessage( $dialogMessage );
+			}
 
-            return dialog;
-        };
-    },
+			return dialog;
+		};
+	},
 
     _publishBuilder: function() {
         var self = this;

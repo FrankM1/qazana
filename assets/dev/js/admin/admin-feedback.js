@@ -4,8 +4,6 @@
 
 	var QazanaAdminDialogApp = {
 
-		qazanaModals: require( 'qazana-editor-utils/modals' ),
-
 		dialogsManager: new DialogsManager.Instance(),
 
 		cacheElements: function() {
@@ -36,13 +34,19 @@
 
 			self.getModal = function() {
 				if ( ! modal ) {
-					modal = self.dialogsManager.createWidget( 'qazana-modal', {
+					modal = self.dialogsManager.createWidget( 'options', {
 						id: 'qazana-deactivate-feedback-modal',
 						headerMessage: self.cache.$dialogHeader,
 						message: self.cache.$dialogForm,
-						hideOnButtonClick: false,
+						hide: {
+							onButtonClick: false
+						},
+						position: {
+							my: 'center',
+							at: 'center'
+						},
 						onReady: function() {
-							DialogsManager.getWidgetType( 'qazana-modal' ).prototype.onReady.apply( this, arguments );
+							DialogsManager.getWidgetType( 'options' ).prototype.onReady.apply( this, arguments );
 
 							this.addButton( {
 								name: 'submit',
@@ -77,7 +81,6 @@
 		},
 
 		init: function() {
-			this.qazanaModals.init();
 			this.initModal();
 			this.cacheElements();
 			this.bindEvents();

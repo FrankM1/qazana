@@ -14,36 +14,42 @@ class Elements_Manager {
 
     public function __construct() {
         add_action( 'after_setup_theme', [ $this, 'require_files' ] );
-        add_action( 'wp_ajax_qazana_save_qazana', [ $this, 'ajax_save_qazana' ] );
+        add_action( 'wp_ajax_qazana_save_builder', [ $this, 'ajax_save_builder' ] );
     }
 
 	/**
 	 * @param array $element_data
 	 *
+	 * @param array $element_args
+	 *
+	 * @param Element_Base $element_type
+	 *
 	 * @return Element_Base
 	 */
-	public function create_element_instance( array $element_data ) {
-		$args = [];
-
-		if ( empty( $element_data['elType'] ) ) {
-			return false;
-		}
-
-		if ( 'widget' === $element_data['elType'] ) {
-			$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
-
-			if ( ! $element_type ) {
-				return null;
+	public function create_element_instance( array $element_data, array $element_args = [], Element_Base $element_type = null ) {
+		if ( null === $element_type ) {
+			if ( 'widget' === $element_data['elType'] ) {
+				$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
+			} else {
+				$element_type = $this->get_element_types( $element_data['elType'] );
 			}
-
-			$args = $element_type->get_default_args();
-		} else {
-			$element_type = $this->get_element_types( $element_data['elType'] );
 		}
+
+		if ( ! $element_type ) {
+			return null;
+		}
+
+		$args = array_merge( $element_type->get_default_args(), $element_args );
 
 		$element_class = $element_type->get_class_name();
 
-		return new $element_class( $element_data, $args );
+		try {
+			$element = new $element_class( $element_data, $args );
+		} catch ( \Exception $e ) {
+			return null;
+		}
+
+		return $element;
 	}
 
 	public function get_categories() {
@@ -114,7 +120,7 @@ class Elements_Manager {
 		}
 	}
 
-	public function ajax_save_qazana() {
+	public function ajax_save_builder() {
 		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
@@ -150,7 +156,6 @@ class Elements_Manager {
 		] );
 
 		$all_revision_ids = Revisions_Manager::get_revisions( $_POST['post_id'], [
-			'posts_per_page' => -1,
 			'fields' => 'ids',
 		], false );
 

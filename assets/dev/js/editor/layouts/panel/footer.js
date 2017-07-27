@@ -55,9 +55,15 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 
 				$dialogMessage.append( $messageIcon, $messageText );
 
-				dialog = qazana.dialogsManager.createWidget( 'popup', {
+				dialog = qazana.dialogsManager.createWidget( 'simple', {
+					id: 'qazana-saved-popup',
+					position: {
+						element: 'message',
+						of: 'widget'
+					},
 					hide: {
-						delay: 1500
+						auto: true,
+						autoDelay: 1500
 					}
 				} );
 
@@ -75,7 +81,9 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 			status: 'publish',
 			onSuccess: function() {
 				self.getDialog().show();
+
 				self.ui.buttonSaveButton.removeClass( 'qazana-button-state' );
+
 				NProgress.done();
 			}
 		};
@@ -153,14 +161,14 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 	},
 
 	onClickShowTemplates: function() {
-		qazana.templates.startModal( function() {
-			qazana.templates.showTemplates();
-		} );
+		qazana.templates.showTemplatesModal();
 	},
 
 	onClickSaveTemplate: function() {
-		qazana.templates.startModal( function() {
-			qazana.templates.getLayout().showSaveTemplateView();
+		qazana.templates.startModal( {
+			onReady: function() {
+				qazana.templates.getLayout().showSaveTemplateView();
+			}
 		} );
 	},
 

@@ -8,6 +8,7 @@ TemplateLibraryManager = function() {
 		deleteDialog,
 		errorDialog,
 		layout,
+		startIntent = {},
 		templateTypes = {},
 		templatesCollection;
 
@@ -81,14 +82,23 @@ TemplateLibraryManager = function() {
 		dialog.show();
 	};
 
-	this.importTemplate = function( templateModel ) {
+	this.importTemplate = function( templateModel, options ) {
+		options = options || {};
+
 		layout.showLoadingView();
 
 		self.requestTemplateContent( templateModel.get( 'source' ), templateModel.get( 'template_id' ), {
+			data: {
+				page_settings: options.withPageSettings
+			},
 			success: function( data ) {
 				self.closeModal();
 
-				qazana.getRegion( 'sections' ).currentView.addChildModel( data );
+				qazana.sections.currentView.addChildModel( data.content, startIntent.importOptions || {} );
+
+				if ( options.withPageSettings ) {
+					qazana.pageSettings.model.set( data.page_settings );
+				}
 			},
 			error: function( data ) {
 				self.showErrorDialog( data );
@@ -108,7 +118,7 @@ TemplateLibraryManager = function() {
 			data = templateType.prepareSavedData( data );
 		}
 
-		data.data = JSON.stringify( data.data );
+		data.content = JSON.stringify( data.content );
 
 		var ajaxParams = { data: data };
 
@@ -129,13 +139,16 @@ TemplateLibraryManager = function() {
 		};
 
 		if ( ajaxOptions ) {
-			_.extend( options, ajaxOptions );
+			Backbone.$.extend( true, options, ajaxOptions );
 		}
 
-		return qazana.ajax.send( 'get_template_content', options );
+		return qazana.ajax.send( 'get_template_data', options );
 	};
 
 	this.getDeleteDialog = function() {
+
+		console.log(qazana.dialogsManager);
+
 		if ( ! deleteDialog ) {
 			deleteDialog = qazana.dialogsManager.createWidget( 'confirm', {
 				id: 'qazana-template-library-delete-dialog',
@@ -163,7 +176,7 @@ TemplateLibraryManager = function() {
 
 	this.getModal = function() {
 		if ( ! modal ) {
-			modal = qazana.dialogsManager.createWidget( 'qazana-modal', {
+			modal = qazana.dialogsManager.createWidget( 'lightbox', {
 				id: 'qazana-template-library-modal',
 				closeButton: false
 			} );
@@ -200,10 +213,12 @@ TemplateLibraryManager = function() {
 		} );
 	};
 
-	this.startModal = function( onModalReady ) {
+	this.startModal = function( customStartIntent ) {
+		startIntent = customStartIntent || {};
+
 		self.getModal().show();
 
-        self.setTemplatesSource( 'remote' );
+		self.setTemplatesSource( 'remote' );
 
 		if ( ! layout ) {
 			initLayout();
@@ -212,8 +227,8 @@ TemplateLibraryManager = function() {
 		layout.showLoadingView();
 
 		self.requestRemoteTemplates( function() {
-			if ( onModalReady ) {
-				onModalReady();
+			if ( startIntent.onReady ) {
+				startIntent.onReady();
 			}
 		} );
 	};
@@ -236,6 +251,12 @@ TemplateLibraryManager = function() {
 		layout.showTemplatesView( templatesCollection );
 	};
 
+	this.showTemplatesModal = function() {
+		self.startModal( {
+			onReady: self.showTemplates
+		} );
+	};
+
 	this.onSearchViewChangeInput = function( view ) {
 		this.changeFilter( view.ui.input.val(), 'search' );
 	};
@@ -249,6 +270,20 @@ TemplateLibraryManager = function() {
 	};
 
 	this.showErrorDialog = function( errorMessage ) {
+		if ( 'object' === typeof errorMessage ) {
+			var message = '';
+
+			_.each( errorMessage, function( error ) {
+				message += '<div>' + error.message + '.</div>';
+			} );
+
+			errorMessage = message;
+		} else if ( errorMessage ) {
+			errorMessage += '.';
+		} else {
+			errorMessage = '<i>&#60;The error message is empty&#62;</i>';
+		}
+
 		self.getErrorDialog()
 		    .setMessage( qazana.translate( 'templates_request_error' ) + '<div id="qazana-template-library-error-info">' + errorMessage + '</div>' )
 		    .show();
