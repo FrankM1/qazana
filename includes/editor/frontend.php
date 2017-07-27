@@ -47,9 +47,11 @@ class Frontend {
 		}
 
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ], 5 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
 
 		if ( qazana()->preview->is_preview_mode() ) {
-			//return;
+			return;
 		}
 
 		$this->_is_frontend_mode = true;
@@ -58,9 +60,9 @@ class Frontend {
 		$this->get_dependencies();
 
 		if ( $this->_has_qazana_in_page ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ], 5 );
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_widget_scripts' ], 999 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_widget_styles' ], 999 );
 		}
 
 		add_action( 'wp_head', [ $this, 'print_google_fonts' ] );
@@ -116,8 +118,6 @@ class Frontend {
 
 		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
 			foreach ( $this->element_scripts as $key ) {
-				qazana_write_log( $key . ' '. wp_script_is( $key, 'registered' ) . ' registered ' );
-
 				wp_enqueue_script( $key );
 			}
 		}
@@ -546,10 +546,5 @@ class Frontend {
 		// Hack to avoid enqueue post css while it's a `the_excerpt` call
 		add_filter( 'get_the_excerpt', [ $this, 'start_excerpt_flag' ], 1 );
 		add_filter( 'get_the_excerpt', [ $this, 'end_excerpt_flag' ], 20 );
-
-		add_action( 'qazana/frontend/after_register_scripts', 	[ $this, 'register_widget_scripts' ] );
-		add_action( 'qazana/frontend/after_register_scripts', 	[ $this, 'enqueue_widget_scripts' ] );
-		add_action( 'qazana/frontend/after_register_styles', 	[ $this, 'enqueue_widget_styles' ] );
-
 	}
 }

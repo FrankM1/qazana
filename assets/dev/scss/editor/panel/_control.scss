@@ -129,6 +129,11 @@
   }
 }
 
+.qazana-control-field {
+	display: flex;
+	align-items: center;
+}
+
 .qazana-label-block {
    > .qazana-control-content {
      > .qazana-control-field {

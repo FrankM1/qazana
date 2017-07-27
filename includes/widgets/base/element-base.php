@@ -4,7 +4,6 @@ namespace Qazana;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 abstract class Element_Base extends Controls_Stack {
-	private $_id;
 
 	/**
 	 * @var Element_Base[]
@@ -127,18 +126,6 @@ abstract class Element_Base extends Controls_Stack {
 		</script>
 		<?php
 	}
-
-	public function get_id() {
-		return $this->_id;
-	}
-
-	/**
-	 * Set element id. Useful in ajax calls
-	 */
-	public function set_id( $id ) {
-		$this->_id = $id;
-	}
-
 
 	public function get_children() {
 		if ( null === $this->_children ) {

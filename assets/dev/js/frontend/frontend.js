@@ -8,6 +8,8 @@
 		var self = this,
 			scopeWindow = window;
 
+		this.config = window.qazanaFrontendConfig;
+
 		var addGlobalHandlers = function() {
 			self.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
 			self.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
@@ -52,8 +54,6 @@
 			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),
 		};
 
-		this.config = qazanaFrontendConfig;
-
 		this.getScopeWindow = function() {
 			return scopeWindow;
 		};
@@ -63,14 +63,23 @@
 		};
 
 		this.isEditMode = function() {
-			return self.config.isEditMode;
+			return window.qazanaFrontendConfig ? window.qazanaFrontendConfig.isEditMode : false;
 		};
 
 		this.hooks = new EventManager();
 		this.elementsHandler = new ElementsHandler( $ );
 		this.utils = new Utils( $ );
 
+		this.initHandlers = function() {
+
+		};
+
 		this.init = function() {
+
+			if ( self.isEditMode() ) {
+				return;
+			}
+
 			addGlobalHandlers();
 
 			addElementsHandlers();
@@ -132,7 +141,5 @@
 })( jQuery );
 
 jQuery( function() {
-	if ( ! qazanaFrontend.isEditMode() ) {
-		qazanaFrontend.init();
-	}
+	window.qazanaFrontend.init();
 });

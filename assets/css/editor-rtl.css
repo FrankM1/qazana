@@ -705,7 +705,7 @@ select {
   .qazana-panel #qazana-panel-content-wrapper {
     position: absolute;
     bottom: 40px;
-    top: 40px;
+    top: 100px;
     left: 0;
     width: 100%; }
   .qazana-panel .qazana-panel-hide {
@@ -1359,6 +1359,15 @@ select {
     line-height: 1.5; }
     .qazana-panel .qazana-control-wp p {
       margin: 15px 0; }
+  .qazana-panel .qazana-control-field {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
   .qazana-panel .qazana-label-block > .qazana-control-content > .qazana-control-field {
     display: -webkit-box;
     display: -webkit-flex;

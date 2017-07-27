@@ -198,6 +198,7 @@ class Editor {
         // Enqueue frontend scripts too
 		qazana()->frontend->register_scripts();
         qazana()->frontend->enqueue_scripts();
+
 		qazana()->frontend->register_widget_scripts();
 		qazana()->frontend->enqueue_widget_scripts();
 
@@ -339,6 +340,7 @@ class Editor {
                 'jquery-simple-dtpicker',
 				'ace',
 				'jquery-fonticonpicker',
+				'qazana-frontend'
             ],
             qazana()->get_version(),
             true

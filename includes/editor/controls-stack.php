@@ -9,6 +9,11 @@ abstract class Controls_Stack {
 	const RESPONSIVE_TABLET = 'tablet';
 	const RESPONSIVE_MOBILE = 'mobile';
 
+
+	/**
+	 * Element Id
+	 * @var string
+	 */
 	private $_id;
 	private $_settings;
 	private $_data;
@@ -30,6 +35,13 @@ abstract class Controls_Stack {
 
 	public function get_id() {
 		return $this->_id;
+	}
+
+	/**
+	 * Set element id. Useful in ajax calls
+	 */
+	public function set_id( $id ) {
+		$this->_id = $id;
 	}
 
 	abstract public function get_name();
