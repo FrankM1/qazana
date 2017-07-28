@@ -112,6 +112,7 @@ class Post_CSS_File extends CSS_File {
 		foreach ( $controls as $control ) {
 			if ( ! empty( $control['style_fields'] ) ) {
 				foreach ( $values[ $control['name'] ] as $field_value ) {
+
 					$this->add_element_style_rules(
 						$controls_stack,
 						$control['style_fields'],
@@ -174,7 +175,7 @@ class Post_CSS_File extends CSS_File {
 	 */
 	private function render_styles( Element_Base $element ) {
 		$element_settings = $element->get_settings();
-		
+
 		$this->add_element_style_rules( $element, $element->get_style_controls(), $element_settings,  [ '{{ID}}', '{{WRAPPER}}' ], [ $element->get_id(), $this->get_element_unique_selector( $element ) ] );
 
 		do_action( 'qazana/element/parse_css', $this, $element );

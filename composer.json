@@ -18,6 +18,7 @@
         }
     ],
     "require": {
-        "YahnisElsts/plugin-update-checker": "dev-master"
+        "YahnisElsts/plugin-update-checker": "dev-master",
+        "mobiledetect/mobiledetectlib": "^2.8"
     }
 }

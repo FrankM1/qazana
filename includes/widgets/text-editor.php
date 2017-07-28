@@ -125,6 +125,10 @@ class Widget_Text_Editor extends Widget_Base {
 
         $this->add_render_attribute( 'text-editor', 'class', 'qazana-text-editor qazana-clearfix' );
 
+		if ( ! empty( $this->get_responsive_settings('align') ) ) {
+			$this->add_render_attribute( 'text-editor', 'class', 'qazana-align-' . $this->get_responsive_settings('align') );
+		}
+
 		$editor_content = $this->parse_text_editor( $settings['editor'] );
 
 		?><div <?php echo $this->get_render_attribute_string( 'text-editor' ); ?>>
@@ -141,7 +145,7 @@ class Widget_Text_Editor extends Widget_Base {
 	protected function _content_template() {
 
 		?>
-		<div class="qazana-text-editor qazana-clearfix">
+		<div class="qazana-text-editor qazana-clearfix qazana-align-{{ settings.align }}">
 			<div class="qazana-wrapper">{{{ settings.editor }}}</div>
 		</div>
 		<?php

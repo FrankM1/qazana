@@ -321,6 +321,7 @@ class Plugin {
         require_once( $this->includes_dir . 'common/db.php' );
         require_once( $this->includes_dir . 'common/heartbeat.php' );
         require_once( $this->includes_dir . 'common/cron.php' );
+        require_once( $this->includes_dir . 'common/mobile.php' );
 
         require_once( $this->includes_dir . 'editor/fonts.php' );
         require_once( $this->includes_dir . 'editor/editor.php' );
@@ -351,6 +352,9 @@ class Plugin {
 
         // extensions
         require_once( $this->includes_dir . 'extensions/extensions-base.php');
+
+        //vendor classes
+        require_once( $this->includes_dir . 'vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php' );
 
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';
@@ -401,6 +405,9 @@ class Plugin {
         $this->extensions_loader    = new Loader( $this->extensions_locations );
         $this->extensions           = new Extensions\Manager();
         $this->cron                 = new Cron;
+
+        $this->mobile_detect        = new MobileDetect();
+        $this->mobile_detect->setDetectionType( 'extended' );
 
     }
 

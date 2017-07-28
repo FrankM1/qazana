@@ -195,7 +195,7 @@ class Frontend {
 			'assets_url' => qazana()->core_assets_url,
 			'nonce' => wp_create_nonce( 'qazana-frontend' ),
 			'isEditMode' => qazana()->editor->is_edit_mode(),
-			'stretchedSectionContainer' => get_option( 'qazana_stretched_section_container', '' ),
+			'stretchedSectionContainer' => get_option( 'qazana_stretched_section_container', 'body' ),
 			'is_rtl' => is_rtl(),
 			'post' => [
 				'id' => $post->ID,

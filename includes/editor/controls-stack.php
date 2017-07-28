@@ -185,7 +185,6 @@ abstract class Controls_Stack {
 
 		if ( isset( $args['default'] ) ) {
 			$args['desktop_default'] = $args['default'];
-
 			unset( $args['default'] );
 		}
 
@@ -264,8 +263,21 @@ abstract class Controls_Stack {
 		return self::_get_items( $this->_data, $item );
 	}
 
-	public function get_settings( $setting = null ) {
-		return self::_get_items( $this->_settings, $setting );
+	public function get_responsive_settings( $setting_key = null ) {
+
+		if ( $setting_key ) {
+			if ( qazana_is_mobile() && ! empty( $this->_settings[ $setting_key . '_mobile' ] ) ) {
+				$setting_key = $setting_key . '_mobile';
+		    } else if( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_tablet' ] ) ) {
+		        $setting_key = $setting_key . '_tablet';
+		    }
+		}
+
+		return self::_get_items( $this->_settings, $setting_key );
+	}
+
+	public function get_settings( $setting_key = null ) {
+		return self::_get_items( $this->_settings, $setting_key );
 	}
 
 	public function get_active_settings() {

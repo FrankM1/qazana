@@ -368,7 +368,7 @@ class Widget_Button extends Widget_Base {
         }
 
         $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-button-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $settings['icon_align'] );
+        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
 
         ?><div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>

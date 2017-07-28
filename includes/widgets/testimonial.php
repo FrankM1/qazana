@@ -308,7 +308,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'content_padding',
 			[
 				'label' => __( 'Content Padding', 'qazana' ),
@@ -361,7 +361,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'content_align',
 			[
 				'label' => __( 'Description Align', 'qazana' ),
@@ -388,7 +388,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'details_align',
 			[
 				'label' => __( 'Details Align', 'qazana' ),
@@ -425,7 +425,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		 $this->add_control(
+		 $this->add_responsive_control(
 			'image_size',
 			[
 				'label' => __( 'Image Size', 'qazana' ),
@@ -443,7 +443,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 		   'image_spacing',
 		   [
 			   'label' => __( 'Image Spacing', 'qazana' ),
@@ -579,7 +579,7 @@ class Widget_Testimonial extends Widget_Base {
 		$slides_to_show = range( 1, 10 );
 		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'slides_to_show',
 			[
 				'label' => __( 'Slides to Show', 'qazana' ),
@@ -589,7 +589,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'slides_to_scroll',
 			[
 				'label' => __( 'Slides to Scroll', 'qazana' ),
@@ -602,7 +602,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'navigation',
 			[
 				'label' => __( 'Navigation', 'qazana' ),
@@ -629,7 +629,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'autoplay',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
@@ -933,13 +933,13 @@ class Widget_Testimonial extends Widget_Base {
 		$is_slideshow = '1' === $settings['slides_to_show'];
 		$is_rtl = ( 'rtl' === $settings['direction'] );
 		$direction = $is_rtl ? 'rtl' : 'ltr';
-		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
-		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
+		$show_dots = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'dots', 'both' ] ) );
+		$show_arrows = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'arrows', 'both' ] ) );
 
 		$slick_options = [
-			'slidesToShow' => absint( $settings['slides_to_show'] ),
-			'autoplaySpeed' => absint( $settings['autoplay_speed'] ),
-			'autoplay' => ( 'yes' === $settings['autoplay'] ),
+			'slidesToShow' => absint( $this->get_responsive_settings( 'slides_to_show' ) ),
+			'autoplaySpeed' => absint( $this->get_responsive_settings( 'autoplay_speed' ) ),
+			'autoplay' => ( 'yes' === $this->get_responsive_settings( 'autoplay' ) ),
 			'infinite' => ( 'yes' === $settings['infinite'] ),
 			'pauseOnHover' => ( 'yes' === $settings['pause_on_hover'] ),
 			'speed' => absint( $settings['transition_speed'] ),

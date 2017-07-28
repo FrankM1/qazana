@@ -193,12 +193,8 @@ class Widget_Heading extends Widget_Base {
 			$this->add_render_attribute( 'heading', 'class', 'qazana-size-' . $settings['size'] );
 		}
 
-        if ( ! empty( $settings['size'] ) ) {
-			$this->add_render_attribute( 'heading', 'class', 'qazana-size-' . $settings['size'] );
-		}
-
-        if ( ! empty( $settings['align'] ) ) {
-			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $settings['align'] );
+        if ( ! empty( $this->get_responsive_settings('align') ) ) {
+			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $this->get_responsive_settings('align') );
 		}
 
 		if ( ! empty( $settings['link']['url'] ) ) {

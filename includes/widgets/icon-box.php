@@ -85,6 +85,7 @@ class Widget_Icon_Box extends Widget_Base {
 			[
 				'label' => __( 'Choose Icon', 'qazana' ),
 				'type' => Controls_Manager::ICON,
+				'label_block' => true,
 				'default' => 'fa fa-file-o',
                 'condition' => [
 					'icon_type' => 'icon',

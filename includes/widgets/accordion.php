@@ -391,7 +391,7 @@ class Widget_Accordion extends Widget_Base {
 			<?php foreach ( $settings['tabs'] as $item ) : ?>
 				<div class="qazana-accordion-item">
 					<div class="qazana-accordion-title" data-section="<?php echo $counter; ?>">
-						<span class="qazana-accordion-icon qazana-accordion-icon-<?php echo $settings['icon_align']; ?>">
+						<span class="qazana-accordion-icon qazana-accordion-icon-<?php echo $this->get_responsive_settings('icon_align'); ?>">
 							<?php echo $this->get_render_icon(); ?>
 						</span>
 						<?php echo $item['tab_title']; ?>

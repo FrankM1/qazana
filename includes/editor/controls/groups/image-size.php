@@ -166,6 +166,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 	}
 
 	public static function get_attachment_image_src( $attachment_id, $group_name, $instance ) {
+
 		if ( empty( $attachment_id ) )
 			return false;
 

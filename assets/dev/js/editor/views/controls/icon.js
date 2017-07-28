@@ -1,10 +1,10 @@
-var ControlSelect2View = require( 'qazana-views/controls/select2' ),
-	ControlIconView;
+var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+	ControlIconItemView;
 
-ControlIconView = ControlSelect2View.extend( {
+ControlIconItemView = ControlBaseItemView.extend( {
 
 	initialize: function() {
-		ControlSelect2View.prototype.initialize.apply( this, arguments );
+		ControlBaseItemView.prototype.initialize.apply( this, arguments );
 
 		this.filterIcons();
 	},
@@ -42,13 +42,31 @@ ControlIconView = ControlSelect2View.extend( {
 		);
 	},
 
-	getSelect2Options: function() {
-		return {
-			allowClear: true,
-			templateResult: _.bind( this.iconsList, this ),
-			templateSelection: _.bind( this.iconsList, this )
-		};
+	onReady: function() {
+		this.ui.select.fontIconPicker({
+	       theme: 'fip-grey'
+        }); // Load with default options
+	},
+
+	templateHelpers: function() {
+		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
+
+		helpers.getIconsByGroups = _.bind( function( groups ) {
+			var icons = this.model.get( 'icons' ),
+				filterIcons = {};
+
+			_.each( icons, function( iconType, iconName ) {
+				if ( _.isArray( groups ) && _.contains( groups, iconType ) || iconType === groups ) {
+					filterIcons[ iconName ] = iconType;
+				}
+			} );
+
+			return filterIcons;
+		}, this );
+
+		return helpers;
 	}
+
 } );
 
-module.exports = ControlIconView;
+module.exports = ControlIconItemView;
