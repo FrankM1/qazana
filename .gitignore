@@ -4,7 +4,7 @@ node_modules/
 build/
 log/
 bower_components/
-vendor/
+/vendor/
 composer.lock
 .DS_Store
 .project
