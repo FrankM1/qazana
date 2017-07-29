@@ -48,6 +48,7 @@ class Controls_Manager {
 	const SELECT2 = 'select2';
 	const DATE_TIME = 'date_time';
 	const BOX_SHADOW = 'box_shadow';
+	const TEXT_SHADOW = 'text_shadow';
 	const ANIMATION_IN = 'animation_in';
 	const ANIMATION_OUT = 'animation_out';
 	const HOVER_ANIMATION = 'hover_animation';
@@ -130,6 +131,7 @@ class Controls_Manager {
 			self::SELECT2,
 			self::DATE_TIME,
 			self::BOX_SHADOW,
+			self::TEXT_SHADOW,
 			self::ANIMATION_IN,
 			self::ANIMATION_OUT,
 			self::HOVER_ANIMATION,
@@ -157,6 +159,7 @@ class Controls_Manager {
 		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/text-shadow.php' );
 
 		$this->_control_groups['background'] = new Group_Control_Background();
 		$this->_control_groups['border']     = new Group_Control_Border();
@@ -165,6 +168,7 @@ class Controls_Manager {
 		$this->_control_groups['box-shadow'] = new Group_Control_Box_Shadow();
 		$this->_control_groups['animations'] = new Group_Control_Animations();
 		$this->_control_groups['icon'] 		 = new Group_Control_Icon();
+		$this->_control_groups['text-shadow'] = new Group_Control_Text_Shadow();
 
 		do_action( 'qazana/controls/controls_registered', $this );
 

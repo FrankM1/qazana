@@ -1957,6 +1957,10 @@ select {
     overflow: hidden; }
   .qazana-panel .qazana-control-type-box_shadow .qazana-box-shadow-slider {
     margin-top: 10px; }
+  .qazana-panel .qazana-control-type-text_shadow .qazana-control-input-wrapper {
+    overflow: hidden; }
+  .qazana-panel .qazana-control-type-text_shadow .qazana-shadow-slider {
+    margin-top: 10px; }
   .qazana-panel .qazana-control-type-switcher .qazana-control-input-wrapper {
     text-align: left; }
   .qazana-panel .qazana-control-type-switcher .qazana-switch {

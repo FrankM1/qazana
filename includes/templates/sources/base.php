@@ -75,7 +75,7 @@ abstract class Source_Base {
 				$element_class = qazana()->elements_manager->get_element_types( $element['elType'] );
 			}
 
-			// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
+			// If the widget/element doesn't exist, like a plugin that creates a widget but deactivated
 			if ( ! $element_class ) {
 				return $element;
 			}
@@ -87,7 +87,7 @@ abstract class Source_Base {
 			foreach ( $element_class->get_controls() as $control ) {
 				$control_class = qazana()->controls_manager->get_control( $control['type'] );
 
-				// If the control isn't exist, like a plugin that creates the control but deactivated
+				// If the control doesn't exist: for instance a plugin that created the control but is deactivated
 				if ( ! $control_class ) {
 					return $element;
 				}

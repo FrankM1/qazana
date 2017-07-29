@@ -1,7 +1,7 @@
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
-	ControlBoxShadowItemView;
+	ControlShadowItemView;
 
-ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
+ControlShadowItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
@@ -80,4 +80,4 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 	}
 } );
 
-module.exports = ControlBoxShadowItemView;
+module.exports = ControlShadowItemView;
