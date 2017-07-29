@@ -75,7 +75,7 @@ class Control_Box_Shadow extends Control_Base_Multiple {
 		<div class="qazana-control-field">
 			<label class="qazana-control-title"><?php _e( 'Color', 'qazana' ); ?></label>
 			<div class="qazana-control-input-wrapper">
-				<input data-setting="color" class="qazana-box-shadow-color-picker" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" data-alpha="true"{{{ defaultColorValue }}} />
+				<input data-setting="color" class="qazana-shadow-color-picker" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" data-alpha="true"{{{ defaultColorValue }}} />
 			</div>
 		</div>
 		<?php foreach ( $this->get_sliders() as $slider_name => $slider ) :

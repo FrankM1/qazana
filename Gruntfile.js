@@ -71,6 +71,11 @@ module.exports = function( grunt ) {
                 preBundleCB: function( bundle ) {
                     bundle.plugin( remapify, [
                         {
+							cwd: 'assets/dev/js/editor',
+							src: '**/*.js',
+							expose: 'qazana-editor'
+						},
+                        {
                             cwd: 'assets/dev/js/editor/behaviors',
                             src: '**/*.js',
                             expose: 'qazana-behaviors'

@@ -274,8 +274,6 @@ function qazana_add_activation_redirect() {
  */
 function qazana_migrate_builder_content_to_qazana(){
 
-    //qazana_write_log('migration_start');
-
     $all_posts = get_posts( array(
         'numberposts' => -1,
         'post_type' => array( 'any' ),
@@ -293,8 +291,6 @@ function qazana_migrate_builder_content_to_qazana(){
         /*$revisions_posts = wp_get_post_revisions( $post->ID );
 
         foreach( $revisions_posts as $post ) : setup_postdata($post);
-
-            qazana_write_log( $post->ID );
 
         endforeach;
 
@@ -317,12 +313,8 @@ function qazana_migrate_builder_content_to_qazana(){
         $draft_data = get_post_meta($post->ID, '_builder_draft_data', true );
 
         /*if ( $post->ID == 4 ) {
-            qazana_write_log( $post->ID );
-            qazana_write_log( $draft_data );
-
             if ( empty( $data ) ) {
                 $draft_data = get_post_meta($post->ID, '_qazana_draft_data', true );
-                qazana_write_log( $draft_data );
             }
 
         }*/
@@ -481,8 +473,6 @@ function qazana_migrate_builder_content_to_qazana(){
     delete_option( 'builder_scheme_color-picker' );
 
     qazana()->posts_css_manager->clear_cache();
-
-    //qazana_write_log('migration_complete');
 }
 
 function qazana_admin_upgrade_v101() {
@@ -499,8 +489,6 @@ function qazana_admin_upgrade_v101() {
             $wpdb->postmeta
         )
     );
-
-    qazana_write_log( count( $post_ids ) );
 
     if ( empty( $post_ids ) )
         return;

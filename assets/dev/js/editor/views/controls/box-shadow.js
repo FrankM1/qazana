@@ -6,7 +6,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
 		ui.sliders = '.qazana-slider';
-		ui.colors = '.qazana-box-shadow-color-picker';
+		ui.colors = '.qazana-shadow-color-picker';
 
 		return ui;
 	},

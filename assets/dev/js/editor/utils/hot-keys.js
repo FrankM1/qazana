@@ -21,7 +21,7 @@ var HotKeys = function( $ ) {
 			deleteElement: {
 				isWorthHandling: function( event ) {
 					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName(),
-						isInputTarget = $( event.target ).is( ':input' );
+						isInputTarget = $( event.target ).is( ':input, .qazana-input' );
 
 					return isEditorOpen && ! isInputTarget;
 				},

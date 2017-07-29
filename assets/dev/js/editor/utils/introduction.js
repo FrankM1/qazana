@@ -7,7 +7,8 @@ Introduction = function() {
 	var initModal = function() {
 		modal = qazana.dialogsManager.createWidget( 'lightbox', {
 			id: 'qazana-introduction',
-			closeButton: true
+			closeButton: true,
+			closeButtonClass: 'eicon-close'
 		} );
 
 		modal.getElements( 'closeButton' ).on( 'click', function() {

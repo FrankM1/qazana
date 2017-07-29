@@ -4221,7 +4221,11 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	initEditSettings: function() {
-		this.set( 'editSettings', new Backbone.Model( this.get( 'defaultEditSettings' ) ) );
+		var editSettings = new Backbone.Model( this.get( 'defaultEditSettings' ) );
+
+		this.set( 'editSettings', editSettings );
+
+		qazanaFrontend.config.elements.editSettings[ this.cid ] = editSettings;
 	},
 
 	onDestroy: function() {
@@ -4610,7 +4614,7 @@ ControlsCSSParser = ViewModule.extend( {
 		var self = this;
 
 		_.each( controls, function( control ) {
-			if ( control.styleFields ) {
+			if ( control.styleFields && control.styleFields.length ) {
 				values[ control.name ].each( function( itemModel ) {
 					self.addStyleRules(
 						control.styleFields,
@@ -5220,7 +5224,7 @@ var HotKeys = function( $ ) {
 			deleteElement: {
 				isWorthHandling: function( event ) {
 					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName(),
-						isInputTarget = $( event.target ).is( ':input' );
+						isInputTarget = $( event.target ).is( ':input, .qazana-input' );
 
 					return isEditorOpen && ! isInputTarget;
 				},
@@ -8062,7 +8066,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
 		ui.sliders = '.qazana-slider';
-		ui.colors = '.qazana-box-shadow-color-picker';
+		ui.colors = '.qazana-shadow-color-picker';
 
 		return ui;
 	},

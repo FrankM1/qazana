@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 abstract class Widget_Base extends Element_Base {
 
@@ -21,7 +23,7 @@ abstract class Widget_Base extends Element_Base {
 			],
 			'remove' => [
 				'title' => sprintf( __( 'Remove %s', 'qazana' ), $widget_label ),
-				'icon' => 'times',
+				'icon' => 'close',
 			],
 		];
 	}

@@ -21,7 +21,7 @@ class Element_Column extends Element_Base {
 			],
 			'remove' => [
 				'title' => sprintf( __( 'Remove %s', 'qazana' ), $column_label ),
-				'icon' => 'times',
+				'icon' => 'close',
 			],
 		];
 	}
@@ -35,16 +35,116 @@ class Element_Column extends Element_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-columns';
+		return 'eicon-column';
 	}
 
 	protected function _register_controls() {
+		// Section Layout.
+		$this->start_controls_section(
+			'layout',
+			[
+				'label' => __( 'Layout', 'qazana' ),
+				'tab' => Controls_Manager::TAB_LAYOUT,
+			]
+		);
+
+		$this->add_responsive_control(
+			'_inline_size',
+			[
+				'label' => __( 'Column Width', 'qazana' ) . ' (%)',
+				'type' => Controls_Manager::NUMBER,
+				'min' => 10,
+				'max' => 90,
+				'device_args' => [
+					Controls_Stack::RESPONSIVE_TABLET => [
+						'nullable' => true,
+						'max' => 100,
+					],
+					Controls_Stack::RESPONSIVE_MOBILE => [
+						'nullable' => true,
+						'max' => 100,
+					],
+				],
+				'min_affected_device' => [
+					Controls_Stack::RESPONSIVE_DESKTOP => Controls_Stack::RESPONSIVE_TABLET,
+					Controls_Stack::RESPONSIVE_TABLET => Controls_Stack::RESPONSIVE_TABLET,
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => 'width: {{VALUE}}%',
+				],
+			]
+		);
+
+		$this->add_control(
+			'content_position',
+			[
+				'label' => __( 'Content Position', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'' => __( 'Default', 'qazana' ),
+					'top' => __( 'Top', 'qazana' ),
+					'center' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
+				],
+				'selectors_dictionary' => [
+					'top' => 'flex-start',
+					'bottom' => 'flex-end',
+				],
+				'selectors' => [
+					'{{WRAPPER}}.qazana-column .qazana-column-wrap' => 'align-items: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'space_between_widgets',
+			[
+				'label' => __( 'Widgets Space', 'qazana' ) . ' (px)',
+				'type' => Controls_Manager::NUMBER,
+				'placeholder' => 20,
+				'selectors' => [
+					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget' => 'margin-bottom: {{VALUE}}px',
+				],
+			]
+		);
+
+		$possible_tags = [
+			'div',
+			'article',
+			'aside',
+			'nav',
+		];
+
+		$options = [
+			'' => __( 'Default', 'qazana' ),
+		] + array_combine( $possible_tags, $possible_tags );
+
+		$this->add_control(
+			'html_tag',
+			[
+				'label' => __( 'HTML Tag', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => $options,
+			]
+		);
+
+		$this->end_controls_section();
+
 		$this->start_controls_section(
 			'section_style',
 			[
-				'label' => __( 'Background & Border', 'qazana' ),
-				'type' => Controls_Manager::SECTION,
+				'label' => __( 'Background', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_background' );
+
+		$this->start_controls_tab(
+			'tab_background_normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
 
@@ -53,6 +153,183 @@ class Element_Column extends Element_Base {
 			[
 				'name' => 'background',
 				'selector' => '{{WRAPPER}} > .qazana-element-populated',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_background_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name' => 'background_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated',
+			]
+		);
+
+		$this->add_control(
+			'background_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'render_type' => 'ui',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		// Section Column Background Overlay.
+		$this->start_controls_section(
+			'section_background_overlay',
+			[
+				'label' => __( 'Background Overlay', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'background_background' => [ 'classic', 'gradient', 'video' ],
+				],
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_background_overlay' );
+
+		$this->start_controls_tab(
+			'tab_background_overlay_normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name' => 'background_overlay',
+				'selector' => '{{WRAPPER}} > .qazana-element-populated >  .qazana-background-overlay',
+				'condition' => [
+					'background_background' => [ 'classic', 'gradient' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'background_overlay_opacity',
+			[
+				'label' => __( 'Opacity (%)', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => .5,
+				],
+				'range' => [
+					'px' => [
+						'max' => 1,
+						'step' => 0.01,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} > .qazana-element-populated >  .qazana-background-overlay' => 'opacity: {{SIZE}};',
+				],
+				'condition' => [
+					'background_overlay_background' => [ 'classic', 'gradient' ],
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_background_overlay_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name' => 'background_overlay_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated >  .qazana-background-overlay',
+			]
+		);
+
+		$this->add_control(
+			'background_overlay_hover_opacity',
+			[
+				'label' => __( 'Opacity (%)', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => .5,
+				],
+				'range' => [
+					'px' => [
+						'max' => 1,
+						'step' => 0.01,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}:hover > .qazana-element-populated >  .qazana-background-overlay' => 'opacity: {{SIZE}};',
+				],
+				'condition' => [
+					'background_overlay_hover_background' => [ 'classic', 'gradient' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'background_overlay_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'render_type' => 'ui',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_border',
+			[
+				'label' => __( 'Border', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_border' );
+
+		$this->start_controls_tab(
+			'tab_border_normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
 
@@ -71,7 +348,7 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} > .qazana-element-populated' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-element-populated, {{WRAPPER}} > .qazana-element-populated > .qazana-background-overlay' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -84,9 +361,71 @@ class Element_Column extends Element_Base {
 			]
 		);
 
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_border_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name' => 'border_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated',
+			]
+		);
+
+		$this->add_control(
+			'border_radius_hover',
+			[
+				'label' => __( 'Border Radius', 'qazana' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors' => [
+					'{{WRAPPER}}:hover > .qazana-element-populated, {{WRAPPER}}:hover > .qazana-element-populated > .qazana-background-overlay' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'box_shadow_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated',
+			]
+		);
+
+		$this->add_control(
+			'border_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} > .qazana-element-populated' => 'transition: background {{background_hover_transition.SIZE}}s, border {{SIZE}}s, border-radius {{SIZE}}s, box-shadow {{SIZE}}s',
+					'{{WRAPPER}} > .qazana-element-populated > .qazana-background-overlay' => 'transition: background {{background_overlay_hover_transition.SIZE}}s, border-radius {{SIZE}}s, opacity {{background_overlay_hover_transition.SIZE}}s',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
 		$this->end_controls_section();
 
-		// Section Typography
+		// Section Typography.
 		$this->start_controls_section(
 			'section_typo',
 			[
@@ -95,6 +434,17 @@ class Element_Column extends Element_Base {
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
+
+		if ( in_array( Scheme_Color::get_type(), Schemes_Manager::get_enabled_schemes() ) ) {
+			$this->add_control(
+				'colors_warning',
+				[
+					'type' => Controls_Manager::RAW_HTML,
+					'raw' => __( 'Note: The following colors won\'t work if Global Colors are enabled.', 'qazana' ),
+					'content_classes' => 'qazana-panel-alert qazana-panel-alert-warning',
+				]
+			);
+		}
 
 		$this->add_control(
 			'heading_color',
@@ -105,6 +455,7 @@ class Element_Column extends Element_Base {
 				'selectors' => [
 					'{{WRAPPER}} .qazana-element-populated .qazana-heading-title' => 'color: {{VALUE}};',
 				],
+				'separator' => 'none',
 			]
 		);
 
@@ -171,11 +522,11 @@ class Element_Column extends Element_Base {
 
 		$this->end_controls_section();
 
-		// Section Advanced
+		// Section Advanced.
 		$this->start_controls_section(
 			'section_advanced',
 			[
-				'label' => __( 'Advanced', 'qazana' ),
+				'label' => __( 'Element Style', 'qazana' ),
 				'type' => Controls_Manager::SECTION,
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
@@ -205,18 +556,62 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Background::get_type(),
+		$this->add_control(
+			'z_index',
 			[
-				'name' => '_background',
-				'selector' => '{{WRAPPER}} .qazana-widget-container',
+				'label' => __( 'Z-Index', 'qazana' ),
+				'type' => Controls_Manager::NUMBER,
+				'min' => 0,
+				'placeholder' => 0,
+				'selectors' => [
+					'{{WRAPPER}}' => 'z-index: {{VALUE}};',
+				],
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Animations::get_type(),
+		$this->add_control(
+			'animation',
 			[
-				'name' => '_animation',
+				'label' => __( 'Entrance Animation', 'qazana' ),
+				'type' => Controls_Manager::ANIMATION,
+				'default' => '',
+				'prefix_class' => 'animated ',
+				'label_block' => true,
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'animation_duration',
+			[
+				'label' => __( 'Animation Duration', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'slow' => __( 'Slow', 'qazana' ),
+					'' => __( 'Normal', 'qazana' ),
+					'fast' => __( 'Fast', 'qazana' ),
+				],
+				'prefix_class' => 'animated-',
+				'condition' => [
+					'animation!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'animation_delay',
+			[
+				'label' => __( 'Animation Delay', 'qazana' ) . ' (ms)',
+				'type' => Controls_Manager::NUMBER,
+				'default' => '',
+				'min' => 0,
+				'step' => 100,
+				'condition' => [
+					'animation!' => '',
+				],
+				'render_type' => 'none',
+				'frontend_available' => true,
 			]
 		);
 
@@ -246,26 +641,6 @@ class Element_Column extends Element_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_column_hover',
-			[
-				'label' => __( 'Column Hover', 'qazana' ),
-				'type' => Controls_Manager::SECTION,
-				'tab' => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'hover_animation',
-			[
-				'label' => __( 'Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
-			]
-		);
-
-		$this->end_controls_section();
-
-		// Section Responsive
-		$this->start_controls_section(
 			'section_responsive',
 			[
 				'label' => __( 'Responsive', 'qazana' ),
@@ -273,65 +648,40 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$responsive_points = [
-			'screen_sm' => [
-				'title' => __( 'Mobile Width', 'qazana' ),
-				'class_prefix' => 'qazana-sm-',
-				'classes' => '',
-				'description' => '',
-			],
-		];
 
-		foreach ( $responsive_points as $point_name => $point_data ) {
-			$this->add_control(
-				$point_name,
-				[
-					'label' => $point_data['title'],
-					'type' => Controls_Manager::SELECT,
-					'default' => 'default',
-					'options' => [
-						'default' => __( 'Default', 'qazana' ),
-						'custom' => __( 'Custom', 'qazana' ),
-					],
-					'description' => $point_data['description'],
-					'classes' => $point_data['classes'],
-				]
-			);
-
-			$this->add_control(
-				$point_name . '_width',
-				[
-					'label' => __( 'Column Width', 'qazana' ),
-					'type' => Controls_Manager::SELECT,
-					'options' => [
-						'10' => '10%',
-						'11' => '11%',
-						'12' => '12%',
-						'14' => '14%',
-						'16' => '16%',
-						'20' => '20%',
-						'25' => '25%',
-						'30' => '30%',
-						'33' => '33%',
-						'40' => '40%',
-						'50' => '50%',
-						'60' => '60%',
-						'66' => '66%',
-						'70' => '70%',
-						'75' => '75%',
-						'80' => '80%',
-						'83' => '83%',
-						'90' => '90%',
-						'100' => '100%',
-					],
-					'default' => '100',
-					'condition' => [
-						$point_name => [ 'custom' ],
-					],
-					'prefix_class' => $point_data['class_prefix'],
-				]
-			);
-		}
+		$this->add_control(
+			'screen_sm_width',
+			[
+				'label' => __( 'Column Width', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'10' => '10%',
+					'11' => '11%',
+					'12' => '12%',
+					'14' => '14%',
+					'16' => '16%',
+					'20' => '20%',
+					'25' => '25%',
+					'30' => '30%',
+					'33' => '33%',
+					'40' => '40%',
+					'50' => '50%',
+					'60' => '60%',
+					'66' => '66%',
+					'70' => '70%',
+					'75' => '75%',
+					'80' => '80%',
+					'83' => '83%',
+					'90' => '90%',
+					'100' => '100%',
+				],
+				'default' => '100',
+				'condition' => [
+					'screen_sm' => [ 'custom' ],
+				],
+				'prefix_class' => 'qazana-sm-',
+			]
+		);
 
 		$this->end_controls_section();
 	}
@@ -339,35 +689,16 @@ class Element_Column extends Element_Base {
 	protected function _render_settings() {
 		?>
 		<div class="qazana-element-overlay">
-			<div class="column-title"></div>
-			<div class="qazana-editor-element-settings qazana-editor-column-settings">
-				<ul class="qazana-editor-element-settings-list qazana-editor-column-settings-list">
-					<li class="qazana-editor-element-setting qazana-editor-element-trigger">
-						<a title="<?php _e( 'Drag Column', 'qazana' ); ?>"><?php _e( 'Column', 'qazana' ); ?></a>
+			<ul class="qazana-editor-element-settings qazana-editor-column-settings">
+				<li class="qazana-editor-element-setting qazana-editor-element-trigger" title="<?php printf( __( 'Edit %s', 'qazana' ), __( 'Column', 'qazana' ) ); ?>"><i class="eicon-column"></i></li>
+				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
+					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
+						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
+						<i class="eicon-<?php echo $edit_tool['icon']; ?>"></i>
 					</li>
-					<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
-						<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>">
-							<a title="<?php echo $edit_tool['title']; ?>">
-								<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-								<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<ul class="qazana-editor-element-settings-list  qazana-editor-section-settings-list">
-					<li class="qazana-editor-element-setting qazana-editor-element-trigger">
-						<a title="<?php _e( 'Drag Section', 'qazana' ); ?>"><?php _e( 'Section', 'qazana' ); ?></a>
-					</li>
-					<?php foreach ( Element_Section::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
-						<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>">
-							<a title="<?php echo $edit_tool['title']; ?>">
-								<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-								<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
+				<?php endforeach; ?>
+			</ul>
+			<div class="qazana-column-percents-tooltip"></div>
 		</div>
 		<?php
 	}
@@ -375,19 +706,60 @@ class Element_Column extends Element_Base {
 	protected function _content_template() {
 		?>
 		<div class="qazana-column-wrap">
+			<div class="qazana-background-overlay"></div>
 			<div class="qazana-widget-wrap"></div>
 		</div>
 		<?php
 	}
 
 	public function before_render() {
+		$settings = $this->get_settings();
+
+		$has_background_overlay = in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ||
+								  in_array( $settings['background_overlay_hover_background'], [ 'classic', 'gradient' ] );
+
+		$column_wrap_class = 'qazana-column-wrap';
+		if ( $this->get_children() ) {
+			$column_wrap_class .= ' qazana-element-populated';
+		}
+		?>
+		<<?php echo $this->get_html_tag() . ' ' . $this->get_render_attribute_string( '_wrapper' ); ?>>
+			<div class="<?php echo $column_wrap_class; ?>">
+			<?php if ( $has_background_overlay ) : ?>
+				<div class="qazana-background-overlay"></div>
+			<?php endif; ?>
+		<div class="qazana-widget-wrap">
+		<?php
+	}
+
+	public function after_render() {
+		?>
+				</div>
+			</div>
+		</<?php echo $this->get_html_tag(); ?>>
+		<?php
+	}
+
+	protected function _add_render_attributes() {
+		parent::_add_render_attributes();
+
 		$is_inner = $this->get_data( 'isInner' );
 
 		$column_type = ! empty( $is_inner ) ? 'inner' : 'top';
 
 		$settings = $this->get_settings();
 
-		$this->add_render_attribute( 'wrapper', 'class', [
+		$this->add_render_attribute(
+			'_wrapper', 'class', [
+				'qazana-column',
+				'qazana-col-' . $settings['_column_size'],
+				'qazana-' . $column_type . '-column',
+			]
+		);
+
+		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
+
+	$this->add_render_attribute( 'wrapper', 'class', [
 			'qazana-column',
 			'qazana-element',
 			'qazana-element-' . $this->get_id(),
@@ -420,19 +792,6 @@ class Element_Column extends Element_Base {
         }
 
 		$this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
-		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<div class="qazana-column-wrap<?php if ( $this->get_children() ) echo ' qazana-element-populated'; ?>">
-				<div class="qazana-widget-wrap">
-		<?php
-	}
-
-	public function after_render() {
-		?>
-				</div>
-			</div>
-		</div>
-		<?php
 	}
 
 	protected function _get_default_child_type( array $element_data ) {
@@ -441,5 +800,15 @@ class Element_Column extends Element_Base {
 		}
 
 		return qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
+	}
+
+	private function get_html_tag() {
+		$html_tag = $this->get_settings( 'html_tag' );
+
+		if ( empty( $html_tag ) ) {
+			$html_tag = 'div';
+		}
+
+		return $html_tag;
 	}
 }
