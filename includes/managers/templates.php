@@ -80,7 +80,7 @@ class Template_Manager {
 	}
 
 	public function save_template( array $args ) {
-		$validate_args = $this->ensure_args( [ 'source', 'data' ], $args );
+		$validate_args = $this->ensure_args( [ 'post_id', 'source', 'content', 'type' ], $args );
 
 		if ( is_wp_error( $validate_args ) ) {
 			return $validate_args;
@@ -92,7 +92,13 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		$args['data'] = json_decode( stripslashes( html_entity_decode( $args['data'] ) ), true );
+		$args['content'] = json_decode( stripslashes( $args['content'] ), true );
+
+		if ( 'page' === $args['type'] ) {
+			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $args['post_id'] );
+
+			$args['page_settings'] = $page->get_data( 'settings' );
+		}
 
 		$template_id = $source->save_item( $args );
 
@@ -104,7 +110,14 @@ class Template_Manager {
 	}
 
 	public function update_template( array $template_data ) {
-		$validate_args = $this->ensure_args( [ 'source', 'data', 'type' ], $template_data );
+		// TODO: Temp patch since 1.5.0.
+		if ( isset( $template_data['data'] ) ) {
+			$template_data['content'] = $template_data['data'];
+
+			unset( $template_data['data'] );
+		}
+		// END Patch.
+		$validate_args = $this->ensure_args( [ 'source', 'content', 'type' ], $template_data );
 
 		if ( is_wp_error( $validate_args ) ) {
 			return $validate_args;
@@ -116,7 +129,7 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		$template_data['data'] = json_decode( stripslashes( html_entity_decode( $template_data['data'] ) ), true );
+		$template_data['content'] = json_decode( stripslashes( $template_data['content'] ), true );
 
 		$update = $source->update_item( $template_data );
 
@@ -139,7 +152,12 @@ class Template_Manager {
 		return true;
 	}
 
-	public function get_template_content( array $args ) {
+	/**
+	 * @param array $args
+	 *
+	 * @return array|bool|\WP_Error
+	 */
+	public function get_template_data( array $args ) {
 		$validate_args = $this->ensure_args( [ 'source', 'template_id' ], $args );
 
 		if ( is_wp_error( $validate_args ) ) {
@@ -156,7 +174,7 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		return $source->get_content( $args['template_id'] );
+		return $source->get_data( $args );
 	}
 
 	public function delete_template( array $args ) {
@@ -178,7 +196,7 @@ class Template_Manager {
 	}
 
 	public function export_template( array $args ) {
-		// TODO: Add nonce for security
+		// TODO: Add nonce for security.
 		$validate_args = $this->ensure_args( [ 'source', 'template_id' ], $args );
 
 		if ( is_wp_error( $validate_args ) ) {
@@ -191,7 +209,7 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		// If you reach this line, the export was not successful
+		// If you reach this line, the export was not successful.
 		return $source->export_template( $args['template_id'] );
 	}
 
@@ -252,7 +270,7 @@ class Template_Manager {
 
 		if ( is_wp_error( $result ) ) {
 			if ( 'ajax' === $request_type ) {
-				wp_send_json_error( $result->get_error_message() );
+				wp_send_json_error( $result );
 			}
 
 			$callback = "on_{$ajax_request}_error";
@@ -280,7 +298,7 @@ class Template_Manager {
 	private function init_ajax_calls() {
 		$allowed_ajax_requests = [
 			'get_templates',
-			'get_template_content',
+			'get_template_data',
 			'save_template',
 			'update_templates',
 			'delete_template',
@@ -291,6 +309,7 @@ class Template_Manager {
 		foreach ( $allowed_ajax_requests as $ajax_request ) {
 			add_action( 'wp_ajax_qazana_' . $ajax_request, function() use ( $ajax_request ) {
 				$this->handle_ajax_request( $ajax_request );
+				qazana_write_log( $ajax_request );
 			} );
 		}
 	}

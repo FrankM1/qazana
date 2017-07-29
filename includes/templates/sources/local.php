@@ -282,6 +282,14 @@ class Source_Local extends Source_Base {
 	}
 
 	public function export_multiple_templates( array $template_ids ) {
+
+		global $wp_filesystem;
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/file.php' );
+			WP_Filesystem();
+		}
+
 		$files = [];
 
 		$wp_upload_dir = wp_upload_dir();
@@ -334,10 +342,6 @@ class Source_Local extends Source_Base {
 
 		$zip_archive->close();
 
-		foreach ( $files as $file ) {
-			unlink( $file['path'] );
-		}
-
 		$this->send_file_headers( $zip_archive_filename, filesize( $zip_complete_path ) );
 
 		@ob_end_flush();
@@ -345,8 +349,26 @@ class Source_Local extends Source_Base {
 		@readfile( $zip_complete_path );
 
 		unlink( $zip_complete_path );
+		$wp_filesystem->delete( $zip_complete_path, true );
 
 		die;
+	}
+
+	function recursive_get_files($path) {
+
+		$Directory = new \RecursiveDirectoryIterator($path);
+
+		$Directory->setFlags(\RecursiveDirectoryIterator::SKIP_DOTS);
+
+ 		$Iterator = new \RecursiveIteratorIterator($Directory);
+
+		$data = array();
+
+		foreach( $Iterator as $name => $object ) {
+		   $data[] = $name;
+		}
+
+	    return $data;
 	}
 
 	public function import_template() {
@@ -380,28 +402,15 @@ class Source_Local extends Source_Base {
 
 			$zip->close();
 
-			$files = $wp_filesystem->dirlist( $temp_path, false, true );
-
 			$found_files = array();
 
-			if ( is_array( $files ) ) :
+			$found_files = $this->recursive_get_files( $temp_path );
 
-                foreach ( $files as $file => $data) :
-                    $file_name = $data['name'];
-                    if ( stristr( $file_name, '.json' ) !== false  ) :
-                        $found_files[] = $file_name;
-                    endif;
-
-                endforeach;
-
-            endif;
-
-			foreach ( $found_files as $file_name ) {
-				$full_file_name = $temp_path . '/' . $file_name;
-				$items[] = $this->import_single_template( $full_file_name );
+			foreach ( $found_files as $file ) {
+				$items[] = $this->import_single_template( $file );
 			}
 
-			///$wp_filesystem->delete( $temp_path, true );
+			$wp_filesystem->delete( $temp_path, true );
 
 		} else {
 			$items[] = $this->import_single_template( $import_file );
@@ -621,6 +630,7 @@ class Source_Local extends Source_Base {
 	}
 
 	private function _add_actions() {
+
 		if ( is_admin() ) {
 			add_action( 'admin_menu', [ $this, 'register_admin_menu' ], 50 );
 			add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 2 );
@@ -631,7 +641,6 @@ class Source_Local extends Source_Base {
 			// template library bulk actions.
 			add_filter( 'bulk_actions-edit-qazana_library', [ $this, 'admin_add_bulk_export_action' ] );
 			add_filter( 'handle_bulk_actions-edit-qazana_library', [ $this, 'admin_export_multiple_templates' ], 10, 3 );
-
 		}
 
 		add_action( 'template_redirect', [ $this, 'block_template_frontend' ] );
