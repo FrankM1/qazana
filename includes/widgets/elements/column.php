@@ -573,7 +573,7 @@ class Element_Column extends Element_Base {
 			'animation',
 			[
 				'label' => __( 'Entrance Animation', 'qazana' ),
-				'type' => Controls_Manager::ANIMATION,
+				'type' => Controls_Manager::ANIMATION_IN,
 				'default' => '',
 				'prefix_class' => 'animated ',
 				'label_block' => true,
