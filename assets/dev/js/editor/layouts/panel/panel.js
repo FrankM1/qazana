@@ -53,6 +53,10 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 			},
 			colorPickerScheme: {
 				view: require( 'qazana-panel/pages/schemes/color-picker' )
+			},
+			settingsPage: {
+				view: require( 'qazana-panel/pages/page-settings/page-settings' ),
+				title: qazana.translate( 'page_settings' )
 			}
 		};
 

@@ -2,8 +2,8 @@
 namespace Qazana\Template_Library;
 
 use Qazana\DB;
-//use Qazana\PageSettings\Manager as PageSettingsManager;
-//use Qazana\PageSettings\Page;
+use Qazana\PageSettings\Manager as PageSettingsManager;
+use Qazana\PageSettings\Page;
 use Qazana\Plugin;
 use Qazana\User;
 
@@ -181,7 +181,7 @@ class Source_Local extends Source_Base {
 		$this->save_item_type( $template_id, $template_data['type'] );
 
 		if ( ! empty( $template_data['page_settings'] ) ) {
-			//PageSettingsManager::save_page_settings( $template_id, $template_data['page_settings'] );
+			PageSettingsManager::save_page_settings( $template_id, $template_data['page_settings'] );
 		}
 
 		do_action( 'qazana/template-library/after_save_template', $template_id, $template_data );
@@ -208,7 +208,7 @@ class Source_Local extends Source_Base {
 
 		$user = get_user_by( 'id', $post->post_author );
 
-		//$page_settings = get_post_meta( $post->ID, PageSettingsManager::META_KEY, true );
+		$page_settings = get_post_meta( $post->ID, PageSettingsManager::META_KEY, true );
 
 		$data = [
 			'template_id' => $post->ID,
@@ -268,7 +268,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( '404', 'The template does not exist' );
 
 		// TODO: since 1.5.0 to content container named `content` instead of `data`
-		$template_data['data'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+		$template_data['data'] = $this->process_export_import_data( $template_data['content'], 'on_export' );
 
 		if ( 'page' === $template_type ) {
 			$page = PageSettingsManager::get_page( $template_id );
@@ -331,7 +331,7 @@ class Source_Local extends Source_Base {
 		if ( $is_invalid_file )
 			return new \WP_Error( 'file_error', 'Invalid File' );
 
-		$content = $this->process_export_import_content( $content, 'on_import' );
+		$content = $this->process_export_import_data( $content, 'on_import' );
 
 		$page_settings = [];
 		if ( ! empty( $data['page_settings'] ) ) {

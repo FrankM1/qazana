@@ -316,6 +316,8 @@ html.qazana-html {
 .qazana-editor-active .qazana-widget:not(.qazana-loading):not(.qazana-widget-menu-anchor) {
   -webkit-transition: all .1s;
   transition: all .1s; }
+.qazana-editor-active .qazana-widget.qazana-widget-can-edit {
+  position: relative; }
 .qazana-editor-active .qazana-widget.qazana-element-editable, .qazana-editor-active .qazana-widget.qazana-widget-can-edit:hover {
   outline: 1px solid #008EFF; }
 .qazana-editor-active .qazana-widget:not(:hover) .qazana-editor-element-settings {

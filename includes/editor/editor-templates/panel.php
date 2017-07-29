@@ -220,6 +220,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		$scheme_fields = array_intersect_key( $typography_fields, array_flip( $scheme_fields_keys ) );
 
+		$system_fonts = Fonts::get_fonts_by_groups( [ Fonts::SYSTEM ] );
+
+		$google_fonts = Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] );
+
 		foreach ( $scheme_fields as $option_name => $option ) : ?>
 			<div class="qazana-panel-scheme-typography-item">
 				<div class="qazana-panel-scheme-item-title qazana-control-title"><?php echo $option['label']; ?></div>
@@ -235,13 +239,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 							<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
 
 							<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
-								<?php foreach ( Fonts::get_fonts_by_groups( [ Fonts::SYSTEM ] ) as $font_title => $font_type ) : ?>
+								<?php foreach ( $system_fonts as $font_title => $font_type ) : ?>
 									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
 								<?php endforeach; ?>
 							</optgroup>
 
 							<optgroup label="<?php _e( 'Google', 'qazana' ); ?>">
-								<?php foreach ( Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] ) as $font_title => $font_type ) : ?>
+								<?php foreach ( $google_fonts as $font_title => $font_type ) : ?>
 									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
 								<?php endforeach; ?>
 							</optgroup>
@@ -296,7 +300,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
 				<a href="#">{{{ tabTitle }}}</a>
 			</div>
-			<# } ); #>
+		<# } ); #>
 	</div>
 	<div id="qazana-panel-page-settings-controls"></div>
 </script>

@@ -10,6 +10,7 @@ class Controls_Manager {
 	const TAB_ADVANCED = 'advanced';
 	const TAB_RESPONSIVE = 'responsive';
 	const TAB_LAYOUT = 'layout';
+	const TAB_SETTINGS = 'settings';
 
 	const TEXT = 'text';
 	const NUMBER = 'number';

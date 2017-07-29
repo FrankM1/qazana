@@ -345,6 +345,7 @@ class Plugin {
         require_once( $this->includes_dir . 'managers/elements.php' );
         require_once( $this->includes_dir . 'managers/widgets.php' );
         require_once( $this->includes_dir . 'managers/templates.php' );
+        require_once( $this->includes_dir . 'managers/page-settings.php' );
         require_once( $this->includes_dir . 'managers/page-template.php' );
         require_once( $this->includes_dir . 'managers/custom-css.php' );
         require_once( $this->includes_dir . 'managers/extensions.php' );
@@ -400,7 +401,8 @@ class Plugin {
         $this->frontend             = new Frontend();
         $this->heartbeat            = new Heartbeat();
 
-        $this->templates_manager    = new Template_Manager();
+        $this->templates_manager        = new Template_Manager();
+        $this->page_settings_manager    = new PageSettings\Manager();
 
         $this->extensions_loader    = new Loader( $this->extensions_locations );
         $this->extensions           = new Extensions\Manager();

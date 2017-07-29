@@ -1,6 +1,8 @@
 <?php
 namespace Qazana;
 
+use Qazana\PageSettings\Manager as PageSettingsManager;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Editor {
@@ -363,6 +365,7 @@ class Editor {
 		if ( empty( $page_title_selector ) ) {
 			$page_title_selector = '.page-header';
 		}
+	$page_settings_instance = PageSettingsManager::get_page( $post_id );
 
         $this->add_localize_settings( [
 			'version' => qazana_version(),
@@ -381,6 +384,11 @@ class Editor {
             'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
 			'revisions' => Revisions_Manager::get_revisions(),
 			'revisions_enabled' => ( $post_id && wp_revisions_enabled( get_post() ) ),
+	'page_settings' => [
+				'controls' => $page_settings_instance->get_controls(),
+				'tabs' => $page_settings_instance->get_tabs_controls(),
+				'settings' => $page_settings_instance->get_settings(),
+			],
             'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'wp_editor' => $this->_get_wp_editor_config(),
             'post_id' => $post_id,
@@ -445,7 +453,13 @@ class Editor {
 				'revision' => __( 'Revision', 'qazana' ),
 				'autosave' => __( 'Autosave', 'qazana' ),
 				'preview' => __( 'Preview', 'qazana' ),
+				'page_settings' => __( 'Page Settings', 'qazana' ),
 				'back_to_editor' => __( 'Back to Editor', 'qazana' ),
+				'import_template_dialog_header' => __( 'Import Page Settings', 'qazana' ),
+				'import_template_dialog_message' => __( 'Do you want to also import the page settings of the template?', 'qazana' ),
+				'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
+				'no' => __( 'No', 'qazana' ),
+				'yes' => __( 'Yes', 'qazana' ),
             ]
         ]);
 

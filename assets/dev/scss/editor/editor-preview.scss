@@ -453,6 +453,10 @@ html.qazana-html {
 			transition: all .1s;
 		}
 
+		&.qazana-widget-can-edit {
+			position: relative;
+		}
+
 		&.qazana-element-editable, &.qazana-widget-can-edit:hover {
 			outline: 1px solid $editor-info;
 		}

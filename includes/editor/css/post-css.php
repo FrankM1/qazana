@@ -1,7 +1,7 @@
 <?php
 namespace Qazana;
 
-//use Qazana\PageSettings\Manager as PageSettingsManager;
+use Qazana\PageSettings\Manager as PageSettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -58,7 +58,7 @@ class Post_CSS_File extends CSS_File {
 	}
 
 	protected function render_css() {
-		//$this->add_page_settings_rules();
+		$this->add_page_settings_rules();
 
 		$data = qazana()->db->get_plain_editor( $this->post_id );
 

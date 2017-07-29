@@ -31,7 +31,11 @@ class Control_Choose extends Base_Data_Control {
 					<# _.each( data.options, function( options, value ) { #>
 					<input id="<?php echo $control_uid; ?>" type="radio" name="qazana-choose-{{ data.name }}-{{ data._cid }}" value="{{ value }}">
 					<label class="qazana-choices-label tooltip-target" for="<?php echo $control_uid; ?>" data-tooltip="{{ options.title }}" title="{{ options.title }}">
-						<i class="{{ options.icon }}"></i>
+						<# if( options.icon ) { #>
+							<i class="{{ options.icon }}"></i>
+						<# } else if( options.title ) { #>
+							<span class="qazana-choose-option-title">{{ options.title }}</span>
+						<# } #>
 					</label>
 					<# } ); #>
 				</div>

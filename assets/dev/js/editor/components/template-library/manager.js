@@ -147,8 +147,6 @@ TemplateLibraryManager = function() {
 
 	this.getDeleteDialog = function() {
 
-		console.log(qazana.dialogsManager);
-
 		if ( ! deleteDialog ) {
 			deleteDialog = qazana.dialogsManager.createWidget( 'confirm', {
 				id: 'qazana-template-library-delete-dialog',

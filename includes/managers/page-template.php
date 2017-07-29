@@ -29,9 +29,10 @@ class Page_Template_Manager {
      * Initializes the plugin by setting filters and administration functions.
      */
     private function __construct() {
+        
         $this->templates = array();
 
-        $this->page_template_path = apply_filters( 'qazana_view_page_template_path', plugin_dir_path( dirname( dirname( __FILE__ ) ) ).'templates/default/' );
+        $this->page_template_path = apply_filters( 'qazana_view_page_template_path', plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'templates/default/' );
 
         // Add a filter to the attributes metabox to inject template into the cache.
         add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_project_templates' ) );
@@ -45,7 +46,7 @@ class Page_Template_Manager {
 
         // Add your templates to this array.
         $templates = array(
-            'qazana.php' => 'Qazana',
+            'qazana.php' => 'Qazana Canvas',
         );
 
         $this->templates = apply_filters( 'qazana_page_templates', $templates );

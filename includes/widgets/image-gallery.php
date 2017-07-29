@@ -268,8 +268,8 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->add_render_attribute( 'shortcode', 'ids', implode( ',', $ids ) );
 		$this->add_render_attribute( 'shortcode', 'size', $settings['thumbnail_size'] );
 
-		if ( $settings['gallery_columns'] ) {
-			$this->add_render_attribute( 'shortcode', 'columns', $settings['gallery_columns'] );
+		if ( $this->get_responsive_settings('gallery_columns') ) {
+			$this->add_render_attribute( 'shortcode', 'columns', $this->get_responsive_settings('gallery_columns') );
 		}
 
 		if ( $settings['gallery_link'] ) {

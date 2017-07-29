@@ -33,12 +33,12 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 				pageName: 'revisionsPage'
 			},
 			{
-				/*icon: 'fa fa-cog',
+				icon: 'fa fa-cog',
 				title: qazana.translate( 'page_settings' ),
 				type: 'page',
 				pageName: 'settingsPage'
 			},
-            {*/
+            {
                 icon: 'fa fa-eraser',
                 title: qazana.translate( 'clear_page' ),
                 callback: function() {
