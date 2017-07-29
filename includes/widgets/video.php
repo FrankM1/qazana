@@ -86,6 +86,7 @@ class Widget_Video extends Widget_Base {
 			[
 				'label' => __( 'Aspect Ratio', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
+				'frontend_available' => true,
 				'options' => [
 					'169' => '16:9',
 					'43' => '4:3',
@@ -110,15 +111,12 @@ class Widget_Video extends Widget_Base {
 			'yt_autoplay',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'no' => __( 'No', 'qazana' ),
-					'yes' => __( 'Yes', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'No', 'qazana' ),
+				'label_on' => __( 'Yes', 'qazana' ),
 				'condition' => [
 					'video_type' => 'youtube',
 				],
-				'default' => 'no',
 			]
 		);
 
@@ -126,12 +124,9 @@ class Widget_Video extends Widget_Base {
 			'yt_rel',
 			[
 				'label' => __( 'Suggested Videos', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'no' => __( 'Hide', 'qazana' ),
-					'yes' => __( 'Show', 'qazana' ),
-				],
-				'default' => 'no',
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'condition' => [
 					'video_type' => 'youtube',
 				],
@@ -142,11 +137,9 @@ class Widget_Video extends Widget_Base {
 			'yt_controls',
 			[
 				'label' => __( 'Player Control', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'yes' => __( 'Show', 'qazana' ),
-					'no' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'default' => 'yes',
 				'condition' => [
 					'video_type' => 'youtube',
@@ -158,11 +151,9 @@ class Widget_Video extends Widget_Base {
 			'yt_showinfo',
 			[
 				'label' => __( 'Player Title & Actions', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'yes' => __( 'Show', 'qazana' ),
-					'no' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'default' => 'yes',
 				'condition' => [
 					'video_type' => 'youtube',
@@ -175,12 +166,9 @@ class Widget_Video extends Widget_Base {
 			'vimeo_autoplay',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'no' => __( 'No', 'qazana' ),
-					'yes' => __( 'Yes', 'qazana' ),
-				],
-				'default' => 'no',
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'No', 'qazana' ),
+				'label_on' => __( 'Yes', 'qazana' ),
 				'condition' => [
 					'video_type' => 'vimeo',
 				],
@@ -191,12 +179,9 @@ class Widget_Video extends Widget_Base {
 			'vimeo_loop',
 			[
 				'label' => __( 'Loop', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'no' => __( 'No', 'qazana' ),
-					'yes' => __( 'Yes', 'qazana' ),
-				],
-				'default' => 'no',
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'No', 'qazana' ),
+				'label_on' => __( 'Yes', 'qazana' ),
 				'condition' => [
 					'video_type' => 'vimeo',
 				],
@@ -207,11 +192,9 @@ class Widget_Video extends Widget_Base {
 			'vimeo_title',
 			[
 				'label' => __( 'Intro Title', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'yes' => __( 'Show', 'qazana' ),
-					'no' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'default' => 'yes',
 				'condition' => [
 					'video_type' => 'vimeo',
@@ -223,11 +206,9 @@ class Widget_Video extends Widget_Base {
 			'vimeo_portrait',
 			[
 				'label' => __( 'Intro Portrait', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'yes' => __( 'Show', 'qazana' ),
-					'no' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'default' => 'yes',
 				'condition' => [
 					'video_type' => 'vimeo',
@@ -239,11 +220,9 @@ class Widget_Video extends Widget_Base {
 			'vimeo_byline',
 			[
 				'label' => __( 'Intro Byline', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'yes' => __( 'Show', 'qazana' ),
-					'no' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'default' => 'yes',
 				'condition' => [
 					'video_type' => 'vimeo',
@@ -342,12 +321,9 @@ class Widget_Video extends Widget_Base {
 			'show_image_overlay',
 			[
 				'label' => __( 'Image Overlay', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'no',
-				'options' => [
-					'no' => __( 'Hide', 'qazana' ),
-					'yes' => __( 'Show', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 			]
 		);
 

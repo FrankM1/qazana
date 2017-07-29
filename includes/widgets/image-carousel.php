@@ -48,13 +48,14 @@ class Widget_Image_Carousel extends Widget_Base {
 		$slides_to_show = range( 1, 10 );
 		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'slides_to_show',
 			[
 				'label' => __( 'Slides to Show', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '3',
-				'options' => $slides_to_show,
+				'options' => [ '' => __( 'Default', 'qazana' ) ] + $slides_to_show,
+				'frontend_available' => true,
 			]
 		);
 
@@ -68,6 +69,7 @@ class Widget_Image_Carousel extends Widget_Base {
 				'condition' => [
 					'slides_to_show!' => '1',
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -97,6 +99,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					'thumbnails' => __( 'Thumbnails', 'qazana' ),
 					'none' => __( 'None', 'qazana' ),
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -155,6 +158,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					'yes' => __( 'Yes', 'qazana' ),
 					'no' => __( 'No', 'qazana' ),
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -168,6 +172,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					'yes' => __( 'Yes', 'qazana' ),
 					'no' => __( 'No', 'qazana' ),
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -177,6 +182,7 @@ class Widget_Image_Carousel extends Widget_Base {
 				'label' => __( 'Autoplay Speed', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 5000,
+				'frontend_available' => true,
 			]
 		);
 
@@ -190,6 +196,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					'yes' => __( 'Yes', 'qazana' ),
 					'no' => __( 'No', 'qazana' ),
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -206,6 +213,7 @@ class Widget_Image_Carousel extends Widget_Base {
 				'condition' => [
 					'slides_to_show' => '1',
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -215,6 +223,7 @@ class Widget_Image_Carousel extends Widget_Base {
 				'label' => __( 'Animation Speed', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 500,
+				'frontend_available' => true,
 			]
 		);
 
@@ -228,6 +237,7 @@ class Widget_Image_Carousel extends Widget_Base {
 					'ltr' => __( 'Left', 'qazana' ),
 					'rtl' => __( 'Right', 'qazana' ),
 				],
+				'frontend_available' => true,
 			]
 		);
 
@@ -424,6 +434,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			[
 				'name' => 'image_border',
 				'selector' => '{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image',
+				'separator' => 'before',
 			]
 		);
 

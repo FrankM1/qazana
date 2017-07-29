@@ -80,7 +80,7 @@ class Page extends Controls_Stack {
 			]
 		);
 
-		/*if ( Manager::is_cpt_custom_templates_supported() ) {
+		if ( Manager::is_cpt_custom_templates_supported() ) {
 			require_once ABSPATH . '/wp-admin/includes/template.php';
 
 			$options = [
@@ -95,6 +95,8 @@ class Page extends Controls_Stack {
 				$saved_template = 'default';
 			}
 
+			unset($options['blog']);
+
 			$this->add_control(
 				'template',
 				[
@@ -107,7 +109,7 @@ class Page extends Controls_Stack {
 					},
 				]
 			);
-		}*/
+		}
 
 		$post_type_object = get_post_type_object( $this->post->post_type );
 

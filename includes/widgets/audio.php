@@ -68,12 +68,7 @@ class Widget_Audio extends Widget_Base {
 			'sc_auto_play',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'no',
-				'options' => [
-					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
 			]
 		);
 
@@ -81,12 +76,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_buying',
 			[
 				'label' => __( 'Buy Button', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -94,12 +87,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_liking',
 			[
 				'label' => __( 'Like Button', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -107,12 +98,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_download',
 			[
 				'label' => __( 'Download Button', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -120,12 +109,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_sharing',
 			[
 				'label' => __( 'Share Button', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -133,12 +120,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_show_comments',
 			[
 				'label' => __( 'Comments', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -146,12 +131,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_show_playcount',
 			[
 				'label' => __( 'Play Counts', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -159,12 +142,10 @@ class Widget_Audio extends Widget_Base {
 			'sc_show_user',
 			[
 				'label' => __( 'Username', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'show',
-				'options' => [
-					'show' => __( 'Show', 'qazana' ),
-					'hide' => __( 'Hide', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -192,8 +173,9 @@ class Widget_Audio extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings();
 
-		if ( empty( $settings['link'] ) )
+		if ( empty( $settings['link'] ) ) {
 			return;
+		}
 
 		$this->_current_instance = $settings;
 
@@ -205,29 +187,37 @@ class Widget_Audio extends Widget_Base {
 			<div class="qazana-soundcloud-wrapper">
 				<?php echo $video_html; ?>
 			</div>
-		<?php endif;
+		<?php
+		endif;
 	}
 
 	public function filter_oembed_result( $html ) {
-		$params = [
-			'auto_play' => 'yes' === $this->_current_instance['sc_auto_play'] ? 'true' : 'false',
-			'buying' => 'show' === $this->_current_instance['sc_buying'] ? 'true' : 'false',
-			'liking' => 'show' === $this->_current_instance['sc_liking'] ? 'true' : 'false',
-			'download' => 'show' === $this->_current_instance['sc_download'] ? 'true' : 'false',
-			'sharing' => 'show' === $this->_current_instance['sc_sharing'] ? 'true' : 'false',
-			'show_comments' => 'show' === $this->_current_instance['sc_show_comments'] ? 'true' : 'false',
-			'show_playcount' => 'show' === $this->_current_instance['sc_show_playcount'] ? 'true' : 'false',
-			'show_user' => 'show' === $this->_current_instance['sc_show_user'] ? 'true' : 'false',
-			'color' => str_replace( '#', '', $this->_current_instance['sc_color'] ),
+		$param_keys = [
+			'auto_play',
+			'buying',
+			'liking',
+			'download',
+			'sharing',
+			'show_comments',
+			'show_playcount',
+			'show_user',
 		];
+
+		$params = [];
+
+		foreach ( $param_keys as $param_key ) {
+			$params[ $param_key ] = 'yes' === $this->_current_instance[ 'sc_' . $param_key ] ? 'true' : 'false';
+		}
+
+		$params['color'] = str_replace( '#', '', $this->_current_instance['sc_color'] );
+
+		preg_match( '/<iframe.*src=\"(.*)\".*><\/iframe>/isU', $html, $matches );
+
+		$url = esc_url( add_query_arg( $params, $matches[1] ) );
 
 		$visual = 'yes' === $this->_current_instance['visual'] ? 'true' : 'false';
 
-		preg_match( '/<iframe.*src=\"(.*)\".*><\/iframe>/isU', $html, $matches );
-		$url = esc_url( add_query_arg( $params, $matches[1] ) );
-
-		$html = str_replace( $matches[1], $url, $html );
-		$html = str_replace( 'visual=true', 'visual=' . $visual, $html );
+		$html = str_replace( [ $matches[1], 'visual=true' ], [ $url, 'visual=' . $visual ], $html );
 
 		if ( 'false' === $visual ) {
 			$html = str_replace( 'height="400"', 'height="200"', $html );

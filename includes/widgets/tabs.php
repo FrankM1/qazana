@@ -30,6 +30,20 @@ class Widget_Tabs extends Widget_Base {
 		);
 
 		$this->add_control(
+			'type',
+			[
+				'label' => __( 'Type', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'horizontal',
+				'options' => [
+					'horizontal' => __( 'Horizontal', 'qazana' ),
+					'vertical' => __( 'Vertical', 'qazana' ),
+				],
+				'prefix_class' => 'qazana-tabs-view-',
+			]
+		);
+
+		$this->add_control(
 			'tabs',
 			[
 				'label' => __( 'Tabs Items', 'qazana' ),
@@ -80,8 +94,31 @@ class Widget_Tabs extends Widget_Base {
 		$this->start_controls_section(
 			'section_tabs_style',
 			[
-				'label' => __( 'Tabs Style', 'qazana' ),
+				'label' => __( 'Tabs', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'navigation_width',
+			[
+				'label' => __( 'Navigation Width', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'unit' => '%',
+				],
+				'range' => [
+					'%' => [
+						'min' => 10,
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-tabs-wrapper' => 'width: {{SIZE}}{{UNIT}}',
+				],
+				'condition' => [
+					'type' => 'vertical',
+				],
 			]
 		);
 
@@ -128,16 +165,25 @@ class Widget_Tabs extends Widget_Base {
 				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tab-title.active' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tab-content' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tab-desktop-title.active' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tabs-content-wrapper' => 'background-color: {{VALUE}};',
 				],
+			]
+		);
+
+		$this->add_control(
+			'heading_title',
+			[
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'tab_color',
 			[
-				'label' => __( 'Title Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-tab-title' => 'color: {{VALUE}};',
@@ -146,7 +192,6 @@ class Widget_Tabs extends Widget_Base {
 					'type' => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_1,
 				],
-				'separator' => 'before',
 			]
 		);
 
@@ -156,7 +201,7 @@ class Widget_Tabs extends Widget_Base {
 				'label' => __( 'Active Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tab-title.active' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -169,28 +214,27 @@ class Widget_Tabs extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'tab_typography',
-				'selector' => '{{WRAPPER}} .qazana-tab-title > span',
+				'selector' => '{{WRAPPER}} .qazana-tab-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_tabs_content',
+		$this->add_control(
+			'heading_content',
 			[
-				'label' => __( 'Tabs Content', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Content', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'content_color',
 			[
-				'label' => __( 'Text Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tab-content *' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tab-content' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -214,12 +258,12 @@ class Widget_Tabs extends Widget_Base {
 	protected function render() {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
-		<div class="qazana-tabs">
+		<div class="qazana-tabs" role="tablist">
 			<?php
 			$counter = 1; ?>
-			<div class="qazana-tabs-wrapper">
+			<div class="qazana-tabs-wrapper" role="tab">
 				<?php foreach ( $tabs as $item ) : ?>
-					<div class="qazana-tab-title" data-tab="<?php echo $counter; ?>"><span><?php echo $item['tab_title']; ?></span></div>
+					<div class="qazana-tab-title qazana-tab-desktop-title" data-tab="<?php echo $counter; ?>"><span><?php echo $item['tab_title']; ?></span></div>
 				<?php
 					$counter++;
 				endforeach; ?>
@@ -227,8 +271,9 @@ class Widget_Tabs extends Widget_Base {
 
 			<?php
 			$counter = 1; ?>
-			<div class="qazana-tabs-content-wrapper">
+			<div class="qazana-tabs-content-wrapper" role="tabpanel">
 				<?php foreach ( $tabs as $item ) : ?>
+					<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="<?php echo $counter; ?>"><?php echo $item['tab_title']; ?></div>
 					<div class="qazana-tab-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 				<?php
 					$counter++;
@@ -240,23 +285,24 @@ class Widget_Tabs extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-tabs" data-active-tab="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}">
+		<div class="qazana-tabs" data-active-tab="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}" role="tablist">
 			<#
 			if ( settings.tabs ) {
 				var counter = 1; #>
-				<div class="qazana-tabs-wrapper">
+				<div class="qazana-tabs-wrapper" role="tab">
 					<#
 					_.each( settings.tabs, function( item ) { #>
-						<div class="qazana-tab-title" data-tab="{{ counter }}"><span>{{{ item.tab_title }}}</span></div>
+						<div class="qazana-tab-title qazana-tab-desktop-title" data-tab="{{ counter }}">{{{ item.tab_title }}}</div>
 					<#
 						counter++;
 					} ); #>
 				</div>
 
 				<# counter = 1; #>
-				<div class="qazana-tabs-content-wrapper">
+				<div class="qazana-tabs-content-wrapper" role="tabpanel">
 					<#
 					_.each( settings.tabs, function( item ) { #>
+						<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="{{ counter }}">{{{ item.tab_title }}}</div>
 						<div class="qazana-tab-content qazana-clearfix qazana-repeater-item-{{ item._id }}" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
 					<#
 					counter++;

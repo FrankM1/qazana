@@ -55,7 +55,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		'change @ui.radio': 'onBaseInputChange',
 		'input @ui.textarea': 'onBaseInputChange',
 		'change @ui.select': 'onBaseInputChange',
-		'click @ui.switcherDesktop': 'onSwitcherDesktopClick',
 		'click @ui.responsiveSwitchers': 'onSwitcherClick'
 	},
 

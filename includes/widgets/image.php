@@ -132,13 +132,19 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'space',
 			[
 				'label' => __( 'Size (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 100,
+					'unit' => '%',
+				],
+				'tablet_default' => [
+					'unit' => '%',
+				],
+				'mobile_default' => [
 					'unit' => '%',
 				],
 				'size_units' => [ '%' ],
@@ -189,10 +195,11 @@ class Widget_Image extends Widget_Base {
 				'name' => 'image_border',
 				'label' => __( 'Image Border', 'qazana' ),
 				'selector' => '{{WRAPPER}} .qazana-image img',
+				'separator' => 'before',
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'image_border_radius',
 			[
 				'label' => __( 'Border Radius', 'qazana' ),
@@ -208,6 +215,9 @@ class Widget_Image extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'image_box_shadow',
+				'exclude' => [
+					'box_shadow_position',
+				],
 				'selector' => '{{WRAPPER}} .qazana-image img',
 			]
 		);
@@ -297,14 +307,16 @@ class Widget_Image extends Widget_Base {
 
 		$link = $this->get_link_url( $settings );
 
-		$this->add_render_attribute( 'link', 'href', $link['url'] );
+		if ( $link ) {
+			$this->add_render_attribute( 'link', 'href', $link['url'] );
 
-		if ( ! empty( $link['is_external'] ) ) {
-			$this->add_render_attribute( 'link', 'target', '_blank' );
-		}
+			if ( ! empty( $link['is_external'] ) ) {
+				$this->add_render_attribute( 'link', 'target', '_blank' );
+			}
 
-		if ( ! empty( $link['nofollow'] ) ) {
-			$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			if ( ! empty( $link['nofollow'] ) ) {
+				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			}
 		} ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 		<?php

@@ -117,21 +117,29 @@ class Widget_Toggle extends Widget_Base {
 		);
 
 		$this->add_control(
+			'heading_title',
+			[
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
 			'title_background',
 			[
-				'label' => __( 'Title Background', 'qazana' ),
+				'label' => __( 'Background', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-toggle .qazana-toggle-title' => 'background-color: {{VALUE}};',
 				],
-				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Title Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-toggle .qazana-toggle-title' => 'color: {{VALUE}};',
@@ -161,7 +169,6 @@ class Widget_Toggle extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'label' => __( 'Title Typography', 'qazana' ),
 				'name' => 'title_typography',
 				'selector' => '{{WRAPPER}} .qazana-toggle .qazana-toggle-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
@@ -169,24 +176,32 @@ class Widget_Toggle extends Widget_Base {
 		);
 
 		$this->add_control(
+			'heading_content',
+			[
+				'label' => __( 'Content', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
 			'content_background_color',
 			[
-				'label' => __( 'Content Background', 'qazana' ),
+				'label' => __( 'Background', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-toggle .qazana-toggle-content' => 'background-color: {{VALUE}};',
 				],
-				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'content_color',
 			[
-				'label' => __( 'Content Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-toggle .qazana-toggle-content *' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-toggle .qazana-toggle-content' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -199,7 +214,6 @@ class Widget_Toggle extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'content_typography',
-				'label' => 'Content Typography',
 				'selector' => '{{WRAPPER}} .qazana-toggle .qazana-toggle-content',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
@@ -212,8 +226,7 @@ class Widget_Toggle extends Widget_Base {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
 		<div class="qazana-toggle">
-			<?php
-			$counter = 1; ?>
+			<?php $counter = 1; ?>
 			<?php foreach ( $tabs as $item ) : ?>
 				<div class="qazana-toggle-title" data-tab="<?php echo $counter; ?>">
 					<span class="qazana-toggle-icon">
@@ -224,7 +237,8 @@ class Widget_Toggle extends Widget_Base {
 				<div class="qazana-toggle-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 			<?php
 				$counter++;
-			endforeach; ?>
+			endforeach;
+			?>
 		</div>
 		<?php
 	}
@@ -238,8 +252,8 @@ class Widget_Toggle extends Widget_Base {
 				_.each(settings.tabs, function( item ) { #>
 					<div class="qazana-toggle-title" data-tab="{{ counter }}">
 						<span class="qazana-toggle-icon">
-						<i class="fa"></i>
-					</span>
+							<i class="fa"></i>
+						</span>
 						{{{ item.tab_title }}}
 					</div>
 					<div class="qazana-toggle-content qazana-clearfix" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>

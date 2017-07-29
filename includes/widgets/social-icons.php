@@ -185,7 +185,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_color',
 			[
-				'label' => __( 'Icon Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
@@ -227,7 +227,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_size',
 			[
-				'label' => __( 'Icon Size', 'qazana' ),
+				'label' => __( 'Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -244,12 +244,18 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_padding',
 			[
-				'label' => __( 'Icon Padding', 'qazana' ),
+				'label' => __( 'Padding', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon' => 'padding: {{SIZE}}{{UNIT}};',
 				],
 				'default' => [
+					'unit' => 'em',
+				],
+				'tablet_default' => [
+					'unit' => 'em',
+				],
+				'mobile_default' => [
 					'unit' => 'em',
 				],
 				'range' => [
@@ -266,7 +272,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_responsive_control(
 			'icon_spacing',
 			[
-				'label' => __( 'Icon Spacing', 'qazana' ),
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -285,6 +291,7 @@ class Widget_Social_Icons extends Widget_Base {
 			[
 				'name' => 'image_border',
 				'selector' => '{{WRAPPER}} .qazana-social-icon',
+				'separator' => 'before',
 			]
 		);
 

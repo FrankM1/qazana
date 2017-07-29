@@ -34,7 +34,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 			[
 				'raw' => __( 'This ID will be the CSS ID you will have to use in your own page, Without #.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
-				'classes' => 'qazana-descriptor',
+				'content_classes' => 'qazana-descriptor',
 			]
 		);
 
@@ -44,7 +44,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 				'label' => __( 'The ID of Menu Anchor.', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'placeholder' => __( 'For Example: About', 'qazana' ),
-	            'label_block' => true,
+				'label_block' => true,
 			]
 		);
 

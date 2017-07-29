@@ -365,7 +365,8 @@ class Editor {
 		if ( empty( $page_title_selector ) ) {
 			$page_title_selector = '.page-header';
 		}
-	$page_settings_instance = PageSettingsManager::get_page( $post_id );
+
+		$page_settings_instance = PageSettingsManager::get_page( $post_id );
 
         $this->add_localize_settings( [
 			'version' => qazana_version(),
@@ -384,7 +385,7 @@ class Editor {
             'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
 			'revisions' => Revisions_Manager::get_revisions(),
 			'revisions_enabled' => ( $post_id && wp_revisions_enabled( get_post() ) ),
-	'page_settings' => [
+			'page_settings' => [
 				'controls' => $page_settings_instance->get_controls(),
 				'tabs' => $page_settings_instance->get_tabs_controls(),
 				'settings' => $page_settings_instance->get_settings(),
@@ -560,6 +561,9 @@ class Editor {
 		do_action( 'qazana/editor/wp_head' );
 	}
 
+	/**
+	 * @param string $template_path - Can be either a link to template file or template HTML content
+	 */
 	public function add_editor_template( $template_path ) {
 		$this->_editor_templates[] = $template_path;
 	}
@@ -573,7 +577,11 @@ class Editor {
 		qazana()->schemes_manager->print_schemes_templates();
 
 		foreach ( $this->_editor_templates as $editor_template ) {
-			include $editor_template;
+			if ( stream_resolve_include_path( $editor_template ) ) {
+				include $editor_template;
+			} else {
+				echo $editor_template;
+			}
 		}
 
 		do_action( 'qazana/editor/footer' );

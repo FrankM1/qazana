@@ -219,6 +219,7 @@ class Frontend {
 		if ( qazana()->editor->is_edit_mode() ) {
 			$qazana_frontend_config['elements'] = [
 				'data' => (object) [],
+				'editSettings' => (object) [],
 				'keys' => $elements_frontend_keys,
 			];
 		}
@@ -328,6 +329,7 @@ class Frontend {
 				'uk' => 'cyrillic',
 				'cs_CZ' => 'latin-ext',
 				'ro_RO' => 'latin-ext',
+				'pl_PL' => 'latin-ext',
 			];
 			$locale = get_locale();
 
@@ -356,14 +358,16 @@ class Frontend {
 		}
 
 		switch ( $font_type ) {
-			case Fonts::GOOGLE :
-				if ( ! in_array( $font, $this->google_fonts ) )
+			case Fonts::GOOGLE:
+				if ( ! in_array( $font, $this->google_fonts ) ) {
 					$this->google_fonts[] = $font;
+				}
 				break;
 
-			case Fonts::EARLYACCESS :
-				if ( ! in_array( $font, $this->google_early_access_fonts ) )
+			case Fonts::EARLYACCESS:
+				if ( ! in_array( $font, $this->google_early_access_fonts ) ) {
 					$this->google_early_access_fonts[] = $font;
+				}
 				break;
 		}
 
@@ -515,6 +519,7 @@ class Frontend {
 		$filters = [
 			'wpautop',
 			'shortcode_unautop',
+			'wptexturize',
 		];
 
 		foreach ( $filters as $filter ) {
@@ -534,9 +539,8 @@ class Frontend {
 	}
 
 	public function __construct() {
-
-		// We don't need this class in admin side, but in AJAX requests
-		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+		// We don't need this class in admin side, but in AJAX requests.
+		if ( is_admin() && ! Utils::is_ajax() ) {
 			return;
 		}
 

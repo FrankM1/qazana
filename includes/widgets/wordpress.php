@@ -39,8 +39,15 @@ class Widget_WordPress extends Widget_Base {
 	}
 
 	public function get_form() {
+		$instance = $this->get_widget_instance();
+
 		ob_start();
-		$this->get_widget_instance()->form( $this->get_settings( 'wp' ) );
+		echo '<div class="widget-inside media-widget-control"><div class="form wp-core-ui">';
+		echo '<input type="hidden" class="id_base" value="' . esc_attr( $instance->id_base ) . '" />';
+		echo '<input type="hidden" class="widget-id" value="widget-' . esc_attr( $this->get_id() ) . '" />';
+		echo '<div class="widget-content">';
+		$instance->form( $this->get_settings( 'wp' ) );
+		echo '</div></div></div>';
 		return ob_get_clean();
 	}
 
@@ -55,11 +62,21 @@ class Widget_WordPress extends Widget_Base {
 				$this->_widget_instance = $wp_widget_factory->widgets[ $this->_widget_name ];
 				$this->_widget_instance->_set( 'REPLACE_TO_ID' );
 			} elseif ( class_exists( $this->_widget_name ) ) {
-				$this->_widget_instance = new $this->_widget_name;
+				$this->_widget_instance = new $this->_widget_name();
 				$this->_widget_instance->_set( 'REPLACE_TO_ID' );
 			}
 		}
 		return $this->_widget_instance;
+	}
+
+	protected function _get_parsed_settings() {
+		$settings = parent::_get_parsed_settings();
+
+		if ( ! empty( $settings['wp'] ) ) {
+			$settings['wp'] = $this->get_widget_instance()->update( $settings['wp'], [] );
+		}
+
+		return $settings;
 	}
 
 	protected function _register_controls() {

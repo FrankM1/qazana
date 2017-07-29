@@ -88,44 +88,26 @@ class Widget_Icon_List extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_icon_style',
+			'section_icon_list',
 			[
-				'label' => __( 'Icon', 'qazana' ),
+				'label' => __( 'List', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
-			'icon_color',
+			'space_between',
 			[
-				'label' => __( 'Icon Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'default' => '',
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-icon i' => 'color: {{VALUE}};',
-				],
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_1,
-				],
-			]
-		);
-
-		$this->add_control(
-			'icon_size',
-			[
-				'label' => __( 'Icon Size', 'qazana' ),
+				'label' => __( 'Space Between', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 14,
-				],
 				'range' => [
 					'px' => [
-						'min' => 6,
+						'max' => 50,
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child)' => 'padding-bottom: calc({{SIZE}}{{UNIT}}/2)',
+					'{{WRAPPER}} .qazana-icon-list-item:not(:first-child)' => 'margin-top: calc({{SIZE}}{{UNIT}}/2)',
 				],
 			]
 		);
@@ -149,8 +131,154 @@ class Widget_Icon_List extends Widget_Base {
 						'icon' => 'fa fa-align-right',
 					],
 				],
+				'prefix_class' => 'qazana-align-',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-items' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .qazana-icon-list-item, {{WRAPPER}} .qazana-icon-list-item a' => 'justify-content: {{VALUE}};',
+				],
+				'selectors_dictionary' => [
+					'left' => 'flex-start',
+					'right' => 'flex-end',
+				],
+			]
+		);
+
+		$this->add_control(
+			'divider',
+			[
+				'label' => __( 'Divider', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Off', 'qazana' ),
+				'label_on' => __( 'On', 'qazana' ),
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'content: ""',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'divider_style',
+			[
+				'label' => __( 'Style', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'solid' => __( 'Solid', 'qazana' ),
+					'double' => __( 'Double', 'qazana' ),
+					'dotted' => __( 'Dotted', 'qazana' ),
+					'dashed' => __( 'Dashed', 'qazana' ),
+				],
+				'default' => 'solid',
+				'condition' => [
+					'divider' => 'yes',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-style: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'divider_weight',
+			[
+				'label' => __( 'Weight', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 1,
+				],
+				'range' => [
+					'px' => [
+						'min' => 1,
+						'max' => 10,
+					],
+				],
+				'condition' => [
+					'divider' => 'yes',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'divider_color',
+			[
+				'label' => __( 'Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#ddd',
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'condition' => [
+					'divider' => 'yes',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'divider_width',
+			[
+				'label' => __( 'Width', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'units' => [ '%' ],
+				'default' => [
+					'unit' => '%',
+				],
+				'condition' => [
+					'divider' => 'yes',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'width: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_icon_style',
+			[
+				'label' => __( 'Icon', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'icon_color',
+			[
+				'label' => __( 'Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-icon i' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_1,
+				],
+			]
+		);
+
+		$this->add_control(
+			'icon_size',
+			[
+				'label' => __( 'Size', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 14,
+				],
+				'range' => [
+					'px' => [
+						'min' => 6,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-icon' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon-list-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -202,7 +330,7 @@ class Widget_Icon_List extends Widget_Base {
 			[
 				'name' => 'icon_typography',
 				'label' => __( 'Typography', 'qazana' ),
-				'selector' => '{{WRAPPER}} .qazana-icon-list-text',
+				'selector' => '{{WRAPPER}} .qazana-icon-list-item',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
@@ -214,10 +342,9 @@ class Widget_Icon_List extends Widget_Base {
 		$settings = $this->get_settings();
 		?>
 		<ul class="qazana-icon-list-items">
-			<?php foreach ( $settings['icon_list'] as $item ) : ?>
+			<?php foreach ( $settings['icon_list'] as $index => $item ) : ?>
 				<li class="qazana-icon-list-item" >
 					<?php
-
 					if ( ! empty( $item['link']['url'] ) ) {
 						$link_key = 'link_' . $index;
 

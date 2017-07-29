@@ -262,7 +262,7 @@ class Widget_Accordion extends Widget_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Title Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-accordion .qazana-accordion-title' => 'color: {{VALUE}};',
@@ -304,7 +304,6 @@ class Widget_Accordion extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'label' => __( 'Title Typography', 'qazana' ),
 				'name' => 'title_typography',
 				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-accordion-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
@@ -312,21 +311,29 @@ class Widget_Accordion extends Widget_Base {
 		);
 
 		$this->add_control(
+			'heading_content',
+			[
+				'label' => __( 'Content', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
 			'content_background_color',
 			[
-				'label' => __( 'Content Background', 'qazana' ),
+				'label' => __( 'Background', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-accordion .qazana-accordion-content' => 'background-color: {{VALUE}};',
 				],
-				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'content_color',
 			[
-				'label' => __( 'Content Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-accordion .qazana-accordion-content' => 'color: {{VALUE}};',
@@ -342,7 +349,6 @@ class Widget_Accordion extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'content_typography',
-				'label' => __( 'Content Typography', 'qazana' ),
 				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-accordion-content',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
@@ -385,18 +391,18 @@ class Widget_Accordion extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings();
 		?>
-		<div class="qazana-accordion">
+		<div class="qazana-accordion" role="tablist">
 			<?php
 			$counter = 1; ?>
 			<?php foreach ( $settings['tabs'] as $item ) : ?>
 				<div class="qazana-accordion-item">
-					<div class="qazana-accordion-title" data-section="<?php echo $counter; ?>">
+					<div class="qazana-accordion-title" data-section="<?php echo $counter; ?>" role="tab">
 						<span class="qazana-accordion-icon qazana-accordion-icon-<?php echo $this->get_responsive_settings('icon_align'); ?>">
 							<?php echo $this->get_render_icon(); ?>
 						</span>
 						<?php echo $item['tab_title']; ?>
 					</div>
-					<div class="qazana-accordion-content qazana-clearfix" data-section="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
+					<div class="qazana-accordion-content qazana-clearfix" data-section="<?php echo $counter; ?>" role="tabpanel"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 				</div>
 			<?php
 				$counter++;
@@ -407,19 +413,19 @@ class Widget_Accordion extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-accordion" data-active-section="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}">
+		<div class="qazana-accordion" data-active-section="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}" role="tablist">
 			<#
 			if ( settings.tabs ) {
 				var counter = 1;
 				_.each( settings.tabs, function( item ) { #>
 					<div class="qazana-accordion-item">
-						<div class="qazana-accordion-title" data-section="{{ counter }}">
+						<div class="qazana-accordion-title" data-section="{{ counter }}" role="tab">
 							<span class="qazana-accordion-icon qazana-accordion-icon-{{ settings.icon_align }}">
 								<i class="{{ settings.icon }}"></i>
 							</span>
 							{{{ item.tab_title }}}
 						</div>
-						<div class="qazana-accordion-content qazana-clearfix" data-section="{{ counter }}">{{{ item.tab_content }}}</div>
+						<div class="qazana-accordion-content qazana-clearfix" data-section="{{ counter }}" role="tabpanel">{{{ item.tab_content }}}</div>
 					</div>
 				<#
 					counter++;

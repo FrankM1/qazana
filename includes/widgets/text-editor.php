@@ -34,6 +34,27 @@ class Widget_Text_Editor extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'drop_cap',[
+				'label' => __( 'Drop Cap', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Off', 'qazana' ),
+				'label_on' => __( 'On', 'qazana' ),
+				'prefix_class' => 'qazana-drop-cap-',
+				'frontend_available' => true,
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style',
+			[
+				'label' => __( 'Text Editor', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
 		$this->add_responsive_control(
 			'max_width',
 			[
@@ -81,38 +102,181 @@ class Widget_Text_Editor extends Widget_Base {
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_style',
+		$this->add_control(
+			'text_color',
 			[
-				'label' => __( 'Text Editor', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Text Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}}' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
 			]
 		);
-
-	    $this->add_control(
-	        'text_color',
-	        [
-	            'label' => __( 'Text Color', 'qazana' ),
-	            'type' => Controls_Manager::COLOR,
-	            'default' => '',
-	            'selectors' => [
-	                '{{WRAPPER}}' => 'color: {{VALUE}};',
-	            ],
-	            'scheme' => [
-		            'type' => Scheme_Color::get_type(),
-		            'value' => Scheme_Color::COLOR_3,
-	            ],
-	        ]
-	    );
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}}',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_drop_cap',
+			[
+				'label' => __( 'Drop Cap', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'drop_cap' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_view',
+			[
+				'label' => __( 'View', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'default' => __( 'Default', 'qazana' ),
+					'stacked' => __( 'Stacked', 'qazana' ),
+					'framed' => __( 'Framed', 'qazana' ),
+				],
+				'default' => 'default',
+				'prefix_class' => 'qazana-drop-cap-view-',
+				'condition' => [
+					'drop_cap' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_primary_color',
+			[
+				'label' => __( 'Primary Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}}.qazana-drop-cap-view-stacked .qazana-drop-cap' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-drop-cap-view-framed .qazana-drop-cap, {{WRAPPER}}.qazana-drop-cap-view-default .qazana-drop-cap' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_1,
+				],
+				'condition' => [
+					'drop_cap' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_secondary_color',
+			[
+				'label' => __( 'Secondary Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}}.qazana-drop-cap-view-framed .qazana-drop-cap' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-drop-cap-view-stacked .qazana-drop-cap' => 'color: {{VALUE}};',
+				],
+				'condition' => [
+					'drop_cap_view!' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_size',
+			[
+				'label' => __( 'Size', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 5,
+				],
+				'range' => [
+					'px' => [
+						'max' => 30,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-drop-cap' => 'padding: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'drop_cap_view!' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_space',
+			[
+				'label' => __( 'Space', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 10,
+				],
+				'range' => [
+					'px' => [
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'body:not(.rtl) {{WRAPPER}} .qazana-drop-cap' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'body.rtl {{WRAPPER}} .qazana-drop-cap' => 'margin-left: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_border_radius',
+			[
+				'label' => __( 'Border Radius', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ '%', 'px' ],
+				'default' => [
+					'unit' => '%',
+				],
+				'range' => [
+					'%' => [
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-drop-cap' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'drop_cap_border_width',[
+				'label' => __( 'Border Width', 'qazana' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'selectors' => [
+					'{{WRAPPER}} .qazana-drop-cap' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'drop_cap_view' => 'framed',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'drop_cap_typography',
+				'selector' => '{{WRAPPER}} .qazana-drop-cap-letter',
+				'exclude' => [
+					'letter_spacing',
+				],
+				'condition' => [
+					'drop_cap' => 'yes',
+				],
 			]
 		);
 

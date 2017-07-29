@@ -205,8 +205,15 @@ class Widgets_Manager {
 			wp_send_json_error( new \WP_Error( 'no_access' ) );
 		}
 
-		// Override the global $post for the render
-		$GLOBALS['post'] = get_post( (int) $_POST['post_id'] );
+		// Override the global $post for the render.
+		query_posts(
+			[
+				'p' => $_POST['post_id'],
+				'post_type' => 'any',
+			]
+		);
+
+		qazana()->db->switch_to_post( $_POST['post_id'] );
 
 		$data = json_decode( stripslashes( $_POST['data'] ), true );
 

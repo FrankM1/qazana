@@ -2424,7 +2424,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		this._initDialog();
 
 		this.listenTo( qazana.channels.editor, 'status:change', this.onEditorChanged )
-			.listenTo( qazana.channels.deviceMode, 'status:change', this.onDeviceModeChange );
+			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
 	},
 
 	_initDialog: function() {
@@ -4682,6 +4682,10 @@ ControlsCSSParser.addControlStyleRules = function( stylesheet, control, controls
 
 				if ( controlName ) {
 					parserControl = _.findWhere( controlsStack, { name: controlName } );
+
+					if ( ! parserControl ) {
+						return '';
+					}
 
 					valueToInsert = valueCallback( parserControl );
 				}
@@ -7864,7 +7868,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		'change @ui.radio': 'onBaseInputChange',
 		'input @ui.textarea': 'onBaseInputChange',
 		'change @ui.select': 'onBaseInputChange',
-		'click @ui.switcherDesktop': 'onSwitcherDesktopClick',
 		'click @ui.responsiveSwitchers': 'onSwitcherClick'
 	},
 
@@ -9507,6 +9510,8 @@ ControlWPWidgetItemView = ControlBaseItemView.extend( {
 					wp.textWidgets.handleWidgetAdded( event, this.ui.form );
 					wp.mediaWidgets.handleWidgetAdded( event, this.ui.form );
 				}
+
+				qazana.hooks.doAction( 'panel/widgets/' + this.model.get( 'widget' ) + '/controls/wp_widget/loaded', this );
 			}, this )
 		} );
 	}
@@ -10060,6 +10065,8 @@ WidgetView = BaseElementView.extend( {
 		}
 
 		var onRenderMethod = this.onRender;
+
+		this.render = _.throttle( this.render, 1000 );
 
 		this.onRender = function() {
 			_.defer( _.bind( onRenderMethod, this ) );

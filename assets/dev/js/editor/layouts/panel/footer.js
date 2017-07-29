@@ -34,7 +34,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		this._initDialog();
 
 		this.listenTo( qazana.channels.editor, 'status:change', this.onEditorChanged )
-			.listenTo( qazana.channels.deviceMode, 'status:change', this.onDeviceModeChange );
+			.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
 	},
 
 	_initDialog: function() {

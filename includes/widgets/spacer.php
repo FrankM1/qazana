@@ -32,7 +32,7 @@ class Widget_Spacer extends Widget_Base {
 		$this->add_responsive_control(
 			'space',
 			[
-				'label' => __( 'Space (PX)', 'qazana' ),
+				'label' => __( 'Space', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 50,

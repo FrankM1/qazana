@@ -94,6 +94,12 @@ class Widget_Divider extends Widget_Base {
 					'size' => 100,
 					'unit' => '%',
 				],
+				'tablet_default' => [
+					'unit' => '%',
+				],
+				'mobile_default' => [
+					'unit' => '%',
+				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-divider-separator' => 'width: {{SIZE}}{{UNIT}};',
 				],
