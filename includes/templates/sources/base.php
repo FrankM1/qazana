@@ -31,6 +31,27 @@ abstract class Source_Base {
 		} );
 	}
 
+	/**
+	 * @param array  $content a set of elements.
+	 * @param string $method  (on_export|on_import).
+	 *
+	 * @return mixed
+	 */
+	protected function process_export_import_content( $content, $method ) {
+		return qazana()->db->iterate_data(
+			$content, function( $element_data ) use ( $method ) {
+				$element = qazana()->elements_manager->create_element_instance( $element_data );
+
+				// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
+				if ( ! $element ) {
+					return null;
+				}
+
+				return $this->process_element_export_import_content( $element, $method );
+			}
+		);
+	}
+
 	public function get_supported_themes() {
 
 		$supported = apply_filters( 'qazana_templates_add_template_support', array('all') );
@@ -60,44 +81,32 @@ abstract class Source_Base {
 	}
 
 	/**
-	 * @param array $data a set of elements
-	 * @param string $method (on_export|on_import)
+	 * @param \Qazana\Controls_Stack $element
+	 * @param string                    $method
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	protected function process_export_import_data( $data, $method ) {
+	protected function process_element_export_import_content( $element, $method ) {
+		$element_data = $element->get_data();
 
-		return qazana()->db->iterate_data( $data, function( $element ) use ( $method ) {
+		if ( method_exists( $element, $method ) ) {
+			// TODO: Use the internal element data without parameters.
+			$element_data = $element->{$method}( $element_data );
+		}
 
-			if ( 'widget' === $element['elType'] ) {
-				$element_class = qazana()->widgets_manager->get_widget_types( $element['widgetType'] );
-			} else {
-				$element_class = qazana()->elements_manager->get_element_types( $element['elType'] );
+		foreach ( $element->get_controls() as $control ) {
+			$control_class = qazana()->controls_manager->get_control( $control['type'] );
+
+			// If the control isn't exist, like a plugin that creates the control but deactivated.
+			if ( ! $control_class ) {
+				return $element_data;
 			}
 
-			// If the widget/element doesn't exist, like a plugin that creates a widget but deactivated
-			if ( ! $element_class ) {
-				return $element;
+			if ( method_exists( $control_class, $method ) ) {
+				$element_data['settings'][ $control['name'] ] = $control_class->{$method}( $element->get_settings( $control['name'] ) );
 			}
+		}
 
-			if ( method_exists( $element_class, $method ) ) {
-				$element = $element_class->{$method}( $element );
-			}
-
-			foreach ( $element_class->get_controls() as $control ) {
-				$control_class = qazana()->controls_manager->get_control( $control['type'] );
-
-				// If the control doesn't exist: for instance a plugin that created the control but is deactivated
-				if ( ! $control_class ) {
-					return $element;
-				}
-
-				if ( method_exists( $control_class, $method ) && isset($element['settings'][ $control['name'] ] ) ) {
-					$element['settings'][ $control['name'] ] = $control_class->{$method}( $element['settings'][ $control['name'] ] );
-				}
-			}
-
-			return $element;
-		} );
+		return $element_data;
 	}
 }

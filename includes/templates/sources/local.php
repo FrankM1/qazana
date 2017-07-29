@@ -19,6 +19,10 @@ class Source_Local extends Source_Base {
 
 	const TYPE_META_KEY = '_qazana_template_type';
 
+	const TEMP_FILES_DIR = 'qazana/tmp';
+
+	const BULK_EXPORT_ACTION = 'qazana_export_multiple_templates';
+
 	private static $_template_types = [ 'page', 'section' ];
 
 	public static function get_template_type( $template_id ) {
@@ -160,7 +164,7 @@ class Source_Local extends Source_Base {
 	}
 
 	public function save_item( $template_data ) {
-	    if ( ! in_array( $template_data['type'], self::$_template_types ) ) {
+		if ( ! in_array( $template_data['type'], self::$_template_types ) ) {
 			return new \WP_Error( 'save_error', 'Invalid template type `' . $template_data['type'] . '`' );
 		}
 
@@ -218,6 +222,7 @@ class Source_Local extends Source_Base {
 			'thumbnail' => get_the_post_thumbnail_url( $post ),
 			'date' => mysql2date( get_option( 'date_format' ), $post->post_date ),
 			'author' => $user->display_name,
+			'hasPageSettings' => ! empty( $page_settings ),
 			'categories' => [],
 			'tags' => [],
 			'keywords' => [],
@@ -233,7 +238,7 @@ class Source_Local extends Source_Base {
 
 		$template_id = $args['template_id'];
 
-		// TODO: Validate the data (in JS too!)
+		// TODO: Validate the data (in JS too!).
 		if ( 'display' === $context ) {
 			$content = $db->get_builder( $template_id );
 		} else {
@@ -257,105 +262,152 @@ class Source_Local extends Source_Base {
 	}
 
 	public function export_template( $template_id ) {
-		$template_type = self::get_template_type( $template_id );
+		$file_data = $this->prepare_template_export( $template_id );
 
-		$template_data = $this->get_data( [
-			'template_id' => $template_id,
-			//'page_settings' => 'page' === $template_type,
-		], 'raw' );
-
-		if ( empty( $template_data['content'] ) )
-			return new \WP_Error( '404', 'The template does not exist' );
-
-		// TODO: since 1.5.0 to content container named `content` instead of `data`
-		$template_data['data'] = $this->process_export_import_data( $template_data['content'], 'on_export' );
-
-		if ( 'page' === $template_type ) {
-			$page = PageSettingsManager::get_page( $template_id );
-			$page_settings_data = $this->process_element_export_import_content( $page, 'on_export' );
-			if ( ! empty( $page_settings_data['settings'] ) ) {
-				$template_data['page_settings'] = $page_settings_data['settings'];
-			}
+		if ( is_wp_error( $file_data ) ) {
+			return $file_data;
 		}
 
-		// TODO: More fields to export?
-		$export_data = [
-			'version' => qazana_get_db_version(),
-			'title' => get_the_title( $template_id ),
-			'type' => self::get_template_type( $template_id ),
-		];
+		$this->send_file_headers( $file_data['name'], strlen( $file_data['content'] ) );
 
-		$export_data += $template_data;
-
-		$filename = 'qazana-' . $template_id . '-' . date( 'Y-m-d' ) . '.json';
-		$template_contents = wp_json_encode( $export_data );
-		$filesize = strlen( $template_contents );
-
-		// Headers to prompt "Save As"
-		header( 'Content-Type: application/octet-stream' );
-		header( 'Content-Disposition: attachment; filename=' . $filename );
-		header( 'Expires: 0' );
-		header( 'Cache-Control: must-revalidate' );
-		header( 'Pragma: public' );
-		header( 'Content-Length: ' . $filesize );
-
-		// Clear buffering just in case
+		// Clear buffering just in case.
 		@ob_end_clean();
 
 		flush();
 
-		// Output file contents
-		echo $template_contents;
+		// Output file contents.
+		echo $file_data['content'];
+
+		die;
+	}
+
+	public function export_multiple_templates( array $template_ids ) {
+		$files = [];
+
+		$wp_upload_dir = wp_upload_dir();
+
+		$temp_path = $wp_upload_dir['basedir'] . '/' . self::TEMP_FILES_DIR;
+
+		/*
+		 * Create temp path if it doesn't exist
+		 */
+		wp_mkdir_p( $temp_path );
+
+		/*
+		 * Create all json files
+		 */
+		foreach ( $template_ids as $template_id ) {
+			$file_data = $this->prepare_template_export( $template_id );
+
+			if ( is_wp_error( $file_data ) ) {
+				continue;
+			}
+
+			$complete_path = $temp_path . '/' . $file_data['name'];
+
+			$put_contents = file_put_contents( $complete_path, $file_data['content'] );
+
+			if ( ! $put_contents ) {
+				return new \WP_Error( '404', 'Cannot create file ' . $file_data['name'] );
+			}
+
+			$files[] = [
+				'path' => $complete_path,
+				'name' => $file_data['name'],
+			];
+		}
+
+		/*
+		 * Create temporary .zip file
+		 */
+		$zip_archive_filename = 'qazana-templates-' . date( 'Y-m-d' ) . '.zip';
+
+		$zip_archive = new \ZipArchive();
+
+		$zip_complete_path = $temp_path . '/' . $zip_archive_filename;
+
+		$zip_archive->open( $zip_complete_path, \ZipArchive::CREATE );
+
+		foreach ( $files as $file ) {
+			$zip_archive->addFile( $file['path'], $file['name'] );
+		}
+
+		$zip_archive->close();
+
+		foreach ( $files as $file ) {
+			unlink( $file['path'] );
+		}
+
+		$this->send_file_headers( $zip_archive_filename, filesize( $zip_complete_path ) );
+
+		@ob_end_flush();
+
+		@readfile( $zip_complete_path );
+
+		unlink( $zip_complete_path );
 
 		die;
 	}
 
 	public function import_template() {
+
+		global $wp_filesystem;
+
+        if ( empty( $wp_filesystem ) ) {
+            require_once( ABSPATH . '/wp-admin/includes/file.php' );
+            WP_Filesystem();
+        }
+
 		$import_file = $_FILES['file']['tmp_name'];
 
-		if ( empty( $import_file ) )
+		if ( empty( $import_file ) ) {
 			return new \WP_Error( 'file_error', 'Please upload a file to import' );
-
-		$data = json_decode( file_get_contents( $import_file ), true );
-
-		if ( ! empty( $data ) ) {
-			// TODO: since 1.5.0 to content container named `content` instead of `data`
-			if ( ! empty( $data['data'] ) ) {
-				$content = $data['data'];
-			} else {
-				$content = $data['content'];
-			}
 		}
 
-		$is_invalid_file = empty( $content ) || ! is_array( $content );
-		if ( $is_invalid_file )
-			return new \WP_Error( 'file_error', 'Invalid File' );
+		$items = [];
 
-		$content = $this->process_export_import_data( $content, 'on_import' );
+		$zip = new \ZipArchive();
 
-		$page_settings = [];
-		if ( ! empty( $data['page_settings'] ) ) {
-			$page = new Page( [
-				'settings' => $data['page_settings'],
-			] );
+		/*
+		 * Check if file is a json or a .zip archive
+		 */
+		if ( true === $zip->open( $import_file ) ) {
+			$wp_upload_dir = wp_upload_dir();
 
-			$page_settings_data = $this->process_element_export_import_content( $page, 'on_import' );
-			if ( ! empty( $page_settings_data['settings'] ) ) {
-				$page_settings = $page_settings_data['settings'];
+			$temp_path = $wp_upload_dir['basedir'] . '/' . self::TEMP_FILES_DIR . '/' . uniqid();
+
+			$zip->extractTo( $temp_path );
+
+			$zip->close();
+
+			$files = $wp_filesystem->dirlist( $temp_path, false, true );
+
+			$found_files = array();
+
+			if ( is_array( $files ) ) :
+
+                foreach ( $files as $file => $data) :
+                    $file_name = $data['name'];
+                    if ( stristr( $file_name, '.json' ) !== false  ) :
+                        $found_files[] = $file_name;
+                    endif;
+
+                endforeach;
+
+            endif;
+
+			foreach ( $found_files as $file_name ) {
+				$full_file_name = $temp_path . '/' . $file_name;
+				$items[] = $this->import_single_template( $full_file_name );
 			}
+
+			///$wp_filesystem->delete( $temp_path, true );
+
+		} else {
+			$items[] = $this->import_single_template( $import_file );
 		}
 
-		$template_id = $this->save_item( [
-			'content' => $content,
-			'title' => $data['title'],
-			'type' => $data['type'],
-			'page_settings' => $page_settings,
-		] );
-
-		if ( is_wp_error( $template_id ) )
-			return $template_id;
-
-		return $this->get_item( $template_id );
+		return $items;
 	}
 
 	public function post_row_actions( $actions, \WP_Post $post ) {
@@ -376,13 +428,13 @@ class Source_Local extends Source_Base {
 		}
 		?>
 		<div id="qazana-hidden-area">
-			<a id="qazana-import-template-trigger" class="page-title-action"><?php _e( 'Import Template', 'qazana' ); ?></a>
+			<a id="qazana-import-template-trigger" class="page-title-action"><?php _e( 'Import Templates', 'qazana' ); ?></a>
 			<div id="qazana-import-template-area">
-				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file, and add it to the list of templates available in your library.', 'qazana' ); ?></div>
+				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
 				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="qazana_import_template">
 					<fieldset id="qazana-import-template-form-inputs">
-						<input type="file" name="file" accept="application/json" required>
+						<input type="file" name="file" accept=".json, .zip" required>
 						<input type="submit" class="button" value="<?php _e( 'Import Now', 'qazana' ); ?>">
 					</fieldset>
 				</form>
@@ -450,6 +502,124 @@ class Source_Local extends Source_Base {
 		$query->query_vars['meta_value'] = self::$_template_types;
 	}
 
+	public function admin_add_bulk_export_action( $actions ) {
+		$actions[ self::BULK_EXPORT_ACTION ] = __( 'Export', 'qazana' );
+
+		return $actions;
+	}
+
+	public function admin_export_multiple_templates( $redirect_to, $action, $post_ids ) {
+		if ( self::BULK_EXPORT_ACTION === $action ) {
+			$this->export_multiple_templates( $post_ids );
+		}
+
+		return $redirect_to;
+	}
+
+	private function import_single_template( $file_name ) {
+
+		global $wp_filesystem;
+
+        if ( empty( $wp_filesystem ) ) {
+            require_once( ABSPATH . '/wp-admin/includes/file.php' );
+            WP_Filesystem();
+        }
+
+		$data = json_decode( $wp_filesystem->get_contents( $file_name ), true );
+
+		if ( empty( $data ) ) {
+			return new \WP_Error( 'file_error', 'Invalid File' );
+		}
+
+		// TODO: since 1.5.0 to content container named `content` instead of `data`.
+		if ( ! empty( $data['data'] ) ) {
+			$content = $data['data'];
+		} else {
+			$content = $data['content'];
+		}
+
+		if ( ! is_array( $content ) ) {
+			return new \WP_Error( 'file_error', 'Invalid File' );
+		}
+
+		$content = $this->process_export_import_content( $content, 'on_import' );
+
+		$page_settings = [];
+
+		if ( ! empty( $data['page_settings'] ) ) {
+			$page = new Model( [
+				'id' => 0,
+				'settings' => $data['page_settings'],
+			] );
+
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_import' );
+
+			if ( ! empty( $page_settings_data['settings'] ) ) {
+				$page_settings = $page_settings_data['settings'];
+			}
+		}
+
+		$template_id = $this->save_item( [
+			'content' => $content,
+			'title' => $data['title'],
+			'type' => $data['type'],
+			'page_settings' => $page_settings,
+		] );
+
+		if ( is_wp_error( $template_id ) ) {
+			return $template_id;
+		}
+
+		return $this->get_item( $template_id );
+	}
+
+	private function prepare_template_export( $template_id ) {
+		$template_data = $this->get_data( [
+			'template_id' => $template_id,
+		], 'raw' );
+
+		if ( empty( $template_data['content'] ) ) {
+			return new \WP_Error( '404', 'The template does not exist' );
+		}
+
+		// TODO: since 1.5.0 to content container named `content` instead of `data`.
+		$template_data['data'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+
+		$template_type = self::get_template_type( $template_id );
+
+		if ( 'page' === $template_type ) {
+			$page = PageSettingsManager::get_page( $template_id );
+
+			$page_settings_data = $this->process_element_export_import_content( $page, 'on_export' );
+
+			if ( ! empty( $page_settings_data['settings'] ) ) {
+				$template_data['page_settings'] = $page_settings_data['settings'];
+			}
+		}
+
+		$export_data = [
+			'version' => qazana_db_version(),
+			'title' => get_the_title( $template_id ),
+			'type' => self::get_template_type( $template_id ),
+		];
+
+		$export_data += $template_data;
+
+		return [
+			'name' => 'qazana-' . $template_id . '-' . date( 'Y-m-d' ) . '.json',
+			'content' => wp_json_encode( $export_data ),
+		];
+	}
+
+	private function send_file_headers( $file_name, $file_size ) {
+		header( 'Content-Type: application/octet-stream' );
+		header( 'Content-Disposition: attachment; filename=' . $file_name );
+		header( 'Expires: 0' );
+		header( 'Cache-Control: must-revalidate' );
+		header( 'Pragma: public' );
+		header( 'Content-Length: ' . $file_size );
+	}
+
 	private function _add_actions() {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', [ $this, 'register_admin_menu' ], 50 );
@@ -457,6 +627,11 @@ class Source_Local extends Source_Base {
 			add_action( 'admin_footer', [ $this, 'admin_import_template_form' ] );
 			add_action( 'save_post', [ $this, 'on_save_post' ], 10, 2 );
 			add_action( 'parse_query', [ $this, 'admin_query_filter_types' ] );
+
+			// template library bulk actions.
+			add_filter( 'bulk_actions-edit-qazana_library', [ $this, 'admin_add_bulk_export_action' ] );
+			add_filter( 'handle_bulk_actions-edit-qazana_library', [ $this, 'admin_export_multiple_templates' ], 10, 3 );
+
 		}
 
 		add_action( 'template_redirect', [ $this, 'block_template_frontend' ] );
@@ -464,7 +639,6 @@ class Source_Local extends Source_Base {
 
 	public function __construct() {
 		parent::__construct();
-
 		$this->_add_actions();
 	}
 }
