@@ -37,7 +37,7 @@ abstract class Source_Base {
 	 *
 	 * @return mixed
 	 */
-	protected function process_export_import_content( $content, $method ) {
+	public function process_export_import_content( $content, $method ) {
 		return qazana()->db->iterate_data(
 			$content, function( $element_data ) use ( $method ) {
 				$element = qazana()->elements_manager->create_element_instance( $element_data );
@@ -86,7 +86,7 @@ abstract class Source_Base {
 	 *
 	 * @return array
 	 */
-	protected function process_element_export_import_content( $element, $method ) {
+	public function process_element_export_import_content( $element, $method ) {
 		$element_data = $element->get_data();
 
 		if ( method_exists( $element, $method ) ) {

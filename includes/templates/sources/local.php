@@ -246,7 +246,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$data = [
-			'content' => $this->replace_elements_ids( $content ),
+			'data' => $this->replace_elements_ids( $content ),
 		];
 
 		if ( ! empty( $args['page_settings'] ) ) {
@@ -268,7 +268,7 @@ class Source_Local extends Source_Base {
 			return $file_data;
 		}
 
-		$this->send_file_headers( $file_data['name'], strlen( $file_data['content'] ) );
+		$this->send_file_headers( $file_data['name'], strlen( $file_data['data'] ) );
 
 		// Clear buffering just in case.
 		@ob_end_clean();
@@ -276,7 +276,7 @@ class Source_Local extends Source_Base {
 		flush();
 
 		// Output file contents.
-		echo $file_data['content'];
+		echo $file_data['data'];
 
 		die;
 	}
@@ -313,7 +313,7 @@ class Source_Local extends Source_Base {
 
 			$complete_path = $temp_path . '/' . $file_data['name'];
 
-			$put_contents = file_put_contents( $complete_path, $file_data['content'] );
+			$put_contents = file_put_contents( $complete_path, $file_data['data'] );
 
 			if ( ! $put_contents ) {
 				return new \WP_Error( '404', 'Cannot create file ' . $file_data['name'] );
@@ -562,7 +562,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$template_id = $this->save_item( [
-			'content' => $content,
+			'data' => $content,
 			'title' => $data['title'],
 			'type' => $data['type'],
 			'page_settings' => $page_settings,
@@ -580,12 +580,12 @@ class Source_Local extends Source_Base {
 			'template_id' => $template_id,
 		], 'raw' );
 
-		if ( empty( $template_data['content'] ) ) {
+		if ( empty( $template_data['data'] ) ) {
 			return new \WP_Error( '404', 'The template does not exist' );
 		}
 
 		// TODO: since 1.5.0 to content container named `content` instead of `data`.
-		$template_data['data'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+		$template_data['data'] = $this->process_export_import_content( $template_data['data'], 'on_export' );
 
 		$template_type = self::get_template_type( $template_id );
 
@@ -609,7 +609,7 @@ class Source_Local extends Source_Base {
 
 		return [
 			'name' => 'qazana-' . $template_id . '-' . date( 'Y-m-d' ) . '.json',
-			'content' => wp_json_encode( $export_data ),
+			'data' => wp_json_encode( $export_data ),
 		];
 	}
 
