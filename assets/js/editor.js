@@ -978,17 +978,17 @@ TemplateLibraryManager = function() {
 			data: {
 				page_settings: options.withPageSettings
 			},
-			success: function( data ) {
+			success: function( response ) {
 				self.closeModal();
 
-				qazana.sections.currentView.addChildModel( data.content, startIntent.importOptions || {} );
+				qazana.sections.currentView.addChildModel( response.data, startIntent.importOptions || {} );
 
 				if ( options.withPageSettings ) {
-					qazana.pageSettings.model.set( data.page_settings );
+					qazana.pageSettings.model.set( response.page_settings );
 				}
 			},
-			error: function( data ) {
-				self.showErrorDialog( data );
+			error: function( response ) {
+				self.showErrorDialog( response );
 			}
 		} );
 	};
