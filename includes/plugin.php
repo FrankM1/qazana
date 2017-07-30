@@ -355,7 +355,7 @@ class Plugin {
         require_once( $this->includes_dir . 'extensions/extensions-base.php');
 
         //vendor classes
-        require_once( $this->includes_dir . 'vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php' );
+        require_once( $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php' );
 
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';

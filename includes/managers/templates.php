@@ -309,7 +309,10 @@ class Template_Manager {
 		foreach ( $allowed_ajax_requests as $ajax_request ) {
 			add_action( 'wp_ajax_qazana_' . $ajax_request, function() use ( $ajax_request ) {
 				$this->handle_ajax_request( $ajax_request );
-				qazana_write_log( $ajax_request );
+				//qazana_write_log( $ajax_request );
+				if ( has_action( 'wp_ajax_qazana_save_template', array( $this, 'save_template' ) )  ) {
+					qazana_write_log('has_action');
+				}
 			} );
 		}
 	}
