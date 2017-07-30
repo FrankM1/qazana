@@ -540,18 +540,11 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'file_error', 'Invalid File' );
 		}
 
-		// TODO: since 1.5.0 to content container named `content` instead of `data`.
-		if ( ! empty( $data['data'] ) ) {
-			$content = $data['data'];
-		} else {
-			$content = $data['content'];
-		}
-
-		if ( ! is_array( $content ) ) {
+		if ( ! is_array( $data['data'] ) ) {
 			return new \WP_Error( 'file_error', 'Invalid File' );
 		}
 
-		$content = $this->process_export_import_content( $content, 'on_import' );
+		$content = $this->process_export_import_content( $data['data'], 'on_import' );
 
 		$page_settings = [];
 

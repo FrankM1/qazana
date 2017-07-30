@@ -77,20 +77,8 @@ class Source_Theme extends Source_Base {
             return false;
         }
 
-        $data = $data['data'];
-
-        // TODO: since 1.5.0 to content container named `content` instead of `data`
-		if ( ! empty( $data['data'] ) ) {
-			$data['content'] = $data['data'];
-			unset( $data['data'] );
-		}
-
-        if ( ! $data ) {
-			return false;
-		}
-
-        $data['content'] = $this->replace_elements_ids( $data['content'] );
-        $data['content'] = $this->process_export_import_data( $data['content'], 'on_import' );
+        $data['data'] = $this->replace_elements_ids( $data['data'] );
+        $data['data'] = $this->process_export_import_content( $data['data'], 'on_import' );
 
         if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
 			$page = new Page( [
