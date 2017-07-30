@@ -3,6 +3,8 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use Qazana\PageSettings\Manager as PageSettingsManager;
+
 class Template_Manager {
 
 	/**
@@ -80,7 +82,7 @@ class Template_Manager {
 	}
 
 	public function save_template( array $args ) {
-		$validate_args = $this->ensure_args( [ 'post_id', 'source', 'content', 'type' ], $args );
+		$validate_args = $this->ensure_args( [ 'post_id', 'source', 'data', 'type' ], $args );
 
 		if ( is_wp_error( $validate_args ) ) {
 			return $validate_args;
@@ -92,11 +94,10 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		$args['content'] = json_decode( stripslashes( $args['content'] ), true );
+		$args['data'] = json_decode( stripslashes( $args['data'] ), true );
 
 		if ( 'page' === $args['type'] ) {
-			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $args['post_id'] );
-
+			$page = PageSettingsManager::get_page( $args['post_id'] );
 			$args['page_settings'] = $page->get_data( 'settings' );
 		}
 
@@ -110,14 +111,7 @@ class Template_Manager {
 	}
 
 	public function update_template( array $template_data ) {
-		// TODO: Temp patch since 1.5.0.
-		if ( isset( $template_data['data'] ) ) {
-			$template_data['content'] = $template_data['data'];
-
-			unset( $template_data['data'] );
-		}
-		// END Patch.
-		$validate_args = $this->ensure_args( [ 'source', 'content', 'type' ], $template_data );
+		$validate_args = $this->ensure_args( [ 'source', 'data', 'type' ], $template_data );
 
 		if ( is_wp_error( $validate_args ) ) {
 			return $validate_args;
@@ -129,7 +123,7 @@ class Template_Manager {
 			return new \WP_Error( 'template_error', 'Template source not found.' );
 		}
 
-		$template_data['content'] = json_decode( stripslashes( $template_data['content'] ), true );
+		$template_data['data'] = json_decode( stripslashes( $template_data['data'] ), true );
 
 		$update = $source->update_item( $template_data );
 
@@ -309,10 +303,6 @@ class Template_Manager {
 		foreach ( $allowed_ajax_requests as $ajax_request ) {
 			add_action( 'wp_ajax_qazana_' . $ajax_request, function() use ( $ajax_request ) {
 				$this->handle_ajax_request( $ajax_request );
-				//qazana_write_log( $ajax_request );
-				if ( has_action( 'wp_ajax_qazana_save_template', array( $this, 'save_template' ) )  ) {
-					qazana_write_log('has_action');
-				}
 			} );
 		}
 	}

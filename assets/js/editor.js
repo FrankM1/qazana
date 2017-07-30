@@ -1005,7 +1005,7 @@ TemplateLibraryManager = function() {
 			data = templateType.prepareSavedData( data );
 		}
 
-		data.content = JSON.stringify( data.content );
+		data.data = JSON.stringify( data.data );
 
 		var ajaxParams = { data: data };
 

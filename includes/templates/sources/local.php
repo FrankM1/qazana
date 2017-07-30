@@ -164,7 +164,7 @@ class Source_Local extends Source_Base {
 	}
 
 	public function save_item( $template_data ) {
-		if ( ! in_array( $template_data['type'], self::$_template_types ) ) {
+	    if ( ! in_array( $template_data['type'], self::$_template_types ) ) {
 			return new \WP_Error( 'save_error', 'Invalid template type `' . $template_data['type'] . '`' );
 		}
 
@@ -180,7 +180,7 @@ class Source_Local extends Source_Base {
 
 		qazana()->db->set_is_builder_page( $template_id );
 
-		qazana()->db->save_editor( $template_id, $template_data['content'] );
+		qazana()->db->save_editor( $template_id, $template_data['data'] );
 
 		$this->save_item_type( $template_id, $template_data['type'] );
 
@@ -195,7 +195,7 @@ class Source_Local extends Source_Base {
 	}
 
 	public function update_item( $new_data ) {
-		qazana()->db->save_editor( $new_data['id'], $new_data['content'] );
+		qazana()->db->save_editor( $new_data['id'], $new_data['data'] );
 
 		do_action( 'qazana/template-library/after_update_template', $new_data['id'], $new_data );
 
@@ -207,8 +207,8 @@ class Source_Local extends Source_Base {
 	 *
 	 * @return array
 	 */
-	public function get_item( $template_id ) {
-		$post = get_post( $template_id );
+	public function get_item( $item_id ) {
+		$post = get_post( $item_id );
 
 		$user = get_user_by( 'id', $post->post_author );
 
@@ -226,7 +226,7 @@ class Source_Local extends Source_Base {
 			'categories' => [],
 			'tags' => [],
 			'keywords' => [],
-			'export_link' => $this->_get_export_link( $template_id ),
+			'export_link' => $this->_get_export_link( $item_id ),
 			'url' => get_permalink( $post->ID ),
 		];
 
@@ -257,8 +257,8 @@ class Source_Local extends Source_Base {
 		return $data;
 	}
 
-	public function delete_template( $template_id ) {
-		wp_delete_post( $template_id, true );
+	public function delete_template( $item_id ) {
+		wp_delete_post( $item_id, true );
 	}
 
 	public function export_template( $template_id ) {
@@ -463,12 +463,12 @@ class Source_Local extends Source_Base {
 		return apply_filters( 'qazana/template_library/is_template_supports_export', true, $template_id );
 	}
 
-	private function _get_export_link( $template_id ) {
+	private function _get_export_link( $item_id ) {
 		return add_query_arg(
 			[
 				'action' => 'qazana_export_template',
 				'source' => $this->get_id(),
-				'template_id' => $template_id,
+				'template_id' => $item_id,
 			],
 			admin_url( 'admin-ajax.php' )
 		);
