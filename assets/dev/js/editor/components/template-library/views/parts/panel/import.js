@@ -6,31 +6,46 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 	id: 'qazana-template-library-import',
 
 	ui: {
-		uploadForm: '#qazana-template-library-import-form'
+		uploadForm: '#qazana-template-library-import-form',
+		input: '#qazana-template-library-import-file',
+		submitButton: '#qazana-template-library-import-submit'
 	},
 
 	events: {
-		'submit @ui.uploadForm': 'onFormSubmit'
+		'submit @ui.uploadForm': 'onFormSubmit',
+		'change @ui.input': 'onInputChanged'
+	},
+
+	onInputChanged: function( event ) {
+	    this.file = event.target.files;
 	},
 
 	onFormSubmit: function( event ) {
-		event.preventDefault();
+		var self = this;
 
+		event.preventDefault();
+		var	uploadForm = new FormData();
 		qazana.templates.getLayout().showLoadingView();
 
+		jQuery(self.ui.submitButton).addClass( 'qazana-button-state' );
+
+		uploadForm.append( 'file', self.file[0] );
+
 		qazana.ajax.send( 'import_template', {
-			data: new FormData( this.ui.uploadForm[ 0 ] ),
+			data: uploadForm,
 			processData: false,
 			contentType: false,
-			success: function( data ) {
-				qazana.templates.getTemplatesCollection().add( data.item );
-
+			cache: false,
+			success: function( response ) {
+				qazana.templates.getTemplatesCollection().add( response );
+				qazana.templates.setTemplatesSource( 'local', true );
 				qazana.templates.showTemplates();
 			},
-			error: function( data ) {
-				qazana.templates.showErrorDialog( data );
+			error: function( response ) {
+				qazana.templates.showErrorDialog( response );
 			}
 		} );
+
 	}
 } );
 

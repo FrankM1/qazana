@@ -9,6 +9,7 @@ TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
 	regions: {
 		logoArea: '#qazana-template-library-header-logo-area',
 		tools: '#qazana-template-library-header-tools',
+		import: '#qazana-template-library-header-import',
 		menuArea: '#qazana-template-library-header-menu-area',
 		searchArea: '#qazana-template-library-header-search-area'
 	},

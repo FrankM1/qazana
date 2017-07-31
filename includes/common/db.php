@@ -313,7 +313,7 @@ class DB {
 
 			return $callback( $data_container );
 		}
-		
+
 		if ( is_array( $data_container ) ) {
 		foreach ( $data_container as $element_key => $element_value ) {
 			$element_data = $this->iterate_data( $data_container[ $element_key ], $callback );
@@ -340,7 +340,9 @@ class DB {
 				// The qazana JSON needs slashes before saving
 				if ( '_qazana_data' === $meta_key ) {
 					$value = wp_slash( $value );
-				}
+				} else {
+ 					$value = maybe_unserialize( $value );
+  				}
 
 				// Don't use `update_post_meta` that can't handle `revision` post type
 				update_metadata( 'post', $to_post_id, $meta_key, $value );

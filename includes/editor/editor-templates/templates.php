@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			<i class="eicon-close" title="<?php _e( 'Close', 'qazana' ); ?>"></i>
 		</div>
 		<div id="qazana-template-library-header-tools"></div>
+		<div id="qazana-template-library-header-import"></div>
 	</div>
 </script>
 
@@ -21,6 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 <script type="text/template" id="tmpl-qazana-template-library-header-save">
 	<i class="eicon-save" title="<?php _e( 'Save Template', 'qazana' ); ?>"></i>
+</script>
+
+<script type="text/template" id="tmpl-qazana-template-library-header-import">
+	<i class="fa fa-upload" title="<?php _e( 'Import Template', 'qazana' ); ?>"></i>
 </script>
 
 <script type="text/template" id="tmpl-qazana-template-library-header-menu">
@@ -130,7 +135,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <div class="qazana-template-library-blank-title">{{{ title }}}</div>
     <div class="qazana-template-library-blank-excerpt">{{{ description }}}</div>
     <form id="qazana-template-library-save-template-form">
-	<input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>">
+		<input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>">
         <input id="qazana-template-library-save-template-name" name="title" placeholder="<?php _e( 'Enter Template Name', 'qazana' ); ?>" required>
         <button id="qazana-template-library-save-template-submit" class="qazana-button qazana-button-success">
             <span class="qazana-state-icon">
@@ -142,9 +147,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 </script>
 
 <script type="text/template" id="tmpl-qazana-template-library-import">
+	<div class="qazana-template-library-import-title"><?php echo __( 'Import Templates', 'qazana' ); ?></div>
+	<div class="qazana-template-library-import-excerpt"><?php _e( 'Choose a Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
     <form id="qazana-template-library-import-form">
-        <input type="file" name="file" />
-        <input type="submit">
+        <input id="qazana-template-library-import-file" type="file" name="file" />
+		<button id="qazana-template-library-import-submit" class="qazana-button qazana-button-success">
+            <span class="qazana-state-icon">
+                <i class="fa fa-spin fa-circle-o-notch "></i>
+            </span>
+            <?php _e( 'Import', 'qazana' ); ?>
+        </button>
     </form>
 </script>
 

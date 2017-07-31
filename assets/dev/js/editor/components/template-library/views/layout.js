@@ -1,5 +1,6 @@
 var TemplateLibraryHeaderLogoView = require( 'qazana-templates/views/parts/header/logo' ),
 	TemplateLibraryHeaderSaveView = require( 'qazana-templates/views/parts/header/save' ),
+	TemplateLibraryHeaderImportView = require( 'qazana-templates/views/parts/header/import' ),
 	TemplateLibraryHeaderMenuView = require( 'qazana-templates/views/parts/header/menu' ),
 	TemplateLibraryHeaderPreviewView = require( 'qazana-templates/views/parts/header/preview' ),
 	TemplateLibraryHeaderSearchView = require( 'qazana-templates/views/parts/header/search' ),
@@ -41,6 +42,7 @@ TemplateLibraryLayoutView = Marionette.LayoutView.extend( {
 		var headerView = this.getHeaderView();
 
 		headerView.tools.show( new TemplateLibraryHeaderSaveView() );
+		headerView.import.show( new TemplateLibraryHeaderImportView() );
 		headerView.menuArea.show( new TemplateLibraryHeaderMenuView() );
 		headerView.logoArea.show( new TemplateLibraryHeaderLogoView() );
 		headerView.searchArea.show( new TemplateLibraryHeaderSearchView() );
@@ -48,6 +50,14 @@ TemplateLibraryLayoutView = Marionette.LayoutView.extend( {
 
 	showImportView: function() {
 		this.modalContent.show( new TemplateLibraryImportView() );
+
+		var headerView = this.getHeaderView();
+
+		headerView.tools.reset();
+		headerView.import.reset();
+		headerView.menuArea.reset();
+		headerView.searchArea.reset();
+		headerView.logoArea.show( new TemplateLibraryHeaderLogoView() );
 	},
 
 	showSaveTemplateView: function( elementModel ) {
@@ -56,6 +66,7 @@ TemplateLibraryLayoutView = Marionette.LayoutView.extend( {
 		var headerView = this.getHeaderView();
 
 		headerView.tools.reset();
+		headerView.import.reset();
 		headerView.menuArea.reset();
 		headerView.searchArea.reset();
 		headerView.logoArea.show( new TemplateLibraryHeaderLogoView() );

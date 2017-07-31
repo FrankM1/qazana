@@ -2601,7 +2601,7 @@ body.qazana-editor-preview #qazana-mode-switcher {
   position: relative;
   z-index: 1;
   padding: 0;
-  background-color: #fff;
+  background-color: #ffffff;
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); }
 #qazana-template-library-modal .dialog-buttons-wrapper {
@@ -2614,8 +2614,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
 #qazana-template-library-modal a, #qazana-template-library-modal a:hover {
   color: inherit; }
 #qazana-template-library-modal a.qazana-template-library-blank-footer-link {
-  -webkit-transition: color 0.5s;
-  transition: color 0.5s; }
+  -webkit-transition: color .5s;
+  transition: color .5s; }
   #qazana-template-library-modal a.qazana-template-library-blank-footer-link:hover {
     color: #0085ba; }
 #qazana-template-library-modal .qazana-button-success, #qazana-template-library-modal .qazana-panel #qazana-panel-header-save .qazana-button.qazana-save-active .qazana-button, .qazana-panel #qazana-panel-header-save .qazana-button.qazana-save-active #qazana-template-library-modal .qazana-button, #qazana-template-library-modal .qazana-panel #qazana-panel-footer-save.qazana-save-active .qazana-button, .qazana-panel #qazana-panel-footer-save.qazana-save-active #qazana-template-library-modal .qazana-button {
@@ -2662,9 +2662,9 @@ body.qazana-editor-preview #qazana-mode-switcher {
   cursor: pointer; }
   .qazana-template-library-menu-item.qazana-active {
     border-bottom: 3px solid #0085ba;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#fff));
-    background-image: -webkit-linear-gradient(top, #f3f3f3, #fff);
-    background-image: linear-gradient(to bottom, #f3f3f3, #fff); }
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    background-image: -webkit-linear-gradient(top, #f3f3f3, #ffffff);
+    background-image: linear-gradient(to bottom, #f3f3f3, #ffffff); }
 
 #qazana-template-library-header-menu-area {
   width: 75%; }
@@ -2672,7 +2672,7 @@ body.qazana-editor-preview #qazana-mode-switcher {
     float: left; }
 
 #qazana-template-library-header-items-area {
-  width: 13%; }
+  width: 18%; }
   #qazana-template-library-header-items-area > * {
     float: left; }
 
@@ -2686,8 +2686,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
           box-sizing: content-box;
   height: 50px;
   cursor: pointer;
-  -webkit-transition: color 0.5s;
-  transition: color 0.5s; }
+  -webkit-transition: color .5s;
+  transition: color .5s; }
   .qazana-template-library-header-item:not(:hover) {
     color: #a0a5aa; }
   .qazana-template-library-header-item > * {
@@ -2700,7 +2700,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
     font-size: 18px; }
 
 #qazana-template-library-header-close-modal,
-#qazana-template-library-header-save {
+#qazana-template-library-header-save,
+#qazana-template-library-header-import {
   width: 56px; }
 
 #qazana-template-library-header-preview > * {
@@ -2718,8 +2719,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
   padding: 16.5px 0 15px 16.5px;
   border-left: 1px solid #EBEBEB;
   cursor: pointer;
-  -webkit-transition: color 0.5s;
-  transition: color 0.5s; }
+  -webkit-transition: color .5s;
+  transition: color .5s; }
   #qazana-template-library-header-preview-back:not(:hover) {
     color: #a0a5aa; }
   #qazana-template-library-header-preview-back i {
@@ -2735,11 +2736,11 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 #qazana-template-library-templates-container {
   overflow: hidden; }
-  #qazana-template-library-templates-container[data-template-source="local"] {
+  #qazana-template-library-templates-container[data-template-source='local'] {
     margin: 15px;
     -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
             box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); }
-  #qazana-template-library-templates-container:not([data-template-source="remote"]) + #qazana-template-library-footer-banner, #qazana-template-library-templates-container:not([data-template-source="theme"]) + #qazana-template-library-footer-banner {
+  #qazana-template-library-templates-container:not([data-template-source='remote']) + #qazana-template-library-footer-banner, #qazana-template-library-templates-container:not([data-template-source='theme']) + #qazana-template-library-footer-banner {
     display: none; }
 
 .qazana-template-library-template-remote,
@@ -2768,8 +2769,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    -webkit-transition: opacity 0.5s;
-    transition: opacity 0.5s; }
+    -webkit-transition: opacity .5s;
+    transition: opacity .5s; }
   .qazana-template-library-template-remote .qazana-template-library-template-insert,
   .qazana-template-library-template-theme .qazana-template-library-template-insert {
     width: 150px;
@@ -2806,10 +2807,10 @@ body.qazana-editor-preview #qazana-mode-switcher {
   width: 100%;
   height: 50px;
   border-bottom: 1px solid #ddd;
-  background-color: #fff;
+  background-color: #ffffff;
   table-layout: fixed;
-  -webkit-transition: background-color 0.3s linear;
-  transition: background-color 0.3s linear; }
+  -webkit-transition: background-color .3s linear;
+  transition: background-color .3s linear; }
   .qazana-template-library-template-local:hover {
     background-color: #fafbfb; }
   .qazana-template-library-template-local:not(:hover) .qazana-template-library-template-controls {
@@ -2837,8 +2838,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
       display: inline-block;
       font-weight: 500;
       cursor: pointer;
-      -webkit-transition: color 0.5s;
-      transition: color 0.5s; }
+      -webkit-transition: color .5s;
+      transition: color .5s; }
       .qazana-template-library-template-local .qazana-template-library-template-controls > div:not(:hover) {
         color: #a0a5aa; }
   .qazana-template-library-template-local .qazana-template-library-template-control-title {
@@ -2891,7 +2892,7 @@ body.qazana-editor-preview #qazana-mode-switcher {
   width: 460px;
   border: none;
   border-radius: 0 3px 3px 0;
-  background-color: #fff;
+  background-color: #ffffff;
   color: #a0a5aa;
   font-weight: 300; }
   #qazana-template-library-save-template-name:focus {
@@ -2902,6 +2903,55 @@ body.qazana-editor-preview #qazana-mode-switcher {
   border-radius: 3px 0 0 3px;
   font-weight: 500; }
   #qazana-template-library-save-template-submit:hover {
+    -webkit-box-shadow: none;
+            box-shadow: none; }
+
+.qazana-template-library-import-title {
+  margin-top: 55px;
+  font-size: 30px; }
+
+.qazana-template-library-import-excerpt {
+  color: #a0a5aa;
+  font-weight: 300;
+  font-size: 18px;
+  max-width: 60%;
+  margin: 20px auto; }
+
+#qazana-template-library-import-form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 55px; }
+  #qazana-template-library-import-form > * {
+    height: 60px;
+    font-size: 18px; }
+
+#qazana-template-library-import-file {
+  padding-right: 25px;
+  width: 460px;
+  border: none;
+  border-radius: 0 3px 3px 0;
+  background-color: #ffffff;
+  color: #a0a5aa;
+  font-weight: 300;
+  line-height: 44px; }
+  #qazana-template-library-import-file:focus {
+    border: 1px solid #EBEBEB; }
+
+#qazana-template-library-import-submit {
+  width: 150px;
+  border-radius: 3px 0 0 3px;
+  font-weight: 500; }
+  #qazana-template-library-import-submit:hover {
     -webkit-box-shadow: none;
             box-shadow: none; }
 
@@ -2940,7 +2990,7 @@ body.qazana-editor-preview #qazana-mode-switcher {
   position: relative;
   margin-top: 10px;
   height: 30px;
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
   border-radius: 2px; }
   #qazana-template-library-header-search-input input {
     padding: 0 27px 0 10px;

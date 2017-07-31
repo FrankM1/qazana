@@ -439,7 +439,7 @@ class Source_Local extends Source_Base {
 		<div id="qazana-hidden-area">
 			<a id="qazana-import-template-trigger" class="page-title-action"><?php _e( 'Import Templates', 'qazana' ); ?></a>
 			<div id="qazana-import-template-area">
-				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
+				<div id="qazana-import-template-title"><?php _e( 'Choose a Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
 				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="qazana_import_template">
 					<fieldset id="qazana-import-template-form-inputs">
@@ -625,6 +625,7 @@ class Source_Local extends Source_Base {
 	private function _add_actions() {
 
 		if ( is_admin() ) {
+			
 			add_action( 'admin_menu', [ $this, 'register_admin_menu' ], 50 );
 			add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 2 );
 			add_action( 'admin_footer', [ $this, 'admin_import_template_form' ] );
