@@ -1565,6 +1565,12 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 
 		jQuery(self.ui.submitButton).addClass( 'qazana-button-state' );
 
+		if ( ! self.file ) {
+			qazana.templates.showErrorDialog( 'Please select a template file to import' );
+			qazana.templates.showTemplates();
+			return;
+		}
+
 		uploadForm.append( 'file', self.file[0] );
 
 		qazana.ajax.send( 'import_template', {

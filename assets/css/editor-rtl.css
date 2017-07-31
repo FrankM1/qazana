@@ -2943,9 +2943,13 @@ body.qazana-editor-preview #qazana-mode-switcher {
   background-color: #ffffff;
   color: #a0a5aa;
   font-weight: 300;
-  line-height: 44px; }
+  padding: 16px 20px;
+  border: 1px solid #e8e8e8; }
   #qazana-template-library-import-file:focus {
     border: 1px solid #EBEBEB; }
+  #qazana-template-library-import-file input[type="button" i] {
+    margin-top: 2px;
+    margin-left: -6px; }
 
 #qazana-template-library-import-submit {
   width: 150px;
