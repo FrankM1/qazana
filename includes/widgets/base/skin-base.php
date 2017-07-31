@@ -100,7 +100,7 @@ abstract class Skin_Base {
 		$args['condition']['_skin'] = $this->get_id();
 		$this->parent->add_group_control( $group_name, $args );
 	}
-	
+
 	public function add_render_attribute( $element, $key = null, $value = null, $overwrite = false ) {
 		return $this->parent->add_render_attribute( $element, $key, $value, $overwrite );
 	}
@@ -108,7 +108,6 @@ abstract class Skin_Base {
 	public function get_render_attribute_string( $element ) {
 		return $this->parent->get_render_attribute_string( $element );
 	}
-
 
 	public function before_render() {
 		$this->parent->before_render();

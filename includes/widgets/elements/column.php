@@ -740,7 +740,7 @@ class Element_Column extends Element_Base {
 		<?php
 	}
 
-	protected function _add_render_attributes() {
+	public function _add_render_attributes() {
 		parent::_add_render_attributes();
 
 		$is_inner = $this->get_data( 'isInner' );
@@ -759,7 +759,7 @@ class Element_Column extends Element_Base {
 
 		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
 
-	$this->add_render_attribute( 'wrapper', 'class', [
+		$this->add_render_attribute( 'wrapper', 'class', [
 			'qazana-column',
 			'qazana-element',
 			'qazana-element-' . $this->get_id(),

@@ -211,7 +211,7 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-	protected function _add_render_attributes() {
+	public function _add_render_attributes() {
 		parent::_add_render_attributes();
 
 		$this->add_render_attribute( '_wrapper', 'class', [
