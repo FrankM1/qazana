@@ -1,13 +1,13 @@
 <?php
 namespace Qazana\Extensions;
 
-class Autoptimize extends Base {
+class Bwp_Minify extends Base {
 
 	public function get_config() {
 
         return [
-        	'title' => __( 'Autoptimize Compatibility', 'qazana' ),
-            'name' => 'autoptimize',
+        	'title' => __( 'Better Wordpress Minify Compatibility', 'qazana' ),
+            'name' => 'bwp_minify',
         	'required' => true,
         	'default_activation' => true,
         ];
@@ -20,10 +20,10 @@ class Autoptimize extends Base {
 
     public static function init() {
 
-        // Disable optimize files in Editor from Autoptimize plugin
-        add_filter( 'autoptimize_filter_noptimize', function( $retval ) {
+		// Disable minifier files in Editor from Better Wordpress Minifier plugin
+        add_filter( 'bwp_minify_is_loadable', function( $retval ) {
             if ( qazana()->editor->is_edit_mode() ) {
-                $retval = true;
+                $retval = false;
             }
 
             return $retval;
