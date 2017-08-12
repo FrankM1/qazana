@@ -15,7 +15,16 @@ class Plugin {
      *
      * @var string
      */
-    public $version;
+    protected $version;
+
+    /**
+     * Current version of the plugin.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    protected $db_version;
 
     /** Magic *****************************************************************/
 
@@ -208,7 +217,7 @@ class Plugin {
         /* Versions **********************************************************/
 
         $this->version = '1.0.1';
-        $this->db_version = '101beta';
+        $this->db_version = '101';
 
         /* Paths *************************************************************/
 
@@ -519,5 +528,12 @@ class Plugin {
      */
     public function get_version() {
         return $this->version;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_db_version() {
+        return $this->db_version;
     }
 }

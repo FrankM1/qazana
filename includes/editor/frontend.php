@@ -173,7 +173,7 @@ class Frontend {
             [
 				'waypoints',
             ],
-            qazana()->get_version(),
+            qazana_get_version(),
             true
         );
 
@@ -263,7 +263,7 @@ class Frontend {
             'qazana-icons',
             qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
         wp_register_style(
@@ -273,7 +273,7 @@ class Frontend {
                 'qazana-icons',
                 'font-awesome',
             ],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
 		do_action( 'qazana/frontend/after_register_styles' );

@@ -33,7 +33,7 @@ class Counter extends Base {
             'odometer-theme-default',
             qazana()->core_assets_url . 'lib/odometer/themes/odometer-theme-default' . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
 		if ( qazana()->preview->is_preview_mode() ) {

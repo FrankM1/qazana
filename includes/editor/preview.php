@@ -103,7 +103,7 @@ class Preview {
             'editor-preview',
             qazana()->core_assets_url . 'css/editor-preview' . $direction_suffix . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
         wp_enqueue_style( 'editor-preview' );

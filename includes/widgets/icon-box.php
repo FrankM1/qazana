@@ -208,7 +208,7 @@ class Widget_Icon_Box extends Widget_Base {
 				'label_on' => __( 'Yes', 'qazana' ),
 				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'true',
-				'force_render' => true,
+				'render_type' => 'template',
 				'prefix_class' => 'icon-svg-animation-'
 			]
 		);

@@ -32,7 +32,7 @@ class Editor_Admin {
 
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_register_script( 'qazana-admin-app', qazana()->core_assets_url . 'js/admin' . $suffix . '.js', [ 'jquery' ], qazana()->get_version(), true );
+        wp_register_script( 'qazana-admin-app', qazana()->core_assets_url . 'js/admin' . $suffix . '.js', [ 'jquery' ], qazana_get_version(), true );
 
         wp_enqueue_script( 'qazana-admin-app' );
 
@@ -53,7 +53,7 @@ class Editor_Admin {
             'qazana-icons',
             qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
         wp_register_style(
@@ -62,7 +62,7 @@ class Editor_Admin {
             [
                 'qazana-icons',
             ],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
         wp_enqueue_style( 'qazana-admin-app' );

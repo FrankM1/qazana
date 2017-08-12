@@ -80,7 +80,7 @@ class Server_Reporter extends Base_Reporter {
 			'timeout' => 25,
 			'body' => [
 				// Which API version is used
-				'api_version' => qazana()->get_version(),
+				'api_version' => qazana_get_version(),
 				// Which language to return
 				'site_lang' => get_bloginfo( 'language' ),
 			],

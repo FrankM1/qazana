@@ -344,7 +344,7 @@ class Editor {
 				'jquery-fonticonpicker',
 				'qazana-frontend'
             ],
-            qazana()->get_version(),
+            qazana_get_version(),
             true
         );
 
@@ -363,7 +363,7 @@ class Editor {
 		$page_title_selector = get_option( 'qazana_page_title_selector' );
 
 		if ( empty( $page_title_selector ) ) {
-			$page_title_selector = '.page-header';
+			$page_title_selector = 'h1.entry-title';
 		}
 
 		$page_settings_instance = PageSettingsManager::get_page( $post_id );
@@ -491,14 +491,14 @@ class Editor {
             'qazana-icons',
             qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
 		wp_register_style(
 			'google-font-noto-sans',
 			'https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i',
 			[],
-			qazana()->get_version()
+			qazana_get_version()
 		);
 
         wp_register_style(
@@ -535,7 +535,7 @@ class Editor {
                 'jquery-fonticonpicker-grey',
                 'font-awesome',
             ],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
         wp_enqueue_style( 'qazana-editor' );

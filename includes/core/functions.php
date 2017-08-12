@@ -23,7 +23,7 @@ function qazana_version() {
      * @retrun string The Qazana version
      */
     function qazana_get_version() {
-        return qazana()->version;
+        return qazana()->get_version();
     }
 
 /**
@@ -43,7 +43,7 @@ function qazana_db_version() {
      * @retrun string The Qazana version
      */
     function qazana_get_db_version() {
-        return qazana()->db_version;
+        return qazana()->get_db_version;
     }
 
 /**

@@ -14,13 +14,22 @@ class Group_Control_Animations extends Group_Control_Base {
     protected function init_fields() {
 		$fields = [];
 
+        $fields['animated'] = [
+            'label' => _x( 'Animated', 'Typography Control', 'qazana' ),
+            'type' => Controls_Manager::SWITCHER,
+            'default' => '',
+            'label_on' => __( 'On', 'qazana' ),
+            'label_off' => __( 'Off', 'qazana' ),
+            'return_value' => 'animated',
+        ];
+
         $fields['in'] = [
         	'label' => __( 'Entrance Animation', 'qazana' ),
         	'type' => Controls_Manager::ANIMATION_IN,
         	'default' => 'fadeInUp',
         	'label_block' => true,
             'condition' => [
-        		'animated!' => '',
+        		'animated' => 'animated',
         	],
         ];
 
@@ -35,35 +44,11 @@ class Group_Control_Animations extends Group_Control_Base {
         	],
         	'prefix_class' => 'animated-',
         	'condition' => [
-        		'in!' => '',
-                'out!' => '',
+                'animated' => 'animated',
         	],
         ];
 
 		return $fields;
 	}
 
-    protected function prepare_fields( $fields ) {
-
-        array_walk( $fields, function ( &$field, $field_name ) {
-            $fields['condition'] = [
-                'animated' => [ 'animated' ],
-            ];
-        } );
-
-        $animation_control = [
-            'animated' => [
-                'label' => _x( 'Animated', 'Typography Control', 'qazana' ),
-                'type' => Controls_Manager::SWITCHER,
-                'default' => '',
-                'label_on' => __( 'On', 'qazana' ),
-                'label_off' => __( 'Off', 'qazana' ),
-                'return_value' => 'animated',
-            ],
-        ];
-
-        $fields = $animation_control + $fields;
-
-        return parent::prepare_fields( $fields );
-    }
 }

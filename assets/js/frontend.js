@@ -46,6 +46,7 @@ module.exports = ElementsHandler;
 /* global qazanaFrontendConfig */
 ( function( $ ) {
 	var EventManager = require( '../utils/hooks' ),
+		elements = {},
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
 	    Utils = require( 'qazana-frontend/utils' );
 
@@ -121,6 +122,8 @@ module.exports = ElementsHandler;
 
 		this.init = function() {
 
+			initElements();
+
 			if ( self.isEditMode() ) {
 				return;
 			}
@@ -132,6 +135,26 @@ module.exports = ElementsHandler;
 			self.utils.insertYTApi();
 
 			runElementsHandlers();
+		};
+
+		var initElements = function() {
+			elements.window = window;
+
+			elements.$window = $( window );
+
+			elements.$document = $( document );
+
+			elements.$body = $( 'body' );
+
+			elements.$qazana = elements.$document.find( '.qazana' );
+		};
+
+		this.getElements = function( element ) {
+			if ( element ) {
+				return elements[ element ];
+			}
+
+			return elements;
 		};
 
 		// Based on underscore function

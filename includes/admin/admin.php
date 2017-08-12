@@ -562,7 +562,7 @@ class Admin {
         $product = $update_plugins->response[ qazana()->basename ];
 
         // Check if have upgrade notices to show
-        if ( version_compare( qazana()->get_version(), $upgrade_notice['version'], '>=' ) )
+        if ( version_compare( qazana_get_version(), $upgrade_notice['version'], '>=' ) )
             return;
 
         $notice_id = 'upgrade_notice_' . $upgrade_notice['version'];
@@ -640,7 +640,7 @@ class Admin {
                 'underscore',
                 'qazana-dialog',
             ],
-            qazana()->get_version(),
+            qazana_get_version(),
             true
         );
 

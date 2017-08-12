@@ -7886,6 +7886,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	className: function() {
+
 		// TODO: Any better classes for that?
 		var classes = 'qazana-control qazana-control-' + this.model.get( 'name' ) + ' qazana-control-type-' + this.model.get( 'type' ),
 			modelClasses = this.model.get( 'classes' ),
@@ -7937,6 +7938,7 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	initialize: function( options ) {
+
 		this.elementSettingsModel = options.elementSettingsModel;
 
 		var controlType = this.model.get( 'type' ),

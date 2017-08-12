@@ -26,7 +26,7 @@ class Hueman_Theme extends Base {
             'qazana-theme-compat-hueman',
             qazana()->core_assets_url . 'css/hueman' . $suffix . '.css',
             [],
-            qazana()->get_version()
+            qazana_get_version()
         );
 
     }

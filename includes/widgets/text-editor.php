@@ -98,7 +98,7 @@ class Widget_Text_Editor extends Widget_Base {
 					],
 				],
 				'prefix_class' => 'qazana-align-',
-				'force_render' => true,
+				'render_type' => 'template',
 			]
 		);
 
