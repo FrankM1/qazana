@@ -914,7 +914,7 @@ class Widget_Testimonial extends Widget_Base {
 						'icon' => 'fa fa-align-right',
 					],
 				],
-				'conditions' => [
+				'condition' => [
 					'navigation' => [ 'dots', 'both' ],
 				],
 			]

@@ -34,11 +34,7 @@ class Conditions {
 
 		$is_or_condition = isset( $conditions['relation'] ) && 'or' === $conditions['relation'];
 
-		$condition_succeed = ! $is_or_condition;
-
-		if ( empty( $conditions['terms'] ) ) {
-			return;
-		}
+		$condition_succeeded = ! $is_or_condition;
 
 		foreach ( $conditions['terms'] as $term ) {
 			if ( ! empty( $term['terms'] ) ) {
@@ -64,7 +60,7 @@ class Conditions {
 			}
 		}
 
-		return $condition_succeed;
+		return $condition_succeeded;
 	}
 
 }

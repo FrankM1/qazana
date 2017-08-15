@@ -10,6 +10,12 @@ class Elements_Manager {
 	 */
 	private $_element_types;
 
+    /**
+     * Globally acceible element instance
+     * @var array
+     */
+    private $_element_instance;
+
     private $_categories;
 
     public function __construct() {
@@ -27,6 +33,7 @@ class Elements_Manager {
 	 * @return Element_Base
 	 */
 	public function create_element_instance( array $element_data, array $element_args = [], Element_Base $element_type = null ) {
+
 		if ( null === $element_type ) {
 			if ( 'widget' === $element_data['elType'] ) {
 				$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
@@ -50,6 +57,36 @@ class Elements_Manager {
 		}
 
 		return $element;
+	}
+
+	/**
+	 * Add element instance to cache
+	 *
+	 * @method get_element_instance
+	 *
+	 * @param  string 	$element_id  unique element id
+	 * @return object 	element object class Element_Base
+	 */
+	public function add_element_instance( Element_Base $element ) {
+		$this->_element_instance[ $element->get_id() ] = $element;
+
+		return true;
+	}
+
+	/**
+	 * Get element instance by id
+	 *
+	 * @method get_element_instance
+	 *
+	 * @param  string 	$element_id  unique element id
+	 * @return object 	element object class Element_Base
+	 */
+	public function get_element_instance( string $element_id = null ) {
+		if ( null !== $element_id ) {
+			return $this->_element_instance[ $element_id ];
+		}
+
+		return $this->_element_instance;
 	}
 
 	public function get_categories() {

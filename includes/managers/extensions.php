@@ -29,7 +29,7 @@ final class Manager {
      *
      * @var array
      */
-    private $instance = null;
+    private $instance = array();
 
     /**
      * __construct
@@ -95,7 +95,7 @@ final class Manager {
              */
             $class_file = "$path/$folder/extension_{$folder}.php";
 
-            if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) ) {
+            if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
                 $this->extensions[ $folder ] = new $extension_class ( $this );
             }
 
@@ -219,7 +219,7 @@ final class Manager {
 
 			$instance = $class_name::instance();
 
-            $this->instance[ $extension_id ] = $instance->get_config();
+            $this->instance[ $extension_id ] = $instance;
 		}
     }
 
@@ -230,7 +230,9 @@ final class Manager {
 
 		$widget_manager = qazana()->widgets_manager;
 
-        foreach ( $this->instance as $extension => $extension_data ) {
+        foreach ( $this->instance as $extension => $extension_object ) {
+
+			$extension_data = $extension_object->get_config();
 
             if ( ! $this->is_extension_active( $extension_data['name'] ) ) {
                 continue;
@@ -273,7 +275,7 @@ final class Manager {
 		return $this->extensions;
 	}
 
-	private function is_extension_active( $extension_id ) {
+	public function is_extension_active( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
@@ -290,8 +292,12 @@ final class Manager {
 		return 'true' === $options[ $extension_id ];
 	}
 
-	private function get_extension_data( $extension_id ) {
-		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ] : false;
+	public function get_extensions( $extension_id = null ) {
+		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ] : $this->instance;
+	}
+
+	public function get_extension_data( $extension_id ) {
+		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ]->get_config() : false;
 	}
 
     public function register_admin_fields() {

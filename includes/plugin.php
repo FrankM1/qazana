@@ -92,13 +92,13 @@ class Plugin {
     public $widgets;
 
     public $frontend;
-    public $heartbeat;
+    public $heartbeat; */
 
     public $templates_manager;
 
-    public $extensions_loader;*/
+    public $extensions_loader;
 
-    public $extensions;
+    public $extensions_manager;
 
     /**
      * Getter method for retrieving the object instance.
@@ -414,7 +414,7 @@ class Plugin {
         $this->page_settings_manager    = new PageSettings\Manager();
 
         $this->extensions_loader    = new Loader( $this->extensions_locations );
-        $this->extensions           = new Extensions\Manager();
+        $this->extensions_manager   = new Extensions\Manager();
         $this->cron                 = new Cron;
 
         $this->mobile_detect        = new MobileDetect();

@@ -84,7 +84,7 @@ class Frontend {
 	protected function get_dependencies() {
 
 		$data = qazana()->db->get_plain_editor( get_the_ID() );
-		$data = apply_filters( 'qazana/frontend/qazana_content_data', $data, get_the_ID() );
+		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, get_the_ID() );
 
 		qazana()->db->iterate_data( $data, function( $element ) {
 
@@ -111,6 +111,34 @@ class Frontend {
 
 			return $element;
 		});
+
+	}
+
+	/**
+	 * @param array $data a set of elements
+	 *
+	 * @return mixed
+	 */
+	public function generate_element_instances( $post_id = null ) {
+
+		$post_id = $post_id ? $post_id : get_the_id();
+
+		$data = qazana()->db->get_plain_editor( $post_id );
+		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
+
+		qazana()->db->iterate_data( $data, function( $element ) {
+
+	        $element_instance = qazana()->elements_manager->create_element_instance( $element );
+
+	        // Exit if the widget/element doesn't exist
+	        if ( ! $element_instance ) {
+	            return $element;
+	        }
+
+	        qazana()->elements_manager->add_element_instance($element_instance);
+
+	        return $element;
+	    });
 
 	}
 

@@ -308,12 +308,14 @@ class Controls_Manager {
 
 		$control_data['name'] = $control_id;
 
+		$stack_id = $element->get_name();
+
 		$control_data = array_merge( $default_args, $control_data );
 
 		$control_type_instance = $this->get_control( $control_data['type'] );
 
 		if ( ! $control_type_instance ) {
-			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Control type `' . $control_data['type'] . '` not found`', '1.0.0' );
+			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Control type `' . $control_data['type'] . '` not found`. Added in `' . $stack_id . '` element.', '1.0.0' );
 			return false;
 		}
 
@@ -326,8 +328,6 @@ class Controls_Manager {
 				$control_data['default'] = ! empty( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
 			}
 		}
-
-		$stack_id = $element->get_name();
 
 		if ( ! $overwrite && isset( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
 			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
