@@ -320,7 +320,7 @@ class Widget_Icon_List extends Widget_Base {
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_2,
+					'value' => Scheme_Color::COLOR_3,
 				],
 			]
 		);
