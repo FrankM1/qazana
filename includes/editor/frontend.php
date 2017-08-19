@@ -57,7 +57,8 @@ class Frontend {
 		$this->_is_frontend_mode = true;
 		$this->_has_qazana_in_page = qazana()->db->is_built_with_qazana( get_the_ID() );
 
-		$this->get_dependencies();
+		//add element script and css dependencies
+		$this->get_dependencies( get_the_ID() );
 
 		if ( $this->_has_qazana_in_page ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
@@ -81,10 +82,14 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	protected function get_dependencies() {
+	protected function get_dependencies( $post_id ) {
 
-		$data = qazana()->db->get_plain_editor( get_the_ID() );
-		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, get_the_ID() );
+		if ( $this->_is_excerpt ) {
+			return;
+		}
+
+		$data = qazana()->db->get_plain_editor( $post_id );
+		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
 
 		qazana()->db->iterate_data( $data, function( $element ) {
 
@@ -512,6 +517,9 @@ class Frontend {
 
 			return $content;
 		}
+
+		//add element script and css dependencies
+		$this->get_dependencies( $post_id );
 
 		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the css inline
 		$is_edit_mode = qazana()->editor->is_edit_mode();

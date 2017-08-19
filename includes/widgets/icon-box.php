@@ -154,15 +154,15 @@ class Widget_Icon_Box extends Widget_Base {
 				'options' => [
 					'left' => [
 						'title' => __( 'Left', 'qazana' ),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-h-align-left',
 					],
 					'top' => [
 						'title' => __( 'Top', 'qazana' ),
-						'icon' => 'fa fa-align-center',
+						'icon' => 'eicon-v-align-top',
 					],
 					'right' => [
 						'title' => __( 'Right', 'qazana' ),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-h-align-right',
 					],
 				],
 				'prefix_class' => 'qazana-position-',

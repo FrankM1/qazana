@@ -270,6 +270,9 @@ class Widget_Button extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .qazana-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
+				'condition' => [
+					'border_border!' => ''
+				]
 			]
 		);
 

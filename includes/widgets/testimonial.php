@@ -766,18 +766,32 @@ class Widget_Testimonial extends Widget_Base {
 		);
 
 		$this->add_control(
-			'arrows_color',
-			[
-				'label' => __( 'Arrows Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
-				],
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
+            'arrows_color',
+            [
+                'label' => __( 'Arrows Color', 'qazana' ),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .prev, {{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'arrows_hover_color',
+            [
+                'label' => __( 'Arrows Hover Color', 'qazana' ),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .prev:hover, {{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
 
 		$this->add_control(
 			'arrows_position',

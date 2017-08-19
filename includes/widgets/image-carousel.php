@@ -303,18 +303,32 @@ class Widget_Image_Carousel extends Widget_Base {
 		);
 
 		$this->add_control(
-			'arrows_color',
-			[
-				'label' => __( 'Arrows Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:before' => 'color: {{VALUE}};',
-				],
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
+            'arrows_color',
+            [
+                'label' => __( 'Arrows Color', 'qazana' ),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'arrows_hover_color',
+            [
+                'label' => __( 'Arrows Hover Color', 'qazana' ),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:hover, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
 
 		$this->add_control(
 			'heading_style_dots',
