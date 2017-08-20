@@ -12,9 +12,9 @@ class Qazana_Library extends \WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'qazana-library',
-			esc_html__( 'Qazana Library', 'energia' ),
+			esc_html__( 'Qazana Library', 'qazana' ),
 			[
-				'description' => esc_html__( 'Embed your saved elements.', 'energia' ),
+				'description' => esc_html__( 'Embed your saved elements.', 'qazana' ),
 			]
 		);
 	}
@@ -58,14 +58,14 @@ class Qazana_Library extends \WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title', 'energia' ); ?>:</label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title', 'qazana' ); ?>:</label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>">
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'template_id' ) ); ?>"><?php esc_attr_e( 'Choose Template', 'energia' ); ?>:</label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'template_id' ) ); ?>"><?php esc_attr_e( 'Choose Template', 'qazana' ); ?>:</label>
 			<select class="widefat qazana-widget-template-select" id="<?php echo esc_attr( $this->get_field_id( 'template_id' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'template_id' ) ); ?>">
-				<option value="">-- <?php _e( 'Select', 'energia' ); ?> --</option>
+				<option value="">-- <?php _e( 'Select', 'qazana' ); ?> --</option>
 				<?php
 				foreach ( $templates as $template ) :
 					$selected = selected( $template['template_id'], $instance['template_id'] );
@@ -85,7 +85,7 @@ class Qazana_Library extends \WP_Widget {
 			}
 			?>
 			<a target="_blank" class="qazana-edit-template" <?php echo $style; ?> href="<?php echo add_query_arg( 'qazana', '', get_permalink( $instance['template_id'] ) ); ?>">
-				<i class="fa fa-pencil"></i> <?php echo __( 'Edit Template', 'energia' ); ?>
+				<i class="fa fa-pencil"></i> <?php echo __( 'Edit Template', 'qazana' ); ?>
 			</a>
 		</p>
 		<?php

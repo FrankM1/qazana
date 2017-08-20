@@ -1,6 +1,7 @@
 /* global qazanaFrontendConfig */
 ( function( $ ) {
 	var EventManager = require( '../utils/hooks' ),
+		Module = require( './handler-module' ),
 		elements = {},
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
 	    Utils = require( 'qazana-frontend/utils' );
@@ -10,6 +11,8 @@
 			scopeWindow = window;
 
 		this.config = window.qazanaFrontendConfig;
+
+		this.Module = Module;
 
 		var addGlobalHandlers = function() {
 			self.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );

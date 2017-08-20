@@ -15,7 +15,7 @@ class Shortcode {
 	}
 
 	public function admin_columns_headers( $defaults ) {
-		$defaults['shortcode'] = __( 'Shortcode', 'energia' );
+		$defaults['shortcode'] = __( 'Shortcode', 'qazana' );
 		return $defaults;
 	}
 

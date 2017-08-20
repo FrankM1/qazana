@@ -20,7 +20,7 @@ class Library extends Base {
 
     public function get_config() {
         return [
-        	'title' => __( 'Library', 'energia' ),
+        	'title' => __( 'Library', 'qazana' ),
             'name' => 'library',
         	'required' => true,
         	'default_activation' => true,
@@ -41,7 +41,7 @@ class Library extends Base {
 	public function localize_settings() {
 		\qazana()->editor->add_localize_settings( 'i18n', [
 			'home_url' => home_url(),
-			'edit_template' => __( 'Edit Template', 'energia' ),
+			'edit_template' => __( 'Edit Template', 'qazana' ),
 		] );
 	}
 
@@ -70,8 +70,8 @@ class Library extends Base {
 	public static function empty_templates_message() {
 		return '<div id="qazana-widget-template-empty-templates">
 				<div class="qazana-widget-template-empty-templates-icon"><i class="eicon-nerd"></i></div>
-				<div class="qazana-widget-template-empty-templates-title">' . __( 'You Haven\'t Saved Templates Yet.', 'energia' ) . '</div>
-				<div class="qazana-widget-template-empty-templates-footer">' . __( 'What is Library?', 'energia' ) . ' <a class="qazana-widget-template-empty-templates-footer-url" href="https://radiumthemes.com/qazana/docs/library/" target="_blank">' . __( 'Read our tutorial on using Library templates.', 'energia' ) . '</a>
+				<div class="qazana-widget-template-empty-templates-title">' . __( 'You Haven\'t Saved Templates Yet.', 'qazana' ) . '</div>
+				<div class="qazana-widget-template-empty-templates-footer">' . __( 'What is Library?', 'qazana' ) . ' <a class="qazana-widget-template-empty-templates-footer-url" href="https://radiumthemes.com/qazana/docs/library/" target="_blank">' . __( 'Read our tutorial on using Library templates.', 'qazana' ) . '</a>
 				</div>
 				</div>';
 	}

@@ -14,7 +14,7 @@ class Template extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Qazana Template', 'energia' );
+		return __( 'Qazana Template', 'qazana' );
 	}
 
 	public function get_icon() {
@@ -33,7 +33,7 @@ class Template extends Widget_Base {
 		$this->start_controls_section(
 			'section_template',
 			[
-				'label' => __( 'Qazana Template', 'energia' ),
+				'label' => __( 'Qazana Template', 'qazana' ),
 			]
 		);
 
@@ -54,7 +54,7 @@ class Template extends Widget_Base {
 		}
 
 		$options = [
-			'0' => '- ' . __( 'Select', 'energia' ) . ' -',
+			'0' => '- ' . __( 'Select', 'qazana' ) . ' -',
 		];
 
 		$types = [];
@@ -67,7 +67,7 @@ class Template extends Widget_Base {
 		$this->add_control(
 			'template_id',
 			[
-				'label' => __( 'Choose Template', 'energia' ),
+				'label' => __( 'Choose Template', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '0',
 				'options' => $options,
