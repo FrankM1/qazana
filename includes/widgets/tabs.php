@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Widget_Tabs extends Widget_Base {
 
@@ -137,10 +139,7 @@ class Widget_Tabs extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span:before' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span:after' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tab-content' => 'border-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-tab-title, {{WRAPPER}} .qazana-tab-title:before, {{WRAPPER}} .qazana-tab-title:after, {{WRAPPER}} .qazana-tab-content, {{WRAPPER}} .qazana-tabs-content-wrapper' => 'border-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -151,10 +150,7 @@ class Widget_Tabs extends Widget_Base {
 				'label' => __( 'Border Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span:before' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span:after' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tabs-wrapper .qazana-tab-title.active > span' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-tabs .qazana-tab-content' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-tab-mobile-title, {{WRAPPER}} .qazana-tab-desktop-title.active, {{WRAPPER}} .qazana-tab-title:before, {{WRAPPER}} .qazana-tab-title:after, {{WRAPPER}} .qazana-tab-content, {{WRAPPER}} .qazana-tabs-content-wrapper' => 'border-color: {{VALUE}};',
 				],
 			]
 		);
@@ -259,25 +255,25 @@ class Widget_Tabs extends Widget_Base {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
 		<div class="qazana-tabs" role="tablist">
-			<?php
-			$counter = 1; ?>
+			<?php $counter = 1; ?>
 			<div class="qazana-tabs-wrapper" role="tab">
 				<?php foreach ( $tabs as $item ) : ?>
 					<div class="qazana-tab-title qazana-tab-desktop-title" data-tab="<?php echo $counter; ?>"><span><?php echo $item['tab_title']; ?></span></div>
 				<?php
 					$counter++;
-				endforeach; ?>
+				endforeach;
+				?>
 			</div>
 
-			<?php
-			$counter = 1; ?>
+			<?php $counter = 1; ?>
 			<div class="qazana-tabs-content-wrapper" role="tabpanel">
 				<?php foreach ( $tabs as $item ) : ?>
-					<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="<?php echo $counter; ?>"><?php echo $item['tab_title']; ?></div>
+					<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="<?php echo $counter; ?>"><span><?php echo $item['tab_title']; ?></span></div>
 					<div class="qazana-tab-content qazana-clearfix" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 				<?php
 					$counter++;
-				endforeach; ?>
+				endforeach;
+				?>
 			</div>
 		</div>
 		<?php
@@ -292,7 +288,7 @@ class Widget_Tabs extends Widget_Base {
 				<div class="qazana-tabs-wrapper" role="tab">
 					<#
 					_.each( settings.tabs, function( item ) { #>
-						<div class="qazana-tab-title qazana-tab-desktop-title" data-tab="{{ counter }}">{{{ item.tab_title }}}</div>
+						<div class="qazana-tab-title qazana-tab-desktop-title" data-tab="{{ counter }}"><span>{{{ item.tab_title }}}</span></div>
 					<#
 						counter++;
 					} ); #>
@@ -302,7 +298,7 @@ class Widget_Tabs extends Widget_Base {
 				<div class="qazana-tabs-content-wrapper" role="tabpanel">
 					<#
 					_.each( settings.tabs, function( item ) { #>
-						<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="{{ counter }}">{{{ item.tab_title }}}</div>
+						<div class="qazana-tab-title qazana-tab-mobile-title" data-tab="{{ counter }}"><span>{{{ item.tab_title }}}</span></div>
 						<div class="qazana-tab-content qazana-clearfix qazana-repeater-item-{{ item._id }}" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
 					<#
 					counter++;
