@@ -9,11 +9,8 @@ class Library extends Base {
 
 	public function __construct() {
 
-		if ( ! class_exists('\Qazana\Extensions\Library\Classes\Shortcode') )
-        	require('classes/shortcode.php');
-
-		if ( ! class_exists('Qazana\Extensions\Library\WP_Widgets\Qazana_Library') )
-			require('wp-widgets/qazana-library.php');
+    	require('classes/shortcode.php');
+		require('wp-widgets/qazana-library.php');
 
 		$this->add_filters();
 		$this->add_actions();
