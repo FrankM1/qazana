@@ -5,13 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 final class Manager {
 
-	/**
-     * Extension data
-     *
-     * @var array
-     */
-	public $found_extensions = array();
-
     /**
      * Extension data
      *
@@ -53,8 +46,6 @@ final class Manager {
             }
         }
 
-		$this->_locate_extensions();
-
         $this->_load_extensions();
 
         add_action( 'qazana/widgets/widgets_registered', [ $this, '_load_widgets' ] );
@@ -62,38 +53,6 @@ final class Manager {
         if ( is_admin() ) {
             add_action( 'qazana/admin/settings/after', [ $this, 'register_admin_fields' ], 21 ); // After the base settings
         }
-
-	}
-
-	private function _locate_extensions() {
-
-		 if ( ! empty( $this->found_extensions ) ) {
-
-			foreach( $this->found_extensions as $folder => $path ) {
-
-				$path = trailingslashit( $path );
-
-				/**
-				 * filter 'qazana/extension/{folder}'
-				 *
-				 * @param        string                    extension class file path
-				 * @param string $extension_class          extension class name
-				 */
-				$class_file = $path . "$folder/extension_{$folder}.php";
-
-				if ( file_exists( $class_file ) ) {
-					require_once( $class_file );
-				} else {
-					continue;
-				}
-
-				$extension_class = 'Qazana\Extensions\\' . $folder;
-
-				if ( empty( $this->extensions[ $folder ] ) ) {
-					$this->extensions[ $folder ] = new $extension_class( $this );
-				 }
-			}
-		}
 	}
 
     /**
@@ -109,9 +68,7 @@ final class Manager {
             return false;
         }
 
-        $folders = (array) scandir( $path, 1 );
-
-		$path = trailingslashit( $path );
+        $folders = scandir( $path, 1 );
 
         /**
          * action 'qazana/extensions/before'
@@ -122,11 +79,26 @@ final class Manager {
 
         foreach ( $folders as $folder ) {
 
+            $path = trailingslashit( $path );
+
             if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
                 continue;
             }
 
-			$this->found_extensions[$folder] = $path;
+            $extension_class = 'Qazana\Extensions\\' . $folder;
+
+            /**
+             * filter 'qazana/extension/{folder}'
+             *
+             * @param        string                    extension class file path
+             * @param string $extension_class          extension class name
+             */
+            $class_file = "$path/$folder/extension_{$folder}.php";
+
+            if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+                $this->extensions[ $folder ] = new $extension_class ( $this );
+            }
+
         }
 
         /**
@@ -169,7 +141,6 @@ final class Manager {
             if ( $file = qazana()->extensions_loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
                 require_once $file;
             }
-
         }
 
         /**
@@ -324,14 +295,12 @@ final class Manager {
 
     public function register_admin_fields() {
 
-		if ( ! empty( $this->extensions ) ) {
-	        foreach ( $this->extensions as $extension_id => $extension_data ) {
+        foreach ( $this->extensions as $extension_id => $extension_data ) {
 
-	            $extension_data = $this->get_extension_data( $extension_id );
-	            if ( $extension_data['required'] ) continue;
+            $extension_data = $this->get_extension_data( $extension_id );
+            if ( $extension_data['required'] ) continue;
 
-	            $this->_add_extension_settings_section( $extension_id );
-			}
+            $this->_add_extension_settings_section( $extension_id );
 		}
 
     }
