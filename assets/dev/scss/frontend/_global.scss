@@ -168,6 +168,10 @@
   }
 }
 
+.qazana-element-inline {
+    display: inline-flex;
+}
+
 // TEMP CODE
 
 #qazana-select-preset {
@@ -177,5 +181,8 @@
 .qazana-widget-container {
   width: 100%;
   position: relative;
-  z-index: 1;
+}
+
+.qazana-editor-active .qazana-widget-container {
+    z-index: 1;
 }

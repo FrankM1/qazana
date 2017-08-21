@@ -1,0 +1,54 @@
+.qazana-link {
+
+  .qazana-link-content-wrapper {
+    transition: $transition-hover;
+  }
+
+  .qazana-align-icon- {
+    &right {
+      margin-left: 5px;
+    }
+
+    &left {
+      margin-right: 5px;
+    }
+  }
+}
+
+// Icon Hover
+.qazana-icon-hover-reveal-yes {
+  .qazana-link {
+    transition: all .5s cubic-bezier(.3,.95,.3,.95);
+  }
+
+  .qazana-align-icon-right {
+    flex-direction: row-reverse;
+  }
+
+  .qazana-link-icon {
+    overflow: hidden;
+    max-width: 0;
+    transition: all .5s cubic-bezier(.3,.95,.3,.95);
+
+    &.qazana-align-icon-right {
+      margin-left: 0;
+    }
+
+    &.qazana-align-icon-left {
+      margin-right: 0;
+    }
+  }
+
+  .qazana-link:hover .qazana-link-icon,
+  .link:hover .qazana-link-icon {
+    max-width: 100px;
+
+    &.qazana-align-icon-right {
+      margin-left: 10px;
+    }
+
+    &.qazana-align-icon-left {
+      margin-right: 10px;
+    }
+  }
+}

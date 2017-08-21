@@ -109,7 +109,7 @@ class Widget_Text_Editor extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}}' => 'color: {{VALUE}};',
+					'{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -123,8 +123,26 @@ class Widget_Text_Editor extends Widget_Base {
 			[
 				'name' => 'typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p'
 			]
 		);
+
+		$this->add_responsive_control(
+            'bottom_space',
+            [
+                'label' => __( 'Bottom Spacing', 'energia' ),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-wrapper p' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
 
 		$this->end_controls_section();
 
@@ -293,10 +311,8 @@ class Widget_Text_Editor extends Widget_Base {
 			$this->add_render_attribute( 'text-editor', 'class', 'qazana-align-' . $this->get_responsive_settings('align') );
 		}
 
-		$editor_content = $this->parse_text_editor( $settings['editor'] );
-
 		?><div <?php echo $this->get_render_attribute_string( 'text-editor' ); ?>>
-			<div class="qazana-wrapper"><?php echo $settings['editor']; ?></div>
+			<div class="qazana-wrapper"><?php echo $this->parse_text_editor( $settings['editor'] ); ?></div>
 		</div><?php
 
 	}

@@ -53,6 +53,7 @@
 			'progress.default': require( 'qazana-frontend/handlers/progress' ),
 			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
 			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
+			'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
 			'video.default': require( 'qazana-frontend/handlers/video' ),
 			//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
 			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),

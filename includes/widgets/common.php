@@ -59,6 +59,19 @@ class Widget_Common extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'_inline_element',
+			[
+				'label' => __( 'Inline Element', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'prefix_class' => 'qazana-',
+				'label_on' => 'On',
+				'label_off' => 'Off',
+				'return_value' => 'element-inline',
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Animations::get_type(),
 			[

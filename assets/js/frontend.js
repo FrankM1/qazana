@@ -98,6 +98,7 @@ module.exports = ElementsHandler;
 			'progress.default': require( 'qazana-frontend/handlers/progress' ),
 			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
 			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
+			'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
 			'video.default': require( 'qazana-frontend/handlers/video' ),
 			//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
 			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),
@@ -215,7 +216,7 @@ jQuery( function() {
 	window.qazanaFrontend.init();
 });
 
-},{"../utils/hooks":18,"./handler-module":3,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/menu-anchor":9,"qazana-frontend/handlers/piechart":10,"qazana-frontend/handlers/progress":11,"qazana-frontend/handlers/section":12,"qazana-frontend/handlers/tabs":13,"qazana-frontend/handlers/toggle":14,"qazana-frontend/handlers/video":15,"qazana-frontend/handlers/widget":16,"qazana-frontend/utils":17}],3:[function(require,module,exports){
+},{"../utils/hooks":19,"./handler-module":3,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/menu-anchor":9,"qazana-frontend/handlers/piechart":10,"qazana-frontend/handlers/progress":11,"qazana-frontend/handlers/section":12,"qazana-frontend/handlers/tabs":13,"qazana-frontend/handlers/toggle":14,"qazana-frontend/handlers/tooltip":15,"qazana-frontend/handlers/video":16,"qazana-frontend/handlers/widget":17,"qazana-frontend/utils":18}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
@@ -327,7 +328,7 @@ HandlerModule = ViewModule.extend( {
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":20}],4:[function(require,module,exports){
+},{"../utils/view-module":21}],4:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -735,6 +736,16 @@ module.exports = function( $scope, $ ) {
 
 },{}],15:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
+	$scope.mouseenter( function() {
+		$( this ).find( '.qazana-tooltip' ).addClass('v--show');
+	}).mouseleave( function() {
+		$( this ).find( '.qazana-tooltip' ).removeClass('v--show');
+	});
+
+};
+
+},{}],16:[function(require,module,exports){
+module.exports = function( $scope, $ ) {
 	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
 		$videoFrame = $scope.find( 'iframe' );
 
@@ -752,7 +763,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -767,7 +778,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function( $ ) {
     var self = this;
 
@@ -798,7 +809,7 @@ module.exports = function( $ ) {
     
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1057,7 +1068,7 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -1243,7 +1254,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -1269,5 +1280,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":19}]},{},[2])
+},{"qazana-utils/module":20}]},{},[2])
 //# sourceMappingURL=frontend.js.map

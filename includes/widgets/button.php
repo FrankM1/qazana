@@ -377,9 +377,9 @@ class Widget_Button extends Widget_Base {
         ?><div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
             <a <?php echo $this->get_render_attribute_string( 'button' ); ?>>
                 <span <?php echo $this->get_render_attribute_string( 'content-wrapper' ); ?>>
-                    <?php if ( ! empty( $settings['icon'] ) ) : ?>
+                    <?php if ( $this->get_settings('icon') ) : ?>
                         <span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
-                            <i class="<?php echo esc_attr( $settings['icon'] ); ?>"></i>
+                            <i class="<?php echo esc_attr( $this->get_settings('icon') ); ?>"></i>
                         </span>
                     <?php endif; ?>
                     <span class="qazana-button-text"><?php echo $settings['text']; ?></span>
