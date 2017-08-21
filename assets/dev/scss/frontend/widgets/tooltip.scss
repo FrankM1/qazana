@@ -1,6 +1,6 @@
 .qazana-tooltip {
     position: relative;
-    
+
   svg:not(:root) {
     overflow: hidden;
   }
@@ -211,7 +211,7 @@
   outline: 0;
 }
 
-@media screen and (min-width:25rem) {
+@media (max-width: $screen-sm-max) {
   .qazana-tooltip__content {
     font-size: calc(1rem + (-2 * (100vw - 400px)/ 624));
   }

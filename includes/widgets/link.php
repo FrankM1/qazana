@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Widget_Link extends Widget_Base {
 
 	public function get_name() {
-		return 'menu-link';
+		return 'link';
 	}
 
 	public function get_title() {
@@ -164,10 +164,10 @@ class Widget_Link extends Widget_Base {
                     'link_icon!' => '',
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .qazana-link .qazana-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .qazana-link .qazana-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .qazana-icon-hover-reveal-yes .qazana-link:hover .qazana-link-icon.qazana-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .qazana-icon-hover-reveal-yes .qazana-link:hover .qazana-link-icon.qazana-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-link.qazana-align-icon-right .qazana-link-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-link .qazana-align-icon-left .qazana-link-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-icon-hover-reveal-yes .qazana-link:hover .qazana-link.qazana-align-icon-right .qazana-link-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-icon-hover-reveal-yes .qazana-link:hover .qazana-link.qazana-align-icon-left .qazana-link-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -300,17 +300,19 @@ class Widget_Link extends Widget_Base {
 
 		}
 
-		$this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_settings('link_icon_align') );
+		$this->add_render_attribute( 'link', 'class', 'qazana-align-icon-' . $this->get_settings('link_icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-link-icon' );
 
 		?>
 		<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
-			<?php if ( $this->get_settings('link_icon') ) : ?>
-				<span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
-					<i class="<?php echo esc_attr( $this->get_settings('link_icon') ); ?>"></i>
-				</span>
-			<?php endif; ?>
-			<span class="qazana-text"><?php echo esc_html( $settings['link_text'] ); ?></span>
+			<span class="qazana-link-wrapper">
+				<?php if ( $this->get_settings('link_icon') ) : ?>
+					<span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
+						<i class="<?php echo esc_attr( $this->get_settings('link_icon') ); ?>"></i>
+					</span>
+				<?php endif; ?>
+				<span class="qazana-text"><?php echo esc_html( $settings['link_text'] ); ?></span>
+			</span>
 		</a>
 		<?php
 	}
@@ -318,12 +320,14 @@ class Widget_Link extends Widget_Base {
 	protected function _content_template() {
 		?>
 		<a class="qazana-link" href="#">
-			<# if ( settings.link_icon ) { #>
-				<span class="qazana-button-icon qazana-align-icon-{{ settings.link_icon_align }}">
-					<i class="{{ settings.link_icon }}"></i>
-				</span>
-			<# } #>
-			<span class="qazana-text">{{ settings.link_text }}</span>
+			<span class="qazana-link-wrapper">
+				<# if ( settings.link_icon ) { #>
+					<span class="qazana-button-icon qazana-align-icon-{{ settings.link_icon_align }}">
+						<i class="{{ settings.link_icon }}"></i>
+					</span>
+				<# } #>
+				<span class="qazana-text">{{ settings.link_text }}</span>
+			</span>
 		</a>
 		<?php
 	}

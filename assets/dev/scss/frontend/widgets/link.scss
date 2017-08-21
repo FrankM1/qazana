@@ -1,7 +1,15 @@
 .qazana-link {
+  transition: $transition-hover;
 
-  .qazana-link-content-wrapper {
-    transition: $transition-hover;
+  .qazana-link-wrapper {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.qazana-align-icon-right .qazana-link-wrapper {
+    flex-direction: row-reverse;
   }
 
   .qazana-align-icon- {
@@ -19,10 +27,6 @@
 .qazana-icon-hover-reveal-yes {
   .qazana-link {
     transition: all .5s cubic-bezier(.3,.95,.3,.95);
-  }
-
-  .qazana-align-icon-right {
-    flex-direction: row-reverse;
   }
 
   .qazana-link-icon {
