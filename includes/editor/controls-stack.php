@@ -15,8 +15,8 @@ abstract class Controls_Stack {
 	 * @var string
 	 */
 	private $_id;
-	private $_settings = array();
-	private $_data = array();
+	private $_settings;
+	private $_data;
 	private $_config;
 
 	/**

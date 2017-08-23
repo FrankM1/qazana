@@ -232,11 +232,15 @@ class Page extends Controls_Stack {
 			return;
 		}
 
-		$custom_css = str_replace( 'selector', 'body.qazana-page-' . $post_css->get_post_id(), $custom_css );
+		$page_selector = apply_filters( 'qazana/page/page_settings_body_selector', 'body.qazana-page-' . $post_css->get_post_id(), $post_css );
+
+		$custom_css = str_replace( 'selector', $page_selector, $custom_css );
 
 		// Add a css comment
 		$custom_css = '/* Start custom CSS for page-settings */' . $custom_css . '/* End custom CSS */';
 
+		qazana_write_log( $custom_css );
+		
 		$post_css->get_stylesheet()->add_raw_css( $custom_css );
 	}
 
