@@ -68,6 +68,10 @@ HandlerModule = ViewModule.extend( {
 		return this.$element.data( 'element_type' ).split( '.' )[0];
 	},
 
+	getSkinName: function() {
+		return this.$element.data( 'element_type' ).split( '.' )[1];
+	},
+
 	getID: function() {
 		return this.$element.data( 'id' );
 	},
@@ -78,22 +82,48 @@ HandlerModule = ViewModule.extend( {
 
 	getElementSettings: function( setting ) {
 		var elementSettings = {},
-			modelCID = this.getModelCID();
+			modelCID = this.getModelCID(),
+			self = this;
+
+		var elementName = self.getElementName().replace(/-/g, '_');
+		var skinName = self.getSkinName().replace(/-/g, '_');
 
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			var settings = qazanaFrontend.config.elements.data[ modelCID ],
 				settingsKeys = qazanaFrontend.config.elements.keys[ settings.attributes.widgetType || settings.attributes.elType ];
 
 			jQuery.each( settings.getActiveControls(), function( controlKey ) {
+
 				if ( -1 !== settingsKeys.indexOf( controlKey ) ) {
-					elementSettings[ controlKey ] = settings.attributes[ controlKey ];
+
+					var newControlKey = controlKey;
+					if ( skinName !== 'default' ) {
+						newControlKey = controlKey.replace( skinName + '_', '' );
+					}
+					elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
 				}
+
 			} );
+
 		} else {
-			elementSettings = this.$element.data( 'settings' ) || {};
+
+			var settings = this.$element.data( 'settings' ) || {};
+
+			if ( settings && skinName !== 'default' ) {
+
+				jQuery.each( settings, function( controlKey ) {
+					var newControlKey = controlKey;
+					newControlKey = controlKey.replace( skinName + '_', '' );
+					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
+				} );
+
+			} else {
+				elementSettings = settings;
+			}
+
 		}
 
-		return this.getItems( elementSettings, setting );
+		return self.getItems( elementSettings, setting );
 	},
 
 	getEditSettings: function( setting ) {

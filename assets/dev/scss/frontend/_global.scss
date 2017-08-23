@@ -4,26 +4,17 @@
 
 //
 
-// Admin Bar - Icon (Front-End)
-
-#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
-  margin-top: 5px;
-  content: '\e800';
-  font-size: 12px;
-  font-family: eicon;
-}
-
 .qazana {
-  // Reset Style for some themes and browsers
-  hyphens: manual;
-
   * {
     &,
-    &:after,
-    &:before {
+    &:before,
+    &:after {
       box-sizing: border-box;
     }
   }
+
+  // Reset Style for some themes and browsers
+  hyphens: manual;
 
   a {
     box-shadow: none;
@@ -36,75 +27,83 @@
   }
 
   img {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
     border: none;
     border-radius: 0;
     box-shadow: none;
   }
 
-  figure {
+  .qazana-widget:not(.qazana-widget-text-editor) figure {
     margin: 0;
   }
-  // Responsive Embed
 
+  // Responsive Embed
   embed,
   iframe,
   object,
   video {
-    margin: 0;
     max-width: 100%;
     width: 100%;
+    margin: 0;
     line-height: 1;
+    border: none;
   }
 
   .qazana-custom-embed {
-    line-height: 0;
-    // for google maps margin bottom
+    line-height: 0; //for google maps margin bottom
   }
-  // Background Video
 
+  // Background Video
   .qazana-background-video-container {
-    position: absolute;
+    height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
-    //z-index: $under-layer;
+    position: absolute;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
+    transition: opacity 1s;
+
+    &.qazana-loading {
+      opacity: 0;
+    }
+  }
+
+  .qazana-background-video-embed {
+    max-width: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .qazana-background-video {
     position: absolute;
+    max-width: none;
     top: 50%;
     left: 50%;
-    //z-index: $ground-layer;
-    max-width: none;
     transform: translateY(-50%) translateX(-50%);
   }
 
   .qazana-html5-video {
-    object-fit: cover;
-    // For HTML5 portrait video
+    object-fit: cover; // For HTML5 portrait video
   }
   // End Background Video
 
   .qazana-background-overlay {
-    position: absolute;
+    height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
+    position: absolute;
     z-index: $ground-layer-overlay;
-    width: 100%;
-    height: 100%;
-  }
-
-  .qazana-invisible {
-    visibility: hidden;
   }
 }
 
-// Alignment Classes
+.qazana-invisible {
+  visibility: hidden;
+}
 
+// Alignment Classes
 .qazana-align- {
   &center {
     margin: 0 auto;
@@ -131,6 +130,33 @@
     }
   }
 }
+
+.qazana-custom-embed-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  i {
+    font-size: 100px;
+    color: #ffffff;
+    opacity: .8;
+    text-shadow: 1px 0 6px rgba(0, 0, 0, .3);
+    transition: all .5s;
+  }
+
+  &.qazana-playing {
+    i {
+      font-family: 'FontAwesome';
+      animation: fa-spin 2s infinite linear;
+
+      &:before {
+        content: '\f1ce';
+      }
+    }
+  }
+}
+
 
 // Alignment for Tablet
 
@@ -172,17 +198,15 @@
     display: inline-flex;
 }
 
-// TEMP CODE
-
-#qazana-select-preset {
-  display: none;
-}
-
-.qazana-widget-container {
-  width: 100%;
-  position: relative;
-}
 
 .qazana-editor-active .qazana-widget-container {
     z-index: 1;
+}
+
+// Admin Bar - Icon (Front-End)
+#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
+  content: '\e800';
+  font-family: eicons;
+  font-size: 12px;
+  margin-top: 5px;
 }

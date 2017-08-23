@@ -95,12 +95,16 @@ class Frontend {
 
 			$element_instance = qazana()->elements_manager->create_element_instance( $element );
 
-			// Exit if the widget/element doesn't exist
+			// Exit if the element doesn't exist
 			if ( ! $element_instance ) {
 				return $element;
 			}
 
-			$element_instance->add_element_dependencies();
+			if ( 'widget' === $element['elType'] && $skin = $element_instance->get_current_skin() ) {
+				$skin->add_element_dependencies();
+			} else {
+				$element_instance->add_element_dependencies();
+			}
 
 			if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
 				foreach ( $element_instance->_element_stylesheets as $key ) {
@@ -135,7 +139,7 @@ class Frontend {
 
 	        $element_instance = qazana()->elements_manager->create_element_instance( $element );
 
-	        // Exit if the widget/element doesn't exist
+	        // Exit if the element doesn't exist
 	        if ( ! $element_instance ) {
 	            return $element;
 	        }

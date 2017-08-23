@@ -74,7 +74,7 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_responsive_control(
 			'tooltip_icon_size',
 			[
-				'label' => __( 'Icon Size', 'energia' ),
+				'label' => __( 'Icon Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 20

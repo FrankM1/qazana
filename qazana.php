@@ -68,7 +68,7 @@ function qazana_fail_php_version() {
  * @param  [type] $log [description]
  * @return [type]      [description]
  */
-function qazana_write_log ( $log, $type = '1' )  {
+function qazana_write_log( $log, $type = '1' )  {
 
     if ( true === WP_DEBUG ) {
         if ( is_array( $log ) || is_object( $log ) ) {

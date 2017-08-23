@@ -59,8 +59,7 @@ abstract class Widget_Base extends Element_Base {
 
 	}
 
-	public function add_actions() {
-	}
+	public function add_actions() {}
 
 	public function show_in_panel() {
 		return true;

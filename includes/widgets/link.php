@@ -100,7 +100,7 @@ class Widget_Link extends Widget_Base {
 		$this->add_control(
             'link_icon',
             [
-                'label' => __( 'Icon', 'energia' ),
+                'label' => __( 'Icon', 'qazana' ),
                 'type' => Controls_Manager::ICON,
                 'label_block' => true,
                 'default' => '',
@@ -136,12 +136,12 @@ class Widget_Link extends Widget_Base {
         $this->add_control(
             'link_icon_align',
             [
-                'label' => __( 'Icon Position', 'energia' ),
+                'label' => __( 'Icon Position', 'qazana' ),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'left',
                 'options' => [
-                    'left' => __( 'Before', 'energia' ),
-                    'right' => __( 'After', 'energia' ),
+                    'left' => __( 'Before', 'qazana' ),
+                    'right' => __( 'After', 'qazana' ),
                 ],
                 'condition' => [
                     'link_icon!' => '',
@@ -153,7 +153,7 @@ class Widget_Link extends Widget_Base {
         $this->add_responsive_control(
             'link_icon_indent',
             [
-                'label' => __( 'Icon Spacing', 'energia' ),
+                'label' => __( 'Icon Spacing', 'qazana' ),
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -175,7 +175,7 @@ class Widget_Link extends Widget_Base {
         $this->add_responsive_control(
 			'link_icon_size',
 			[
-				'label' => __( 'Icon Size', 'energia' ),
+				'label' => __( 'Icon Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 20

@@ -121,8 +121,24 @@ abstract class Skin_Base {
 		return $this->parent->bool( $value );
 	}
 
+	public function add_element_dependencies() {
+		$this->parent->add_element_dependencies();
+	}
+
+	public function add_frontend_script( $value ) {
+		return $this->parent->add_frontend_script( $value );
+	}
+
+	public function add_frontend_style( $value ) {
+		return $this->parent->add_frontend_style( $value );
+	}
+
 	public function set_parent( $parent ) {
 		$this->parent = $parent;
+	}
+
+	public function get_parent() {
+		return $this->parent;
 	}
 
 	public function get_presets() {}

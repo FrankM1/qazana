@@ -97,17 +97,11 @@
 .qazana-hidden {
   display: none; }
 
-#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
-  margin-top: 5px;
-  content: '\e800';
-  font-size: 12px;
-  font-family: eicon; }
-
 .qazana {
   -webkit-hyphens: manual;
       -ms-hyphens: manual;
           hyphens: manual; }
-  .qazana *, .qazana *:after, .qazana *:before {
+  .qazana *, .qazana *:before, .qazana *:after {
     -webkit-box-sizing: border-box;
             box-sizing: border-box; }
   .qazana a {
@@ -118,50 +112,62 @@
     margin: 0;
     background-color: transparent; }
   .qazana img {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
     border: none;
     border-radius: 0;
     -webkit-box-shadow: none;
             box-shadow: none; }
-  .qazana figure {
+  .qazana .qazana-widget:not(.qazana-widget-text-editor) figure {
     margin: 0; }
   .qazana embed,
   .qazana iframe,
   .qazana object,
   .qazana video {
-    margin: 0;
     max-width: 100%;
     width: 100%;
-    line-height: 1; }
+    margin: 0;
+    line-height: 1;
+    border: none; }
   .qazana .qazana-custom-embed {
     line-height: 0; }
   .qazana .qazana-background-video-container {
-    position: absolute;
+    height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
+    position: absolute;
     overflow: hidden;
-    width: 100%;
-    height: 100%; }
-  .qazana .qazana-background-video {
+    -webkit-transition: opacity 1s;
+    transition: opacity 1s; }
+    .qazana .qazana-background-video-container.qazana-loading {
+      opacity: 0; }
+  .qazana .qazana-background-video-embed {
+    max-width: none;
     position: absolute;
     top: 50%;
-    left: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%); }
+  .qazana .qazana-background-video {
+    position: absolute;
     max-width: none;
+    top: 50%;
+    left: 50%;
     -webkit-transform: translateY(-50%) translateX(-50%);
             transform: translateY(-50%) translateX(-50%); }
   .qazana .qazana-html5-video {
     -o-object-fit: cover;
        object-fit: cover; }
   .qazana .qazana-background-overlay {
-    position: absolute;
+    height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%; }
-  .qazana .qazana-invisible {
-    visibility: hidden; }
+    position: absolute;
+    z-index: 1; }
+
+.qazana-invisible {
+  visibility: hidden; }
 
 .qazana-align-center {
   margin: 0 auto;
@@ -176,6 +182,26 @@
   text-align: left; }
   .qazana-align-left .qazana-wrapper {
     margin-right: auto; }
+
+.qazana-custom-embed-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%); }
+  .qazana-custom-embed-play i {
+    font-size: 100px;
+    color: #ffffff;
+    opacity: .8;
+    text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+  .qazana-custom-embed-play.qazana-playing i {
+    font-family: 'FontAwesome';
+    -webkit-animation: fa-spin 2s infinite linear;
+            animation: fa-spin 2s infinite linear; }
+    .qazana-custom-embed-play.qazana-playing i:before {
+      content: '\f1ce'; }
 
 @media (max-width: 1024px) {
   .qazana-tablet-align-center {
@@ -197,15 +223,33 @@
   display: -ms-inline-flexbox;
   display: inline-flex; }
 
-#qazana-select-preset {
-  display: none; }
-
-.qazana-widget-container {
-  width: 100%;
-  position: relative; }
-
 .qazana-editor-active .qazana-widget-container {
   z-index: 1; }
+
+#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
+  content: '\e800';
+  font-family: eicons;
+  font-size: 12px;
+  margin-top: 5px; }
+
+.qazana:after {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0; }
+  @media (min-width: 1025px) {
+    .qazana:after {
+      content: 'desktop'; } }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .qazana:after {
+      content: 'tablet'; } }
+  @media (max-width: 767px) {
+    .qazana:after {
+      content: 'mobile'; } }
 
 .qazana-section {
   position: relative; }
@@ -269,9 +313,8 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 100%;
-  /* In dragging mode it's causing a columns fall */ }
-  @media (max-width: 767px) {
+  width: 100%; }
+  @media (max-width: 1024px) {
     .qazana-row {
       -webkit-flex-wrap: wrap;
           -ms-flex-wrap: wrap;
@@ -290,7 +333,8 @@
   width: 100%; }
 
 .qazana-widget-wrap {
-  width: 100%; }
+  width: 100%;
+  z-index: 1; }
 
 .qazana-column {
   position: relative;
