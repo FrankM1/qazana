@@ -135,15 +135,19 @@ class Template_Manager {
 	}
 
 	public function update_templates( array $args ) {
-		foreach ( $args['templates'] as $template_data ) {
-			$result = $this->update_template( $template_data );
 
-			if ( is_wp_error( $result ) ) {
-				return $result;
-			}
+		if ( ! empty( $args['templates'] ) ) {
+			foreach ( $args['templates'] as $template_data ) {
+				$result = $this->update_template( $template_data );
+
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
+			} 
+			return true;
 		}
-
-		return true;
+		
+		return false;
 	}
 
 	/**

@@ -136,6 +136,16 @@ abstract class Controls_Stack {
 		$group->add_controls( $this, $args );
 	}
 
+	final public function remove_group_control( $group_name, $control_id ) {
+		$group = qazana()->controls_manager->get_control_groups( $group_name );
+
+		if ( ! $group ) {
+			wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
+		}
+
+		$group->remove_controls( $this, $control_id );
+	}
+
 	final public function get_scheme_controls() {
 		$enabled_schemes = Schemes_Manager::get_enabled_schemes();
 

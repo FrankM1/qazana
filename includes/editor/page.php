@@ -40,6 +40,8 @@ class Page extends Controls_Stack {
 
 	protected function _register_controls() {
 
+		do_action( 'qazana/editor/before_page_settings', $this );
+
 		$this->start_controls_section(
 			'section_page_settings',
 			[
@@ -193,6 +195,8 @@ class Page extends Controls_Stack {
 		);
 
 		$this->end_controls_section();
+
+		do_action( 'qazana/editor/after_page_settings', $this );
 	}
 
 	/**
@@ -211,6 +215,7 @@ class Page extends Controls_Stack {
 		if ( empty( $css ) ) {
 			return;
 		}
+
 		$css = str_replace( 'selector', $post_css->get_element_unique_selector( $element ), $css );
 
 		// Add a css comment
@@ -223,7 +228,9 @@ class Page extends Controls_Stack {
 	 * @param $post_css Post_CSS_File
 	 */
 	public function add_page_settings_css( $post_css ) {
+
 		$page_settings_instance = PageSettingsManager::get_page( $post_css->get_post_id() );
+
 		$custom_css = $page_settings_instance->get_settings( 'custom_css' );
 
 		$custom_css = trim( $custom_css );
@@ -232,14 +239,12 @@ class Page extends Controls_Stack {
 			return;
 		}
 
-		$page_selector = apply_filters( 'qazana/page/page_settings_body_selector', 'body.qazana-page-' . $post_css->get_post_id(), $post_css );
+		$page_selector = apply_filters( 'qazana/editor/page_settings/body_selector', 'body.qazana-page-' . $post_css->get_post_id(), $post_css );
 
 		$custom_css = str_replace( 'selector', $page_selector, $custom_css );
 
 		// Add a css comment
 		$custom_css = '/* Start custom CSS for page-settings */' . $custom_css . '/* End custom CSS */';
-
-		qazana_write_log( $custom_css );
 		
 		$post_css->get_stylesheet()->add_raw_css( $custom_css );
 	}

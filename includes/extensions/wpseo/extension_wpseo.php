@@ -7,11 +7,13 @@ class WPSEO extends Base {
 
 	public function get_config() {
 
+        $wpseo_exists = class_exists( '\wpseo_sitemaps_supported_post_types' );
+
         return [
         	'title' => __( 'WPSEO Compatibility', 'qazana' ),
             'name' => 'wpseo',
         	'required' => true,
-        	'default_activation' => true,
+        	'default_activation' => $wpseo_exists,
         ];
 
 	}

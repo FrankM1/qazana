@@ -36,6 +36,20 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		}
 	}
 
+	final public function remove_controls( Controls_Stack $element ) {
+
+		// Filter witch controls to display
+		$fields = $this->get_fields();
+
+		foreach ( $fields as $field_id => $field_args ) {
+
+			// Register the control
+			$id = $this->get_controls_prefix() . $field_id;
+
+			$element->remove_control( $id );
+		}
+	}
+
 	final public function get_args() {
 		return $this->args;
 	}

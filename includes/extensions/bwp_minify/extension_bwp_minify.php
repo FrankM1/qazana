@@ -5,11 +5,13 @@ class Bwp_Minify extends Base {
 
 	public function get_config() {
 
+        $bwp_minify_exist = function_exists( '\bwp_minify_is_loadable' );
+
         return [
         	'title' => __( 'Better Wordpress Minify Compatibility', 'qazana' ),
             'name' => 'bwp_minify',
         	'required' => true,
-        	'default_activation' => true,
+        	'default_activation' => $bwp_minify_exist,
         ];
 
 	}

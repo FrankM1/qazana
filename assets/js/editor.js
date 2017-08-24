@@ -6050,6 +6050,8 @@ module.exports = ViewModule.extend( {
 		post_title: function( newValue ) {
 			var $title = qazanaFrontend.getElements( '$document' ).find( qazana.config.page_title_selector );
 
+			console.log(qazana.config.page_title_selector);
+
 			$title.text( newValue );
 		},
 
@@ -6148,6 +6150,8 @@ module.exports = ViewModule.extend( {
 		var self = this;
 
 		self.hasChange = true;
+
+		console.log( model.changed );
 
 		this.controlsCSS.stylesheet.empty();
 

@@ -5,11 +5,13 @@ class Ninja_Forms extends Base {
 
 	public function get_config() {
 
+        $ninja_exists = class_exists( '\Ninja_Forms' );
+
         return [
         	'title' => __( 'Ninja Forms Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
         	'required' => true,
-        	'default_activation' => true,
+        	'default_activation' => $ninja_exists,
         ];
 
 	}

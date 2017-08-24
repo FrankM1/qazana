@@ -5,11 +5,13 @@ class Hueman_Theme extends Base {
 
 	public function get_config() {
 
+        $active_theme = wp_get_theme();
+
         return [
         	'title' => __( 'Hueman Theme Compatibility', 'qazana' ),
             'name' => 'hueman_theme',
         	'required' => true,
-        	'default_activation' => true,
+        	'default_activation' => ( $active_theme->get( 'Name' ) === 'hueman' ),
         ];
 
 	}

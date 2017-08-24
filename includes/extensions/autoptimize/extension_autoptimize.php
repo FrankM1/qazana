@@ -5,11 +5,13 @@ class Autoptimize extends Base {
 
 	public function get_config() {
 
+        $autoptimize_minify_exist = function_exists( '\autoptimize_filter_noptimize' );
+
         return [
         	'title' => __( 'Autoptimize Compatibility', 'qazana' ),
             'name' => 'autoptimize',
         	'required' => true,
-        	'default_activation' => true,
+            'default_activation' => $autoptimize_minify_exist,
         ];
 
 	}

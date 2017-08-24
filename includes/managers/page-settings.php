@@ -54,7 +54,7 @@ class Manager {
 			'template',
 		];
 
-		$special_settings = apply_filters( 'qazana_page_special_settings', $special_settings, $post_id );
+		$special_settings = apply_filters( 'qazana/editor/page_settings/special_settings', $special_settings, $post_id );
 
 		foreach ( $special_settings as $special_setting ) {
 			if ( isset( $settings[ $special_setting ] ) ) {
@@ -68,7 +68,7 @@ class Manager {
 			delete_post_meta( $post_id, self::META_KEY );
 		}
 
-		do_action( 'qazana_page_settings_save', $settings, $post_id );
+		do_action( 'qazana/editor/page_settings/save', $settings, $post_id );
 
 		$css_file = new Post_CSS_File( $post_id );
 
