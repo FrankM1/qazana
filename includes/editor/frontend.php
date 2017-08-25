@@ -104,7 +104,7 @@ class Frontend {
 
 			//Add skin dependencies
 			if ( 'widget' === $element['elType'] && $skin = $element_instance->get_current_skin() ) {
-				
+
 				$settings = $element_instance->get_settings(); // Initialize settings
 
 				$skin->add_element_dependencies( $settings ); // temp solution (passing settings array)

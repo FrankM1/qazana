@@ -62,7 +62,6 @@
   }
   &.v--east {
     margin-left: 50%;
-    left: 100%;
     top: 50%;
     transform: translate(10px,-50%);
     bottom: auto;
@@ -147,7 +146,6 @@
     bottom: -10px;
   }
   &.v--west {
-    right: 100%;
     left: auto;
     bottom: 50%;
     margin-bottom: 0;

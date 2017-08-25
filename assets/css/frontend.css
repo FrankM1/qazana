@@ -2271,7 +2271,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     margin-left: 28px; }
   .qazana-tooltip__content.v--east {
     margin-left: 50%;
-    left: 100%;
     top: 50%;
     -webkit-transform: translate(10px, -50%);
             transform: translate(10px, -50%);
@@ -2345,7 +2344,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     top: -50px;
     bottom: -10px; }
   .qazana-tooltip__content.v--west {
-    right: 100%;
     left: auto;
     bottom: 50%;
     margin-bottom: 0;
