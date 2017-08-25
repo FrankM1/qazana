@@ -9,22 +9,22 @@ module.exports = ViewModule.extend( {
 
 	hasChange: false,
 
+	reloadPreviewFlag: false,
+
 	changeCallbacks: {
+
 		post_title: function( newValue ) {
 			var $title = qazanaFrontend.getElements( '$document' ).find( qazana.config.page_title_selector );
-
-			console.log(qazana.config.page_title_selector);
 
 			$title.text( newValue );
 		},
 
 		template: function() {
-			this.save( function() {
-				qazana.reloadPreview();
+			
+			var self = this;
 
-				qazana.once( 'preview:loaded', function() {
-					qazana.getPanelView().setPage( 'settingsPage' );
-				} );
+			this.save( function() {
+				self.reloadPreview();
 			} );
 		}
 	},
@@ -89,6 +89,11 @@ module.exports = ViewModule.extend( {
 
 				self.hasChange = false;
 
+				if ( self.reloadPreviewFlag ) {
+					self.reloadPreviewFlag = false;
+					self.reloadPreview();
+				}
+
 				if ( callback ) {
 					callback.apply( self, arguments );
 				}
@@ -114,18 +119,31 @@ module.exports = ViewModule.extend( {
 
 		self.hasChange = true;
 
-		console.log( model.changed );
-
 		this.controlsCSS.stylesheet.empty();
 
 		_.each( model.changed, function( value, key ) {
+
 			if ( self.changeCallbacks[ key ] ) {
 				self.changeCallbacks[ key ].call( self, value );
 			}
+
+			if ( self.model.controls[ key ].render_type === 'preview' ) {
+				self.reloadPreviewFlag = true;
+			}
+
 		} );
 
 		self.updateStylesheet();
 
 		self.debounceSave();
+	},
+
+	reloadPreview: function() {
+		qazana.reloadPreview();
+
+		qazana.once( 'preview:loaded', function() {
+			qazana.getPanelView().setPage( 'settingsPage' );
+		} );
 	}
+
 } );
