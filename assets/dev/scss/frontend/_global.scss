@@ -5,208 +5,219 @@
 //
 
 .qazana {
-  * {
-    &,
-    &:before,
-    &:after {
-      box-sizing: border-box;
+    * {
+        &,
+        &:before,
+        &:after {
+            box-sizing: border-box;
+        }
     }
-  }
 
-  // Reset Style for some themes and browsers
-  hyphens: manual;
+    // Reset Style for some themes and browsers
+    hyphens: manual;
 
-  a {
-    box-shadow: none;
-    text-decoration: none;
-  }
-
-  hr {
-    margin: 0;
-    background-color: transparent;
-  }
-
-  img {
-    height: auto;
-    max-width: 100%;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .qazana-widget:not(.qazana-widget-text-editor) figure {
-    margin: 0;
-  }
-
-  // Responsive Embed
-  embed,
-  iframe,
-  object,
-  video {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-    line-height: 1;
-    border: none;
-  }
-
-  .qazana-custom-embed {
-    line-height: 0; //for google maps margin bottom
-  }
-
-  // Background Video
-  .qazana-background-video-container {
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    overflow: hidden;
-    transition: opacity 1s;
-
-    &.qazana-loading {
-      opacity: 0;
+    a {
+        box-shadow: none;
+        text-decoration: none;
     }
-  }
 
-  .qazana-background-video-embed {
-    max-width: none;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+    hr {
+        margin: 0;
+        background-color: transparent;
+    }
 
-  .qazana-background-video {
-    position: absolute;
-    max-width: none;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-  }
+    img {
+        height: auto;
+        max-width: 100%;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
 
-  .qazana-html5-video {
-    object-fit: cover; // For HTML5 portrait video
-  }
-  // End Background Video
+    .qazana-widget:not(.qazana-widget-text-editor) figure {
+        margin: 0;
+    }
 
-  .qazana-background-overlay {
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: $ground-layer-overlay;
-  }
+    // Responsive Embed
+    embed,
+    iframe,
+    object,
+    video {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        line-height: 1;
+        border: none;
+    }
+
+    .qazana-custom-embed {
+        line-height: 0;
+
+        //for google maps margin bottom
+   
+    }
+
+    // Background Video
+    .qazana-background-video-container {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        overflow: hidden;
+        transition: opacity 1s;
+
+        &.qazana-loading {
+            opacity: 0;
+        }
+    }
+
+    .qazana-background-video-embed {
+        max-width: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .qazana-background-video {
+        position: absolute;
+        max-width: none;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+
+    .qazana-html5-video {
+        object-fit: cover;
+
+        // For HTML5 portrait video
+   
+    }
+
+    // End Background Video
+
+    .qazana-background-overlay {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        z-index: $ground-layer-overlay;
+    }
 }
 
 .qazana-invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 // Alignment Classes
 .qazana-align- {
-  &center {
-    margin: 0 auto;
-    text-align: center;
+    &center {
+        margin: 0 auto;
+        text-align: center;
 
-    .qazana-wrapper {
-      margin: 0 auto;
+        .qazana-wrapper {
+            margin: 0 auto;
+        }
     }
-  }
 
-  &right {
-    text-align: right;
+    &right {
+        text-align: right;
 
-    .qazana-wrapper {
-      margin-left: auto;
+        .qazana-wrapper {
+            margin-left: auto;
+        }
     }
-  }
 
-  &left {
-    text-align: left;
+    &left {
+        text-align: left;
 
-    .qazana-wrapper {
-      margin-right: auto;
+        .qazana-wrapper {
+            margin-right: auto;
+        }
     }
-  }
 }
 
 .qazana-custom-embed-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 
-  i {
-    font-size: 100px;
-    color: #ffffff;
-    opacity: .8;
-    text-shadow: 1px 0 6px rgba(0, 0, 0, .3);
-    transition: all .5s;
-  }
-
-  &.qazana-playing {
     i {
-      font-family: 'FontAwesome';
-      animation: fa-spin 2s infinite linear;
-
-      &:before {
-        content: '\f1ce';
-      }
+        font-size: 100px;
+        color: #ffffff;
+        opacity: .8;
+        text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
+        transition: all .5s;
     }
-  }
-}
 
+    &.qazana-playing {
+        i {
+            font-family: 'FontAwesome';
+            animation: fa-spin 2s infinite linear;
+
+            &:before {
+                content: '\f1ce';
+            }
+        }
+    }
+}
 
 // Alignment for Tablet
 
 @media (max-width: $screen-md-max) {
-  .qazana-tablet-align- {
-    &center {
-      text-align: center;
-    }
+    .qazana-tablet-align- {
+        &center {
+            text-align: center;
+        }
 
-    &right {
-      text-align: right;
-    }
+        &right {
+            text-align: right;
+        }
 
-    &left {
-      text-align: left;
+        &left {
+            text-align: left;
+        }
     }
-  }
 }
 
 // Alignment for Mobile
 
 @media (max-width: $screen-sm-max) {
-  .qazana-mobile-align- {
-    &center {
-      text-align: center;
-    }
+    .qazana-mobile-align- {
+        &center {
+            text-align: center;
+        }
 
-    &right {
-      text-align: right;
-    }
+        &right {
+            text-align: right;
+        }
 
-    &left {
-      text-align: left;
+        &left {
+            text-align: left;
+        }
     }
-  }
 }
 
 .qazana-element-inline {
     display: inline-flex;
 }
 
+.qazana-editor-active {
+    .qazana-element-inline {
+        display: inline-flex  !important;
+    }
 
-.qazana-editor-active .qazana-widget-container {
-    z-index: 1;
+    .qazana-widget-container {
+        z-index: 1;
+    }
 }
 
 // Admin Bar - Icon (Front-End)
 #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
-  content: '\e800';
-  font-family: eicons;
-  font-size: 12px;
-  margin-top: 5px;
+    content: '\e800';
+    font-family: eicons;
+    font-size: 12px;
+    margin-top: 5px;
 }

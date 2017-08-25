@@ -223,6 +223,11 @@
   display: -ms-inline-flexbox;
   display: inline-flex; }
 
+.qazana-editor-active .qazana-element-inline {
+  display: -webkit-inline-box  !important;
+  display: -webkit-inline-flex  !important;
+  display: -ms-inline-flexbox  !important;
+  display: inline-flex  !important; }
 .qazana-editor-active .qazana-widget-container {
   z-index: 1; }
 
