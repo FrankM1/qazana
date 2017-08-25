@@ -102,9 +102,12 @@ class Frontend {
 
 			$element_instance->add_element_dependencies();
 
-			//Sdd skin dependencies
+			//Add skin dependencies
 			if ( 'widget' === $element['elType'] && $skin = $element_instance->get_current_skin() ) {
-				$skin->add_element_dependencies( $element['settings'] ); // temp solution (passing settings array)
+				
+				$settings = $element_instance->get_settings(); // Initialize settings
+
+				$skin->add_element_dependencies( $settings ); // temp solution (passing settings array)
 
 				if ( ! empty( $skin->get_parent()->_element_stylesheets ) && is_array( $skin->get_parent()->_element_stylesheets ) ) {
 					foreach ( $skin->get_parent()->_element_stylesheets as $key ) {
