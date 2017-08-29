@@ -41,6 +41,11 @@ abstract class Skin_Base {
 		return $this->parent->get_settings( $control_id );
 	}
 
+	public function get_responsive_instance_value( $control_base_id ) {
+		$control_id = $this->get_control_id( $control_base_id );
+		return $this->parent->get_responsive_settings( $control_id );
+	}
+
 	public function start_controls_section( $id, $args ) {
 		$args['condition']['_skin'] = $this->get_id();
 		$this->parent->start_controls_section( $this->get_control_id( $id ), $args );

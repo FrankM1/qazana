@@ -103,7 +103,7 @@ abstract class Controls_Stack {
 		if ( empty( $args['type'] ) || ! in_array( $args['type'], [ Controls_Manager::SECTION, Controls_Manager::WP_WIDGET ] ) ) {
 			if ( null !== $this->_current_section ) {
 				if ( ! empty( $args['section'] ) || ! empty( $args['tab'] ) ) {
-					_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. - ' . $id, '1.0.0' );
+					_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . $id .'`.', '1.0.0' );
 				}
 				$args = array_merge( $args, $this->_current_section );
 
@@ -111,7 +111,7 @@ abstract class Controls_Stack {
 					$args = array_merge( $args, $this->_current_tab );
 				}
 			} elseif ( empty( $args['section'] ) ) {
-				wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`).' );
+				wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id .'`.' );
 			}
 		}
 

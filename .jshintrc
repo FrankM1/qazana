@@ -13,9 +13,9 @@
 	"node": true,
 	"strict": false,
 	"trailing": true,
-	
+
 	"debug": true,
-	
+
 	// WordPress
 	"boss": true,
 	"es3": true,
@@ -26,9 +26,14 @@
 
 	"globals": {
 		"_": false,
-		//"Backbone": false,
+		"Backbone": false,
 		"jQuery": false,
 		"JSON": false,
-		"wp": false
+		"wp": false,
+		"NProgress": false,
+		"Marionette": false,
+		"qazana": false,
+		"qazanaFrontend": false,
+		"DialogsManager": false
 	}
 }
