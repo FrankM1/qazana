@@ -809,6 +809,16 @@ class Element_Section extends Element_Base {
 		<?php
 	}
 
+	private function get_html_tag() {
+		$html_tag = $this->get_settings( 'html_tag' );
+
+		if ( empty( $html_tag ) ) {
+			$html_tag = 'section';
+		}
+
+		return $html_tag;
+	}
+
 	public function before_render() {
 		$section_type = $this->get_data( 'isInner' ) ? 'inner' : 'top';
 
@@ -839,7 +849,7 @@ class Element_Section extends Element_Base {
 		$this->add_render_attribute( 'row', 'class', 'qazana-row' );
 
         ?>
-        <section <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+        <<?php echo $this->get_html_tag() . ' '. $this->get_render_attribute_string( 'wrapper' ); ?>>
             <?php
 
             if ( 'video' === $settings['background_background'] ) :
@@ -869,7 +879,7 @@ class Element_Section extends Element_Base {
         ?>
                 </div>
             </div>
-        </section>
+		</<?php echo $this->get_html_tag(); ?>>
         <?php
     }
 
