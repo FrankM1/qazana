@@ -114,13 +114,9 @@ abstract class Skin_Base {
 		return $this->parent->get_render_attribute_string( $element );
 	}
 
-	public function before_render() {
-		$this->parent->before_render();
-	}
+	public function before_render() {}
 
-	public function after_render() {
-		$this->parent->after_render();
-	}
+	public function after_render() {}
 
 	public function bool( $value ) {
 		return $this->parent->bool( $value );

@@ -60,7 +60,7 @@ class Widget_Text_Editor extends Widget_Base {
 			[
 				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem' ],
+				'size_units' => [ '%', 'px', 'em', 'rem' ],
 				'range' => [
 					'px' => [
 						'min' => 10,

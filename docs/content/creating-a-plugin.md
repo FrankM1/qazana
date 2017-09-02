@@ -6,7 +6,7 @@ But before we start, let's examine the proper way to write code in Qazana.
 The code should be written in accordance with the [WordPress code standards](https://codex.wordpress.org/WordPress_Coding_Standards). (This is [how you can define a check for code standard in PHPStorm](https://kellenmace.com/set-up-php-codesniffer-in-phpstorm-with-wordpress-coding-standards/)).
 
 ### File names
-The name of the file that runs the plugin should be in-tune with the plugin folder name. For example: `plugin-name/plugin-name.php`
+The name of the file that runs the plugin should be in-tune with the plugin folder name. For example: `qazana/qazana.php`
 
 ### Domain names
 We recommend using autoloader and namespace according to the [PSR-2](http://www.php-fig.org/psr/psr-2/) standard.
@@ -29,7 +29,7 @@ You should write the minimal version of Qazana required for the plugin to work, 
 * Plugin Name: ...
 * ...
 * Qazana requires at least: 1.0.0
-* Qazana tested up to: 1.3.2
+* Qazana tested up to: 1.0.2
 */
 ```
 
