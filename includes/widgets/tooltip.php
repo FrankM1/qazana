@@ -148,7 +148,7 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
             'tooltip_icon_color',
             [
-                'label' => __( 'Icon Color', 'energia' ),
+                'label' => __( 'Icon Color', 'qazana' ),
                 'type' => Controls_Manager::COLOR,
                 'default' => '',
                 'scheme' => [
@@ -164,7 +164,7 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
             'tooltip_text_color',
             [
-                'label' => __( 'Text Color', 'energia' ),
+                'label' => __( 'Text Color', 'qazana' ),
                 'type' => Controls_Manager::COLOR,
                 'default' => '',
                 'selectors' => [
@@ -176,7 +176,7 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'tooltip_background_color',
             [
-                'label' => __( 'Background Color', 'energia' ),
+                'label' => __( 'Background Color', 'qazana' ),
                 'type' => Controls_Manager::COLOR,
                 'default' => '',
                 'selectors' => [
@@ -192,7 +192,7 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'tooltip_style_color',
             [
-                'label' => __( 'Accent Color', 'energia' ),
+                'label' => __( 'Accent Color', 'qazana' ),
                 'type' => Controls_Manager::COLOR,
                 'default' => '',
                 'scheme' => [
@@ -209,7 +209,7 @@ class Widget_Tooltip extends Widget_Base {
             Group_Control_Border::get_type(),
             [
                 'name' => 'button',
-                'label' => __( 'Border', 'energia' ),
+                'label' => __( 'Border', 'qazana' ),
                 'selector' => '{{WRAPPER}} .qazana-tooltip__content',
                 'seperator' => 'before',
             ]
@@ -218,7 +218,7 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'button_border_radius',
             [
-                'label' => __( 'Border Radius', 'energia' ),
+                'label' => __( 'Border Radius', 'qazana' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', '%' ],
                 'selectors' => [

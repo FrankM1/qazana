@@ -231,6 +231,9 @@
 .qazana-editor-active .qazana-widget-container {
   z-index: 1; }
 
+a.qazana-edit-template {
+  font-size: 80%; }
+
 #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
   content: '\e800';
   font-family: eicons;

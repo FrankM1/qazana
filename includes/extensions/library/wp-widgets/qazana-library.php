@@ -4,6 +4,7 @@ namespace Qazana\Extensions\Library\WP_Widgets;
 use Qazana\Plugin;
 use Qazana\Template_Library\Source_Local;
 use Qazana\Extensions\Library;
+use Qazana\User;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -34,6 +35,12 @@ class Qazana_Library extends \WP_Widget {
 			echo qazana()->frontend->get_builder_content_for_display( $instance['template_id'] );
 		}
 
+		if ( User::is_current_user_can_edit() ) {
+			echo '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $instance['template_id'] ) ) .'">
+				<i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'
+			</a>';
+		}
+	
 		echo $args['after_widget'];
 	}
 
