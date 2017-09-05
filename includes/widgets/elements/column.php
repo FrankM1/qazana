@@ -569,49 +569,10 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$this->add_control(
-			'animation',
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
 			[
-				'label' => __( 'Entrance Animation', 'qazana' ),
-				'type' => Controls_Manager::ANIMATION_IN,
-				'default' => '',
-				'prefix_class' => 'animated ',
-				'label_block' => true,
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'animation_duration',
-			[
-				'label' => __( 'Animation Duration', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '',
-				'options' => [
-					'slow' => __( 'Slow', 'qazana' ),
-					'' => __( 'Normal', 'qazana' ),
-					'fast' => __( 'Fast', 'qazana' ),
-				],
-				'prefix_class' => 'animated-',
-				'condition' => [
-					'animation!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'animation_delay',
-			[
-				'label' => __( 'Animation Delay', 'qazana' ) . ' (ms)',
-				'type' => Controls_Manager::NUMBER,
-				'default' => '',
-				'min' => 0,
-				'step' => 100,
-				'condition' => [
-					'animation!' => '',
-				],
-				'render_type' => 'none',
-				'frontend_available' => true,
+				'name' => '_animation',
 			]
 		);
 

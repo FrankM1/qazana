@@ -96,6 +96,10 @@ class Widgets_Manager {
 
         qazana()->widget_loader->locate_widget( 'wordpress.php', true );
 
+		$blacklist = [
+			'WP_Widget_Text', //unnecessary since Qazana has a text widget
+		];
+
         /**
          * Allow override of allowed widgets
          *
@@ -103,11 +107,11 @@ class Widgets_Manager {
          *
          * @param array $allowed_widgets.
          */
-        // Allow themes/plugins to filter out their widgets
-		$black_list = apply_filters( 'qazana/widgets/black_list', [] );
+        // Allow themes/plugins to filter out their wordpress widgets
+		$black_list = apply_filters( 'qazana/widgets/black_list', $blacklist );
 
         foreach ( $wp_widget_factory->widgets as $widget_class => $widget_obj ) {
-
+			
     		if ( in_array( $widget_class, $black_list ) ) {
     			continue;
     		}

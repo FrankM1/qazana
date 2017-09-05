@@ -246,6 +246,13 @@ abstract class Widget_Base extends Element_Base {
 
 		$this->add_render_attribute( '_wrapper', 'class', $this->get_name() . '-skin-' . $skin_type );
 		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
+
+		$skin = $this->get_current_skin();
+		if ( $skin ) {
+			$skin->set_parent( $this );
+			$skin->_add_render_attributes();
+		}
+
 	}
 
 	public function before_render() {

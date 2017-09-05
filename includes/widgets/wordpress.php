@@ -15,6 +15,12 @@ class Widget_WordPress extends Widget_Base {
 	 */
 	private $_widget_instance = null;
 
+	public function __construct( $data = [], $args = null ) {
+		$this->_widget_name = $args['widget_name'];
+
+		parent::__construct( $data, $args );
+	}
+
 	public function get_name() {
 		return 'wp-widget-' . $this->get_widget_instance()->id_base;
 	}
@@ -24,9 +30,7 @@ class Widget_WordPress extends Widget_Base {
 	}
 
 	public function get_categories() {
-
 		$category = 'wordpress';
-
 		return [ $category ];
 	}
 
@@ -104,12 +108,6 @@ class Widget_WordPress extends Widget_Base {
 	}
 
 	protected function content_template() {}
-
-	public function __construct( $data = [], $args = null ) {
-		$this->_widget_name = $args['widget_name'];
-
-		parent::__construct( $data, $args );
-	}
 
 	public function render_plain_content( $instance = [] ) {}
 }

@@ -203,6 +203,29 @@ class Group_Control_Background extends Group_Control_Base {
 			'condition' => [
 				'background' => [ 'classic' ],
 				'image[url]!' => '',
+				'custom_position' => '',
+			],
+		];
+
+		$fields['custom_position'] = [
+			'label' => _x( 'Custom Position', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::SWITCHER,
+			'label_on' => __( 'Yes', 'qazana' ),
+			'label_off' => __( 'No', 'qazana' ),
+			'render_type' => 'ui',
+		];
+
+		$fields['custom_position_values'] = [
+			'label' => _x( 'Custom Dimension', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::DIMENSIONS,
+			'description' => __( 'Add custom image position for .', 'qazana' ),
+			'size_units' => [ 'px', '%' ],
+			'allowed_dimensions'=> [ 'top', 'right' ],
+			'condition' => [
+				'custom_position!' => '',
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => 'background-position: {{RIGHT}}{{UNIT}} {{TOP}}{{UNIT}} ;',
 			],
 		];
 
