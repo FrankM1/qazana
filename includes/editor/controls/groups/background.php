@@ -213,6 +213,10 @@ class Group_Control_Background extends Group_Control_Base {
 			'label_on' => __( 'Yes', 'qazana' ),
 			'label_off' => __( 'No', 'qazana' ),
 			'render_type' => 'ui',
+			'condition' => [
+				'background' => [ 'classic' ],
+				'image[url]!' => '',
+			],
 		];
 
 		$fields['custom_position_values'] = [
@@ -223,6 +227,8 @@ class Group_Control_Background extends Group_Control_Base {
 			'allowed_dimensions'=> [ 'top', 'right' ],
 			'condition' => [
 				'custom_position!' => '',
+				'background' => [ 'classic' ],
+				'image[url]!' => '',
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-position: {{RIGHT}}{{UNIT}} {{TOP}}{{UNIT}} ;',
