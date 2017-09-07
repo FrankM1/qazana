@@ -43,6 +43,17 @@ class Widget_Divider extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'vertical', [
+				'label' => _x( 'Vertical.', 'Animation Control', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'label_on' => __( 'On', 'qazana' ),
+				'label_off' => __( 'Off', 'qazana' ),
+				'prefix_class' => 'qazana-divider-vertical-',
+			]
+		);
+
 		$this->add_control(
 			'weight',
 			[
@@ -82,7 +93,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_responsive_control(
 			'width',
 			[
-				'label' => __( 'Width', 'qazana' ),
+				'label' => __( 'Length', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ '%', 'px' ],
 				'range' => [
@@ -149,15 +160,6 @@ class Widget_Divider extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .qazana-divider' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
 				],
-			]
-		);
-
-		$this->add_control(
-			'view',
-			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::HIDDEN,
-				'default' => 'traditional',
 			]
 		);
 

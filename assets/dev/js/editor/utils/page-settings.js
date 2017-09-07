@@ -26,7 +26,13 @@ module.exports = ViewModule.extend( {
 			this.save( function() {
 				self.reloadPreview();
 			} );
-		}
+		},
+
+		custom_css: function( newValue ) {
+			newValue = newValue.replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id );
+			this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
+		}			
+		
 	},
 
 	addChangeCallback: function( attribute, callback ) {

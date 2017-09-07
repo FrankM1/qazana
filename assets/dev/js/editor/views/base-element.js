@@ -238,17 +238,22 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	renderStyles: function() {
+		
 		var self = this,
-			settings = self.getEditModel().get( 'settings' );
-
+			settings = self.getEditModel().get( 'settings' ),
+			customCSS = settings.get( 'custom_css' ),
+			extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
+			
 		self.controlsCSSParser.stylesheet.empty();
 
 		self.controlsCSSParser.addStyleRules( settings.getStyleControls(), settings.attributes, self.getEditModel().get( 'settings' ).controls, [ /{{ID}}/g, /{{WRAPPER}}/g ], [ self.getID(), '#qazana .' + self.getElementUniqueID() ] );
 
 		self.controlsCSSParser.addStyleToDocument();
 
-		var extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
-
+		if ( customCSS ) {
+			self.controlsCSSParser.elements.$stylesheetElement.append( customCSS.replace( /selector/g, '#qazana .' + self.getElementUniqueID() ) );
+		}
+		
 		if ( extraCSS ) {
 			self.controlsCSSParser.elements.$stylesheetElement.append( extraCSS );
 		}
