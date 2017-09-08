@@ -720,14 +720,6 @@ class Element_Column extends Element_Base {
 
 		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
 
-		$this->add_render_attribute( 'wrapper', 'class', [
-			'qazana-column',
-			'qazana-element',
-			'qazana-element-' . $this->get_id(),
-			'qazana-col-' . $settings['_column_size'],
-			'qazana-' . $column_type . '-column',
-		] );
-
 		foreach ( self::get_class_controls() as $control ) {
 			if ( empty( $settings[ $control['name'] ] ) )
 				continue;
@@ -735,24 +727,26 @@ class Element_Column extends Element_Base {
 			if ( ! $this->is_control_visible( $control ) )
 				continue;
 
-			$this->add_render_attribute( 'wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
+			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
 		}
 
 		if ( ! empty( $settings['_element_id'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'id', trim( $settings['_element_id'] ) );
+			$this->add_render_attribute( '_wrapper', 'id', trim( $settings['_element_id'] ) );
 		}
 
 		if ( ! empty( $settings['_animation_animated'] ) && ! empty( $settings['_animation_in'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'qazana-column-animated' );
-			$this->add_render_attribute( 'wrapper', 'data-animation-in', $settings['_animation_in'] );
-			$this->add_render_attribute( 'wrapper', 'data-animation-out', $settings['_animation_in'] );
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-column-animated' );
+			$this->add_render_attribute( '_wrapper', 'data-animation-in', $settings['_animation_in'] );
+			$this->add_render_attribute( '_wrapper', 'data-animation-out', $settings['_animation_in'] );
+			if ( ! empty($settings['_animation_delay'] ) ) {
+                $this->add_render_attribute('_wrapper', 'data-delay', $settings['_animation_delay']);
+			}
 		}
 
 		if ( ! empty( $settings['hover_animation'] ) ) {
-            $this->add_render_attribute( 'wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
-        }
-
-		$this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
+            $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
+		}
+		
 	}
 
 	protected function _get_default_child_type( array $element_data ) {

@@ -127,12 +127,11 @@ module.exports = ElementsHandler;
 		this.init = function() {
 
 			initElements();
-
+			addGlobalHandlers();
+			
 			if ( self.isEditMode() ) {
 				return;
 			}
-
-			addGlobalHandlers();
 
 			addElementsHandlers();
 
@@ -205,6 +204,36 @@ module.exports = ElementsHandler;
 				return result;
 			};
 
+		};
+
+		this.addListenerOnce = function( listenerID, event, callback, to ) {
+			if ( ! to ) {
+				to = self.getElements( '$window' );
+			}
+
+			if ( ! self.isEditMode() ) {
+				to.on( event, callback );
+
+				return;
+			}
+
+			if ( to instanceof jQuery ) {
+				var eventNS = event + '.' + listenerID;
+
+				to.off( eventNS ).on( eventNS, callback );
+			} else {
+				to.off( event, null, listenerID ).on( event, callback, listenerID );
+			}
+		};
+
+		this.waypoint = function( $element, callback, options ) {
+			var correctCallback = function() {
+				var element = this.element || this;
+
+				return callback.apply( element, arguments );
+			};
+
+			return $element.qazanaWaypoint( correctCallback, options );
 		};
 
     };
@@ -305,7 +334,7 @@ HandlerModule = ViewModule.extend( {
 			self = this;
 
 		var elementName = self.getElementName().replace(/-/g, '_');
-		var skinName = self.getSkinName().replace(/-/g, '_');
+		var skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
 
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			var settings = qazanaFrontend.config.elements.data[ modelCID ],
@@ -522,25 +551,57 @@ module.exports = function( $scope, $ ) {
 };
 
 },{}],8:[function(require,module,exports){
-module.exports = function( $scope, $ ) {
-	if ( qazanaFrontend.isEditMode() ) {
-		return;
+var HandlerModule = require('qazana-frontend/handler-module'),
+	GlobalHandler;
+
+GlobalHandler = HandlerModule.extend({
+	getElementName: function () {
+		return 'global';
+	},
+	animate: function () {
+		var self = this,
+			$element = this.$element,
+			animation = this.getAnimation(),
+			elementSettings = this.getElementSettings(),
+			animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
+
+		$element.removeClass('animated').removeClass(self.prevAnimation);
+		
+		setTimeout(function () {
+			self.prevAnimation = animation;
+			$element.addClass(animation).addClass('animated');
+		}, animationDelay);
+	},
+	getAnimation: function () {
+		var elementSettings = this.getElementSettings();
+
+		return elementSettings.animation || elementSettings._animation_in;
+	},
+	onInit: function () {
+		var self = this;
+
+		HandlerModule.prototype.onInit.apply(self, arguments);
+
+		if ( ! self.getAnimation()) {
+			return;
+		}
+
+		self.$element.addClass('qazana-element-animated');
+		
+	},
+	onElementChange: function (propertyName) {
+		if (/^_?animation/.test(propertyName)) {
+			this.animate();
+		}
 	}
+});
 
-	var animation = $scope.data( 'animation' );
-
-	if ( ! animation ) {
-		return;
-	}
-
-	$scope.addClass( 'qazana-invisible' ).removeClass( animation );
-
-	qazanaFrontend.utils.waypoint( $scope, function() {
-		$scope.removeClass( 'qazana-invisible' ).addClass( animation );
-	}, { offset: '90%' } );
+module.exports = function ($scope) {
+	new GlobalHandler({
+		$element: $scope
+	});
 };
-
-},{}],9:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( qazanaFrontend.isEditMode() ) {
 		return;

@@ -86,7 +86,7 @@ HandlerModule = ViewModule.extend( {
 			self = this;
 
 		var elementName = self.getElementName().replace(/-/g, '_');
-		var skinName = self.getSkinName().replace(/-/g, '_');
+		var skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
 
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			var settings = qazanaFrontend.config.elements.data[ modelCID ],

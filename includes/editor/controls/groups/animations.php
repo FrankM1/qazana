@@ -20,14 +20,17 @@ class Group_Control_Animations extends Group_Control_Base {
             'default' => '',
             'label_on' => __( 'On', 'qazana' ),
             'label_off' => __( 'Off', 'qazana' ),
-            'return_value' => 'animated',
+			'return_value' => 'animated',
+			'render_type' => 'template'
         ];
 
         $fields['in'] = [
         	'label' => __( 'Entrance Animation', 'qazana' ),
         	'type' => Controls_Manager::ANIMATION_IN,
         	'default' => 'fadeInUp',
-        	'label_block' => true,
+			'label_block' => true,
+			'frontend_available' => true,
+			'render_type' => 'template',
             'condition' => [
         		'animated' => 'animated',
         	],
@@ -42,7 +45,8 @@ class Group_Control_Animations extends Group_Control_Base {
         		'' => __( 'Normal', 'qazana' ),
         		'fast' => __( 'Fast', 'qazana' ),
         	],
-        	'prefix_class' => 'animated-',
+			'prefix_class' => 'animated-',
+			'frontend_available' => true,
         	'condition' => [
                 'animated' => 'animated',
         	],

@@ -82,12 +82,11 @@
 		this.init = function() {
 
 			initElements();
-
+			addGlobalHandlers();
+			
 			if ( self.isEditMode() ) {
 				return;
 			}
-
-			addGlobalHandlers();
 
 			addElementsHandlers();
 
@@ -160,6 +159,36 @@
 				return result;
 			};
 
+		};
+
+		this.addListenerOnce = function( listenerID, event, callback, to ) {
+			if ( ! to ) {
+				to = self.getElements( '$window' );
+			}
+
+			if ( ! self.isEditMode() ) {
+				to.on( event, callback );
+
+				return;
+			}
+
+			if ( to instanceof jQuery ) {
+				var eventNS = event + '.' + listenerID;
+
+				to.off( eventNS ).on( eventNS, callback );
+			} else {
+				to.off( event, null, listenerID ).on( event, callback, listenerID );
+			}
+		};
+
+		this.waypoint = function( $element, callback, options ) {
+			var correctCallback = function() {
+				var element = this.element || this;
+
+				return callback.apply( element, arguments );
+			};
+
+			return $element.qazanaWaypoint( correctCallback, options );
 		};
 
     };
