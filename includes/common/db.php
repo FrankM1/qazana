@@ -219,8 +219,8 @@ class DB {
 	 */
 	public function set_is_builder_page( $post_id, $is_qazana = true ) {
 		if ( $is_qazana ) {
-			// Use the string `builder` and not a boolean for rollback compatibility
-			update_post_meta( $post_id, '_qazana_edit_mode', 'builder' );
+			// Use the string `qazana` and not a boolean for rollback compatibility
+			update_post_meta( $post_id, '_qazana_edit_mode', 'qazana' );
 		} else {
 			delete_post_meta( $post_id, '_qazana_edit_mode' );
 		}
