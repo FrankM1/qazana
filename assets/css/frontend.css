@@ -766,9 +766,9 @@ a.qazana-edit-template {
         -ms-flex-pack: end;
             justify-content: flex-end; } }
 .qazana-error .qazana-field {
-  border-color: #d9534f; }
+  border-color: #f7423d; }
 .qazana-error .help-inline {
-  color: #d9534f;
+  color: #f7423d;
   font-size: 0.9em; }
 
 .qazana-message {
@@ -784,11 +784,11 @@ a.qazana-edit-template {
     vertical-align: middle;
     margin-right: 5px; }
   .qazana-message.qazana-message-danger {
-    color: #d9534f; }
+    color: #f7423d; }
     .qazana-message.qazana-message-danger:before {
       content: "\f00d"; }
   .qazana-message.form-message-success {
-    color: #5cb85c; }
+    color: #00a33e; }
 
 .qazana-form .qazana-button {
   padding-top: 0;
@@ -960,17 +960,17 @@ a.qazana-edit-template {
     margin-right: 5px; }
 
 .qazana-widget.qazana-button-info .qazana-button-content-wrapper {
-  border-color: #5bc0de;
-  background-color: #5bc0de; }
+  border-color: #2296FA;
+  background-color: #2296FA; }
 .qazana-widget.qazana-button-success .qazana-button-content-wrapper {
-  border-color: #5cb85c;
-  background-color: #5cb85c; }
+  border-color: #00a33e;
+  background-color: #00a33e; }
 .qazana-widget.qazana-button-warning .qazana-button-content-wrapper {
-  border-color: #f0ad4e;
-  background-color: #f0ad4e; }
+  border-color: #ffcd3f;
+  background-color: #ffcd3f; }
 .qazana-widget.qazana-button-danger .qazana-button-content-wrapper {
-  border-color: #d9534f;
-  background-color: #d9534f; }
+  border-color: #f7423d;
+  background-color: #f7423d; }
 .qazana-widget.qazana-button-clear .qazana-button-content-wrapper {
   padding: 0;
   border: none;
@@ -1528,13 +1528,13 @@ body.qazana-page .qazana-widget-menu-anchor {
     float: right; }
 
 .qazana-widget-progress .qazana-progress-wrapper.progress-info .qazana-progress-bar {
-  background-color: #5bc0de; }
+  background-color: #2296FA; }
 .qazana-widget-progress .qazana-progress-wrapper.progress-success .qazana-progress-bar {
-  background-color: #5cb85c; }
+  background-color: #00a33e; }
 .qazana-widget-progress .qazana-progress-wrapper.progress-warning .qazana-progress-bar {
-  background-color: #f0ad4e; }
+  background-color: #ffcd3f; }
 .qazana-widget-progress .qazana-progress-wrapper.progress-danger .qazana-progress-bar {
-  background-color: #d9534f; }
+  background-color: #f7423d; }
 
 .qazana-progress .qazana-title {
   display: block; }

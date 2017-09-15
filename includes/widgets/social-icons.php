@@ -362,11 +362,10 @@ class Widget_Social_Icons extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'hover_animation',
+		$this->add_group_control(
+			Group_Control_Hover_Animations::get_type(),
 			[
-				'label' => __( 'Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
+				'name' => '_hover_animation',
 			]
 		);
 

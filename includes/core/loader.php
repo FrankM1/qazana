@@ -28,18 +28,21 @@ Class Loader {
      *
      * @param [type] $locations [description]
      */
-    function __construct( $locations = array() ) {
+    function __construct( $base, $locations = array() ) {
 
+        $base_path  = ! empty($base['path'] ) ? $base['path'] : qazana()->plugin_dir;
+        $base_url   = ! empty($base['url'] ) ? $base['url'] : qazana()->plugin_url;
+        
         $this->_stack = array(
             get_stylesheet_directory(),
             get_template_directory(),
-            qazana()->plugin_dir,
+            $base_path,
         );
 
         $this->_stack_uri = array(
             get_stylesheet_directory_uri(),
             get_template_directory_uri(),
-            qazana()->plugin_url,
+            $base_url,
         );
 
         $this->_locations = $locations;

@@ -28,7 +28,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 
 		$size = $settings[ $setting_key . '_size' ];
 
-		$image_class = ! empty( $settings['hover_animation'] ) ? 'qazana-animation-' . $settings['hover_animation'] : '';
+		$image_class = ! empty( $settings['hover_animation_type'] ) ? 'qazana-hover-animation-' . $settings['hover_animation_type'] : '';
 
 		$html = '';
 

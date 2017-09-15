@@ -6056,7 +6056,6 @@ module.exports = ViewModule.extend( {
 		},
 
 		template: function() {
-			
 			var self = this;
 
 			this.save( function() {

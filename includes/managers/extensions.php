@@ -6,6 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 final class Manager {
 
     /**
+     * Extension loader
+     *
+     * @var array
+     */
+	public $loader;
+    
+    /**
      * Extension data
      *
      * @var array
@@ -34,9 +41,10 @@ final class Manager {
     /**
      * __construct
      */
-	public function __construct() {
+	public function __construct( $loader ) {
 
-        $this->path = qazana()->extensions_loader->merge_files_stack_locations();
+        $this->loader = $loader;
+        $this->path = $this->loader->merge_files_stack_locations();
 
         $this->reflection = new \ReflectionClass( $this );
 
@@ -95,7 +103,7 @@ final class Manager {
              */
             $class_file = "$path/$folder/extension_{$folder}.php";
 
-            if ( $file = qazana()->extensions_loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+            if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
                 $this->extensions[ $folder ] = new $extension_class ( $this );
             }
 
@@ -138,7 +146,7 @@ final class Manager {
     			)
     		);
 
-            if ( $file = qazana()->extensions_loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
+            if ( $file = $this->loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
                 require_once $file;
             }
         }
@@ -186,7 +194,7 @@ final class Manager {
                 continue;
             }
 
-            if ( $file = qazana()->extensions_loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
+            if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
                 require_once $file;
             }
         }

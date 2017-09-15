@@ -43,17 +43,6 @@ class Widget_Divider extends Widget_Base {
 			]
 		);
 
-		$this->add_responsive_control(
-			'vertical', [
-				'label' => _x( 'Vertical.', 'Animation Control', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'yes',
-				'label_on' => __( 'On', 'qazana' ),
-				'label_off' => __( 'Off', 'qazana' ),
-				'prefix_class' => 'qazana-divider-vertical-',
-			]
-		);
-
 		$this->add_control(
 			'weight',
 			[

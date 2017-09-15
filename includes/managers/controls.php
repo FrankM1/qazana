@@ -51,7 +51,6 @@ class Controls_Manager {
 	const TEXT_SHADOW = 'text_shadow';
 	const ANIMATION_IN = 'animation_in';
 	const ANIMATION_OUT = 'animation_out';
-	const HOVER_ANIMATION = 'hover_animation';
 	const ORDER = 'order';
 
 	/**
@@ -134,7 +133,6 @@ class Controls_Manager {
 			self::TEXT_SHADOW,
 			self::ANIMATION_IN,
 			self::ANIMATION_OUT,
-			self::HOVER_ANIMATION,
 			self::ORDER,
 		];
 
@@ -158,20 +156,21 @@ class Controls_Manager {
 		require( qazana()->includes_dir  . 'editor/controls/groups/image-size.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/hover-animations.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/text-shadow.php' );
 
-		$this->_control_groups['background'] = new Group_Control_Background();
-		$this->_control_groups['border']     = new Group_Control_Border();
-		$this->_control_groups['typography'] = new Group_Control_Typography();
-		$this->_control_groups['image-size'] = new Group_Control_Image_Size();
-		$this->_control_groups['box-shadow'] = new Group_Control_Box_Shadow();
-		$this->_control_groups['animations'] = new Group_Control_Animations();
-		$this->_control_groups['icon'] 		 = new Group_Control_Icon();
-		$this->_control_groups['text-shadow'] = new Group_Control_Text_Shadow();
+		$this->_control_groups['background'] 		= new Group_Control_Background();
+		$this->_control_groups['border']     		= new Group_Control_Border();
+		$this->_control_groups['typography'] 		= new Group_Control_Typography();
+		$this->_control_groups['image-size'] 		= new Group_Control_Image_Size();
+		$this->_control_groups['box-shadow'] 		= new Group_Control_Box_Shadow();
+		$this->_control_groups['animations'] 		= new Group_Control_Animations();
+		$this->_control_groups['hover-animations'] 	= new Group_Control_Hover_Animations();
+		$this->_control_groups['icon'] 		 		= new Group_Control_Icon();
+		$this->_control_groups['text-shadow'] 		= new Group_Control_Text_Shadow();
 
 		do_action( 'qazana/controls/controls_registered', $this );
-
 	}
 
 	/**

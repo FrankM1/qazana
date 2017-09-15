@@ -380,6 +380,10 @@ class Plugin {
                 require_once( $this->includes_dir . 'managers/image.php' );
             }
         }
+
+        if ( defined( 'WP_CLI' ) ) {
+            require_once( $this->includes_dir . 'wp-cli/commands.php' );
+        }
     }
 
     /**
@@ -389,13 +393,18 @@ class Plugin {
      */
     public function init_classes() {
 
+        $paths = array( 
+			'path' 	=> $this->plugin_dir, 
+			'uri' 	=> $this->plugin_url 
+        );
+        
         $this->db                   = new DB();
         $this->icons_manager        = new Icons_Manager();
         $this->controls_manager     = new Controls_Manager();
         $this->schemes_manager      = new Schemes_Manager();
         $this->elements_manager     = new Elements_Manager();
 
-        $this->widget_loader        = new Loader( $this->widget_locations );
+        $this->widget_loader        = new Loader( $paths, $this->widget_locations );
         $this->widgets_manager      = new Widgets_Manager();
 
 	    $this->skins_manager 	    = new Skins_Manager();
@@ -413,8 +422,8 @@ class Plugin {
         $this->templates_manager        = new Template_Manager();
         $this->page_settings_manager    = new PageSettings\Manager();
 
-        $this->extensions_loader    = new Loader( $this->extensions_locations );
-        $this->extensions_manager   = new Extensions\Manager();
+        $this->extensions_loader    = new Loader( $paths, $this->extensions_locations );
+        $this->extensions_manager   = new Extensions\Manager( $this->extensions_loader );
         $this->cron                 = new Cron;
 
         $this->mobile_detect        = new MobileDetect();

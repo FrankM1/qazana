@@ -224,14 +224,6 @@ class Widget_Common extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'_hover_animation',
-			[
-				'label' => __( 'Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
 			[

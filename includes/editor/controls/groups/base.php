@@ -125,8 +125,10 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 			$field_args['section'] = $args['section'];
 		}
 
-		$field_args['classes'] = $this->get_base_group_classes() . ' qazana-group-control-' . $control_id;
+		$classes = $this->get_base_group_classes() . ' qazana-group-control-' . $control_id;
 
+		$field_args['classes'] = ! empty( $field_args['classes'] ) ? $field_args['classes'] . ' ' . $classes : $classes;
+		
 		// add defaults
 		if ( ! empty( $args['defaults'][$control_id] ) ) {
 			$field_args['default'] = $args['defaults'][$control_id];

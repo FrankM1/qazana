@@ -181,11 +181,10 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'hover_animation',
+		$this->add_group_control(
+			Group_Control_Hover_Animations::get_type(),
 			[
-				'label' => __( 'Hover Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
+				'name' => 'hover_animation',
 			]
 		);
 
@@ -325,7 +324,7 @@ class Widget_Image extends Widget_Base {
 		<?php endif;
 
 		if ( $link ) : ?>
-				<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+			<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
 		<?php endif;
 
 		echo Group_Control_Image_Size::get_attachment_image_html( $settings );
@@ -335,7 +334,7 @@ class Widget_Image extends Widget_Base {
 		<?php endif;
 
 		if ( $has_caption ) : ?>
-				<figcaption class="widget-image-caption wp-caption-text"><?php echo $settings['caption']; ?></figcaption>
+			<figcaption class="widget-image-caption wp-caption-text"><?php echo $settings['caption']; ?></figcaption>
 		<?php endif;
 
 		if ( $has_caption ) : ?>
@@ -376,8 +375,8 @@ class Widget_Image extends Widget_Base {
 			var imgClass = '',
 				hasCaption = '' !== settings.caption;
 
-			if ( '' !== settings.hover_animation ) {
-				imgClass = 'qazana-hover-animation-' + settings.hover_animation;
+			if ( '' !== settings.hover_animation_type ) {
+				imgClass = 'qazana-hover-animation-' + settings.hover_animation_type;
 			}
 
 			if ( hasCaption ) {

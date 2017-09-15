@@ -22,6 +22,15 @@ class Widget_Icon_Box extends Widget_Base {
 	}
 
 	protected function _register_controls() {
+		$this->_register_section_icon_controls();
+		$this->_register_section_style_content_controls();
+		$this->_register_section_style_icon_controls();
+		$this->_register_section_svg_style_content_controls();
+		$this->_register_section_hover_controls();
+	}
+
+	protected function _register_section_icon_controls() {
+			
 		$this->start_controls_section(
 			'section_icon',
 			[
@@ -191,7 +200,10 @@ class Widget_Icon_Box extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
+	}
+	
+	protected function _register_section_svg_style_content_controls() {
+			
 		$this->start_controls_section(
 			'section_svg_style_content',
 			[
@@ -240,7 +252,10 @@ class Widget_Icon_Box extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+	}
 
+	protected function _register_section_style_icon_controls() {
+			
 		$this->start_controls_section(
 			'section_style_icon',
 			[
@@ -409,7 +424,10 @@ class Widget_Icon_Box extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+	}
 
+	protected function _register_section_hover_controls() {
+			
 		$this->start_controls_section(
 			'section_hover',
 			[
@@ -447,16 +465,18 @@ class Widget_Icon_Box extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'hover_animation',
+		$this->add_group_control(
+			Group_Control_Hover_Animations::get_type(),
 			[
-				'label' => __( 'Animation', 'qazana' ),
-				'type' => Controls_Manager::HOVER_ANIMATION,
+				'name' => 'hover_animation',
 			]
 		);
 
 		$this->end_controls_section();
+	}
 
+	protected function _register_section_style_content_controls() {
+		
 		$this->start_controls_section(
 			'section_style_content',
 			[
@@ -706,7 +726,7 @@ class Widget_Icon_Box extends Widget_Base {
 
         $icon_tag = 'span';
 
-		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation'] ] );
+		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation_type'] ] );
 
         $link_attributes = $this->get_render_attribute_string( 'link' );
 
