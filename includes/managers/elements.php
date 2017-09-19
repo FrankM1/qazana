@@ -106,11 +106,7 @@ class Elements_Manager {
 			$this->_categories[ $category_name ] = $category_properties;
 		}
 
-		$this->_categories = array_slice( $this->_categories, 0, $offset, true )
-			+ [
-				$category_name => $category_properties,
-			]
-			+ array_slice( $this->_categories, $offset, null, true );
+		$this->_categories = array_slice( $this->_categories, 0, $offset, true ) + [ $category_name => $category_properties ] + array_slice( $this->_categories, $offset, null, true );
 	}
 
 	public function register_element_type( Element_Base $element ) {

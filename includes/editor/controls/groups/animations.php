@@ -34,6 +34,16 @@ class Group_Control_Animations extends Group_Control_Base {
             'condition' => [
         		'animated' => 'animated',
         	],
+		];
+		
+		$fields['delay'] = [
+        	'label' => __( 'Animation Delay', 'qazana' ),
+        	'type' => Controls_Manager::NUMBER,
+        	'default' => '',
+			'frontend_available' => true,
+        	'condition' => [
+                'animated' => 'animated',
+        	],
         ];
 
         $fields['duration'] = [

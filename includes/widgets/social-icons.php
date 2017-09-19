@@ -365,7 +365,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Hover_Animations::get_type(),
 			[
-				'name' => '_hover_animation',
+				'name' => 'hover_animation',
 			]
 		);
 
@@ -376,8 +376,8 @@ class Widget_Social_Icons extends Widget_Base {
 	protected function render() {
 
 		$class_animation = '';
-		if ( ! empty( $settings['hover_animation'] ) ) {
-			$class_animation = ' qazana-animation-' . $settings['hover_animation'];
+		if ( ! empty( $settings['hover_animation_type'] ) ) {
+			$class_animation = ' qazana-animation-' . $settings['hover_animation_type'];
 		}
 
 		?>

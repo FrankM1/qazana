@@ -18,6 +18,8 @@ class Group_Control_Text_Shadow extends Group_Control_Base {
 
 		$controls['text_shadow_type'] = [
 			'label' => _x( 'Text Shadow', 'Text Shadow Control', 'qazana' ),
+			'label_on' => _x( 'On', 'Text Shadow Control', 'qazana' ),
+			'label_off' => _x( 'Off', 'Text Shadow Control', 'qazana' ),
 			'type' => Controls_Manager::SWITCHER,
 			'return_value' => 'yes',
 			'render_type' => 'ui',

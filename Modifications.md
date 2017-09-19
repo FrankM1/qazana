@@ -18,4 +18,4 @@ Based on the Elementor plugin
 
 
 // Todo
-Integrate with customizer like so. Add ability to switch to the qazana if current page being viewed in customizer is a qazana page.
+Integrate with customizer like so. Add ability to switch to the Qazana if current page being viewed in customizer is a qazana page.

@@ -376,7 +376,7 @@ class Widget_Icon extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Hover_Animations::get_type(),
 			[
-				'name' => '_hover_animation',
+				'name' => 'hover_animation',
 			]
 		);
 
@@ -417,8 +417,8 @@ class Widget_Icon extends Widget_Base {
 
 		$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-icon' );
 
-		if ( ! empty( $settings['hover_animation'] ) ) {
-			$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
+		if ( ! empty( $settings['hover_animation_type'] ) ) {
+			$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation_type'] );
 		}
 
 		$icon_tag = 'div';

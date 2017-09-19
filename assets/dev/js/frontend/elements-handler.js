@@ -17,9 +17,6 @@ ElementsHandler = function( $ ) {
 		}
 
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
-
-		$(document).trigger( 'element_ready', $scope );
-		$(document).trigger( 'element_ready::'+ elementType, $scope );
 	};
 
 	this.addExternalListener = function( $scope, event, callback, externalElement ) {

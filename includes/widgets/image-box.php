@@ -213,7 +213,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Hover_Animations::get_type(),
 			[
-				'name' => '_hover_animation',
+				'name' => 'hover_animation',
 			]
 		);
 
@@ -371,8 +371,8 @@ class Widget_Image_Box extends Widget_Base {
 			$this->add_render_attribute( 'image', 'alt', Control_Media::get_image_alt( $settings['image'] ) );
 			$this->add_render_attribute( 'image', 'title', Control_Media::get_image_title( $settings['image'] ) );
 
-			if ( $settings['hover_animation'] ) {
-				$this->add_render_attribute( 'image', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
+			if ( $settings['hover_animation_type'] ) {
+				$this->add_render_attribute( 'image', 'class', 'qazana-hover-animation-' . $settings['hover_animation_type'] );
 			}
 
 			$image_html = '<img ' . $this->get_render_attribute_string( 'image' ) . '>';

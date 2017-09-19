@@ -11,13 +11,13 @@ class Template_Api {
      * [$api_template_url description]
      * @var string
      */
-    public static $api_template_url = 'https://api.radiumthemes.com/api/v1/qazana/templates';
+    public static $api_template_url = 'https://api.qazana.net/api/v1/qazana/templates';
 
     /**
      * [$api_template_content_url description]
      * @var string
      */
-    private static $api_template_content_url = 'https://api.radiumthemes.com/api/v1/qazana/templates/%d';
+    private static $api_template_content_url = 'https://api.qazana.net/api/v1/qazana/templates/%d';
 
     /**
      * [__construct description]

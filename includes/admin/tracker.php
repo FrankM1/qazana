@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Admin_Tracker {
 
-    private static $_api_url = 'https://api.radiumthemes.com/api/v1/qazana/stats/';
+    private static $_api_url = 'https://api.qazana.net/api/v1/qazana/stats/';
 
 	/**
 	 * Hook into cron event.
