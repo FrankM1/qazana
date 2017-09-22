@@ -369,7 +369,7 @@ class Editor {
 		$page_settings_instance = PageSettingsManager::get_page( $post_id );
 
         $this->add_localize_settings( [
-			'version' => qazana_version(),
+			'version' => qazana_get_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'home_url' => home_url(),
             'nonce' => wp_create_nonce( 'qazana-editing' ),

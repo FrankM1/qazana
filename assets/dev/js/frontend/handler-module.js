@@ -83,14 +83,14 @@ HandlerModule = ViewModule.extend( {
 	getElementSettings: function( setting ) {
 		var elementSettings = {},
 			modelCID = this.getModelCID(),
-			self = this;
-
-		var elementName = self.getElementName().replace(/-/g, '_');
-		var skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
-
+			self = this,
+			settings,
+			elementName = self.getElementName().replace(/-/g, '_'),
+			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
+		
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
-			var settings = qazanaFrontend.config.elements.data[ modelCID ],
-				settingsKeys = qazanaFrontend.config.elements.keys[ settings.attributes.widgetType || settings.attributes.elType ];
+			settings = qazanaFrontend.config.elements.data[ modelCID ];
+			settingsKeys = qazanaFrontend.config.elements.keys[ settings.attributes.widgetType || settings.attributes.elType ];
 
 			jQuery.each( settings.getActiveControls(), function( controlKey ) {
 
@@ -107,10 +107,9 @@ HandlerModule = ViewModule.extend( {
 
 		} else {
 
-			var settings = this.$element.data( 'settings' ) || {};
+			settings = this.$element.data( 'settings' ) || {};
 
 			if ( settings && skinName !== 'default' ) {
-
 				jQuery.each( settings, function( controlKey ) {
 					var newControlKey = controlKey;
 					newControlKey = controlKey.replace( skinName + '_', '' );

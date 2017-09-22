@@ -19,8 +19,10 @@ class Group_Control_Animations extends Group_Control_Base {
             'type' => Controls_Manager::SWITCHER,
             'default' => '',
             'label_on' => __( 'On', 'qazana' ),
-            'label_off' => __( 'Off', 'qazana' ),
+			'label_off' => __( 'Off', 'qazana' ),
+			'frontend_available' => true,
 			'return_value' => 'animated',
+			'prefix_class' => 'qazana-element-',
 			'render_type' => 'template'
         ];
 

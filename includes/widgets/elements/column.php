@@ -734,15 +734,6 @@ class Element_Column extends Element_Base {
 			$this->add_render_attribute( '_wrapper', 'id', trim( $settings['_element_id'] ) );
 		}
 
-		if ( ! empty( $settings['_animation_animated'] ) && ! empty( $settings['_animation_in'] ) ) {
-			$this->add_render_attribute( '_wrapper', 'class', 'qazana-column-animated' );
-			$this->add_render_attribute( '_wrapper', 'data-animation-in', $settings['_animation_in'] );
-			$this->add_render_attribute( '_wrapper', 'data-animation-out', $settings['_animation_in'] );
-			if ( ! empty($settings['_animation_delay'] ) ) {
-                $this->add_render_attribute('_wrapper', 'data-delay', $settings['_animation_delay']);
-			}
-		}
-
 		if ( ! empty( $settings['hover_animation'] ) ) {
             $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 		}

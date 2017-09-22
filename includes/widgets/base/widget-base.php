@@ -232,12 +232,6 @@ abstract class Widget_Base extends Element_Base {
 			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
 		}
 
-		if ( ! empty( $settings['_animation_animated'] ) && ! empty( $settings['_animation_in'] ) ) {
-			$this->add_render_attribute( '_wrapper', 'class', 'qazana-element-animated' );
-			$this->add_render_attribute( '_wrapper', 'data-animation-in', $settings['_animation_in'] );
-			$this->add_render_attribute( '_wrapper', 'data-animation-out', $settings['_animation_in'] );
-		}
-
 		if ( ! empty( $settings['_hover_animation'] ) ) {
             $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['_hover_animation'] );
         }

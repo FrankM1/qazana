@@ -22,7 +22,7 @@ GlobalHandler = HandlerModule.extend({
 	getAnimation: function () {
 		var elementSettings = this.getElementSettings();
 
-		return elementSettings.animation || elementSettings._animation_in;
+		return elementSettings._animation_animated && elementSettings._animation_in;
 	},
 	onInit: function () {
 		var self = this;
@@ -32,8 +32,6 @@ GlobalHandler = HandlerModule.extend({
 		if ( ! self.getAnimation()) {
 			return;
 		}
-
-		self.$element.addClass('qazana-element-animated');
 		
 	},
 	onElementChange: function (propertyName) {

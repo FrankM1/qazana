@@ -1,0 +1,5 @@
+- skins are classes and therefore can be shared by multiple elemnts 
+- each skin can have independent settings 
+- a askin can acess parent settings
+- a skin can manage it's own dependencies
+- 

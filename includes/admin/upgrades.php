@@ -13,7 +13,7 @@ class Upgrades {
         $qazana_version = get_option( 'qazana_version' );
 
         if ( ! $qazana_version ) {
-            // 0.3.1 is the first version to use this option so we must add it
+            // 1.0.0 is the first version to use this option so we must add it
             $qazana_version = '1.0.0';
             update_option( 'qazana_version', $qazana_version );
         }

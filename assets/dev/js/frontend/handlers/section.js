@@ -80,7 +80,97 @@ var StretchedSection = HandlerModule.extend( {
 	}
 } );
 
-module.exports = function( $scope, $ ) {
+var Shapes = HandlerModule.extend( {
+	
+	getDefaultSettings: function() {
+		return {
+			selectors: {
+				container: '> .qazana-shape-%s'
+			},
+			svgURL: qazanaFrontend.config.urls.assets + 'shapes/'
+		};
+	},
+
+	getDefaultElements: function() {
+		var elements = {},
+			selectors = this.getSettings( 'selectors' );
+
+		elements.$topContainer = this.$element.find( selectors.container.replace( '%s', 'top' ) );
+
+		elements.$bottomContainer = this.$element.find( selectors.container.replace( '%s', 'bottom' ) );
+
+		return elements;
+	},
+
+	buildSVG: function( side ) {
+		var self = this,
+			baseSettingKey = 'shape_divider_' + side,
+			shapeType = self.getElementSettings( baseSettingKey ),
+			$svgContainer = this.elements[ '$' + side + 'Container' ];
+			console.log(shapeType);
+			
+		$svgContainer.empty().attr( 'data-shape', shapeType );
+
+		if ( ! shapeType ) {
+			return;
+		}
+
+		var fileName = shapeType;
+
+		if ( self.getElementSettings( baseSettingKey + '_negative' ) ) {
+			fileName += '-negative';
+		}
+
+		var svgURL = self.getSettings( 'svgURL' ) + fileName + '.svg';
+
+		jQuery.get( svgURL, function( data ) {
+			$svgContainer.append( data.childNodes[0] );
+		} );
+
+		this.setNegative( side );
+	},
+
+	setNegative: function( side ) {
+		this.elements[ '$' + side + 'Container' ].attr( 'data-negative', !! this.getElementSettings( 'shape_divider_' + side + '_negative' ) );
+	},
+
+	onInit: function() {
+		var self = this;
+
+		HandlerModule.prototype.onInit.apply( self, arguments );
+
+		[ 'top', 'bottom' ].forEach( function( side ) {
+			console.log(side);
+			if ( self.getElementSettings( 'shape_divider_' + side ) ) {
+				self.buildSVG( side );
+			}
+		} );
+	},
+
+	onElementChange: function( propertyName ) {
+		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
+
+		if ( shapeChange ) {
+			this.buildSVG( shapeChange[1] );
+
+			return;
+		}
+
+		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
+
+		if ( negativeChange ) {
+			this.buildSVG( negativeChange[1] );
+
+			this.setNegative( negativeChange[1] );
+		}
+	}
+} );
+	
+module.exports = function( $scope ) {
+
+	if ( qazanaFrontend.isEditMode() ) {
+		new Shapes( { $element:  $scope } );
+	}
 
 	if ( qazanaFrontend.isEditMode() || $scope.hasClass( 'qazana-section-stretched' ) ) {
 		new StretchedSection( { $element: $scope } );
