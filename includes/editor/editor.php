@@ -7,23 +7,31 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Editor {
 
+	private $_post_id;
+
 	private $_is_edit_mode;
 
-	private $_editor_templates = [
-		'editor-templates/global.php',
-		'editor-templates/panel.php',
-		'editor-templates/panel-elements.php',
-		'editor-templates/repeater.php',
-		'editor-templates/templates.php',
-	];
+	private $_editor_templates = [];
 
 	/**
 	 * @var array
 	 */
 	private $_localize_settings = [];
 
+	private function init_editor_templates() {
+		// It can be filled from plugins
+		$this->_editor_templates = array_merge( $this->_editor_templates, [
+		 	__DIR__ . '/editor-templates/global.php',
+			__DIR__ . '/editor-templates/panel.php',
+			__DIR__ . '/editor-templates/panel-elements.php',
+			__DIR__ . '/editor-templates/repeater.php',
+			__DIR__ . '/editor-templates/templates.php',
+		] );
+	}
+
 	public function __construct() {
-		add_action( 'template_redirect', [ $this, 'init' ] );
+		add_action( 'admin_action_qazana', [ $this, 'init' ] );
+		add_action( 'template_redirect', [ $this, 'redirect_to_new_url' ] );
 	}
 
     public function get_localize_settings() {
@@ -44,10 +52,25 @@ class Editor {
         $this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
     }
 
-	public function init() {
-		if ( is_admin() || ! $this->is_edit_mode() ) {
+	public function init( $die = true ) {
+		if ( empty( $_REQUEST['post'] ) ) { // WPCS: CSRF ok.
 			return;
 		}
+
+		$this->_post_id = absint( $_REQUEST['post'] );
+
+		if ( ! $this->is_edit_mode( $this->_post_id ) ) {
+			return;
+		}
+
+		$this->init_editor_templates();
+
+		// Send MIME Type header like WP admin-header.
+		@header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
+
+		query_posts( [ 'p' => $this->_post_id, 'post_type' => get_post_type( $this->_post_id ) ] );
+
+		qazana()->db->switch_to_post( $this->_post_id );
 
 		add_filter( 'show_admin_bar', '__return_false' );
 
@@ -75,14 +98,12 @@ class Editor {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 999999 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
-		$post_id = get_the_ID();
-
 		// Change mode to Builder
-		qazana()->db->set_is_builder_page( $post_id );
+		qazana()->db->set_is_builder_page( $this->_post_id );
 
 		// Post Lock
-		if ( ! $this->get_locked_user( $post_id ) ) {
-			$this->lock_post( $post_id );
+		if ( ! $this->get_locked_user( $this->_post_id ) ) {
+			$this->lock_post( $this->_post_id );
 		}
 
 		// Setup default heartbeat options
@@ -96,29 +117,38 @@ class Editor {
 
 		// Print the panel
 		$this->print_panel_html();
+
+		// From the action it's an empty string, from tests its `false`
+		if ( false !== $die ) {
+			die;
+		}
+	}
+
+	public function redirect_to_new_url() {
+		if ( ! isset( $_GET['qazana'] ) ) {
+			return;
+		}
+
+		if ( ! User::is_current_user_can_edit( $this->_post_id ) || ! qazana()->db->is_built_with_qazana( $this->_post_id ) ) {
+			return;
+		}
+
+		wp_redirect( Utils::get_edit_link( $this->_post_id ) );
 		die;
 	}
 
-	public function is_edit_mode() {
+	public function is_edit_mode( $post_id = null ) {
 		if ( null !== $this->_is_edit_mode ) {
 			return $this->_is_edit_mode;
 		}
 
-		if ( ! User::is_current_user_can_edit() ) {
+		if ( ! User::is_current_user_can_edit( $post_id ) ) {
 			return false;
-		}
-
-		if ( isset( $_GET['qazana'] ) ) {
-			return true;
-		}
-
-		// In some Apache configurations, in the Home page, the $_GET['qazana'] is not set
-		if ( '/?qazana' === $_SERVER['REQUEST_URI'] ) {
-			return true;
 		}
 
 		// Ajax request as Editor mode
 		$actions = [
+			'qazana',
 			'qazana_render_widget',
 
 			// Templates
@@ -171,14 +201,14 @@ class Editor {
 	}
 
 	public function enqueue_scripts() {
+		remove_action( 'wp_enqueue_scripts', [ $this, __FUNCTION__ ], 999999 );
+
 		global $wp_styles, $wp_scripts;
 
-		$post_id = get_the_ID();
-
 		// Set the global data like $authordata and etc
-		setup_postdata( $post_id );
+		setup_postdata( $this->_post_id );
 
-        $editor_data = qazana()->db->get_builder( $post_id, DB::STATUS_DRAFT );
+        $editor_data = qazana()->db->get_builder( $this->_post_id, DB::STATUS_DRAFT );
 
         // Reset global variable
         $wp_styles = new \WP_Styles();
@@ -197,9 +227,9 @@ class Editor {
 			true
 		);
 
-        // Enqueue frontend scripts too
+        	// Enqueue frontend scripts too
 		qazana()->frontend->register_scripts();
-        qazana()->frontend->enqueue_scripts();
+        	qazana()->frontend->enqueue_scripts();
 
 		qazana()->frontend->register_widget_scripts();
 		qazana()->frontend->enqueue_widget_scripts();
@@ -350,15 +380,20 @@ class Editor {
 
 		do_action( 'qazana/editor/before_enqueue_scripts' );
 
-        wp_enqueue_script( 'qazana-editor' );
+		// Remove all TinyMCE plugins.
+		remove_all_filters( 'mce_buttons', 10 );
+		remove_all_filters( 'mce_external_plugins', 10 );
 
-        // Tweak for WP Admin menu icons
-        wp_print_styles( 'editor-buttons' );
+		wp_enqueue_script( 'qazana-editor' );
 
-        $locked_user = $this->get_locked_user( $post_id );
-        if ( $locked_user ) {
-            $locked_user = $locked_user->display_name;
-        }
+		// Tweak for WP Admin menu icons
+		wp_print_styles( 'editor-buttons' );
+
+		$locked_user = $this->get_locked_user( $this->_post_id );
+
+		if ( $locked_user ) {
+			$locked_user = $locked_user->display_name;
+		}
 
 		$page_title_selector = get_option( 'qazana_page_title_selector' );
 
@@ -366,14 +401,14 @@ class Editor {
 			$page_title_selector = 'h1.entry-title';
 		}
 
-		$page_settings_instance = PageSettingsManager::get_page( $post_id );
+		$page_settings_instance = PageSettingsManager::get_page( $this->_post_id );
 
         $this->add_localize_settings( [
 			'version' => qazana_get_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'home_url' => home_url(),
             'nonce' => wp_create_nonce( 'qazana-editing' ),
-            'preview_link' => add_query_arg( 'qazana-preview', '', remove_query_arg( 'qazana' ) ),
+            'preview_link' => Utils::get_preview_url( $this->_post_id ),
             'elements_categories' => qazana()->elements_manager->get_categories(),
             'controls' => qazana()->controls_manager->get_controls_data(),
             'elements' => qazana()->elements_manager->get_element_types_config(),
@@ -384,7 +419,7 @@ class Editor {
             ],
             'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
 			'revisions' => Revisions_Manager::get_revisions(),
-			'revisions_enabled' => ( $post_id && wp_revisions_enabled( get_post() ) ),
+			'revisions_enabled' => ( $this->_post_id && wp_revisions_enabled( get_post() ) ),
 			'page_settings' => [
 				'controls' => $page_settings_instance->get_controls(),
 				'tabs' => $page_settings_instance->get_tabs_controls(),
@@ -392,9 +427,9 @@ class Editor {
 			],
             'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'wp_editor' => $this->_get_wp_editor_config(),
-            'post_id' => $post_id,
+            'post_id' => $this->_post_id,
             'post_permalink' => get_the_permalink(),
-            'edit_post_link' => get_edit_post_link(),
+            'edit_post_link' => get_edit_post_link( $this->_post_id ),
             'settings_page_link' => admin_url( 'admin.php?page=' . qazana()->slug ),
             'qazana_site' => 'https://radiumthemes.com/plugins/qazana',
             'help_the_content_url' => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
@@ -577,7 +612,7 @@ class Editor {
 		qazana()->schemes_manager->print_schemes_templates();
 
 		foreach ( $this->_editor_templates as $editor_template ) {
-			if ( stream_resolve_include_path( $editor_template ) ) {
+			if ( file_exists( $editor_template ) ) {
 				include $editor_template;
 			} else {
 				echo $editor_template;

@@ -3,7 +3,9 @@ namespace Qazana\System_Info\Classes;
 
 use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class MU_Plugins_Reporter extends Base_Reporter {
 

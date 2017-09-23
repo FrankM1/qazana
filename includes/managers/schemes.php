@@ -129,7 +129,7 @@ class Schemes_Manager {
 		if ( null === self::$_enabled_schemes ) {
 			$enabled_schemes = [];
 
-			foreach ( self::$_schemes_types as $schemes_type ) {
+			foreach ( self::$_schemes_types as $schemes_type => $scheme_class ) {
 				if ( 'yes' === get_option( 'qazana_disable_' . $schemes_type . '_schemes' ) ) {
 					continue;
 				}
@@ -145,10 +145,10 @@ class Schemes_Manager {
 
 		include( qazana()->includes_dir  . 'editor/schemes/base.php' );
 
-		foreach ( self::$_schemes_types as $schemes_type ) {
-			include( qazana()->includes_dir  . 'editor/schemes/' . $schemes_type . '.php' );
+		foreach ( self::$_schemes_types as $schemes_class ) {
+			include( qazana()->includes_dir  . 'editor/schemes/' . $schemes_class . '.php' );
 
-			$this->register_scheme( __NAMESPACE__ . '\Scheme_' . ucfirst( str_replace( '-', '_', $schemes_type ) ) );
+			$this->register_scheme( __NAMESPACE__ . '\Scheme_' . ucfirst( str_replace( '-', '_', $schemes_class ) ) );
 		}
 	}
 

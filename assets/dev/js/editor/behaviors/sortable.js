@@ -105,11 +105,12 @@ SortableBehavior = Marionette.Behavior.extend( {
 			ui.placeholder.height( itemHeight );
 		}
 
-		qazana.channels.data.trigger( model.get( 'elType' ) + ':drag:start' );
 
 		qazana.channels.data
 			.reply( 'dragging:model', model )
-			.reply( 'dragging:parent:view', this.view );
+			.reply( 'dragging:parent:view', this.view )
+			.trigger( 'drag:start', model )
+			.trigger( model.get( 'elType' ) + ':drag:start' );
 	},
 
 	onSortOver: function( event ) {
@@ -156,9 +157,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 			return;
 		}
 
-		var newIndex = ui.item.parent().children().index( ui.item );
+		qazana.channels.data.trigger( 'drag:before:update', model );
 
-		this.view.addChildElement( model.toJSON( { copyHtmlCache: true } ), { at: newIndex } );
+		var newIndex = ui.item.parent().children().index( ui.item ),
+			modelJSON = model.toJSON( { copyHtmlCache: true } );
 
 		var senderSection = qazana.channels.data.request( 'dragging:parent:view' );
 
@@ -167,6 +169,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 		model.destroy();
 
 		senderSection.isManualRemoving = false;
+
+		this.view.addChildElement( modelJSON, { at: newIndex } );
+
+		qazana.channels.data.trigger( 'drag:after:update', model );
 	},
 
 	onSortUpdate: function( event, ui ) {
@@ -178,6 +184,8 @@ SortableBehavior = Marionette.Behavior.extend( {
 				collection = this.view.collection,
 				newIndex = $childElement.parent().children().index( $childElement );
 
+			qazana.channels.data.trigger( 'drag:before:update', model );
+
 			var child = this.view.children.findByModelCid( model.cid );
 
 			child._isRendering = true;
@@ -187,6 +195,8 @@ SortableBehavior = Marionette.Behavior.extend( {
 			this.view.addChildElement( model, { at: newIndex } );
 
 			qazana.setFlagEditorChange( true );
+
+			qazana.channels.data.trigger( 'drag:after:update', model );
 		}
 	},
 

@@ -25,6 +25,10 @@ EditorView = ControlsStack.extend( {
 		return ControlsStack.prototype.isVisibleSectionControl.apply( this, arguments ) && qazana.helpers.isActiveControl( sectionControlModel, this.model.get( 'settings' ).attributes );
 	},
 
+	scrollToEditedElement: function() {
+		qazana.helpers.scrollToView( this.getOption( 'editedElementView' ) );
+	},
+
 	onBeforeRender: function() {
 		var controls = qazana.getElementControls( this.model );
 
@@ -59,14 +63,7 @@ EditorView = ControlsStack.extend( {
 	onDeviceModeChange: function() {
 		ControlsStack.prototype.onDeviceModeChange.apply( this, arguments );
 
-		var self = this;
-
-		// Timeout according to preview resize css animation duration
-		setTimeout( function() {
-			qazana.$previewContents.find( 'html, body' ).animate( {
-				scrollTop: self.getOption( 'editedElementView' ).$el.offset().top - qazana.$preview[0].contentWindow.innerHeight / 2
-			} );
-		}, 500 );
+		this.scrollToEditedElement();
 	},
 
 	onChildviewSettingsChange: function( childView ) {

@@ -1,36 +1,24 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Utils {
 
 	public static function is_ajax() {
-		return ( defined( 'DOING_AJAX' ) && DOING_AJAX );
+		return defined( 'DOING_AJAX' ) && DOING_AJAX;
 	}
 
 	public static function is_script_debug() {
-		return ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 	}
 
 	public static function get_edit_link( $post_id = 0 ) {
-		return apply_filters( 'qazana/utils/get_edit_link', add_query_arg( 'qazana', '', get_permalink( $post_id ) ), $post_id );
-	}
+		$edit_link = add_query_arg( [ 'post' => $post_id, 'action' => 'qazana' ], admin_url( 'post.php' ) );
 
-	public static function is_post_type_support( $post_id = 0 ) {
-		$post_type = get_post_type( $post_id );
-		$is_supported = post_type_supports( $post_type, 'qazana' );
-
-		return apply_filters( 'qazana/utils/is_post_type_support', $is_supported, $post_id, $post_type );
-	}
-
-	public static function get_placeholder_image_src() {
-		return apply_filters( 'qazana/utils/get_placeholder_image_src', qazana()->core_assets_url . 'images/placeholder.png' );
-	}
-
-	public static function generate_random_string( $length = 7 ) {
-		$salt = 'abcdefghijklmnopqrstuvwxyz';
-		return substr( str_shuffle( str_repeat( $salt, $length ) ), 0, $length );
+		return apply_filters( 'qazana/utils/get_edit_link', $edit_link, $post_id );
 	}
 
     /**
@@ -77,29 +65,55 @@ class Utils {
 
 	}
 
+	public static function get_preview_url( $post_id ) {
+		$preview_url = set_url_scheme( add_query_arg( 'qazana-preview', '', get_permalink( $post_id ) ) );
+
+		return apply_filters( 'qazana/utils/preview_url', $preview_url, $post_id );
+	}
+
+	public static function is_post_type_support( $post_id = 0 ) {
+		$post_type = get_post_type( $post_id );
+		$is_supported = post_type_supports( $post_type, 'qazana' );
+
+		return apply_filters( 'qazana/utils/is_post_type_support', $is_supported, $post_id, $post_type );
+	}
+
+	public static function get_placeholder_image_src() {
+		return apply_filters( 'qazana/utils/get_placeholder_image_src', qazana()->core_assets_url . 'images/placeholder.png' );
+	}
+
+	public static function generate_random_string( $length = 7 ) {
+		$salt = 'abcdefghijklmnopqrstuvwxyz';
+		return substr( str_shuffle( str_repeat( $salt, $length ) ), 0, $length );
+	}
+
 	/**
 	 * Tell to WP Cache plugins do not cache this request.
 	 *
 	 * @return void
 	 */
 	public static function do_not_cache() {
-
-		if ( ! defined( 'DONOTCACHEPAGE' ) )
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
+		}
 
-		if ( ! defined( 'DONOTCACHEDB' ) )
+		if ( ! defined( 'DONOTCACHEDB' ) ) {
 			define( 'DONOTCACHEDB', true );
+		}
 
-		if ( ! defined( 'DONOTMINIFY' ) )
+		if ( ! defined( 'DONOTMINIFY' ) ) {
 			define( 'DONOTMINIFY', true );
+		}
 
-		if ( ! defined( 'DONOTCDN' ) )
+		if ( ! defined( 'DONOTCDN' ) ) {
 			define( 'DONOTCDN', true );
+		}
 
-		if ( ! defined( 'DONOTCACHCEOBJECT' ) )
+		if ( ! defined( 'DONOTCACHCEOBJECT' ) ) {
 			define( 'DONOTCACHCEOBJECT', true );
+		}
 
-		// Set the headers to prevent caching for the different browsers
+		// Set the headers to prevent caching for the different browsers.
 		nocache_headers();
 	}
 
@@ -107,7 +121,7 @@ class Utils {
 		$current_offset = (float) get_option( 'gmt_offset' );
 		$timezone_string = get_option( 'timezone_string' );
 
-		// Create a UTC+- zone if no timezone string exists
+		// Create a UTC+- zone if no timezone string exists.
 		if ( empty( $timezone_string ) ) {
 			if ( 0 === $current_offset ) {
 				$timezone_string = 'UTC+0';

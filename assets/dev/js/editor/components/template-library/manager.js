@@ -94,10 +94,13 @@ TemplateLibraryManager = function() {
 			success: function( response ) {
 				self.closeModal();
 
+				qazana.channels.data.trigger( 'template:before:insert', templateModel );
+
 				qazana.sections.currentView.addChildModel( response.data, startIntent.importOptions || {} );
+				qazana.channels.data.trigger( 'template:after:insert', templateModel );
 
 				if ( options.withPageSettings ) {
-					qazana.pageSettings.model.set( response.page_settings );
+					qazana.settings.page.model.set( response.page_settings );
 				}
 			},
 			error: function( response ) {

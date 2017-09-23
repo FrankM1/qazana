@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * A single Checkbox control
@@ -24,8 +26,8 @@ class Control_Checkbox extends Base_Data_Control {
 			<span>{{{ data.label }}}</span>
 		</label>
 		<# if ( data.description ) { #>
-		<div class="qazana-control-field-description">{{{ data.description }}}</div>
-		<# } #>
+			<div class="qazana-control-field-description">{{{ data.description }}}</div>
+			<# } #>
 		<?php
 	}
 }

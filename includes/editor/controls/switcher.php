@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * A Switcher (on/off) control - basically a fancy UI representation of a checkbox.
@@ -56,8 +58,8 @@ class Control_Switcher extends Base_Data_Control {
 
 	protected function get_default_settings() {
 		return [
-			'label_off' => '',
-			'label_on' => '',
+			'label_off' => __( 'No', 'qazana' ),
+			'label_on' => __( 'Yes', 'qazana' ),
 			'return_value' => 'yes',
 		];
 	}

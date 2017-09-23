@@ -87,14 +87,21 @@ AddSectionView = Marionette.ItemView.extend( {
 			} );
 		}
 
+		qazana.channels.data.trigger( 'element:before:add', {
+			elType: 'section'
+		} );
+
 		var newSection = this.addSection( { elements: elements } );
 
 		newSection.setStructure( selectedStructure );
-		newSection.redefineLayout();
+
+		qazana.channels.data.trigger( 'element:after:add' );
 	},
 
 	onDropping: function() {
+		qazana.channels.data.trigger( 'section:before:drop' );
 		this.addSection().addElementFromPanel();
+		qazana.channels.data.trigger( 'section:after:drop' );
 	}
 } );
 

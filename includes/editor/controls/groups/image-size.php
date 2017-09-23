@@ -39,8 +39,11 @@ class Group_Control_Image_Size extends Group_Control_Base {
 
 		if ( ! empty( $id ) && in_array( $size, $image_sizes ) ) {
 			$image_class .= " attachment-$size size-$size";
+			$image_attr = [
+				'class' => trim( $image_class ),
+			];
 
-			$html .= wp_get_attachment_image( $id, $size, false, [ 'class' => trim( $image_class ) ] );
+			$html .= wp_get_attachment_image( $id, $size, false, $image_attr );
 		} else {
 			$image_src = self::get_attachment_image_src( $id, $setting_key, $settings );
 

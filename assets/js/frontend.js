@@ -2,12 +2,82 @@
 var ElementsHandler;
 
 ElementsHandler = function( $ ) {
+	var self = this;
+
+	// element-type.skin-type
+	var handlers = {
+		// Elements
+		'section': require( 'qazana-frontend/handlers/section' ),
+
+		// Widgets
+		'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
+		'alert.default': require( 'qazana-frontend/handlers/alert' ),
+		'counter.default': require( 'qazana-frontend/handlers/counter' ),
+		'progress.default': require( 'qazana-frontend/handlers/progress' ),
+		'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
+		'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
+		'video.default': require( 'qazana-frontend/handlers/video' ),
+		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
+		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' )
+	};
+
+	var addGlobalHandlers = function() {
+		qazanaFrontend.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
+		qazanaFrontend.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
+	};
+
+	var addElementsHandlers = function() {
+		$.each( handlers, function( elementName, funcCallback ) {
+			qazanaFrontend.hooks.addAction( 'frontend/element_ready/' + elementName, funcCallback );
+		} );
+	};
+
+	var runElementsHandlers = function() {
+		var $elements;
+
+		if ( qazanaFrontend.isEditMode() ) {
+			// Elements outside from the Preview
+			$elements = jQuery( '.qazana-element', '.qazana:not(.qazana-edit-mode)' );
+		} else {
+			$elements = $( '.qazana-element' );
+		}
+
+		$elements.each( function() {
+			self.runReadyTrigger( $( this ) );
+		} );
+	};
+
+	var init = function() {
+		if ( ! qazanaFrontend.isEditMode() ) {
+			self.initHandlers();
+		}
+	};
+
+	this.initHandlers = function() {
+		addGlobalHandlers();
+
+		addElementsHandlers();
+
+		runElementsHandlers();
+	};
+
+	this.getHandlers = function( handlerName ) {
+		if ( handlerName ) {
+			return handlers[ handlerName ];
+		}
+
+		return handlers;
+	};
+
 	this.runReadyTrigger = function( $scope ) {
-		var elementType = $scope.data( 'element_type' );
+		var elementType = $scope.attr( 'data-element_type' );
 
 		if ( ! elementType ) {
 			return;
 		}
+
+		// Initializing the `$scope` as frontend jQuery instance
+		$scope = jQuery( $scope );
 
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
 
@@ -20,121 +90,32 @@ ElementsHandler = function( $ ) {
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 	};
 
-	this.addExternalListener = function( $scope, event, callback, externalElement ) {
-		var $externalElement = $( externalElement || qazanaFrontend.getScopeWindow() );
-
-		if ( ! qazanaFrontend.isEditMode() ) {
-			$externalElement.on( event, callback );
-
-			return;
-		}
-
-		var eventNS = event + '.' + $scope.attr( 'id' );
-
-		$externalElement
-			.off( eventNS )
-			.on( eventNS, callback );
-	};
+	init();
 };
 
 module.exports = ElementsHandler;
 
-},{}],2:[function(require,module,exports){
+},{"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/progress":9,"qazana-frontend/handlers/section":10,"qazana-frontend/handlers/tabs":11,"qazana-frontend/handlers/text-editor":12,"qazana-frontend/handlers/toggle":13,"qazana-frontend/handlers/video":14,"qazana-frontend/handlers/widget":15}],2:[function(require,module,exports){
 /* global qazanaFrontendConfig */
 ( function( $ ) {
-	var EventManager = require( '../utils/hooks' ),
-		Module = require( './handler-module' ),
-		elements = {},
+	var elements = {},
+		EventManager = require( 'qazana-utils/hooks' ),
+		Module = require( 'qazana-frontend/handler-module' ),
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
-	    Utils = require( 'qazana-frontend/utils' );
+		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
+		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
 
 	var QazanaFrontend = function() {
 		var self = this,
-			scopeWindow = window;
+			dialogsManager;
 
-		this.config = window.qazanaFrontendConfig;
+		this.config = qazanaFrontendConfig;
 
 		this.Module = Module;
 
-		var addGlobalHandlers = function() {
-			self.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
-			self.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
-		};
-
-		var addElementsHandlers = function() {
-			$.each( self.handlers, function( elementName, funcCallback ) {
-				self.hooks.addAction( 'frontend/element_ready/' + elementName, funcCallback );
-			} );
-		};
-
-		var runElementsHandlers = function() {
-			var $elements;
-
-			if ( self.isEditMode() ) {
-				// Elements outside from the Preview
-				$elements = self.getScopeWindow().jQuery( '.qazana-element', '.qazana:not(.qazana-edit-mode)' );
-			} else {
-				$elements = $( '.qazana-element' );
-			}
-
-			$elements.each( function() {
-				self.elementsHandler.runReadyTrigger( $( this ) );
-			} );
-		};
-
-		// element-type.skin-type
-		this.handlers = {
-			// Elements
-			'section': require( 'qazana-frontend/handlers/section' ),
-
-			// Widgets
-			'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
-			'alert.default': require( 'qazana-frontend/handlers/alert' ),
-			'counter.default': require( 'qazana-frontend/handlers/counter' ),
-			'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
-			'progress.default': require( 'qazana-frontend/handlers/progress' ),
-			'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
-			'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
-			'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
-			'video.default': require( 'qazana-frontend/handlers/video' ),
-			//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
-			'menu-anchor.default': require( 'qazana-frontend/handlers/menu-anchor' ),
-		};
-
-		this.getScopeWindow = function() {
-			return scopeWindow;
-		};
-
-		this.setScopeWindow = function( window ) {
-			scopeWindow = window;
-		};
-
-		this.isEditMode = function() {
-			return window.qazanaFrontendConfig ? window.qazanaFrontendConfig.isEditMode : false;
-		};
-
-		this.hooks = new EventManager();
-		this.elementsHandler = new ElementsHandler( $ );
-		this.utils = new Utils( $ );
-
-		this.initHandlers = function() {
-
-		};
-
-		this.init = function() {
-
-			initElements();
-			addGlobalHandlers();
-			
-			if ( self.isEditMode() ) {
-				return;
-			}
-
-			addElementsHandlers();
-
-			self.utils.insertYTApi();
-
-			runElementsHandlers();
+		var setDeviceModeData = function() {
+			elements.$body.attr( 'data-qazana-device-mode', self.getCurrentDeviceMode() );
 		};
 
 		var initElements = function() {
@@ -149,12 +130,84 @@ module.exports = ElementsHandler;
 			elements.$qazana = elements.$document.find( '.qazana' );
 		};
 
+		var bindEvents = function() {
+			elements.$window.on( 'resize', setDeviceModeData );
+		};
+
+		var initOnReadyComponents = function() {
+			self.utils = {
+				youtube: new YouTubeModule(),
+				anchors: new AnchorsModule(),
+				lightbox: new LightboxModule()
+			};
+
+			self.modules = {
+				StretchElement: require( 'qazana-frontend/modules/stretch-element' )
+			};
+
+			self.elementsHandler = new ElementsHandler( $ );
+		};
+
+		var initHotKeys = function() {
+			self.hotKeys = require( 'qazana-utils/hot-keys' );
+
+			self.hotKeys.bindListener( elements.$window );
+		};
+
+		var getSiteSettings = function( settingType, settingName ) {
+			var settingsObject = self.isEditMode() ? qazana.settings[ settingType ].model.attributes : self.config.settings[ settingType ];
+
+			if ( settingName ) {
+				return settingsObject[ settingName ];
+			}
+
+			return settingsObject;
+		};
+
+		this.init = function() {
+			self.hooks = new EventManager();
+
+			initElements();
+
+			bindEvents();
+
+			setDeviceModeData();
+
+			elements.$window.trigger( 'qazana/frontend/init' );
+
+			if ( ! self.isEditMode() ) {
+				initHotKeys();
+			}
+
+			initOnReadyComponents();
+		};
+
 		this.getElements = function( element ) {
 			if ( element ) {
 				return elements[ element ];
 			}
 
 			return elements;
+		};
+
+		this.getDialogsManager = function() {
+			if ( ! dialogsManager ) {
+				dialogsManager = new DialogsManager.Instance();
+			}
+
+			return dialogsManager;
+		};
+
+		this.getPageSettings = function( settingName ) {
+			return getSiteSettings( 'page', settingName );
+		};
+
+		this.getGeneralSettings = function( settingName ) {
+			return getSiteSettings( 'general', settingName );
+		};
+
+		this.isEditMode = function() {
+			return self.config.isEditMode;
 		};
 
 		// Based on underscore function
@@ -200,7 +253,6 @@ module.exports = ElementsHandler;
 
 				return result;
 			};
-
 		};
 
 		this.addListenerOnce = function( listenerID, event, callback, to ) {
@@ -223,6 +275,10 @@ module.exports = ElementsHandler;
 			}
 		};
 
+		this.getCurrentDeviceMode = function() {
+			return getComputedStyle( elements.$qazana[ 0 ], ':after' ).content.replace( /"/g, '' );
+		};
+
 		this.waypoint = function( $element, callback, options ) {
 			var correctCallback = function() {
 				var element = this.element || this;
@@ -232,17 +288,16 @@ module.exports = ElementsHandler;
 
 			return $element.qazanaWaypoint( correctCallback, options );
 		};
-
-    };
+	};
 
 	window.qazanaFrontend = new QazanaFrontend();
-})( jQuery );
+} )( jQuery );
 
-jQuery( function() {
-	window.qazanaFrontend.init();
-});
+if ( ! qazanaFrontend.isEditMode() ) {
+	jQuery( qazanaFrontend.init );
+}
 
-},{"../utils/hooks":19,"./handler-module":3,"qazana-frontend/elements-handler":1,"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/menu-anchor":9,"qazana-frontend/handlers/piechart":10,"qazana-frontend/handlers/progress":11,"qazana-frontend/handlers/section":12,"qazana-frontend/handlers/tabs":13,"qazana-frontend/handlers/toggle":14,"qazana-frontend/handlers/tooltip":15,"qazana-frontend/handlers/video":16,"qazana-frontend/handlers/widget":17,"qazana-frontend/utils":18}],3:[function(require,module,exports){
+},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":16,"qazana-frontend/utils/anchors":17,"qazana-frontend/utils/lightbox":18,"qazana-frontend/utils/youtube":19,"qazana-utils/hooks":20,"qazana-utils/hot-keys":21}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
@@ -383,7 +438,7 @@ HandlerModule = ViewModule.extend( {
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":21}],4:[function(require,module,exports){
+},{"../utils/view-module":23}],4:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -597,76 +652,6 @@ module.exports = function ($scope) {
 };
 },{"qazana-frontend/handler-module":3}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	if ( qazanaFrontend.isEditMode() ) {
-		return;
-	}
-
-	var $anchor = $scope.find( '.qazana-menu-anchor' ),
-		anchorID = $anchor.attr( 'id' ),
-		$anchorLinks = $( 'a[href*="#' + anchorID + '"]' ),
-		$scrollable = $( 'html, body' ),
-		adminBarHeight = $( '#wpadminbar' ).height();
-
-	$anchorLinks.on( 'click', function( event ) {
-		var isSamePathname = ( location.pathname === this.pathname ),
-			isSameHostname = ( location.hostname === this.hostname );
-
-		if ( ! isSameHostname || ! isSamePathname ) {
-			return;
-		}
-
-		event.preventDefault();
-
-		$scrollable.animate( {
-			scrollTop: $anchor.offset().top - adminBarHeight
-		}, 1000 );
-	} );
-	
-};
-
-},{}],10:[function(require,module,exports){
-module.exports = function( $scope, $ ) {
-
-    var $chart = $scope.find('.qazana-piechart');
-    var $piechart_progress = $chart.find('.qazana-piechart-number-count');
-
-    var animation = {
-        duration: $chart.data('duration')
-    };
-
-    if ( $chart.closest('.qazana-element').hasClass('qazana-piechart-animation-type-none') ) {
-        animation = {
-            duration: 0
-        };
-    }
-
-    if ( false == animation ){
-        $piechart_progress.html($piechart_progress.data('value') );
-        $chart.addClass('animated');
-    }
-
-    qazanaFrontend.utils.waypoint( $chart, function() {
-
-    if ( ! $chart.hasClass('animated') ) {
-
-        $chart.circleProgress({
-                startAngle: -Math.PI / 4 * 2,
-                emptyFill: $chart.data('emptyfill'),
-                animation: animation
-        }).on('circle-animation-progress', function (event, progress) {
-            $piechart_progress.html( parseInt( ( $piechart_progress.data('value') ) * progress ) );
-        }).on('circle-animation-end', function (event) {
-            $chart.addClass('animated');
-        });
-
-    }
-
-    }, { offset: '90%' } );
-
-};
-
-},{}],11:[function(require,module,exports){
-module.exports = function( $scope, $ ) {
 	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
 		var $progressbar = $( this );
 
@@ -674,7 +659,7 @@ module.exports = function( $scope, $ ) {
 	}, { offset: '90%' } );
 };
 
-},{}],12:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var BackgroundVideo = require( 'qazana-frontend/handlers/background-video' );
 
 var HandlerModule = require( 'qazana-frontend/handler-module' );
@@ -757,7 +742,36 @@ var StretchedSection = HandlerModule.extend( {
 	}
 } );
 
-var Shapes = HandlerModule.extend( {
+var SVGShapes = HandlerModule.extend( {
+	
+	__construct: function( settings ) {
+		this.$element  = settings.$element;
+		this.addEditorListener();
+	},
+
+	addEditorListener: function() {
+		var self = this,
+			uniqueHandlerID = self.getUniqueHandlerID();
+
+		if ( self.onElementChange ) {
+			var elementName = self.getElementName(),
+				eventName = 'change';
+
+			qazanaFrontend.addListenerOnce( uniqueHandlerID, eventName, function( controlView, elementView ) {
+				var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
+				
+				if ( elementViewHandlerID !== uniqueHandlerID ) {
+					//return;
+				}
+
+				console.log('elementViewHandlerID ' + elementViewHandlerID);
+				console.log('uniqueHandlerID ' + uniqueHandlerID);
+				
+				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
+			}, qazana.channels.editor );
+		}
+
+	},
 	
 	getDefaultSettings: function() {
 		return {
@@ -780,12 +794,24 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	buildSVG: function( side ) {
+
 		var self = this,
 			baseSettingKey = 'shape_divider_' + side,
-			shapeType = self.getElementSettings( baseSettingKey ),
-			$svgContainer = this.elements[ '$' + side + 'Container' ];
-			console.log(shapeType);
+			shapeType = self.getElementSettings( baseSettingKey );
+		
+		var elements =this.getDefaultElements();
 			
+			console.log( this.getDefaultElements() );
+			console.log('------------------------------------');
+			console.log( elements[ '$' + side + 'Container' ] );
+			console.log('$' + side + 'Container');
+			console.log('shapeType ' + shapeType );
+			console.log('shapeType ' + shapeType );
+			console.log('------------------------------------');
+			//  return;
+			
+		var $svgContainer = elements[ '$' + side + 'Container' ];
+
 		$svgContainer.empty().attr( 'data-shape', shapeType );
 
 		if ( ! shapeType ) {
@@ -812,27 +838,36 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	onInit: function() {
+
 		var self = this;
-
-		HandlerModule.prototype.onInit.apply( self, arguments );
-
+		
+		qazanaFrontend.Module.prototype.onInit.apply( self, arguments );
+		
+		var settings = self.getElementSettings();
+		
 		[ 'top', 'bottom' ].forEach( function( side ) {
-			console.log(side);
-			if ( self.getElementSettings( 'shape_divider_' + side ) ) {
+			if ( settings['shape_divider_' + side] ) {
+				console.log( settings['shape_divider_' + side] );
 				self.buildSVG( side );
 			}
 		} );
 	},
 
-	onElementChange: function( propertyName ) {
+	onElementChange: function( propertyName,  controlView, elementView ) {
 		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
 
+		// console.log( 'shapeChange ' + shapeChange );
+		// console.log( 'propertyName ' + propertyName );
+
+		if( propertyName === 'shape_divider_top' || propertyName === 'shape_divider_bottom' ) {
+			console.log( 'propertyName ' + propertyName );
+			this.buildSVG( 'top');
+		}
+		
 		if ( shapeChange ) {
 			this.buildSVG( shapeChange[1] );
-
-			return;
 		}
-
+		
 		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
 
 		if ( negativeChange ) {
@@ -842,21 +877,23 @@ var Shapes = HandlerModule.extend( {
 		}
 	}
 } );
-	
+
 module.exports = function( $scope ) {
 
+	new SVGShapes( { $element: $scope } );
+	
 	if ( qazanaFrontend.isEditMode() ) {
-		new Shapes( { $element:  $scope } );
+
+		if ( $scope.hasClass( 'qazana-section-stretched' ) ) {
+			new StretchedSection( { $element: $scope } );
+		}
 	}
 
-	if ( qazanaFrontend.isEditMode() || $scope.hasClass( 'qazana-section-stretched' ) ) {
-		new StretchedSection( { $element: $scope } );
-	}
 	new BackgroundVideo( $scope, $ );
 
 };
 
-},{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],13:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],11:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
 		$tabsTitles = $scope.find( '.qazana-tab-title' ),
@@ -891,7 +928,110 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],14:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+var HandlerModule = require( 'qazana-frontend/handler-module' ),
+	TextEditor;
+
+TextEditor = HandlerModule.extend( {
+	dropCapLetter: '',
+
+	getDefaultSettings: function() {
+		return {
+			selectors: {
+				paragraph: 'p:first'
+			},
+			classes: {
+				dropCap: 'qazana-drop-cap',
+				dropCapLetter: 'qazana-drop-cap-letter'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+		var selectors = this.getSettings( 'selectors' ),
+			classes = this.getSettings( 'classes' ),
+			$dropCap = jQuery( '<span>', { 'class': classes.dropCap } ),
+			$dropCapLetter = jQuery( '<span>', { 'class': classes.dropCapLetter } );
+
+		$dropCap.append( $dropCapLetter );
+
+		return {
+			$paragraph: this.$element.find( selectors.paragraph ),
+			$dropCap: $dropCap,
+			$dropCapLetter: $dropCapLetter
+		};
+	},
+
+	getElementName: function() {
+		return 'text-editor';
+	},
+
+	wrapDropCap: function() {
+		var isDropCapEnabled = this.getElementSettings( 'drop_cap' );
+
+		if ( ! isDropCapEnabled ) {
+			// If there is an old drop cap inside the paragraph
+			if ( this.dropCapLetter ) {
+				this.elements.$dropCap.remove();
+
+				this.elements.$paragraph.prepend( this.dropCapLetter );
+
+				this.dropCapLetter = '';
+			}
+
+			return;
+		}
+
+		var $paragraph = this.elements.$paragraph;
+
+		if ( ! $paragraph.length ) {
+			return;
+		}
+
+		var	paragraphContent = $paragraph.html().replace( /&nbsp;/g, ' ' ),
+			firstLetterMatch = paragraphContent.match( /^ *([^ ] ?)/ );
+
+		if ( ! firstLetterMatch ) {
+			return;
+		}
+
+		var firstLetter = firstLetterMatch[1],
+			trimmedFirstLetter = firstLetter.trim();
+
+		// Don't apply drop cap when the content starting with an HTML tag
+		if ( '<' === trimmedFirstLetter ) {
+			return;
+		}
+
+		this.dropCapLetter = firstLetter;
+
+		this.elements.$dropCapLetter.text( trimmedFirstLetter );
+
+		var restoredParagraphContent = paragraphContent.slice( firstLetter.length ).replace( /^ */, function( match ) {
+			return new Array( match.length + 1 ).join( '&nbsp;' );
+		});
+
+		$paragraph.html( restoredParagraphContent ).prepend( this.elements.$dropCap );
+	},
+
+	onInit: function() {
+		HandlerModule.prototype.onInit.apply( this, arguments );
+
+		this.wrapDropCap();
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'drop_cap' === propertyName ) {
+			this.wrapDropCap();
+		}
+	}
+} );
+
+module.exports = function( $scope ) {
+	new TextEditor( { $element: $scope } );
+};
+
+},{"qazana-frontend/handler-module":3}],13:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
@@ -909,22 +1049,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],15:[function(require,module,exports){
-module.exports = function( $scope, $ ) {
-
-	if ( $scope.find( '.qazana-tooltip' ).hasClass('v--show') ) {
-		return;
-	}
-
-	$scope.mouseenter( function() {
-		$( this ).find( '.qazana-tooltip' ).addClass('v--show');
-	}).mouseleave( function() {
-		$( this ).find( '.qazana-tooltip' ).removeClass('v--show');
-	});
-
-};
-
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
 		$videoFrame = $scope.find( 'iframe' );
@@ -943,7 +1068,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],17:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -958,38 +1083,634 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],18:[function(require,module,exports){
-module.exports = function( $ ) {
-    var self = this;
+},{}],16:[function(require,module,exports){
+var ViewModule = require( '../../utils/view-module' );
 
-    this.onYoutubeApiReady = function( callback ) {
-        if ( window.YT && YT.loaded ) {
-            callback( YT );
-        } else {
-            // If not ready check again by timeout..
-            setTimeout( function() {
-                self.onYoutubeApiReady( callback );
-            }, 350 );
-        }
-    };
+module.exports = ViewModule.extend( {
+	getDefaultSettings: function() {
+		return {
+			element: null,
+			direction: qazanaFrontend.config.is_rtl ? 'right' : 'left',
+			selectors: {
+				container: window
+			}
+		};
+	},
 
-    this.insertYTApi = function() {
-        $( 'script:first' ).before(  $( '<script>', { src: 'https://www.youtube.com/iframe_api' } ) );
-    };
+	getDefaultElements: function() {
+		return {
+			$element: jQuery( this.getSettings( 'element' ) )
+		};
+	},
 
-    this.waypoint = function( $element, callback, options ) {
-		var correctCallback = function() {
-			var element = this.element || this;
+	stretch: function() {
+		var containerSelector = this.getSettings( 'selectors.container' ),
+			$element = this.elements.$element,
+			$container = jQuery( containerSelector ),
+			isSpecialContainer = window !== $container[0];
 
-			return callback.apply( element, arguments );
+		this.reset();
+
+		var containerWidth = $container.outerWidth(),
+			elementWidth = $element.outerWidth(),
+			elementOffset = $element.offset().left,
+			correctOffset = elementOffset;
+
+		if ( isSpecialContainer ) {
+			var containerOffset = $container.offset().left;
+
+			if ( elementOffset > containerOffset ) {
+				correctOffset = elementOffset - containerOffset;
+			} else {
+				correctOffset = 0;
+			}
+		}
+
+		if ( qazanaFrontend.config.is_rtl ) {
+			correctOffset = containerWidth - ( elementWidth + correctOffset );
+		}
+
+		var css = {};
+
+		css.width = containerWidth + 'px';
+
+		css[ this.getSettings( 'direction' ) ] = -correctOffset + 'px';
+
+		$element.css( css );
+	},
+
+	reset: function() {
+		var css = {};
+
+		css.width = 'auto';
+
+		css[ this.getSettings( 'direction' ) ] = 0;
+
+		this.elements.$element.css( css );
+	}
+} );
+
+},{"../../utils/view-module":23}],17:[function(require,module,exports){
+var ViewModule = require( '../../utils/view-module' );
+
+module.exports = ViewModule.extend( {
+	getDefaultSettings: function() {
+
+		return {
+			scrollDuration: 500,
+			selectors: {
+				links: 'a[href*="#"]',
+				targets: '.qazana-element, .qazana-menu-anchor',
+				scrollable: 'html, body',
+				wpAdminBar: '#wpadminbar'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+		var $ = jQuery,
+			selectors = this.getSettings( 'selectors' );
+
+		return {
+			$scrollable: $( selectors.scrollable ),
+			$wpAdminBar: $( selectors.wpAdminBar )
+		};
+	},
+
+	bindEvents: function() {
+		qazanaFrontend.getElements( '$document' ).on( 'click', this.getSettings( 'selectors.links' ), this.handleAnchorLinks );
+	},
+
+	handleAnchorLinks: function( event ) {
+		var clickedLink = event.currentTarget,
+			isSamePathname = ( location.pathname === clickedLink.pathname ),
+			isSameHostname = ( location.hostname === clickedLink.hostname );
+
+		if ( ! isSameHostname || ! isSamePathname || clickedLink.hash.length < 2 ) {
+			return;
+		}
+
+		var $anchor = jQuery( clickedLink.hash ).filter( this.getSettings( 'selectors.targets' ) );
+
+		if ( ! $anchor.length ) {
+			return;
+		}
+
+		var hasAdminBar = ( 1 <= this.elements.$wpAdminBar.length ),
+			scrollTop = $anchor.offset().top;
+
+		if ( hasAdminBar ) {
+			scrollTop -= this.elements.$wpAdminBar.height();
+		}
+
+		event.preventDefault();
+
+		scrollTop = qazanaFrontend.hooks.applyFilters( 'frontend/handlers/menu_anchor/scroll_top_distance', scrollTop );
+
+		this.elements.$scrollable.animate( {
+			scrollTop: scrollTop
+		}, this.getSettings( 'scrollDuration' ), 'linear' );
+	},
+
+	onInit: function() {
+		ViewModule.prototype.onInit.apply( this, arguments );
+
+		this.bindEvents();
+	}
+} );
+
+},{"../../utils/view-module":23}],18:[function(require,module,exports){
+var ViewModule = require( '../../utils/view-module' ),
+	LightboxModule;
+
+LightboxModule = ViewModule.extend( {
+	oldAspectRatio: null,
+
+	oldAnimation: null,
+
+	swiper: null,
+
+	getDefaultSettings: function() {
+		return {
+			classes: {
+				aspectRatio: 'qazana-aspect-ratio-%s',
+				item: 'qazana-lightbox-item',
+				image: 'qazana-lightbox-image',
+				videoContainer: 'qazana-video-container',
+				videoWrapper: 'qazana-video-wrapper',
+				playButton: 'qazana-custom-embed-play',
+				playButtonIcon: 'fa',
+				playing: 'qazana-playing',
+				hidden: 'qazana-hidden',
+				invisible: 'qazana-invisible',
+				slideshow: {
+					container: 'swiper-container',
+					slidesWrapper: 'swiper-wrapper',
+					prevButton: 'qazana-swiper-button qazana-swiper-button-prev',
+					nextButton: 'qazana-swiper-button qazana-swiper-button-next',
+					prevButtonIcon: 'eicon-chevron-left',
+					nextButtonIcon: 'eicon-chevron-right',
+					slide: 'swiper-slide'
+				}
+			},
+			selectors: {
+				links: 'a, [data-qazana-lightbox]',
+				slideshow: {
+					activeSlide: '.swiper-slide-active',
+					prevSlide: '.swiper-slide-prev',
+					nextSlide: '.swiper-slide-next'
+				}
+			},
+			modalOptions: {
+				id: 'qazana-lightbox',
+				entranceAnimation: 'zoomIn',
+				videoAspectRatio: 169,
+				position: {
+					enable: false
+				}
+			}
+		};
+	},
+
+	getModal: function() {
+		if ( ! LightboxModule.modal ) {
+			this.initModal();
+		}
+
+		return LightboxModule.modal;
+	},
+
+	initModal: function() {
+		var modal = LightboxModule.modal = qazanaFrontend.getDialogsManager().createWidget( 'lightbox', {
+			className: 'qazana-lightbox',
+			closeButton: true,
+			closeButtonClass: 'eicon-close'
+		} );
+
+		modal.on( 'hide', function() {
+			modal.setMessage( '' );
+		} );
+	},
+
+	showModal: function( options ) {
+		var self = this,
+			defaultOptions = self.getDefaultSettings().modalOptions;
+
+		self.setSettings( 'modalOptions', jQuery.extend( defaultOptions, options.modalOptions ) );
+
+		var modal = self.getModal();
+
+		modal.setID( self.getSettings( 'modalOptions.id' ) );
+
+		modal.onShow = function() {
+			DialogsManager.getWidgetType( 'lightbox' ).prototype.onShow.apply( modal, arguments );
+
+			setTimeout( function() {
+				self.setEntranceAnimation();
+			}, 10 );
 		};
 
-		$element.waypoint( correctCallback, options );
-	};
-    
-};
+		modal.onHide = function() {
+			DialogsManager.getWidgetType( 'lightbox' ).prototype.onHide.apply( modal, arguments );
 
-},{}],19:[function(require,module,exports){
+			modal.getElements( 'widgetContent' ).removeClass( 'animated' );
+		};
+
+		switch ( options.type ) {
+			case 'image':
+				self.setImageContent( options.url );
+
+				break;
+			case 'video':
+				self.setVideoContent( options.url );
+
+				break;
+			case 'slideshow':
+				self.setSlideshowContent( options.slideshow );
+
+				break;
+			default:
+				self.setHTMLContent( options.html );
+		}
+
+		modal.show();
+	},
+
+	setHTMLContent: function( html ) {
+		this.getModal().setMessage( html );
+	},
+
+	setImageContent: function( imageURL ) {
+		var self = this,
+			classes = self.getSettings( 'classes' ),
+			$item = jQuery( '<div>', { 'class': classes.item } ),
+			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image } );
+
+		$item.append( $image );
+
+		self.getModal().setMessage( $item );
+	},
+
+	setVideoContent: function( videoEmbedURL ) {
+		videoEmbedURL = videoEmbedURL.replace( '&autoplay=0', '' ) + '&autoplay=1';
+
+		var classes = this.getSettings( 'classes' ),
+			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer } ),
+			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
+			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL } ),
+			modal = this.getModal();
+
+		$videoContainer.append( $videoWrapper );
+
+		$videoWrapper.append( $videoFrame );
+
+		modal.setMessage( $videoContainer );
+
+		this.setVideoAspectRatio();
+
+		var onHideMethod = modal.onHide;
+
+		modal.onHide = function() {
+			onHideMethod();
+
+			modal.getElements( 'message' ).removeClass( 'qazana-video-wrapper' );
+		};
+	},
+
+	setSlideshowContent: function( options ) {
+		var $ = jQuery,
+			self = this,
+			classes = self.getSettings( 'classes' ),
+			slideshowClasses = classes.slideshow,
+			$container = $( '<div>', { 'class': slideshowClasses.container } ),
+			$slidesWrapper = $( '<div>', { 'class': slideshowClasses.slidesWrapper } ),
+			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
+			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
+
+		options.slides.forEach( function( slide ) {
+			var slideClass =  slideshowClasses.slide + ' ' + classes.item;
+
+			if ( slide.video ) {
+				slideClass += ' ' + classes.video;
+			}
+
+			var $slide = $( '<div>', { 'class': slideClass } ),
+				$zoomContainer = $( '<div>', { 'class': 'swiper-zoom-container' } ),
+				$slideImage = $( '<img>', { 'class': classes.image } ).attr( 'src', slide.image );
+
+			$slide.append( $zoomContainer );
+
+			$zoomContainer.append( $slideImage );
+
+			if ( slide.video ) {
+				$slide.attr( 'data-qazana-slideshow-video', slide.video );
+
+				var $playIcon = $( '<div>', { 'class': classes.playButton } ).html( $( '<i>', { 'class': classes.playButtonIcon } ) );
+
+				$slide.append( $playIcon );
+			}
+
+			$slidesWrapper.append( $slide );
+		} );
+
+		$container.append(
+			$slidesWrapper,
+			$prevButton,
+			$nextButton
+		);
+
+		var modal = self.getModal();
+
+		modal.setMessage( $container );
+
+		var onShowMethod = modal.onShow;
+
+		modal.onShow = function() {
+			onShowMethod();
+
+			var swiperOptions = {
+				prevButton: $prevButton,
+				nextButton: $nextButton,
+				paginationClickable: true,
+				grabCursor: true,
+				onSlideChangeEnd: self.onSlideChange,
+				runCallbacksOnInit: false,
+				loop: true
+			};
+
+			if ( options.swiper ) {
+				$.extend( swiperOptions, options.swiper );
+			}
+
+			self.swiper = new Swiper( $container, swiperOptions );
+
+			self.setVideoAspectRatio();
+
+			self.playSlideVideo();
+		};
+	},
+
+	setVideoAspectRatio: function( aspectRatio ) {
+		aspectRatio = aspectRatio || this.getSettings( 'modalOptions.videoAspectRatio' );
+
+		var $widgetContent = this.getModal().getElements( 'widgetContent' ),
+			oldAspectRatio = this.oldAspectRatio,
+			aspectRatioClass = this.getSettings( 'classes.aspectRatio' );
+
+		this.oldAspectRatio = aspectRatio;
+
+		if ( oldAspectRatio ) {
+			$widgetContent.removeClass( aspectRatioClass.replace( '%s', oldAspectRatio ) );
+		}
+
+		if ( aspectRatio ) {
+			$widgetContent.addClass( aspectRatioClass.replace( '%s', aspectRatio ) );
+		}
+	},
+
+	getSlide: function( slideState ) {
+		return this.swiper.slides.filter( this.getSettings( 'selectors.slideshow.' + slideState + 'Slide' ) );
+	},
+
+	playSlideVideo: function() {
+		var selectors = this.getSettings( 'selectors' ),
+			$activeSlide = this.getSlide( 'active' ),
+			videoURL = $activeSlide.data( 'qazana-slideshow-video' );
+
+		if ( ! videoURL ) {
+			return;
+		}
+
+		var classes = this.getSettings( 'classes' );
+
+		var $videoContainer = jQuery( '<div>', { 'class': classes.videoContainer + ' ' + classes.invisible } ),
+			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
+			$videoFrame = jQuery( '<iframe>', { src: videoURL } ),
+			$playIcon = $activeSlide.children( '.' + classes.playButton ),
+			$slideImage = $activeSlide.find( '.' + classes.image );
+
+		$videoContainer.append( $videoWrapper );
+
+		$videoWrapper.append( $videoFrame );
+
+		$activeSlide.append( $videoContainer );
+
+		$playIcon.addClass( classes.playing );
+
+		$playIcon.add( $slideImage ).removeClass( classes.hidden );
+
+		$videoFrame.on( 'load', function() {
+			$playIcon.add( $slideImage ).addClass( classes.hidden );
+
+			$videoContainer.removeClass( classes.invisible );
+		} );
+	},
+
+	setEntranceAnimation: function( animation ) {
+		animation = animation || this.getSettings( 'modalOptions.entranceAnimation' );
+
+		var $widgetMessage = this.getModal().getElements( 'message' );
+
+		if ( this.oldAnimation ) {
+			$widgetMessage.removeClass( this.oldAnimation );
+		}
+
+		this.oldAnimation = animation;
+
+		if ( animation ) {
+			$widgetMessage.addClass( 'animated ' + animation );
+		}
+	},
+
+	isLightboxLink: function( element ) {
+		if ( 'A' === element.tagName && ! /\.(png|jpe?g|gif|svg)$/i.test( element.href ) ) {
+			return false;
+		}
+
+		var generalOpenInLightbox = qazanaFrontend.getGeneralSettings( 'qazana_global_image_lightbox' ),
+			currentLinkOpenInLightbox = element.dataset.qazanaOpenLightbox;
+
+		return 'yes' === currentLinkOpenInLightbox || generalOpenInLightbox && 'no' !== currentLinkOpenInLightbox;
+	},
+
+	openLink: function( event ) {
+		var element = event.currentTarget;
+
+		if ( ! this.isLightboxLink( element ) ) {
+			if ( qazanaFrontend.isEditMode() ) {
+				event.preventDefault();
+			}
+
+			return;
+		}
+
+		event.preventDefault();
+
+		var lightboxData = {};
+
+		if ( element.dataset.qazanaLightbox ) {
+			lightboxData = JSON.parse( element.dataset.qazanaLightbox );
+		}
+
+		if ( lightboxData.type && 'slideshow' !== lightboxData.type ) {
+			this.showModal( lightboxData );
+
+			return;
+		}
+
+		if ( ! element.dataset.qazanaLightboxSlideshow ) {
+			this.showModal( {
+				type: 'image',
+				url: element.href
+			} );
+
+			return;
+		}
+
+		var slideshowID = element.dataset.qazanaLightboxSlideshow;
+
+		var $allSlideshowLinks = jQuery( this.getSettings( 'selectors.links' ) ).filter( function() {
+			return slideshowID === this.dataset.qazanaLightboxSlideshow;
+		} );
+
+		var slides = [],
+			uniqueLinks = {};
+
+		$allSlideshowLinks.each( function() {
+			if ( uniqueLinks[ this.href ] ) {
+				return;
+			}
+
+			uniqueLinks[ this.href ] = true;
+
+			var slideIndex = this.dataset.qazanaLightboxIndex;
+
+			if ( undefined === slideIndex ) {
+				slideIndex = $allSlideshowLinks.index( this );
+			}
+
+			var slideData = {
+				image: this.href,
+				index: slideIndex
+			};
+
+			if ( this.dataset.qazanaLightboxVideo ) {
+				slideData.video = this.dataset.qazanaLightboxVideo;
+			}
+
+			slides.push( slideData );
+		} );
+
+		slides.sort( function( a, b ) {
+			return a.index - b.index;
+		} );
+
+		var initialSlide = element.dataset.qazanaLightboxIndex;
+
+		if ( undefined === initialSlide ) {
+			initialSlide = $allSlideshowLinks.index( element );
+		}
+
+		this.showModal( {
+			type: 'slideshow',
+			modalOptions: {
+				id: 'qazana-lightbox-slideshow-' + slideshowID
+			},
+			slideshow: {
+				slides: slides,
+				swiper: {
+					initialSlide: +initialSlide
+				}
+			}
+		} );
+	},
+
+	bindEvents: function() {
+		qazanaFrontend.getElements( '$document' ).on( 'click', this.getSettings( 'selectors.links' ), this.openLink );
+	},
+
+	onInit: function() {
+		ViewModule.prototype.onInit.apply( this, arguments );
+
+		if ( qazanaFrontend.isEditMode() ) {
+			qazana.settings.general.model.on( 'change', this.onGeneralSettingsChange );
+		}
+	},
+
+	onGeneralSettingsChange: function( model ) {
+		if ( 'qazana_lightbox_content_animation' in model.changed ) {
+			this.setSettings( 'modalOptions.entranceAnimation', model.changed.qazana_lightbox_content_animation );
+
+			this.setEntranceAnimation();
+		}
+	},
+
+	onSlideChange: function() {
+		this
+			.getSlide( 'prev' )
+			.add( this.getSlide( 'next' ) )
+			.add( this.getSlide( 'active' ) )
+			.find( '.' + this.getSettings( 'classes.videoWrapper' ) )
+			.remove();
+
+		this.playSlideVideo();
+	}
+} );
+
+module.exports = LightboxModule;
+
+},{"../../utils/view-module":23}],19:[function(require,module,exports){
+var ViewModule = require( '../../utils/view-module' );
+
+module.exports = ViewModule.extend( {
+	getDefaultSettings: function() {
+		return {
+			isInserted: false,
+			APISrc: 'https://www.youtube.com/iframe_api',
+			selectors: {
+				firstScript: 'script:first'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+
+		return {
+			$firstScript: jQuery( this.getSettings( 'selectors.firstScript' ) )
+		};
+	},
+
+	insertYTAPI: function() {
+		this.setSettings( 'isInserted', true );
+
+		this.elements.$firstScript.before( jQuery( '<script>', { src: this.getSettings( 'APISrc' ) } ) );
+	},
+
+	onYoutubeApiReady: function( callback ) {
+		var self = this;
+
+		if ( ! self.getSettings( 'IsInserted' ) ) {
+			self.insertYTAPI();
+		}
+
+		if ( window.YT && YT.loaded ) {
+			callback( YT );
+		} else {
+			// If not ready check again by timeout..
+			setTimeout( function() {
+				self.onYoutubeApiReady( callback );
+			}, 350 );
+		}
+	},
+
+	getYoutubeIDFromURL: function( url ) {
+		var videoIDParts = url.match( /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?vi?=|(?:embed|v|vi|user)\/))([^?&"'>]+)/ );
+
+		return videoIDParts && videoIDParts[1];
+	}
+} );
+
+},{"../../utils/view-module":23}],20:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1248,7 +1969,59 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+var HotKeys = function() {
+	var hotKeysHandlers = this.hotKeysHandlers = {};
+
+	var isMac = function() {
+		return -1 !== navigator.userAgent.indexOf( 'Mac OS X' );
+	};
+
+	var applyHotKey = function( event ) {
+		var handlers = hotKeysHandlers[ event.which ];
+
+		if ( ! handlers ) {
+			return;
+		}
+
+		jQuery.each( handlers, function() {
+			var handler = this;
+
+			if ( handler.isWorthHandling && ! handler.isWorthHandling( event ) ) {
+				return;
+			}
+
+			// Fix for some keyboard sources that consider alt key as ctrl key
+			if ( ! handler.allowAltKey && event.altKey ) {
+				return;
+			}
+
+			event.preventDefault();
+
+			handler.handle( event );
+		} );
+	};
+
+	this.isControlEvent = function( event ) {
+		return event[ isMac() ? 'metaKey' : 'ctrlKey' ];
+	};
+
+	this.addHotKeyHandler = function( keyCode, handlerName, handler ) {
+		if ( ! hotKeysHandlers[ keyCode ] ) {
+			hotKeysHandlers[ keyCode ] = {};
+		}
+
+		hotKeysHandlers[ keyCode ][ handlerName ] = handler;
+	};
+
+	this.bindListener = function( $listener ) {
+		$listener.on( 'keydown', applyHotKey );
+	};
+};
+
+module.exports = new HotKeys();
+
+},{}],22:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -1338,6 +2111,12 @@ var Module = function() {
 		}
 
 		return self.setSettings( keyStack.join( '.' ), value, settingsContainer[ currentKey ] );
+	};
+
+	this.forceMethodImplementation = function( methodArguments ) {
+		var functionName = methodArguments.callee.name;
+
+		throw new ReferenceError( 'The method ' + functionName + ' must to be implemented in the inheritor child.' );
 	};
 
 	this.on = function( eventName, callback ) {
@@ -1434,7 +2213,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -1460,5 +2239,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":20}]},{},[2])
+},{"qazana-utils/module":22}]},{},[2])
 //# sourceMappingURL=frontend.js.map

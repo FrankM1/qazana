@@ -1,18 +1,20 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * A URL input control. with the ability to set the target of the link to `_blank` to open in a new tab.
  *
  * @param array $default {
- * 		@type string $url         Default empty
- * 		@type bool   $is_external Determine whether to open the url in the same tab or in a new one
+ *      @type string $url         Default empty
+ *      @type bool   $is_external Determine whether to open the url in the same tab or in a new one
  *                                Default empty
  * }
  *
- * @param bool  $show_external 	  Whether to show the 'Is External' button
+ * @param bool  $show_external    Whether to show the 'Is External' button
  *                                Default true
  *
  * @since 1.0.0
@@ -50,7 +52,7 @@ class Control_URL extends Control_Base_Multiple {
 		<div class="qazana-control-field qazana-control-url-external-{{{ data.show_external ? 'show' : 'hide' }}}">
 			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
-				<input id="<?php echo $control_uid; ?>" type="url" data-setting="url" placeholder="{{ data.placeholder }}" />
+				<input id="<?php echo $control_uid; ?>" type="url" class="qazana-input" data-setting="url" placeholder="{{ data.placeholder }}" />
 				<label for="<?php echo $more_input_control_uid; ?>" class="qazana-control-url-more tooltip-target" data-tooltip="<?php _e( 'Link Options', 'qazana' ); ?>">
 					<i class="fa fa-cog"></i>
 				</label>

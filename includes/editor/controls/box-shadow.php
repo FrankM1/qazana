@@ -1,17 +1,19 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * A Box Shadow set of controls
  *
  * @param array  $default    {
- * 		@type integer $horizontal Default 0
- * 		@type integer $vertical   Default 0
- * 		@type integer $blur       Default 10
- * 		@type integer $spread     Default 0
- * 		@type string  $color      Shadow color, in rgb|rgba|hex format.
+ *      @type integer $horizontal Default 0
+ *      @type integer $vertical   Default 0
+ *      @type integer $blur       Default 10
+ *      @type integer $spread     Default 0
+ *      @type string  $color      Shadow color, in rgb|rgba|hex format.
  * }
  *
  * @since 1.0.0
@@ -78,10 +80,11 @@ class Control_Box_Shadow extends Control_Base_Multiple {
 				<input data-setting="color" class="qazana-shadow-color-picker" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'qazana' ); ?>" data-alpha="true"{{{ defaultColorValue }}} />
 			</div>
 		</div>
-		<?php foreach ( $this->get_sliders() as $slider_name => $slider ) :
+		<?php
+		foreach ( $this->get_sliders() as $slider_name => $slider ) :
 			$control_uid = $this->get_control_uid( $slider_name );
 			?>
-			<div class="qazana-box-shadow-slider">
+			<div class="qazana-shadow-slider">
 				<label for="<?php echo $control_uid; ?>" class="qazana-control-title"><?php echo $slider['label']; ?></label>
 				<div class="qazana-control-input-wrapper">
 					<div class="qazana-slider" data-input="<?php echo $slider_name; ?>"></div>

@@ -17,24 +17,28 @@ SectionView = BaseElementView.extend( {
 	},
 
 	tagName: function() {
-		var html_tag = this.model.getSetting( 'html_tag' ) ? this.model.getSetting( 'html_tag' ) : 'div';
-
-		return html_tag;
+		return this.model.getSetting( 'html_tag' ) || 'section';
 	},
 
 	childViewContainer: '> .qazana-container > .qazana-row',
 
-	behaviors: {
-		Sortable: {
-			behaviorClass: require( 'qazana-behaviors/sortable' ),
-			elChildType: 'column'
-		},
-		HandleDuplicate: {
-			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
-		},
-		HandleAddMode: {
-			behaviorClass: require( 'qazana-behaviors/duplicate' )
-		}
+	behaviors: function() {
+		var behaviors = BaseElementView.prototype.behaviors.apply( this, arguments );
+
+		_.extend( behaviors, {
+			Sortable: {
+				behaviorClass: require( 'qazana-behaviors/sortable' ),
+				elChildType: 'column'
+			},
+			HandleDuplicate: {
+				behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
+			},
+			HandleAddMode: {
+				behaviorClass: require( 'qazana-behaviors/duplicate' )
+			}
+		} );
+
+		return qazana.hooks.applyFilters( 'elements/section/behaviors', behaviors, this );
 	},
 
 	errors: {
@@ -54,6 +58,8 @@ SectionView = BaseElementView.extend( {
 		BaseElementView.prototype.initialize.apply( this, arguments );
 
 		this.listenTo( this.collection, 'add remove reset', this._checkIsFull );
+
+		this._checkIsEmpty();
 	},
 
 	addEmptyColumn: function() {
@@ -90,6 +96,14 @@ SectionView = BaseElementView.extend( {
 		};
 	},
 
+	onSettingsChanged: function( settingsModel ) {
+		BaseElementView.prototype.onSettingsChanged.apply( this, arguments );
+
+		if ( settingsModel.changed.structure ) {
+			this.redefineLayout();
+		}
+	},
+
 	getColumnPercentSize: function( element, size ) {
 		return +( size / element.parent().width() * 100 ).toFixed( 3 );
 	},
@@ -110,8 +124,6 @@ SectionView = BaseElementView.extend( {
 		}
 
 		this.model.setSetting( 'structure', structure );
-
-		this.redefineLayout();
 	},
 
 	redefineLayout: function() {
@@ -145,7 +157,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	_checkIsEmpty: function() {
-		if ( ! this.collection.length ) {
+		if ( ! this.collection.length && ! this.model.get( 'dontFillEmpty' ) ) {
 			this.addEmptyColumn();
 		}
 	},
@@ -211,10 +223,6 @@ SectionView = BaseElementView.extend( {
 		}
 	},
 
-	onBeforeRender: function() {
-		this._checkIsEmpty();
-	},
-
 	onRender: function() {
 		BaseElementView.prototype.onRender.apply( this, arguments );
 
@@ -248,7 +256,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	onAddChild: function() {
-		if ( ! this.isBuffering ) {
+		if ( ! this.isBuffering && ! this.model.get( 'dontFillEmpty' ) ) {
 			// Reset the layout just when we have really add/remove element.
 			this.resetLayout();
 		}

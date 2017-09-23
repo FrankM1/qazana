@@ -87,8 +87,8 @@ class Widgets_Manager {
 
         $this->_register_wp_widgets();
 
-        do_action( 'qazana/widgets/widgets_registered' );
-    }
+		do_action( 'qazana/widgets/widgets_registered', $this );
+	}
 
     private function _register_wp_widgets() {
 

@@ -50,8 +50,13 @@ class DB {
 				Revisions_Manager::handle_revision();
 			}
 
+			do_action( 'qazana/db/before_save', $status, $is_meta_updated );
+
 			$this->_save_plain_text( $post_id );
 		} elseif ( self::STATUS_AUTOSAVE === $status ) {
+
+			do_action( 'qazana/db/before_save', $status, true );
+
 			Revisions_Manager::handle_revision();
 
 			$old_autosave = wp_get_post_autosave( $post_id, get_current_user_id() );

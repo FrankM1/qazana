@@ -172,6 +172,12 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		} );
 	},
 
+	onClickHistory: function() {
+		if ( 'historyPage' !== qazana.getPanelView().getCurrentPageName() ) {
+			qazana.getPanelView().setPage( 'historyPage' );
+		}
+	},
+
 	onRender: function() {
 		var self = this;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 class Controls_Manager {
 
@@ -56,42 +56,80 @@ class Controls_Manager {
 	/**
 	 * @var Base_Control[]
 	 */
-	private $_controls = null;
+	private $controls = null;
 
 	/**
 	 * @var Group_Control_Base[]
 	 */
-	private $_control_groups = [];
+	private $control_groups = [];
 
-	private $_controls_stack = [];
+	private $stacks = [];
 
-	private static $_available_tabs_controls;
+	private static $tabs;
 
-	private static function _get_available_tabs_controls() {
-		if ( ! self::$_available_tabs_controls ) {
-			self::$_available_tabs_controls = [
-				self::TAB_CONTENT => __( 'Content', 'qazana' ),
-				self::TAB_STYLE => __( 'Style', 'qazana' ),
-				self::TAB_ADVANCED => __( 'Advanced', 'qazana' ),
-				self::TAB_RESPONSIVE => __( 'Responsive', 'qazana' ),
-				self::TAB_LAYOUT => __( 'Layout', 'qazana' ),
-			];
+	private static function init_tabs() {
+		self::$tabs = [
+			self::TAB_CONTENT => __( 'Content', 'qazana' ),
+			self::TAB_STYLE => __( 'Style', 'qazana' ),
+			self::TAB_ADVANCED => __( 'Advanced', 'qazana' ),
+			self::TAB_RESPONSIVE => __( 'Responsive', 'qazana' ),
+			self::TAB_LAYOUT => __( 'Layout', 'qazana' ),
+			self::TAB_SETTINGS => __( 'Settings', 'qazana' ),
+		];
 
-			self::$_available_tabs_controls = apply_filters( 'qazana/controls/get_available_tabs_controls', self::$_available_tabs_controls );
+		self::$tabs = Utils::apply_filters_deprecated( 'qazana/controls/get_available_tabs_controls', [ self::$tabs ], '1.0.0', '`' . __CLASS__ . '::add_tab( $tab_name, $tab_title )`' );
+	}
+
+	public static function get_tabs() {
+		if ( ! self::$tabs ) {
+			self::init_tabs();
 		}
 
-		return self::$_available_tabs_controls;
+		return self::$tabs;
+	}
+
+	public static function add_tab( $tab_name, $tab_title ) {
+		if ( ! self::$tabs ) {
+			self::init_tabs();
+		}
+
+		if ( isset( self::$tabs[ $tab_name ] ) ) {
+			return;
+		}
+
+		self::$tabs[ $tab_name ] = $tab_title;
+	}
+
+	public function include_controls() {
+		
+		require( qazana()->includes_dir  . 'editor/controls/base.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-data.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-ui.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-multiple.php' );
+		require( qazana()->includes_dir  . 'editor/controls/base-units.php' );
+
+		// Group Controls
+		require( qazana()->includes_dir  . 'editor/interfaces/group-control.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/base.php' );
+
+		require( qazana()->includes_dir  . 'editor/controls/groups/background.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/border.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/typography.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/image-size.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/hover-animations.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/text-shadow.php' );
+
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function register_controls() {
-		require( qazana()->includes_dir  . 'editor/controls/base.php' );
-		require( qazana()->includes_dir  . 'editor/controls/base-data.php' );
-		require( qazana()->includes_dir  . 'editor/controls/base-ui.php' );
-		require( qazana()->includes_dir  . 'editor/controls/base-multiple.php' );
-		require( qazana()->includes_dir  . 'editor/controls/base-units.php' );
+
+		$this->controls = [];
 
 		$available_controls = [
 			self::TEXT,
@@ -135,8 +173,9 @@ class Controls_Manager {
 			self::ANIMATION_OUT,
 			self::ORDER,
 		];
-
+		
 		foreach ( $available_controls as $control_id ) {
+			
 			$control_filename = str_replace( '_', '-', $control_id );
 			$control_filename =  qazana()->includes_dir . "editor/controls/{$control_filename}.php";
 			require( $control_filename );
@@ -147,28 +186,15 @@ class Controls_Manager {
 		}
 
 		// Group Controls
-		require( qazana()->includes_dir  . 'editor/interfaces/group-control.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/base.php' );
-
-		require( qazana()->includes_dir  . 'editor/controls/groups/background.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/border.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/typography.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/image-size.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/hover-animations.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
-		require( qazana()->includes_dir  . 'editor/controls/groups/text-shadow.php' );
-
-		$this->_control_groups['background'] 		= new Group_Control_Background();
-		$this->_control_groups['border']     		= new Group_Control_Border();
-		$this->_control_groups['typography'] 		= new Group_Control_Typography();
-		$this->_control_groups['image-size'] 		= new Group_Control_Image_Size();
-		$this->_control_groups['box-shadow'] 		= new Group_Control_Box_Shadow();
-		$this->_control_groups['animations'] 		= new Group_Control_Animations();
-		$this->_control_groups['hover-animations'] 	= new Group_Control_Hover_Animations();
-		$this->_control_groups['icon'] 		 		= new Group_Control_Icon();
-		$this->_control_groups['text-shadow'] 		= new Group_Control_Text_Shadow();
+		$this->control_groups['background'] 		= new Group_Control_Background();
+		$this->control_groups['border']     		= new Group_Control_Border();
+		$this->control_groups['typography'] 		= new Group_Control_Typography();
+		$this->control_groups['image-size'] 		= new Group_Control_Image_Size();
+		$this->control_groups['box-shadow'] 		= new Group_Control_Box_Shadow();
+		$this->control_groups['text-shadow'] 		= new Group_Control_Text_Shadow();
+		$this->control_groups['animations'] 		= new Group_Control_Animations();
+		$this->control_groups['hover-animations'] 	= new Group_Control_Hover_Animations();
+		$this->control_groups['icon'] 		 		= new Group_Control_Icon();
 
 		do_action( 'qazana/controls/controls_registered', $this );
 	}
@@ -180,7 +206,7 @@ class Controls_Manager {
 	 * @param Base_Control $control_instance
 	 */
 	public function register_control( $control_id, Base_Control $control_instance ) {
-		$this->_controls[ $control_id ] = $control_instance;
+		$this->controls[ $control_id ] = $control_instance;
 	}
 
 	/**
@@ -190,11 +216,11 @@ class Controls_Manager {
 	 * @return bool
 	 */
 	public function unregister_control( $control_id ) {
-		if ( ! isset( $this->_controls[ $control_id ] ) ) {
+		if ( ! isset( $this->controls[ $control_id ] ) ) {
 			return false;
 		}
 
-		unset( $this->_controls[ $control_id ] );
+		unset( $this->controls[ $control_id ] );
 
 		return true;
 	}
@@ -204,11 +230,11 @@ class Controls_Manager {
 	 * @return Base_Control[]
 	 */
 	public function get_controls() {
-		if ( null === $this->_controls ) {
+		if ( null === $this->controls ) {
 			$this->register_controls();
 		}
 
-		return $this->_controls;
+		return $this->controls;
 	}
 
 	/**
@@ -260,10 +286,10 @@ class Controls_Manager {
 	 */
 	public function get_control_groups( $id = null ) {
 		if ( $id ) {
-			return isset( $this->_control_groups[ $id ] ) ? $this->_control_groups[ $id ] : null;
+			return isset( $this->control_groups[ $id ] ) ? $this->control_groups[ $id ] : null;
 		}
 
-		return $this->_control_groups;
+		return $this->control_groups;
 	}
 
 	/**
@@ -275,7 +301,7 @@ class Controls_Manager {
 	 * @return Group_Control_Base[]
 	 */
 	public function add_group_control( $id, $instance ) {
-		$this->_control_groups[ $id ] = $instance;
+		$this->control_groups[ $id ] = $instance;
 
 		return $instance;
 	}
@@ -291,23 +317,36 @@ class Controls_Manager {
 	}
 
 	public function open_stack( Controls_Stack $element ) {
-		$stack_id = $element->get_name();
+		$stack_id = $element->get_unique_name();
 
-		$this->_controls_stack[ $stack_id ] = [
+		$this->stacks[ $stack_id ] = [
 			'tabs' => [],
 			'controls' => [],
 		];
 	}
 
-	public function add_control_to_stack( Controls_Stack $element, $control_id, $control_data, $overwrite = false ) {
+	public function add_control_to_stack( Controls_Stack $element, $control_id, $control_data, $options = [] ) {
+		if ( ! is_array( $options ) ) {
+			_deprecated_argument( __FUNCTION__, '1.7.0', 'Use `[ \'overwrite\' => ' . var_export( $options, true ) . ' ]` instead.' );
+
+			$options = [
+				'overwrite' => $options,
+			];
+		}
+
+		$default_options = [
+			'overwrite' => false,
+			'index' => null,
+		];
+
+		$options = array_merge( $default_options, $options );
+
 		$default_args = [
 			'type' => self::TEXT,
 			'tab' => self::TAB_CONTENT,
 		];
 
 		$control_data['name'] = $control_id;
-
-		$stack_id = $element->get_name();
 
 		$control_data = array_merge( $default_args, $control_data );
 
@@ -322,29 +361,39 @@ class Controls_Manager {
 			$control_default_value = $control_type_instance->get_default_value();
 
 			if ( is_array( $control_default_value ) ) {
-				$control_data['default'] = ! empty( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
+				$control_data['default'] = isset( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
 			} else {
-				$control_data['default'] = ! empty( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
+				$control_data['default'] = isset( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
 			}
 		}
 
-		if ( ! $overwrite && isset( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
+		$stack_id = $element->get_unique_name();
+
+		if ( ! $options['overwrite'] && isset( $this->stacks[ $stack_id ]['controls'][ $control_id ] ) ) {
 			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
+
 			return false;
 		}
 
-		$available_tabs = self::_get_available_tabs_controls();
+		$tabs = self::get_tabs();
 
-		if ( ! isset( $available_tabs[ $control_data['tab'] ] ) ) {
+		if ( ! isset( $tabs[ $control_data['tab'] ] ) ) {
 			$control_data['tab'] = $default_args['tab'];
 		}
 
-		// Add the default settings from control instance
-		$control_data = array_merge( $control_type_instance->get_settings(), $control_data );
+		$this->stacks[ $stack_id ]['tabs'][ $control_data['tab'] ] = $tabs[ $control_data['tab'] ];
 
-		$this->_controls_stack[ $stack_id ]['tabs'][ $control_data['tab'] ] = $available_tabs[ $control_data['tab'] ];
+		$this->stacks[ $stack_id ]['controls'][ $control_id ] = $control_data;
 
-		$this->_controls_stack[ $stack_id ]['controls'][ $control_id ] = $control_data;
+		if ( null !== $options['index'] ) {
+			$controls = $this->stacks[ $stack_id ]['controls'];
+
+			$controls_keys = array_keys( $controls );
+
+			array_splice( $controls_keys, $options['index'], 0, $control_id );
+
+			$this->stacks[ $stack_id ]['controls'] = array_merge( array_flip( $controls_keys ), $controls );
+		}
 
 		return true;
 	}
@@ -358,11 +407,11 @@ class Controls_Manager {
 			return true;
 		}
 
-		if ( empty( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
+		if ( empty( $this->stacks[ $stack_id ]['controls'][ $control_id ] ) ) {
 			return new \WP_Error( 'Cannot remove non-existent control.' );
 		}
 
-		unset( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] );
+		unset( $this->stacks[ $stack_id ]['controls'][ $control_id ] );
 
 		return true;
 	}
@@ -374,32 +423,44 @@ class Controls_Manager {
 	 * @return array|\WP_Error
 	 */
 	public function get_control_from_stack( $stack_id, $control_id ) {
-		if ( empty( $this->_controls_stack[ $stack_id ]['controls'][ $control_id ] ) ) {
+		if ( empty( $this->stacks[ $stack_id ]['controls'][ $control_id ] ) ) {
 			return new \WP_Error( 'Cannot get a non-existent control.' );
 		}
 
-		return $this->_controls_stack[ $stack_id ]['controls'][ $control_id ];
+		return $this->stacks[ $stack_id ]['controls'][ $control_id ];
 	}
 
 	public function update_control_in_stack( Controls_Stack $element, $control_id, $control_data ) {
-		$old_control_data = $this->get_control_from_stack( $element->get_name(), $control_id );
+		$old_control_data = $this->get_control_from_stack( $element->get_unique_name(), $control_id );
 		if ( is_wp_error( $old_control_data ) ) {
 			return false;
 		}
 
 		$control_data = array_merge( $old_control_data, $control_data );
 
-		return $this->add_control_to_stack( $element, $control_id, $control_data, true );
+		return $this->add_control_to_stack( $element, $control_id, $control_data, [ 'overwrite' => true ] );
 	}
 
-	public function get_element_stack( Controls_Stack $controls_stack ) {
-		$stack_id = $controls_stack->get_name();
+	public function get_stacks( $stack_id = null ) {
+		if ( $stack_id ) {
+			if ( isset( $this->stacks[ $stack_id ] ) ) {
+				return $this->stacks[ $stack_id ];
+			}
 
-		if ( ! isset( $this->_controls_stack[ $stack_id ] ) ) {
 			return null;
 		}
 
-		$stack = $this->_controls_stack[ $stack_id ];
+		return $this->stacks;
+	}
+
+	public function get_element_stack( Controls_Stack $controls_stack ) {
+		$stack_id = $controls_stack->get_unique_name();
+
+		if ( ! isset( $this->stacks[ $stack_id ] ) ) {
+			return null;
+		}
+
+		$stack = $this->stacks[ $stack_id ];
 
 		if ( 'widget' === $controls_stack->get_type() && 'common' !== $stack_id ) {
 			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
@@ -417,7 +478,7 @@ class Controls_Manager {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
-		$this->register_controls();
+	public function __construct() {		
+		$this->include_controls();
 	}
 }

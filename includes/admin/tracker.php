@@ -43,15 +43,15 @@ class Admin_Tracker {
 			return;
 		}
 
+		$last_send = self::_get_last_send_time();
+
 		if ( ! apply_filters( 'qazana/tracker/send_override', $override ) ) {
 			// Send a maximum of once per week by default.
-			$last_send = self::_get_last_send_time();
 			if ( $last_send && $last_send > apply_filters( 'qazana/tracker/last_send_interval', strtotime( '-1 week' ) ) ) {
 				return;
 			}
 		} else {
 			// Make sure there is at least a 1 hour delay between override sends, we dont want duplicate calls due to double clicking links.
-			$last_send = self::_get_last_send_time();
 			if ( $last_send && $last_send > strtotime( '-1 hours' ) ) {
 				return;
 			}

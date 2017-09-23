@@ -5,17 +5,21 @@ var SectionView = require( 'qazana-views/section' ),
 BaseSectionsContainerView = BaseContainer.extend( {
 	childView: SectionView,
 
-	behaviors: {
-		Sortable: {
-			behaviorClass: require( 'qazana-behaviors/sortable' ),
-			elChildType: 'section'
-		},
-		HandleDuplicate: {
-			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
-		},
-		HandleAdd: {
-			behaviorClass: require( 'qazana-behaviors/duplicate' )
-		}
+	behaviors: function() {
+		var behaviors = {
+			Sortable: {
+				behaviorClass: require( 'qazana-behaviors/sortable' ),
+				elChildType: 'section'
+			},
+			HandleDuplicate: {
+				behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
+			},
+			HandleAddMode: {
+				behaviorClass: require( 'qazana-behaviors/duplicate' )
+			}
+		};
+
+		return qazana.hooks.applyFilters( 'elements/base-section-container/behaviors', behaviors, this );
 	},
 
 	getSortableOptions: function() {

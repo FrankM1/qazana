@@ -26,6 +26,8 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 
 	currentPageName: null,
 
+	currentPageView: null,
+
 	_isScrollbarInitialized: false,
 
 	initialize: function() {
@@ -63,13 +65,13 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		var schemesTypes = Object.keys( qazana.schemes.getSchemes() ),
 			disabledSchemes = _.difference( schemesTypes, qazana.schemes.getEnabledSchemesTypes() );
 
-		_.each( disabledSchemes, function( schemeType ) {
+		/*_.each( disabledSchemes, function( schemeType ) {
 			var scheme  = qazana.schemes.getScheme( schemeType );
 
 			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
 				disabledTitle: scheme.disabled_title
 			} );
-		} );
+		} );*/
 
 		return pages;
 	},
@@ -107,7 +109,7 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 	},
 
 	getCurrentPageView: function() {
-		return this.getChildView( 'content' );
+		return this.currentPageView;
 	},
 
 	setPage: function( page, title, viewOptions ) {
@@ -127,11 +129,17 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 			View = pageData.getView();
 		}
 
-		this.showChildView( 'content', new View( viewOptions ) );
+		this.currentPageView = new View( viewOptions );
+
+		this.showChildView( 'content', this.currentPageView );
 
 		this.getHeaderView().setTitle( title || pageData.title );
 
 		this.currentPageName = page;
+
+		this
+			.trigger( 'set:page', this.currentPageView )
+			.trigger( 'set:page:' + page, this.currentPageView );
 	},
 
 	openEditor: function( model, view ) {

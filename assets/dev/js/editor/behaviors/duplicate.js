@@ -26,7 +26,11 @@ HandleAddDuplicateBehavior = Marionette.Behavior.extend( {
 			elements: []
 		};
 
+		qazana.channels.data.trigger( 'element:before:add', newItem );
+
 		this.view.addChildModel( newItem, options );
+
+		qazana.channels.data.trigger( 'element:after:add', newItem );
 	}
 } );
 

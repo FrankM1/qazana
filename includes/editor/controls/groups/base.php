@@ -1,13 +1,15 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 abstract class Group_Control_Base implements Group_Control_Interface {
 
 	private $args = [];
 
-	final public function add_controls( Controls_Stack $element, array $user_args ) {
+	final public function add_controls( Controls_Stack $element, array $user_args, array $options = [] ) {
 		$this->init_args( $user_args );
 
 		// Filter witch controls to display
@@ -15,8 +17,21 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 
 		$filtered_fields = $this->prepare_fields( $filtered_fields );
 
+		// For php < 7
+		reset( $filtered_fields );
+
 		if ( isset( $this->args['separator'] ) ) {
 			$filtered_fields[ key( $filtered_fields ) ]['separator'] = $this->args['separator'];
+		}
+
+		$has_injection = false;
+
+		if ( ! empty( $options['position'] ) ) {
+			$has_injection = true;
+
+			$element->start_injection( $options['position'] );
+
+			unset( $options['position'] );
 		}
 
 		foreach ( $filtered_fields as $field_id => $field_args ) {
@@ -29,10 +44,14 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 			if ( ! empty( $field_args['responsive'] ) ) {
 				unset( $field_args['responsive'] );
 
-				$element->add_responsive_control( $id, $field_args );
+				$element->add_responsive_control( $id, $field_args, $options );
 			} else {
-				$element->add_control( $id , $field_args );
+				$element->add_control( $id , $field_args, $options );
 			}
+		}
+
+		if ( $has_injection ) {
+			$element->end_injection();
 		}
 	}
 
@@ -135,8 +154,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		}
 
 		if ( ! empty( $args['condition'] ) ) {
-			if ( empty( $field_args['condition'] ) )
+			if ( empty( $field_args['condition'] ) ) {
 				$field_args['condition'] = [];
+			}
 
 			$field_args['condition'] += $args['condition'];
 		}
@@ -200,9 +220,11 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		$args = $this->get_args();
 
 		$selectors = array_combine(
-			array_map( function( $key ) use ( $args ) {
-				return str_replace( '{{SELECTOR}}', $args['selector'], $key );
-			}, array_keys( $selectors ) ),
+			array_map(
+				function( $key ) use ( $args ) {
+						return str_replace( '{{SELECTOR}}', $args['selector'], $key );
+				}, array_keys( $selectors )
+			),
 			$selectors
 		);
 
@@ -213,9 +235,11 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		$controls_prefix = $this->get_controls_prefix();
 
 		foreach ( $selectors as &$selector ) {
-			$selector = preg_replace_callback( '/(?:\{\{)\K[^.}]+(?=\.[^}]*}})/', function( $matches ) use ( $controls_prefix ) {
-				return $controls_prefix . $matches[0];
-			}, $selector );
+			$selector = preg_replace_callback(
+				'/(?:\{\{)\K[^.}]+(?=\.[^}]*}})/', function( $matches ) use ( $controls_prefix ) {
+					return $controls_prefix . $matches[0];
+				}, $selector
+			);
 		}
 
 		return $selectors;

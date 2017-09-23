@@ -1,12 +1,12 @@
 /* global qazanaFrontendConfig */
 ( function( $ ) {
 	var elements = {},
-		EventManager = require( 'qazana-utils/hooks' ),
-		Module = require( 'qazana-frontend/handler-module' ),
+		EventManager = require( '../utils/hooks' ),
+		Module = require( './handler-module' ),
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
-		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
-		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
-		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
+		YouTubeModule = require( './utils/youtube' ),
+		AnchorsModule = require( './utils/anchors' ),
+		LightboxModule = require( './utils/lightbox' );
 
 	var QazanaFrontend = function() {
 		var self = this,
@@ -51,7 +51,7 @@
 		};
 
 		var initHotKeys = function() {
-			self.hotKeys = require( 'qazana-utils/hot-keys' );
+			self.hotKeys = require( '../utils/hot-keys' );
 
 			self.hotKeys.bindListener( elements.$window );
 		};
@@ -178,7 +178,7 @@
 		};
 
 		this.getCurrentDeviceMode = function() {
-			return getComputedStyle( elements.$qazana[ 0 ], ':after' ).content.replace( /"/g, '' );
+			//return getComputedStyle( elements.$qazana[ 0 ], ':after' ).content.replace( /"/g, '' );
 		};
 
 		this.waypoint = function( $element, callback, options ) {
@@ -193,8 +193,8 @@
 	};
 
 	window.qazanaFrontend = new QazanaFrontend();
-} )( jQuery );
+})( jQuery );
 
-if ( ! qazanaFrontend.isEditMode() ) {
-	jQuery( qazanaFrontend.init );
-}
+jQuery( function() {
+	window.qazanaFrontend.init();
+});

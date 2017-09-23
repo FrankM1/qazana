@@ -187,12 +187,16 @@ class Frontend {
 	protected function _print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
 			$element = qazana()->elements_manager->create_element_instance( $element_data );
+
+			if ( ! $element ) {
+				continue;
+			}
+
 			$element->print_element();
 		}
 	}
 
 	public function body_class( $classes = [] ) {
-
 		$classes[] = 'qazana-default';
 
 		$id = get_the_ID();
@@ -243,7 +247,7 @@ class Frontend {
 
 		$qazana_frontend_config = [
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'home_url' => home_url(),
+            		'home_url' => home_url(),
 			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),
 			'assets_url' => qazana()->core_assets_url,
 			'nonce' => wp_create_nonce( 'qazana-frontend' ),
@@ -260,16 +264,16 @@ class Frontend {
 			],
 		];
 
-		$elements_manager = qazana()->elements_manager;
+		if ( qazana()->preview->is_preview_mode() ) {
+			$elements_manager = qazana()->elements_manager;
 
-		$elements_frontend_keys = [
-			'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
-			'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
-		];
+			$elements_frontend_keys = [
+				'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
+				'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
+			];
 
-		$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
+			$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
 
-		if ( qazana()->editor->is_edit_mode() ) {
 			$qazana_frontend_config['elements'] = [
 				'data' => (object) [],
 				'editSettings' => (object) [],
@@ -352,6 +356,9 @@ class Frontend {
 	 * Handle style that are not printed in the header
 	 */
 	public function wp_footer() {
+		if ( ! $this->_has_qazana_in_page ) {
+			return;
+		}
 
 		$this->enqueue_styles();
 		$this->enqueue_scripts();

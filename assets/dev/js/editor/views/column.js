@@ -9,20 +9,26 @@ ColumnView = BaseElementView.extend( {
 
 	childViewContainer: '> .qazana-column-wrap > .qazana-widget-wrap',
 
-	behaviors: {
-		Sortable: {
-			behaviorClass: require( 'qazana-behaviors/sortable' ),
-			elChildType: 'widget'
-		},
-		Resizable: {
-			behaviorClass: require( 'qazana-behaviors/resizable' )
-		},
-		HandleDuplicate: {
-			behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
-		},
-		HandleAddMode: {
-			behaviorClass: require( 'qazana-behaviors/duplicate' )
-		}
+	behaviors: function() {
+		var behaviors = BaseElementView.prototype.behaviors.apply( this, arguments );
+
+		_.extend( behaviors, {
+			Sortable: {
+				behaviorClass: require( 'qazana-behaviors/sortable' ),
+				elChildType: 'widget'
+			},
+			Resizable: {
+				behaviorClass: require( 'qazana-behaviors/resizable' )
+			},
+			HandleDuplicate: {
+				behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
+			},
+			HandleAddMode: {
+				behaviorClass: require( 'qazana-behaviors/duplicate' )
+			}
+		} );
+
+		return qazana.hooks.applyFilters( 'elements/column/behaviors', behaviors, this );
 	},
 
 	className: function() {
@@ -33,9 +39,7 @@ ColumnView = BaseElementView.extend( {
 	},
 
 	tagName: function() {
-		var html_tag = this.model.getSetting( 'html_tag' ) ? this.model.getSetting( 'html_tag' ) : 'div';
-
-		return html_tag;
+		return this.model.getSetting( 'html_tag' ) || 'div';
 	},
 
 	ui: function() {
@@ -82,7 +86,9 @@ ColumnView = BaseElementView.extend( {
 		self.$el.attr( 'data-col', columnSize );
 
 		_.defer( function() { // Wait for the column size to be applied
-			self.ui.percentsTooltip.text( self.getPercentsForDisplay() );
+			if ( self.ui.percentsTooltip ) {
+				self.ui.percentsTooltip.text( self.getPercentsForDisplay() );
+			}
 		} );
 	},
 

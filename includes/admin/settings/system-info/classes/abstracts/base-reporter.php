@@ -3,21 +3,23 @@ namespace Qazana\System_Info\Classes\Abstracts;
 
 use Qazana\System_Info\Helpers\Model_Helper;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 abstract class Base_Reporter {
 
 	private $_properties;
 
-	public abstract function get_title();
+	abstract public function get_title();
 
-	public abstract function get_fields();
+	abstract public function get_fields();
 
 	public function is_enabled() {
 		return true;
 	}
 
-	public final function get_report() {
+	final public function get_report() {
 		$result = [];
 
 		foreach ( $this->get_fields() as $field_name => $field_label ) {
@@ -46,11 +48,11 @@ abstract class Base_Reporter {
 		];
 	}
 
-	public final static function filter_possible_properties( $properties ) {
+	final public static function filter_possible_properties( $properties ) {
 		return Model_Helper::filter_possible_properties( self::get_properties_keys(), $properties );
 	}
 
-	public final function set_properties( $key, $value = null ) {
+	final public function set_properties( $key, $value = null ) {
 		if ( is_array( $key ) ) {
 			$key = self::filter_possible_properties( $key );
 

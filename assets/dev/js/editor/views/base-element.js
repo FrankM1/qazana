@@ -39,6 +39,16 @@ BaseElementView = BaseContainer.extend( {
 		};
 	},
 
+	behaviors: function() {
+		var behaviors = {};
+
+		return qazana.hooks.applyFilters( 'elements/base/behaviors', behaviors, this );
+	},
+
+	getBehavior: function( name ) {
+		return this._behaviors[ Object.keys( this.behaviors() ).indexOf( name ) ];
+	},
+
 	events: function() {
 		return {
 			'click @ui.removeButton': 'onClickRemove',
@@ -102,8 +112,6 @@ BaseElementView = BaseContainer.extend( {
 		this.listenTo( editModel.get( 'settings' ), 'change', this.onSettingsChanged, this );
 		this.listenTo( editModel.get( 'editSettings' ), 'change', this.onEditSettingsChanged, this );
 
-		this.initRemoveDialog();
-
 		this.initControlsCSSParser();
 	},
 
@@ -158,11 +166,15 @@ BaseElementView = BaseContainer.extend( {
 			_.extend( itemData, customData );
 		}
 
+		qazana.channels.data.trigger( 'element:before:add', itemData );
+
 		var newView = this.addChildElement( itemData, options );
 
 		if ( 'section' === newView.getElementType() && newView.isInner() ) {
 			newView.addEmptyColumn();
 		}
+
+		qazana.channels.data.trigger( 'element:after:add', itemData );
 
 	},
 
@@ -187,37 +199,6 @@ BaseElementView = BaseContainer.extend( {
 		return !! this.model.get( 'isInner' );
 	},
 
-	initRemoveDialog: function() {
-		var removeDialog;
-
-		this.getRemoveDialog = function() {
-			if ( ! removeDialog ) {
-				var elementTitle = this.model.getTitle();
-
-				removeDialog = qazana.dialogsManager.createWidget( 'confirm', {
-					message: qazana.translate( 'dialog_confirm_delete', [ elementTitle.toLowerCase() ] ),
-					headerMessage: qazana.translate( 'delete_element', [ elementTitle ] ),
-					strings: {
-						confirm: qazana.translate( 'delete' ),
-						cancel: qazana.translate( 'cancel' )
-					},
-					defaultOption: 'confirm',
-					onConfirm: _.bind( function() {
-						var parent = this._parent;
-
-						parent.isManualRemoving = true;
-
-						this.model.destroy();
-
-						parent.isManualRemoving = false;
-					}, this )
-				} );
-			}
-
-			return removeDialog;
-		};
-	},
-
 	initControlsCSSParser: function() {
 		this.controlsCSSParser = new ControlsCSSParser( { id: this.model.cid } );
 	},
@@ -237,10 +218,12 @@ BaseElementView = BaseContainer.extend( {
 		}, this ) );
 	},
 
-	renderStyles: function() {
+	renderStyles: function( settings ) {
+		if ( ! settings ) {
+			settings = this.getEditModel().get( 'settings' );
+		}
 		
 		var self = this,
-			settings = self.getEditModel().get( 'settings' ),
 			customCSS = settings.get( 'custom_css' ),
 			extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
 			
@@ -307,6 +290,19 @@ BaseElementView = BaseContainer.extend( {
 		this.$el.attr( 'id', customElementID );
 	},
 
+	getModelForRender: function() {
+		return qazana.hooks.applyFilters( 'element/templateHelpers/editModel', this.getEditModel(), this );
+	},
+
+	renderUIOnly: function() {
+		var editModel = this.getModelForRender();
+
+		this.renderStyles( editModel.get( 'settings' ) );
+		this.renderCustomClasses();
+		this.renderCustomElementID();
+		this.enqueueFonts();
+	},
+
 	renderUI: function() {
 		this.renderStyles();
 		this.renderCustomClasses();
@@ -330,10 +326,6 @@ BaseElementView = BaseContainer.extend( {
 
 	duplicate: function() {
 		this.trigger( 'request:duplicate' );
-	},
-
-	confirmRemove: function() {
-		this.getRemoveDialog().show();
 	},
 
 	renderOnChange: function( settings ) {
@@ -370,7 +362,7 @@ BaseElementView = BaseContainer.extend( {
 			}
 
 			if ( ! isContentChanged ) {
-				this.renderUI();
+				this.renderUIOnly();
 				return;
 			}
 		}
@@ -419,8 +411,11 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	onClickEdit: function( event ) {
-		event.preventDefault();
-		event.stopPropagation();
+		if ( ! Backbone.$( event.target ).closest( '.qazana-clickable' ).length ) {
+			event.preventDefault();
+
+			event.stopPropagation();
+		}
 
 		var activeMode = qazana.channels.dataEditMode.request( 'activeMode' );
 
@@ -438,11 +433,24 @@ BaseElementView = BaseContainer.extend( {
 		this.duplicate();
 	},
 
+	removeElement: function() {
+		qazana.channels.data.trigger( 'element:before:remove', this.model );
+
+		var parent = this._parent;
+
+		parent.isManualRemoving = true;
+
+		this.model.destroy();
+
+		parent.isManualRemoving = false;
+
+		qazana.channels.data.trigger( 'element:after:remove', this.model );
+	},
+
 	onClickRemove: function( event ) {
 		event.preventDefault();
 		event.stopPropagation();
-
-		this.confirmRemove();
+		this.removeElement();
 	},
 
 	onClickSave: function( event ) {
