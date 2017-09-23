@@ -44,7 +44,7 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 				view: require( 'qazana-panel/pages/editor' )
 			},
 			menu: {
-				view: require( 'qazana-panel/pages/menu/menu' ),
+				view: qazana.modules.panel.Menu,
 				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">'
 			},
 			colorScheme: {
@@ -55,23 +55,19 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 			},
 			colorPickerScheme: {
 				view: require( 'qazana-panel/pages/schemes/color-picker' )
-			},
-			settingsPage: {
-				view: require( 'qazana-panel/pages/page-settings/page-settings' ),
-				title: qazana.translate( 'page_settings' )
 			}
 		};
 
 		var schemesTypes = Object.keys( qazana.schemes.getSchemes() ),
 			disabledSchemes = _.difference( schemesTypes, qazana.schemes.getEnabledSchemesTypes() );
 
-		/*_.each( disabledSchemes, function( schemeType ) {
-			var scheme  = qazana.schemes.getScheme( schemeType );
-
-			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
+		_.each( disabledSchemes, function( schemeType ) {
+			var scheme = qazana.schemes.getScheme( schemeType );
+			console.log(scheme);
+			/*pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
 				disabledTitle: scheme.disabled_title
-			} );
-		} );*/
+			} );*/
+		} );
 
 		return pages;
 	},

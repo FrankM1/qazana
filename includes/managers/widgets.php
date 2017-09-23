@@ -299,4 +299,9 @@ class Widgets_Manager {
 		return $keys;
 	}
 
+	public function add_widget_dependencies() {
+		foreach ( $this->get_widget_types() as $widget ) {
+			$widget->add_element_dependencies();
+		}
+	}
 }

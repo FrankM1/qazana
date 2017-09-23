@@ -247,7 +247,7 @@ class Frontend {
 
 		$qazana_frontend_config = [
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            		'home_url' => home_url(),
+            'home_url' => home_url(),
 			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),
 			'assets_url' => qazana()->core_assets_url,
 			'nonce' => wp_create_nonce( 'qazana-frontend' ),

@@ -89,11 +89,12 @@ class Plugin {
 
     public $editor;
     public $preview;
-    public $widgets;
 
     public $frontend;
     public $heartbeat; */
-
+    
+    public $widgets;
+    
     public $templates_manager;
 
     public $extensions_loader;
@@ -325,6 +326,19 @@ class Plugin {
         require_once( $this->includes_dir . 'core/update.php' );
         require_once( $this->includes_dir . 'core/loader.php' );
 
+        require_once( $this->includes_dir . 'core/settings/manager.php' );
+        require_once( $this->includes_dir . 'core/settings/controls-stack.php' );
+        
+        require_once( $this->includes_dir . 'core/settings/base/manager.php' );
+        require_once( $this->includes_dir . 'core/settings/base/model.php' );
+        require_once( $this->includes_dir . 'core/settings/general/manager.php' );
+        require_once( $this->includes_dir . 'core/settings/general/model.php' );
+        require_once( $this->includes_dir . 'core/settings/page/manager.php' );
+        require_once( $this->includes_dir . 'core/settings/page/model.php' );
+        
+        // require_once( $this->includes_dir . 'core/settings/settings.php' );
+        require_once( $this->includes_dir . 'core/settings/page/template.php' );
+
         require_once( $this->includes_dir . 'common/functions.php' );
         require_once( $this->includes_dir . 'common/utils.php' );
         require_once( $this->includes_dir . 'common/db.php' );
@@ -341,7 +355,6 @@ class Plugin {
         require_once( $this->includes_dir . 'editor/user.php' );
         require_once( $this->includes_dir . 'editor/conditions.php' );
         require_once( $this->includes_dir . 'editor/icons.php' );
-        require_once( $this->includes_dir . 'editor/controls-stack.php' );
         require_once( $this->includes_dir . 'editor/css/css-base.php' );
         require_once( $this->includes_dir . 'editor/css/global-css-file.php' );
         require_once( $this->includes_dir . 'editor/css/post-css.php' );
@@ -354,8 +367,6 @@ class Plugin {
         require_once( $this->includes_dir . 'managers/elements.php' );
         require_once( $this->includes_dir . 'managers/widgets.php' );
         require_once( $this->includes_dir . 'managers/templates.php' );
-        require_once( $this->includes_dir . 'managers/page-settings.php' );
-        require_once( $this->includes_dir . 'managers/page-template.php' );
         require_once( $this->includes_dir . 'managers/custom-css.php' );
         require_once( $this->includes_dir . 'managers/extensions.php' );
         require_once( $this->includes_dir . 'managers/revisions.php' );
@@ -397,7 +408,9 @@ class Plugin {
 			'path' 	=> $this->plugin_dir, 
 			'uri' 	=> $this->plugin_url 
         );
-        
+
+        Core\Settings\Manager::run();
+
         $this->db                   = new DB();
         $this->icons_manager        = new Icons_Manager();
         $this->controls_manager     = new Controls_Manager();
@@ -414,13 +427,11 @@ class Plugin {
 
         $this->editor               = new Editor();
         $this->preview              = new Preview();
-        $this->widgets              = '';
 
         $this->frontend             = new Frontend();
         $this->heartbeat            = new Heartbeat();
 
-        $this->templates_manager        = new Template_Manager();
-        $this->page_settings_manager    = new PageSettings\Manager();
+        $this->templates_manager    = new Template_Manager();
 
         $this->extensions_loader    = new Loader( $paths, $this->extensions_locations );
         $this->extensions_manager   = new Extensions\Manager( $this->extensions_loader );

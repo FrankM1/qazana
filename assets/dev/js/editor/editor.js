@@ -133,16 +133,11 @@ App = Marionette.Application.extend( {
 
 	initComponents: function() {
 		var EventManager = require( 'qazana-utils/hooks' ),
-			Settings = require( 'qazana-editor-utils/page-settings' );
-
+			Settings = require( 'qazana-editor/settings/settings' );
+		
 		this.hooks = new EventManager();
 
 		this.settings = new Settings();
-
-		/**
-		 * @deprecated - use `this.settings.page` instead
-		 */
-		this.pageSettings = this.settings.page;
 
 		this.templates.init();
 
@@ -197,9 +192,9 @@ App = Marionette.Application.extend( {
 		
 		frontendWindow.qazana = this;
 
-		//qazanaFrontend.init();
+		qazanaFrontend.init();
 
-		//qazanaFrontend.elementsHandler.initHandlers();
+		qazanaFrontend.elementsHandler.initHandlers();
 
 		this.trigger( 'frontend:init' );
 	},
@@ -339,7 +334,7 @@ App = Marionette.Application.extend( {
 			} );
 		} );
 
-		//hotKeysManager.bindListener( this.$window.add( qazanaFrontend.getElements( '$window' ) ) );
+		hotKeysManager.bindListener( this.$window.add( qazanaFrontend.getElements( '$window' ) ) );
 	},
 
 	preventClicksInsideEditor: function() {
@@ -401,6 +396,9 @@ App = Marionette.Application.extend( {
 
 		var $previewQazanaEl = this.$previewContents.find( '#qazana' );
 
+		console.log('------------------------------------');
+		console.log(this.$previewContents);
+		console.log('------------------------------------');
 		if ( ! $previewQazanaEl.length ) {
 			this.onPreviewElNotFound();
 			return;
@@ -451,7 +449,7 @@ App = Marionette.Application.extend( {
 		Backbone.$( '#qazana-loading, #qazana-preview-loading' ).fadeOut( 600 );
 
 		_.defer( function() {
-			//qazanaFrontend.getElements( 'window' ).jQuery.holdReady( false );
+			qazanaFrontend.getElements( 'window' ).jQuery.holdReady( false );
 		} );
 
 		this.enqueueTypographyFonts();

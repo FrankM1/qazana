@@ -1,11 +1,17 @@
 var ControlsStack = require( 'qazana-views/controls-stack' );
 
 module.exports = ControlsStack.extend( {
-	id: 'qazana-panel-page-settings',
+	id: function() {
+		return 'qazana-panel-' + this.getOption( 'name' ) + '-settings';
+	},
 
-	template: '#tmpl-qazana-panel-page-settings',
+	getTemplate: function() {
+		return '#tmpl-qazana-panel-' + this.getOption( 'name' ) + '-settings';
+	},
 
-	childViewContainer: '#qazana-panel-page-settings-controls',
+	childViewContainer: function() {
+		return '#qazana-panel-' + this.getOption( 'name' ) + '-settings-controls';
+	},
 
 	childViewOptions: function() {
 		return {
@@ -14,8 +20,6 @@ module.exports = ControlsStack.extend( {
 	},
 
 	initialize: function() {
-		this.model = qazana.pageSettings.model;
-
 		this.collection = new Backbone.Collection( _.values( this.model.controls ) );
 	}
 } );

@@ -1,11 +1,14 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-( function( $, window, document ) {
+( function( $ ) {
 	'use strict';
 
 	var QazanaAdminApp = {
 
+		maintenanceMode: null,
+
 		cacheElements: function() {
 			this.cache = {
+				$window: $( window ),
 				$body: $( 'body' ),
 				$switchMode: $( '#qazana-switch-mode' ),
 				$goToEditLink: $( '#qazana-go-to-edit-page-link' ),
@@ -48,7 +51,8 @@
 					self.animateLoader();
 
 					$( document ).on( 'heartbeat-tick.autosave', function() {
-						$( window ).off( 'beforeunload.edit-post' );
+						self.cache.$window.off( 'beforeunload.edit-post' );
+
 						window.location = self.cache.$goToEditLink.attr( 'href' );
 					} );
 				}
@@ -154,6 +158,12 @@
 			$importButton.on( 'click', function() {
 				$( '#qazana-import-template-area' ).toggle();
 			} );
+		},
+
+		initMaintenanceMode: function() {
+			//var MaintenanceMode = require( 'qazana-admin/maintenance-mode' );
+
+			//this.maintenanceMode = new MaintenanceMode();
 		},
 
 		getEditMode: function() {
