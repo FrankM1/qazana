@@ -63,10 +63,13 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 
 		_.each( disabledSchemes, function( schemeType ) {
 			var scheme = qazana.schemes.getScheme( schemeType );
-			console.log(scheme);
-			/*pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
-				disabledTitle: scheme.disabled_title
-			} );*/
+			console.log(schemeType + 'Scheme');
+			
+			if ( pages[ schemeType + 'Scheme' ] ) {
+				pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
+					disabledTitle: scheme.disabled_title
+				} );
+			}
 		} );
 
 		return pages;

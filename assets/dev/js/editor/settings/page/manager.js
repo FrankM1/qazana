@@ -16,25 +16,7 @@ module.exports = BaseSettings.extend( {
 					qazana.getPanelView().setPage( 'page_settings' );
 				} );
 			} );
-		},
-
-		custom_css: function( newValue ) {
-			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
-			this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
-		}			
-		
-	},
-
-	updateStylesheet: function( keepOldEntries ) {
-		if ( ! keepOldEntries ) {
-			this.controlsCSS.stylesheet.empty();
 		}
-
-		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /{{WRAPPER}}/g ], [ this.getSettings( 'cssWrapperSelector' ) ] );
-		
-		//this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', this.model.get('custom_css').replace( /selector/g, [ this.getSettings( 'cssWrapperSelector' ) ] ) );
-		
-		this.controlsCSS.addStyleToDocument();
 	},
 
 	getDataToSave: function( data ) {

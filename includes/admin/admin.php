@@ -115,6 +115,11 @@ class Admin {
      * @since 1.0.0
      */
     private function includes() {
+
+        if ( Utils::is_ajax() ) {
+            require_once( qazana()->includes_dir . 'managers/image.php' );
+        }
+
         require( $this->admin_dir . 'upgrades.php' );
         require( $this->admin_dir . 'editor.php' );
         require( $this->admin_dir . 'api.php' );
@@ -188,6 +193,9 @@ class Admin {
         $this->admin_api            = new Admin_Api();
         $this->admin_tracker        = new Admin_Tracker();
 
+        if ( Utils::is_ajax() ) {
+            new Images_Manager();
+        }
     }
 
     /**

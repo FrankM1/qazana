@@ -15,12 +15,13 @@ LightboxModule = ViewModule.extend( {
 				item: 'qazana-lightbox-item',
 				image: 'qazana-lightbox-image',
 				videoContainer: 'qazana-video-container',
-				videoWrapper: 'qazana-video-wrapper',
+				videoWrapper: 'qazana-fit-aspect-ratio',
 				playButton: 'qazana-custom-embed-play',
 				playButtonIcon: 'fa',
 				playing: 'qazana-playing',
 				hidden: 'qazana-hidden',
 				invisible: 'qazana-invisible',
+				preventClose: 'qazana-lightbox-prevent-close',
 				slideshow: {
 					container: 'swiper-container',
 					slidesWrapper: 'swiper-wrapper',
@@ -62,7 +63,13 @@ LightboxModule = ViewModule.extend( {
 		var modal = LightboxModule.modal = qazanaFrontend.getDialogsManager().createWidget( 'lightbox', {
 			className: 'qazana-lightbox',
 			closeButton: true,
-			closeButtonClass: 'eicon-close'
+			closeButtonClass: 'eicon-close',
+			selectors: {
+				preventClose: '.' + this.getSettings( 'classes.preventClose' )
+			},
+			hide: {
+				onClick: true
+			}
 		} );
 
 		modal.on( 'hide', function() {
@@ -122,7 +129,7 @@ LightboxModule = ViewModule.extend( {
 		var self = this,
 			classes = self.getSettings( 'classes' ),
 			$item = jQuery( '<div>', { 'class': classes.item } ),
-			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image } );
+			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image + ' ' + classes.preventClose } );
 
 		$item.append( $image );
 
@@ -135,7 +142,7 @@ LightboxModule = ViewModule.extend( {
 		var classes = this.getSettings( 'classes' ),
 			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer } ),
 			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
-			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL } ),
+			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL, allowfullscreen: 1 } ),
 			modal = this.getModal();
 
 		$videoContainer.append( $videoWrapper );
@@ -151,7 +158,7 @@ LightboxModule = ViewModule.extend( {
 		modal.onHide = function() {
 			onHideMethod();
 
-			modal.getElements( 'message' ).removeClass( 'qazana-video-wrapper' );
+			modal.getElements( 'message' ).removeClass( 'qazana-fit-aspect-ratio' );
 		};
 	},
 
@@ -162,8 +169,8 @@ LightboxModule = ViewModule.extend( {
 			slideshowClasses = classes.slideshow,
 			$container = $( '<div>', { 'class': slideshowClasses.container } ),
 			$slidesWrapper = $( '<div>', { 'class': slideshowClasses.slidesWrapper } ),
-			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
-			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
+			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
+			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
 
 		options.slides.forEach( function( slide ) {
 			var slideClass =  slideshowClasses.slide + ' ' + classes.item;
@@ -174,7 +181,7 @@ LightboxModule = ViewModule.extend( {
 
 			var $slide = $( '<div>', { 'class': slideClass } ),
 				$zoomContainer = $( '<div>', { 'class': 'swiper-zoom-container' } ),
-				$slideImage = $( '<img>', { 'class': classes.image } ).attr( 'src', slide.image );
+				$slideImage = $( '<img>', { 'class': classes.image + ' ' + classes.preventClose } ).attr( 'src', slide.image );
 
 			$slide.append( $zoomContainer );
 
@@ -213,7 +220,8 @@ LightboxModule = ViewModule.extend( {
 				grabCursor: true,
 				onSlideChangeEnd: self.onSlideChange,
 				runCallbacksOnInit: false,
-				loop: true
+				loop: true,
+				keyboardControl: true
 			};
 
 			if ( options.swiper ) {
@@ -323,6 +331,10 @@ LightboxModule = ViewModule.extend( {
 		}
 
 		event.preventDefault();
+
+		if ( qazanaFrontend.isEditMode() && ! qazanaFrontend.getGeneralSettings( 'qazana_enable_lightbox_in_editor' ) ) {
+			return;
+		}
 
 		var lightboxData = {};
 

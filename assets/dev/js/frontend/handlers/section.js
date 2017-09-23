@@ -218,7 +218,7 @@ var SVGShapes = HandlerModule.extend( {
 
 module.exports = function( $scope ) {
 
-	new SVGShapes( { $element: $scope } );
+	//new SVGShapes( { $element: $scope } );
 	
 	if ( qazanaFrontend.isEditMode() ) {
 
@@ -227,6 +227,6 @@ module.exports = function( $scope ) {
 		}
 	}
 
-	new BackgroundVideo( $scope, $ );
+	new BackgroundVideo( { $element: $scope } );
 
 };

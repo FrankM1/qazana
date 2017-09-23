@@ -55,7 +55,7 @@ class Manager {
 				'settings' => $settings_model->get_settings(),
 			];
 		}
-
+		
 		return $config;
 	}
 

@@ -1340,6 +1340,6 @@ abstract class Controls_Stack {
 	}
 
 	public function is_edit_mode() {
-        	return qazana()->editor->is_edit_mode();
+        return qazana()->editor->is_edit_mode();
 	}
 }

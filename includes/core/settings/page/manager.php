@@ -55,7 +55,7 @@ class Manager extends BaseManager {
 			$page_template = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
 			if ( self::TEMPLATE_CANVAS === $page_template ) {
-				$template = QAZANA_PATH . '/includes/page-templates/canvas.php';
+				$template = qazana()->plugin_dir . 'templates/default/qazana.php';
 			}
 		}
 
@@ -155,11 +155,13 @@ class Manager extends BaseManager {
 	}
 
 	protected function get_special_settings_names() {
-		return [
+		$special_settings = [
 			'id',
 			'post_title',
 			'post_status',
 			'template',
 		];
+
+		return apply_filters( 'qazana/core/settings/page/special_settings', $special_settings, $post_id );
 	}
 }

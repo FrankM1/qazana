@@ -3,7 +3,9 @@ namespace Qazana;
 
 use Qazana\Core\Settings\Manager as SettingsManager;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Editor {
 

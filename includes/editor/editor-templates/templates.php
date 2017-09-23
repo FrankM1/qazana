@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 </script>
 
 <script type="text/template" id="tmpl-qazana-template-library-header-search">
-	<input id="qazana-template-library-header-search-input-text" placeholder="<?php _e( 'Search Widget...', 'qazana' ); ?>" />
+	<input id="qazana-template-library-header-search-input-text" placeholder="<?php _e( 'Search...', 'qazana' ); ?>" />
 	<i class="fa fa-search"></i>
 	<div id="qazana-template-library-header-search-input-clear"><i class="eicon-close"></i></div>
 </script>

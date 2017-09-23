@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 ?>
 <!DOCTYPE html>
@@ -17,6 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?php echo __( 'Qazana', 'qazana' ) . ' | ' . get_the_title(); ?></title>
 	<?php wp_head(); ?>
+	<script>
+		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
+	</script>
 </head>
 <body class="qazana-editor-active">
 <div id="qazana-editor-wrapper">
@@ -33,6 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	</div>
 	<div id="qazana-panel" class="qazana-panel"></div>
 </div>
-<?php wp_footer(); ?>
+<?php
+	wp_footer();
+	do_action( 'admin_print_footer_scripts' );
+?>
 </body>
 </html>

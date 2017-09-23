@@ -21,7 +21,7 @@ App = Marionette.Application.extend( {
 	templates: require( 'qazana-templates/manager' ),
 	ajax: require( 'qazana-editor-utils/ajax' ),
 	conditions: require( 'qazana-editor-utils/conditions' ),
-	revisions:  require( 'qazana-revisions/manager' ),
+	history:  require( 'qazana-revisions/manager' ),
 	hotKeys: require( 'qazana-editor-utils/hot-keys' ),
 
 	channels: {
@@ -109,8 +109,9 @@ App = Marionette.Application.extend( {
 			return false;
 		}
 
-		var isInner = modelElement.get( 'isInner' ),
-		    controls = {};
+		var elType = modelElement.get( 'elType' ),
+			isInner = modelElement.get( 'isInner' ),
+			controls = {};
 
 		_.each( elementData.controls, function( controlData, controlKey ) {
 			if ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top ) {
@@ -134,7 +135,7 @@ App = Marionette.Application.extend( {
 	initComponents: function() {
 		var EventManager = require( 'qazana-utils/hooks' ),
 			Settings = require( 'qazana-editor/settings/settings' );
-		
+
 		this.hooks = new EventManager();
 
 		this.settings = new Settings();
@@ -187,9 +188,9 @@ App = Marionette.Application.extend( {
 
 	initFrontend: function() {
 		var frontendWindow = this.$preview[0].contentWindow;
-		
+
 		window.qazanaFrontend = frontendWindow.qazanaFrontend;
-		
+
 		frontendWindow.qazana = this;
 
 		qazanaFrontend.init();
@@ -396,9 +397,6 @@ App = Marionette.Application.extend( {
 
 		var $previewQazanaEl = this.$previewContents.find( '#qazana' );
 
-		console.log('------------------------------------');
-		console.log(this.$previewContents);
-		console.log('------------------------------------');
 		if ( ! $previewQazanaEl.length ) {
 			this.onPreviewElNotFound();
 			return;

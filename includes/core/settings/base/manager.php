@@ -76,6 +76,8 @@ abstract class Manager {
 			}
 		}
 
+		$settings_to_save = apply_filters( 'qazana/core/settings_to_save', $settings_to_save, $id );
+
 		$this->save_settings_to_db( $settings_to_save, $id );
 
 		// Clear cache after save.
@@ -86,6 +88,8 @@ abstract class Manager {
 		$css_file = $this->get_css_file_for_update( $id );
 
 		$css_file->update();
+
+		do_action( 'qazana/core/settings/save', $settings_to_save, $id );
 	}
 
 	public function add_settings_css_rules( CSS_File $css_file ) {
@@ -145,16 +149,16 @@ abstract class Manager {
 	protected function ajax_before_save_settings( array $data, $id ) {}
 
 	protected function print_editor_template_content( $name ) {
-		?>
-		<div class="qazana-panel-navigation">
+		
+		?><div class="qazana-panel-navigation">
 			<# _.each( qazana.config.settings.<?php echo $name; ?>.tabs, function( tabTitle, tabSlug ) { #>
 				<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
 					<a href="#">{{{ tabTitle }}}</a>
 				</div>
-				<# } ); #>
+			<# } ); #>
 		</div>
-		<div id="qazana-panel-<?php echo $name; ?>-settings-controls"></div>
-		<?php
+		<div id="qazana-panel-<?php echo $name; ?>-settings-controls"></div><?php
+
 	}
 
 	/**

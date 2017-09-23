@@ -327,7 +327,7 @@ class Plugin {
         require_once( $this->includes_dir . 'core/loader.php' );
 
         require_once( $this->includes_dir . 'core/settings/manager.php' );
-        require_once( $this->includes_dir . 'core/settings/controls-stack.php' );
+        require_once( $this->includes_dir . 'core/controls-stack.php' );
         
         require_once( $this->includes_dir . 'core/settings/base/manager.php' );
         require_once( $this->includes_dir . 'core/settings/base/model.php' );
@@ -377,24 +377,25 @@ class Plugin {
         //vendor classes
         require_once( $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php' );
 
+
+        require_once( $this->includes_dir . 'widgets/base/element-base.php' );
+        require_once( $this->includes_dir . 'widgets/base/widget-base.php' );
+        
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';
         require_once $this->includes_dir.'core/filters.php';
 
         if ( is_admin() ) {
-
             require_once( $this->includes_dir . 'admin/admin.php' );
             require_once( $this->includes_dir . 'admin/functions.php' );
             require_once( $this->includes_dir . 'admin/actions.php' );
-
-            if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-                require_once( $this->includes_dir . 'managers/image.php' );
-            }
         }
 
         if ( defined( 'WP_CLI' ) ) {
             require_once( $this->includes_dir . 'wp-cli/commands.php' );
         }
+
+        do_action( 'qazana/includes' );
     }
 
     /**
@@ -412,31 +413,24 @@ class Plugin {
         Core\Settings\Manager::run();
 
         $this->db                   = new DB();
-        $this->icons_manager        = new Icons_Manager();
         $this->controls_manager     = new Controls_Manager();
         $this->schemes_manager      = new Schemes_Manager();
         $this->elements_manager     = new Elements_Manager();
-
+        $this->icons_manager        = new Icons_Manager();
         $this->widget_loader        = new Loader( $paths, $this->widget_locations );
         $this->widgets_manager      = new Widgets_Manager();
-
 	    $this->skins_manager 	    = new Skins_Manager();
 	    $this->posts_css_manager    = new Posts_CSS_Manager();
         $this->customcss            = new Custom_Css();
-        $this->revisions_manager    = new Revisions_Manager();
-
         $this->editor               = new Editor();
         $this->preview              = new Preview();
-
         $this->frontend             = new Frontend();
         $this->heartbeat            = new Heartbeat();
-
+        $this->revisions_manager    = new Revisions_Manager();
         $this->templates_manager    = new Template_Manager();
-
         $this->extensions_loader    = new Loader( $paths, $this->extensions_locations );
         $this->extensions_manager   = new Extensions\Manager( $this->extensions_loader );
         $this->cron                 = new Cron;
-
         $this->mobile_detect        = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
 

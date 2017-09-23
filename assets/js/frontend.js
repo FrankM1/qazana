@@ -480,6 +480,147 @@ module.exports = function( $scope, $ ) {
 };
 
 },{}],6:[function(require,module,exports){
+var HandlerModule = require( 'qazana-frontend/handler-module' );
+
+var BackgroundVideo = HandlerModule.extend( {
+	player: null,
+
+	isYTVideo: null,
+
+	getDefaultSettings: function() {
+		return {
+			selectors: {
+				backgroundVideoContainer: '.qazana-background-video-container',
+				backgroundVideoEmbed: '.qazana-background-video-embed',
+				backgroundVideoHosted: '.qazana-background-video-hosted'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+		var selectors = this.getSettings( 'selectors' ),
+			elements = {
+				$backgroundVideoContainer: this.$element.find( selectors.backgroundVideoContainer )
+			};
+
+		elements.$backgroundVideoEmbed = elements.$backgroundVideoContainer.children( selectors.backgroundVideoEmbed );
+
+		elements.$backgroundVideoHosted = elements.$backgroundVideoContainer.children( selectors.backgroundVideoHosted );
+
+		return elements;
+	},
+
+	calcVideosSize: function() {
+		var containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
+			containerHeight = this.elements.$backgroundVideoContainer.outerHeight(),
+			aspectRatioSetting = '16:9', //TEMP
+			aspectRatioArray = aspectRatioSetting.split( ':' ),
+			aspectRatio = aspectRatioArray[ 0 ] / aspectRatioArray[ 1 ],
+			ratioWidth = containerWidth / aspectRatio,
+			ratioHeight = containerHeight * aspectRatio,
+			isWidthFixed = containerWidth / containerHeight > aspectRatio;
+
+		return {
+			width: isWidthFixed ? containerWidth : ratioHeight,
+			height: isWidthFixed ? ratioWidth : containerHeight
+		};
+	},
+
+	changeVideoSize: function() {
+		var $video = this.isYTVideo ? jQuery( this.player.getIframe() ) : this.elements.$backgroundVideoHosted,
+			size = this.calcVideosSize();
+
+		$video.width( size.width ).height( size.height );
+	},
+
+	prepareYTVideo: function( YT, videoID ) {
+		var self = this,
+			$backgroundVideoContainer = self.elements.$backgroundVideoContainer;
+
+		$backgroundVideoContainer.addClass( 'qazana-loading qazana-invisible' );
+
+		self.player = new YT.Player( self.elements.$backgroundVideoEmbed[ 0 ], {
+			videoId: videoID,
+			events: {
+				onReady: function() {
+					self.player.mute();
+
+					self.changeVideoSize();
+
+					self.player.playVideo();
+				},
+				onStateChange: function( event ) {
+					switch ( event.data ) {
+						case YT.PlayerState.PLAYING:
+							$backgroundVideoContainer.removeClass( 'qazana-invisible qazana-loading' );
+
+							break;
+						case YT.PlayerState.ENDED:
+							self.player.seekTo( 0 );
+					}
+				}
+			},
+			playerVars: {
+				controls: 0,
+				showinfo: 0
+			}
+		} );
+
+		qazanaFrontend.getElements( '$window' ).on( 'resize', self.changeVideoSize );
+	},
+
+	activate: function() {
+		var self = this,
+			videoLink = self.getElementSettings( 'background_video_link' ),
+			videoID = qazanaFrontend.utils.youtube.getYoutubeIDFromURL( videoLink );
+
+		self.isYTVideo = !! videoID;
+
+		if ( videoID ) {
+			qazanaFrontend.utils.youtube.onYoutubeApiReady( function( YT ) {
+				setTimeout( function() {
+					self.prepareYTVideo( YT, videoID );
+				}, 1 );
+			} );
+		} else {
+			self.elements.$backgroundVideoHosted.attr( 'src', videoLink ).one( 'canplay', self.changeVideoSize );
+		}
+	},
+
+	deactivate: function() {
+		if ( this.isYTVideo && this.player.getIframe() ) {
+			this.player.destroy();
+		} else {
+			this.elements.$backgroundVideoHosted.removeAttr( 'src' );
+		}
+	},
+
+	run: function() {
+		var elementSettings = this.getElementSettings();
+
+		if ( 'video' === elementSettings.background_background && elementSettings.background_video_link ) {
+			this.activate();
+		} else {
+			this.deactivate();
+		}
+	},
+
+	onInit: function() {
+		HandlerModule.prototype.onInit.apply( this, arguments );
+
+		this.run();
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'background_background' === propertyName ) {
+			this.run();
+		}
+	}
+} );
+
+module.exports =  BackgroundVideo;
+
+/* 
 module.exports = function( $scope, $ ) {
 
 	var BackgroundVideo = function( $backgroundVideoContainer, $ ) {
@@ -577,9 +718,9 @@ module.exports = function( $scope, $ ) {
 	if ( $backgroundVideoContainer ) {
 		new BackgroundVideo( $backgroundVideoContainer, $ );
 	}
-};
+}; */
 
-},{}],7:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],7:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 
 	var $counter = $scope.find( '.qazana-counter-number' );
@@ -879,7 +1020,7 @@ var SVGShapes = HandlerModule.extend( {
 
 module.exports = function( $scope ) {
 
-	new SVGShapes( { $element: $scope } );
+	//new SVGShapes( { $element: $scope } );
 	
 	if ( qazanaFrontend.isEditMode() ) {
 
@@ -888,7 +1029,7 @@ module.exports = function( $scope ) {
 		}
 	}
 
-	new BackgroundVideo( $scope, $ );
+	new BackgroundVideo( { $element: $scope } );
 
 };
 
@@ -1236,12 +1377,13 @@ LightboxModule = ViewModule.extend( {
 				item: 'qazana-lightbox-item',
 				image: 'qazana-lightbox-image',
 				videoContainer: 'qazana-video-container',
-				videoWrapper: 'qazana-video-wrapper',
+				videoWrapper: 'qazana-fit-aspect-ratio',
 				playButton: 'qazana-custom-embed-play',
 				playButtonIcon: 'fa',
 				playing: 'qazana-playing',
 				hidden: 'qazana-hidden',
 				invisible: 'qazana-invisible',
+				preventClose: 'qazana-lightbox-prevent-close',
 				slideshow: {
 					container: 'swiper-container',
 					slidesWrapper: 'swiper-wrapper',
@@ -1283,7 +1425,13 @@ LightboxModule = ViewModule.extend( {
 		var modal = LightboxModule.modal = qazanaFrontend.getDialogsManager().createWidget( 'lightbox', {
 			className: 'qazana-lightbox',
 			closeButton: true,
-			closeButtonClass: 'eicon-close'
+			closeButtonClass: 'eicon-close',
+			selectors: {
+				preventClose: '.' + this.getSettings( 'classes.preventClose' )
+			},
+			hide: {
+				onClick: true
+			}
 		} );
 
 		modal.on( 'hide', function() {
@@ -1343,7 +1491,7 @@ LightboxModule = ViewModule.extend( {
 		var self = this,
 			classes = self.getSettings( 'classes' ),
 			$item = jQuery( '<div>', { 'class': classes.item } ),
-			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image } );
+			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image + ' ' + classes.preventClose } );
 
 		$item.append( $image );
 
@@ -1356,7 +1504,7 @@ LightboxModule = ViewModule.extend( {
 		var classes = this.getSettings( 'classes' ),
 			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer } ),
 			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
-			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL } ),
+			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL, allowfullscreen: 1 } ),
 			modal = this.getModal();
 
 		$videoContainer.append( $videoWrapper );
@@ -1372,7 +1520,7 @@ LightboxModule = ViewModule.extend( {
 		modal.onHide = function() {
 			onHideMethod();
 
-			modal.getElements( 'message' ).removeClass( 'qazana-video-wrapper' );
+			modal.getElements( 'message' ).removeClass( 'qazana-fit-aspect-ratio' );
 		};
 	},
 
@@ -1383,8 +1531,8 @@ LightboxModule = ViewModule.extend( {
 			slideshowClasses = classes.slideshow,
 			$container = $( '<div>', { 'class': slideshowClasses.container } ),
 			$slidesWrapper = $( '<div>', { 'class': slideshowClasses.slidesWrapper } ),
-			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
-			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
+			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
+			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
 
 		options.slides.forEach( function( slide ) {
 			var slideClass =  slideshowClasses.slide + ' ' + classes.item;
@@ -1395,7 +1543,7 @@ LightboxModule = ViewModule.extend( {
 
 			var $slide = $( '<div>', { 'class': slideClass } ),
 				$zoomContainer = $( '<div>', { 'class': 'swiper-zoom-container' } ),
-				$slideImage = $( '<img>', { 'class': classes.image } ).attr( 'src', slide.image );
+				$slideImage = $( '<img>', { 'class': classes.image + ' ' + classes.preventClose } ).attr( 'src', slide.image );
 
 			$slide.append( $zoomContainer );
 
@@ -1434,7 +1582,8 @@ LightboxModule = ViewModule.extend( {
 				grabCursor: true,
 				onSlideChangeEnd: self.onSlideChange,
 				runCallbacksOnInit: false,
-				loop: true
+				loop: true,
+				keyboardControl: true
 			};
 
 			if ( options.swiper ) {
@@ -1544,6 +1693,10 @@ LightboxModule = ViewModule.extend( {
 		}
 
 		event.preventDefault();
+
+		if ( qazanaFrontend.isEditMode() && ! qazanaFrontend.getGeneralSettings( 'qazana_enable_lightbox_in_editor' ) ) {
+			return;
+		}
 
 		var lightboxData = {};
 

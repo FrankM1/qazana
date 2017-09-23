@@ -3,7 +3,7 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use Qazana\PageSettings\Manager as PageSettingsManager;
+use Qazana\Core\Settings\Manager as SettingsManager;
 
 class Template_Manager {
 
@@ -97,7 +97,8 @@ class Template_Manager {
 		$args['data'] = json_decode( stripslashes( $args['data'] ), true );
 
 		if ( 'page' === $args['type'] ) {
-			$page = PageSettingsManager::get_page( $args['post_id'] );
+			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $args['post_id'] );
+
 			$args['page_settings'] = $page->get_data( 'settings' );
 		}
 

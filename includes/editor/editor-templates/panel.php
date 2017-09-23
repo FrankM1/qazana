@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 ?>
 <script type="text/template" id="tmpl-qazana-panel">
 	<div id="qazana-mode-switcher"></div>
@@ -124,6 +126,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             </div>
         </div>
     </div>
+	<div id="qazana-panel-footer-history" class="qazana-panel-footer-tool qazana-leave-open" title="<?php esc_attr_e( 'History', 'qazana' ); ?>">
+		<span class="qazana-screen-only"><?php _e( 'History', 'qazana' ); ?></span>
+		<i class="fa fa-history"></i>
+	</div>
 
     <div id="qazana-panel-footer-templates" class="qazana-panel-footer-tool" title="<?php esc_attr_e( 'Templates', 'qazana' ); ?>">
         <span class="qazana-screen-only"><?php _e( 'Templates', 'qazana' ); ?></span>
@@ -148,18 +154,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             </span>
             <?php _e( 'Publish', 'qazana' ); ?>
         </button>
-        <?php /*<div class="qazana-panel-footer-sub-menu-wrapper">
-            <div class="qazana-panel-footer-sub-menu">
-                <div id="qazana-panel-footer-publish" class="qazana-panel-footer-sub-menu-item">
-                    <i class="qazana-icon fa fa-check-circle"></i>
-                    <span class="qazana-title"><?php _e( 'Publish', 'qazana' ); ?></span>
-                </div>
-                <div id="qazana-panel-footer-discard" class="qazana-panel-footer-sub-menu-item">
-                    <i class="qazana-icon fa fa-times-circle"></i>
-                    <span class="qazana-title"><?php _e( 'Discard', 'qazana' ); ?></span>
-                </div>
-            </div>
-        </div>*/ ?>
     </div>
 </script>
 
@@ -224,7 +218,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		$google_fonts = Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] );
 
-		foreach ( $scheme_fields as $option_name => $option ) : ?>
+		foreach ( $scheme_fields as $option_name => $option ) :
+		?>
 			<div class="qazana-panel-scheme-typography-item">
 				<div class="qazana-panel-scheme-item-title qazana-control-title"><?php echo $option['label']; ?></div>
 				<div class="qazana-panel-scheme-typography-item-value">
@@ -261,16 +256,27 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 <script type="text/template" id="tmpl-qazana-control-responsive-switchers">
 	<div class="qazana-control-responsive-switchers">
-		<a class="qazana-responsive-switcher qazana-responsive-switcher-desktop" data-device="desktop">
-			<i class="eicon-device-desktop"></i>
-		</a>
-		<a class="qazana-responsive-switcher qazana-responsive-switcher-tablet" data-device="tablet">
-			<i class="eicon-device-tablet"></i>
-		</a>
-		<a class="qazana-responsive-switcher qazana-responsive-switcher-mobile" data-device="mobile">
-			<i class="eicon-device-mobile"></i>
-		</a>
+		<#
+			var devices = responsive.devices || [ 'desktop', 'tablet', 'mobile' ];
+
+			_.each( devices, function( device ) { #>
+				<a class="qazana-responsive-switcher qazana-responsive-switcher-{{ device }}" data-device="{{ device }}">
+					<i class="eicon-device-{{ device }}"></i>
+				</a>
+			<# } );
+		#>
 	</div>
+</script>
+
+<script type="text/template" id="tmpl-qazana-panel-page-settings">
+	<div class="qazana-panel-navigation">
+		<# _.each( qazana.config.page_settings.tabs, function( tabTitle, tabSlug ) { #>
+			<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
+				<a href="#">{{{ tabTitle }}}</a>
+			</div>
+			<# } ); #>
+	</div>
+	<div id="qazana-panel-page-settings-controls"></div>
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-revisions">
@@ -294,16 +300,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	</div>
 </script>
 
-<script type="text/template" id="tmpl-qazana-panel-page-settings">
-	<div class="qazana-panel-navigation">
-		<# _.each( qazana.config.page_settings.tabs, function( tabTitle, tabSlug ) { #>
-			<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
-				<a href="#">{{{ tabTitle }}}</a>
-			</div>
-		<# } ); #>
-	</div>
-	<div id="qazana-panel-page-settings-controls"></div>
-</script>
+
 
 <script type="text/template" id="tmpl-qazana-panel-revisions-no-revisions">
 	<i class="qazana-panel-nerd-box-icon eicon-nerd"></i>
