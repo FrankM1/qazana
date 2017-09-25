@@ -115,7 +115,8 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 		}
 
 		items.add( itemData, options );
-				}
+	}
+
 } );
 
 module.exports = PanelMenuPageView;

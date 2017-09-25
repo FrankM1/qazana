@@ -9,6 +9,18 @@ module.exports = BaseSettings.extend( {
 			titleSelectors[ newSelector ] = 'display: none';
 
 			qazana.settings.page.updateStylesheet();
+		},
+		custom_css: function( newValue ) {
+			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
+			this.controlsCSS.stylesheet.addRawCSS( 'general-settings-custom-css', newValue );
 		}
+	},
+	
+	reloadPreview: function() {
+		qazana.reloadPreview();
+
+		qazana.once( 'preview:loaded', function() {
+			qazana.getPanelView().setPage( 'general_settings' );
+		} );
 	}
 } );

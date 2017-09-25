@@ -320,6 +320,8 @@ class Plugin {
 
     private function includes() {
 
+        do_action( 'qazana/before/includes' );
+        
         /** Core **************************************************************/
         require_once( $this->includes_dir . 'core/sub-actions.php' );
         require_once( $this->includes_dir . 'core/functions.php' );
@@ -335,7 +337,7 @@ class Plugin {
         require_once( $this->includes_dir . 'core/settings/general/model.php' );
         require_once( $this->includes_dir . 'core/settings/page/manager.php' );
         require_once( $this->includes_dir . 'core/settings/page/model.php' );
-        
+
         // require_once( $this->includes_dir . 'core/settings/settings.php' );
         require_once( $this->includes_dir . 'core/settings/page/template.php' );
 
@@ -395,7 +397,7 @@ class Plugin {
             require_once( $this->includes_dir . 'wp-cli/commands.php' );
         }
 
-        do_action( 'qazana/includes' );
+        do_action( 'qazana/after/includes' );
     }
 
     /**
@@ -405,6 +407,8 @@ class Plugin {
      */
     public function init_classes() {
 
+        do_action( 'qazana/before/init_classes' );
+        
         $paths = array( 
 			'path' 	=> $this->plugin_dir, 
 			'uri' 	=> $this->plugin_url 
@@ -434,6 +438,8 @@ class Plugin {
         $this->mobile_detect        = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
 
+        do_action( 'qazana/after/init_classes' );
+        
     }
 
     /** Public Methods ********************************************************/

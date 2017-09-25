@@ -38,7 +38,5 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-global">
-	<div class="qazana-panel-nerd-box">
-		
-	</div>
+	<div class="qazana-panel-nerd-box">Coming Soon</div>
 </script>

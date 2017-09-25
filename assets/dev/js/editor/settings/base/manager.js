@@ -8,11 +8,11 @@ module.exports = ViewModule.extend( {
 	model: null,
 
 	hasChange: false,
-
-	changeCallbacks: {},
-
+	
 	reloadPreviewFlag: false,
 	
+	changeCallbacks: {},
+
 	addChangeCallback: function( attribute, callback ) {
 		this.changeCallbacks[ attribute ] = callback;
 	},
@@ -130,6 +130,7 @@ module.exports = ViewModule.extend( {
 		this.controlsCSS.stylesheet.empty();
 
 		_.each( model.changed, function( value, key ) {
+
 			if ( self.changeCallbacks[ key ] ) {
 				self.changeCallbacks[ key ].call( self, value );
 			}
@@ -145,17 +146,14 @@ module.exports = ViewModule.extend( {
 		self.debounceSave();
 	},
 
-	reloadPreview: function() {
-		qazana.reloadPreview();
-
-		qazana.once( 'preview:loaded', function() {
-			qazana.getPanelView().setPage( 'settingsPage' );
-		} );
-	},
-
 	onQazanaPreviewLoaded: function() {
 		this.updateStylesheet();
 
 		this.addPanelPage();
+	},
+	
+	reloadPreview: function() {
+		qazana.reloadPreview();
 	}
+
 } );

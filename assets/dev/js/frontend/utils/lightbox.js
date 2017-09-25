@@ -421,8 +421,7 @@ LightboxModule = ViewModule.extend( {
 
 	onInit: function() {
 		ViewModule.prototype.onInit.apply( this, arguments );
-
-		if ( qazanaFrontend.isEditMode() ) {
+		if ( qazanaFrontend.isEditMode() && typeof qazana.settings !== 'undefined' ) {
 			qazana.settings.general.model.on( 'change', this.onGeneralSettingsChange );
 		}
 	},

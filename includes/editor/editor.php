@@ -21,6 +21,7 @@ class Editor {
 	private $_localize_settings = [];
 
 	private function init_editor_templates() {
+
 		// It can be filled from plugins
 		$this->_editor_templates = array_merge( $this->_editor_templates, [
 		 	__DIR__ . '/editor-templates/global.php',
@@ -30,7 +31,8 @@ class Editor {
 			__DIR__ . '/editor-templates/templates.php',
 		] );
 
-		do_action( 'qazana/editor/editor_templates' );
+		do_action( 'qazana/editor/panel_templates' );
+		
 	}
 
 	public function __construct() {
@@ -403,22 +405,22 @@ class Editor {
         $this->add_localize_settings( [
 			'version' => qazana_get_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'home_url' => home_url(),
+			'home_url' => home_url(),
+			'post_id' => $this->_post_id,
             'nonce' => wp_create_nonce( 'qazana-editing' ),
             'preview_link' => Utils::get_preview_url( $this->_post_id ),
             'elements_categories' => qazana()->elements_manager->get_categories(),
             'controls' => qazana()->controls_manager->get_controls_data(),
             'elements' => qazana()->elements_manager->get_element_types_config(),
-            'widgets' => qazana()->widgets_manager->get_widget_types_config(),
+			'widgets' => qazana()->widgets_manager->get_widget_types_config(),
+			'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
+            'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'schemes' => [
                 'items' => qazana()->schemes_manager->get_registered_schemes_data(),
                 'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
             ],
-            'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
-	     	'settings' => SettingsManager::get_settings_managers_config(),
-            'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'wp_editor' => $this->_get_wp_editor_config(),
-            'post_id' => $this->_post_id,
+			'settings' => SettingsManager::get_settings_managers_config(),
             'settings_page_link' => admin_url( 'admin.php?page=' . qazana()->slug ),
             'qazana_site' => 'https://radiumthemes.com/plugins/qazana',
             'help_the_content_url' => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',

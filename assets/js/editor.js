@@ -1977,8 +1977,7 @@ App = Marionette.Application.extend( {
 			return false;
 		}
 
-		var elType = modelElement.get( 'elType' ),
-			isInner = modelElement.get( 'isInner' ),
+		var isInner = modelElement.get( 'isInner' ),
 			controls = {};
 
 		_.each( elementData.controls, function( controlData, controlKey ) {
@@ -2007,7 +2006,7 @@ App = Marionette.Application.extend( {
 		this.hooks = new EventManager();
 
 		this.settings = new Settings();
-
+		
 		this.templates.init();
 
 		this.initDialogsManager();
@@ -2738,7 +2737,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		var $tool = $target.closest( '.qazana-panel-footer-tool' ),
 			isClosedTool = $tool.length && ! $tool.hasClass( 'qazana-open' );
 
-		this.ui.menuButtons.filter( ':not(.qazana-leave-open)' ).removeClass( 'qazana-open' );
+		this.ui.menuButtons.removeClass( 'qazana-open' );
 
 		if ( isClosedTool ) {
 			$tool.addClass( 'qazana-open' );
@@ -3547,7 +3546,8 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 		}
 
 		items.add( itemData, options );
-				}
+	}
+
 } );
 
 module.exports = PanelMenuPageView;
@@ -3989,13 +3989,10 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 
 		_.each( disabledSchemes, function( schemeType ) {
 			var scheme = qazana.schemes.getScheme( schemeType );
-			console.log(schemeType + 'Scheme');
 			
-			if ( pages[ schemeType + 'Scheme' ] ) {
-				pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
-					disabledTitle: scheme.disabled_title
-				} );
-			}
+			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
+				disabledTitle: scheme.disabled_title
+			} );
 		} );
 
 		return pages;
@@ -4053,11 +4050,11 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		if ( pageData.getView ) {
 			View = pageData.getView();
 		}
-
+		
 		this.currentPageView = new View( viewOptions );
-
+		
 		this.showChildView( 'content', this.currentPageView );
-
+	
 		this.getHeaderView().setTitle( title || pageData.title );
 
 		this.currentPageName = page;
@@ -4696,11 +4693,11 @@ module.exports = ViewModule.extend( {
 	model: null,
 
 	hasChange: false,
-
-	changeCallbacks: {},
-
+	
 	reloadPreviewFlag: false,
 	
+	changeCallbacks: {},
+
 	addChangeCallback: function( attribute, callback ) {
 		this.changeCallbacks[ attribute ] = callback;
 	},
@@ -4818,6 +4815,7 @@ module.exports = ViewModule.extend( {
 		this.controlsCSS.stylesheet.empty();
 
 		_.each( model.changed, function( value, key ) {
+
 			if ( self.changeCallbacks[ key ] ) {
 				self.changeCallbacks[ key ].call( self, value );
 			}
@@ -4833,19 +4831,16 @@ module.exports = ViewModule.extend( {
 		self.debounceSave();
 	},
 
-	reloadPreview: function() {
-		qazana.reloadPreview();
-
-		qazana.once( 'preview:loaded', function() {
-			qazana.getPanelView().setPage( 'settingsPage' );
-		} );
-	},
-
 	onQazanaPreviewLoaded: function() {
 		this.updateStylesheet();
 
 		this.addPanelPage();
+	},
+	
+	reloadPreview: function() {
+		qazana.reloadPreview();
 	}
+
 } );
 
 },{"qazana-editor-utils/controls-css-parser":73,"qazana-models/base-settings":61,"qazana-utils/view-module":125}],67:[function(require,module,exports){
@@ -4887,7 +4882,19 @@ module.exports = BaseSettings.extend( {
 			titleSelectors[ newSelector ] = 'display: none';
 
 			qazana.settings.page.updateStylesheet();
+		},
+		custom_css: function( newValue ) {
+			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
+			this.controlsCSS.stylesheet.addRawCSS( 'general-settings-custom-css', newValue );
 		}
+	},
+	
+	reloadPreview: function() {
+		qazana.reloadPreview();
+
+		qazana.once( 'preview:loaded', function() {
+			qazana.getPanelView().setPage( 'general_settings' );
+		} );
 	}
 } );
 
@@ -4898,25 +4905,41 @@ module.exports = BaseSettings.extend( {
 	changeCallbacks: {
 		post_title: function( newValue ) {
 			var $title = qazanaFrontend.getElements( '$document' ).find( qazana.config.page_title_selector );
-
 			$title.text( newValue );
 		},
 
 		template: function() {
-			this.save( function() {
-				qazana.reloadPreview();
 
-				qazana.once( 'preview:loaded', function() {
-					qazana.getPanelView().setPage( 'page_settings' );
-				} );
+			var self = this;
+
+			self.save( function() {
+				self.reloadPreview();
 			} );
+			
+		},
+
+		custom_css: function( newValue ) {
+			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
+			this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
 		}
+	},
+
+	renderStyles: function() {
+		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /\{\{WRAPPER}}/g ], [ 'body.qazana-page-' + qazana.config.post_id ] );
+		this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', this.model.get('custom_css').replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id ) );
 	},
 
 	getDataToSave: function( data ) {
 		data.id = qazana.config.post_id;
-
 		return data;
+	},
+
+	reloadPreview: function() {
+		qazana.reloadPreview();
+
+		qazana.once( 'preview:loaded', function() {
+			qazana.getPanelView().setPage( 'page_settings' );
+		} );
 	}
 } );
 
@@ -4940,10 +4963,8 @@ module.exports = Module.extend( {
 
 	initSettings: function() {
 		var self = this;
-
 		_.each( qazana.config.settings, function( config, name ) {
 			var Manager = self.modules[ name ] || self.modules.base;
-
 			self[ name ] = new Manager( config );
 		} );
 	}

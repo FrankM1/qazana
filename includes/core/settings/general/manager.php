@@ -78,6 +78,9 @@ class Manager extends BaseManager {
 	 * @return void
 	 */
 	protected function save_settings_to_db( array $settings, $id ) {
+
+		$settings = apply_filters( 'qazana/core/settings/'. $this->get_name() .'/to_save', $settings, $id );
+		
 		$model_controls = Model::get_controls_list();
 
 		$one_list_settings = [];

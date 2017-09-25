@@ -108,6 +108,9 @@ class Manager extends BaseManager {
 	}
 
 	protected function save_settings_to_db( array $settings, $id ) {
+
+		$settings = apply_filters( 'qazana/core/settings/'. $this->get_name() .'/to_save', $settings, $id );
+		
 		if ( ! empty( $settings ) ) {
 			update_post_meta( $id, self::META_KEY, $settings );
 		} else {
@@ -162,6 +165,6 @@ class Manager extends BaseManager {
 			'template',
 		];
 
-		return apply_filters( 'qazana/core/settings/page/special_settings', $special_settings, $post_id );
+		return apply_filters( 'qazana/core/settings/page/special_settings', $special_settings );
 	}
 }

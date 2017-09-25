@@ -63,13 +63,10 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 
 		_.each( disabledSchemes, function( schemeType ) {
 			var scheme = qazana.schemes.getScheme( schemeType );
-			console.log(schemeType + 'Scheme');
 			
-			if ( pages[ schemeType + 'Scheme' ] ) {
-				pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
-					disabledTitle: scheme.disabled_title
-				} );
-			}
+			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
+				disabledTitle: scheme.disabled_title
+			} );
 		} );
 
 		return pages;
@@ -127,11 +124,11 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		if ( pageData.getView ) {
 			View = pageData.getView();
 		}
-
+		
 		this.currentPageView = new View( viewOptions );
-
+		
 		this.showChildView( 'content', this.currentPageView );
-
+	
 		this.getHeaderView().setTitle( title || pageData.title );
 
 		this.currentPageName = page;

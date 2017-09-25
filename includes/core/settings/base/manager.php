@@ -21,7 +21,7 @@ abstract class Manager {
 			add_action( 'wp_ajax_qazana_save_' . $this->get_name() . '_settings', [ $this, 'ajax_save_settings' ] );
 		}
 		
-		add_action( 'qazana/editor/editor_templates', [ $this, 'add_editor_template' ] );
+		add_action( 'qazana/editor/panel_templates', [ $this, 'add_editor_template' ] );
 		
 		add_action( 'qazana/' . $this->get_css_file_name() . '-css-file/parse', [ $this, 'add_settings_css_rules' ] );
 	}
@@ -68,17 +68,15 @@ abstract class Manager {
 	final public function save_settings( array $settings, $id = 0 ) {
 		$special_settings = $this->get_special_settings_names();
 
-		$settings_to_save = $settings;
-
 		foreach ( $special_settings as $special_setting ) {
-			if ( isset( $settings_to_save[ $special_setting ] ) ) {
-				unset( $settings_to_save[ $special_setting ] );
+			if ( isset( $settings[ $special_setting ] ) ) {
+				unset( $settings[ $special_setting ] );
 			}
 		}
 
-		$settings_to_save = apply_filters( 'qazana/core/settings_to_save', $settings_to_save, $id );
+		$settings = apply_filters( 'qazana/core/settings/to_save', $settings, $id );
 
-		$this->save_settings_to_db( $settings_to_save, $id );
+		$this->save_settings_to_db( $settings, $id );
 
 		// Clear cache after save.
 		if ( isset( $this->models_cache[ $id ] ) ) {
@@ -89,19 +87,29 @@ abstract class Manager {
 
 		$css_file->update();
 
-		do_action( 'qazana/core/settings/save', $settings_to_save, $id );
+		do_action( 'qazana/core/settings/save', $settings, $id );
 	}
 
 	public function add_settings_css_rules( CSS_File $css_file ) {
 		$model = $this->get_model_for_css_file( $css_file );
 
-		$css_file->add_controls_stack_style_rules(
-			$model,
-			$model->get_style_controls(),
-			$model->get_settings(),
-			[ '{{WRAPPER}}' ],
-			[ $model->get_css_wrapper_selector() ]
-		);
+		$css_file->add_controls_stack_style_rules( $model, $model->get_style_controls(), $model->get_settings(), [ '{{WRAPPER}}' ], [ $model->get_css_wrapper_selector() ] );
+		
+		$custom_css = $model->get_settings( 'custom_css' );
+
+		$custom_css = trim( $custom_css );
+		
+		if ( empty( $custom_css ) ) {
+			return;
+		}
+		
+		$custom_css = str_replace( 'selector', $model->get_css_wrapper_selector(), $custom_css );
+
+		// Add a css comment
+		$custom_css = '/* Start custom CSS for page-settings */' . $custom_css . '/* End custom CSS */';
+
+		$css_file->get_stylesheet()->add_raw_css( $custom_css );
+		
 	}
 
 	public function add_editor_template() {

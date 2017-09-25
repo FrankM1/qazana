@@ -58,6 +58,9 @@ class Model extends BaseModel {
 	}
 
 	protected function _register_controls() {
+
+		do_action( 'qazana/core/settings/before/'. $this->get_name(), $this );
+		
 		$this->start_controls_section(
 			'section_page_settings',
 			[
@@ -175,5 +178,37 @@ class Model extends BaseModel {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_custom_css',
+			[
+				'label' => __( 'Custom CSS', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'custom_css',
+			[
+				'type' => Controls_Manager::CODE,
+				'label' => __( 'Add your own custom CSS here', 'qazana' ),
+				'language' => 'css',
+				'render_type' => 'ui',
+			]
+		);
+
+		$this->add_control(
+			'custom_css_description',
+			[
+				'raw' => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
+				'type' => Controls_Manager::RAW_HTML,
+				'content_classes' => 'qazana-descriptor',
+			]
+		);
+
+		$this->end_controls_section();
+
+		do_action( 'qazana/core/settings/after/'. $this->get_name(), $this );
+		
 	}
 }

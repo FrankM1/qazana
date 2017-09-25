@@ -70,7 +70,7 @@ final class Manager {
      * @access      public
      * @return      void
      */
-    private function _register_extensions( $path ) {
+    public function _register_extensions( $path ) {
 
         if ( ! is_dir( $path ) ) {
             return false;
@@ -86,27 +86,7 @@ final class Manager {
         do_action( "qazana/extensions/before", $this );
 
         foreach ( $folders as $folder ) {
-
-            $path = trailingslashit( $path );
-
-            if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
-                continue;
-            }
-
-            $extension_class = 'Qazana\Extensions\\' . $folder;
-
-            /**
-             * filter 'qazana/extension/{folder}'
-             *
-             * @param        string                    extension class file path
-             * @param string $extension_class          extension class name
-             */
-            $class_file = "$path/$folder/extension_{$folder}.php";
-
-            if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
-                $this->extensions[ $folder ] = new $extension_class ( $this );
-            }
-
+            $this->register_extension( $folder, $path );
         }
 
         /**
@@ -116,6 +96,41 @@ final class Manager {
          */
         do_action( "qazana/extensions", $this );
 
+    }
+
+     /**
+      * Register Extension for use
+      *
+      * @since       1.0.0
+      * @access      public
+      * @return      void
+      */
+    public function register_extension( $folder, $path ) {
+
+        $path = trailingslashit( $path );
+
+        if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
+            return;
+        }
+
+        $extension_class = 'Qazana\Extensions\\' . $folder;
+
+        /**
+         * filter 'qazana/extension/{folder}'
+         *
+         * @param        string                    extension class file path
+         * @param string $extension_class          extension class name
+         */
+        $class_file = "$path/$folder/extension_{$folder}.php";
+
+        if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+            
+            if( ! class_exists( $extension_class ) ) {
+                return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
+            }
+
+            $this->extensions[ $folder ] = new $extension_class ( $this );
+        }
     }
 
     /**
@@ -247,7 +262,13 @@ final class Manager {
                 $this->_register_widgets( $extension_data['name'], $extension_data['widgets'] );
 
         		foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
-        			$class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+                    
+                    $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+                    
+                    if( ! class_exists( $class_name ) ) {
+                        return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
+                    }
+
                     $widget_manager->register_widget_type( new $class_name() );
         		}
             }

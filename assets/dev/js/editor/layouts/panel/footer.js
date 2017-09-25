@@ -116,7 +116,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		var $tool = $target.closest( '.qazana-panel-footer-tool' ),
 			isClosedTool = $tool.length && ! $tool.hasClass( 'qazana-open' );
 
-		this.ui.menuButtons.filter( ':not(.qazana-leave-open)' ).removeClass( 'qazana-open' );
+		this.ui.menuButtons.removeClass( 'qazana-open' );
 
 		if ( isClosedTool ) {
 			$tool.addClass( 'qazana-open' );
