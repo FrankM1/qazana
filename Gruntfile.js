@@ -130,12 +130,11 @@ module.exports = function( grunt ) {
                             src: '**/*.js',
                             expose: 'qazana-frontend'
                         },
-                        {
-							cwd: 'assets/dev/js/editor/components/revisions',
+						{
+							cwd: 'includes/extensions',
 							src: '**/*.js',
-							expose: 'qazana-revisions'
+							expose: 'qazana-extensions'
 						}
-
                     ] );
                 }
             },

@@ -55,7 +55,8 @@ class Editor {
             return;
         }
 
-        $this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
+		$this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
+		
     }
 
 	public function init( $die = true ) {
@@ -402,7 +403,7 @@ class Editor {
 			$page_title_selector = 'h1.entry-title';
 		}
 
-        $this->add_localize_settings( [
+        $localize_settings = [
 			'version' => qazana_get_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'home_url' => home_url(),
@@ -433,8 +434,6 @@ class Editor {
 			'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
 			'page_title_selector' => $page_title_selector,
 			'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
-			'revisions' => Revisions_Manager::get_revisions(),
-			'revisions_enabled' => ( $this->_post_id && wp_revisions_enabled( get_post() ) ),
             'i18n' => [
                 'qazana' => __( 'Qazana', 'qazana' ),
                 'dialog_confirm_delete' => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
@@ -481,14 +480,12 @@ class Editor {
 				'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
 				'no' => __( 'No', 'qazana' ),
 				'yes' => __( 'Yes', 'qazana' ),
-				'revision_history' => __( 'Revision History', 'qazana' ),
-				'no_revisions_1' => __( 'Revision history lets you save your previous versions of your work, and restore them any time.', 'qazana' ),
-				'no_revisions_2' => __( 'Start designing your page and you\'ll be able to see the entire revision history here.', 'qazana' ),
-				'revisions_disabled_1' => __( 'It looks like the post revision feature is unavailable in your website.', 'qazana' ),
-				'revisions_disabled_2' => sprintf( __( 'Learn more about <a targe="_blank" href="%s">WordPress revisions</a>', 'qazana' ), 'https://codex.wordpress.org/Revisions#Revision_Options)' ),
-				'revision' => __( 'Revision', 'qazana' ),
             ]
-        ]);
+		];
+
+		$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+		
+		$this->add_localize_settings( $localize_settings );
 
 		// Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );

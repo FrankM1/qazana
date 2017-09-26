@@ -46,9 +46,6 @@ class DB {
 
 			$is_meta_updated = update_metadata( 'post', $post_id, '_qazana_data', $json_value );
 
-			if ( $is_meta_updated ) {
-				Revisions_Manager::handle_revision();
-			}
 
 			do_action( 'qazana/db/before_save', $status, $is_meta_updated );
 
@@ -56,8 +53,6 @@ class DB {
 		} elseif ( self::STATUS_AUTOSAVE === $status ) {
 
 			do_action( 'qazana/db/before_save', $status, true );
-
-			Revisions_Manager::handle_revision();
 
 			$old_autosave = wp_get_post_autosave( $post_id, get_current_user_id() );
 

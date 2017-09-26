@@ -84,9 +84,6 @@ class Plugin {
     public $customcss;
 
     /*
-	 * @var Revisions_Manager
-	public $revisions_manager;
-
     public $editor;
     public $preview;
 
@@ -371,14 +368,12 @@ class Plugin {
         require_once( $this->includes_dir . 'managers/templates.php' );
         require_once( $this->includes_dir . 'managers/custom-css.php' );
         require_once( $this->includes_dir . 'managers/extensions.php' );
-        require_once( $this->includes_dir . 'managers/revisions.php' );
 
         // extensions
         require_once( $this->includes_dir . 'extensions/extensions-base.php');
 
         //vendor classes
         require_once( $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php' );
-
 
         require_once( $this->includes_dir . 'widgets/base/element-base.php' );
         require_once( $this->includes_dir . 'widgets/base/widget-base.php' );
@@ -417,10 +412,10 @@ class Plugin {
         Core\Settings\Manager::run();
 
         $this->db                   = new DB();
+        $this->icons_manager        = new Icons_Manager();
         $this->controls_manager     = new Controls_Manager();
         $this->schemes_manager      = new Schemes_Manager();
         $this->elements_manager     = new Elements_Manager();
-        $this->icons_manager        = new Icons_Manager();
         $this->widget_loader        = new Loader( $paths, $this->widget_locations );
         $this->widgets_manager      = new Widgets_Manager();
 	    $this->skins_manager 	    = new Skins_Manager();
@@ -430,11 +425,12 @@ class Plugin {
         $this->preview              = new Preview();
         $this->frontend             = new Frontend();
         $this->heartbeat            = new Heartbeat();
-        $this->revisions_manager    = new Revisions_Manager();
         $this->templates_manager    = new Template_Manager();
+        $this->cron                 = new Cron;
+
         $this->extensions_loader    = new Loader( $paths, $this->extensions_locations );
         $this->extensions_manager   = new Extensions\Manager( $this->extensions_loader );
-        $this->cron                 = new Cron;
+
         $this->mobile_detect        = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
 

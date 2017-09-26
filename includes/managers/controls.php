@@ -481,5 +481,6 @@ class Controls_Manager {
 	 */
 	public function __construct() {		
 		$this->include_controls();
+		$this->register_controls();
 	}
 }

@@ -21,7 +21,7 @@ App = Marionette.Application.extend( {
 	templates: require( 'qazana-templates/manager' ),
 	ajax: require( 'qazana-editor-utils/ajax' ),
 	conditions: require( 'qazana-editor-utils/conditions' ),
-	history:  require( 'qazana-revisions/manager' ),
+	history:  require( 'qazana-extensions/history/assets/js/module' ),
 	hotKeys: require( 'qazana-editor-utils/hot-keys' ),
 
 	channels: {

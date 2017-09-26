@@ -182,20 +182,7 @@ class Elements_Manager {
 
 		qazana()->db->save_editor( $_POST['post_id'], $posted, $status, $save_state );
 
-		$return_data = [];
-
-		$latest_revision = Revisions_Manager::get_revisions( $_POST['post_id'], [
-			'posts_per_page' => 1,
-		] );
-
-		$all_revision_ids = Revisions_Manager::get_revisions( $_POST['post_id'], [
-			'fields' => 'ids',
-		], false );
-
-		if ( ! empty( $latest_revision ) ) {
-			$return_data['last_revision'] = $latest_revision[0];
-			$return_data['revisions_ids'] = $all_revision_ids;
-		}
+		$return_data = apply_filters( 'qazana/ajax_save_builder/return_data', [] );
 
 		wp_send_json_success( $return_data );
 	}

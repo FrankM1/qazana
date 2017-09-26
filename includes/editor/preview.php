@@ -98,10 +98,10 @@ class Preview {
 	}
 
 	private function enqueue_scripts() {
+
 		qazana()->frontend->register_scripts();
 		qazana()->frontend->enqueue_scripts();
-		qazana()->widgets_manager->add_widget_dependencies();
-
+		
 		do_action( 'qazana/preview/enqueue_scripts' );
 	}
 
