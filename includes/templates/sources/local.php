@@ -553,7 +553,8 @@ class Source_Local extends Source_Base {
 		$page_settings = [];
 
 		if ( ! empty( $data['page_settings'] ) ) {
-			$page = new Page( [
+
+			$page = new Model( [
 				'id' => 0,
 				'settings' => $data['page_settings'],
 			] );

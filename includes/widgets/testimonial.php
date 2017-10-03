@@ -129,15 +129,6 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$repeater->add_control(
-			'view',
-			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::HIDDEN,
-				'default' => 'traditional',
-			]
-		);
-
 		$repeater->end_controls_tab();
 
 		$repeater->end_controls_tabs();

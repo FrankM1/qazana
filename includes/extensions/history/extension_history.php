@@ -22,7 +22,7 @@ class History extends Base {
 	}	
 
 	public function include_files() {
-        require('revisions-manager.php');
+        require('classes/revisions-manager.php');
     }
 
 	public function localize_settings( $settings ) {

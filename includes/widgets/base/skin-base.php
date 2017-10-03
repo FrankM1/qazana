@@ -120,8 +120,8 @@ abstract class Skin_Base {
 
 	public function after_render() {}
 
-	public function bool( $value ) {
-		return $this->parent->bool( $value );
+	public function is_bool( $value ) {
+		return $this->parent->is_bool( $value );
 	}
 
 	public function add_element_dependencies() { }

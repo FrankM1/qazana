@@ -319,10 +319,10 @@ class Widget_Link extends Widget_Base {
 
 	protected function _content_template() {
 		?>
-		<a class="qazana-link" href="#">
+		<a class="qazana-link {{ settings.link_classes }} qazana-align-icon-{{ settings.link_icon_align }}" href="#">
 			<span class="qazana-link-wrapper">
 				<# if ( settings.link_icon ) { #>
-					<span class="qazana-button-icon qazana-align-icon-{{ settings.link_icon_align }}">
+					<span class="qazana-button-icon qazana-link-icon">
 						<i class="{{ settings.link_icon }}"></i>
 					</span>
 				<# } #>

@@ -32,7 +32,6 @@ class Preview {
 			$this->enqueue_scripts();
 		} );
 
-        	add_action( 'radium_after_loop', [ $this, 'preview_grid' ] );
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
@@ -104,28 +103,6 @@ class Preview {
 		
 		do_action( 'qazana/preview/enqueue_scripts' );
 	}
-
-    public function preview_grid() {
-
-        echo '<div id="grid">
-            <div class="qazana-container">
-                <div class="qazana-row">
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                    <div class="qazana-column" data-col="12"><div class="shadow"></div></div>
-                </div>
-            </div>
-        </div>';
-    }
 
     /**
      * Preview constructor.

@@ -222,7 +222,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['custom_position_values'] = [
 			'label' => _x( 'Custom Dimension', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::DIMENSIONS,
-			'description' => __( 'Add custom image position for .', 'qazana' ),
+			'description' => __( 'Add custom image position for  background image.', 'qazana' ),
 			'size_units' => [ 'px', '%' ],
 			'allowed_dimensions'=> [ 'top', 'right' ],
 			'condition' => [
@@ -273,6 +273,34 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 		];
 
+		$fields['custom_size'] = [
+			'label' => _x( 'Custom size', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::SWITCHER,
+			'label_on' => __( 'Yes', 'qazana' ),
+			'label_off' => __( 'No', 'qazana' ),
+			'render_type' => 'ui',
+			'condition' => [
+				'background' => [ 'classic' ],
+				'image[url]!' => '',
+			],
+		];
+
+		$fields['custom_size_values'] = [
+			'label' => _x( 'Custom Size Dimension', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::DIMENSIONS,
+			'description' => __( 'Add custom image size for background image.', 'qazana' ),
+			'size_units' => [ 'px', '%' ],
+			'allowed_dimensions'=> [ 'top', 'right' ],
+			'condition' => [
+				'custom_size!' => '',
+				'background' => [ 'classic' ],
+				'image[url]!' => '',
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => 'background-size: {{RIGHT}}{{UNIT}} {{TOP}}{{UNIT}} ;',
+			],
+		];
+
 		$fields['size'] = [
 			'label' => _x( 'Size', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
@@ -289,6 +317,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'condition' => [
 				'background' => [ 'classic' ],
 				'image[url]!' => '',
+				'custom_size' => '',
 			],
 		];
 

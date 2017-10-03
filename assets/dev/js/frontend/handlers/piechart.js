@@ -18,21 +18,21 @@ module.exports = function( $scope, $ ) {
         $chart.addClass('animated');
     }
 
-    qazanaFrontend.utils.waypoint( $chart, function() {
+    qazanaFrontend.waypoint( $chart, function() {
 
-    if ( ! $chart.hasClass('animated') ) {
+        if ( ! $chart.hasClass('animated') ) {
 
-        $chart.circleProgress({
-                startAngle: -Math.PI / 4 * 2,
-                emptyFill: $chart.data('emptyfill'),
-                animation: animation
-        }).on('circle-animation-progress', function (event, progress) {
-            $piechart_progress.html( parseInt( ( $piechart_progress.data('value') ) * progress ) );
-        }).on('circle-animation-end', function (event) {
-            $chart.addClass('animated');
-        });
+            $chart.circleProgress({
+                    startAngle: -Math.PI / 4 * 2,
+                    emptyFill: $chart.data('emptyfill'),
+                    animation: animation
+            }).on('circle-animation-progress', function (event, progress) {
+                $piechart_progress.html( parseInt( ( $piechart_progress.data('value') ) * progress ) );
+            }).on('circle-animation-end', function (event) {
+                $chart.addClass('animated');
+            });
 
-    }
+        }
 
     }, { offset: '90%' } );
 

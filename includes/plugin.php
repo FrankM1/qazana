@@ -344,7 +344,8 @@ class Plugin {
         require_once( $this->includes_dir . 'common/heartbeat.php' );
         require_once( $this->includes_dir . 'common/cron.php' );
         require_once( $this->includes_dir . 'common/mobile.php' );
-
+        require_once( $this->includes_dir . 'common/embed.php' );
+        
         require_once( $this->includes_dir . 'editor/fonts.php' );
         require_once( $this->includes_dir . 'editor/editor.php' );
         require_once( $this->includes_dir . 'editor/preview.php' );

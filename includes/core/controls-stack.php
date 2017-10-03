@@ -1334,7 +1334,7 @@ abstract class Controls_Stack {
 		}
 	}
 
-	public function bool( $var ) {
+	public function is_bool( $var ) {
 		$falsey = array( 'false', '0', 'no', 'n' );
         return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
 	}

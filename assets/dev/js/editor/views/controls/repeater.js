@@ -1,7 +1,8 @@
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	RepeaterRowView = require( 'qazana-views/controls/repeater-row' ),
+	BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	ControlRepeaterItemView;
-
+	
 ControlRepeaterItemView = ControlBaseItemView.extend( {
 	ui: {
 		btnAddRow: '.qazana-repeater-add',

@@ -138,7 +138,7 @@ class Schemes_Manager {
 		include( qazana()->includes_dir  . 'editor/schemes/scheme-base.php' );
 
 		foreach ( self::$_schemes_types as $schemes_type => $scheme_class ) {
-			include( qazana()->includes_dir  . 'editor/schemes/' . str_replace( '_', '-', $scheme_class ) . '.php' );
+			include( qazana()->includes_dir  . 'editor/schemes/' . strtolower( str_replace( '_', '-', $scheme_class ) ) . '.php' );
 
 			$this->register_scheme( __NAMESPACE__ . '\\' . ucfirst( str_replace( '-', '_', $scheme_class ) ) );
 		}

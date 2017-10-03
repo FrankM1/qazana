@@ -9101,8 +9101,9 @@ module.exports = RepeaterRowView;
 },{"qazana-behaviors/inner-tabs":3}],103:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	RepeaterRowView = require( 'qazana-views/controls/repeater-row' ),
+	BaseSettingsModel = require( 'qazana-models/base-settings' ),
 	ControlRepeaterItemView;
-
+	
 ControlRepeaterItemView = ControlBaseItemView.extend( {
 	ui: {
 		btnAddRow: '.qazana-repeater-add',
@@ -9373,7 +9374,7 @@ ControlRepeaterItemView = ControlBaseItemView.extend( {
 
 module.exports = ControlRepeaterItemView;
 
-},{"qazana-views/controls/base":89,"qazana-views/controls/repeater-row":102}],104:[function(require,module,exports){
+},{"qazana-models/base-settings":55,"qazana-views/controls/base":89,"qazana-views/controls/repeater-row":102}],104:[function(require,module,exports){
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
 	ControlSectionItemView;
 

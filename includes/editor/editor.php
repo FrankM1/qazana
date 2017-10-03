@@ -236,7 +236,6 @@ class Editor {
 			true
 		);
 
-
         wp_register_script(
             'backbone-marionette',
             qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',
