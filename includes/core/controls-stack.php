@@ -1334,11 +1334,24 @@ abstract class Controls_Stack {
 		}
 	}
 
+	/**
+	 * Helper method to check for non falsey values
+	 *
+	 * @access public
+	 * 
+	 * @param string $var The vaule to check.
+	 * @return boolean
+	 */
 	public function is_bool( $var ) {
 		$falsey = array( 'false', '0', 'no', 'n' );
         return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
 	}
 
+	/**
+	 * Helper method to detect builder edit mode
+	 *
+	 * @return boolean
+	 */
 	public function is_edit_mode() {
         return qazana()->editor->is_edit_mode();
 	}

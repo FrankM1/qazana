@@ -138,7 +138,7 @@ module.exports = ElementsHandler;
 			self.utils = {
 				youtube: new YouTubeModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
+				//lightbox: new LightboxModule()
 			};
 
 			self.modules = {
@@ -457,7 +457,8 @@ var activateSection = function( sectionIndex, $accordionTitles ) {
 	}
 };
 
-module.exports = function( $scope, $ ) {
+module.exports = function( $scope ) {
+	
 	var defaultActiveSection = $scope.find( '.qazana-accordion' ).data( 'active-section' ),
 		$accordionTitles = $scope.find( '.qazana-accordion-title' );
 
@@ -467,7 +468,7 @@ module.exports = function( $scope, $ ) {
 
 	activateSection( defaultActiveSection, $accordionTitles );
 
-	$accordionTitles.on( 'click', function() {
+	$accordionTitles.off( 'click').on( 'click', function() {
 		activateSection( this.dataset.section, $accordionTitles );
 	} );
 };

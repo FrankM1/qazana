@@ -40,7 +40,7 @@
 			self.utils = {
 				youtube: new YouTubeModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
+				//lightbox: new LightboxModule()
 			};
 
 			self.modules = {

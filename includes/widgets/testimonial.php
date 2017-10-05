@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Widget_Testimonial extends Widget_Base {
 
+	public $carousel = true;
+	
 	public function get_name() {
 		return 'testimonial';
 	}
@@ -26,13 +28,7 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
 	protected function _register_controls() {
-		$this->_register_controls_section_testimonial_options();
-		$this->_register_controls_section_slider_options();
-		$this->_register_controls_section_style_navigation();
-	}
-
-	protected function _register_controls_section_testimonial_options() {
-
+	
 		$this->start_controls_section(
 			'section_testimonial',
 			[
@@ -199,6 +195,15 @@ class Widget_Testimonial extends Widget_Base {
 
 		$this->end_controls_section();
 
+		$this->start_controls_section(
+			'section_carousel_settings',
+			[
+				'label' => __( 'Carousel Settings', 'qazana' ),
+			]
+		);
+
+		$this->end_controls_section();
+		
 		// Content Wrapper
 		$this->start_controls_section(
 			'section_style_testimonial_content_wrapper',
@@ -557,377 +562,6 @@ class Widget_Testimonial extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function _register_controls_section_slider_options() {
-
-		$this->start_controls_section(
-			'section_slider_options',
-			[
-				'label' => __( 'Slider Options', 'qazana' ),
-				'type' => Controls_Manager::SECTION,
-			]
-		);
-
-		$slides_to_show = range( 1, 10 );
-		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
-
-		$this->add_responsive_control(
-			'slides_to_show',
-			[
-				'label' => __( 'Slides to Show', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '2',
-				'options' => $slides_to_show,
-			]
-		);
-
-		$this->add_responsive_control(
-			'slides_to_scroll',
-			[
-				'label' => __( 'Slides to Scroll', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '1',
-				'options' => $slides_to_show,
-				'condition' => [
-					'slides_to_show!' => '1',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'navigation',
-			[
-				'label' => __( 'Navigation', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'both',
-				'options' => [
-					'both' => __( 'Arrows and Dots', 'qazana' ),
-					'arrows' => __( 'Arrows', 'qazana' ),
-					'dots' => __( 'Dots', 'qazana' ),
-					'none' => __( 'None', 'qazana' ),
-				],
-			]
-		);
-
-		$this->add_control(
-			'pause_on_hover',
-			[
-				'label' => __( 'Pause on Hover', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
-				'return_value' => 'yes',
-				'default' => 'yes',
-			]
-		);
-
-		$this->add_responsive_control(
-			'autoplay',
-			[
-				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
-				'return_value' => 'yes',
-				'default' => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'autoplay_speed',
-			[
-				'label' => __( 'Autoplay Speed (ms)', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 5000,
-				'condition' => [
-					'autoplay' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'infinite',
-			[
-				'label' => __( 'Infinite Loop', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
-				'return_value' => 'yes',
-				'default' => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'direction',
-			[
-				'label' => __( 'Direction', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'ltr',
-				'options' => [
-					'ltr' => __( 'Left', 'qazana' ),
-					'rtl' => __( 'Right', 'qazana' ),
-				],
-			]
-		);
-
-		$this->add_control(
-			'transition',
-			[
-				'label' => __( 'Transition', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'slide',
-				'options' => [
-					'slide' => __( 'Slide', 'qazana' ),
-					'fade' => __( 'Fade', 'qazana' ),
-				],
-			]
-		);
-
-		$this->add_control(
-			'transition_speed',
-			[
-				'label' => __( 'Transition Speed (ms)', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 500,
-			]
-		);
-
-		$this->add_control(
-			'content_animation',
-			[
-				'label' => __( 'Content Animation', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'fadeInRight',
-				'options' => [
-					'' => __( 'None', 'qazana' ),
-					'fadeInDown' => __( 'Down', 'qazana' ),
-					'fadeInUp' => __( 'Up', 'qazana' ),
-					'fadeInRight' => __( 'Right', 'qazana' ),
-					'fadeInLeft' => __( 'Left', 'qazana' ),
-					'zoomIn' => __( 'Zoom', 'qazana' ),
-				],
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
-	protected function _register_controls_section_style_navigation() {
-
-		$this->start_controls_section(
-			'section_style_navigation',
-			[
-				'label' => __( 'Navigation', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'navigation' => [ 'arrows', 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'heading_style_arrows',
-			[
-				'label' => __( 'Arrows', 'qazana' ),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'arrows_size',
-			[
-				'label' => __( 'Arrows Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 20,
-						'max' => 60,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-slides-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-            'arrows_color',
-            [
-                'label' => __( 'Arrows Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .prev, {{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
-                ],
-                'condition' => [
-                    'navigation' => [ 'arrows', 'both' ],
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'arrows_hover_color',
-            [
-                'label' => __( 'Arrows Hover Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .prev:hover, {{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
-                ],
-                'condition' => [
-                    'navigation' => [ 'arrows', 'both' ],
-                ],
-            ]
-        );
-
-		$this->add_control(
-			'arrows_position',
-			[
-				'label' => __( 'Arrows Position', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px' ],
-				'allowed_dimensions' => 'horizontal',
-				'placeholder' => [
-					'top' => 'auto',
-					'right' => '',
-					'bottom' => 'auto',
-					'left' => '',
-				],
-				'default' =>
-				array (
-				  'unit' => 'px',
-				  'top' => 0,
-				  'right' => '-40',
-				  'bottom' => 0,
-				  'left' => '-40',
-				  'isLinked' => false,
-				),
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation a.prev' => 'left: {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides div.slick-navigation a.next' => 'right: {{RIGHT}}{{UNIT}};',
-
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'heading_style_dots',
-			[
-				'label' => __( 'Dots', 'qazana' ),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_size',
-			[
-				'label' => __( 'Dots Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 5,
-						'max' => 15,
-					],
-				],
-				'default' =>
-			    array (
-			      'unit' => 'px',
-			      'size' => 11,
-			    ),
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'line-height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'line-height: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_position_bottom',
-			[
-				'label' => __( 'Dots Position', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => -100,
-						'max' => 100,
-					],
-				],
-				'default' => array(
-			      'unit' => 'px',
-			      'size' => '-20',
-			    ),
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_color',
-			[
-				'label' => __( 'Dots Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-slides-wrapper .qazana-slides .slick-dots li button:before' => 'background-color: {{VALUE}};',
-				],
-				'default' => '#4054b2',
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_align',
-			[
-				'label' => __( 'Dots Align', 'qazana' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'center',
-				'options' => [
-					'left' => [
-						'title' => __( 'Left', 'qazana' ),
-						'icon' => 'fa fa-align-left',
-					],
-					'center' => [
-						'title' => __( 'Center', 'qazana' ),
-						'icon' => 'fa fa-align-center',
-					],
-					'right' => [
-						'title' => __( 'Right', 'qazana' ),
-						'icon' => 'fa fa-align-right',
-					],
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
 	protected function render() {
 		$settings = $this->get_settings();
 		$testimonials = $this->get_settings( 'testimonials' );
@@ -935,40 +569,17 @@ class Widget_Testimonial extends Widget_Base {
 		if ( empty( $settings['testimonials'] ) )
 			return;
 
-		$is_slideshow = '1' === $settings['slides_to_show'];
-		$is_rtl = ( 'rtl' === $settings['direction'] );
-		$direction = $is_rtl ? 'rtl' : 'ltr';
 		$show_dots = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'dots', 'both' ] ) );
 		$show_arrows = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'arrows', 'both' ] ) );
 
-		$slick_options = [
-			'slidesToShow' => absint( $this->get_responsive_settings( 'slides_to_show' ) ),
-			'autoplaySpeed' => absint( $this->get_responsive_settings( 'autoplay_speed' ) ),
-			'autoplay' => ( 'yes' === $this->get_responsive_settings( 'autoplay' ) ),
-			'infinite' => ( 'yes' === $settings['infinite'] ),
-			'pauseOnHover' => ( 'yes' === $settings['pause_on_hover'] ),
-			'speed' => absint( $settings['transition_speed'] ),
-			'arrows' => $show_arrows,
-			'dots' => $show_dots,
-			'rtl' => $is_rtl,
-		];
-
-		if ( 'fade' === $settings['transition'] ) {
-			$slick_options['fade'] = true;
-		}
-
-		if ( ! $is_slideshow ) {
-			$slick_options['slidesToScroll'] = absint( $settings['slides_to_scroll'] );
-		} else {
-			$slick_options['fade'] = ( 'fade' === $settings['transition'] );
-		}
-
 		$carousel_classes = [ 'qazana-slides' ];
 
+		$carousel_classes[] = $this->get_settings('carousel_class');
+		
 		$this->add_render_attribute( 'slides', [
 			'class' => $carousel_classes,
-			'data-slider_options' => wp_json_encode( $slick_options ),
 			'data-animation' => $settings['content_animation'],
+			'data-animation-delay' => $settings['content_animation_delay'],
 		] );
 
 		$counter = 1;
@@ -981,6 +592,7 @@ class Widget_Testimonial extends Widget_Base {
 								foreach ( $testimonials as $item ) :
 
 									$has_image = false;
+
 									if ( '' !== $item['testimonial_image']['url'] ) {
 										$image_url = qazana_maybe_ssl_url( $item['testimonial_image']['url'] );
 										$has_image = ' qazana-has-image';
@@ -1021,8 +633,10 @@ class Widget_Testimonial extends Widget_Base {
 													</div>
 												</div>
 											</div>
+
 										</div>
 									</div>
+
 								<?php $counter++;
 
 							endforeach;

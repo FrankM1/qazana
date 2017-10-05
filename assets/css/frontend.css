@@ -261,11 +261,6 @@ a.qazana-edit-template {
 
 .qazana-section {
   position: relative; }
-  @media (min-width: 768px) {
-    .qazana-section.qazana-section-height-full {
-      height: 100vh; }
-      .qazana-section.qazana-section-height-full > .qazana-container {
-        height: 100%; } }
   .qazana-section .qazana-container {
     position: relative;
     display: -webkit-box;

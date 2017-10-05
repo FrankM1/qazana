@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Widget_Image_Carousel extends Widget_Base {
 
+	public $carousel = true;
+	
 	public function get_name() {
 		return 'image-carousel';
 	}
@@ -45,34 +47,6 @@ class Widget_Image_Carousel extends Widget_Base {
 			]
 		);
 
-		$slides_to_show = range( 1, 10 );
-		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
-
-		$this->add_responsive_control(
-			'slides_to_show',
-			[
-				'label' => __( 'Slides to Show', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '3',
-				'options' => [ '' => __( 'Default', 'qazana' ) ] + $slides_to_show,
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'slides_to_scroll',
-			[
-				'label' => __( 'Slides to Scroll', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '2',
-				'options' => $slides_to_show,
-				'condition' => [
-					'slides_to_show!' => '1',
-				],
-				'frontend_available' => true,
-			]
-		);
-
 		$this->add_control(
 			'image_stretch',
 			[
@@ -83,23 +57,6 @@ class Widget_Image_Carousel extends Widget_Base {
 					'no' => __( 'No', 'qazana' ),
 					'yes' => __( 'Yes', 'qazana' ),
 				],
-			]
-		);
-
-		$this->add_control(
-			'navigation',
-			[
-				'label' => __( 'Navigation', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'both',
-				'options' => [
-					'both' => __( 'Arrows and Dots', 'qazana' ),
-					'arrows' => __( 'Arrows', 'qazana' ),
-					'dots' => __( 'Dots', 'qazana' ),
-					'thumbnails' => __( 'Thumbnails', 'qazana' ),
-					'none' => __( 'None', 'qazana' ),
-				],
-				'frontend_available' => true,
 			]
 		);
 
@@ -133,253 +90,9 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_additional_options',
+			'section_carousel_settings',
 			[
-				'label' => __( 'Additional Options', 'qazana' ),
-			]
-		);
-
-		$this->add_control(
-			'pause_on_hover',
-			[
-				'label' => __( 'Pause on Hover', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'yes',
-				'options' => [
-					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
-				],
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'autoplay',
-			[
-				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'yes',
-				'options' => [
-					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
-				],
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'autoplay_speed',
-			[
-				'label' => __( 'Autoplay Speed', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 5000,
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'infinite',
-			[
-				'label' => __( 'Infinite Loop', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'yes',
-				'options' => [
-					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
-				],
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'effect',
-			[
-				'label' => __( 'Effect', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'slide',
-				'options' => [
-					'slide' => __( 'Slide', 'qazana' ),
-					'fade' => __( 'Fade', 'qazana' ),
-				],
-				'condition' => [
-					'slides_to_show' => '1',
-				],
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'speed',
-			[
-				'label' => __( 'Animation Speed', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 500,
-				'frontend_available' => true,
-			]
-		);
-
-		$this->add_control(
-			'direction',
-			[
-				'label' => __( 'Direction', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'ltr',
-				'options' => [
-					'ltr' => __( 'Left', 'qazana' ),
-					'rtl' => __( 'Right', 'qazana' ),
-				],
-				'frontend_available' => true,
-			]
-		);
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_style_navigation',
-			[
-				'label' => __( 'Navigation', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'navigation' => [ 'arrows', 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'heading_style_arrows',
-			[
-				'label' => __( 'Arrows', 'qazana' ),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'arrows_position',
-			[
-				'label' => __( 'Arrows Position', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'inside',
-				'options' => [
-					'inside' => __( 'Inside', 'qazana' ),
-					'outside' => __( 'Outside', 'qazana' ),
-				],
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'arrows_size',
-			[
-				'label' => __( 'Arrows Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 20,
-						'max' => 60,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:before, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:before' => 'font-size: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'navigation' => [ 'arrows', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-            'arrows_color',
-            [
-                'label' => __( 'Arrows Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
-                ],
-                'condition' => [
-                    'navigation' => [ 'arrows', 'both' ],
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'arrows_hover_color',
-            [
-                'label' => __( 'Arrows Hover Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-prev:hover, {{WRAPPER}} .qazana-image-carousel-wrapper .slick-slider .slick-next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
-                ],
-                'condition' => [
-                    'navigation' => [ 'arrows', 'both' ],
-                ],
-            ]
-        );
-
-		$this->add_control(
-			'heading_style_dots',
-			[
-				'label' => __( 'Dots', 'qazana' ),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_position',
-			[
-				'label' => __( 'Dots Position', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'outside',
-				'options' => [
-					'outside' => __( 'Outside', 'qazana' ),
-					'inside' => __( 'Inside', 'qazana' ),
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_size',
-			[
-				'label' => __( 'Dots Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 5,
-						'max' => 10,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-dots li button:before' => 'font-size: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_color',
-			[
-				'label' => __( 'Dots Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-dots li button:before' => 'color: {{VALUE}};',
-				],
-				'condition' => [
-					'navigation' => [ 'dots', 'both' ],
-				],
+				'label' => __( 'Carousel Settings', 'qazana' ),
 			]
 		);
 
@@ -535,23 +248,9 @@ class Widget_Image_Carousel extends Widget_Base {
 
 		}
 
-		$is_slideshow = '1' === $settings['slides_to_show'];
-		$is_rtl = ( 'rtl' === $settings['direction'] );
 		$direction = $is_rtl ? 'rtl' : 'ltr';
 		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
 		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
-
-		$slick_options = [
-			'slidesToShow' => absint( $settings['slides_to_show'] ),
-			'autoplaySpeed' => absint( $settings['autoplay_speed']  ),
-			'autoplay' => ( $this->bool( $settings['autoplay'] ) ),
-			'infinite' => ( $this->bool( $settings['infinite'] ) ),
-			'pauseOnHover' => ( $this->bool( $settings['pause_on_hover'] ) ),
-			'speed' => absint( $settings['speed'] ),
-			'arrows' => $show_arrows,
-			'dots' => $show_dots,
-			'rtl' => $is_rtl,
-		];
 
 		$carousel_classes = [ 'qazana-image-carousel' ];
 
@@ -567,11 +266,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			$carousel_classes[] = 'slick-image-stretch';
 		}
 
-		if ( ! $is_slideshow ) {
-			$slick_options['slidesToScroll'] = absint( $settings['slides_to_scroll'] );
-		} else {
-			$slick_options['fade'] = ( 'fade' === $settings['effect'] );
-		}
+		$carousel_classes[] = $this->get_settings('carousel_class');
 
 		?>
 		<div class="qazana-image-carousel-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">

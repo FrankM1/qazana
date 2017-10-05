@@ -248,15 +248,16 @@ class Plugin {
 
         $this->__set( 'widget_locations', array(
             'includes/widgets',
+            'qazana/extensions/overrides',
         ));
 
-        $this->__set( 'extensions_locations', array(
-            'includes/extensions/qazana/extensions',
+        $this->__set( 'extensions_locations', array(            
             'includes/extensions',
+            'qazana/extensions',
         ));
 
-        $this->widget_locations = apply_filters( 'qazana_widget_locations', $this->__get( 'widget_locations' )); //
-        $this->extensions_locations = apply_filters( 'qazana_extensions_locations', $this->__get( 'extensions_locations' ));
+        $this->widget_locations = apply_filters( 'qazana/widgets/location', $this->__get( 'widget_locations' ) );
+        $this->extensions_locations = apply_filters( 'qazana/extensions/location', $this->__get( 'extensions_locations' ) );
     }
 
     /**
@@ -378,6 +379,7 @@ class Plugin {
 
         require_once( $this->includes_dir . 'widgets/base/element-base.php' );
         require_once( $this->includes_dir . 'widgets/base/widget-base.php' );
+        require_once( $this->includes_dir . 'widgets/shared/carousel.php' );
         
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';

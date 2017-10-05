@@ -1,0 +1,529 @@
+<?php
+
+add_action( 'qazana/element/after_section_start', 'qazana_register_controls_section_carousel_settings', 10, 3);
+/**
+ * Undocumented function
+ *
+ * @param [type] $element
+ * @param [type] $section_id
+ * @param [type] $args
+ * @return void
+ */
+function qazana_register_controls_section_carousel_settings( Qazana\Controls_Stack $element, string $section_id, array $args ) {
+
+    if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
+        return;
+    }
+
+    $slides_to_show = range( 1, 10 );
+    $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+
+    $element->add_responsive_control(
+        'slidesToShow',
+        [
+            'label' => __( 'Slides to Show', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 2,
+            'options' => $slides_to_show,
+            'frontend_available' => true
+        ]
+    );
+
+    $element->add_responsive_control(
+        'slidesToScroll',
+        [
+            'label' => __( 'Slides to Scroll', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 1,
+            'options' => $slides_to_show,
+            'condition' => [
+                'slidesToShow!' => '1',
+            ],
+            'frontend_available' => true
+        ]
+    );
+
+    $element->add_responsive_control(
+        'autoplay',
+        [
+            'label' => __('Autoplay', 'energia'),
+            'type' => Qazana\Controls_Manager::SWITCHER,
+            'label_on' => __('Yes', 'energia'),
+            'label_off' => __('No', 'energia'),
+            'return_value' => 'yes',
+            'default' => 'yes',
+            'frontend_available' => true
+        ]
+    );
+
+    $element->add_control(
+        'autoplaySpeed',
+        [
+            'label' => __('Autoplay Speed (ms)', 'energia'),
+            'type' => Qazana\Controls_Manager::NUMBER,
+            'default' => 5000,
+            'frontend_available' => true,
+            'condition' => [
+                'autoplay!' => '',
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'pauseOnHover',
+        [
+            'label' => __('Pause on Hover', 'energia'),
+            'type' => Qazana\Controls_Manager::SWITCHER,
+            'label_on' => __('Yes', 'energia'),
+            'label_off' => __('No', 'energia'),
+            'return_value' => 'yes',
+            'default' => 'yes',
+            'frontend_available' => true
+        ]
+    );    
+
+    $element->add_control(
+        'infinite',
+        [
+            'label' => __('Infinite Loop', 'energia'),
+            'type' => Qazana\Controls_Manager::SWITCHER,
+            'label_on' => __('Yes', 'energia'),
+            'label_off' => __('No', 'energia'),
+            'return_value' => 'yes',
+            'default' => 'yes',
+            'frontend_available' => true,
+        ]
+    );
+
+    $element->add_control(
+        'effect',
+        [
+            'label' => __('Transition', 'energia'),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 'slide',
+            'frontend_available' => true,
+            'options' => [
+                'slide' => __('Slide', 'energia'),
+                'fade' => __('Fade', 'energia'),
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'direction',
+        [
+            'label' => __('Direction', 'energia'),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 'ltr',
+            'frontend_available' => true,
+            'options' => [
+                'ltr' => __('Left', 'energia'),
+                'rtl' => __('Right', 'energia'),
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'speed',
+        [
+            'label' => __('Transition Speed (ms)', 'energia'),
+            'type' => Qazana\Controls_Manager::NUMBER,
+            'default' => 500,
+            'frontend_available' => true,
+        ]
+    );
+
+    $element->add_responsive_control(
+        'navigation',
+        [
+            'label' => __('Navigation', 'energia'),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 'both',
+            'options' => [
+                'both' => __('Arrows and Dots', 'energia'),
+                'arrows' => __('Arrows', 'energia'),
+                'dots' => __('Dots', 'energia'),
+                'none' => __('None', 'energia'),
+            ],
+            'frontend_available' => true
+        ]
+    );
+
+    $element->add_control(
+        'content_animation',
+        [
+            'label' => __('Content Animation', 'energia'),
+            'type' => Qazana\Controls_Manager::SELECT,
+            'default' => 'fadeInUp',
+            'options' => [
+                '' => __('None', 'energia'),
+                'fadeInDown' => __('Down', 'energia'),
+                'fadeInUp' => __('Up', 'energia'),
+                'fadeInRight' => __('Right', 'energia'),
+                'fadeInLeft' => __('Left', 'energia'),
+                'zoomIn' => __('Zoom', 'energia'),
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'content_animation_delay',
+        [
+            'label' => __('Content Animation Delay', 'energia'),
+            'type' => Qazana\Controls_Manager::TEXT,
+            'default' => '200',
+        ]
+    );
+
+    $element->add_control(
+        'carousel_class',
+        [
+            'label' => esc_html__('Carousel Class', 'qazana'),
+            'type' => Qazana\Controls_Manager::TEXT,
+            'default' => '',
+            'description' => esc_html__('Class added to the carousel item (e.g., ".my-nav-carousel")', 'qazana'),
+        ]
+    );
+
+    $element->add_control(
+        'asNavFor',
+        [
+            'label' => esc_html__('Sync With', 'qazana'),
+            'type' => Qazana\Controls_Manager::TEXT,
+            'default' => '',
+            'description' => esc_html__('Selector of another carousel to sync with (e.g., ".my-other-nav-carousel")', 'qazana'),
+        ]
+    );
+    
+}
+
+add_action( 'qazana/element/after_section_end', 'qazana_register_controls_section_style_arrows_navigation', 10, 3);
+/**
+ * Undocumented function
+ *
+ * @param [type] $element
+ * @param [type] $section_id
+ * @param [type] $args
+ * @return void
+ */
+function qazana_register_controls_section_style_arrows_navigation( Qazana\Controls_Stack $element, $section_id, $args ) {
+
+    if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
+        return;
+    }
+
+    $element->start_controls_section(
+        'section_style_navigation',
+        [
+            'label' => __( 'Navigation', 'qazana' ),
+            'tab' => Qazana\Controls_Manager::TAB_STYLE,
+            'condition' => [
+                'navigation!' => 'none',
+            ],
+        ]
+    );
+
+    $element->start_controls_tabs( 'tabs_arrows_navigation' );
+    
+    $element->start_controls_tab(
+        'tab_arrows_navigation_default',
+        [
+            'label' => __( 'Default', 'qazana' ),
+        ]
+    );
+
+    $element->add_control(
+        'arrows_size',
+        [
+            'label' => __( 'Size', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SLIDER,
+            'range' => [
+                'px' => [
+                    'min' => 20,
+                    'max' => 60,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .prev i, {{WRAPPER}} div.slick-navigation .next i' => 'font-size: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'arrows_color',
+        [
+            'label' => __( 'Color', 'qazana' ),
+            'type' => Qazana\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+  
+    $element->add_control(
+        'arrows_position',
+        [
+            'label' => __( 'Position', 'qazana' ),
+            'type' => Qazana\Controls_Manager::DIMENSIONS,
+            'size_units' => [ 'px' ],
+            'allowed_dimensions' => 'horizontal',
+            'placeholder' => [
+                'top' => 'auto',
+                'right' => '',
+                'bottom' => 'auto',
+                'left' => '',
+            ],
+            'default' =>
+            array (
+                'unit' => 'px',
+                'top' => 0,
+                'right' => '-40',
+                'bottom' => 0,
+                'left' => '-40',
+                'isLinked' => false,
+            ),
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation a.prev' => 'left: {{LEFT}}{{UNIT}};',
+                '{{WRAPPER}} div.slick-navigation a.next' => 'right: {{RIGHT}}{{UNIT}};',
+
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->end_controls_tab();
+
+    $element->start_controls_tab(
+        'tab_arrows_hover',
+        [
+            'label' => __( 'Hover', 'qazana' ),
+        ]
+    );
+
+    $element->add_control(
+        'arrows_hover_color',
+        [
+            'label' => __( 'Color', 'qazana' ),
+            'type' => Qazana\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+
+
+    $element->end_controls_tab();
+    
+    $element->end_controls_tabs();
+
+    $element->end_controls_section();
+}
+
+add_action( 'qazana/element/after_section_end', 'qazana_register_controls_section_style_bullets_navigation', 10, 3);
+/**
+ * Undocumented function
+ *
+ * @param [type] $element
+ * @param [type] $section_id
+ * @param [type] $args
+ * @return void
+ */
+function qazana_register_controls_section_style_bullets_navigation( Qazana\Controls_Stack $element, $section_id, $args ) {
+
+    if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
+        return;
+    }
+
+    $element->start_controls_section(
+        'section_style_bullet_navigation',
+        [
+            'label' => __( 'Bullet Navigation Style', 'qazana' ),
+            'tab' => Qazana\Controls_Manager::TAB_STYLE,
+            'condition' => [
+                'navigation!' => 'none',
+            ],
+        ]
+    );
+
+    $element->start_controls_tabs( 'tabs_bullet_navigation' );
+    
+    $element->start_controls_tab(
+        'tab_bullet_navigation_default',
+        [
+            'label' => __( 'Default', 'qazana' ),
+        ]
+    );
+
+    $element->add_control(
+        'dots_size',
+        [
+            'label' => __( 'Size', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SLIDER,
+            'range' => [
+                'px' => [
+                    'step' => 2,
+                    'min' => 2,
+                    'max' => 30,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation ul.slick-dots li button' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    
+
+    $element->add_control(
+        'dots_spacing',
+        [
+            'label' => __( 'Spacing', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SLIDER,
+            'range' => [
+                'px' => [
+                    'step' => 1,
+                    'min' => 0,
+                    'max' => 30,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} ul.slick-dots li' => 'margin:0 {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'dots_position_bottom',
+        [
+            'label' => __( 'Position', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SLIDER,
+            'range' => [
+                'px' => [
+                    'min' => -100,
+                    'max' => 100,
+                ],
+            ],
+            'default' => array(
+                'unit' => 'px',
+                'size' => '-20',
+            ),
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'dots_color',
+        [
+            'label' => __( 'Color', 'qazana' ),
+            'type' => Qazana\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .slick-dots li button' => 'border-color: {{VALUE}};',
+                '{{WRAPPER}} div.slick-navigation .slick-dots li button:before' => 'background-color: {{VALUE}};',
+            ],
+            'default' => '#4054b2',
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'dots_align',
+        [
+            'label' => __( 'Align', 'qazana' ),
+            'type' => Qazana\Controls_Manager::CHOOSE,
+            'label_block' => false,
+            'default' => 'center',
+            'options' => [
+                'left' => [
+                    'title' => __( 'Left', 'qazana' ),
+                    'icon' => 'fa fa-align-left',
+                ],
+                'center' => [
+                    'title' => __( 'Center', 'qazana' ),
+                    'icon' => 'fa fa-align-center',
+                ],
+                'right' => [
+                    'title' => __( 'Right', 'qazana' ),
+                    'icon' => 'fa fa-align-right',
+                ],
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->end_controls_tab();
+
+    $element->start_controls_tab(
+        'tab_bullets_active',
+        [
+            'label' => __( 'Active', 'qazana' ),
+        ]
+    );
+
+    $element->add_control(
+        'active_dots_color',
+        [
+            'label' => __( 'Color', 'qazana' ),
+            'type' => Qazana\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .slick-dots li.slick-active button' => 'border-color: {{VALUE}};',
+                '{{WRAPPER}} div.slick-navigation .slick-dots li.slick-active button:before' => 'background-color: {{VALUE}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'active_dots_size',
+        [
+            'label' => __( 'Size', 'qazana' ),
+            'type' => Qazana\Controls_Manager::SLIDER,
+            'range' => [
+                'px' => [
+                    'step' => 2,
+                    'min' => 2,
+                    'max' => 30,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation ul.slick-dots li.slick-active button' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->end_controls_tab();
+    
+    $element->end_controls_tabs();
+
+    $element->end_controls_section();
+}
