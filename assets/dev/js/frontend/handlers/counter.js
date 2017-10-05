@@ -7,14 +7,14 @@ module.exports = function( $scope, $ ) {
 		return;
 	}
 
-	if ( 'count' == animation ){
+	if ( 'count' === animation ){
 		var odometer = new Odometer({el: $counter[0], animation: 'count' } );
 	} else {
 		var odometer = new Odometer({ el: $counter[0] });
 	}
 
-	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
-			odometer.update( $(this).data('to-value') );
+	qazanaFrontend.waypoint( $scope.find( '.qazana-counter-number' ), function() {
+		odometer.update( $(this).data('to-value') );
 	}, { offset: '90%' } );
 
 };

@@ -18,7 +18,8 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		buttonPublish: '#qazana-panel-footer-publish',
 		watchTutorial: '#qazana-panel-footer-watch-tutorial',
 		showTemplates: '#qazana-panel-footer-templates-modal',
-		saveTemplate: '#qazana-panel-footer-save-template'
+		saveTemplate: '#qazana-panel-footer-save-template',
+		history: '#qazana-panel-footer-history'
 	},
 
 	events: {
@@ -27,7 +28,8 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		'click @ui.buttonPublish': 'onClickButtonPublish',
 		'click @ui.watchTutorial': 'onClickWatchTutorial',
 		'click @ui.showTemplates': 'onClickShowTemplates',
-		'click @ui.saveTemplate': 'onClickSaveTemplate'
+		'click @ui.saveTemplate': 'onClickSaveTemplate',
+		'click @ui.history': 'onClickHistory'
 	},
 
 	initialize: function() {

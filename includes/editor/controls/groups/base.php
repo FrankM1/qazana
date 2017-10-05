@@ -87,7 +87,7 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	public function get_controls_prefix() {
-		return $this->args['name'] . '_';
+		return ! empty($this->args['name']) ? $this->args['name'] . '_' : '_';
 	}
 
 	public function get_base_group_classes() {

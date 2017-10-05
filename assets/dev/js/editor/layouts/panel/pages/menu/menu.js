@@ -18,7 +18,7 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 				var pageName = childView.model.get( 'pageName' ),
 					pageTitle = childView.model.get( 'title' );
 
-					qazana.getPanelView().setPage( pageName, pageTitle );
+				qazana.getPanelView().setPage( pageName, pageTitle );
 				break;
 
 			case 'link':
@@ -51,40 +51,32 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 				icon: 'fa fa-paint-brush',
 				title: qazana.translate( 'global_colors' ),
 				type: 'page',
-                pageName: 'colorScheme'
-            },
-            {
-                icon: 'fa fa-font',
-                title: qazana.translate( 'global_fonts' ),
-				type: 'page',
-                pageName: 'typographyScheme'
-            },
+				pageName: 'colorScheme'
+			},
 			{
+				name: 'global-fonts',
+				icon: 'fa fa-font',
+				title: qazana.translate( 'global_fonts' ),
+				type: 'page',
+				pageName: 'typographyScheme'
+			},
+			{
+				name: 'color-picker',
 				icon: 'fa fa-eyedropper',
 				title: qazana.translate( 'color_picker' ),
 				type: 'page',
 				pageName: 'colorPickerScheme'
 			},
 			{
-				icon: 'fa fa-history',
-				title: qazana.translate( 'revision_history' ),
-				type: 'page',
-				pageName: 'revisionsPage'
+				name: 'clear-page',
+				icon: 'fa fa-eraser',
+				title: qazana.translate( 'clear_page' ),
+				callback: function() {
+					qazana.clearPage();
+				}
 			},
 			{
-				icon: 'fa fa-cog',
-				title: qazana.translate( 'page_settings' ),
-				type: 'page',
-				pageName: 'settingsPage'
-			},
-            {
-                icon: 'fa fa-eraser',
-                title: qazana.translate( 'clear_page' ),
-                callback: function() {
-                    qazana.clearPage();
-                }
-            },
-			{
+				name: 'qazana-settings',
 				icon: 'fa fa-cogs',
 				title: qazana.translate( 'qazana_settings' ),
 				type: 'link',
@@ -92,6 +84,7 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 				newTab: true
 			},
 			{
+				name: 'about-qazana',
 				icon: 'fa fa-info-circle',
 				title: qazana.translate( 'about_qazana' ),
 				type: 'link',
@@ -122,7 +115,8 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 		}
 
 		items.add( itemData, options );
-				}
+	}
+
 } );
 
 module.exports = PanelMenuPageView;

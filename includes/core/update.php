@@ -478,7 +478,7 @@ function qazana_migrate_builder_content_to_qazana(){
 function qazana_admin_upgrade_v101() {
     global $wpdb;
 
-    // Try to update PHP memory limit (so that it does not run out of it).
+    // Try to update PHP memory limit.
     ini_set( 'memory_limit', apply_filters( 'qazana_upgrade_memory_limit', '350M' ) );
     set_time_limit(0);
 
@@ -509,7 +509,7 @@ function qazana_admin_upgrade_v101() {
 
         if ( 'button' === $element['widgetType'] || 'search' === $element['widgetType'] || 'newsletter' === $element['widgetType']  ) {
 
-                $keys = array('text', 'link', 'align', 'size', 'icon', 'icon_hover_reveal', 'icon_align', 'icon_indent', 'icon_size', 'view', 'background_color', 'border_radius', 'text_padding', 'hover_color');
+                $keys = array('text', 'link', 'align', 'size', 'icon', 'icon_hover_reveal', 'icon_align', 'icon_indent', 'icon_size', 'background_color', 'border_radius', 'text_padding', 'hover_color');
 
                 foreach ( $keys as $key => $value ) {
                     if ( isset( $element['settings'][ $value ] ) ) {

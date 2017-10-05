@@ -1,7 +1,11 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+use Qazana\Core\Settings\Manager as SettingsManager;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Frontend {
 
@@ -14,7 +18,7 @@ class Frontend {
 	private $_is_frontend_mode = false;
 	private $_has_qazana_in_page = false;
 	private $_is_excerpt = false;
-	private $content_removed_filters =[];
+	private $content_removed_filters = [];
 
 	/**
 	 * [$scripts description]
@@ -41,21 +45,17 @@ class Frontend {
 	 * @return void
 	 */
 	public function init() {
-
 		if ( qazana()->editor->is_edit_mode() ) {
 			return;
 		}
 
 		add_filter( 'body_class', [ $this, 'body_class' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ], 5 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
-
 		if ( qazana()->preview->is_preview_mode() ) {
 			return;
 		}
 
 		$this->_is_frontend_mode = true;
-		$this->_has_qazana_in_page = qazana()->db->is_built_with_qazana( get_the_ID() );
+		$this->_has_qazana_in_page = is_singular() && qazana()->db->is_built_with_qazana( get_the_ID() );
 
 		//add element script and css dependencies
 		$this->get_dependencies( get_the_ID() );
@@ -67,10 +67,7 @@ class Frontend {
 		}
 
 		add_action( 'wp_head', [ $this, 'print_google_fonts' ] );
-
-		if ( $this->_has_qazana_in_page ) {
-			add_action( 'wp_footer', [ $this, 'wp_footer' ] );
-		}
+		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
 		// Add Edit with Qazana in Admin Bar
 		add_action( 'admin_bar_menu', [ $this, 'add_menu_in_admin_bar' ], 200 );
@@ -251,8 +248,8 @@ class Frontend {
 			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),
 			'assets_url' => qazana()->core_assets_url,
 			'nonce' => wp_create_nonce( 'qazana-frontend' ),
-			'isEditMode' => qazana()->editor->is_edit_mode(),
-			'stretchedSectionContainer' => get_option( 'qazana_stretched_section_container', 'body' ),
+			'isEditMode' => qazana()->preview->is_preview_mode(),
+			'settings' => SettingsManager::get_settings_frontend_config(),
 			'is_rtl' => is_rtl(),
 			'post' => [
 				'id' => $post->ID,
@@ -367,7 +364,6 @@ class Frontend {
 	}
 
 	public function print_google_fonts() {
-
 		if ( ! apply_filters( 'qazana/frontend/print_google_fonts', true ) ) {
 			return;
 		}
@@ -487,7 +483,7 @@ class Frontend {
 
 		ob_start();
 
-		// Handle JS and Customizer requests, with css inline
+		// Handle JS and Customizer requests, with css inline.
 		if ( is_customize_preview() || Utils::is_ajax() ) {
 			$with_css = true;
 		}
@@ -517,7 +513,7 @@ class Frontend {
 	public function add_menu_in_admin_bar( \WP_Admin_Bar $wp_admin_bar ) {
 		$post_id = get_the_ID();
 
-		$is_builder_mode = is_singular() && User::is_current_user_can_edit( $post_id ) || qazana()->db->is_built_with_qazana( $post_id );
+		$is_builder_mode = is_singular() && User::is_current_user_can_edit( $post_id ) && qazana()->db->is_built_with_qazana( $post_id );
 
 		if ( ! $is_builder_mode ) {
 			return;
@@ -608,9 +604,11 @@ class Frontend {
 		}
 
 		add_action( 'template_redirect', [ $this, 'init' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ], 5 );
 		add_filter( 'the_content', [ $this, 'apply_builder_in_content' ], self::THE_CONTENT_FILTER_PRIORITY );
 
-		// Hack to avoid enqueue post css while it's a `the_excerpt` call
+		// Hack to avoid enqueue post css while it's a `the_excerpt` call.
 		add_filter( 'get_the_excerpt', [ $this, 'start_excerpt_flag' ], 1 );
 		add_filter( 'get_the_excerpt', [ $this, 'end_excerpt_flag' ], 20 );
 	}

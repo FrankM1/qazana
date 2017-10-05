@@ -34,15 +34,13 @@ GlobalHandler = HandlerModule.extend({
 		}
 		
 	},
-	onElementChange: function (propertyName) {
-		if (/^_?animation/.test(propertyName)) {
+	onElementChange: function( propertyName ) {
+		if ( /^_?animation/.test( propertyName ) ) {
 			this.animate();
 		}
 	}
-});
+} );
 
-module.exports = function ($scope) {
-	new GlobalHandler({
-		$element: $scope
-	});
+module.exports = function( $scope ) {
+	new GlobalHandler( { $element: $scope } );
 };

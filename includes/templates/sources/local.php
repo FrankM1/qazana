@@ -2,12 +2,16 @@
 namespace Qazana\Template_Library;
 
 use Qazana\DB;
-use Qazana\PageSettings\Manager as PageSettingsManager;
-use Qazana\PageSettings\Page;
+use Qazana\Core\Settings\Page\Manager as PageSettingsManager;
+use Qazana\Core\Settings\Manager as SettingsManager;
+use Qazana\Core\Settings\Page\Model;
 use Qazana\Plugin;
+use Qazana\Settings;
 use Qazana\User;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Source_Local extends Source_Base {
 
@@ -185,7 +189,7 @@ class Source_Local extends Source_Base {
 		$this->save_item_type( $template_id, $template_data['type'] );
 
 		if ( ! empty( $template_data['page_settings'] ) ) {
-			PageSettingsManager::save_page_settings( $template_id, $template_data['page_settings'] );
+			SettingsManager::get_settings_managers( 'page' )->save_settings( $template_data['page_settings'], $template_id );
 		}
 
 		do_action( 'qazana/template-library/after_save_template', $template_id, $template_data );
@@ -443,7 +447,7 @@ class Source_Local extends Source_Base {
 				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="qazana_import_template">
 					<fieldset id="qazana-import-template-form-inputs">
-						<input type="file" name="file" accept=".json, .zip" required>
+						<input type="file" name="file" accept=".json,.zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" required>
 						<input type="submit" class="button" value="<?php _e( 'Import Now', 'qazana' ); ?>">
 					</fieldset>
 				</form>
@@ -549,7 +553,8 @@ class Source_Local extends Source_Base {
 		$page_settings = [];
 
 		if ( ! empty( $data['page_settings'] ) ) {
-			$page = new Page( [
+
+			$page = new Model( [
 				'id' => 0,
 				'settings' => $data['page_settings'],
 			] );
@@ -590,7 +595,7 @@ class Source_Local extends Source_Base {
 		$template_type = self::get_template_type( $template_id );
 
 		if ( 'page' === $template_type ) {
-			$page = PageSettingsManager::get_page( $template_id );
+			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $template_id );
 
 			$page_settings_data = $this->process_element_export_import_content( $page, 'on_export' );
 

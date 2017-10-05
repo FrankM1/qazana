@@ -3136,4 +3136,88 @@ body.qazana-editor-preview #qazana-mode-switcher {
 .qazana-widget-template-empty-templates-footer a {
   color: #a4afb7; }
 
+.qazana-revision-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 11px; }
+  .qazana-revision-item:hover:not(.qazana-revision-current-preview) {
+    background-color: rgba(235, 235, 235, 0.3); }
+  .qazana-revision-item:not(:hover) .qazana-revision-item__tools-delete {
+    display: none; }
+  .qazana-revision-item-loading .qazana-revision-item__tools-delete {
+    display: none; }
+  .qazana-revision-item:not(.qazana-revision-item-loading) .qazana-revision-item__tools-spinner {
+    display: none; }
+  .qazana-revision-item__gravatar {
+    border-radius: 50%;
+    overflow: hidden; }
+    .qazana-revision-item__gravatar img {
+      display: block; }
+  .qazana-revision-item__details {
+    padding-left: 15px;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    cursor: pointer; }
+  .qazana-revision-item__tools-delete {
+    cursor: pointer; }
+.qazana-revision-meta {
+  padding-top: 5px;
+  font-size: 10px;
+  font-weight: bold; }
+.qazana-revision-current-preview {
+  background-color: #EBEBEB; }
+
+.qazana-history-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  line-height: 1.4;
+  cursor: pointer; }
+  .qazana-history-item:hover {
+    background-color: rgba(235, 235, 235, 0.3); }
+    .qazana-history-item:hover .qazana-history-item__icon .fa:before {
+      content: '\f1da'; }
+  .qazana-history-item-applied {
+    color: #a0a5aa; }
+  .qazana-history-item-current {
+    background: #EBEBEB;
+    cursor: inherit; }
+    .qazana-history-item-current .qazana-history-item__icon .fa:before, .qazana-history-item-current:hover .qazana-history-item__icon .fa:before {
+      content: '\f00c'; }
+  .qazana-history-item__details {
+    width: 95%; }
+  .qazana-history-item__title {
+    font-weight: bold; }
+  .qazana-history-item__subtitle, .qazana-history-item__action {
+    font-weight: lighter; }
+  .qazana-history-item__action {
+    font-style: italic;
+    text-decoration: underline; }
+  .qazana-history-item .__icon {
+    float: right; }
+.qazana-history-revisions-message {
+  font-size: 11px;
+  text-align: center;
+  padding: 5px 0; }
+
 /*# sourceMappingURL=editor.css.map */

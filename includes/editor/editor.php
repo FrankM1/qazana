@@ -1,9 +1,11 @@
 <?php
 namespace Qazana;
 
-use Qazana\PageSettings\Manager as PageSettingsManager;
+use Qazana\Core\Settings\Manager as SettingsManager;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Editor {
 
@@ -19,6 +21,7 @@ class Editor {
 	private $_localize_settings = [];
 
 	private function init_editor_templates() {
+
 		// It can be filled from plugins
 		$this->_editor_templates = array_merge( $this->_editor_templates, [
 		 	__DIR__ . '/editor-templates/global.php',
@@ -27,6 +30,9 @@ class Editor {
 			__DIR__ . '/editor-templates/repeater.php',
 			__DIR__ . '/editor-templates/templates.php',
 		] );
+
+		do_action( 'qazana/editor/panel_templates' );
+		
 	}
 
 	public function __construct() {
@@ -49,7 +55,8 @@ class Editor {
             return;
         }
 
-        $this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
+		$this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
+		
     }
 
 	public function init( $die = true ) {
@@ -125,15 +132,17 @@ class Editor {
 	}
 
 	public function redirect_to_new_url() {
-		if ( ! isset( $_GET['qazana'] ) ) {
+		if ( ! isset( $_REQUEST['qazana'] ) ) {
 			return;
 		}
 
-		if ( ! User::is_current_user_can_edit( $this->_post_id ) || ! qazana()->db->is_built_with_qazana( $this->_post_id ) ) {
+		$post_id = get_the_ID();
+
+		if ( ! User::is_current_user_can_edit( $post_id ) || ! qazana()->db->is_built_with_qazana( $post_id ) ) {
 			return;
 		}
 
-		wp_redirect( Utils::get_edit_link( $this->_post_id ) );
+		wp_redirect( Utils::get_edit_link( $post_id ) );
 		die;
 	}
 
@@ -226,13 +235,6 @@ class Editor {
 			'4.0.1',
 			true
 		);
-
-        	// Enqueue frontend scripts too
-		qazana()->frontend->register_scripts();
-        	qazana()->frontend->enqueue_scripts();
-
-		qazana()->frontend->register_widget_scripts();
-		qazana()->frontend->enqueue_widget_scripts();
 
         wp_register_script(
             'backbone-marionette',
@@ -371,8 +373,7 @@ class Editor {
                 'hoverIntent',
                 'jquery-simple-dtpicker',
 				'ace',
-				'jquery-fonticonpicker',
-				'qazana-frontend'
+				'jquery-fonticonpicker'
             ],
             qazana_get_version(),
             true
@@ -401,35 +402,25 @@ class Editor {
 			$page_title_selector = 'h1.entry-title';
 		}
 
-		$page_settings_instance = PageSettingsManager::get_page( $this->_post_id );
-
-        $this->add_localize_settings( [
+        $localize_settings = [
 			'version' => qazana_get_version(),
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'home_url' => home_url(),
+			'home_url' => home_url(),
+			'post_id' => $this->_post_id,
             'nonce' => wp_create_nonce( 'qazana-editing' ),
             'preview_link' => Utils::get_preview_url( $this->_post_id ),
             'elements_categories' => qazana()->elements_manager->get_categories(),
             'controls' => qazana()->controls_manager->get_controls_data(),
             'elements' => qazana()->elements_manager->get_element_types_config(),
-            'widgets' => qazana()->widgets_manager->get_widget_types_config(),
+			'widgets' => qazana()->widgets_manager->get_widget_types_config(),
+			'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
+            'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'schemes' => [
                 'items' => qazana()->schemes_manager->get_registered_schemes_data(),
                 'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
             ],
-            'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
-			'revisions' => Revisions_Manager::get_revisions(),
-			'revisions_enabled' => ( $this->_post_id && wp_revisions_enabled( get_post() ) ),
-			'page_settings' => [
-				'controls' => $page_settings_instance->get_controls(),
-				'tabs' => $page_settings_instance->get_tabs_controls(),
-				'settings' => $page_settings_instance->get_settings(),
-			],
-            'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
             'wp_editor' => $this->_get_wp_editor_config(),
-            'post_id' => $this->_post_id,
-            'post_permalink' => get_the_permalink(),
-            'edit_post_link' => get_edit_post_link( $this->_post_id ),
+			'settings' => SettingsManager::get_settings_managers_config(),
             'settings_page_link' => admin_url( 'admin.php?page=' . qazana()->slug ),
             'qazana_site' => 'https://radiumthemes.com/plugins/qazana',
             'help_the_content_url' => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
@@ -438,11 +429,10 @@ class Editor {
             'locked_user' => $locked_user,
             'is_rtl' => is_rtl(),
             'locale' => get_locale(),
-            'introduction' => User::get_introduction(),
             'viewportBreakpoints' => Responsive::get_breakpoints(),
-        	'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
+			'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
 			'page_title_selector' => $page_title_selector,
-	   		'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
+			'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
             'i18n' => [
                 'qazana' => __( 'Qazana', 'qazana' ),
                 'dialog_confirm_delete' => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
@@ -459,7 +449,6 @@ class Editor {
                 'global_fonts' => __( 'Global Fonts', 'qazana' ),
                 'qazana_settings' => __( 'Qazana Settings', 'qazana' ),
                 'soon' => __( 'Soon', 'qazana' ),
-				'revision_history' => __( 'Revision History', 'qazana' ),
                 'about_qazana' => __( 'About Qazana', 'qazana' ),
                 'inner_section' => __( 'Columns', 'qazana' ),
                 'dialog_confirm_gallery_delete' => __( 'Are you sure you want to reset this gallery?', 'qazana' ),
@@ -482,14 +471,8 @@ class Editor {
                 'dialog_confirm_clear_page' => __( 'Attention! We are going to DELETE ALL CONTENT from this page. Are you sure you want to do that?', 'qazana' ),
                 'asc' => __( 'Ascending order', 'qazana' ),
                 'desc' => __( 'Descending order', 'qazana' ),
-				'no_revisions_1' => __( 'Revision history lets you save your previous versions of your work, and restore them any time.', 'qazana' ),
-				'no_revisions_2' => __( 'Start designing your page and you\'ll be able to see the entire revision history here.', 'qazana' ),
-				'revisions_disabled_1' => __( 'It looks like the post revision feature is unavailable in your website.', 'qazana' ),
-				'revisions_disabled_2' => sprintf( __( 'Learn more about <a targe="_blank" href="%s">WordPress revisions</a>', 'qazana' ), 'https://codex.wordpress.org/Revisions#Revision_Options)' ),
-				'revision' => __( 'Revision', 'qazana' ),
 				'autosave' => __( 'Autosave', 'qazana' ),
 				'preview' => __( 'Preview', 'qazana' ),
-				'page_settings' => __( 'Page Settings', 'qazana' ),
 				'back_to_editor' => __( 'Back to Editor', 'qazana' ),
 				'import_template_dialog_header' => __( 'Import Page Settings', 'qazana' ),
 				'import_template_dialog_message' => __( 'Do you want to also import the page settings of the template?', 'qazana' ),
@@ -497,7 +480,11 @@ class Editor {
 				'no' => __( 'No', 'qazana' ),
 				'yes' => __( 'Yes', 'qazana' ),
             ]
-        ]);
+		];
+
+		$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+		
+		$this->add_localize_settings( $localize_settings );
 
 		// Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );

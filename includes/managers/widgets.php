@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Widgets_Manager {
 	/**
@@ -11,7 +13,7 @@ class Widgets_Manager {
 
     public function __construct() {
 
-        add_action( 'after_setup_theme', [ $this, 'require_files' ] );
+        add_action( 'qazana/includes', [ $this, 'require_files' ] );
 
         add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
         add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
@@ -298,5 +300,4 @@ class Widgets_Manager {
 
 		return $keys;
 	}
-
 }

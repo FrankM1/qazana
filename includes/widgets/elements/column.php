@@ -104,7 +104,7 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::NUMBER,
 				'placeholder' => 20,
 				'selectors' => [
-					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget' => 'margin-bottom: {{VALUE}}px',
+					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-bottom: {{VALUE}}px',//Need the full path for exclude the inner section
 				],
 			]
 		);

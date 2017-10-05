@@ -1,5 +1,5 @@
 /*!
- * Dialogs Manager v3.2.1
+ * Dialogs Manager v3.2.4
  * https://github.com/kobizz/dialogs-manager
  *
  * Copyright Kobi Zaltzberg
@@ -130,8 +130,8 @@
 
 			elements.window.on('keyup', onWindowKeyUp);
 
-			if (settings.hide.onBackgroundClick) {
-				elements.widget.on('click', hideOnBackgroundClick);
+			if (settings.hide.onClick || settings.hide.onBackgroundClick) {
+				elements.widget.on('click', hideOnClick);
 			}
 
 			if (settings.position.autoRefresh) {
@@ -207,17 +207,22 @@
 					globalPrefix: parentSettings.classPrefix,
 					prefix: parentSettings.classPrefix + '-' + widgetName
 				},
+				selectors: {
+					preventClose: '.' + parentSettings.classPrefix + '-prevent-close'
+				},
 				container: 'body',
 				position: {
 					element: 'widget',
 					my: 'center',
 					at: 'center',
 					of: 'container',
+					enable: true,
 					autoRefresh: false
 				},
 				hide: {
 					auto: false,
 					autoDelay: 5000,
+					onClick: false,
 					onBackgroundClick: true
 				}
 			};
@@ -251,8 +256,14 @@
 			});
 		};
 
-		var hideOnBackgroundClick = function(event) {
-			if (event.target !== this) {
+		var hideOnClick = function(event) {
+
+			if (settings.hide.onClick) {
+
+				if ($(event.target).closest(settings.selectors.preventClose).length) {
+					return;
+				}
+			} else if (event.target !== this) {
 				return;
 			}
 
@@ -272,8 +283,8 @@
 
 			elements.window.off('keyup', onWindowKeyUp);
 
-			if (settings.hide.onBackgroundClick) {
-				elements.widget.off('click', hideOnBackgroundClick);
+			if (settings.hide.onClick || settings.hide.onBackgroundClick) {
+				elements.widget.off('click', hideOnClick);
 			}
 
 			if (settings.position.autoRefresh) {
@@ -413,9 +424,13 @@
 
 		this.refreshPosition = function () {
 
+			if (! settings.position.enable) {
+				return;
+			}
+
 			var position = $.extend({}, settings.position);
 
-			if ( elements[position.of] ) {
+			if (elements[position.of]) {
 				position.of = elements[position.of];
 			}
 
@@ -485,6 +500,7 @@
 				contentWidth: 'auto',
 				contentHeight: 'auto',
 				closeButton: false,
+				closeButtonClass: 'fa fa-times',
 				position: {
 					element: 'widgetContent',
 					of: 'widget',
@@ -507,7 +523,7 @@
 				return;
 			}
 
-			var $closeButton = this.addElement('closeButton', '<div><i class="fa fa-times"></i></div>');
+			var $closeButton = this.addElement('closeButton', '<div><i class="' + this.getSettings('closeButtonClass') + '"></i></div>');
 
 			$widgetContent.prepend($closeButton);
 		},

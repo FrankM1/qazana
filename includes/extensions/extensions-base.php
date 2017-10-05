@@ -4,7 +4,53 @@ namespace Qazana\Extensions;
 abstract class Base {
 
 	/**
-	 * @var Module_Base
+	 * Is the extension required
+	 *
+	 * @return array
+	 */
+	private $required = false;
+	
+	/**
+	 * activate extension by default
+	 *
+	 * @return array
+	 */
+	private $default_activation = true;
+	
+	/**
+	 * Unique extension name
+	 *
+	 * @return string
+	 */
+	public function get_name() {}
+	
+	/**
+	 * Extension title
+	 *
+	 * @return string
+	 */
+	public function get_title() {}
+	
+	/**
+	 * Extension widgets
+	 *
+	 * @return array
+	 */
+	public function get_widgets() {
+		return []; 
+	}
+	
+	/**
+	 * Widgets skins to load
+	 *
+	 * @return array
+	 */
+	public function get_skins() {
+		return []; 
+	}
+			
+	/**
+	 * @var Extension_Base
 	 */
 	protected static $_instances = [];
 
@@ -38,7 +84,7 @@ abstract class Base {
 	}
 
 	/**
-	 * @return Module_Base
+	 * @return Extension_Base
 	 */
 	public static function instance() {
 		if ( empty( static::$_instances[ static::class_name() ] ) ) {
@@ -47,7 +93,23 @@ abstract class Base {
 
 		return static::$_instances[ static::class_name() ];
 	}
-
+	
+	/**
+	 * Get extension config
+	 *
+	 * @return array
+	 */
+	public function get_config() {
+		return [
+			'title' => $this->get_title(),
+			'name' => $this->get_name(),
+			'required' => $this->required,
+			'default_activation' => $this->default_activation,
+			'widgets' => $this->get_widgets(),
+			'skins' => $this->get_skins(),
+		];
+	}
+	
     /**
      * extension url helper function
      *
@@ -62,7 +124,7 @@ abstract class Base {
 	}
 
 	/**
-     * extension url helper function
+     * extension dir helper function
      *
      * @param  [type] $file [description]
      * @return [type]       [description]
@@ -73,5 +135,4 @@ abstract class Base {
 
         return qazana()->extensions_loader->locate_widget( $config['name'] .'/'. $file );
 	}
-
 }

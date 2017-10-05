@@ -8,67 +8,56 @@ module.exports = ViewModule.extend( {
 	model: null,
 
 	hasChange: false,
-
+	
 	reloadPreviewFlag: false,
-
-	changeCallbacks: {
-
-		post_title: function( newValue ) {
-			var $title = qazanaFrontend.getElements( '$document' ).find( qazana.config.page_title_selector );
-
-			$title.text( newValue );
-		},
-
-		template: function() {
-			var self = this;
-
-			this.save( function() {
-				self.reloadPreview();
-			} );
-		},
-
-		custom_css: function( newValue ) {
-			newValue = newValue.replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id );
-			this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
-		}			
-		
-	},
+	
+	changeCallbacks: {},
 
 	addChangeCallback: function( attribute, callback ) {
 		this.changeCallbacks[ attribute ] = callback;
 	},
 
-	getDefaultSettings: function() {
-		return {
-			savedSettings: qazana.config.page_settings.settings
-		};
-	},
-
 	bindEvents: function() {
-		qazana.on( 'preview:loaded', this.updateStylesheet );
+		qazana.on( 'preview:loaded', this.onQazanaPreviewLoaded );
 
 		this.model.on( 'change', this.onModelChange );
 	},
 
-	renderStyles: function() {
-		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /\{\{WRAPPER}}/g ], [ 'body.qazana-page-' + qazana.config.post_id ] );
-		this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', this.model.get('custom_css').replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id ) );
+	addPanelPage: function() {
+		var name = this.getSettings( 'name' );
+
+		qazana.getPanelView().addPage( name + '_settings', {
+			view: qazana.settings.panelPages[ name ] || qazana.settings.panelPages.base,
+			title: this.getSettings( 'panelPage.title' ),
+			options: {
+				model: this.model,
+				name: name
+			}
+		} );
 	},
 
-	updateStylesheet: function() {
-		this.renderStyles();
+	updateStylesheet: function( keepOldEntries ) {
+		if ( ! keepOldEntries ) {
+			this.controlsCSS.stylesheet.empty();
+		}
+
+		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /{{WRAPPER}}/g ], [ this.getSettings( 'cssWrapperSelector' ) ] );
 
 		this.controlsCSS.addStyleToDocument();
 	},
 
 	initModel: function() {
-		this.model = new SettingsModel( this.getSettings( 'savedSettings' ), {
-			controls: qazana.config.page_settings.controls
+		this.model = new SettingsModel( this.getSettings( 'settings' ), {
+			controls: this.getSettings( 'controls' )
 		} );
 	},
 
 	initControlsCSSParser: function() {
-		this.controlsCSS = new ControlsCSSParser();
+		this.controlsCSS = new ControlsCSSParser( { id: this.getSettings( 'name' ) } );
+	},
+
+	getDataToSave: function( data ) {
+		return data;
 	},
 
 	save: function( callback ) {
@@ -78,20 +67,19 @@ module.exports = ViewModule.extend( {
 			return;
 		}
 
-		var settings = self.model.toJSON( { removeDefault: true } ),
-			data = {
-				id: qazana.config.post_id,
+		var settings = this.model.toJSON( { removeDefault: true } ),
+			data = this.getDataToSave( {
 				data: JSON.stringify( settings )
-			};
+			} );
 
 		NProgress.start();
 
-		qazana.ajax.send( 'save_page_settings', {
+		qazana.ajax.send( 'save_' + this.getSettings( 'name' ) + '_settings', {
 			data: data,
 			success: function() {
 				NProgress.done();
 
-				self.setSettings( 'savedSettings', settings );
+				self.setSettings( 'settings', settings );
 
 				self.hasChange = false;
 
@@ -110,10 +98,24 @@ module.exports = ViewModule.extend( {
 		} );
 	},
 
+	addPanelMenuItem: function() {
+		var menuSettings = this.getSettings( 'panelPage.menu' ),
+			menuItemOptions = {
+				icon: menuSettings.icon,
+				title: this.getSettings( 'panelPage.title' ),
+				type: 'page',
+				pageName: this.getSettings( 'name' ) + '_settings'
+			};
+
+		qazana.modules.panel.Menu.addItem( menuItemOptions, menuSettings.beforeItem );
+	},
+
 	onInit: function() {
 		this.initModel();
 
 		this.initControlsCSSParser();
+
+		this.addPanelMenuItem();
 
 		this.debounceSave = _.debounce( this.save, 3000 );
 
@@ -139,17 +141,19 @@ module.exports = ViewModule.extend( {
 
 		} );
 
-		self.updateStylesheet();
+		self.updateStylesheet( true );
 
 		self.debounceSave();
 	},
 
+	onQazanaPreviewLoaded: function() {
+		this.updateStylesheet();
+
+		this.addPanelPage();
+	},
+	
 	reloadPreview: function() {
 		qazana.reloadPreview();
-
-		qazana.once( 'preview:loaded', function() {
-			qazana.getPanelView().setPage( 'settingsPage' );
-		} );
 	}
 
 } );

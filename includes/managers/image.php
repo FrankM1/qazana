@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Images_Manager {
 
@@ -17,6 +19,10 @@ class Images_Manager {
 	}
 
 	public function get_details( $id, $size, $is_first_time ) {
+		if ( ! class_exists( 'Group_Control_Image_Size' ) ) {
+			require_once qazana()->includes_dir . 'editor/controls/groups/image-size.php';
+		}
+
 		if ( 'true' === $is_first_time ) {
 			$sizes = get_intermediate_image_sizes();
 			$sizes[] = 'full';
@@ -52,5 +58,3 @@ class Images_Manager {
 		add_action( 'wp_ajax_qazana_get_images_details', [ $this, 'get_images_details' ] );
 	}
 }
-
-new Images_Manager();

@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 abstract class CSS_File {
 
@@ -39,6 +41,8 @@ abstract class CSS_File {
 	 * @var Stylesheet
 	 */
 	protected $stylesheet_obj;
+
+	abstract public function get_name();
 
 	/**
 	 * CSS_File constructor.
@@ -102,7 +106,13 @@ abstract class CSS_File {
 		}
 
 		if ( self::CSS_STATUS_INLINE === $meta['status'] ) {
-			wp_add_inline_style( $this->get_inline_dependency(), $meta['css'] );
+			$dep = $this->get_inline_dependency();
+			// If the dependency has already been printed ( like a template in footer )
+			if ( wp_styles()->query( $dep, 'done' ) ) {
+				echo '<style>' . $this->get_css() . '</style>'; // XSS ok.
+			} else {
+				wp_add_inline_style( $dep , $meta['css'] );
+			}
 		} else {
 			wp_enqueue_style( $this->get_file_handle_id(), $this->url, $this->get_enqueue_dependencies(), $meta['time'] );
 		}
@@ -116,47 +126,53 @@ abstract class CSS_File {
 	}
 
 	/**
-	 * @param array $control
-	 * @param array $controls_stack
+	 * @param array    $control
+	 * @param array    $controls_stack
 	 * @param callable $value_callback
-	 * @param array $placeholders
-	 * @param array $replacements
+	 * @param array    $placeholders
+	 * @param array    $replacements
 	 */
 	public function add_control_rules( array $control, array $controls_stack, callable $value_callback, array $placeholders, array $replacements ) {
 		$value = call_user_func( $value_callback, $control );
 
-		if ( null === $value ) {
+		if ( null === $value || empty( $control['selectors'] ) ) {
 			return;
 		}
 
 		foreach ( $control['selectors'] as $selector => $css_property ) {
 			try {
-				$output_css_property = preg_replace_callback( '/\{\{(?:([^.}]+)\.)?([^}]*)}}/', function( $matches ) use ( $control, $value_callback, $controls_stack, $value, $css_property ) {
-					$parser_control = $control;
+				$output_css_property = preg_replace_callback(
+					'/\{\{(?:([^.}]+)\.)?([^}]*)}}/', function( $matches ) use ( $control, $value_callback, $controls_stack, $value, $css_property ) {
+						$parser_control = $control;
 
-					$value_to_insert = $value;
+						$value_to_insert = $value;
 
-					if ( ! empty( $matches[1] ) ) {
-						$parser_control = $controls_stack[ $matches[1] ];
+						if ( ! empty( $matches[1] ) ) {
+							if ( ! isset( $controls_stack[ $matches[1] ] ) ) {
+								return '';
+							}
 
-						$value_to_insert = call_user_func( $value_callback, $parser_control );
-					}
+							$parser_control = $controls_stack[ $matches[1] ];
 
-					if ( Controls_Manager::FONT === $control['type'] ) {
-						$this->fonts[] = $value_to_insert;
-					}
+							$value_to_insert = call_user_func( $value_callback, $parser_control );
+						}
 
-					/** @var Base_Data_Control $control_obj */
-					$control_obj = qazana()->controls_manager->get_control( $parser_control['type'] );
+						if ( Controls_Manager::FONT === $control['type'] ) {
+							$this->fonts[] = $value_to_insert;
+						}
 
-					$parsed_value = $control_obj->get_style_value( strtolower( $matches[2] ), $value_to_insert );
+						/** @var Base_Data_Control $control_obj */
+						$control_obj = qazana()->controls_manager->get_control( $parser_control['type'] );
 
-					if ( '' === $parsed_value ) {
-						throw new \Exception();
-					}
+						$parsed_value = $control_obj->get_style_value( strtolower( $matches[2] ), $value_to_insert );
 
-					return $parsed_value;
-				}, $css_property );
+						if ( '' === $parsed_value ) {
+							throw new \Exception();
+						}
+
+						return $parsed_value;
+					}, $css_property
+				);
 			} catch ( \Exception $e ) {
 				return;
 			}
@@ -194,7 +210,7 @@ abstract class CSS_File {
 			$parsed_selector = str_replace( $placeholders, $replacements, $selector );
 
 			if ( ! $query && ! empty( $control['responsive'] ) ) {
-				$query = $control['responsive'];
+				$query = array_intersect_key( $control['responsive'], array_flip( [ 'min', 'max' ] ) );
 
 				if ( ! empty( $query['max'] ) && Element_Base::RESPONSIVE_DESKTOP === $query['max'] ) {
 					unset( $query['max'] );
@@ -236,6 +252,35 @@ abstract class CSS_File {
 		}
 
 		return $meta;
+	}
+
+	/**
+	 * @param Controls_Stack $controls_stack
+	 * @param array          $controls
+	 * @param array          $values
+	 * @param array          $placeholders
+	 * @param array          $replacements
+	 */
+	public function add_controls_stack_style_rules( Controls_Stack $controls_stack, array $controls, array $values, array $placeholders, array $replacements ) {
+		foreach ( $controls as $control ) {
+			if ( ! empty( $control['style_fields'] ) ) {
+				foreach ( $values[ $control['name'] ] as $field_value ) {
+					$this->add_controls_stack_style_rules(
+						$controls_stack,
+						$control['style_fields'],
+						$field_value,
+						array_merge( $placeholders, [ '{{CURRENT_ITEM}}' ] ),
+						array_merge( $replacements, [ '.qazana-repeater-item-' . $field_value['_id'] ] )
+					);
+				}
+			}
+
+			if ( empty( $control['selectors'] ) ) {
+				continue;
+			}
+
+			$this->add_control_style_rules( $control, $values, $controls_stack->get_controls(), $placeholders, $replacements );
+		}
 	}
 
 	/**
@@ -281,6 +326,41 @@ abstract class CSS_File {
 		return false;
 	}
 
+	/**
+	 * @param array $control
+	 * @param array $values
+	 * @param array $controls_stack
+	 * @param array $placeholders
+	 * @param array $replacements
+	 */
+	private function add_control_style_rules( array $control, array $values, array $controls_stack, array $placeholders, array $replacements ) {
+		$this->add_control_rules(
+			$control, $controls_stack, function( $control ) use ( $values ) {
+				return $this->get_style_control_value( $control, $values );
+			}, $placeholders, $replacements
+		);
+	}
+
+	/**
+	 * @param array $control
+	 * @param array $values
+	 *
+	 * @return mixed
+	 */
+	private function get_style_control_value( array $control, array $values ) {
+		$value = $values[ $control['name'] ];
+
+		if ( isset( $control['selectors_dictionary'][ $value ] ) ) {
+			$value = $control['selectors_dictionary'][ $value ];
+		}
+
+		if ( ! is_numeric( $value ) && ! is_float( $value ) && empty( $value ) ) {
+			return null;
+		}
+
+		return $value;
+	}
+
 	private function init_stylesheet() {
 		$this->stylesheet_obj = new Stylesheet();
 
@@ -304,6 +384,8 @@ abstract class CSS_File {
 
 	private function parse_css() {
 		$this->render_css();
+
+		do_action( 'qazana/' . $this->get_name() . '-css-file/parse', $this );
 
 		$this->css = $this->stylesheet_obj->__toString();
 	}

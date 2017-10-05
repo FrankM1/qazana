@@ -13,25 +13,16 @@ class Schemes_Manager {
 	private static $_enabled_schemes;
 
 	private static $_schemes_types = [
-		'color',
-		'typography',
-		'color-picker',
+		'color' => 'Scheme_Color',
+		'typography' => 'Scheme_Typography',
+		'color-picker' => 'Scheme_Color_Picker',
 	];
 
 	public function register_scheme( $scheme_class ) {
-		if ( ! class_exists( $scheme_class ) ) {
-			return new \WP_Error( 'scheme_class_name_not_exists' );
-		}
-
+		/** @var Scheme_Base $scheme_instance */
 		$scheme_instance = new $scheme_class();
 
-		if ( ! $scheme_instance instanceof Scheme_Base ) {
-			return new \WP_Error( 'wrong_instance_scheme' );
-		}
-
 		$this->_registered_schemes[ $scheme_instance::get_type() ] = $scheme_instance;
-
-		return true;
 	}
 
 	public function unregister_scheme( $id ) {
@@ -94,8 +85,9 @@ class Schemes_Manager {
 
 	public function get_scheme_value( $scheme_type, $scheme_value ) {
 		$scheme = $this->get_scheme( $scheme_type );
-		if ( ! $scheme )
+		if ( ! $scheme ) {
 			return false;
+		}
 
 		return $scheme->get_scheme_value()[ $scheme_value ];
 	}
@@ -141,14 +133,14 @@ class Schemes_Manager {
 	}
 
 	private function register_default_schemes() {
+
 		include( qazana()->includes_dir  . 'editor/interfaces/scheme.php' );
+		include( qazana()->includes_dir  . 'editor/schemes/scheme-base.php' );
 
-		include( qazana()->includes_dir  . 'editor/schemes/base.php' );
+		foreach ( self::$_schemes_types as $schemes_type => $scheme_class ) {
+			include( qazana()->includes_dir  . 'editor/schemes/' . strtolower( str_replace( '_', '-', $scheme_class ) ) . '.php' );
 
-		foreach ( self::$_schemes_types as $schemes_class ) {
-			include( qazana()->includes_dir  . 'editor/schemes/' . $schemes_class . '.php' );
-
-			$this->register_scheme( __NAMESPACE__ . '\Scheme_' . ucfirst( str_replace( '-', '_', $schemes_class ) ) );
+			$this->register_scheme( __NAMESPACE__ . '\\' . ucfirst( str_replace( '-', '_', $scheme_class ) ) );
 		}
 	}
 

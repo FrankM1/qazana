@@ -50,17 +50,14 @@ final class Manager {
 
         if ( $this->path ) {
             foreach ( $this->path as $folder ) {
-                $this->_register_extensions( $folder );
+                $this->register_extensions( $folder );
             }
         }
 
-        $this->_load_extensions();
+        $this->load_extensions();
 
-        add_action( 'qazana/widgets/widgets_registered', [ $this, '_load_widgets' ] );
-
-        if ( is_admin() ) {
-            add_action( 'qazana/admin/settings/after', [ $this, 'register_admin_fields' ], 21 ); // After the base settings
-        }
+        add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_widgets' ] );
+        add_action( 'qazana/admin/settings/after',          [ $this, 'register_admin_fields' ], 21 ); // After the base settings
 	}
 
     /**
@@ -70,7 +67,7 @@ final class Manager {
      * @access      public
      * @return      void
      */
-    private function _register_extensions( $path ) {
+    public function register_extensions( $path ) {
 
         if ( ! is_dir( $path ) ) {
             return false;
@@ -86,27 +83,7 @@ final class Manager {
         do_action( "qazana/extensions/before", $this );
 
         foreach ( $folders as $folder ) {
-
-            $path = trailingslashit( $path );
-
-            if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
-                continue;
-            }
-
-            $extension_class = 'Qazana\Extensions\\' . $folder;
-
-            /**
-             * filter 'qazana/extension/{folder}'
-             *
-             * @param        string                    extension class file path
-             * @param string $extension_class          extension class name
-             */
-            $class_file = "$path/$folder/extension_{$folder}.php";
-
-            if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
-                $this->extensions[ $folder ] = new $extension_class ( $this );
-            }
-
+            $this->register_extension( $folder, $path );
         }
 
         /**
@@ -118,13 +95,65 @@ final class Manager {
 
     }
 
+     /**
+      * Register Extension for use
+      *
+      * @since       1.0.0
+      * @access      public
+      * @return      void
+      */
+    public function register_extension( $folder, $path ) {
+
+        $path = trailingslashit( $path );
+
+        if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
+            return;
+        }
+
+        $extension_class = 'Qazana\Extensions\\' . $folder;
+
+        /**
+         * filter 'qazana/extension/{folder}'
+         *
+         * @param string                    extension class file path
+         * @param string $extension_class   extension class name
+         */
+        $class_file = "$path/$folder/extension_{$folder}.php";
+
+        if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+            
+            if( ! class_exists( $extension_class ) ) {
+                return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
+            }
+
+            $this->extensions[ $folder ] = new $extension_class ( $this );
+        }
+    }
+
+    /**
+     * Load Extensions for use
+     *
+     * @since       1.0.0
+     * @return      void
+     */
+    public function load_extensions() {
+        
+        if ( empty( $this->extensions ) )
+            return;
+
+        foreach ( $this->extensions as $extension_id => $extension_data ) {
+            $this->instance[ $extension_id ] = $extension_data;
+        }
+        
+    }
+
     /**
      * Register Extensions for use
      *
      * @since       1.0.0
      * @return      void
      */
-    private function _register_widgets( $extension, $widgets ) {
+    private function register_widgets( $extension, $widgets ) {
 
         /**
          * action 'qazana/extensions/before'
@@ -166,7 +195,7 @@ final class Manager {
      * @since       1.0.0
      * @return      void
      */
-    private function _load_skins( $extension, $skins ) {
+    private function load_skins( $extension, $skins ) {
 
         /**
          * action 'qazana/extensions/before'
@@ -208,23 +237,7 @@ final class Manager {
 
     }
 
-    /**
-     * Load Extensions for use
-     *
-     * @since       1.0.0
-     * @return      void
-     */
-    private function _load_extensions() {
-
-        if ( empty( $this->extensions ) )
-            return;
-
-        foreach ( $this->extensions as $extension_id => $extension_data ) {
-            $this->instance[ $extension_id ] = $extension_data;
-		}
-    }
-
-	public function _load_widgets() {
+	public function load_widgets() {
 
         if ( empty( $this->instance ) )
             return;
@@ -240,14 +253,20 @@ final class Manager {
             }
 
             if ( ! empty( $extension_data['skins'] ) ) {
-                $this->_load_skins( $extension_data['name'], $extension_data['skins'] );
+                $this->load_skins( $extension_data['name'], $extension_data['skins'] );
             }
 
             if ( ! empty( $extension_data['widgets'] ) ) {
-                $this->_register_widgets( $extension_data['name'], $extension_data['widgets'] );
+                $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
 
         		foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
-        			$class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+                    
+                    $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+                    
+                    if( ! class_exists( $class_name ) ) {
+                        return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
+                    }
+
                     $widget_manager->register_widget_type( new $class_name() );
         		}
             }
@@ -306,14 +325,17 @@ final class Manager {
         foreach ( $this->extensions as $extension_id => $extension_data ) {
 
             $extension_data = $this->get_extension_data( $extension_id );
-            if ( $extension_data['required'] ) continue;
+            
+            if ( $extension_data['required'] ) {
+                continue;
+            }
 
-            $this->_add_extension_settings_section( $extension_id );
+            $this->add_extension_settings_section( $extension_id );
 		}
 
     }
 
-    public function _add_extension_settings_section( $extension_id ) {
+    public function add_extension_settings_section( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id ) ;
 
@@ -331,6 +353,7 @@ final class Manager {
         );
 
         $field_id = 'qazana_extension_' . $extension_data['name'];
+        
         add_settings_field(
             $field_id,
             __( 'Enable Extension', 'qazana' ),

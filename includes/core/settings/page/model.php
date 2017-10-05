@@ -1,15 +1,16 @@
 <?php
-namespace Qazana\PageSettings;
+namespace Qazana\Core\Settings\Page;
 
 use Qazana\Controls_Manager;
-use Qazana\Controls_Stack;
+use Qazana\Core\Settings\Base\Model as BaseModel;
 use Qazana\Group_Control_Background;
-use Qazana\Settings;
-use Qazana\PageSettings\Manager as PageSettingsManager;
+use Qazana\Core\Settings\Manager as SettingsManager;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
-class Page extends Controls_Stack {
+class Model extends BaseModel {
 
 	/**
 	 * @var \WP_Post
@@ -17,17 +18,35 @@ class Page extends Controls_Stack {
 	private $post;
 
 	public function __construct( array $data = [] ) {
-
 		$this->post = get_post( $data['id'] );
 
-		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
-		add_action( 'qazana/post-css-file/parse', [ $this, 'add_page_settings_css' ] );
+		if ( ! $this->post ) {
+			$this->post = new \WP_Post( (object) [] );
+		}
 
 		parent::__construct( $data );
 	}
 
 	public function get_name() {
-		return 'page-settings-' . $this->post->ID;
+		return 'page-settings';
+	}
+
+	public function get_unique_name() {
+		return $this->get_name() . '-' . $this->post->ID;
+	}
+
+	public function get_css_wrapper_selector() {
+		return 'body.qazana-page-' . $this->get_id();
+	}
+
+	public function get_panel_page_settings() {
+		return [
+			'title' => __( 'Page Settings', 'qazana' ),
+			'menu' => [
+				'icon' => 'fa fa-cog',
+				'beforeItem' => 'clear-page',
+			],
+		];
 	}
 
 	public function on_export( $element_data ) {
@@ -40,8 +59,8 @@ class Page extends Controls_Stack {
 
 	protected function _register_controls() {
 
-		do_action( 'qazana/editor/before_page_settings', $this );
-
+		do_action( 'qazana/core/settings/before/'. $this->get_name(), $this );
+		
 		$this->start_controls_section(
 			'section_page_settings',
 			[
@@ -61,9 +80,9 @@ class Page extends Controls_Stack {
 			]
 		);
 
-		$page_title_selector = get_option( 'qazana_page_title_selector' );
+		$page_title_selector = SettingsManager::get_settings_managers( 'general' )->get_model()->get_settings( 'qazana_page_title_selector' );
 
-		if ( empty( $page_title_selector ) ) {
+		if ( ! $page_title_selector ) {
 			$page_title_selector = 'h1.entry-title';
 		}
 
@@ -74,6 +93,7 @@ class Page extends Controls_Stack {
 				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'No', 'qazana' ),
 				'label_on' => __( 'Yes', 'qazana' ),
+				// translators: %s: Setting Page link
 				'description' => sprintf( __( 'Not working? You can set a different selector for the title in the <a href="%s" target="_blank">Settings page</a>.', 'qazana' ), admin_url( 'admin.php?page=' . qazana()->slug ) ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $page_title_selector => 'display: none',
@@ -91,20 +111,12 @@ class Page extends Controls_Stack {
 
 			$options += array_flip( get_page_templates( null, $this->post->post_type ) );
 
-			$saved_template = get_post_meta( $this->post->ID, '_wp_page_template', true );
-
-			if ( ! $saved_template ) {
-				$saved_template = 'default';
-			}
-
-			unset($options['blog']);
-
 			$this->add_control(
 				'template',
 				[
 					'label' => __( 'Template', 'qazana' ),
 					'type' => Controls_Manager::SELECT,
-					'default' => $saved_template,
+					'default' => 'default',
 					'options' => $options,
 					'export' => function( $value ) {
 						return Manager::TEMPLATE_CANVAS === $value;
@@ -196,57 +208,7 @@ class Page extends Controls_Stack {
 
 		$this->end_controls_section();
 
-		do_action( 'qazana/editor/after_page_settings', $this );
-	}
-
-	/**
-	 * @param $post_css Post_CSS_File
-	 * @param $element Element_Base
-	 */
-	public function add_post_css( $post_css, $element ) {
-		$element_settings = $element->get_settings();
-
-		if ( empty( $element_settings['custom_css'] ) ) {
-			return;
-		}
-
-		$css = trim( $element_settings['custom_css'] );
-
-		if ( empty( $css ) ) {
-			return;
-		}
-
-		$css = str_replace( 'selector', $post_css->get_element_unique_selector( $element ), $css );
-
-		// Add a css comment
-		$css = sprintf( '/* Start custom CSS for %s, class: %s */', $element->get_name(), $element->get_unique_selector() ) . $css . '/* End custom CSS */';
-
-		$post_css->get_stylesheet()->add_raw_css( $css );
-	}
-
-	/**
-	 * @param $post_css Post_CSS_File
-	 */
-	public function add_page_settings_css( $post_css ) {
-
-		$page_settings_instance = PageSettingsManager::get_page( $post_css->get_post_id() );
-
-		$custom_css = $page_settings_instance->get_settings( 'custom_css' );
-
-		$custom_css = trim( $custom_css );
-
-		if ( empty( $custom_css ) ) {
-			return;
-		}
-
-		$page_selector = apply_filters( 'qazana/editor/page_settings/body_selector', 'body.qazana-page-' . $post_css->get_post_id(), $post_css );
-
-		$custom_css = str_replace( 'selector', $page_selector, $custom_css );
-
-		// Add a css comment
-		$custom_css = '/* Start custom CSS for page-settings */' . $custom_css . '/* End custom CSS */';
+		do_action( 'qazana/core/settings/after/'. $this->get_name(), $this );
 		
-		$post_css->get_stylesheet()->add_raw_css( $custom_css );
 	}
-
 }

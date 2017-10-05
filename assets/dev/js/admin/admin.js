@@ -1,10 +1,13 @@
-( function( $, window, document ) {
+( function( $ ) {
 	'use strict';
 
 	var QazanaAdminApp = {
 
+		maintenanceMode: null,
+
 		cacheElements: function() {
 			this.cache = {
+				$window: $( window ),
 				$body: $( 'body' ),
 				$switchMode: $( '#qazana-switch-mode' ),
 				$goToEditLink: $( '#qazana-go-to-edit-page-link' ),
@@ -47,7 +50,8 @@
 					self.animateLoader();
 
 					$( document ).on( 'heartbeat-tick.autosave', function() {
-						$( window ).off( 'beforeunload.edit-post' );
+						self.cache.$window.off( 'beforeunload.edit-post' );
+
 						window.location = self.cache.$goToEditLink.attr( 'href' );
 					} );
 				}
@@ -153,6 +157,12 @@
 			$importButton.on( 'click', function() {
 				$( '#qazana-import-template-area' ).toggle();
 			} );
+		},
+
+		initMaintenanceMode: function() {
+			//var MaintenanceMode = require( 'qazana-admin/maintenance-mode' );
+
+			//this.maintenanceMode = new MaintenanceMode();
 		},
 
 		getEditMode: function() {

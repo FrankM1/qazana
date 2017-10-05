@@ -82,35 +82,6 @@ var StretchedSection = HandlerModule.extend( {
 
 var SVGShapes = HandlerModule.extend( {
 	
-	__construct: function( settings ) {
-		this.$element  = settings.$element;
-		this.addEditorListener();
-	},
-
-	addEditorListener: function() {
-		var self = this,
-			uniqueHandlerID = self.getUniqueHandlerID();
-
-		if ( self.onElementChange ) {
-			var elementName = self.getElementName(),
-				eventName = 'change';
-
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, eventName, function( controlView, elementView ) {
-				var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
-				
-				if ( elementViewHandlerID !== uniqueHandlerID ) {
-					//return;
-				}
-
-				console.log('elementViewHandlerID ' + elementViewHandlerID);
-				console.log('uniqueHandlerID ' + uniqueHandlerID);
-				
-				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
-			}, qazana.channels.editor );
-		}
-
-	},
-	
 	getDefaultSettings: function() {
 		return {
 			selectors: {
@@ -132,23 +103,10 @@ var SVGShapes = HandlerModule.extend( {
 	},
 
 	buildSVG: function( side ) {
-
 		var self = this,
 			baseSettingKey = 'shape_divider_' + side,
-			shapeType = self.getElementSettings( baseSettingKey );
-		
-		var elements =this.getDefaultElements();
-			
-			console.log( this.getDefaultElements() );
-			console.log('------------------------------------');
-			console.log( elements[ '$' + side + 'Container' ] );
-			console.log('$' + side + 'Container');
-			console.log('shapeType ' + shapeType );
-			console.log('shapeType ' + shapeType );
-			console.log('------------------------------------');
-			//  return;
-			
-		var $svgContainer = elements[ '$' + side + 'Container' ];
+			shapeType = self.getElementSettings( baseSettingKey ),
+			$svgContainer = this.elements[ '$' + side + 'Container' ];
 
 		$svgContainer.empty().attr( 'data-shape', shapeType );
 
@@ -176,36 +134,26 @@ var SVGShapes = HandlerModule.extend( {
 	},
 
 	onInit: function() {
-
 		var self = this;
-		
-		qazanaFrontend.Module.prototype.onInit.apply( self, arguments );
-		
-		var settings = self.getElementSettings();
-		
+
+		HandlerModule.prototype.onInit.apply( self, arguments );
+
 		[ 'top', 'bottom' ].forEach( function( side ) {
-			if ( settings['shape_divider_' + side] ) {
-				console.log( settings['shape_divider_' + side] );
+			if ( self.getElementSettings( 'shape_divider_' + side ) ) {
 				self.buildSVG( side );
 			}
 		} );
 	},
 
-	onElementChange: function( propertyName,  controlView, elementView ) {
+	onElementChange: function( propertyName ) {
 		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
 
-		// console.log( 'shapeChange ' + shapeChange );
-		// console.log( 'propertyName ' + propertyName );
-
-		if( propertyName === 'shape_divider_top' || propertyName === 'shape_divider_bottom' ) {
-			console.log( 'propertyName ' + propertyName );
-			this.buildSVG( 'top');
-		}
-		
 		if ( shapeChange ) {
 			this.buildSVG( shapeChange[1] );
+
+			return;
 		}
-		
+
 		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
 
 		if ( negativeChange ) {
@@ -218,15 +166,14 @@ var SVGShapes = HandlerModule.extend( {
 
 module.exports = function( $scope ) {
 
-	new SVGShapes( { $element: $scope } );
-	
 	if ( qazanaFrontend.isEditMode() ) {
+		new SVGShapes( { $element: $scope } );
 
 		if ( $scope.hasClass( 'qazana-section-stretched' ) ) {
 			new StretchedSection( { $element: $scope } );
 		}
 	}
 
-	new BackgroundVideo( $scope, $ );
+	new BackgroundVideo( { $element: $scope } );
 
 };

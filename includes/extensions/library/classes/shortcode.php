@@ -3,6 +3,7 @@
 namespace Qazana\Extensions\Library\Classes;
 
 use Qazana\Template_Library\Source_Local;
+use Qazana\User;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -32,7 +33,13 @@ class Shortcode {
 			return '';
 		}
 
-		return qazana()->frontend->get_builder_content_for_display( $attributes['id'] );
+		$output = qazana()->frontend->get_builder_content_for_display( $attributes['id'] );
+
+		if ( User::is_current_user_can_edit() ) {
+			$output .= '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $attributes['id'] ) ) .'"><i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'</a>';
+		}
+
+		return $output;
 	}
 
 	private function add_actions() {

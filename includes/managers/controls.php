@@ -326,8 +326,11 @@ class Controls_Manager {
 	}
 
 	public function add_control_to_stack( Controls_Stack $element, $control_id, $control_data, $options = [] ) {
+		
+		$stack_id = $element->get_unique_name();
+		
 		if ( ! is_array( $options ) ) {
-			_deprecated_argument( __FUNCTION__, '1.7.0', 'Use `[ \'overwrite\' => ' . var_export( $options, true ) . ' ]` instead.' );
+			_deprecated_argument( __FUNCTION__, '1.7.0', 'Use `[ \'overwrite\' => ' . var_export( $options, true ) . ' ]` instead. Added in ' . $control_id . ' in the ' . $stack_id . ' element.' );
 
 			$options = [
 				'overwrite' => $options,
@@ -361,13 +364,11 @@ class Controls_Manager {
 			$control_default_value = $control_type_instance->get_default_value();
 
 			if ( is_array( $control_default_value ) ) {
-				$control_data['default'] = isset( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
+				$control_data['default'] = ! empty( $control_data['default'] ) ? array_merge( $control_default_value, $control_data['default'] ) : $control_default_value;
 			} else {
-				$control_data['default'] = isset( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
+				$control_data['default'] = ! empty( $control_data['default'] ) ? $control_data['default'] : $control_default_value;
 			}
 		}
-
-		$stack_id = $element->get_unique_name();
 
 		if ( ! $options['overwrite'] && isset( $this->stacks[ $stack_id ]['controls'][ $control_id ] ) ) {
 			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
@@ -480,5 +481,6 @@ class Controls_Manager {
 	 */
 	public function __construct() {		
 		$this->include_controls();
+		$this->register_controls();
 	}
 }

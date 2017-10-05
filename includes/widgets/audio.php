@@ -157,15 +157,6 @@ class Widget_Audio extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'view',
-			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::HIDDEN,
-				'default' => 'soundcloud',
-			]
-		);
-
 		$this->end_controls_section();
 
 	}

@@ -19,12 +19,14 @@ class Repeater extends Element_Base {
 		return 'repeater';
 	}
 
-	public function add_control( $id, array $args, $overwrite = false ) {
-		if ( null !== $this->_current_tab ) {
-			$args = array_merge( $args, $this->_current_tab );
+	public function add_control( $id, array $args, $options = [] ) {
+		$current_tab = $this->get_current_tab();
+
+		if ( null !== $current_tab ) {
+			$args = array_merge( $args, $current_tab );
 		}
 
-		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $overwrite );
+		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
 	}
 
 	public function get_fields() {

@@ -1,7 +1,7 @@
 <?php
 namespace Qazana\Template_Library;
 
-use Qazana\PageSettings\Page;
+use Elementor\Core\Settings\Page\Model;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -84,7 +84,7 @@ class Source_Remote extends Source_Base {
 		$data['data'] = $this->process_export_import_content( $data['data'], 'on_import' );
 
 		if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
-			$page = new Page( [
+			$page = new Model( [
 				'settings' => $data['page_settings'],
 			] );
 

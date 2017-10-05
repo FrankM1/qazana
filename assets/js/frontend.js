@@ -138,7 +138,7 @@ module.exports = ElementsHandler;
 			self.utils = {
 				youtube: new YouTubeModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
+				//lightbox: new LightboxModule()
 			};
 
 			self.modules = {
@@ -457,7 +457,8 @@ var activateSection = function( sectionIndex, $accordionTitles ) {
 	}
 };
 
-module.exports = function( $scope, $ ) {
+module.exports = function( $scope ) {
+	
 	var defaultActiveSection = $scope.find( '.qazana-accordion' ).data( 'active-section' ),
 		$accordionTitles = $scope.find( '.qazana-accordion-title' );
 
@@ -467,7 +468,7 @@ module.exports = function( $scope, $ ) {
 
 	activateSection( defaultActiveSection, $accordionTitles );
 
-	$accordionTitles.on( 'click', function() {
+	$accordionTitles.off( 'click').on( 'click', function() {
 		activateSection( this.dataset.section, $accordionTitles );
 	} );
 };
@@ -480,6 +481,147 @@ module.exports = function( $scope, $ ) {
 };
 
 },{}],6:[function(require,module,exports){
+var HandlerModule = require( 'qazana-frontend/handler-module' );
+
+var BackgroundVideo = HandlerModule.extend( {
+	player: null,
+
+	isYTVideo: null,
+
+	getDefaultSettings: function() {
+		return {
+			selectors: {
+				backgroundVideoContainer: '.qazana-background-video-container',
+				backgroundVideoEmbed: '.qazana-background-video-embed',
+				backgroundVideoHosted: '.qazana-background-video-hosted'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+		var selectors = this.getSettings( 'selectors' ),
+			elements = {
+				$backgroundVideoContainer: this.$element.find( selectors.backgroundVideoContainer )
+			};
+
+		elements.$backgroundVideoEmbed = elements.$backgroundVideoContainer.children( selectors.backgroundVideoEmbed );
+
+		elements.$backgroundVideoHosted = elements.$backgroundVideoContainer.children( selectors.backgroundVideoHosted );
+
+		return elements;
+	},
+
+	calcVideosSize: function() {
+		var containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
+			containerHeight = this.elements.$backgroundVideoContainer.outerHeight(),
+			aspectRatioSetting = '16:9', //TEMP
+			aspectRatioArray = aspectRatioSetting.split( ':' ),
+			aspectRatio = aspectRatioArray[ 0 ] / aspectRatioArray[ 1 ],
+			ratioWidth = containerWidth / aspectRatio,
+			ratioHeight = containerHeight * aspectRatio,
+			isWidthFixed = containerWidth / containerHeight > aspectRatio;
+
+		return {
+			width: isWidthFixed ? containerWidth : ratioHeight,
+			height: isWidthFixed ? ratioWidth : containerHeight
+		};
+	},
+
+	changeVideoSize: function() {
+		var $video = this.isYTVideo ? jQuery( this.player.getIframe() ) : this.elements.$backgroundVideoHosted,
+			size = this.calcVideosSize();
+
+		$video.width( size.width ).height( size.height );
+	},
+
+	prepareYTVideo: function( YT, videoID ) {
+		var self = this,
+			$backgroundVideoContainer = self.elements.$backgroundVideoContainer;
+
+		$backgroundVideoContainer.addClass( 'qazana-loading qazana-invisible' );
+
+		self.player = new YT.Player( self.elements.$backgroundVideoEmbed[ 0 ], {
+			videoId: videoID,
+			events: {
+				onReady: function() {
+					self.player.mute();
+
+					self.changeVideoSize();
+
+					self.player.playVideo();
+				},
+				onStateChange: function( event ) {
+					switch ( event.data ) {
+						case YT.PlayerState.PLAYING:
+							$backgroundVideoContainer.removeClass( 'qazana-invisible qazana-loading' );
+
+							break;
+						case YT.PlayerState.ENDED:
+							self.player.seekTo( 0 );
+					}
+				}
+			},
+			playerVars: {
+				controls: 0,
+				showinfo: 0
+			}
+		} );
+
+		qazanaFrontend.getElements( '$window' ).on( 'resize', self.changeVideoSize );
+	},
+
+	activate: function() {
+		var self = this,
+			videoLink = self.getElementSettings( 'background_video_link' ),
+			videoID = qazanaFrontend.utils.youtube.getYoutubeIDFromURL( videoLink );
+
+		self.isYTVideo = !! videoID;
+
+		if ( videoID ) {
+			qazanaFrontend.utils.youtube.onYoutubeApiReady( function( YT ) {
+				setTimeout( function() {
+					self.prepareYTVideo( YT, videoID );
+				}, 1 );
+			} );
+		} else {
+			self.elements.$backgroundVideoHosted.attr( 'src', videoLink ).one( 'canplay', self.changeVideoSize );
+		}
+	},
+
+	deactivate: function() {
+		if ( this.isYTVideo && this.player.getIframe() ) {
+			this.player.destroy();
+		} else {
+			this.elements.$backgroundVideoHosted.removeAttr( 'src' );
+		}
+	},
+
+	run: function() {
+		var elementSettings = this.getElementSettings();
+
+		if ( 'video' === elementSettings.background_background && elementSettings.background_video_link ) {
+			this.activate();
+		} else {
+			this.deactivate();
+		}
+	},
+
+	onInit: function() {
+		HandlerModule.prototype.onInit.apply( this, arguments );
+
+		this.run();
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'background_background' === propertyName ) {
+			this.run();
+		}
+	}
+} );
+
+module.exports =  BackgroundVideo;
+
+/* 
 module.exports = function( $scope, $ ) {
 
 	var BackgroundVideo = function( $backgroundVideoContainer, $ ) {
@@ -577,9 +719,9 @@ module.exports = function( $scope, $ ) {
 	if ( $backgroundVideoContainer ) {
 		new BackgroundVideo( $backgroundVideoContainer, $ );
 	}
-};
+}; */
 
-},{}],7:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],7:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 
 	var $counter = $scope.find( '.qazana-counter-number' );
@@ -589,14 +731,14 @@ module.exports = function( $scope, $ ) {
 		return;
 	}
 
-	if ( 'count' == animation ){
+	if ( 'count' === animation ){
 		var odometer = new Odometer({el: $counter[0], animation: 'count' } );
 	} else {
 		var odometer = new Odometer({ el: $counter[0] });
 	}
 
-	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-counter-number' ), function() {
-			odometer.update( $(this).data('to-value') );
+	qazanaFrontend.waypoint( $scope.find( '.qazana-counter-number' ), function() {
+		odometer.update( $(this).data('to-value') );
 	}, { offset: '90%' } );
 
 };
@@ -638,21 +780,20 @@ GlobalHandler = HandlerModule.extend({
 		}
 		
 	},
-	onElementChange: function (propertyName) {
-		if (/^_?animation/.test(propertyName)) {
+	onElementChange: function( propertyName ) {
+		if ( /^_?animation/.test( propertyName ) ) {
 			this.animate();
 		}
 	}
-});
+} );
 
-module.exports = function ($scope) {
-	new GlobalHandler({
-		$element: $scope
-	});
+module.exports = function( $scope ) {
+	new GlobalHandler( { $element: $scope } );
 };
+
 },{"qazana-frontend/handler-module":3}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
-	qazanaFrontend.utils.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
+	qazanaFrontend.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
 		var $progressbar = $( this );
 
 		$progressbar.css( 'width', $progressbar.data( 'max' ) + '%' );
@@ -744,35 +885,6 @@ var StretchedSection = HandlerModule.extend( {
 
 var SVGShapes = HandlerModule.extend( {
 	
-	__construct: function( settings ) {
-		this.$element  = settings.$element;
-		this.addEditorListener();
-	},
-
-	addEditorListener: function() {
-		var self = this,
-			uniqueHandlerID = self.getUniqueHandlerID();
-
-		if ( self.onElementChange ) {
-			var elementName = self.getElementName(),
-				eventName = 'change';
-
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, eventName, function( controlView, elementView ) {
-				var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
-				
-				if ( elementViewHandlerID !== uniqueHandlerID ) {
-					//return;
-				}
-
-				console.log('elementViewHandlerID ' + elementViewHandlerID);
-				console.log('uniqueHandlerID ' + uniqueHandlerID);
-				
-				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
-			}, qazana.channels.editor );
-		}
-
-	},
-	
 	getDefaultSettings: function() {
 		return {
 			selectors: {
@@ -794,23 +906,10 @@ var SVGShapes = HandlerModule.extend( {
 	},
 
 	buildSVG: function( side ) {
-
 		var self = this,
 			baseSettingKey = 'shape_divider_' + side,
-			shapeType = self.getElementSettings( baseSettingKey );
-		
-		var elements =this.getDefaultElements();
-			
-			console.log( this.getDefaultElements() );
-			console.log('------------------------------------');
-			console.log( elements[ '$' + side + 'Container' ] );
-			console.log('$' + side + 'Container');
-			console.log('shapeType ' + shapeType );
-			console.log('shapeType ' + shapeType );
-			console.log('------------------------------------');
-			//  return;
-			
-		var $svgContainer = elements[ '$' + side + 'Container' ];
+			shapeType = self.getElementSettings( baseSettingKey ),
+			$svgContainer = this.elements[ '$' + side + 'Container' ];
 
 		$svgContainer.empty().attr( 'data-shape', shapeType );
 
@@ -838,36 +937,26 @@ var SVGShapes = HandlerModule.extend( {
 	},
 
 	onInit: function() {
-
 		var self = this;
-		
-		qazanaFrontend.Module.prototype.onInit.apply( self, arguments );
-		
-		var settings = self.getElementSettings();
-		
+
+		HandlerModule.prototype.onInit.apply( self, arguments );
+
 		[ 'top', 'bottom' ].forEach( function( side ) {
-			if ( settings['shape_divider_' + side] ) {
-				console.log( settings['shape_divider_' + side] );
+			if ( self.getElementSettings( 'shape_divider_' + side ) ) {
 				self.buildSVG( side );
 			}
 		} );
 	},
 
-	onElementChange: function( propertyName,  controlView, elementView ) {
+	onElementChange: function( propertyName ) {
 		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
 
-		// console.log( 'shapeChange ' + shapeChange );
-		// console.log( 'propertyName ' + propertyName );
-
-		if( propertyName === 'shape_divider_top' || propertyName === 'shape_divider_bottom' ) {
-			console.log( 'propertyName ' + propertyName );
-			this.buildSVG( 'top');
-		}
-		
 		if ( shapeChange ) {
 			this.buildSVG( shapeChange[1] );
+
+			return;
 		}
-		
+
 		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
 
 		if ( negativeChange ) {
@@ -880,16 +969,15 @@ var SVGShapes = HandlerModule.extend( {
 
 module.exports = function( $scope ) {
 
-	new SVGShapes( { $element: $scope } );
-	
 	if ( qazanaFrontend.isEditMode() ) {
+		new SVGShapes( { $element: $scope } );
 
 		if ( $scope.hasClass( 'qazana-section-stretched' ) ) {
 			new StretchedSection( { $element: $scope } );
 		}
 	}
 
-	new BackgroundVideo( $scope, $ );
+	new BackgroundVideo( { $element: $scope } );
 
 };
 
@@ -1050,25 +1138,90 @@ module.exports = function( $scope, $ ) {
 };
 
 },{}],14:[function(require,module,exports){
-module.exports = function( $scope, $ ) {
-	var $imageOverlay = $scope.find( '.qazana-custom-embed-image-overlay' ),
-		$videoFrame = $scope.find( 'iframe' );
+var HandlerModule = require( 'qazana-frontend/handler-module' ),
+VideoModule;
 
-	if ( ! $imageOverlay.length ) {
-		return;
-	}
+VideoModule = HandlerModule.extend( {
+	getDefaultSettings: function() {
+		return {
+			selectors: {
+				imageOverlay: '.qazana-custom-embed-image-overlay',
+				videoWrapper: '.qazana-video-wrapper',
+				videoFrame: 'iframe'
+			}
+		};
+	},
 
-	$imageOverlay.on( 'click', function() {
-		$imageOverlay.remove();
-		var newSourceUrl = $videoFrame[0].src;
-		// Remove old autoplay if exists
-		newSourceUrl = newSourceUrl.replace( '&autoplay=0', '' );
+	getDefaultElements: function() {
+		var selectors = this.getSettings( 'selectors' );
+
+		var elements = {
+			$imageOverlay: this.$element.find( selectors.imageOverlay ),
+			$videoWrapper: this.$element.find( selectors.videoWrapper )
+		};
+
+		elements.$videoFrame = elements.$videoWrapper.find( selectors.videoFrame );
+
+		return elements;
+	},
+
+	getLightBox: function() {
+		return qazanaFrontend.utils.lightbox;
+	},
+
+	handleVideo: function() {
+		if ( ! this.getElementSettings( 'lightbox' ) ) {
+			this.elements.$imageOverlay.remove();
+
+			this.playVideo();
+		}
+	},
+
+	playVideo: function() {
+		var $videoFrame = this.elements.$videoFrame,
+			newSourceUrl = $videoFrame[0].src.replace( '&autoplay=0', '' );
 
 		$videoFrame[0].src = newSourceUrl + '&autoplay=1';
-	} );
+	},
+
+	animateVideo: function() {
+		this.getLightBox().setEntranceAnimation( this.getElementSettings( 'lightbox_content_animation' ) );
+	},
+
+	handleAspectRatio: function() {
+		this.getLightBox().setVideoAspectRatio( this.getElementSettings( 'aspect_ratio' ) );
+	},
+
+	bindEvents: function() {
+		this.elements.$imageOverlay.on( 'click', this.handleVideo );
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'lightbox_content_animation' === propertyName ) {
+			this.animateVideo();
+
+			return;
+		}
+
+		var isLightBoxEnabled = this.getElementSettings( 'lightbox' );
+
+		if ( 'lightbox' === propertyName && ! isLightBoxEnabled ) {
+			this.getLightBox().getModal().hide();
+
+			return;
+		}
+
+		if ( 'aspect_ratio' === propertyName && isLightBoxEnabled ) {
+			this.handleAspectRatio();
+		}
+	}
+} );
+
+module.exports = function( $scope ) {
+	new VideoModule( { $element: $scope } );
 };
 
-},{}],15:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],15:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -1237,12 +1390,13 @@ LightboxModule = ViewModule.extend( {
 				item: 'qazana-lightbox-item',
 				image: 'qazana-lightbox-image',
 				videoContainer: 'qazana-video-container',
-				videoWrapper: 'qazana-video-wrapper',
+				videoWrapper: 'qazana-fit-aspect-ratio',
 				playButton: 'qazana-custom-embed-play',
 				playButtonIcon: 'fa',
 				playing: 'qazana-playing',
 				hidden: 'qazana-hidden',
 				invisible: 'qazana-invisible',
+				preventClose: 'qazana-lightbox-prevent-close',
 				slideshow: {
 					container: 'swiper-container',
 					slidesWrapper: 'swiper-wrapper',
@@ -1284,7 +1438,13 @@ LightboxModule = ViewModule.extend( {
 		var modal = LightboxModule.modal = qazanaFrontend.getDialogsManager().createWidget( 'lightbox', {
 			className: 'qazana-lightbox',
 			closeButton: true,
-			closeButtonClass: 'eicon-close'
+			closeButtonClass: 'eicon-close',
+			selectors: {
+				preventClose: '.' + this.getSettings( 'classes.preventClose' )
+			},
+			hide: {
+				onClick: true
+			}
 		} );
 
 		modal.on( 'hide', function() {
@@ -1344,7 +1504,7 @@ LightboxModule = ViewModule.extend( {
 		var self = this,
 			classes = self.getSettings( 'classes' ),
 			$item = jQuery( '<div>', { 'class': classes.item } ),
-			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image } );
+			$image = jQuery( '<img>', { src: imageURL, 'class': classes.image + ' ' + classes.preventClose } );
 
 		$item.append( $image );
 
@@ -1357,7 +1517,7 @@ LightboxModule = ViewModule.extend( {
 		var classes = this.getSettings( 'classes' ),
 			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer } ),
 			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
-			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL } ),
+			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL, allowfullscreen: 1 } ),
 			modal = this.getModal();
 
 		$videoContainer.append( $videoWrapper );
@@ -1373,7 +1533,7 @@ LightboxModule = ViewModule.extend( {
 		modal.onHide = function() {
 			onHideMethod();
 
-			modal.getElements( 'message' ).removeClass( 'qazana-video-wrapper' );
+			modal.getElements( 'message' ).removeClass( 'qazana-fit-aspect-ratio' );
 		};
 	},
 
@@ -1384,8 +1544,8 @@ LightboxModule = ViewModule.extend( {
 			slideshowClasses = classes.slideshow,
 			$container = $( '<div>', { 'class': slideshowClasses.container } ),
 			$slidesWrapper = $( '<div>', { 'class': slideshowClasses.slidesWrapper } ),
-			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
-			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
+			$prevButton = $( '<div>', { 'class': slideshowClasses.prevButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.prevButtonIcon } ) ),
+			$nextButton = $( '<div>', { 'class': slideshowClasses.nextButton + ' ' + classes.preventClose } ).html( $( '<i>', { 'class': slideshowClasses.nextButtonIcon } ) );
 
 		options.slides.forEach( function( slide ) {
 			var slideClass =  slideshowClasses.slide + ' ' + classes.item;
@@ -1396,7 +1556,7 @@ LightboxModule = ViewModule.extend( {
 
 			var $slide = $( '<div>', { 'class': slideClass } ),
 				$zoomContainer = $( '<div>', { 'class': 'swiper-zoom-container' } ),
-				$slideImage = $( '<img>', { 'class': classes.image } ).attr( 'src', slide.image );
+				$slideImage = $( '<img>', { 'class': classes.image + ' ' + classes.preventClose } ).attr( 'src', slide.image );
 
 			$slide.append( $zoomContainer );
 
@@ -1435,7 +1595,8 @@ LightboxModule = ViewModule.extend( {
 				grabCursor: true,
 				onSlideChangeEnd: self.onSlideChange,
 				runCallbacksOnInit: false,
-				loop: true
+				loop: true,
+				keyboardControl: true
 			};
 
 			if ( options.swiper ) {
@@ -1546,6 +1707,10 @@ LightboxModule = ViewModule.extend( {
 
 		event.preventDefault();
 
+		if ( qazanaFrontend.isEditMode() && ! qazanaFrontend.getGeneralSettings( 'qazana_enable_lightbox_in_editor' ) ) {
+			return;
+		}
+
 		var lightboxData = {};
 
 		if ( element.dataset.qazanaLightbox ) {
@@ -1631,8 +1796,7 @@ LightboxModule = ViewModule.extend( {
 
 	onInit: function() {
 		ViewModule.prototype.onInit.apply( this, arguments );
-
-		if ( qazanaFrontend.isEditMode() ) {
+		if ( qazanaFrontend.isEditMode() && typeof qazana.settings !== 'undefined' ) {
 			qazana.settings.general.model.on( 'change', this.onGeneralSettingsChange );
 		}
 	},

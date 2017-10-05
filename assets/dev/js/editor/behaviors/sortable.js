@@ -105,7 +105,6 @@ SortableBehavior = Marionette.Behavior.extend( {
 			ui.placeholder.height( itemHeight );
 		}
 
-
 		qazana.channels.data
 			.reply( 'dragging:model', model )
 			.reply( 'dragging:parent:view', this.view )

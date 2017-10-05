@@ -34,7 +34,6 @@ class Widget_Video extends Widget_Base {
 				'options' => [
 					'youtube' => __( 'YouTube', 'qazana' ),
 					'vimeo' => __( 'Vimeo', 'qazana' ),
-					//'hosted' => __( 'HTML5 Video', 'qazana' ),
 				],
 			]
 		);
@@ -161,6 +160,17 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'yt_mute',
+			[
+				'label' => __( 'Mute', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'condition' => [
+					'video_type' => 'youtube',
+				],
+			]
+		);
+
 		// Vimeo
 		$this->add_control(
 			'vimeo_autoplay',
@@ -242,72 +252,6 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
-		// Self Hosted
-		//$this->add_control(
-		//	'hosted_width',
-		//	[
-		//		'label' => __( 'Width', 'qazana' ),
-		//		'type' => Controls_Manager::NUMBER,
-		//		'default' => '640',
-		//		'condition' => [
-		//			'video_type' => 'hosted',
-		//		],
-		//	]
-		//);
-		//
-		//$this->add_control(
-		//	'hosted_height',
-		//	[
-		//		'label' => __( 'Height', 'qazana' ),
-		//		'type' => Controls_Manager::NUMBER,
-		//		'default' => '360',
-		//		'condition' => [
-		//			'video_type' => 'hosted',
-		//		],
-		//	]
-		//);
-		//
-		//$this->add_control(
-		//	'hosted_autoplay',
-		//	[
-		//		'label' => __( 'Autoplay', 'qazana' ),
-		//		'type' => Controls_Manager::SELECT,
-		//		'options' => [
-		//			'no' => __( 'No', 'qazana' ),
-		//			'yes' => __( 'Yes', 'qazana' ),
-		//		],
-		//		'default' => 'no',
-		//		'condition' => [
-		//			'video_type' => 'hosted',
-		//		],
-		//	]
-		//);
-		//
-		//$this->add_control(
-		//	'hosted_loop',
-		//	[
-		//		'label' => __( 'Loop', 'qazana' ),
-		//		'type' => Controls_Manager::SELECT,
-		//		'options' => [
-		//			'no' => __( 'No', 'qazana' ),
-		//			'yes' => __( 'Yes', 'qazana' ),
-		//		],
-		//		'default' => 'no',
-		//		'condition' => [
-		//			'video_type' => 'hosted',
-		//		],
-		//	]
-		//);
-
-		$this->add_control(
-			'view',
-			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::HIDDEN,
-				'default' => 'youtube',
-			]
-		);
-
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -345,12 +289,9 @@ class Widget_Video extends Widget_Base {
 			'show_play_icon',
 			[
 				'label' => __( 'Play Icon', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'yes',
-				'options' => [
-					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
-				],
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
 				'condition' => [
 					'show_image_overlay' => 'yes',
 					'image_overlay[url]!' => '',
@@ -603,52 +544,64 @@ class Widget_Video extends Widget_Base {
 		$settings = $this->get_settings();
 
 		if ( 'hosted' !== $settings['video_type'] ) {
-			add_filter( 'oembed_result', [ $this, 'filter_oembed_result' ], 50, 3 );
 
 			$video_link = 'youtube' === $settings['video_type'] ? $settings['link'] : $settings['vimeo_link'];
 
 			if ( empty( $video_link ) )
 				return;
 
-			$video_html = wp_oembed_get( $video_link, wp_embed_defaults() );
+			$embed_params = $this->get_embed_params();
 
-			remove_filter( 'oembed_result', [ $this, 'filter_oembed_result' ], 50 );
+			$video_html = Embed::get_embed_html( $video_link, $embed_params );
+
 		} else {
+
 			$video_html = wp_video_shortcode( $this->get_hosted_params() );
 		}
 
-		if ( $video_html ) : ?>
-			<div class="qazana-video-wrapper">
-				<?php
-				echo $video_html;
+		if ( empty( $video_html ) ) {
+			echo esc_url( $video_link );
+			return;
+		} 
+		
+		?><div class="qazana-video-wrapper"><?php 
+				
+			echo $video_html;
 
-				if ( $this->has_image_overlay() ) : ?>
-					<div class="qazana-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">
-						<?php if ( 'yes' === $settings['show_play_icon'] ) : ?>
-							<div class="qazana-custom-embed-play">
-								<?php echo $this->get_render_icon(); ?>
-							</div>
-						<?php endif; ?>
-						<div class="qazana-image-background-overlay"></div>
-					</div>
-				<?php endif; ?>
-			</div>
-		<?php else :
-			echo $settings['link'];
-		endif;
+			if ( $this->has_image_overlay() ) : ?>
+				<div class="qazana-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">
+					<?php if ( $settings['show_play_icon'] ) : ?>
+						<div class="qazana-custom-embed-play">
+							<?php echo $this->get_render_icon(); ?>
+						</div>
+					<?php endif; ?>
+					<div class="qazana-image-background-overlay"></div>
+				</div>
+			<?php endif; 
+				
+		?></div><?php
+
 	}
 
-	public function filter_oembed_result( $html ) {
+	/**
+	 * Retrieve video widget embed parameters.
+	 *
+	 * @access public
+	 *
+	 * @return array Video embed parameters.
+	 */
+	public function get_embed_params() {
 		$settings = $this->get_settings();
 
 		$params = [];
 
 		if ( 'youtube' === $settings['video_type'] ) {
-			$youtube_options = [ 'autoplay', 'rel', 'controls', 'showinfo' ];
+			$youtube_options = [ 'autoplay', 'rel', 'controls', 'showinfo', 'mute' ];
 
 			foreach ( $youtube_options as $option ) {
-				if ( 'autoplay' === $option && $this->has_image_overlay() )
+				if ( 'autoplay' === $option && $this->has_image_overlay() ) {
 					continue;
+				}
 
 				$value = ( 'yes' === $settings[ 'yt_' . $option ] ) ? '1' : '0';
 				$params[ $option ] = $value;
@@ -661,8 +614,9 @@ class Widget_Video extends Widget_Base {
 			$vimeo_options = [ 'autoplay', 'loop', 'title', 'portrait', 'byline' ];
 
 			foreach ( $vimeo_options as $option ) {
-				if ( 'autoplay' === $option && $this->has_image_overlay() )
+				if ( 'autoplay' === $option && $this->has_image_overlay() ) {
 					continue;
+				}
 
 				$value = ( 'yes' === $settings[ 'vimeo_' . $option ] ) ? '1' : '0';
 				$params[ $option ] = $value;
@@ -671,16 +625,9 @@ class Widget_Video extends Widget_Base {
 			$params['color'] = str_replace( '#', '', $settings['vimeo_color'] );
 		}
 
-		if ( ! empty( $params ) ) {
-			preg_match( '/<iframe.*src=\"(.*)\".*><\/iframe>/isU', $html, $matches );
-			$url = esc_url( add_query_arg( $params, $matches[1] ) );
-
-			$html = str_replace( $matches[1], $url, $html );
-		}
-
-		return $html;
+		return $params;
 	}
-
+	
 	protected function get_hosted_params() {
 		$settings = $this->get_settings();
 

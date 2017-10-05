@@ -113,15 +113,6 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'view',
-			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::HIDDEN,
-				'default' => 'traditional',
-			]
-		);
-
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -185,6 +176,11 @@ class Widget_Image extends Widget_Base {
 			Group_Control_Hover_Animations::get_type(),
 			[
 				'name' => 'hover_animation',
+				'fields_options' => [
+					'type' => [
+						'default' => 'grow',
+					],
+				],
 			]
 		);
 
