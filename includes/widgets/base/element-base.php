@@ -283,7 +283,7 @@ abstract class Element_Base extends Controls_Stack {
 		return $this->_is_type_instance;
 	}
 
-	public function _add_render_attributes() {
+	protected function _add_render_attributes() {
 		$id = $this->get_id();
 
 		$this->add_render_attribute( '_wrapper', 'data-id', $id );

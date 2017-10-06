@@ -17,6 +17,8 @@ ElementsHandler = function( $ ) {
 		'tabs.default': require( 'qazana-frontend/handlers/tabs' ),
 		'toggle.default': require( 'qazana-frontend/handlers/toggle' ),
 		'video.default': require( 'qazana-frontend/handlers/video' ),
+		'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
+		'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
 		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' )
 	};
@@ -95,7 +97,7 @@ ElementsHandler = function( $ ) {
 
 module.exports = ElementsHandler;
 
-},{"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/progress":9,"qazana-frontend/handlers/section":10,"qazana-frontend/handlers/tabs":11,"qazana-frontend/handlers/text-editor":12,"qazana-frontend/handlers/toggle":13,"qazana-frontend/handlers/video":14,"qazana-frontend/handlers/widget":15}],2:[function(require,module,exports){
+},{"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/piechart":9,"qazana-frontend/handlers/progress":10,"qazana-frontend/handlers/section":11,"qazana-frontend/handlers/tabs":12,"qazana-frontend/handlers/text-editor":13,"qazana-frontend/handlers/toggle":14,"qazana-frontend/handlers/tooltip":15,"qazana-frontend/handlers/video":16,"qazana-frontend/handlers/widget":17}],2:[function(require,module,exports){
 /* global qazanaFrontendConfig */
 ( function( $ ) {
 	var elements = {},
@@ -105,7 +107,8 @@ module.exports = ElementsHandler;
 		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
-
+		CarouselModule = require( 'qazana-frontend/utils/carousel' );
+		
 	var QazanaFrontend = function() {
 		var self = this,
 			dialogsManager;
@@ -139,6 +142,7 @@ module.exports = ElementsHandler;
 				youtube: new YouTubeModule(),
 				anchors: new AnchorsModule(),
 				//lightbox: new LightboxModule()
+				//carousel: new CarouselModule()
 			};
 
 			self.modules = {
@@ -297,7 +301,7 @@ if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
 
-},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":16,"qazana-frontend/utils/anchors":17,"qazana-frontend/utils/lightbox":18,"qazana-frontend/utils/youtube":19,"qazana-utils/hooks":20,"qazana-utils/hot-keys":21}],3:[function(require,module,exports){
+},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":18,"qazana-frontend/utils/anchors":19,"qazana-frontend/utils/carousel":20,"qazana-frontend/utils/lightbox":21,"qazana-frontend/utils/youtube":22,"qazana-utils/hooks":23,"qazana-utils/hot-keys":24}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
@@ -438,7 +442,7 @@ HandlerModule = ViewModule.extend( {
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":23}],4:[function(require,module,exports){
+},{"../utils/view-module":26}],4:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -793,6 +797,47 @@ module.exports = function( $scope ) {
 
 },{"qazana-frontend/handler-module":3}],9:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
+
+    var $chart = $scope.find('.qazana-piechart');
+    var $piechart_progress = $chart.find('.qazana-piechart-number-count');
+
+    var animation = {
+        duration: $chart.data('duration')
+    };
+
+    if ( $chart.closest('.qazana-element').hasClass('qazana-piechart-animation-type-none') ) {
+        animation = {
+            duration: 0
+        };
+    }
+
+    if ( false == animation ){
+        $piechart_progress.html($piechart_progress.data('value') );
+        $chart.addClass('animated');
+    }
+
+    qazanaFrontend.waypoint( $chart, function() {
+
+        if ( ! $chart.hasClass('animated') ) {
+
+            $chart.circleProgress({
+                    startAngle: -Math.PI / 4 * 2,
+                    emptyFill: $chart.data('emptyfill'),
+                    animation: animation
+            }).on('circle-animation-progress', function (event, progress) {
+                $piechart_progress.html( parseInt( ( $piechart_progress.data('value') ) * progress ) );
+            }).on('circle-animation-end', function (event) {
+                $chart.addClass('animated');
+            });
+
+        }
+
+    }, { offset: '90%' } );
+
+};
+
+},{}],10:[function(require,module,exports){
+module.exports = function( $scope, $ ) {
 	qazanaFrontend.waypoint( $scope.find( '.qazana-progress-bar' ), function() {
 		var $progressbar = $( this );
 
@@ -800,7 +845,7 @@ module.exports = function( $scope, $ ) {
 	}, { offset: '90%' } );
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var BackgroundVideo = require( 'qazana-frontend/handlers/background-video' );
 
 var HandlerModule = require( 'qazana-frontend/handler-module' );
@@ -981,7 +1026,7 @@ module.exports = function( $scope ) {
 
 };
 
-},{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],11:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],12:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
 		$tabsTitles = $scope.find( '.qazana-tab-title' ),
@@ -1016,7 +1061,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var HandlerModule = require( 'qazana-frontend/handler-module' ),
 	TextEditor;
 
@@ -1119,7 +1164,7 @@ module.exports = function( $scope ) {
 	new TextEditor( { $element: $scope } );
 };
 
-},{"qazana-frontend/handler-module":3}],13:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],14:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
@@ -1137,7 +1182,22 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+module.exports = function( $scope, $ ) {
+
+	if ( $scope.find( '.qazana-tooltip' ).hasClass('v--show') ) {
+		return;
+	}
+
+	$scope.mouseenter( function() {
+		$( this ).find( '.qazana-tooltip' ).addClass('v--show');
+	}).mouseleave( function() {
+		$( this ).find( '.qazana-tooltip' ).removeClass('v--show');
+	});
+
+};
+
+},{}],16:[function(require,module,exports){
 var HandlerModule = require( 'qazana-frontend/handler-module' ),
 VideoModule;
 
@@ -1221,7 +1281,7 @@ module.exports = function( $scope ) {
 	new VideoModule( { $element: $scope } );
 };
 
-},{"qazana-frontend/handler-module":3}],15:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],17:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -1236,7 +1296,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1303,7 +1363,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":23}],17:[function(require,module,exports){
+},{"../../utils/view-module":26}],19:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1372,7 +1432,156 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":23}],18:[function(require,module,exports){
+},{"../../utils/view-module":26}],20:[function(require,module,exports){
+var addNav = function($scope, $slick, settings) {
+    
+    $scope = $scope.closest('.qazana-widget-container');
+
+    if ( $scope.data( 'nav' ) ) {
+        return;
+    }
+
+    var $wrapper = $scope.find(".qazana-loop-wrapper");
+
+    // slick has already been initialized, so we know the dots are already in the DOM;
+    var $dots = $scope.find(".slick-dots");
+
+    if ( $dots.length <= 0 ) {
+        // slick has already been initialized, so we know the dots are already in the DOM;
+        $dots = $scope.append("<ul class='slick-dots' />");
+    }
+
+    if ( settings.arrows ) {
+
+        // wrap the $dots so we can put our arrows next to them;
+        $wrapper.parent().append("<div class=\"slick-navigation\"></div>");
+
+        $wrapper.parent().find('.slick-navigation')
+            .prepend("<a class=\"prev\"><i class=\"ricon ricon-slider-arrow-left\"></i></a>")
+            .append("<a class=\"next\"><i class=\"ricon ricon-slider-arrow-right\"></i></a>");
+
+        if ( $slick.length && settings.slidesToScroll ) {
+            // attach previous button events;
+            $dots.parent().find("a.prev").on("click", function() {
+                $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') - settings.slidesToScroll);
+            }).end()
+            // attach next button events;
+            .find("a.next").on("click", function() {
+                $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') + settings.slidesToScroll);
+            });
+        }
+    }
+
+    $scope.attr( 'data-nav', 'true' );
+};
+
+var Carousel = function( $carousel, settings ) {
+    
+    if ( $carousel.find("div.slick-slides-biggie").length < 1 || typeof settings === 'undefined' ) {
+        return;
+    }
+    
+    var elementSettings = {};
+    var slick_globals = window.slick_globals;
+    
+    settings.direction = settings.is_rtl ? 'rtl' : 'ltr';
+    settings.rtl = ( 'rtl' === settings.direction );
+    settings.dots = ( settings.navigation === 'dots' || settings.navigation === 'both' );
+    settings.arrows = ( settings.navigation === 'arrows' || settings.navigation === 'both' );
+     
+    var is_slideshow = '1' === parseFloat(settings.slidesToShow);
+
+    if ( ! is_slideshow ) {
+        settings.slidesToScroll = parseFloat(settings.slidesToScroll);
+    } else {
+        settings.fade = ( 'fade' === settings.effect );
+    }
+
+    if ( ! settings.slidesToScroll ) {
+        settings.slidesToScroll = 1;
+    }
+
+    settings.slidesToShow = parseFloat(settings.slidesToShow);
+
+    jQuery.each( settings, function( controlKey ) {
+
+        var value = settings[ controlKey ];
+
+        if ( value === 'yes' ) {
+            elementSettings[ controlKey ] = true;
+        } else {
+            elementSettings[ controlKey ] = value;
+        }
+
+    } );
+
+    var optionsBiggie = jQuery.extend( {}, slick_globals, elementSettings ),
+        // large slideshow;
+        $biggie = $carousel.find("div.slick-slides-biggie"),
+        // class to indicate the slideshow is disabled (on mouseover so the user can see the full photo);
+        disabledClass = "is-disabled",
+
+        // prev/next button click events - trigger a change the large slideshow;
+        goToPreviousSlide = function() {
+            var index = Number($biggie.slick('slickCurrentSlide'));
+            $biggie.slick('slickGoTo', (index - 1));
+
+        },
+        goToNextSlide = function() {
+            var index = Number($biggie.slick('slickCurrentSlide'));
+            $biggie.slick('slickGoTo', (index + 1));
+        };
+
+    // after slick is initialized (these wouldn't work properly if done before init);
+    $biggie.on('init', function() {
+        // add the navigation;
+        new addNav($biggie.parent(), $biggie, optionsBiggie);
+    });
+
+    if ( ! $biggie.hasClass('slick-initialized') ) {
+        // init the slideshows;
+        $biggie.slick(optionsBiggie);
+    } else {
+        $biggie.slick('refresh');
+    }
+
+    // attach prev/next button events now that the smalls arrows have been added;
+    $carousel
+        // attach previous button events;
+        .find("a.prev").on("click", goToPreviousSlide).end()
+        // attach next button events;
+        .find("a.next").on("click", goToNextSlide);
+
+    // if the device is NOT a touchscreen;
+    // then hide the controls when the user isn't interacting with them;
+    if (Modernizr.touch === false) {
+
+        // show/hide the elements that overlay $slideshow1 (social, prev, next);
+        $biggie.parent().on("mouseenter", function() {
+            $biggie.parent().removeClass(disabledClass);
+        }).on("mouseleave", function() {
+            $biggie.parent().addClass(disabledClass);
+        })
+        // on load, disable the slideshow (maybe);
+        .each(function() {
+            var disable = function() {
+
+                // make sure the user isn't hovering over the photo gallery;
+                if ($biggie.parent().is(":hover") === false) {
+                    $biggie.parent().addClass(disabledClass);
+                }
+            };
+
+            // before "disabling" the overlay elements, wait 2 seconds;
+            window.setTimeout(disable, 2000);
+        });
+    }
+
+};
+
+module.exports = Carousel;
+
+},{}],21:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' ),
 	LightboxModule;
 
@@ -1823,7 +2032,7 @@ LightboxModule = ViewModule.extend( {
 
 module.exports = LightboxModule;
 
-},{"../../utils/view-module":23}],19:[function(require,module,exports){
+},{"../../utils/view-module":26}],22:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1874,7 +2083,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":23}],20:[function(require,module,exports){
+},{"../../utils/view-module":26}],23:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2133,7 +2342,7 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var HotKeys = function() {
 	var hotKeysHandlers = this.hotKeysHandlers = {};
 
@@ -2185,7 +2394,7 @@ var HotKeys = function() {
 
 module.exports = new HotKeys();
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -2377,7 +2586,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -2403,5 +2612,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":22}]},{},[2])
+},{"qazana-utils/module":25}]},{},[2])
 //# sourceMappingURL=frontend.js.map

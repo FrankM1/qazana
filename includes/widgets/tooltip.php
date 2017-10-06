@@ -145,6 +145,15 @@ class Widget_Tooltip extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'typography',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}} .qazana-tooltip__content'
+			]
+		);
+
 		$this->add_control(
             'tooltip_icon_color',
             [

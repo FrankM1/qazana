@@ -18,7 +18,7 @@
   position: absolute;
   z-index: 100;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 13px;
   line-height: 1.5;
   color: #5b5e6d;
   text-align: left;
@@ -48,8 +48,8 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -12px;
-    border-width: 12px;
+    margin-left: -8px;
+    border-width: 8px;
     border-style: solid;
     border-color: #ffffff transparent transparent;
   }
@@ -72,7 +72,7 @@
     left: auto;
     margin-left: auto;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -8px;
     border-color: transparent #ffffff transparent transparent;
   }
   &.v--east:before {
@@ -157,7 +157,7 @@
     right: auto;
     margin-left: auto;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -8px;
     border-color: transparent transparent transparent #ffffff;
   }
   &.v--west:before {

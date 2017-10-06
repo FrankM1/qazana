@@ -2230,7 +2230,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   position: absolute;
   z-index: 100;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 13px;
   line-height: 1.5;
   color: #5b5e6d;
   text-align: left;
@@ -2258,8 +2258,8 @@ body.qazana-page .qazana-widget-menu-anchor {
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -12px;
-    border-width: 12px;
+    margin-left: -8px;
+    border-width: 8px;
     border-style: solid;
     border-color: #ffffff transparent transparent; }
   .qazana-tooltip__content.v--north-east {
@@ -2279,7 +2279,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     left: auto;
     margin-left: auto;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -8px;
     border-color: transparent #ffffff transparent transparent; }
   .qazana-tooltip__content.v--east:before {
     left: -50px;
@@ -2353,7 +2353,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     right: auto;
     margin-left: auto;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -8px;
     border-color: transparent transparent transparent #ffffff; }
   .qazana-tooltip__content.v--west:before {
     right: -50px;

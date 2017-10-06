@@ -151,7 +151,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image',
+				'selector' => '{{WRAPPER}} .qazana-image-carousel .slick-slide-image',
 				'separator' => 'before',
 			]
 		);
@@ -163,7 +163,7 @@ class Widget_Image_Carousel extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -176,8 +176,6 @@ class Widget_Image_Carousel extends Widget_Base {
 
 		if ( empty( $settings['carousel'] ) )
 			return;
-
-		$this->add_script_dependencies(['jquery-slick']);
 
 		$slides = [];
 
@@ -245,32 +243,20 @@ class Widget_Image_Carousel extends Widget_Base {
 
 				$count++;
 			}
-
 		}
 
+		$is_rtl = ( 'rtl' ===  $this->get_settings('direction') );
 		$direction = $is_rtl ? 'rtl' : 'ltr';
-		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
-		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
 
-		$carousel_classes = [ 'qazana-image-carousel' ];
+		$carousel_classes = [ 'qazana-grid-wrapper', 'slick-slides-biggie', 'slick-slider' ];
 
-		if ( $show_arrows ) {
-			$carousel_classes[] = 'slick-arrows-' . $settings['arrows_position'];
-		}
-
-		if ( $show_dots ) {
-			$carousel_classes[] = 'slick-dots-' . $settings['dots_position'];
-		}
-
-		if ( 'yes' === $settings['image_stretch'] ) {
-			$carousel_classes[] = 'slick-image-stretch';
-		}
-
-		$carousel_classes[] = $this->get_settings('carousel_class');
-
-		?>
-		<div class="qazana-image-carousel-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
-			<div class="<?php echo implode( ' ', $carousel_classes ); ?>" data-slider_options='<?php echo esc_attr( wp_json_encode( $slick_options ) ); ?>'>
+		$this->add_render_attribute( 'slides', [
+			'class' => $carousel_classes
+		] );
+		
+		?><div class="qazana-slides-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
+			<div <?php echo $this->get_render_attribute_string( 'slides' ); ?>>
+				
 				<div class="slick-slideshow-large-container-biggie">
 					<div class="slick-slides slick-slides-biggie">
 						<?php echo implode( '', $slides ); ?>
@@ -286,8 +272,8 @@ class Widget_Image_Carousel extends Widget_Base {
 				<?php } ?>
 
 			</div>
-		</div>
-	<?php
+		</div><?php
+
 	}
 
 	protected function _content_template() {}

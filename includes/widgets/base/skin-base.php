@@ -106,7 +106,11 @@ abstract class Skin_Base {
 		$this->parent->add_group_control( $group_name, $args );
 	}
 
-	public function _add_render_attributes() {}
+	public function add_render_attributes () {
+		$this->_add_render_attributes();
+	}
+
+	protected function _add_render_attributes () { }
 
 	public function add_render_attribute( $element, $key = null, $value = null, $overwrite = false ) {
 		return $this->parent->add_render_attribute( $element, $key, $value, $overwrite );

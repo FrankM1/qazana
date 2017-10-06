@@ -7,7 +7,8 @@
 		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
-
+		CarouselModule = require( 'qazana-frontend/utils/carousel' );
+		
 	var QazanaFrontend = function() {
 		var self = this,
 			dialogsManager;
@@ -41,6 +42,7 @@
 				youtube: new YouTubeModule(),
 				anchors: new AnchorsModule(),
 				//lightbox: new LightboxModule()
+				//carousel: new CarouselModule()
 			};
 
 			self.modules = {

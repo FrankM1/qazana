@@ -210,7 +210,7 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-	public function _add_render_attributes() {
+	protected function _add_render_attributes() {
 		parent::_add_render_attributes();
 
 		$this->add_render_attribute( '_wrapper', 'class', [
@@ -244,7 +244,7 @@ abstract class Widget_Base extends Element_Base {
 		$skin = $this->get_current_skin();
 		if ( $skin ) {
 			$skin->set_parent( $this );
-			$skin->_add_render_attributes();
+			$skin->add_render_attributes();
 		}
 
 	}

@@ -248,7 +248,7 @@ class Plugin {
 
         $this->__set( 'widget_locations', array(
             'includes/widgets',
-            'qazana/extensions/overrides',
+            'qazana/overrides',
         ));
 
         $this->__set( 'extensions_locations', array(            
@@ -380,6 +380,7 @@ class Plugin {
         require_once( $this->includes_dir . 'widgets/base/element-base.php' );
         require_once( $this->includes_dir . 'widgets/base/widget-base.php' );
         require_once( $this->includes_dir . 'widgets/shared/carousel.php' );
+        require_once( $this->includes_dir . 'widgets/shared/position.php' );
         
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';
