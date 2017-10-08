@@ -46,6 +46,10 @@ class Global_CSS_File extends CSS_File {
 	protected function get_file_name() {
 		return 'global';
 	}
+	
+	protected function get_enqueue_dependencies() {
+		return [ 'qazana-frontend' ];
+	}
 
 	protected function get_inline_dependency() {
 		return 'qazana-frontend';
