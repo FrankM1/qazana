@@ -20,8 +20,7 @@ class PieChart extends Base {
 	}
 
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-		add_action( 'qazana/editor/scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'qazana/frontend/after_register_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
    	public function enqueue_scripts() {
@@ -36,8 +35,8 @@ class PieChart extends Base {
             true
         );
 
-	   if ( qazana()->editor->is_edit_mode() ) {
-		   wp_enqueue_script( 'jquery-circle-progress' );
+		if ( qazana()->preview->is_preview_mode() ) {
+			wp_enqueue_script( 'jquery-circle-progress' );
 	   }
    }
 

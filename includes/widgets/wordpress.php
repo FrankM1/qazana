@@ -107,7 +107,7 @@ class Widget_WordPress extends Widget_Base {
 		$this->get_widget_instance()->widget( $empty_widget_args, $this->get_settings( 'wp' ) );
 	}
 
-	protected function content_template() {}
+	protected function _content_template() {}
 
 	public function render_plain_content( $instance = [] ) {}
 }

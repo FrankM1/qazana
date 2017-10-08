@@ -17,7 +17,7 @@ class Hueman_Theme extends Base {
 	}
 
     public function __construct() {
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+        add_action( 'qazana/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
     }
 
     function enqueue_styles() {

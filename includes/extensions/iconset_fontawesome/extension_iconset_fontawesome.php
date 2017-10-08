@@ -20,7 +20,7 @@ class Iconset_FontAwesome extends Base {
     }
 
     public function _add_actions() {
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+        add_action( 'qazana/frontend/before_enqueue_scripts', [ $this, 'enqueue_styles' ] );
         add_action( 'qazana/editor/before_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 	}
 

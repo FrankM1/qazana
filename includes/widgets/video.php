@@ -87,12 +87,11 @@ class Widget_Video extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'frontend_available' => true,
 				'options' => [
-					'169' => '16:9',
-					'43' => '4:3',
-					'32' => '3:2',
+					'16:9' => '16:9',
+					'4:3' => '4:3',
+					'3:2' => '3:2',
 				],
-				'default' => '169',
-				'prefix_class' => 'qazana-aspect-ratio-',
+				'default' => '16:9',
 			]
 		);
 
@@ -538,6 +537,26 @@ class Widget_Video extends Widget_Base {
 		$output .= '</'. $icon_tag .'>';
 
 		return $output;
+	}
+
+	public function before_render() {
+		
+		$settings = $this->get_settings();
+		
+		if ( empty( $settings['aspect_ratio'] ) ) {
+			$settings['aspect_ratio'] = '16:9';
+		}
+
+		$this->add_render_attribute( '_wrapper', 'data-video-aspect-ratio', $settings['aspect_ratio'] );
+		$this->add_render_attribute( '_wrapper', 'class', 'qazana-aspect-ratio-' . str_replace( ':', '', $settings['aspect_ratio'] ) );
+		
+		$this->add_render_attribute( '_wrapper', 'class', 'qazana-button-align-' . $this->get_responsive_settings('button_align') );
+		if ( ! empty( $settings['text'] ) ) {
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-button-has-text' );
+		} 
+		
+		parent::before_render();
+
 	}
 
 	public function render() {

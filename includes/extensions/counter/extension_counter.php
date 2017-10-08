@@ -20,9 +20,8 @@ class Counter extends Base {
 	}
 
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-		add_action( 'qazana/editor/scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'qazana/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
+		add_action( 'qazana/frontend/after_register_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
 	public function enqueue_styles() {
@@ -53,8 +52,8 @@ class Counter extends Base {
             true
         );
 
-	   if ( qazana()->editor->is_edit_mode() ) {
-		   wp_enqueue_script( 'odometer' );
+		if ( qazana()->preview->is_preview_mode() ) {
+			wp_enqueue_script( 'odometer' );
 	   }
    }
 
