@@ -13,7 +13,7 @@ abstract class Widget_Base extends Element_Base {
 		return 'widget';
 	}
 
-	protected static function get_default_edit_tools() {
+	public static function get_default_edit_tools() {
 		$widget_label = __( 'Widget', 'qazana' );
 
 		return [
@@ -168,7 +168,7 @@ abstract class Widget_Base extends Element_Base {
 		<?php
 	}
 
-	protected function parse_text_editor( $content ) {
+	public function parse_text_editor( $content ) {
 		$content = apply_filters( 'widget_text', $content, $this->get_settings() );
 
 		$content = shortcode_unautop( $content );
@@ -284,7 +284,7 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-	protected function get_default_data() {
+	public function get_default_data() {
 		$data = parent::get_default_data();
 
 		$data['widgetType'] = '';

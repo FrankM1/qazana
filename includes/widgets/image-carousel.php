@@ -171,7 +171,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		if ( empty( $settings['carousel'] ) )

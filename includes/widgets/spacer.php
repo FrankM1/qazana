@@ -52,7 +52,7 @@ class Widget_Spacer extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		?>
 		<div class="qazana-spacer">
 			<div class="qazana-spacer-inner"></div>

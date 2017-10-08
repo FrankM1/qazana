@@ -155,7 +155,7 @@ class Widget_Divider extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		?>
 		<div class="qazana-divider">
 			<span class="qazana-divider-separator"></span>

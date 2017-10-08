@@ -242,7 +242,7 @@ class Widget_Tabs extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
 		<div class="qazana-tabs" role="tablist">

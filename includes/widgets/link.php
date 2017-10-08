@@ -277,7 +277,7 @@ class Widget_Link extends Widget_Base {
 
 	}
 
-	protected function render() {
+	public function render() {
 
 		$settings = $this->get_settings();
 

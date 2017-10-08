@@ -46,7 +46,7 @@ class Widget_Shortcode extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$shortcode = $this->get_settings( 'shortcode' );
 
 		$shortcode = do_shortcode( shortcode_unautop( $shortcode ) );

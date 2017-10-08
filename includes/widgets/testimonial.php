@@ -562,7 +562,7 @@ class Widget_Testimonial extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 		$testimonials = $this->get_settings( 'testimonials' );
 

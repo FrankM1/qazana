@@ -79,7 +79,7 @@ class Template extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 
 		$template_id = $this->get_settings( 'template_id' );
 

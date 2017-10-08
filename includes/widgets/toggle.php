@@ -213,7 +213,7 @@ class Widget_Toggle extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
 		<div class="qazana-toggle">

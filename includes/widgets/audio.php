@@ -161,7 +161,7 @@ class Widget_Audio extends Widget_Base {
 
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		if ( empty( $settings['link'] ) ) {

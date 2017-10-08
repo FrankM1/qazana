@@ -109,6 +109,7 @@ abstract class Element_Base extends Controls_Stack {
 	public function is_reload_preview_required() {
 		return false;
 	}
+	
 	public function print_template() {
 		ob_start();
 
@@ -209,6 +210,7 @@ abstract class Element_Base extends Controls_Stack {
 	public function set_render_attribute( $element, $key = null, $value = null ) {
 		return $this->add_render_attribute( $element, $key, $value, true );
 	}
+
 	public function unset_render_attribute( $element, $key = null, $value = null ) {
 		unset( $this->_render_attributes[ $element ][ $key ] );
 	}
@@ -329,9 +331,9 @@ abstract class Element_Base extends Controls_Stack {
 		}
 	}
 
-	protected function render() {}
+	public function render() {}
 
-	protected function get_default_data() {
+	public function get_default_data() {
 		$data = parent::get_default_data();
 
 		return array_merge(

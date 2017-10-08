@@ -56,7 +56,7 @@ class Widget_Sidebar extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$sidebar = $this->get_settings( 'sidebar' );
 
 		if ( empty( $sidebar ) ) {

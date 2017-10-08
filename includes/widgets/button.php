@@ -329,7 +329,7 @@ class Widget_Button extends Widget_Base {
         $this->end_controls_section();
     }
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		$this->add_render_attribute( 'wrapper', 'class', 'qazana-button-wrapper' );

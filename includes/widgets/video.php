@@ -540,7 +540,7 @@ class Widget_Video extends Widget_Base {
 		return $output;
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		if ( 'hosted' !== $settings['video_type'] ) {

@@ -2389,6 +2389,12 @@ body.qazana-page .qazana-widget-menu-anchor {
   .qazana-tooltip__content {
     font-size: -webkit-calc(1rem + (-2 * (100vw - 400px)/ 624));
     font-size: calc(1rem + (-2 * (100vw - 400px)/ 624)); } }
+.qazana-widget-video.qazana-aspect-ratio-169 .qazana-video-wrapper {
+  padding-bottom: 56.25%; }
+.qazana-widget-video.qazana-aspect-ratio-43 .qazana-video-wrapper {
+  padding-bottom: 75%; }
+.qazana-widget-video.qazana-aspect-ratio-32 .qazana-video-wrapper {
+  padding-bottom: 66.6666%; }
 .qazana-widget-video .qazana-custom-embed-image-overlay {
   position: absolute;
   top: 0;

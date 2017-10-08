@@ -379,7 +379,7 @@ class Widget_Accordion extends Widget_Base {
 		return $output;
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 		?>
 		<div class="qazana-accordion" role="tablist">

@@ -51,7 +51,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$anchor = $this->get_settings( 'anchor' );
 
 		if ( ! empty( $anchor ) ) {

@@ -350,7 +350,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );

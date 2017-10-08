@@ -193,7 +193,7 @@ class Widget_Alert extends Widget_Base {
 
 	}
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		if ( empty( $settings['alert_title'] ) ) {

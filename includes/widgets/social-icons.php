@@ -364,7 +364,7 @@ class Widget_Social_Icons extends Widget_Base {
 
 	}
 
-	protected function render() {
+	public function render() {
 
 		$class_animation = '';
 		if ( ! empty( $settings['hover_animation_type'] ) ) {

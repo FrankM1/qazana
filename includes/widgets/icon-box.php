@@ -766,7 +766,7 @@ class Widget_Icon_Box extends Widget_Base {
 
     }
 
-	protected function render() {
+	public function render() {
 		$settings = $this->get_settings();
 
 		$icon_tag = 'span';

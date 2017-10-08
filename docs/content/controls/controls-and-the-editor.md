@@ -211,7 +211,7 @@ It is possible to get the value of the control inside the element render method,
 Let's examine how to do this using the 'title' control we created earlier:
 
 ```php
-protected function render() {
+public function render() {
   $settings = $this->get_settings();
 
   $title = $settings['title'];

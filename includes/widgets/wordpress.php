@@ -95,7 +95,7 @@ class Widget_WordPress extends Widget_Base {
 		);
 	}
 
-	protected function render() {
+	public function render() {
 		$empty_widget_args = [
 			'widget_id' => $this->get_name(),
 			'before_widget' => '',

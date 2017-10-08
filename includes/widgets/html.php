@@ -43,7 +43,7 @@ class Widget_Html extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render() {
+	public function render() {
 		 echo $this->get_settings( 'html' );
 	}
 
