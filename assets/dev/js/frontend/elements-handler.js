@@ -19,7 +19,8 @@ ElementsHandler = function( $ ) {
 		'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
 		'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
-		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' )
+		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' ),
+		'spacer.default': require( 'qazana-frontend/handlers/spacer' )
 	};
 
 	var addGlobalHandlers = function() {

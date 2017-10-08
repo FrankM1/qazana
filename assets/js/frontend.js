@@ -20,7 +20,8 @@ ElementsHandler = function( $ ) {
 		'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
 		'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
-		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' )
+		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' ),
+		'spacer.default': require( 'qazana-frontend/handlers/spacer' )
 	};
 
 	var addGlobalHandlers = function() {
@@ -97,7 +98,7 @@ ElementsHandler = function( $ ) {
 
 module.exports = ElementsHandler;
 
-},{"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/piechart":9,"qazana-frontend/handlers/progress":10,"qazana-frontend/handlers/section":11,"qazana-frontend/handlers/tabs":12,"qazana-frontend/handlers/text-editor":13,"qazana-frontend/handlers/toggle":14,"qazana-frontend/handlers/tooltip":15,"qazana-frontend/handlers/video":16,"qazana-frontend/handlers/widget":17}],2:[function(require,module,exports){
+},{"qazana-frontend/handlers/accordion":4,"qazana-frontend/handlers/alert":5,"qazana-frontend/handlers/counter":7,"qazana-frontend/handlers/global":8,"qazana-frontend/handlers/piechart":9,"qazana-frontend/handlers/progress":10,"qazana-frontend/handlers/section":11,"qazana-frontend/handlers/spacer":12,"qazana-frontend/handlers/tabs":13,"qazana-frontend/handlers/text-editor":14,"qazana-frontend/handlers/toggle":15,"qazana-frontend/handlers/tooltip":16,"qazana-frontend/handlers/video":17,"qazana-frontend/handlers/widget":18}],2:[function(require,module,exports){
 /* global qazanaFrontendConfig */
 ( function( $ ) {
 	var elements = {},
@@ -301,7 +302,7 @@ if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
 
-},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":18,"qazana-frontend/utils/anchors":19,"qazana-frontend/utils/carousel":20,"qazana-frontend/utils/lightbox":21,"qazana-frontend/utils/youtube":22,"qazana-utils/hooks":23,"qazana-utils/hot-keys":24}],3:[function(require,module,exports){
+},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":19,"qazana-frontend/utils/anchors":20,"qazana-frontend/utils/carousel":21,"qazana-frontend/utils/lightbox":22,"qazana-frontend/utils/youtube":23,"qazana-utils/hooks":24,"qazana-utils/hot-keys":25}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
@@ -353,7 +354,7 @@ HandlerModule = ViewModule.extend( {
 					return;
 				}
 
-				self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
+				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
 			}, qazana.channels.editor );
 		}
 
@@ -442,7 +443,7 @@ HandlerModule = ViewModule.extend( {
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":26}],4:[function(require,module,exports){
+},{"../utils/view-module":27}],4:[function(require,module,exports){
 var activateSection = function( sectionIndex, $accordionTitles ) {
 	var $activeTitle = $accordionTitles.filter( '.active' ),
 		$requestedTitle = $accordionTitles.filter( '[data-section="' + sectionIndex + '"]' ),
@@ -1027,6 +1028,38 @@ module.exports = function( $scope ) {
 };
 
 },{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],12:[function(require,module,exports){
+var HandlerModule = require( 'qazana-frontend/handler-module' ),
+SpaceModule;
+
+SpaceModule = HandlerModule.extend( {
+
+	onElementChange: function( propertyName ) {
+        if ( ! qazanaFrontend.isEditMode() ) {
+			return;
+		}
+		if ( 'space' === propertyName ) {
+            var space = this.getElementSettings( 'space' );
+			this.$element.find('.qazana-space-resize-value').html('Spacing: ' + space.size + space.unit);
+			return;
+		}
+    },
+
+    onInit: function() {
+        if ( ! qazanaFrontend.isEditMode() ) {
+			return;
+		}
+        var space = this.getElementSettings('space');
+        var text = '<span class="qazana-space-resize-value">Spacing: ' + space.size + space.unit + '</span>';
+        this.$element.find('.qazana-spacer-inner').html(text);
+	}
+    
+});
+
+module.exports = function( $scope ) {
+	new SpaceModule( { $element: $scope } );
+};
+
+},{"qazana-frontend/handler-module":3}],13:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var defaultActiveTab = $scope.find( '.qazana-tabs' ).data( 'active-tab' ),
 		$tabsTitles = $scope.find( '.qazana-tab-title' ),
@@ -1061,7 +1094,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var HandlerModule = require( 'qazana-frontend/handler-module' ),
 	TextEditor;
 
@@ -1164,7 +1197,7 @@ module.exports = function( $scope ) {
 	new TextEditor( { $element: $scope } );
 };
 
-},{"qazana-frontend/handler-module":3}],14:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],15:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	var $toggleTitles = $scope.find( '.qazana-toggle-title' );
 
@@ -1182,7 +1215,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 
 	if ( $scope.find( '.qazana-tooltip' ).hasClass('v--show') ) {
@@ -1197,7 +1230,7 @@ module.exports = function( $scope, $ ) {
 
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var HandlerModule = require( 'qazana-frontend/handler-module' ),
 VideoModule;
 
@@ -1281,7 +1314,7 @@ module.exports = function( $scope ) {
 	new VideoModule( { $element: $scope } );
 };
 
-},{"qazana-frontend/handler-module":3}],17:[function(require,module,exports){
+},{"qazana-frontend/handler-module":3}],18:[function(require,module,exports){
 module.exports = function( $scope, $ ) {
 	if ( ! qazanaFrontend.isEditMode() ) {
 		return;
@@ -1296,7 +1329,7 @@ module.exports = function( $scope, $ ) {
 	} );
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1363,7 +1396,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":26}],19:[function(require,module,exports){
+},{"../../utils/view-module":27}],20:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1432,7 +1465,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":26}],20:[function(require,module,exports){
+},{"../../utils/view-module":27}],21:[function(require,module,exports){
 var addNav = function($scope, $slick, settings) {
     
     $scope = $scope.closest('.qazana-widget-container');
@@ -1581,7 +1614,7 @@ var Carousel = function( $carousel, settings ) {
 
 module.exports = Carousel;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' ),
 	LightboxModule;
 
@@ -2032,7 +2065,7 @@ LightboxModule = ViewModule.extend( {
 
 module.exports = LightboxModule;
 
-},{"../../utils/view-module":26}],22:[function(require,module,exports){
+},{"../../utils/view-module":27}],23:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -2083,7 +2116,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":26}],23:[function(require,module,exports){
+},{"../../utils/view-module":27}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2342,7 +2375,7 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var HotKeys = function() {
 	var hotKeysHandlers = this.hotKeysHandlers = {};
 
@@ -2394,7 +2427,7 @@ var HotKeys = function() {
 
 module.exports = new HotKeys();
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -2586,7 +2619,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -2612,5 +2645,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":25}]},{},[2])
+},{"qazana-utils/module":26}]},{},[2])
 //# sourceMappingURL=frontend.js.map

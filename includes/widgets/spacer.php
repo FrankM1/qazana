@@ -36,6 +36,7 @@ class Widget_Spacer extends Widget_Base {
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 50,
+					'unit' => 'px',
 				],
 				'range' => [
 					'px' => [
@@ -43,9 +44,11 @@ class Widget_Spacer extends Widget_Base {
 						'max' => 600,
 					],
 				],
+				'size_units' => [ 'px', 'em', 'rem' ],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-spacer-inner' => 'height: {{SIZE}}{{UNIT}};',
 				],
+				'frontend_available' => true
 			]
 		);
 

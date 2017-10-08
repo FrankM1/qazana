@@ -49,7 +49,7 @@ HandlerModule = ViewModule.extend( {
 					return;
 				}
 
-				self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
+				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
 			}, qazana.channels.editor );
 		}
 

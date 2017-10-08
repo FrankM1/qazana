@@ -538,27 +538,7 @@ class Widget_Video extends Widget_Base {
 
 		return $output;
 	}
-
-	public function before_render() {
-		
-		$settings = $this->get_settings();
-		
-		if ( empty( $settings['aspect_ratio'] ) ) {
-			$settings['aspect_ratio'] = '16:9';
-		}
-
-		$this->add_render_attribute( '_wrapper', 'data-video-aspect-ratio', $settings['aspect_ratio'] );
-		$this->add_render_attribute( '_wrapper', 'class', 'qazana-aspect-ratio-' . str_replace( ':', '', $settings['aspect_ratio'] ) );
-		
-		$this->add_render_attribute( '_wrapper', 'class', 'qazana-button-align-' . $this->get_responsive_settings('button_align') );
-		if ( ! empty( $settings['text'] ) ) {
-			$this->add_render_attribute( '_wrapper', 'class', 'qazana-button-has-text' );
-		} 
-		
-		parent::before_render();
-
-	}
-
+	
 	public function render() {
 		$settings = $this->get_settings();
 
@@ -582,10 +562,30 @@ class Widget_Video extends Widget_Base {
 			echo esc_url( $video_link );
 			return;
 		} 
+
+		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-video-wrapper' );
 		
-		?><div class="qazana-video-wrapper"><?php 
-				
-			echo $video_html;
+		if ( ! $settings['lightbox'] ) {
+			$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-fit-aspect-ratio' );
+		}
+
+		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-open-inline' );
+
+		if ( empty( $settings['aspect_ratio'] ) ) {
+            $settings['aspect_ratio'] = '16:9';
+        }
+
+        $this->add_render_attribute( 'video-wrapper', 'data-video-aspect-ratio', $settings['aspect_ratio'] );
+        $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-aspect-ratio-' . str_replace( ':', '', $settings['aspect_ratio'] ) );
+        
+        $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-align-' . $this->get_responsive_settings('button_align') );
+        if ( ! empty( $settings['text'] ) ) {
+            $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-has-text' );
+        } 
+		
+		?><div <?php echo $this->get_render_attribute_string( 'video-wrapper' ); ?>><?php 
+
+		echo $video_html;
 
 			if ( $this->has_image_overlay() ) : ?>
 				<div class="qazana-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">

@@ -65,6 +65,35 @@ body.qazana-editor-active .qazana-element-overlay .qazana-editor-element-setting
 #qazana .gallery {
   opacity: 1; }
 
+.qazana-spacer {
+  background: -webkit-linear-gradient(315deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
+  background: linear-gradient(135deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
+  background-size: 6px 6px;
+  text-align: center; }
+
+span.qazana-space-resize-value {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  white-space: nowrap;
+  color: #0275d8;
+  font-family: sans-serif;
+  font-size: 11px;
+  text-align: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center; }
+
 html.qazana-html {
   margin-top: 0 !important; }
 
