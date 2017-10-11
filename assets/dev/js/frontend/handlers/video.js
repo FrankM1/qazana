@@ -48,8 +48,33 @@ VideoModule = HandlerModule.extend( {
 		this.getLightBox().setEntranceAnimation( this.getElementSettings( 'lightbox_content_animation' ) );
 	},
 
-	handleAspectRatio: function() {
-		this.getLightBox().setVideoAspectRatio( this.getElementSettings( 'aspect_ratio' ) );
+	getAspectRatio: function() {
+
+		var aspect_ratio = this.getElementSettings( 'aspect_ratio' );
+		var selectors = this.getSettings( 'selectors' );
+		
+		if ( aspect_ratio === 'custom' ) {
+			aspect_ratio = this.getElementSettings( 'custom_aspect_ratio' );
+		} else {
+			return;
+		}
+
+		var aspect_ratio_parts = aspect_ratio.split(':');
+
+		var calculate_aspect_ratio = (Math.round(aspect_ratio_parts[1]) / Math.round(aspect_ratio_parts[0]));
+
+		// Calculate padding top
+		var padding = ( calculate_aspect_ratio * 100).toFixed(2);
+		
+		if (padding > 0) {
+			this.$element.find( selectors.videoWrapper ).css('padding-bottom', padding.replace(".00", "") + '%');
+		}
+
+		return calculate_aspect_ratio;
+	},
+
+	handleAspectRatio: function() {		
+		this.getLightBox().setVideoAspectRatio( this.getAspectRatio() );
 	},
 
 	bindEvents: function() {
@@ -59,7 +84,6 @@ VideoModule = HandlerModule.extend( {
 	onElementChange: function( propertyName ) {
 		if ( 'lightbox_content_animation' === propertyName ) {
 			this.animateVideo();
-
 			return;
 		}
 
@@ -67,14 +91,18 @@ VideoModule = HandlerModule.extend( {
 
 		if ( 'lightbox' === propertyName && ! isLightBoxEnabled ) {
 			this.getLightBox().getModal().hide();
-
 			return;
 		}
 
 		if ( 'aspect_ratio' === propertyName && isLightBoxEnabled ) {
 			this.handleAspectRatio();
 		}
+	},
+
+	onInit: function() {
+		this.getAspectRatio();
 	}
+
 } );
 
 module.exports = function( $scope ) {

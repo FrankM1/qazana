@@ -1,0 +1,48 @@
+.qazana-widget-text-editor {
+
+	&.qazana-drop-cap {
+
+		&-view- {
+
+			&stacked {
+
+				.qazana-drop-cap {
+					background-color: $gray;
+					color: #fff;
+				}
+			}
+
+			&framed {
+
+				.qazana-drop-cap {
+					color: $gray;
+					border: 3px solid;
+					background-color: transparent;
+				}
+			}
+		}
+	}
+
+	&:not(.qazana-drop-cap-view-default) {
+
+		.qazana-drop-cap {
+			margin-top: 8px;
+
+			&-letter {
+				width: 1em;
+				height: 1em;
+			}
+		}
+	}
+
+	.qazana-drop-cap {
+		float: $start;
+		text-align: center;
+		line-height: 1;
+		font-size: 50px;
+
+		&-letter {
+			display: inline-block;
+		}
+	}
+}

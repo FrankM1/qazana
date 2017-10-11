@@ -343,7 +343,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['youtube_video_link'] = [
 			'label' => _x( 'Youtube Video Link', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::TEXT,
-			'placeholder' => 'https://www.youtube.com/watch?v=9uOETcuFjbE',
+			'placeholder' => 'https://www.youtube.com/watch?v=iNJdPyoqt8U',
 			'description' => __( 'Insert YouTube link', 'qazana' ),
 			'label_block' => true,
 			'default' => '',

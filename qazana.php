@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Qazana: A Frontend page builder for WordPress
  * Description: Front-end page builder for WordPress with live drag and drop editing. Build high quality responsive websites and landing pages visually. Any theme, anywhere.
- * Plugin URI: https://radiumthemes.com/builder
+ * Plugin URI: https://qazana.net/
  * Author: RadiumThemes.com
  * Version: 1.2.0
- * Author URI: https://radiumthemes.com/
+ * Author URI: https://qazana.net/
  *
  * Text Domain: qazana
  *
@@ -18,7 +18,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
-*/
+ */
 
 /**
  * Based on : Elementor plugin version 0.10.2
@@ -37,16 +37,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
-*/
+ */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
 define( 'QAZANA__FILE__', __FILE__ );
 
 if ( ! version_compare( PHP_VERSION, '5.4', '>=' ) ) {
     add_action( 'admin_notices', 'qazana_fail_php_version' );
 } else {
-    require( plugin_dir_path( QAZANA__FILE__ ) . 'includes/plugin.php' );
+    require plugin_dir_path( QAZANA__FILE__ ) . 'includes/plugin.php';
 }
 
 /**
@@ -63,13 +65,14 @@ function qazana_fail_php_version() {
 }
 
 /**
- * Log actions
+ * Helper function for writing to log file.
  *
- * @param  [type] $log [description]
- * @return [type]      [description]
+ * @since 1.0.0
+ *
+ * @param log data to log
+ * @param type log or export
  */
-function qazana_write_log( $log, $type = '1' )  {
-
+function qazana_write_log( $log, $type = '1' ) {
     if ( true === WP_DEBUG ) {
         if ( is_array( $log ) || is_object( $log ) ) {
             if ( $type === '1' ) {
@@ -97,10 +100,10 @@ function qazana_write_log( $log, $type = '1' )  {
  * @return The one true Qazana Instance
  */
 function qazana() {
-
     // In tests we run the instance manually.
     if ( ! defined( 'QAZANA_TESTS' ) ) {
         $instance = Qazana\Plugin::instance();
+
         return $instance;
     }
 }
@@ -116,4 +119,3 @@ if ( defined( 'QAZANA_LATE_LOAD' ) ) {
 } else {
     qazana();
 }
-// End class

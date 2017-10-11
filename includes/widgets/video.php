@@ -92,6 +92,7 @@ class Widget_Video extends Widget_Base {
 					'3:2' => '3:2',
 				],
 				'default' => '16:9',
+				'frontend_available' => true,
 			]
 		);
 

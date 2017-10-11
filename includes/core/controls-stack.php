@@ -156,7 +156,6 @@ abstract class Controls_Stack {
 		$this->_id = $id;
 	}
 
-
 	/**
 	 * Retrieve the type.
 	 *

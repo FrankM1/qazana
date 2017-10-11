@@ -1842,6 +1842,11 @@ body.qazana-page .qazana-widget-menu-anchor {
     .qazana-social-icons-default .qazana-social-icon-spotify:hover {
       border-color: #1db954;
       color: #1db954; }
+  .qazana-social-icons-default .qazana-social-icon-amazon {
+    background-color: #f49727; }
+    .qazana-social-icons-default .qazana-social-icon-amazon:hover {
+      border-color: #f49727;
+      color: #f49727; }
 
 .qazana-social-icons-transparent .qazana-social-icon-behance {
   border-color: #1769ff;
@@ -2023,6 +2028,12 @@ body.qazana-page .qazana-widget-menu-anchor {
   .qazana-social-icons-transparent .qazana-social-icon-spotify:hover {
     color: white;
     background-color: #1db954; }
+.qazana-social-icons-transparent .qazana-social-icon-amazon {
+  border-color: #f49727;
+  color: #f49727; }
+  .qazana-social-icons-transparent .qazana-social-icon-amazon:hover {
+    color: white;
+    background-color: #f49727; }
 
 .qazana-shape-square .qazana-icon.qazana-social-icon {
   border-radius: 0; }
@@ -2186,6 +2197,26 @@ body.qazana-page .qazana-widget-menu-anchor {
       width: 60px;
       height: 60px;
       border-radius: 50%; }
+
+.qazana-widget-text-editor.qazana-drop-cap-view-stacked .qazana-drop-cap {
+  background-color: #818a91;
+  color: #fff; }
+.qazana-widget-text-editor.qazana-drop-cap-view-framed .qazana-drop-cap {
+  color: #818a91;
+  border: 3px solid;
+  background-color: transparent; }
+.qazana-widget-text-editor:not(.qazana-drop-cap-view-default) .qazana-drop-cap {
+  margin-top: 8px; }
+  .qazana-widget-text-editor:not(.qazana-drop-cap-view-default) .qazana-drop-cap-letter {
+    width: 1em;
+    height: 1em; }
+.qazana-widget-text-editor .qazana-drop-cap {
+  float: right;
+  text-align: center;
+  line-height: 1;
+  font-size: 50px; }
+  .qazana-widget-text-editor .qazana-drop-cap-letter {
+    display: inline-block; }
 
 .qazana-toggle {
   text-align: right; }
