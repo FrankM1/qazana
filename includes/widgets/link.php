@@ -14,7 +14,7 @@ class Widget_Link extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-link';
+		return 'eicon-anchor';
 	}
 
 	public function get_categories() {

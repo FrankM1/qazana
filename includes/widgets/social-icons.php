@@ -173,6 +173,15 @@ class Widget_Social_Icons extends Widget_Base {
 			]
 		);
 
+		$this->start_controls_tabs( 'tabs_icon_styles' );
+		
+		$this->start_controls_tab(
+			"tab_default_styles",
+			[
+				'label' => __( 'Default', 'qazana' ),
+			]
+		);
+
 		$this->add_control(
 			'icon_color',
 			[
@@ -190,7 +199,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_primary_color',
 			[
-				'label' => __( 'Primary Color', 'qazana' ),
+				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'condition' => [
 					'icon_color' => 'custom',
@@ -204,7 +213,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'icon_secondary_color',
 			[
-				'label' => __( 'Secondary Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'condition' => [
 					'icon_color' => 'custom',
@@ -226,6 +235,7 @@ class Widget_Social_Icons extends Widget_Base {
 						'max' => 300,
 					],
 				],
+				'size_units' => [ 'px', 'em', 'rem' ],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
@@ -255,6 +265,7 @@ class Widget_Social_Icons extends Widget_Base {
 						'max' => 5,
 					],
 				],
+				'size_units' => [ 'px', 'em', 'rem' ],
 			]
 		);
 
@@ -271,6 +282,7 @@ class Widget_Social_Icons extends Widget_Base {
 						'max' => 100,
 					],
 				],
+				'size_units' => [ 'px', 'em', 'rem' ],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon:not(:last-child)' => $icon_spacing,
 				],
@@ -280,7 +292,7 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
 			[
-				'name' => 'image_border',
+				'name' => 'border',
 				'selector' => '{{WRAPPER}} .qazana-social-icon',
 				'separator' => 'before',
 			]
@@ -298,25 +310,21 @@ class Widget_Social_Icons extends Widget_Base {
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_social_hover',
+		$this->end_controls_tab();
+		
+		$this->start_controls_tab(
+			"tab_hover_style",
 			[
-				'label' => __( 'Icon Hover', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Hover', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'hover_primary_color',
 			[
-				'label' => __( 'Primary Color', 'qazana' ),
+				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
-				'condition' => [
-					'icon_color' => 'custom',
-				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon:hover' => 'background-color: {{VALUE}};',
 				],
@@ -326,12 +334,9 @@ class Widget_Social_Icons extends Widget_Base {
 		$this->add_control(
 			'hover_secondary_color',
 			[
-				'label' => __( 'Secondary Color', 'qazana' ),
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
-				'condition' => [
-					'icon_color' => 'custom',
-				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon:hover i' => 'color: {{VALUE}};',
 				],
@@ -345,7 +350,7 @@ class Widget_Social_Icons extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'condition' => [
-					'image_border_border!' => '',
+					'border_border!' => '',
 				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-social-icon:hover' => 'border-color: {{VALUE}};',
@@ -360,6 +365,10 @@ class Widget_Social_Icons extends Widget_Base {
 			]
 		);
 
+		$this->end_controls_tab();
+		
+		$this->end_controls_tabs();
+		
 		$this->end_controls_section();
 
 	}
@@ -374,8 +383,10 @@ class Widget_Social_Icons extends Widget_Base {
 		?>
 		<div class="qazana-social-icons-wrapper qazana-social-icons-<?php echo $this->get_settings('icon_color'); ?> qazana-social-icons-align-<?php echo $this->get_settings('align'); ?>">
 			<?php foreach ( $this->get_settings( 'social_icon_list' ) as $index => $item ) :
-				$social = str_replace( 'fa fa-', '', $item['social'] );
 
+				$social = preg_replace('/^[^-]*-\s*/', '', $item['social']);
+				$social = str_replace( ' ', '-', $social );
+				
 				$link_key = 'link_' . $index;
 
 				$this->add_render_attribute( $link_key, 'href', $item['link']['url'] );
@@ -402,7 +413,8 @@ class Widget_Social_Icons extends Widget_Base {
 		<div class="qazana-social-icons-wrapper qazana-social-icons-{{ settings.icon_color }} qazana-social-icons-align-{{ settings.align }}">
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
-					social = item.social.replace( 'fa fa-', '' ); #>
+					social = item.social.replace( /^[^-]*-\s*/ );
+ 				#>
 				<a class="qazana-icon qazana-social-icon qazana-social-icon-{{ social }} qazana-animation-{{ settings.hover_animation }}" href="{{ link }}">
 					<i class="{{ item.social }}"></i>
 				</a>

@@ -379,6 +379,12 @@ class Element_Section extends Element_Base {
 					'background' => [
 						'frontend_available' => true,
 					],
+					'video_source' => [
+						'frontend_available' => true,
+					],
+					'youtube_video_link' => [
+						'frontend_available' => true,
+					],
 					'video_link' => [
 						'frontend_available' => true,
 					],
@@ -994,14 +1000,12 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-        	$this->add_group_control(
+        $this->add_group_control(
 			Group_Control_Animations::get_type(),
 			[
-				'name' => '_background',
-				'selector' => '{{WRAPPER}} .qazana-widget-container',
+				'name' => '_animation',
 			]
 		);
-
 
 		$this->add_control(
 			'_element_id',
