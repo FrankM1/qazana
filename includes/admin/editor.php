@@ -15,9 +15,10 @@ class Editor_Admin {
 
         add_action( 'edit_form_after_title', [ $this, 'print_switch_mode_button' ] );
         add_action( 'save_post', [ $this, 'save_post' ] );
-
+ 
         add_filter( 'page_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
         add_filter( 'post_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
+		add_filter( 'display_post_states', [ $this, 'add_post_state' ], 10, 2 );
 
         add_filter( 'admin_body_class', [ $this, 'body_status_classes' ] );
     }
@@ -183,4 +184,20 @@ class Editor_Admin {
         return $classes;
     }
 
+    /**
+	 * Adds a "Qazana" post state for post table.
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param  array   $post_states An array of post display states.
+	 * @param  \WP_Post $post        The current post object.
+	 *
+	 * @return array                A filtered array of post display states.
+	 */
+	public function add_post_state( $post_states, $post ) {
+		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->db->is_built_with_qazana( $post->ID ) ) {
+			$post_states[] = '<span class="status-qazana">' . __( 'Qazana', 'qazana' ) . '</span>';
+		}
+		return $post_states;
+	}
 }

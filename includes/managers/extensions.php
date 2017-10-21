@@ -325,19 +325,19 @@ final class Manager {
         foreach ( $this->extensions as $extension_id => $extension_data ) {
 
             $extension_data = $this->get_extension_data( $extension_id );
-            
+ 
             if ( $extension_data['required'] ) {
                 continue;
             }
 
-            $this->add_extension_settings_section( $extension_id );
+            //$this->add_extension_settings_section( $extension_id );
 		}
 
     }
 
     public function add_extension_settings_section( $extension_id ) {
 
-        $extension_data = $this->get_extension_data( $extension_id ) ;
+        $extension_data = $this->get_extension_data( $extension_id );
 
         $section = 'qazana_extension ' . $extension_id . '_editor_section';
 
@@ -347,13 +347,13 @@ final class Manager {
             $section,
             $extension_data['title'],
             function () {
-                //echo $extension_data['description'];
+                // echo $extension_data['description'];
             },
             qazana()->slug
         );
 
         $field_id = 'qazana_extension_' . $extension_data['name'];
-        
+
         add_settings_field(
             $field_id,
             __( 'Enable Extension', 'qazana' ),
@@ -363,7 +363,8 @@ final class Manager {
             [
                 'id' => $field_id,
                 'type' => 'checkbox',
-                'value' => $extension_data['default_activation'],
+                'value' => true,
+                'std' => $extension_data['default_activation'],
             ]
         );
 

@@ -363,6 +363,11 @@ class Frontend {
 		$this->print_google_fonts();
 	}
 
+    /**
+     * TODO // Optimize, load with wp_enqueue, add to wp_resource_hints, load only used weights
+     *
+     * @return void
+     */
 	public function print_google_fonts() {
 		if ( ! apply_filters( 'qazana/frontend/print_google_fonts', true ) ) {
 			return;

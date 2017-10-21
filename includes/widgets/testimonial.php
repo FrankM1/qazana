@@ -571,7 +571,9 @@ class Widget_Testimonial extends Widget_Base {
 
 		$show_dots = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'dots', 'both' ] ) );
 		$show_arrows = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'arrows', 'both' ] ) );
-
+        $is_rtl = ( 'rtl' === $this->get_settings('direction') );
+        $direction = $is_rtl ? 'rtl' : 'ltr';
+        
 		$carousel_classes = [ 'qazana-slides' ];
 
 		$carousel_classes[] = $this->get_settings('carousel_class');

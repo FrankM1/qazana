@@ -28,47 +28,37 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'editor',
 			[
-				'label' => '',
-				'type' => Controls_Manager::WYSIWYG,
+				'label'   => '',
+				'type'    => Controls_Manager::WYSIWYG,
 				'default' => __( 'I am a text block. Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'drop_cap',[
-				'label' => __( 'Drop Cap', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'Off', 'qazana' ),
-				'label_on' => __( 'On', 'qazana' ),
-				'prefix_class' => 'qazana-drop-cap-',
+				'label'              => __( 'Drop Cap', 'qazana' ),
+				'type'               => Controls_Manager::SWITCHER,
+				'label_off'          => __( 'Off', 'qazana' ),
+				'label_on'           => __( 'On', 'qazana' ),
+				'prefix_class'       => 'qazana-drop-cap-',
 				'frontend_available' => true,
 			]
-		);
+        );
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_style',
-			[
-				'label' => __( 'Text Editor', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_responsive_control(
+        $this->add_responsive_control(
 			'max_width',
 			[
-				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
+				'label'      => _x( 'Max width', 'Size Control', 'qazana' ),
+				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ '%', 'px', 'em', 'rem' ],
-				'range' => [
+				'range'      => [
 					'px' => [
 						'min' => 10,
 						'max' => 2000,
 					],
 				],
 				'responsive' => true,
-				'selectors' => [
+				'selectors'  => [
 					'{{WRAPPER}} .qazana-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
@@ -77,61 +67,36 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_responsive_control(
 			'align',
 			[
-				'label' => __( 'Alignment', 'qazana' ),
-				'type' => Controls_Manager::CHOOSE,
+				'label'   => __( 'Alignment', 'qazana' ),
+				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
 						'title' => __( 'Left', 'qazana' ),
-						'icon' => 'fa fa-align-left',
+						'icon'  => 'fa fa-align-left',
 					],
 					'center' => [
 						'title' => __( 'Center', 'qazana' ),
-						'icon' => 'fa fa-align-center',
+						'icon'  => 'fa fa-align-center',
 					],
 					'right' => [
 						'title' => __( 'Right', 'qazana' ),
-						'icon' => 'fa fa-align-right',
+						'icon'  => 'fa fa-align-right',
 					],
 					'justify' => [
 						'title' => __( 'Justified', 'qazana' ),
-						'icon' => 'fa fa-align-justify',
+						'icon'  => 'fa fa-align-justify',
 					],
 				],
 				'prefix_class' => 'qazana-align-',
-				'render_type' => 'template',
+				'render_type'  => 'template',
 			]
-		);
+        );
 
-		$this->add_control(
-			'text_color',
-			[
-				'label' => __( 'Text Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'default' => '',
-				'selectors' => [
-					'{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p' => 'color: {{VALUE}};',
-				],
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_3,
-				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name' => 'typography',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p'
-			]
-		);
-
-		$this->add_responsive_control(
+        $this->add_responsive_control(
             'bottom_space',
             [
                 'label' => __( 'Bottom Spacing', 'qazana' ),
-                'type' => Controls_Manager::SLIDER,
+                'type'  => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
                         'min' => 0,
@@ -147,10 +112,45 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'section_style',
+			[
+				'label' => __( 'Text Editor', 'qazana' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'text_color',
+			[
+				'label'     => __( 'Text Color', 'qazana' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => [
+					'{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type'  => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography:: get_type(),
+			[
+				'name'     => 'typography',
+				'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}}, {{WRAPPER}} .qazana-wrapper p'
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'section_drop_cap',
 			[
-				'label' => __( 'Drop Cap', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label'     => __( 'Drop Cap', 'qazana' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'drop_cap' => 'yes',
 				],
@@ -160,16 +160,16 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_view',
 			[
-				'label' => __( 'View', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
+				'label'   => __( 'View', 'qazana' ),
+				'type'    => Controls_Manager::SELECT,
 				'options' => [
 					'default' => __( 'Default', 'qazana' ),
 					'stacked' => __( 'Stacked', 'qazana' ),
-					'framed' => __( 'Framed', 'qazana' ),
+					'framed'  => __( 'Framed', 'qazana' ),
 				],
-				'default' => 'default',
+				'default'      => 'default',
 				'prefix_class' => 'qazana-drop-cap-view-',
-				'condition' => [
+				'condition'    => [
 					'drop_cap' => 'yes',
 				],
 			]
@@ -178,14 +178,14 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_primary_color',
 			[
-				'label' => __( 'Primary Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
+				'label'     => __( 'Primary Color', 'qazana' ),
+				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}}.qazana-drop-cap-view-stacked .qazana-drop-cap' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-drop-cap-view-stacked .qazana-drop-cap'                                                           => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}.qazana-drop-cap-view-framed .qazana-drop-cap, {{WRAPPER}}.qazana-drop-cap-view-default .qazana-drop-cap' => 'color: {{VALUE}}; border-color: {{VALUE}};',
 				],
 				'scheme' => [
-					'type' => Scheme_Color::get_type(),
+					'type'  => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_1,
 				],
 				'condition' => [
@@ -197,10 +197,10 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_secondary_color',
 			[
-				'label' => __( 'Secondary Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
+				'label'     => __( 'Secondary Color', 'qazana' ),
+				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}}.qazana-drop-cap-view-framed .qazana-drop-cap' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-drop-cap-view-framed .qazana-drop-cap'  => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}.qazana-drop-cap-view-stacked .qazana-drop-cap' => 'color: {{VALUE}};',
 				],
 				'condition' => [
@@ -212,8 +212,8 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_size',
 			[
-				'label' => __( 'Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
+				'label'   => __( 'Size', 'qazana' ),
+				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 5,
 				],
@@ -234,8 +234,8 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_space',
 			[
-				'label' => __( 'Space', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
+				'label'   => __( 'Space', 'qazana' ),
+				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 10,
 				],
@@ -246,7 +246,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 				'selectors' => [
 					'body:not(.rtl) {{WRAPPER}} .qazana-drop-cap' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'body.rtl {{WRAPPER}} .qazana-drop-cap' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'body.rtl {{WRAPPER}} .qazana-drop-cap'       => 'margin-left: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -254,10 +254,10 @@ class Widget_Text_Editor extends Widget_Base {
 		$this->add_control(
 			'drop_cap_border_radius',
 			[
-				'label' => __( 'Border Radius', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
+				'label'      => __( 'Border Radius', 'qazana' ),
+				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ '%', 'px' ],
-				'default' => [
+				'default'    => [
 					'unit' => '%',
 				],
 				'range' => [
@@ -273,8 +273,8 @@ class Widget_Text_Editor extends Widget_Base {
 
 		$this->add_control(
 			'drop_cap_border_width',[
-				'label' => __( 'Border Width', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
+				'label'     => __( 'Border Width', 'qazana' ),
+				'type'      => Controls_Manager::DIMENSIONS,
 				'selectors' => [
 					'{{WRAPPER}} .qazana-drop-cap' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -285,11 +285,11 @@ class Widget_Text_Editor extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+			Group_Control_Typography:: get_type(),
 			[
-				'name' => 'drop_cap_typography',
+				'name'     => 'drop_cap_typography',
 				'selector' => '{{WRAPPER}} .qazana-drop-cap-letter',
-				'exclude' => [
+				'exclude'  => [
 					'letter_spacing',
 				],
 				'condition' => [
@@ -307,8 +307,8 @@ class Widget_Text_Editor extends Widget_Base {
 
         $this->add_render_attribute( 'text-editor', 'class', 'qazana-text-editor qazana-clearfix' );
 
-		if ( ! empty( $this->get_responsive_settings('align') ) ) {
-			$this->add_render_attribute( 'text-editor', 'class', 'qazana-align-' . $this->get_responsive_settings('align') );
+		if ( ! empty( $this->get_responsive_settings( 'align' ) ) ) {
+			$this->add_render_attribute( 'text-editor', 'class', 'qazana-align-' . $this->get_responsive_settings( 'align' ) );
 		}
 
 		?><div <?php echo $this->get_render_attribute_string( 'text-editor' ); ?>>

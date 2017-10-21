@@ -333,7 +333,7 @@ abstract class Controls_Stack {
 				if ( ! empty( $args['section'] ) || ! empty( $args['tab'] ) ) {
 					_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) .'`.', '1.0.0' );
 				}
-				
+	
 				$args = array_replace_recursive( $target_section_args, $args );
 
 				if ( null !== $target_tab ) {

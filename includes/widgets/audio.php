@@ -33,8 +33,8 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label' => __( 'Link', 'qazana' ),
-				'type' => Controls_Manager::URL,
+				'label'   => __( 'Link', 'qazana' ),
+				'type'    => Controls_Manager::URL,
 				'default' => [
 					'url' => 'https://soundcloud.com/shchxango/john-coltrane-1963-my-favorite',
 				],
@@ -45,12 +45,12 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'visual',
 			[
-				'label' => __( 'Visual Player', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
+				'label'   => __( 'Visual Player', 'qazana' ),
+				'type'    => Controls_Manager::SELECT,
 				'default' => 'no',
 				'options' => [
 					'yes' => __( 'Yes', 'qazana' ),
-					'no' => __( 'No', 'qazana' ),
+					'no'  => __( 'No', 'qazana' ),
 				],
 			]
 		);
@@ -58,8 +58,8 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'sc_options',
 			[
-				'label' => __( 'Additional Options', 'qazana' ),
-				'type' => Controls_Manager::HEADING,
+				'label'     => __( 'Additional Options', 'qazana' ),
+				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
@@ -68,84 +68,84 @@ class Widget_Audio extends Widget_Base {
 			'sc_auto_play',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
 
 		$this->add_control(
 			'sc_buying',
 			[
-				'label' => __( 'Buy Button', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Buy Button', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_liking',
 			[
-				'label' => __( 'Like Button', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Like Button', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_download',
 			[
-				'label' => __( 'Download Button', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Download Button', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_sharing',
 			[
-				'label' => __( 'Share Button', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Share Button', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_comments',
 			[
-				'label' => __( 'Comments', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Comments', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_playcount',
 			[
-				'label' => __( 'Play Counts', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Play Counts', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_user',
 			[
-				'label' => __( 'Username', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Username', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
+				'label_on'  => __( 'Show', 'qazana' ),
+				'default'   => 'yes',
 			]
 		);
 
@@ -153,7 +153,7 @@ class Widget_Audio extends Widget_Base {
 			'sc_color',
 			[
 				'label' => __( 'Controls Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
+				'type'  => Controls_Manager::COLOR,
 			]
 		);
 

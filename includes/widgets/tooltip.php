@@ -14,7 +14,7 @@ class Widget_Tooltip extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-tooltip';
+		return 'fa fa-question-circle-o';
 	}
 
 	public function get_categories() {
@@ -33,8 +33,8 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
 			'tooltip_editor',
 			[
-				'label' => __( 'Text', 'qazana' ),
-				'type' => Controls_Manager::TEXTAREA,
+				'label'   => __( 'Text', 'qazana' ),
+				'type'    => Controls_Manager::TEXTAREA,
 				'default' => __( 'I am a tooltip element. Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'qazana' ),
 			]
 		);
@@ -42,30 +42,30 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
 			'tooltip_state',
 			[
-				'label' => __( 'Open tooltip', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
+				'label'        => __( 'Open tooltip', 'qazana' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'qazana' ),
+				'label_off'    => __( 'No', 'qazana' ),
 				'return_value' => 'show',
-				'description' => __( 'Open tooltip by default.', 'qazana' ),
+				'description'  => __( 'Open tooltip by default.', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
 			'tooltip_position',
 			[
-				'label' => __( 'Tooltip position', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
+				'label'   => __( 'Tooltip position', 'qazana' ),
+				'type'    => Controls_Manager::SELECT,
 				'default' => 'east',
 				'options' => [
-					'east' 			=> __( 'East', 'qazana' ),
-					'west'      	=> __( 'West', 'qazana' ),
-					'north'       	=> __( 'North', 'qazana' ),
-					'north-east' 	=> __( 'North east', 'qazana' ),
-					'north-west' 	=> __( 'North west', 'qazana' ),
-					'south'       	=> __( 'South', 'qazana' ),
-					'south-east' 	=> __( 'South east', 'qazana' ),
-					'south-west' 	=> __( 'South west', 'qazana' ),
+					'east'       => __( 'East', 'qazana' ),
+					'west'       => __( 'West', 'qazana' ),
+					'north'      => __( 'North', 'qazana' ),
+					'north-east' => __( 'North east', 'qazana' ),
+					'north-west' => __( 'North west', 'qazana' ),
+					'south'      => __( 'South', 'qazana' ),
+					'south-east' => __( 'South east', 'qazana' ),
+					'south-west' => __( 'South west', 'qazana' ),
 				],
 			]
 		);
@@ -73,13 +73,13 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
 			'tooltip_style',
 			[
-				'label' => __( 'Tooltip Accent', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
+				'label'   => __( 'Tooltip Accent', 'qazana' ),
+				'type'    => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'red'      	=> __( 'Red', 'qazana' ),
-					'green' 	=> __( 'Green', 'qazana' ),
-					'custom' 	=> __( 'Custom', 'qazana' ),
+					'red'    => __( 'Red', 'qazana' ),
+					'green'  => __( 'Green', 'qazana' ),
+					'custom' => __( 'Custom', 'qazana' ),
 				],
 			]
 		);
@@ -87,8 +87,8 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_responsive_control(
 			'tooltip_icon_size',
 			[
-				'label' => __( 'Icon Size', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
+				'label'   => __( 'Icon Size', 'qazana' ),
+				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 20
 				],
@@ -109,23 +109,23 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_responsive_control(
 			'tooltip_align',
 			[
-				'label' => __( 'Alignment', 'qazana' ),
-				'type' => Controls_Manager::CHOOSE,
+				'label'   => __( 'Alignment', 'qazana' ),
+				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
 						'title' => __( 'Left', 'qazana' ),
-						'icon' => 'fa fa-align-left',
+						'icon'  => 'fa fa-align-left',
 					],
 					'center' => [
 						'title' => __( 'Center', 'qazana' ),
-						'icon' => 'fa fa-align-center',
+						'icon'  => 'fa fa-align-center',
 					],
 					'right' => [
 						'title' => __( 'Right', 'qazana' ),
-						'icon' => 'fa fa-align-right',
+						'icon'  => 'fa fa-align-right',
 					],
 				],
-				'default' => 'center',
+				'default'   => 'center',
 				'selectors' => [
 					'{{WRAPPER}}' => 'text-align: {{VALUE}};',
 				],
@@ -137,8 +137,8 @@ class Widget_Tooltip extends Widget_Base {
 		$this->start_controls_section(
 			'section_tooltip_style',
 			[
-				'label' => __( 'Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label'     => __( 'Style', 'qazana' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'tooltip_style' => 'custom'
 				]
@@ -146,10 +146,10 @@ class Widget_Tooltip extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+			Group_Control_Typography:: get_type(),
 			[
-				'name' => 'typography',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+				'name'     => 'typography',
+				'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .qazana-tooltip__content'
 			]
 		);
@@ -157,11 +157,11 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
             'tooltip_icon_color',
             [
-                'label' => __( 'Icon Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
+                'label'   => __( 'Icon Color', 'qazana' ),
+                'type'    => Controls_Manager::COLOR,
                 'default' => '',
-                'scheme' => [
-                    'type' => Scheme_Color::get_type(),
+                'scheme'  => [
+                    'type'  => Scheme_Color::get_type(),
                     'value' => Scheme_Color::COLOR_4,
                 ],
                 'selectors' => [
@@ -173,9 +173,9 @@ class Widget_Tooltip extends Widget_Base {
 		$this->add_control(
             'tooltip_text_color',
             [
-                'label' => __( 'Text Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'default' => '',
+                'label'     => __( 'Text Color', 'qazana' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '',
                 'selectors' => [
                     '{{WRAPPER}} .qazana-tooltip__content' => 'color: {{VALUE}};',
                 ],
@@ -185,15 +185,15 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'tooltip_background_color',
             [
-                'label' => __( 'Background Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
-                'default' => '',
+                'label'     => __( 'Background Color', 'qazana' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '',
                 'selectors' => [
-                    '{{WRAPPER}} .qazana-tooltip__content' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content'                                                                                                                                    => 'background-color: {{VALUE}};',
                     '{{WRAPPER}} .qazana-tooltip__content.v--north:after, {{WRAPPER}} .qazana-tooltip__content.v--north-east:after, {{WRAPPER}} .qazana-tooltip__content.v--north-west:after' => 'border-top-color: {{VALUE}};',
-                    '{{WRAPPER}} .qazana-tooltip__content.v--west:after' => 'border-left-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--west:after'                                                                                                                      => 'border-left-color: {{VALUE}};',
                     '{{WRAPPER}} .qazana-tooltip__content.v--south:after, {{WRAPPER}} .qazana-tooltip__content.v--south-east:after, {{WRAPPER}} .qazana-tooltip__content.v--south-west:after' => 'border-bottom-color: {{VALUE}};',
-                    '{{WRAPPER}} .qazana-tooltip__content.v--east:after' => 'border-color: transparent {{VALUE}} transparent transparent;',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--east:after'                                                                                                                      => 'border-color: transparent {{VALUE}} transparent transparent;',
                 ],
             ]
         );
@@ -201,11 +201,11 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'tooltip_style_color',
             [
-                'label' => __( 'Accent Color', 'qazana' ),
-                'type' => Controls_Manager::COLOR,
+                'label'   => __( 'Accent Color', 'qazana' ),
+                'type'    => Controls_Manager::COLOR,
                 'default' => '',
-                'scheme' => [
-                    'type' => Scheme_Color::get_type(),
+                'scheme'  => [
+                    'type'  => Scheme_Color::get_type(),
                     'value' => Scheme_Color::COLOR_4,
                 ],
                 'selectors' => [
@@ -215,11 +215,11 @@ class Widget_Tooltip extends Widget_Base {
         );
 
         $this->add_group_control(
-            Group_Control_Border::get_type(),
+            Group_Control_Border:: get_type(),
             [
-                'name' => 'button',
-                'label' => __( 'Border', 'qazana' ),
-                'selector' => '{{WRAPPER}} .qazana-tooltip__content',
+                'name'      => 'button',
+                'label'     => __( 'Border', 'qazana' ),
+                'selector'  => '{{WRAPPER}} .qazana-tooltip__content',
                 'seperator' => 'before',
             ]
         );
@@ -227,10 +227,10 @@ class Widget_Tooltip extends Widget_Base {
         $this->add_control(
             'button_border_radius',
             [
-                'label' => __( 'Border Radius', 'qazana' ),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'      => __( 'Border Radius', 'qazana' ),
+                'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', '%' ],
-                'selectors' => [
+                'selectors'  => [
                     '{{WRAPPER}} .qazana-tooltip__content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
                 'condition' => [
@@ -240,15 +240,14 @@ class Widget_Tooltip extends Widget_Base {
         );
 
         $this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
+			Group_Control_Box_Shadow:: get_type(),
 			[
-				'name' => 'button',
+				'name'     => 'button',
 				'selector' => '{{WRAPPER}} .qazana-tooltip__content',
 			]
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	public function render() {

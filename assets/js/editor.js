@@ -5063,14 +5063,27 @@ heartbeat = {
 					heartbeat.getModal().hide();
 				}
 
-				qazana.config.nonce = response.qazana_nonce;
+				qazana.config.nonce = response.qazanaNonce;
+			},
+			'heartbeat-tick.wp-refresh-nonces': function( event, response ) {
+				var nonces = response['qazana-refresh-nonces'];
+
+				if ( nonces ) {
+					if ( nonces.heartbeatNonce ) {
+						qazana.config.nonce = nonces.qazanaNonce;
+					}
+
+					if ( nonces.heartbeatNonce ) {
+						window.heartbeatSettings.nonce = nonces.heartbeatNonce;
+					}
+				}
 			}
 		} );
 
 		if ( qazana.config.locked_user ) {
 			heartbeat.showLockMessage( qazana.config.locked_user );
 		}
-	},
+    },
 
 	initModal: function() {
 		var modal = qazana.dialogsManager.createWidget( 'options', {
