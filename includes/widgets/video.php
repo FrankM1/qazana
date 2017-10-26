@@ -647,7 +647,7 @@ class Widget_Video extends Widget_Base {
 
 		return $params;
 	}
-	
+
 	protected function get_hosted_params() {
 		$settings = $this->get_settings();
 

@@ -92,7 +92,7 @@ class Revisions_Manager {
 	public static function restore_revision( $parent_id, $revision_id ) {
 		$is_built_with_qazana = qazana()->db->is_built_with_qazana( $revision_id );
 
-		qazana()->db->set_is_qazana_page( $parent_id, $is_built_with_qazana );
+		qazana()->db->set_is_builder_page( $parent_id, $is_built_with_qazana );
 
 		if ( ! $is_built_with_qazana ) {
 			return;
