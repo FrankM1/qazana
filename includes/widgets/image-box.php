@@ -157,10 +157,6 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Image Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 30,
-					'unit' => '%',
-				],
 				'tablet_default' => [
 					'unit' => '%',
 				],
@@ -185,9 +181,6 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Opacity (%)', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 1,
-				],
 				'range' => [
 					'px' => [
 						'max' => 1,
