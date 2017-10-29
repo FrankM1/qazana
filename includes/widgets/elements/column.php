@@ -556,19 +556,6 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$this->add_control(
-			'z_index',
-			[
-				'label' => __( 'Z-Index', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'min' => 0,
-				'placeholder' => 0,
-				'selectors' => [
-					'{{WRAPPER}}' => 'z-index: {{VALUE}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Animations::get_type(),
 			[
@@ -608,7 +595,6 @@ class Element_Column extends Element_Base {
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
 		);
-
 
 		$this->add_control(
 			'screen_sm_width',

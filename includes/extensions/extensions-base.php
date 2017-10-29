@@ -9,46 +9,46 @@ abstract class Base {
 	 * @return array
 	 */
 	private $required = false;
-	
+
 	/**
-	 * activate extension by default
+	 * Activate extension by default
 	 *
 	 * @return array
 	 */
 	private $default_activation = true;
-	
+
 	/**
 	 * Unique extension name
 	 *
 	 * @return string
 	 */
 	public function get_name() {}
-	
+
 	/**
 	 * Extension title
 	 *
 	 * @return string
 	 */
 	public function get_title() {}
-	
+
 	/**
 	 * Extension widgets
 	 *
 	 * @return array
 	 */
 	public function get_widgets() {
-		return []; 
+		return [];
 	}
-	
+
 	/**
 	 * Widgets skins to load
 	 *
 	 * @return array
 	 */
 	public function get_skins() {
-		return []; 
+		return [];
 	}
-			
+
 	/**
 	 * @var Extension_Base
 	 */
@@ -93,7 +93,7 @@ abstract class Base {
 
 		return static::$_instances[ static::class_name() ];
 	}
-	
+
 	/**
 	 * Get extension config
 	 *
@@ -109,9 +109,9 @@ abstract class Base {
 			'skins' => $this->get_skins(),
 		];
 	}
-	
+
     /**
-     * extension url helper function
+     * Extension url helper function
      *
      * @param  [type] $file [description]
      * @return [type]       [description]
@@ -119,20 +119,20 @@ abstract class Base {
 	public function extension_url( $file ) {
 
         $config = $this->get_config();
- 
-        return qazana()->extensions_loader->locate_widget_url( $config['name'] .'/'. $file );
+
+        return qazana()->extensions_loader->locate_widget_url( $config['name'] . '/' . $file );
 	}
 
 	/**
-     * extension dir helper function
+     * Extension dir helper function
      *
      * @param  [type] $file [description]
      * @return [type]       [description]
      */
-	public function extension_path( $file ) {
+	public function extension_dir( $file ) {
 
         $config = $this->get_config();
 
-        return qazana()->extensions_loader->locate_widget( $config['name'] .'/'. $file );
+        return qazana()->extensions_loader->locate_widget( $config['name'] . '/' . $file );
 	}
 }

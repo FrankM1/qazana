@@ -76,7 +76,7 @@ final class Manager {
         $folders = scandir( $path, 1 );
 
         /**
-         * action 'qazana/extensions/before'
+         * Action 'qazana/extensions/before'
          *
          * @param object $this Qazana
          */
@@ -87,7 +87,7 @@ final class Manager {
         }
 
         /**
-         * action 'qazana/extensions'
+         * Action 'qazana/extensions'
          *
          * @param object $this Qazana
          */
@@ -113,7 +113,7 @@ final class Manager {
         $extension_class = 'Qazana\Extensions\\' . $folder;
 
         /**
-         * filter 'qazana/extension/{folder}'
+         * Filter 'qazana/extension/{folder}'
          *
          * @param string                    extension class file path
          * @param string $extension_class   extension class name
@@ -121,8 +121,8 @@ final class Manager {
         $class_file = "$path/$folder/extension_{$folder}.php";
 
         if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
-            
-            if( ! class_exists( $extension_class ) ) {
+
+            if ( ! class_exists( $extension_class ) ) {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
             }
 
@@ -137,14 +137,14 @@ final class Manager {
      * @return      void
      */
     public function load_extensions() {
-        
+
         if ( empty( $this->extensions ) )
             return;
 
         foreach ( $this->extensions as $extension_id => $extension_data ) {
             $this->instance[ $extension_id ] = $extension_data;
         }
-        
+
     }
 
     /**
@@ -260,9 +260,9 @@ final class Manager {
                 $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
 
         		foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
-                    
+ 
                     $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
-                    
+ 
                     if( ! class_exists( $class_name ) ) {
                         return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
                     }
