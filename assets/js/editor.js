@@ -6898,6 +6898,12 @@ module.exports = BaseAddSectionView.extend( {
 },{"qazana-views/add-section/base":79}],82:[function(require,module,exports){
 module.exports = Marionette.CompositeView.extend( {
 
+    templateHelpers: function() {
+		return {
+			view: this
+		};
+    },
+    
 	getBehavior: function( name ) {
 		return this._behaviors[ Object.keys( this.behaviors() ).indexOf( name ) ];
 	},
@@ -6990,6 +6996,10 @@ BaseElementView = BaseContainer.extend( {
 
 	getElementType: function() {
 		return this.model.get( 'elType' );
+    },
+    
+    getIDInt: function() {
+		return parseInt( this.getID(), 16 );
 	},
 
 	getChildType: function() {
@@ -7011,11 +7021,13 @@ BaseElementView = BaseContainer.extend( {
 		return qazana.hooks.applyFilters( 'element/view', ChildView, model, this );
 	},
 
+	// TODO: backward compatibility method since 1.3.0
 	templateHelpers: function() {
-		return {
-			elementModel: this.model,
-			editModel: this.getEditModel()
-		};
+		var templateHelpers = BaseContainer.prototype.templateHelpers.apply( this, arguments );
+
+		return jQuery.extend( templateHelpers, {
+			editModel: this.getEditModel() // @deprecated. Use view.getEditModel() instead.
+		} );
 	},
 
 	getTemplateType: function() {

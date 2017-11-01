@@ -60,6 +60,10 @@ BaseElementView = BaseContainer.extend( {
 
 	getElementType: function() {
 		return this.model.get( 'elType' );
+    },
+    
+    getIDInt: function() {
+		return parseInt( this.getID(), 16 );
 	},
 
 	getChildType: function() {
@@ -81,11 +85,13 @@ BaseElementView = BaseContainer.extend( {
 		return qazana.hooks.applyFilters( 'element/view', ChildView, model, this );
 	},
 
+	// TODO: backward compatibility method since 1.3.0
 	templateHelpers: function() {
-		return {
-			elementModel: this.model,
-			editModel: this.getEditModel()
-		};
+		var templateHelpers = BaseContainer.prototype.templateHelpers.apply( this, arguments );
+
+		return jQuery.extend( templateHelpers, {
+			editModel: this.getEditModel() // @deprecated. Use view.getEditModel() instead.
+		} );
 	},
 
 	getTemplateType: function() {

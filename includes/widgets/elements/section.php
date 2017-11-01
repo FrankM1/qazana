@@ -1101,7 +1101,7 @@ class Element_Section extends Element_Base {
 
 	}
 
-	protected function _render_settings() {
+	protected function render_edit_tools() {
 		?>
 		<div class="qazana-element-overlay">
 			<ul class="qazana-editor-element-settings qazana-editor-section-settings">

@@ -2081,6 +2081,11 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-widget-tabs .qazana-tab-content,
 .qazana-widget-tabs .qazana-tabs-content-wrapper {
   border: 1px none #D4D4D4; }
+.qazana-widget-tabs .qazana-tab-title::-moz-focus-inner {
+  padding: 0;
+  border: 0; }
+.qazana-widget-tabs .qazana-tab-title:focus {
+  outline: 0; }
 .qazana-widget-tabs .qazana-tabs {
   text-align: right; }
 .qazana-widget-tabs .qazana-tabs-wrapper {

@@ -633,7 +633,7 @@ class Element_Column extends Element_Base {
 		$this->end_controls_section();
 	}
 
-	protected function _render_settings() {
+	protected function render_edit_tools() {
 		?>
 		<div class="qazana-element-overlay">
 			<ul class="qazana-editor-element-settings qazana-editor-column-settings">

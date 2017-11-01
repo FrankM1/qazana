@@ -70,7 +70,18 @@
 	.qazana-tab-content,
 	.qazana-tabs-content-wrapper {
 		border: 1px none $gray-light;
-	}
+    }
+    
+    .qazana-tab-title { 
+        &::-moz-focus-inner {
+            padding: 0;
+            border: 0;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+    }
 
 	.qazana-tabs {
 		text-align: $start;

@@ -124,7 +124,7 @@ abstract class Element_Base extends Controls_Stack {
 		}
 		?>
 		<script type="text/html" id="tmpl-qazana-<?php echo $this->get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
-			<?php $this->_render_settings(); ?>
+			<?php $this->render_edit_tools(); ?>
 			<?php echo $content_template; ?>
 		</script>
 		<?php
@@ -276,7 +276,7 @@ abstract class Element_Base extends Controls_Stack {
 
 	protected function _content_template() {}
 
-	protected function _render_settings() {}
+	protected function render_edit_tools() {}
 
 	/**
 	 * @return boolean

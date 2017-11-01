@@ -27,17 +27,17 @@ class DB {
 	 */
 	public function save_editor( $post_id, $posted, $status = self::STATUS_PUBLISH, $save_state = 'save' ) {
 
-		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data
+		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data.
 		$this->switch_to_post( $post_id );
 
 		$editor_data = $this->_get_editor_data( $posted );
 
-        // exit if data is empty and save state is not in delete mode. Important for prevention of accidental template deletions
+        // exit if data is empty and save state is not in delete mode. Important for prevention of accidental template deletions.
         if ( ! $editor_data && $save_state !== 'delete' ) {
             return false;
         }
 
-		// We need the `wp_slash` in order to avoid the unslashing during the `update_post_meta`
+		// We need the `wp_slash` in order to avoid the unslashing during the `update_post_meta`.
 		$json_value = wp_slash( wp_json_encode( $editor_data ) );
 
 		if ( self::STATUS_PUBLISH === $status ) {
@@ -45,7 +45,6 @@ class DB {
 			$this->remove_draft( $post_id );
 
 			$is_meta_updated = update_metadata( 'post', $post_id, '_qazana_data', $json_value );
-
 
 			do_action( 'qazana/db/before_save', $status, $is_meta_updated );
 
@@ -73,10 +72,10 @@ class DB {
 
 		update_post_meta( $post_id, '_qazana_version', qazana_get_db_version() );
 
-		// Restore global post
+		// Restore global post.
 		$this->restore_current_post();
 
-		// Remove Post CSS
+		// Remove Post CSS.
 		delete_post_meta( $post_id, Post_CSS_File::META_KEY );
 
 		do_action( 'qazana/editor/after_save', $post_id, $editor_data );
@@ -138,7 +137,7 @@ class DB {
 
 		$text_editor_widget_type = qazana()->widgets_manager->get_widget_types( 'text-editor' );
 
-		// TODO: Better coding to start template for editor
+		// TODO: Better coding to start template for editor.
 		return [
 			[
 				'id' => Utils::generate_random_string(),
@@ -370,7 +369,7 @@ class DB {
 
 		$this->switched_post_data[] = [
 			'switched_id' => $post_id,
-			'original_id' => get_the_ID(),// Note, it can be false if the global isn't set
+			'original_id' => get_the_ID(), // Note, it can be false if the global isn't set.
 		];
 
 		$GLOBALS['post'] = get_post( $post_id );
@@ -385,7 +384,7 @@ class DB {
 			return;
 		}
 
-		// It was switched from an empty global post, restore this state and unset the global post
+		// It was switched from an empty global post, restore this state and unset the global post.
 		if ( false === $data['original_id'] ) {
 			unset( $GLOBALS['post'] );
 			return;

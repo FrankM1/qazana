@@ -57,7 +57,7 @@ class Frontend {
 		$this->_is_frontend_mode = true;
 		$this->_has_qazana_in_page = is_singular() && qazana()->db->is_built_with_qazana( get_the_ID() );
 
-		//add element script and css dependencies
+		// Add element script and css dependencies
 		$this->get_dependencies( get_the_ID() );
 
 		if ( $this->_has_qazana_in_page ) {
@@ -99,7 +99,7 @@ class Frontend {
 
 			$element_instance->add_element_dependencies();
 
-			//Add skin dependencies
+			// Add skin dependencies.
 			if ( 'widget' === $element['elType'] && $skin = $element_instance->get_current_skin() ) {
 
 				$skin->set_parent( $element_instance ); // Match skins scope
@@ -118,7 +118,7 @@ class Frontend {
 				}
 			}
 
-			//Add normal widget dependencies
+			// Add normal widget dependencies.
 			if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
 				foreach ( $element_instance->_element_stylesheets as $key ) {
 					$this->element_stylesheets[] = $key;
@@ -243,17 +243,17 @@ class Frontend {
 		$post = get_post();
 
 		$qazana_frontend_config = [
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            		'home_url' => home_url(),
+			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+			'home_url'       => home_url(),
 			'google_api_key' => get_option( 'qazana_google_maps_api_key', '' ),
-			'assets_url' => qazana()->core_assets_url,
-			'nonce' => wp_create_nonce( 'qazana-frontend' ),
-			'isEditMode' => qazana()->preview->is_preview_mode(),
-			'settings' => SettingsManager::get_settings_frontend_config(),
-			'is_rtl' => is_rtl(),
-			'post' => [
-				'id' => $post->ID,
-				'title' => $post->post_title,
+			'assets_url'     => qazana()->core_assets_url,
+			'nonce'          => wp_create_nonce( 'qazana-frontend' ),
+			'isEditMode'     => qazana()->preview->is_preview_mode(),
+			'settings'       => SettingsManager::get_settings_frontend_config(),
+			'is_rtl'         => is_rtl(),
+			'post'           => [
+				'id'      => $post->ID,
+				'title'   => $post->post_title,
 				'excerpt' => $post->post_excerpt,
 			],
 			'urls' => [
@@ -546,22 +546,24 @@ class Frontend {
 			return $content;
 		}
 
-		//add element script and css dependencies
-		$this->get_dependencies( $post_id );
+		// Add element script and css dependencies.
+        $this->get_dependencies( $post_id );
+        $this->enqueue_widget_scripts();
+        $this->enqueue_widget_styles();
 
-		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the css inline
+		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the css inline.
 		$is_edit_mode = qazana()->editor->is_edit_mode();
 		qazana()->editor->set_edit_mode( false );
 
-		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data
+		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data.
 		qazana()->db->switch_to_post( $post_id );
 
 		$content = $this->get_builder_content( $post_id, $is_edit_mode );
 
 		qazana()->db->restore_current_post();
 
-		// Restore edit mode state
-		qazana()->editor->set_edit_mode( $is_edit_mode );
+		// Restore edit mode state.
+        qazana()->editor->set_edit_mode( $is_edit_mode );
 
 		return $content;
 	}
@@ -577,7 +579,7 @@ class Frontend {
 	}
 
 	/**
-	 * Remove WordPress default filters that conflicted with Elementor
+	 * Remove WordPress default filters that conflicted with Qazana
 	 */
 	public function remove_content_filters() {
 		$filters = [

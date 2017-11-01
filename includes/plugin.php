@@ -319,7 +319,7 @@ class Plugin {
     private function includes() {
 
         do_action( 'qazana/before/includes' );
-        
+
         /** Core **************************************************************/
         require_once( $this->includes_dir . 'core/sub-actions.php' );
         require_once( $this->includes_dir . 'core/functions.php' );
@@ -328,7 +328,7 @@ class Plugin {
 
         require_once( $this->includes_dir . 'core/settings/manager.php' );
         require_once( $this->includes_dir . 'core/controls-stack.php' );
-        
+
         require_once( $this->includes_dir . 'core/settings/base/manager.php' );
         require_once( $this->includes_dir . 'core/settings/base/model.php' );
         require_once( $this->includes_dir . 'core/settings/general/manager.php' );
@@ -346,7 +346,7 @@ class Plugin {
         require_once( $this->includes_dir . 'common/cron.php' );
         require_once( $this->includes_dir . 'common/mobile.php' );
         require_once( $this->includes_dir . 'common/embed.php' );
-        
+
         require_once( $this->includes_dir . 'editor/fonts.php' );
         require_once( $this->includes_dir . 'editor/editor.php' );
         require_once( $this->includes_dir . 'editor/preview.php' );
@@ -374,14 +374,14 @@ class Plugin {
         // extensions
         require_once( $this->includes_dir . 'extensions/extensions-base.php');
 
-        //vendor classes
+        // vendor classes
         require_once( $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php' );
 
         require_once( $this->includes_dir . 'widgets/base/element-base.php' );
         require_once( $this->includes_dir . 'widgets/base/widget-base.php' );
         require_once( $this->includes_dir . 'widgets/shared/carousel.php' );
         require_once( $this->includes_dir . 'widgets/shared/position.php' );
-        
+
         /** Hooks *************************************************************/
         require_once $this->includes_dir.'core/actions.php';
         require_once $this->includes_dir.'core/filters.php';
@@ -407,39 +407,39 @@ class Plugin {
     public function init_classes() {
 
         do_action( 'qazana/before/init_classes' );
-        
-        $paths = array( 
-			'path' 	=> $this->plugin_dir, 
-			'uri' 	=> $this->plugin_url 
+
+        $paths = array(
+			'path' 	=> $this->plugin_dir,
+			'uri' 	=> $this->plugin_url,
         );
 
         Core\Settings\Manager::run();
 
-        $this->db                   = new DB();
-        $this->icons_manager        = new Icons_Manager();
-        $this->controls_manager     = new Controls_Manager();
-        $this->schemes_manager      = new Schemes_Manager();
-        $this->elements_manager     = new Elements_Manager();
-        $this->widget_loader        = new Loader( $paths, $this->widget_locations );
-        $this->widgets_manager      = new Widgets_Manager();
-	    $this->skins_manager 	    = new Skins_Manager();
-	    $this->posts_css_manager    = new Posts_CSS_Manager();
-        $this->customcss            = new Custom_Css();
-        $this->editor               = new Editor();
-        $this->preview              = new Preview();
-        $this->frontend             = new Frontend();
-        $this->heartbeat            = new Heartbeat();
-        $this->templates_manager    = new Template_Manager();
-        $this->cron                 = new Cron;
+        $this->db                = new DB();
+        $this->icons_manager     = new Icons_Manager();
+        $this->controls_manager  = new Controls_Manager();
+        $this->schemes_manager   = new Schemes_Manager();
+        $this->elements_manager  = new Elements_Manager();
+        $this->widget_loader     = new Loader( $paths, $this->widget_locations );
+        $this->widgets_manager   = new Widgets_Manager();
+        $this->skins_manager     = new Skins_Manager();
+        $this->posts_css_manager = new Posts_CSS_Manager();
+        $this->customcss         = new Custom_Css();
+        $this->editor            = new Editor();
+        $this->preview           = new Preview();
+        $this->frontend          = new Frontend();
+        $this->heartbeat         = new Heartbeat();
+        $this->templates_manager = new Template_Manager();
+        $this->cron              = new Cron;
 
-        $this->extensions_loader    = new Loader( $paths, $this->extensions_locations );
-        $this->extensions_manager   = new Extensions\Manager( $this->extensions_loader );
+        $this->extensions_loader  = new Loader( $paths, $this->extensions_locations );
+        $this->extensions_manager = new Extensions\Manager( $this->extensions_loader );
 
-        $this->mobile_detect        = new MobileDetect();
+        $this->mobile_detect = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
 
         do_action( 'qazana/after/init_classes' );
-        
+
     }
 
     /** Public Methods ********************************************************/
@@ -473,7 +473,7 @@ class Plugin {
         $extensions_locations = $this->__get( 'extensions_locations' );
 
         if ( is_array( $location ) ) {
-            $extensions_locations = array_merge( $location, $extensions_locations);
+            $extensions_locations = array_merge( $location, $extensions_locations );
         } else {
             $extensions_locations[] = $location;
         }
