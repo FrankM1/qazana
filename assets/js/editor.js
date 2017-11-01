@@ -4487,9 +4487,32 @@ module.exports = BaseSettings.extend( {
 			qazana.settings.page.updateStylesheet();
 		},
 		custom_css: function( newValue ) {
-			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
-			this.controlsCSS.stylesheet.addRawCSS( 'general-settings-custom-css', newValue );
+            this.custom_css( newValue );
 		}
+    },
+    
+    custom_css: function( newValue ) {
+
+        if ( ! newValue ) {
+            newValue = this.model.get('custom_css');
+        } 
+        
+        if ( newValue ) {
+            newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
+            this.controlsCSS.stylesheet.addRawCSS( 'general-settings-custom-css', newValue );
+        }
+    },
+
+    updateStylesheet: function( keepOldEntries ) {
+		if ( ! keepOldEntries ) {
+			this.controlsCSS.stylesheet.empty();
+        }
+        
+		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /{{WRAPPER}}/g ], [ this.getSettings( 'cssWrapperSelector' ) ] );
+        
+        this.custom_css();
+        
+		this.controlsCSS.addStyleToDocument();
 	},
 	
 	reloadPreview: function() {
@@ -4522,11 +4545,34 @@ module.exports = BaseSettings.extend( {
 		},
 
 		custom_css: function( newValue ) {
-			newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
-			this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
+			this.custom_css( newValue );
 		}
-	},
+    },
 
+    custom_css: function( newValue ) {
+
+        if ( ! newValue ) {
+            newValue = this.model.get('custom_css');
+        } 
+
+        if ( newValue ) {
+            newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
+            this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
+        }
+    },
+
+    updateStylesheet: function( keepOldEntries ) {
+		if ( ! keepOldEntries ) {
+			this.controlsCSS.stylesheet.empty();
+        }
+        
+		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /{{WRAPPER}}/g ], [ this.getSettings( 'cssWrapperSelector' ) ] );
+        
+        this.custom_css();
+        
+		this.controlsCSS.addStyleToDocument();
+	},
+    
 	renderStyles: function() {
 		this.controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /\{\{WRAPPER}}/g ], [ 'body.qazana-page-' + qazana.config.post_id ] );
 		this.controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', this.model.get('custom_css').replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id ) );
