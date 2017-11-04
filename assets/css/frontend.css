@@ -192,16 +192,16 @@
   .qazana-custom-embed-play i {
     font-size: 100px;
     color: #ffffff;
-    opacity: .8;
+    opacity: 0.8;
     text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
-    -webkit-transition: all .5s;
-    transition: all .5s; }
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s; }
   .qazana-custom-embed-play.qazana-playing i {
-    font-family: 'FontAwesome';
+    font-family: "FontAwesome";
     -webkit-animation: fa-spin 2s infinite linear;
             animation: fa-spin 2s infinite linear; }
     .qazana-custom-embed-play.qazana-playing i:before {
-      content: '\f1ce'; }
+      content: "\f1ce"; }
 
 @media (max-width: 1024px) {
   .qazana-tablet-align-center {
@@ -224,21 +224,48 @@
   display: inline-flex; }
 
 .qazana-editor-active .qazana-element-inline {
-  display: -webkit-inline-box  !important;
-  display: -webkit-inline-flex  !important;
-  display: -ms-inline-flexbox  !important;
-  display: inline-flex  !important; }
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important; }
 .qazana-editor-active .qazana-widget-container {
   z-index: 1; }
 
 a.qazana-edit-template {
   font-size: 80%; }
 
-#wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
-  content: '\e800';
-  font-family: eicons;
-  font-size: 12px;
-  margin-top: 5px; }
+#wpadminbar #wp-admin-bar-qazana_edit_page {
+  background-color: #360061;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s; }
+  #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item {
+    text-transform: uppercase;
+    background-color: transparent;
+    font-size: 9px;
+    color: #bbc5ff;
+    letter-spacing: 2px;
+    padding: 0 18px 0 22px !important;
+    -webkit-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
+      background-image: url(../images/logo-small-light.png) !important;
+      background-repeat: no-repeat;
+      content: " ";
+      background-size: 9px;
+      background-position: 7px 9px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 32px;
+      width: 19px; }
 
 .qazana:after {
   position: absolute;
