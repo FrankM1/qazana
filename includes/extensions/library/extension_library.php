@@ -40,7 +40,7 @@ class Library extends Base {
 
 	public function localize_settings() {
 		\qazana()->editor->add_localize_settings( 'i18n', [
-			'home_url' => home_url(),
+			'home_url'      => home_url(),
 			'edit_template' => __( 'Edit Template', 'qazana' ),
 		] );
 	}
@@ -65,7 +65,6 @@ class Library extends Base {
 
 		return $source->get_items();
 	}
-
 
 	public static function empty_templates_message() {
 		return '<div id="qazana-widget-template-empty-templates">
