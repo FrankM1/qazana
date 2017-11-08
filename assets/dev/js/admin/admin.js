@@ -14,14 +14,24 @@
 				$switchModeInput: $( '#qazana-switch-mode-input' ),
 				$switchModeButton: $( '#qazana-switch-mode-button' ),
 				$qazanaLoader: $( '.qazana-loader' ),
-				$qazanaEditor: $( '#qazana-editor' ),
+				$builderEditor: $( '#qazana-editor' ),
 				$importButton: $( '#qazana-import-template-trigger' ),
-				$importArea: $( '#qazana-import-template-area' )
+				$importArea: $( '#qazana-import-template-area' ),
+				$settingsForm: $( '#qazana-settings-form' ),
+				$settingsTabsWrapper: $( '#qazana-settings-tabs-wrapper' )
 			};
+
+			this.cache.$settingsFormPages = this.cache.$settingsForm.find( '.qazana-settings-form-page' );
+            
+			this.cache.$activeSettingsPage = this.cache.$settingsFormPages.filter( '.qazana-active' );
+
+			this.cache.$settingsTabs = this.cache.$settingsTabsWrapper.children();
+
+			this.cache.$activeSettingsTab = this.cache.$settingsTabs.filter( '.nav-tab-active' );
 		},
 
 		toggleStatus: function() {
-			var isQazanaMode = 'qazana' === this.getEditMode();
+			var isQazanaMode = this.isQazanaMode();
 
 			this.cache.$body
 			    .toggleClass( 'qazana-editor-active', isQazanaMode )
@@ -29,15 +39,15 @@
 		},
 
 		bindEvents: function() {
-			var self = this;
-
+            var self = this;
+            
 			self.cache.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();
 
-				if ( 'qazana' === self.getEditMode() ) {
-					self.cache.$switchModeInput.val( 'editor' );
+				if ( self.isQazanaMode() ) {
+					self.cache.$switchModeInput.val( '' );
 				} else {
-					self.cache.$switchModeInput.val( 'qazana' );
+					self.cache.$switchModeInput.val( true );
 
 					var $wpTitle = $( '#title' );
 
@@ -45,7 +55,9 @@
 						$wpTitle.val( 'Qazana #' + $( '#post_ID' ).val() );
 					}
 
-					wp.autosave.server.triggerSave();
+					if ( wp.autosave ) {
+						wp.autosave.server.triggerSave();
+					}
 
 					self.animateLoader();
 
@@ -72,14 +84,14 @@
 				} );
 			} );
 
-			$( '#qazana-clear-css-cache-button' ).on( 'click', function( event ) {
+			$( '#qazana-clear-cache-button' ).on( 'click', function( event ) {
 				event.preventDefault();
 				var $thisButton = $( this );
 
 				$thisButton.removeClass( 'success' ).addClass( 'loading' );
 
 				$.post( ajaxurl, {
-					action: 'qazana_clear_css_cache',
+					action: 'qazana_clear_cache',
 					_nonce: $thisButton.data( 'nonce' )
 				} )
 					.done( function() {
@@ -94,7 +106,7 @@
 				$thisButton.removeClass( 'success' ).addClass( 'loading' );
 
 				$.post( ajaxurl, {
-					action: 'qazana_reset_remote_library',
+					action: 'qazana_reset_library',
 					_nonce: $thisButton.data( 'nonce' )
 				} )
 					.done( function() {
@@ -130,13 +142,61 @@
 							} ).show();
 					} );
 			} );
+
+			self.cache.$settingsTabs.on( {
+				click: function( event ) {
+					event.preventDefault();
+
+					event.currentTarget.focus(); // Safari does not focus the tab automatically
+				},
+				focus: function() { // Using focus event to enable navigation by tab key
+					var hrefWithoutHash = location.href.replace( /#.*/, '' );
+
+					history.pushState( {}, '', hrefWithoutHash + this.hash );
+
+					self.goToSettingsTabFromHash();
+				}
+			} );
+
+			$( '.qazana-rollback-button' ).on( 'click', function( event ) {
+				event.preventDefault();
+
+				var $this = $( this ),
+					dialogsManager = new DialogsManager.Instance();
+
+				dialogsManager.createWidget( 'confirm', {
+					headerMessage: QazanaAdminConfig.i18n.rollback_to_previous_version,
+					message: QazanaAdminConfig.i18n.rollback_confirm,
+					strings: {
+						confirm: QazanaAdminConfig.i18n.yes,
+						cancel: QazanaAdminConfig.i18n.cancel
+					},
+					onConfirm: function() {
+						$this.addClass( 'loading' );
+
+						location.href = $this.attr( 'href' );
+					}
+				} ).show();
+			} );
+
+			$( '.qazana_css_print_method select' ).on( 'change', function() {
+				var $descriptions = $( '.qazana-css-print-method-description' );
+
+				$descriptions.hide();
+				$descriptions.filter( '[data-value="' + $( this ).val() + '"]' ).show();
+			} ).trigger( 'change' );
 		},
 
 		init: function() {
 			this.cacheElements();
+
 			this.bindEvents();
 
 			this.initTemplatesImport();
+
+			this.initMaintenanceMode();
+
+			this.goToSettingsTabFromHash();
 		},
 
 		initTemplatesImport: function() {
@@ -150,7 +210,7 @@
 
 			self.cache.$formAnchor = $( 'h1' );
 
-			$( '#wpbody-content' ).find( '.page-title-action' ).after( $importButton );
+			$( '#wpbody-content' ).find( '.page-title-action:last' ).after( $importButton );
 
 			self.cache.$formAnchor.after( $importArea );
 
@@ -160,17 +220,49 @@
 		},
 
 		initMaintenanceMode: function() {
-			//var MaintenanceMode = require( 'qazana-admin/maintenance-mode' );
+			var MaintenanceMode = require( './maintenance-mode' );
 
-			//this.maintenanceMode = new MaintenanceMode();
+			this.maintenanceMode = new MaintenanceMode();
 		},
 
-		getEditMode: function() {
-			return this.cache.$switchModeInput.val();
+		isQazanaMode: function() {
+			return !! this.cache.$switchModeInput.val();
 		},
 
 		animateLoader: function() {
 			this.cache.$goToEditLink.addClass( 'qazana-animate' );
+		},
+
+		goToSettingsTabFromHash: function() {
+			var hash = location.hash.slice( 1 );
+
+			if ( hash ) {
+				this.goToSettingsTab( hash );
+			}
+		},
+
+		goToSettingsTab: function( tabName ) {
+			var $activePage = this.cache.$settingsFormPages.filter( '#' + tabName );
+
+			if ( ! $activePage.length ) {
+				return;
+			}
+
+			this.cache.$activeSettingsPage.removeClass( 'qazana-active' );
+
+			this.cache.$activeSettingsTab.removeClass( 'nav-tab-active' );
+
+			var $activeTab = this.cache.$settingsTabs.filter( '#qazana-settings-' + tabName );
+
+			$activePage.addClass( 'qazana-active' );
+
+			$activeTab.addClass( 'nav-tab-active' );
+
+			this.cache.$settingsForm.attr( 'action', 'options.php#' + tabName  );
+
+			this.cache.$activeSettingsPage = $activePage;
+
+			this.cache.$activeSettingsTab = $activeTab;
 		}
 	};
 
@@ -178,4 +270,5 @@
 		QazanaAdminApp.init();
 	} );
 
-}( jQuery, window, document ) );
+	window.qazanaAdmin = QazanaAdminApp;
+}( jQuery ) );

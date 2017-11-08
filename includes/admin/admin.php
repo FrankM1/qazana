@@ -5,6 +5,9 @@
  */
 namespace Qazana;
 
+use Qazana\System_Info;
+use Qazana\Utils;
+
 /**
  * Loads Qazana plugin admin area.
  *
@@ -124,6 +127,7 @@ class Admin {
         require( $this->admin_dir . 'editor.php' );
         require( $this->admin_dir . 'api.php' );
         require( $this->admin_dir . 'settings/panel.php' );
+        require( $this->admin_dir . 'settings/tools.php' );
         require( $this->admin_dir . 'settings/system-info/main.php' );
         require( $this->admin_dir . 'tracker.php' );
     }
@@ -187,11 +191,11 @@ class Admin {
      * @return [type] [description]
      */
     public function init_classes() {
-        $this->editor_admin         = new Editor_Admin();
-        $this->settings             = new Settings_Panel();
-        $this->system_info          = new System_Info\Main();
-        $this->admin_api            = new Admin_Api();
-        $this->admin_tracker        = new Admin_Tracker();
+        $this->editor_admin   = new Admin\Post_Editor();
+        $this->settings_panel = new Admin\Settings\Panel();
+        $this->admin_api      = new Admin\Api();
+        $this->admin_tracker  = new Admin\Tracker();
+        $this->system_info    = new System_Info\Main();
 
         if ( Utils::is_ajax() ) {
             new Images_Manager();
@@ -210,23 +214,23 @@ class Admin {
     public function admin_menus() {
 
         // Are settings enabled?
-            add_options_page(
-                __( 'Qazana',  'qazana' ),
-                __( 'Qazana',  'qazana' ),
-                $this->minimum_capability,
-                'qazana',
-                array( &$this, 'plugin_options_page' )
-            );
+        add_menu_page(
+            __( 'Qazana',  'qazana' ),
+            __( 'Qazana',  'qazana' ),
+            $this->minimum_capability,
+            'qazana',
+            array( &$this, 'plugin_options_page' )
+        );
 
-            // These are later removed in admin_head
-            // About
-            add_dashboard_page(
-                __( 'Welcome to Qazana',  'qazana' ),
-                __( 'Welcome to Qazana',  'qazana' ),
-                $this->minimum_capability,
-                'qazana-about',
-                array( $this, 'about_screen' )
-            );
+        // These are later removed in admin_head
+        // About
+        add_dashboard_page(
+            __( 'Welcome to Qazana',  'qazana' ),
+            __( 'Welcome to Qazana',  'qazana' ),
+            $this->minimum_capability,
+            'qazana-about',
+            array( $this, 'about_screen' )
+        );
 
         // Bail if plugin is not network activated
         if ( ! is_plugin_active_for_network( qazana()->basename ) ) {
@@ -497,58 +501,13 @@ class Admin {
 
     /** Admin Settings UI **************************************************************/
 
-    /*
-     * Plugin Options page rendering goes here, checks
-     * for active tab and replaces key with the related
-     * settings key. Uses the plugin_options_tabs method
-     * to render the tabs.
-     */
-    public function plugin_options_page() {
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key; ?>
-
-        <div class="wrap">
-
-            <?php $this->plugin_options_tabs(); ?>
-
-            <form method="post" action="options.php">
-
-                <?php wp_nonce_field( 'update-options' ); ?>
-
-                <?php settings_fields( $tab ); ?>
-
-                <?php do_settings_sections( $tab ); ?>
-
-                <?php submit_button(); ?>
-
-            </form>
-
-        </div>
-
-        <?php
-
-    }
-
-    /*
-     * Renders our tabs in the plugin options page,
-     * walks through the object's tabs array and prints
-     * them one by one. Provides the heading for the
-     * plugin_options_page method.
-     */
-    public function plugin_options_tabs() {
-        $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key;
-
-        screen_icon();
-
-        echo '<h2 class="nav-tab-wrapper">';
-
-        foreach ( $this->plugin_settings_tabs as $tab_key => $tab_caption ) {
-            $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-
-            echo '<a class="nav-tab '.$active.'" href="?page=qazana&tab='.esc_attr( $tab_key ).'">'.$tab_caption.'</a>';
-        }
-
-        echo '</h2>';
-    }
+    /**
+	 * @since 1.3.0
+	 * @access public
+	*/
+	public function plugin_options_page() {
+        $this->settings_panel->display_settings_page();
+	}
 
     public function admin_notices() {
         $upgrade_notice = $this->admin_api->get_upgrade_notice();
@@ -658,7 +617,7 @@ class Admin {
             'qazana-admin-feedback',
             'QazanaAdminFeedbackArgs',
             [
-                'is_tracker_opted_in' => Admin_Tracker::is_allow_track(),
+                'is_tracker_opted_in' => Admin\Tracker::is_allow_track(),
                 'i18n' => [
                     'submit_n_deactivate' => __( 'Submit & Deactivate', 'qazana' ),
                     'skip_n_deactivate' => __( 'Skip & Deactivate', 'qazana' ),

@@ -1,16 +1,24 @@
 <?php
-namespace Qazana;
+namespace Qazana\Admin\Settings;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
-class Settings_Controls {
+class Controls {
 
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public static function render( $field = [] ) {
-		if ( empty( $field ) || empty( $field['id'] ) )
+		if ( empty( $field ) || empty( $field['id'] ) ) {
 			return;
+		}
 
 		$defaults = [
-			'type' => 'text',
+			'type' => '',
 			'placeholder' => '',
 			'classes' => [],
 			'std' => '',
@@ -20,35 +28,58 @@ class Settings_Controls {
 
 		$method_name = '_' . $field['type'];
 		if ( ! method_exists( __CLASS__, $method_name ) )
-			return;
+			$method_name = '_text';
 
 		self::$method_name( $field );
 	}
 
-	private static function _text( $field = [] ) {
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access private
+	*/
+	private static function _text( array $field ) {
 		if ( empty( $field['classes'] ) ) {
 			$field['classes'] = [ 'regular-text' ];
 		}
 		?>
 		<input type="<?php echo esc_attr( $field['type'] ); ?>" class="<?php echo esc_attr( implode( ' ', $field['classes'] ) ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo esc_attr( get_option( $field['id'], $field['std'] ) ); ?>"<?php echo ! empty( $field['placeholder'] ) ? ' placeholder="' . $field['placeholder'] . '"' : ''; ?> />
-		<?php if ( ! empty( $field['sub_desc'] ) ) echo $field['sub_desc']; ?>
+		<?php
+		if ( ! empty( $field['sub_desc'] ) ) :
+			echo $field['sub_desc'];
+		endif;
+		?>
 		<?php if ( ! empty( $field['desc'] ) ) : ?>
 			<p class="description"><?php echo $field['desc']; ?></p>
 		<?php endif;
-	}
+    }
 
-	private static function _checkbox( $field = [] ) {
+    /**
+	 * @static
+	 * @since 1.3.0
+	 * @access private
+	*/
+	private static function _checkbox( array $field ) {
 		?>
 		<label>
 			<input type="<?php echo esc_attr( $field['type'] ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo $field['value']; ?>"<?php checked( $field['value'], get_option( $field['id'], $field['std'] ) ); ?> />
-			<?php if ( ! empty( $field['sub_desc'] ) ) echo $field['sub_desc']; ?>
+			<?php
+			if ( ! empty( $field['sub_desc'] ) ) :
+				echo $field['sub_desc'];
+			endif;
+			?>
 		</label>
 		<?php if ( ! empty( $field['desc'] ) ) : ?>
 			<p class="description"><?php echo $field['desc']; ?></p>
 		<?php endif;
 	}
 
-	private static function _checkbox_list( $field = [] ) {
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access private
+	*/
+	private static function _checkbox_list( array $field ) {
 		$old_value = get_option( $field['id'], $field['std'] );
 		if ( ! is_array( $old_value ) )
 			$old_value = [];
@@ -64,7 +95,36 @@ class Settings_Controls {
 		<?php endif;
 	}
 
-	private static function _checkbox_list_cpt( $field = [] ) {
+	/**
+	 * @static
+	 * @since 1.4.0
+	 * @access private
+	*/
+	private static function _select( array $field ) {
+		$old_value = get_option( $field['id'], $field['std'] );
+		?>
+		<select name="<?php echo esc_attr( $field['id'] ); ?>">
+			<?php if ( ! empty( $field['show_select'] ) ) : ?>
+				<option value="">— <?php _e( 'Select', 'elementor' ); ?> —</option>
+			<?php endif; ?>
+
+			<?php foreach ( $field['options'] as $value => $label ) : ?>
+				<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $value, $old_value ); ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+		</select>
+
+		<?php if ( ! empty( $field['desc'] ) ) : ?>
+			<p class="description"><?php echo $field['desc']; ?></p>
+		<?php
+		endif;
+	}
+
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access private
+	*/
+	private static function _checkbox_list_cpt( array $field ) {
 		$defaults = [
 			'exclude' => [],
 		];
@@ -99,15 +159,28 @@ class Settings_Controls {
 		self::_checkbox_list( $field );
 	}
 
-	private static function _raw_html( $field = [] ) {
-		if ( empty( $field['html'] ) )
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access private
+	*/
+	private static function _raw_html( array $field ) {
+		if ( empty( $field['html'] ) ) {
 			return;
+		}
 		?>
-		<div><?php echo $field['html']; ?></div>
+		<div id="<?php echo $field['id']; ?>">
 
-		<?php if ( ! empty( $field['sub_desc'] ) ) echo $field['sub_desc']; ?>
-		<?php if ( ! empty( $field['desc'] ) ) : ?>
-			<p class="description"><?php echo $field['desc']; ?></p>
-		<?php endif;
+			<div><?php echo $field['html']; ?></div>
+			<?php
+			if ( ! empty( $field['sub_desc'] ) ) :
+				echo $field['sub_desc'];
+			endif;
+			?>
+			<?php if ( ! empty( $field['desc'] ) ) : ?>
+				<p class="description"><?php echo $field['desc']; ?></p>
+			<?php endif; ?>
+			</div>
+		<?php
 	}
 }

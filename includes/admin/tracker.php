@@ -1,9 +1,9 @@
 <?php
-namespace Qazana;
+namespace Qazana\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Admin_Tracker {
+class Tracker {
 
     private static $_api_url = 'https://api.qazana.net/api/v1/qazana/stats/';
 

@@ -1,9 +1,12 @@
 <?php
-namespace Qazana;
+namespace Qazana\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Editor_Admin {
+use Qazana\Utils;
+use Qazana\User;
+
+class Post_Editor {
 
     /**
      * Admin constructor.
@@ -15,7 +18,7 @@ class Editor_Admin {
 
         add_action( 'edit_form_after_title', [ $this, 'print_switch_mode_button' ] );
         add_action( 'save_post', [ $this, 'save_post' ] );
- 
+
         add_filter( 'page_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
         add_filter( 'post_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
 		add_filter( 'display_post_states', [ $this, 'add_post_state' ], 10, 2 );
