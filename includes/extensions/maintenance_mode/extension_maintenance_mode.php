@@ -7,18 +7,19 @@ use Qazana\Admin\Settings\Panel;
 use Qazana\Admin\Settings\Tools;
 
 class Maintenance_Mode extends Base {
-
+    
     const OPTION_PREFIX = 'qazana_maintenance_mode_';
- 
     const MODE_MAINTENANCE = 'maintenance';
-
     const MODE_COMING_SOON = 'coming_soon';
 
-     /**
+    /**
      * @since 1.3.0
      * @access public
-    */
+     */
     public function __construct() {
+
+        require('classes/hooks.php');
+        
         $is_enabled = (bool) self::get( 'mode' ) && (bool) self::get( 'template_id' );
 
         if ( is_admin() ) {
@@ -46,13 +47,13 @@ class Maintenance_Mode extends Base {
 
             $compare_roles = array_intersect( $user->roles, $exclude_roles );
 
-            if ( ! empty( $compare_roles ) ) {
+            if ( !empty( $compare_roles ) ) {
                 return;
             }
         }
 
-        add_filter( 'body_class', [ $this, 'body_class' ] );
-        add_action( 'template_redirect', [ $this, 'template_redirect' ], 1 );
+        add_filter( 'body_class', [$this, 'body_class'] );
+        add_action( 'template_redirect', [$this, 'template_redirect'], 1 );
     }
 
     /**
@@ -60,7 +61,7 @@ class Maintenance_Mode extends Base {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+    public function get_name() {
         return 'maintenance_mode';
     }
 
@@ -100,6 +101,7 @@ class Maintenance_Mode extends Base {
 
         return $classes;
     }
+
     /**
      * @since 1.3.0
      * @access public
@@ -112,7 +114,7 @@ class Maintenance_Mode extends Base {
         // Setup global post for Qazana\frontend so `_has_qazana_in_page = true`.
         $GLOBALS['post'] = get_post( self::get( 'template_id' ) );
 
-        add_filter( 'template_include', [ $this, 'template_include' ], 1 );
+        add_filter( 'template_include', [$this, 'template_include'], 1 );
     }
 
     /**
@@ -141,7 +143,7 @@ class Maintenance_Mode extends Base {
      * @access public
     */
     public function register_settings_fields( Panel $tools ) {
-        $templates = qazana()->templates_manager->get_source( 'local' )->get_items( [ 'type' => 'page' ] );
+        $templates = qazana()->templates_manager->get_source( 'local' )->get_items( ['type' => 'page'] );
 
         $templates_options = [];
 
@@ -204,7 +206,7 @@ class Maintenance_Mode extends Base {
                                     'class' => 'qazana-default-hide',
                                     'type' => 'checkbox_list_roles',
                                 ],
-                                'setting_args' => [ 'Qazana\Admin\Settings\Validations', 'checkbox_list' ],
+                                'setting_args' => ['Qazana\Admin\Settings\Validations', 'checkbox_list'],
                             ],
                             'maintenance_mode_template_id' => [
                                 'label' => __( 'Choose Template', 'qazana' ),
@@ -252,5 +254,4 @@ class Maintenance_Mode extends Base {
             #wp-admin-bar-qazana-maintenance-on > .ab-item:before { content: "\f160"; top: 2px; }</style>
         <?php
     }
-
 }

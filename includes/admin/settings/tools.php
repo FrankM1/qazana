@@ -10,7 +10,7 @@ class Tools extends Panel {
 	const PAGE_ID = 'qazana-tools';
 
 	/**
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 * @access public
 	*/
 	public function register_admin_menu() {
@@ -25,7 +25,7 @@ class Tools extends Panel {
 	}
 
 	/**
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 * @access public
 	*/
 	public function ajax_qazana_clear_cache() {
@@ -73,32 +73,7 @@ class Tools extends Panel {
 	}
 
 	/**
-	 * @since 1.5.0
-	 * @access public
-	*/
-	public function post_qazana_rollback() {
-		check_admin_referer( 'qazana_rollback' );
-
-		$rollback = new Rollback(
-			[
-				'version' => ELEMENTOR_PREVIOUS_STABLE_VERSION,
-				'plugin_name' => ELEMENTOR_PLUGIN_BASE,
-				'plugin_slug' => qazana()->slug,
-				'package_url' => sprintf( 'https://downloads.wordpress.org/plugin/%s.%s.zip', qazana()->slug, ELEMENTOR_PREVIOUS_STABLE_VERSION ),
-			]
-		);
-
-		$rollback->run();
-
-		wp_die(
-			'', __( 'Rollback to Previous Version', 'qazana' ), [
-				'response' => 200,
-			]
-		);
-	}
-
-	/**
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 * @access public
 	*/
 	public function __construct() {
@@ -110,12 +85,10 @@ class Tools extends Panel {
 			add_action( 'wp_ajax_qazana_clear_cache', [ $this, 'ajax_qazana_clear_cache' ] );
 			add_action( 'wp_ajax_qazana_replace_url', [ $this, 'ajax_qazana_replace_url' ] );
 		}
-
-		add_action( 'admin_post_qazana_rollback', [ $this, 'post_qazana_rollback' ] );
 	}
 
 	/**
-	 * @since 1.5.0
+	 * @since 1.3.0
 	 * @access protected
 	*/
 	protected function create_tabs() {
@@ -168,58 +141,11 @@ class Tools extends Panel {
 					],
 				],
 			],
-			'versions' => [
-				'label' => __( 'Version Control', 'qazana' ),
-				'sections' => [
-					'rollback' => [
-						'label' => __( 'Rollback to Previous Version', 'qazana' ),
-						'callback' => function() {
-							$intro_text = sprintf( __( 'Experiencing an issue with Qazana version %s? Rollback to a previous version before the issue appeared.', 'qazana' ), ELEMENTOR_VERSION );
-							$intro_text = '<p>' . $intro_text . '</p>';
-
-							echo $intro_text;
-						},
-						'fields' => [
-							'rollback' => [
-								'label' => __( 'Rollback Version', 'qazana' ),
-								'field_args' => [
-									'type' => 'raw_html',
-									'html' => sprintf( '<a href="%s" class="button qazana-button-spinner qazana-rollback-button">%s</a>', wp_nonce_url( admin_url( 'admin-post.php?action=qazana_rollback' ), 'qazana_rollback' ), sprintf( __( 'Reinstall v%s', 'qazana' ), ELEMENTOR_PREVIOUS_STABLE_VERSION ) ),
-									'desc' => '<span style="color: red;">' . __( 'Warning: Please backup your database before making the rollback.', 'qazana' ) . '</span>',
-								],
-							],
-						],
-					],
-					'beta' => [
-						'label' => __( 'Become a Beta Tester', 'qazana' ),
-						'callback' => function() {
-							$intro_text = sprintf( __( 'Turn-on Beta Tester, to get notified when a new beta version of Qazana or E-Pro is available. The Beta version will not install automatically. You always have the option to ignore it.', 'qazana' ), ELEMENTOR_VERSION );
-							$intro_text = '<p>' . $intro_text . '</p>';
-
-							echo $intro_text;
-						},
-						'fields' => [
-							'beta' => [
-								'label' => __( 'Beta Tester', 'qazana' ),
-								'field_args' => [
-									'type' => 'select',
-									'default' => 'no',
-									'options' => [
-										'no' => __( 'Disable', 'qazana' ),
-										'yes' => __( 'Enable', 'qazana' ),
-									],
-									'desc' => __( 'Please Note: We do not recommend updating to a beta version on production sites.', 'qazana' ),
-								],
-							],
-						],
-					],
-				],
-			],
 		];
 	}
 
 	/**
-	 * @since 1.5.2
+	 * @since 1.3.0
 	 * @access public
 	*/
 	public function display_settings_page() {
@@ -229,7 +155,7 @@ class Tools extends Panel {
 	}
 
 	/**
-	 * @since 1.5.0
+	 * @since 1.3.0
 	 * @access protected
 	*/
 	protected function get_page_title() {

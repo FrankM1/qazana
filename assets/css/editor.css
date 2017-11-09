@@ -2760,7 +2760,10 @@ body.qazana-editor-preview #qazana-mode-switcher {
             box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2); }
   .qazana-template-library-template-remote .qazana-template-library-template-screenshot,
   .qazana-template-library-template-theme .qazana-template-library-template-screenshot {
-    height: 100%; }
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; }
   .qazana-template-library-template-remote .qazana-template-library-template-controls,
   .qazana-template-library-template-theme .qazana-template-library-template-controls {
     position: absolute;

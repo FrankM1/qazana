@@ -126,6 +126,9 @@ class Admin {
         require( $this->admin_dir . 'upgrades.php' );
         require( $this->admin_dir . 'editor.php' );
         require( $this->admin_dir . 'api.php' );
+
+        require( $this->admin_dir . 'settings/controls.php' );
+        require( $this->admin_dir . 'settings/validations.php' );
         require( $this->admin_dir . 'settings/panel.php' );
         require( $this->admin_dir . 'settings/tools.php' );
         require( $this->admin_dir . 'settings/system-info/main.php' );
@@ -191,11 +194,12 @@ class Admin {
      * @return [type] [description]
      */
     public function init_classes() {
-        $this->editor_admin   = new Admin\Post_Editor();
+        $this->editor_admin   = new Admin\Post\Editor();
         $this->settings_panel = new Admin\Settings\Panel();
+        $this->settings_tools = new Admin\Settings\Tools();
         $this->admin_api      = new Admin\Api();
         $this->admin_tracker  = new Admin\Tracker();
-        $this->system_info    = new System_Info\Main();
+        $this->system_info    = new Admin\System\Info\Main();
 
         if ( Utils::is_ajax() ) {
             new Images_Manager();

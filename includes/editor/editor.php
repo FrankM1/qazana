@@ -32,7 +32,7 @@ class Editor {
 		] );
 
 		do_action( 'qazana/editor/panel_templates' );
-		
+	
 	}
 
 	public function __construct() {
@@ -56,7 +56,7 @@ class Editor {
         }
 
 		$this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
-		
+	
     }
 
 	public function init( $die = true ) {
@@ -334,7 +334,6 @@ class Editor {
 			true
     	);
 
-
 		wp_register_script(
 			'ace',
 			'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js',
@@ -373,7 +372,7 @@ class Editor {
                 'hoverIntent',
                 'jquery-simple-dtpicker',
 				'ace',
-				'jquery-fonticonpicker'
+				'jquery-fonticonpicker',
             ],
             qazana_get_version(),
             true
@@ -403,87 +402,87 @@ class Editor {
 		}
 
         $localize_settings = [
-			'version' => qazana_get_version(),
-            'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'home_url' => home_url(),
-			'post_id' => $this->_post_id,
-            'nonce' => wp_create_nonce( 'qazana-editing' ),
-            'preview_link' => Utils::get_preview_url( $this->_post_id ),
-            'elements_categories' => qazana()->elements_manager->get_categories(),
-            'controls' => qazana()->controls_manager->get_controls_data(),
-            'elements' => qazana()->elements_manager->get_element_types_config(),
-			'widgets' => qazana()->widgets_manager->get_widget_types_config(),
-			'default_schemes' => qazana()->schemes_manager->get_schemes_defaults(),
-            'system_schemes' => qazana()->schemes_manager->get_system_schemes(),
-            'schemes' => [
-                'items' => qazana()->schemes_manager->get_registered_schemes_data(),
+			'version'             => qazana_get_version(),
+			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
+			'home_url'            => home_url(),
+			'post_id'             => $this->_post_id,
+			'nonce'               => wp_create_nonce( 'qazana-editing' ),
+			'preview_link'        => Utils::get_preview_url( $this->_post_id ),
+			'elements_categories' => qazana()->elements_manager->get_categories(),
+			'controls'            => qazana()->controls_manager->get_controls_data(),
+			'elements'            => qazana()->elements_manager->get_element_types_config(),
+			'widgets'             => qazana()->widgets_manager->get_widget_types_config(),
+			'default_schemes'     => qazana()->schemes_manager->get_schemes_defaults(),
+			'system_schemes'      => qazana()->schemes_manager->get_system_schemes(),
+			'schemes'             => [
+                'items'           => qazana()->schemes_manager->get_registered_schemes_data(),
                 'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
             ],
-            'wp_editor' => $this->_get_wp_editor_config(),
-			'settings' => SettingsManager::get_settings_managers_config(),
-            'settings_page_link' => admin_url( 'admin.php?page=' . qazana()->slug ),
-            'qazana_site' => 'https://radiumthemes.com/plugins/qazana',
-            'help_the_content_url' => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
-            'assets_url' => qazana()->core_assets_url,
-            'data' => $editor_data,
-            'locked_user' => $locked_user,
-            'is_rtl' => is_rtl(),
-            'locale' => get_locale(),
-            'viewportBreakpoints' => Responsive::get_breakpoints(),
-			'rich_editing_enabled' => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
-			'page_title_selector' => $page_title_selector,
-			'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
-            'i18n' => [
-                'qazana' => __( 'Qazana', 'qazana' ),
-                'dialog_confirm_delete' => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
-                'dialog_user_taken_over' => __( '{0} has taken over and is currently editing. Do you want to take over this page editing?', 'qazana' ),
-                'delete' => __( 'Delete', 'qazana' ),
-                'cancel' => __( 'Cancel', 'qazana' ),
-                'delete_element' => __( 'Delete {0}', 'qazana' ),
-                'take_over' => __( 'Take Over', 'qazana' ),
-                'go_back' => __( 'Go Back', 'qazana' ),
-                'saved' => __( 'Saved', 'qazana' ),
-                'before_unload_alert' => __( 'Please note: All unsaved changes will be lost.', 'qazana' ),
-                'edit_element' => __( 'Edit {0}', 'qazana' ),
-                'global_colors' => __( 'Global Colors', 'qazana' ),
-                'global_fonts' => __( 'Global Fonts', 'qazana' ),
-                'qazana_settings' => __( 'Qazana Settings', 'qazana' ),
-                'soon' => __( 'Soon', 'qazana' ),
-                'about_qazana' => __( 'About Qazana', 'qazana' ),
-                'inner_section' => __( 'Columns', 'qazana' ),
-                'dialog_confirm_gallery_delete' => __( 'Are you sure you want to reset this gallery?', 'qazana' ),
-                'delete_gallery' => __( 'Reset Gallery', 'qazana' ),
-                'gallery_images_selected' => __( '{0} Images Selected', 'qazana' ),
-                'insert_media' => __( 'Insert Media', 'qazana' ),
-                'preview_el_not_found_header' => __( 'Sorry, the content area was not found in your page.', 'qazana' ),
-                'preview_el_not_found_message' => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
-                'learn_more' => __( 'Learn More', 'qazana' ),
-                'an_error_occurred' => __( 'An error occurred', 'qazana' ),
-                'templates_request_error' => __( 'The following error(s) occurred while processing the request:', 'qazana' ),
-                'save_your_template' => __( 'Save Your {0} to Library', 'qazana' ),
-        		'save_your_template_description' => __( 'Your designs will be available for export and reuse on any page or website', 'qazana' ),
-                'page' => __( 'Page', 'qazana' ),
-                'section' => __( 'Section', 'qazana' ),
-                'delete_template' => __( 'Delete Template', 'qazana' ),
-                'delete_template_confirm' => __( 'Are you sure you want to delete this template?', 'qazana' ),
-                'color_picker' => __( 'Color Picker', 'qazana' ),
-                'clear_page' => __( 'Delete All Content', 'qazana' ),
-                'dialog_confirm_clear_page' => __( 'Attention! We are going to DELETE ALL CONTENT from this page. Are you sure you want to do that?', 'qazana' ),
-                'asc' => __( 'Ascending order', 'qazana' ),
-                'desc' => __( 'Descending order', 'qazana' ),
-				'autosave' => __( 'Autosave', 'qazana' ),
-				'preview' => __( 'Preview', 'qazana' ),
-				'back_to_editor' => __( 'Back to Editor', 'qazana' ),
-				'import_template_dialog_header' => __( 'Import Page Settings', 'qazana' ),
-				'import_template_dialog_message' => __( 'Do you want to also import the page settings of the template?', 'qazana' ),
-				'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
-				'no' => __( 'No', 'qazana' ),
-				'yes' => __( 'Yes', 'qazana' ),
+            'wp_editor'              => $this->_get_wp_editor_config(),
+            'settings'               => SettingsManager::get_settings_managers_config(),
+            'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
+            'qazana_site'            => 'https://radiumthemes.com/plugins/qazana',
+            'help_the_content_url'   => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
+            'assets_url'             => qazana()->core_assets_url,
+            'data'                   => $editor_data,
+            'locked_user'            => $locked_user,
+            'is_rtl'                 => is_rtl(),
+            'locale'                 => get_locale(),
+            'viewportBreakpoints'    => Responsive::get_breakpoints(),
+            'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
+            'page_title_selector'    => $page_title_selector,
+            'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
+            'i18n'                   => [
+                'qazana'                                   => __( 'Qazana', 'qazana' ),
+                'dialog_confirm_delete'                    => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
+                'dialog_user_taken_over'                   => __( '{0} has taken over and is currently editing. Do you want to take over this page editing?', 'qazana' ),
+                'delete'                                   => __( 'Delete', 'qazana' ),
+                'cancel'                                   => __( 'Cancel', 'qazana' ),
+                'delete_element'                           => __( 'Delete {0}', 'qazana' ),
+                'take_over'                                => __( 'Take Over', 'qazana' ),
+                'go_back'                                  => __( 'Go Back', 'qazana' ),
+                'saved'                                    => __( 'Saved', 'qazana' ),
+                'before_unload_alert'                      => __( 'Please note: All unsaved changes will be lost.', 'qazana' ),
+                'edit_element'                             => __( 'Edit {0}', 'qazana' ),
+                'global_colors'                            => __( 'Global Colors', 'qazana' ),
+                'global_fonts'                             => __( 'Global Fonts', 'qazana' ),
+                'qazana_settings'                          => __( 'Qazana Settings', 'qazana' ),
+                'soon'                                     => __( 'Soon', 'qazana' ),
+                'about_qazana'                             => __( 'About Qazana', 'qazana' ),
+                'inner_section'                            => __( 'Columns', 'qazana' ),
+                'dialog_confirm_gallery_delete'            => __( 'Are you sure you want to reset this gallery?', 'qazana' ),
+                'delete_gallery'                           => __( 'Reset Gallery', 'qazana' ),
+                'gallery_images_selected'                  => __( '{0} Images Selected', 'qazana' ),
+                'insert_media'                             => __( 'Insert Media', 'qazana' ),
+                'preview_el_not_found_header'              => __( 'Sorry, the content area was not found in your page.', 'qazana' ),
+                'preview_el_not_found_message'             => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
+                'learn_more'                               => __( 'Learn More', 'qazana' ),
+                'an_error_occurred'                        => __( 'An error occurred', 'qazana' ),
+                'templates_request_error'                  => __( 'The following error(s) occurred while processing the request:', 'qazana' ),
+                'save_your_template'                       => __( 'Save Your {0} to Library', 'qazana' ),
+                'save_your_template_description'           => __( 'Your designs will be available for export and reuse on any page or website', 'qazana' ),
+                'page'                                     => __( 'Page', 'qazana' ),
+                'section'                                  => __( 'Section', 'qazana' ),
+                'delete_template'                          => __( 'Delete Template', 'qazana' ),
+                'delete_template_confirm'                  => __( 'Are you sure you want to delete this template?', 'qazana' ),
+                'color_picker'                             => __( 'Color Picker', 'qazana' ),
+                'clear_page'                               => __( 'Delete All Content', 'qazana' ),
+                'dialog_confirm_clear_page'                => __( 'Attention! We are going to DELETE ALL CONTENT from this page. Are you sure you want to do that?', 'qazana' ),
+                'asc'                                      => __( 'Ascending order', 'qazana' ),
+                'desc'                                     => __( 'Descending order', 'qazana' ),
+                'autosave'                                 => __( 'Autosave', 'qazana' ),
+                'preview'                                  => __( 'Preview', 'qazana' ),
+                'back_to_editor'                           => __( 'Back to Editor', 'qazana' ),
+                'import_template_dialog_header'            => __( 'Import Page Settings', 'qazana' ),
+                'import_template_dialog_message'           => __( 'Do you want to also import the page settings of the template?', 'qazana' ),
+                'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
+                'no'                                       => __( 'No', 'qazana' ),
+                'yes'                                      => __( 'Yes', 'qazana' ),
             ]
 		];
 
 		$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
-		
+
 		$this->add_localize_settings( $localize_settings );
 
 		// Very important that this be loaded before 'qazana-editor' - for use by extensions

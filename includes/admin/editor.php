@@ -1,12 +1,12 @@
 <?php
-namespace Qazana\Admin;
+namespace Qazana\Admin\Post;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use Qazana\Utils;
 use Qazana\User;
 
-class Post_Editor {
+class Editor {
 
     /**
      * Admin constructor.
