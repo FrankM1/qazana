@@ -21,7 +21,7 @@ class Piechart extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-piechart';
+		return 'eicon-counter-circle';
 	}
 
 	public function get_categories() {
