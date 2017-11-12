@@ -16,21 +16,21 @@ Qazana allows you to create unique and high quality page layouts in WordPress.
 
 The plugin uses best practices to deliver great looking pages to your users. Our main focus with this plugin is the ability to create very high quality designs and to provide the best integration with themes and plugins.
 
-> <strong>Use Qazana in your premium themes</strong><br>
-> Qazana is an open source page builder. You can use it to build any free or premium theme. It's easy to ship your designs with Qazana and create new additional modules.
-
 = Features =
 * Frontend live editing.
+* Inline text editing
 * Template library
 * Custom widgets
 * Integration with inbuilt WordPress widgets
 * Custom page template included
 * Extension manager for theme and new widget integration
-* Revision control
+* Revision history
+* Edit history
 * Section dividers
 * Content animations
 * Custom colors
 * Custom page fonts
+* RTL Support
 
 = Well Integrated With WordPress =
 Qazana works with any standard compliant WordPress theme. It's fully compatible with other plugins like Yoast WP SEO or contact form builders.
@@ -40,6 +40,9 @@ Export any page section or the whole page. Reuse pages, sections or widgets you 
 
 = Mobile Responsive =
 It's easy to create responsive websites in Qazana. You can customize responsive layouts on element to make it looks perfect on all mobile devices, ensuring your site is mobile-ready.
+
+> <strong>Use Qazana in your premium themes</strong><br>
+> Qazana is an open source page builder. You can use it to build any free or premium theme. It's easy to ship your designs with Qazana and create new additional modules.
 
 = Contact =
 For more info, check us out on twitter <a href="https://twitter.com/RadiumThemes">Twitter</a> and view our website <a href="https://radiumthemes.com">RadiumThemes</a>  .

@@ -178,7 +178,7 @@ class Maintenance_Mode extends Base {
                                         self::MODE_MAINTENANCE => __( 'Maintenance', 'qazana' ),
                                     ],
                                     'desc' => '<div class="qazana-maintenance-mode-description" data-value="" style="display: none">' .
-                                                __( 'Choose between Coming Soon mode (returning HTTP200) or Maintenance Mode (returning HTTP503).', 'qazana' ) .
+                                                __( 'Choose between Coming Soon mode (returning HTTP status code 200) or Maintenance Mode (returning HTTP status code 503).', 'qazana' ) .
                                                 '</div>' .
                                                 '<div class="qazana-maintenance-mode-description" data-value="maintenance" style="display: none">' .
                                                 __( 'Maintenance Mode returns HTTP 503 code, so search engines know to come back a short time later. It is not recommended to use this mode for more than a couple of days.', 'qazana' ) .

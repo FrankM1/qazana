@@ -157,7 +157,7 @@ class Frontend {
 	            return $element;
 	        }
 
-	        qazana()->elements_manager->add_element_instance($element_instance);
+	        qazana()->elements_manager->add_element_instance( $element_instance );
 
 	        return $element;
 	    });

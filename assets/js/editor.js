@@ -7280,7 +7280,9 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	renderOnChange: function( settings ) {
-		// Make sure is correct model
+        var self = this;
+        
+        // Make sure is correct model
 		if ( settings instanceof BaseSettingsModel ) {
 			var hasChanged = settings.hasChanged(),
 				isContentChanged = ! hasChanged,
@@ -7321,14 +7323,20 @@ BaseElementView = BaseContainer.extend( {
 		// Re-render the template
 		var templateType = this.getTemplateType(),
 			editModel = this.getEditModel();
-
-		if ( 'js' === templateType ) {
-			this.getEditModel().setHtmlCache();
-			this.render();
-			editModel.renderOnLeave = true;
-		} else {
-			editModel.renderRemoteServer();
-		}
+            
+        // Add a slight delay for re-render
+        setTimeout( function() {
+            
+            if ( 'js' === templateType ) {
+                self.getEditModel().setHtmlCache();
+                self.render();
+                editModel.renderOnLeave = true;
+            } else {
+                editModel.renderRemoteServer();
+            }
+            
+        }, 200);
+    
 	},
 
 	onRender: function() {
