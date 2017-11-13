@@ -27,8 +27,10 @@
     "grunt-shell": "~2.1.0",
     "grunt-text-replace": "~0.4.0",
     "grunt-wp-readme-to-markdown-with-extra": "~2.2.0",
+    "jit-grunt": "^0.10.0",
     "matchdep": "~1.0.1",
-    "remapify": "2.1.0"
+    "remapify": "2.1.0",
+    "time-grunt": "^1.4.0"
   },
   "browserify": {
     "transform": [
