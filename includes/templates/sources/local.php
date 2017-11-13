@@ -5,8 +5,7 @@ use Qazana\DB;
 use Qazana\Core\Settings\Page\Manager as PageSettingsManager;
 use Qazana\Core\Settings\Manager as SettingsManager;
 use Qazana\Core\Settings\Page\Model;
-use Qazana\Plugin;
-use Qazana\Settings;
+use Qazana\Editor;
 use Qazana\User;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,6 +44,18 @@ class Source_Local extends Source_Base {
 
 	public static function add_template_type( $type ) {
 		self::$_template_types[] = $type;
+    }
+
+    /**
+	 * @static
+	 * @since 1.3.0
+	 * @access public
+	 */
+	public static function remove_template_type( $type ) {
+		$key = array_search( $type, self::$_template_types, true );
+		if ( false !== $key ) {
+			unset( self::$_template_types[ $key ] );
+		}
 	}
 
 	public function get_id() {
@@ -126,13 +137,25 @@ class Source_Local extends Source_Base {
 	}
 
 	public function register_admin_menu() {
-		add_submenu_page(
-			qazana()->slug,
-			__( 'My Library', 'qazana' ),
-			__( 'My Library', 'qazana' ),
-			'edit_pages',
-			'edit.php?post_type=' . self::CPT
-		);
+		if ( current_user_can( 'manage_options' ) ) {
+			add_submenu_page(
+				qazana()->slug,
+				__( 'My Library', 'qazana' ),
+				__( 'My Library', 'qazana' ),
+				Editor::EDITING_CAPABILITY,
+				'edit.php?post_type=' . self::CPT
+			);
+		} else {
+			add_menu_page(
+				__( 'Qazana', 'qazana' ),
+				__( 'Qazana', 'qazana' ),
+				Editor::EDITING_CAPABILITY,
+				'edit.php?post_type=' . self::CPT,
+				'',
+				'',
+				99
+			);
+		}
 	}
 
 	public function get_items( $args = [] ) {
@@ -237,13 +260,13 @@ class Source_Local extends Source_Base {
 		return apply_filters( 'qazana/template-library/get_template', $data );
 	}
 
-	public function get_data( array $args, $context = 'display' ) {
+	public function get_data( array $args ) {
 		$db = qazana()->db;
 
 		$template_id = $args['template_id'];
 
 		// TODO: Validate the data (in JS too!).
-		if ( 'display' === $context ) {
+		if ( ! empty( $args['display'] ) ) {
 			$content = $db->get_builder( $template_id );
 		} else {
 			$content = $db->get_plain_editor( $template_id );
@@ -465,6 +488,16 @@ class Source_Local extends Source_Base {
 
 	public function is_template_supports_export( $template_id ) {
 		return apply_filters( 'qazana/template_library/is_template_supports_export', true, $template_id );
+    }
+    
+    /**
+	 * @access public
+	 */
+	public function remove_qazana_post_state_from_library( $post_states, $post ) {
+		if ( self::CPT === $post->post_type && isset( $post_states['qazana'] ) ) {
+			unset( $post_states['qazana'] );
+		}
+		return $post_states;
 	}
 
 	private function _get_export_link( $item_id ) {
@@ -636,6 +669,7 @@ class Source_Local extends Source_Base {
 			add_action( 'admin_footer', [ $this, 'admin_import_template_form' ] );
 			add_action( 'save_post', [ $this, 'on_save_post' ], 10, 2 );
 			add_action( 'parse_query', [ $this, 'admin_query_filter_types' ] );
+            add_filter( 'display_post_states', [ $this, 'remove_qazana_post_state_from_library' ], 11, 2 );
 
 			// template library bulk actions.
 			add_filter( 'bulk_actions-edit-qazana_library', [ $this, 'admin_add_bulk_export_action' ] );

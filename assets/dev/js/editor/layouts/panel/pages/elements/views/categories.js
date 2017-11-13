@@ -15,7 +15,9 @@ PanelElementsCategoriesView = Marionette.CompositeView.extend( {
 	},
 
 	onPanelElementsFilterChange: function() {
-		qazana.getPanelView().getCurrentPageView().showView( 'elements' );
+		if ( qazana.channels.panelElements.request( 'filter:value' ) ) {
+			qazana.getPanelView().getCurrentPageView().showView( 'elements' );
+		}
 	}
 } );
 

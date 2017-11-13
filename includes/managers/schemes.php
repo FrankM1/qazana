@@ -93,7 +93,8 @@ class Schemes_Manager {
 	}
 
 	public function ajax_apply_scheme() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+	
+        if ( ! qazana()->editor->verify_request_nonce() ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 

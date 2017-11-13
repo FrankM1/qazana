@@ -61,8 +61,10 @@ abstract class Manager {
 		$this->ajax_before_save_settings( $data, $id );
 
 		$this->save_settings( $data, $id );
- 
-		wp_send_json_success();
+
+        $success_response_data = apply_filters( 'qazana/' . $this->get_name() . '/settings/success_response_data', [], $id, $data );
+
+        wp_send_json_success( $success_response_data );
 	}
 
 	final public function save_settings( array $settings, $id = 0 ) {

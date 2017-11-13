@@ -8,7 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Editor {
-
+    
+    const EDITING_NONCE_KEY = 'qazana_editing';
+    
+    const EDITING_CAPABILITY = 'edit_pages';
+    
 	private $_post_id;
 
 	private $_is_edit_mode;
@@ -20,19 +24,23 @@ class Editor {
 	 */
 	private $_localize_settings = [];
 
+	 
+    /**
+	 * @since 1.3.0
+	 * @access private
+	*/
 	private function init_editor_templates() {
+		$template_names = [
+			'global',
+			'panel',
+			'panel-elements',
+			'repeater',
+			'templates',
+		];
 
-		// It can be filled from plugins
-		$this->_editor_templates = array_merge( $this->_editor_templates, [
-		 	__DIR__ . '/editor-templates/global.php',
-			__DIR__ . '/editor-templates/panel.php',
-			__DIR__ . '/editor-templates/panel-elements.php',
-			__DIR__ . '/editor-templates/repeater.php',
-			__DIR__ . '/editor-templates/templates.php',
-		] );
-
-		do_action( 'qazana/editor/panel_templates' );
-	
+		foreach ( $template_names as $template_name ) {
+			$this->add_editor_template( __DIR__ . "/editor-templates/$template_name.php" );
+		}
 	}
 
 	public function __construct() {
@@ -56,7 +64,7 @@ class Editor {
         }
 
 		$this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
-	
+
     }
 
 	public function init( $die = true ) {
@@ -69,8 +77,6 @@ class Editor {
 		if ( ! $this->is_edit_mode( $this->_post_id ) ) {
 			return;
 		}
-
-		$this->init_editor_templates();
 
 		// Send MIME Type header like WP admin-header.
 		@header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
@@ -131,6 +137,18 @@ class Editor {
 		}
 	}
 
+    /**
+	 * @since 1.3.0
+	 * @access public
+	 */
+	public function get_post_id() {
+		return $this->_post_id;
+	}
+
+	/**
+	 * @since 1.2.0
+	 * @access public
+	 */
 	public function redirect_to_new_url() {
 		if ( ! isset( $_REQUEST['qazana'] ) ) {
 			return;
@@ -340,6 +358,16 @@ class Editor {
 			[],
 			'1.2.5',
 			true
+        );
+ 
+        wp_register_script(
+			'ace-language-tools',
+			'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ext-language_tools.js',
+			[
+				'ace',
+			],
+			'1.2.5',
+			true
 		);
 
 		wp_register_script(
@@ -371,7 +399,8 @@ class Editor {
                 'jquery-select2',
                 'hoverIntent',
                 'jquery-simple-dtpicker',
-				'ace',
+                'ace',
+                'ace-language-tools',
 				'jquery-fonticonpicker',
             ],
             qazana_get_version(),
@@ -406,7 +435,7 @@ class Editor {
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
 			'home_url'            => home_url(),
 			'post_id'             => $this->_post_id,
-			'nonce'               => wp_create_nonce( 'qazana-editing' ),
+			'nonce'               => $this->create_nonce(),
 			'preview_link'        => Utils::get_preview_url( $this->_post_id ),
 			'elements_categories' => qazana()->elements_manager->get_categories(),
 			'controls'            => qazana()->controls_manager->get_controls_data(),
@@ -432,6 +461,7 @@ class Editor {
             'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
             'page_title_selector'    => $page_title_selector,
             'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
+            'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
             'i18n'                   => [
                 'qazana'                                   => __( 'Qazana', 'qazana' ),
                 'dialog_confirm_delete'                    => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
@@ -444,8 +474,8 @@ class Editor {
                 'saved'                                    => __( 'Saved', 'qazana' ),
                 'before_unload_alert'                      => __( 'Please note: All unsaved changes will be lost.', 'qazana' ),
                 'edit_element'                             => __( 'Edit {0}', 'qazana' ),
-                'global_colors'                            => __( 'Global Colors', 'qazana' ),
-                'global_fonts'                             => __( 'Global Fonts', 'qazana' ),
+                'global_colors'                            => __( 'Default Colors', 'qazana' ),
+                'global_fonts'                             => __( 'Default Fonts', 'qazana' ),
                 'qazana_settings'                          => __( 'Qazana Settings', 'qazana' ),
                 'soon'                                     => __( 'Soon', 'qazana' ),
                 'about_qazana'                             => __( 'About Qazana', 'qazana' ),
@@ -456,7 +486,12 @@ class Editor {
                 'insert_media'                             => __( 'Insert Media', 'qazana' ),
                 'preview_el_not_found_header'              => __( 'Sorry, the content area was not found in your page.', 'qazana' ),
                 'preview_el_not_found_message'             => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
+                'preview_not_loading_header'               => __( 'The preview could not be loaded', 'qazana' ),
+                'preview_not_loading_message'              => __( 'We\'re sorry, but something went wrong. Click on \'Learn more\' and follow each of the steps to quickly solve it.', 'qazana' ),
+                'session_expired_header'                   => __( 'Timeout', 'qazana' ),
+                'session_expired_message'                  => __( 'Your session has expired. Please reload the page to continue editing.', 'qazana' ),
                 'learn_more'                               => __( 'Learn More', 'qazana' ),
+                'reload_page'                              => __( 'Reload Page', 'qazana' ),
                 'an_error_occurred'                        => __( 'An error occurred', 'qazana' ),
                 'templates_request_error'                  => __( 'The following error(s) occurred while processing the request:', 'qazana' ),
                 'save_your_template'                       => __( 'Save Your {0} to Library', 'qazana' ),
@@ -478,6 +513,7 @@ class Editor {
                 'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
                 'no'                                       => __( 'No', 'qazana' ),
                 'yes'                                      => __( 'Yes', 'qazana' ),
+                'type_here'                                => __( 'Type Here', 'qazana' ),
             ]
 		];
 
@@ -583,10 +619,22 @@ class Editor {
 	}
 
 	/**
-	 * @param string $template_path - Can be either a link to template file or template HTML content
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param string $template - Can be either a link to template file or template HTML content
+	 * @param string $type Optional. Whether to handle the template as path or text
 	 */
-	public function add_editor_template( $template_path ) {
-		$this->_editor_templates[] = $template_path;
+	public function add_editor_template( $template, $type = 'path' ) {
+		if ( 'path' === $type ) {
+			ob_start();
+
+			include $template;
+
+			$template = ob_get_clean();
+		}
+
+		$this->_editor_templates[] = $template;
 	}
 
 	public function wp_footer() {
@@ -596,6 +644,8 @@ class Editor {
 		qazana()->elements_manager->render_elements_content();
 
 		qazana()->schemes_manager->print_schemes_templates();
+
+        $this->init_editor_templates();
 
 		foreach ( $this->_editor_templates as $editor_template ) {
 			if ( file_exists( $editor_template ) ) {
@@ -613,6 +663,42 @@ class Editor {
 	 */
 	public function set_edit_mode( $edit_mode ) {
 		$this->_is_edit_mode = $edit_mode;
+    }
+ 
+    /**
+	 * @since 1.3.0
+	 * @access public
+	 *
+	 * @return null|string
+	 */
+	public function create_nonce() {
+		if ( ! current_user_can( self::EDITING_CAPABILITY ) ) {
+			return null;
+		}
+
+		return wp_create_nonce( self::EDITING_NONCE_KEY );
+	}
+
+	/**
+	 * @since 1.3.0
+	 * @access public
+	 *
+	 * @param string $nonce
+	 *
+	 * @return false|int
+	 */
+	public function verify_nonce( $nonce ) {
+		return wp_verify_nonce( $nonce, self::EDITING_NONCE_KEY );
+	}
+
+	/**
+	 * @since 1.3.0
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function verify_request_nonce() {
+		return ! empty( $_REQUEST['_nonce'] ) && $this->verify_nonce( $_REQUEST['_nonce'] );
 	}
 
 }

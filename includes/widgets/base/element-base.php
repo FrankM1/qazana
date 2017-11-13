@@ -316,19 +316,11 @@ abstract class Element_Base extends Controls_Stack {
 			$this->add_render_attribute( '_wrapper', 'id', trim( $settings['_element_id'] ) );
 		}
 
-		if ( ! qazana()->editor->is_edit_mode() ) {
-			$frontend_settings = array_intersect_key( $settings, array_flip( $this->get_frontend_settings_keys() ) );
+		$frontend_settings = $this->get_frontend_settings();
 
-			foreach ( $frontend_settings as $key => $setting ) {
-				if ( in_array( $setting, [ null, '' ], true ) ) {
-					unset( $frontend_settings[ $key ] );
-				}
-			}
-
-			if ( $frontend_settings ) {
-				$this->add_render_attribute( '_wrapper', 'data-settings', wp_json_encode( $frontend_settings ) );
-			}
-		}
+        if ( $frontend_settings ) {
+            $this->add_render_attribute( '_wrapper', 'data-settings', wp_json_encode( $frontend_settings ) );
+        }
 	}
 
 	public function render() {}

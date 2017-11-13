@@ -59,7 +59,7 @@ MaintenanceModeModule = ViewModule.extend( {
 				return;
 			}
 
-			var editUrl = ElementorAdminConfig.home_url + '?p=' + templateID + '&qazana';
+			var editUrl = QazanaAdminConfig.home_url + '?p=' + templateID + '&qazana';
 
 			elements.$editTemplateButton
 				.prop( 'href', editUrl )

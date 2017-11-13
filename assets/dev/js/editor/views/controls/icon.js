@@ -1,7 +1,7 @@
 var ControlBaseItemView = require( 'qazana-views/controls/base' ),
-	ControlIconItemView;
+	ControlIconView;
 
-ControlIconItemView = ControlBaseItemView.extend( {
+ControlIconView = ControlBaseItemView.extend( {
 
 	initialize: function() {
 		ControlBaseItemView.prototype.initialize.apply( this, arguments );
@@ -69,4 +69,4 @@ ControlIconItemView = ControlBaseItemView.extend( {
 
 } );
 
-module.exports = ControlIconItemView;
+module.exports = ControlIconView;
