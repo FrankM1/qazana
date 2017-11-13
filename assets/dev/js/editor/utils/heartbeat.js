@@ -50,7 +50,7 @@ heartbeat = {
 		if ( qazana.config.locked_user ) {
 			heartbeat.showLockMessage( qazana.config.locked_user );
 		}
-    },
+	},
 
 	initModal: function() {
 		var modal = qazana.dialogsManager.createWidget( 'options', {

@@ -11,8 +11,10 @@ BaseElementView = BaseContainer.extend( {
 
 	toggleEditTools: true,
 
+	allowRender: true,
+
 	className: function() {
-		return this.getElementUniqueID();
+		return 'qazana-element qazana-element-edit-mode ' + this.getElementUniqueID();
 	},
 
 	attributes: function() {
@@ -60,9 +62,9 @@ BaseElementView = BaseContainer.extend( {
 
 	getElementType: function() {
 		return this.model.get( 'elType' );
-    },
-    
-    getIDInt: function() {
+	},
+
+	getIDInt: function() {
 		return parseInt( this.getID(), 16 );
 	},
 
@@ -335,9 +337,14 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	renderOnChange: function( settings ) {
-        var self = this;
-        
-        // Make sure is correct model
+		
+		var self = this;
+
+		if ( ! this.allowRender ) {
+			return;
+		}
+
+		// Make sure is correct model
 		if ( settings instanceof BaseSettingsModel ) {
 			var hasChanged = settings.hasChanged(),
 				isContentChanged = ! hasChanged,
@@ -346,9 +353,14 @@ BaseElementView = BaseContainer.extend( {
 			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
 				var control = settings.getControl( settingKey );
 
+				if ( '_column_size' === settingKey ) {
+					isRenderRequired = true;
+					return;
+				}
+
 				if ( ! control ) {
 					isRenderRequired = true;
-
+					isContentChanged = true;
 					return;
 				}
 
@@ -415,7 +427,8 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	onEditSettingsChanged: function( changedModel ) {
-		this.renderOnChange( changedModel );
+		qazana.channels.editor
+			.trigger( 'change:editSettings', changedModel, this );
 	},
 
 	onSettingsChanged: function( changedModel ) {

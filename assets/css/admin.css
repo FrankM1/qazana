@@ -142,6 +142,7 @@ body.qazana-editor-active #qazana-switch-mode-button {
     -webkit-box-shadow: inset 0 1px 0 #ccc;
             box-shadow: inset 0 1px 0 #ccc;
     -webkit-transform: translateY(1px);
+        -ms-transform: translateY(1px);
             transform: translateY(1px); }
 body.qazana-editor-active #qazana-editor {
   display: table; }
@@ -181,7 +182,8 @@ body.qazana-editor-inactive #qazana-editor {
   background-image: url("../images/logo-small-light.png");
   background-repeat: no-repeat;
   content: " ";
-  background-size: 15px;
+  -webkit-background-size: 15px 15px;
+          background-size: 15px;
   background-position: 4px 4px; }
 
 #qazana-switch-mode {
@@ -204,6 +206,7 @@ body.qazana-editor-inactive #qazana-editor {
   height: 300px;
   width: 100%;
   -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
   transition: all 0.5s ease; }
   #qazana-editor:hover {
     background-color: #ffffff; }
@@ -221,6 +224,7 @@ body.qazana-editor-inactive #qazana-editor {
     width: 5rem;
     height: 5rem;
     -webkit-transition: all 300ms ease-in-out 0s;
+    -o-transition: all 300ms ease-in-out 0s;
     transition: all 300ms ease-in-out 0s;
     z-index: 1; }
     #qazana-editor .qazana-loader .cubes .cube {
@@ -393,6 +397,7 @@ button.qazana-button-spinner.success:before {
         -webkit-box-shadow: inset 0 1px 0 #7c1337;
                 box-shadow: inset 0 1px 0 #7c1337;
         -webkit-transform: translateY(1px);
+            -ms-transform: translateY(1px);
                 transform: translateY(1px); }
 
 @media (max-width: 767px) {

@@ -16,7 +16,6 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		buttonSave: '#qazana-panel-footer-save',
 		buttonSaveButton: '#qazana-panel-footer-save .qazana-button',
 		buttonPublish: '#qazana-panel-footer-publish',
-		watchTutorial: '#qazana-panel-footer-watch-tutorial',
 		showTemplates: '#qazana-panel-footer-templates-modal',
 		saveTemplate: '#qazana-panel-footer-save-template',
 		history: '#qazana-panel-footer-history'
@@ -158,9 +157,6 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		qazana.changeDeviceMode( newDeviceMode );
 	},
 
-	onClickWatchTutorial: function() {
-		qazana.introduction.startIntroduction();
-	},
 
 	onClickShowTemplates: function() {
 		qazana.templates.showTemplatesModal();

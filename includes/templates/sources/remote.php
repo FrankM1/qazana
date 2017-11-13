@@ -1,7 +1,7 @@
 <?php
 namespace Qazana\Template_Library;
 
-use Elementor\Core\Settings\Page\Model;
+use Qazana\Core\Settings\Page\Model;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

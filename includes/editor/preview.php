@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preview {
 
+    private $post_id;
+
 	/**
 	 * Initialize the preview mode. Fired by `init` action.
 	 *
@@ -18,6 +20,8 @@ class Preview {
 			return;
 		}
 
+        $this->post_id = get_the_ID();
+        
 		// Compatibility with Yoast SEO plugin when 'Removes unneeded query variables from the URL' enabled.
 		// TODO: Move this code to `includes/compatibility.php`.
 		if ( class_exists( 'WPSEO_Frontend' ) ) {
@@ -35,7 +39,16 @@ class Preview {
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
-		Utils::do_not_cache();
+        Utils::do_not_cache();
+        
+        do_action( 'qazana/preview/init', $this );
+    }
+    
+    /**
+	 * @access public
+	 */
+	public function get_post_id() {
+		return $this->post_id;
 	}
 
 	/**
@@ -97,6 +110,16 @@ class Preview {
 	}
 
 	private function enqueue_scripts() {
+
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+        wp_enqueue_script(
+            'qazana-inline-editor',
+            qazana()->core_assets_url . 'lib/inline-editor/js/inline-editor' . $suffix . '.js',
+            [],
+            '',
+            true
+        );
 
 		qazana()->frontend->register_scripts();
 		qazana()->frontend->enqueue_scripts();

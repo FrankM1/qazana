@@ -201,7 +201,8 @@ class Widgets_Manager {
 	}
 
 	public function ajax_render_widget() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+
+        if ( ! qazana()->editor->verify_request_nonce() ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -228,6 +229,7 @@ class Widgets_Manager {
 		// Start buffering
 		ob_start();
 
+        /** @var Widget_Base $widget */
 		$widget = qazana()->elements_manager->create_element_instance( $data );
 
 		if ( ! $widget ) {
@@ -248,7 +250,8 @@ class Widgets_Manager {
 	}
 
 	public function ajax_get_wp_widget_form() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+
+        if ( qazana()->editor->verify_request_nonce() ) {
 			die;
 		}
 
@@ -299,5 +302,61 @@ class Widgets_Manager {
 		}
 
 		return $keys;
+    }
+
+    /**
+	 * Retrieve inline editing configuration.
+	 *
+	 * Returns general inline editing configurations like toolbar types etc.
+	 *
+	 * @access public
+	 * @since 1.3.0
+	 *
+	 * @return array {
+	 *     Inline editing configuration.
+	 *
+	 *     @type array $toolbar {
+	 *         Toolbar types and the actions each toolbar includes.
+	 *         Note: Wysiwyg controls uses the advanced toolbar, textarea controls
+	 *         uses the basic toolbar and text controls has no toolbar.
+	 *
+	 *         @type array $basic    Basic actions included in the edit tool.
+	 *         @type array $advanced Advanced actions included in the edit tool.
+	 *     }
+	 * }
+	 */
+	public function get_inline_editing_config() {
+		$basic_tools = [
+			'bold',
+			'underline',
+			'italic',
+		];
+
+		$advanced_tools = array_merge( $basic_tools, [
+			'createlink',
+			'unlink',
+			'h1' => [
+				'h1',
+				'h2',
+				'h3',
+				'h4',
+				'h5',
+				'h6',
+				'p',
+				'blockquote',
+				'pre',
+			],
+			'list' => [
+				'insertOrderedList',
+				'insertUnorderedList',
+			],
+		] );
+
+		return [
+			'toolbar' => [
+				'basic' => $basic_tools,
+				'advanced' => $advanced_tools,
+			],
+		];
 	}
 }

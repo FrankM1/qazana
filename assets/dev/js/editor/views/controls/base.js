@@ -34,10 +34,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 			classes += ' ' + modelClasses;
 		}
 
-		if ( ! _.isEmpty( this.model.get( 'section' ) ) ) {
-			classes += ' qazana-control-under-section';
-		}
-
 		if ( ! _.isEmpty( responsive ) ) {
 			classes += ' qazana-control-responsive-' + responsive.max;
 		}
@@ -76,7 +72,6 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 	},
 
 	initialize: function( options ) {
-
 		this.elementSettingsModel = options.elementSettingsModel;
 
 		var controlType = this.model.get( 'type' ),
@@ -178,9 +173,11 @@ ControlBaseItemView = Marionette.CompositeView.extend( {
 		}
 
 		this.$el.addClass( elClasses );
+
 		this.renderResponsiveSwitchers();
 
 		this.triggerMethod( 'ready' );
+
 		this.toggleControlVisibility();
 		this.addTooltip();
 	},

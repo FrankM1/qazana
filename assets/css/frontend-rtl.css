@@ -139,6 +139,7 @@
     position: absolute;
     overflow: hidden;
     -webkit-transition: opacity 1s;
+    -o-transition: opacity 1s;
     transition: opacity 1s; }
     .qazana .qazana-background-video-container.qazana-loading {
       opacity: 0; }
@@ -147,6 +148,7 @@
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
             transform: translateY(-50%); }
   .qazana .qazana-background-video {
     position: absolute;
@@ -154,6 +156,7 @@
     top: 50%;
     left: 50%;
     -webkit-transform: translateY(-50%) translateX(-50%);
+        -ms-transform: translateY(-50%) translateX(-50%);
             transform: translateY(-50%) translateX(-50%); }
   .qazana .qazana-html5-video {
     -o-object-fit: cover;
@@ -188,6 +191,7 @@
   top: 50%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%); }
   .qazana-custom-embed-play i {
     font-size: 100px;
@@ -195,6 +199,7 @@
     opacity: 0.8;
     text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
     -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
     transition: all 0.5s; }
   .qazana-custom-embed-play.qazana-playing i {
     font-family: "FontAwesome";
@@ -237,6 +242,7 @@ a.qazana-edit-template {
 #wpadminbar #wp-admin-bar-qazana_edit_page {
   background-color: #360061;
   -webkit-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
   transition: background-color 0.3s; }
   #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item {
     text-transform: uppercase;
@@ -246,6 +252,7 @@ a.qazana-edit-template {
     letter-spacing: 2px;
     padding: 0 18px 0 22px !important;
     -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
     transition: all 0.3s ease-in;
     display: -webkit-box;
     display: -webkit-flex;
@@ -259,7 +266,8 @@ a.qazana-edit-template {
       background-image: url(../images/logo-small-light.png) !important;
       background-repeat: no-repeat;
       content: " ";
-      background-size: 9px;
+      -webkit-background-size: 9px 9px;
+              background-size: 9px;
       background-position: 7px 9px;
       position: absolute;
       left: 0;
@@ -680,6 +688,7 @@ a.qazana-edit-template {
       position: absolute;
       top: 50%;
       -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
               transform: translateY(-50%);
       left: 10px; }
 
@@ -964,6 +973,7 @@ a.qazana-edit-template {
     text-align: center;
     line-height: 1;
     -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
     transition: all 0.5s; }
   .qazana-button.qazana-size-xs .qazana-button-content-wrapper {
     padding: 10px 20px;
@@ -1006,6 +1016,7 @@ a.qazana-edit-template {
 
 .qazana-icon-hover-reveal-yes .qazana-button {
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
+  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
 .qazana-icon-hover-reveal-yes .qazana-align-icon-right .qazana-button-content-wrapper {
   -webkit-box-orient: horizontal;
@@ -1017,6 +1028,7 @@ a.qazana-edit-template {
   overflow: hidden;
   max-width: 0;
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
+  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
   .qazana-icon-hover-reveal-yes .qazana-button-icon.qazana-align-icon-right {
     margin-left: 0; }
@@ -1187,10 +1199,12 @@ a.qazana-edit-template {
         z-index: 2; }
         .qazana-widget-icon-box.qazana-view-animated-1 .qazana-icon-box-wrapper:hover .front {
           -webkit-transform: translateY(-75%);
+              -ms-transform: translateY(-75%);
                   transform: translateY(-75%);
           border-radius: 0; }
         .qazana-widget-icon-box.qazana-view-animated-1 .qazana-icon-box-wrapper:hover .back {
           -webkit-transform: translateY(0);
+              -ms-transform: translateY(0);
                   transform: translateY(0); }
       .qazana-widget-icon-box.qazana-view-animated-1 .height-adjust {
         margin-top: 100%; }
@@ -1209,6 +1223,7 @@ a.qazana-edit-template {
       .qazana-widget-icon-box.qazana-view-animated-1 .back,
       .qazana-widget-icon-box.qazana-view-animated-1 .front {
         -webkit-transition: all 500ms cubic-bezier(1, 0, 0.6, 1);
+        -o-transition: all 500ms cubic-bezier(1, 0, 0.6, 1);
         transition: all 500ms cubic-bezier(1, 0, 0.6, 1);
         -webkit-backface-visibility: hidden;
                 backface-visibility: hidden; }
@@ -1234,6 +1249,7 @@ a.qazana-edit-template {
           position: absolute;
           top: 50%;
           -webkit-transform: translateY(-50%);
+              -ms-transform: translateY(-50%);
                   transform: translateY(-50%); }
       .qazana-widget-icon-box.qazana-view-animated-1 .back {
         background: #ccc;
@@ -1245,6 +1261,7 @@ a.qazana-edit-template {
         height: 75%;
         width: 100%;
         -webkit-transform: translateY(100%);
+            -ms-transform: translateY(100%);
                 transform: translateY(100%); }
       .qazana-widget-icon-box.qazana-view-animated-1 .qazana-icon-box-title {
         margin-top: 25px; }
@@ -1288,6 +1305,7 @@ a.qazana-edit-template {
   display: inline-block;
   line-height: 1;
   -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
   transition: all 0.5s;
   color: #818a91;
   font-size: 50px;
@@ -1392,6 +1410,7 @@ a.qazana-edit-template {
 
 .qazana-link {
   -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
   transition: all 0.5s; }
   .qazana-link .qazana-link-wrapper {
     display: -webkit-box;
@@ -1420,11 +1439,13 @@ a.qazana-edit-template {
 
 .qazana-icon-hover-reveal-yes .qazana-link {
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
+  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
 .qazana-icon-hover-reveal-yes .qazana-link-icon {
   overflow: hidden;
   max-width: 0;
   -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
+  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
   .qazana-icon-hover-reveal-yes .qazana-link-icon.qazana-align-icon-right {
     margin-left: 0; }
@@ -1538,6 +1559,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   width: 0;
   border-radius: 2px;
   -webkit-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
   transition: width 1s ease-in-out; }
 
 .qazana-progress-inner-text {
@@ -1548,6 +1570,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   font-size: 11px;
   width: 0;
   -webkit-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
   transition: width 1s ease-in-out; }
   .qazana-progress-inner-text .qazana-progress-percentage {
     position: relative;
@@ -1614,6 +1637,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     z-index: 3;
     color: #fff;
     -webkit-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
     transition: background-color 0.3s;
     margin-top: -25px; }
     .slick-slideshow-large-container-smalls a.next i,
@@ -2090,6 +2114,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.active:before {
     top: 0;
     -webkit-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
             transform: translateY(-100%); }
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.active:after {
     top: 100%; }
@@ -2293,6 +2318,7 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-tooltip__content {
   display: none;
   -webkit-transition: all .1s;
+  -o-transition: all .1s;
   transition: all .1s;
   position: absolute;
   z-index: 100;
@@ -2338,6 +2364,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     margin-left: 50%;
     top: 50%;
     -webkit-transform: translate(10px, -50%);
+        -ms-transform: translate(10px, -50%);
             transform: translate(10px, -50%);
     bottom: auto;
     margin-bottom: 0; }
@@ -2413,6 +2440,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     bottom: 50%;
     margin-bottom: 0;
     -webkit-transform: translateY(50%);
+        -ms-transform: translateY(50%);
             transform: translateY(50%);
     margin-right: 22px; }
   .qazana-tooltip__content.v--west:after {
@@ -2469,7 +2497,8 @@ body.qazana-page .qazana-widget-menu-anchor {
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  -webkit-background-size: cover;
+          background-size: cover;
   background-position: 50%;
   cursor: pointer; }
   .qazana-widget-video .qazana-custom-embed-image-overlay:hover .qazana-custom-embed-play i {
@@ -2486,6 +2515,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   top: 50%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
   z-index: 1; }
 
@@ -2508,9 +2538,11 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 .qazana-hover-animation-grow {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform; }
 
@@ -2518,13 +2550,16 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-grow:focus,
 .qazana-hover-animation-grow:hover {
   -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
           transform: scale(1.1); }
 
 .qazana-hover-animation-shrink {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform; }
 
@@ -2532,6 +2567,7 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-shrink:focus,
 .qazana-hover-animation-shrink:hover {
   -webkit-transform: scale(0.9);
+      -ms-transform: scale(0.9);
           transform: scale(0.9); }
 
 @-webkit-keyframes qazana-hover-animation-pulse {
@@ -2657,33 +2693,41 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 .qazana-hover-animation-bounce-in {
   -webkit-transition-duration: 0.5s;
+       -o-transition-duration: 0.5s;
           transition-duration: 0.5s; }
 
 .qazana-hover-animation-bounce-in:active,
 .qazana-hover-animation-bounce-in:focus,
 .qazana-hover-animation-bounce-in:hover {
   -webkit-transform: scale(1.2);
+      -ms-transform: scale(1.2);
           transform: scale(1.2);
   -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+       -o-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
           transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
 
 .qazana-hover-animation-bounce-out {
   -webkit-transition-duration: 0.5s;
+       -o-transition-duration: 0.5s;
           transition-duration: 0.5s; }
 
 .qazana-hover-animation-bounce-out:active,
 .qazana-hover-animation-bounce-out:focus,
 .qazana-hover-animation-bounce-out:hover {
   -webkit-transform: scale(0.8);
+      -ms-transform: scale(0.8);
           transform: scale(0.8);
   -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+       -o-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
           transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
 
 .qazana-hover-animation-rotate {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform; }
 
@@ -2691,13 +2735,16 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-rotate:focus,
 .qazana-hover-animation-rotate:hover {
   -webkit-transform: rotate(4deg);
+      -ms-transform: rotate(4deg);
           transform: rotate(4deg); }
 
 .qazana-hover-animation-grow-rotate {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform; }
 
@@ -2705,38 +2752,47 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-grow-rotate:focus,
 .qazana-hover-animation-grow-rotate:hover {
   -webkit-transform: scale(1.1) rotate(4deg);
+      -ms-transform: scale(1.1) rotate(4deg);
           transform: scale(1.1) rotate(4deg); }
 
 .qazana-hover-animation-float {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
   -webkit-transition-timing-function: ease-out;
+       -o-transition-timing-function: ease-out;
           transition-timing-function: ease-out; }
 
 .qazana-hover-animation-float:active,
 .qazana-hover-animation-float:focus,
 .qazana-hover-animation-float:hover {
   -webkit-transform: translateY(-8px);
+      -ms-transform: translateY(-8px);
           transform: translateY(-8px); }
 
 .qazana-hover-animation-sink {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
   -webkit-transition-timing-function: ease-out;
+       -o-transition-timing-function: ease-out;
           transition-timing-function: ease-out; }
 
 .qazana-hover-animation-sink:active,
 .qazana-hover-animation-sink:focus,
 .qazana-hover-animation-sink:hover {
   -webkit-transform: translateY(8px);
+      -ms-transform: translateY(8px);
           transform: translateY(8px); }
 
 @-webkit-keyframes qazana-hover-animation-bob {
@@ -2835,9 +2891,11 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 .qazana-hover-animation-skew {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform; }
 
@@ -2845,38 +2903,47 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-skew:focus,
 .qazana-hover-animation-skew:hover {
   -webkit-transform: skew(-10deg);
+      -ms-transform: skew(-10deg);
           transform: skew(-10deg); }
 
 .qazana-hover-animation-skew-forward {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
   -webkit-transform-origin: 0 100%;
+      -ms-transform-origin: 0 100%;
           transform-origin: 0 100%; }
 
 .qazana-hover-animation-skew-forward:active,
 .qazana-hover-animation-skew-forward:focus,
 .qazana-hover-animation-skew-forward:hover {
   -webkit-transform: skew(-10deg);
+      -ms-transform: skew(-10deg);
           transform: skew(-10deg); }
 
 .qazana-hover-animation-skew-backward {
   -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
           transition-duration: 0.3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
+  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
   -webkit-transform-origin: 0 100%;
+      -ms-transform-origin: 0 100%;
           transform-origin: 0 100%; }
 
 .qazana-hover-animation-skew-backward:active,
 .qazana-hover-animation-skew-backward:focus,
 .qazana-hover-animation-skew-backward:hover {
   -webkit-transform: skew(10deg);
+      -ms-transform: skew(10deg);
           transform: skew(10deg); }
 
 @-webkit-keyframes qazana-hover-animation-wobble-vertical {
@@ -3124,6 +3191,7 @@ body.qazana-page .qazana-widget-menu-anchor {
             transform: skew(0); } }
 .qazana-hover-animation-wobble-top {
   -webkit-transform-origin: 0 100%;
+      -ms-transform-origin: 0 100%;
           transform-origin: 0 100%; }
 
 .qazana-hover-animation-wobble-top:active,
@@ -3179,6 +3247,7 @@ body.qazana-page .qazana-widget-menu-anchor {
             transform: skew(0); } }
 .qazana-hover-animation-wobble-bottom {
   -webkit-transform-origin: 100% 0;
+      -ms-transform-origin: 100% 0;
           transform-origin: 100% 0; }
 
 .qazana-hover-animation-wobble-bottom:active,
@@ -3349,6 +3418,7 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-shadow-bottom {
   -webkit-transition: border-color 0.2s ease-in-out, background-color 0.4s ease, -webkit-box-shadow 0.3s ease;
   transition: border-color 0.2s ease-in-out, background-color 0.4s ease, -webkit-box-shadow 0.3s ease;
+  -o-transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease;
   transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease;
   transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease, -webkit-box-shadow 0.3s ease; }
 
@@ -3362,11 +3432,13 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-hover-animation-no-shadow {
   -webkit-transition: -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease;
   transition: -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease;
+  -o-transition: transform 0.2s ease, box-shadow 0.3s ease;
   transition: transform 0.2s ease, box-shadow 0.3s ease;
   transition: transform 0.2s ease, box-shadow 0.3s ease, -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease; }
   .qazana-hover-animation-no-shadow .qazana-widget-container {
     -webkit-transition: -webkit-box-shadow 0.3s ease;
     transition: -webkit-box-shadow 0.3s ease;
+    -o-transition: box-shadow 0.3s ease;
     transition: box-shadow 0.3s ease;
     transition: box-shadow 0.3s ease, -webkit-box-shadow 0.3s ease; }
 
@@ -3376,6 +3448,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
   -webkit-transform: translateY(-2px);
+      -ms-transform: translateY(-2px);
           transform: translateY(-2px); }
   .qazana-hover-animation-no-shadow:active .qazana-widget-container,
   .qazana-hover-animation-no-shadow:focus .qazana-widget-container,
@@ -3396,9 +3469,11 @@ body.qazana-page .qazana-widget-menu-anchor {
     bottom: -1px; }
   .qazana-shape[data-negative="false"].qazana-shape-bottom {
     -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
             transform: rotate(180deg); }
   .qazana-shape[data-negative="true"].qazana-shape-top {
     -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
             transform: rotate(180deg); }
   .qazana-shape svg {
     display: block;
@@ -3407,10 +3482,12 @@ body.qazana-page .qazana-widget-menu-anchor {
     position: relative;
     left: 50%;
     -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
             transform: translateX(-50%); }
   .qazana-shape .qazana-shape-fill {
     fill: #fff;
     -webkit-transform-origin: center;
+        -ms-transform-origin: center;
             transform-origin: center;
     -webkit-transform: rotateY(0deg);
             transform: rotateY(0deg); }

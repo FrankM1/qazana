@@ -40,15 +40,6 @@ Ajax = {
 
 		if ( successCallback || errorCallback ) {
 			ajaxParams.success = function( response ) {
-
-                if( ! response.data ) {
-                    console.log('error');
-                    console.log(ajaxParams);
-                } else {
-                    console.log('sucess');
-                    console.log(response.data.data);
-                }
-
 				if ( response.success && successCallback ) {
 					successCallback( response.data );
 				}

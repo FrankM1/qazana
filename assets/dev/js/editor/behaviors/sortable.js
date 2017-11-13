@@ -21,7 +21,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 	onEditModeSwitched: function( activeMode ) {
 		if ( 'edit' === activeMode ) {
-			this.active();
+			this.activate();
 		} else {
 			this.deactivate();
 		}
@@ -31,7 +31,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		var deviceMode = qazana.channels.deviceMode.request( 'currentMode' );
 
 		if ( 'desktop' === deviceMode ) {
-			this.active();
+			this.activate();
 		} else {
 			this.deactivate();
 		}
@@ -49,7 +49,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		this.deactivate();
 	},
 
-	active: function() {
+	activate: function() {
 		if ( this.getChildViewContainer().sortable( 'instance' ) ) {
 			return;
 		}
@@ -62,7 +62,8 @@ SortableBehavior = Marionette.Behavior.extend( {
 					top: 20,
 					left: 25
 				},
-				helper: _.bind( this._getSortableHelper, this )
+				helper: _.bind( this._getSortableHelper, this ),
+				cancel: 'input, textarea, button, select, option, .qazana-inline-editing, .qazana-tab-title'
 			},
 			sortableOptions = _.extend( defaultSortableOptions, this.view.getSortableOptions() );
 

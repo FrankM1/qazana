@@ -10,6 +10,7 @@ class Heartbeat {
 	/**
 	 * Handle the post lock in the editor.
 	 *
+     * @access public
 	 * @since 1.0.0
 	 *
 	 * @param array $response
@@ -28,28 +29,33 @@ class Heartbeat {
 				$response['locked_user'] = $locked_user->display_name;
 			}
 
-			$response['qazanaNonce'] = wp_create_nonce( 'qazana-editing' );
+            $response['qazanaNonce'] = qazana()->editor->create_nonce();
 		}
 		return $response;
     }
 
-    public function refresh_nonces( $response, $data ) {
+    /**
+	 * @access public
+	 */
+	public function refresh_nonces( $response, $data ) {
 		if ( isset( $data['qazana_post_lock']['post_ID'] ) ) {
 			$response['qazana-refresh-nonces'] = [
-				'qazanaNonce' => wp_create_nonce( 'qazana-editing' ),
+				'qazanaNonce' => qazana()->editor->create_nonce(),
 				'heartbeatNonce' => wp_create_nonce( 'heartbeat-nonce' ),
 			];
-        }
-        return $response;
+		}
+
+		return $response;
 	}
 
 	/**
 	 * Heartbeat constructor.
 	 *
+	 * @access public
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-        add_filter( 'heartbeat_received', [ $this, 'heartbeat_received' ], 10, 2 );
-        add_filter( 'wp_refresh_nonces', [ $this, 'refresh_nonces' ], 30, 2 );
-    }
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_received' ], 10, 2 );
+		add_filter( 'wp_refresh_nonces', [ $this, 'refresh_nonces' ], 30, 2 );
+	}
 }

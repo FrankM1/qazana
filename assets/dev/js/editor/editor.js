@@ -246,10 +246,19 @@ App = Marionette.Application.extend( {
 		hotKeysHandlers[ keysDictionary.del ] = {
 			deleteElement: {
 				isWorthHandling: function( event ) {
-					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName(),
-						isInputTarget = $( event.target ).is( ':input, .qazana-input' );
+					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName();
 
-					return isEditorOpen && ! isInputTarget;
+					if ( ! isEditorOpen ) {
+						return false;
+					}
+
+					var $target = $( event.target );
+
+					if ( $target.is( ':input, .qazana-input' ) ) {
+						return false;
+					}
+
+					return ! $target.closest( '.qazana-inline-editing' ).length;
 				},
 				handle: function() {
 					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).removeElement();
@@ -362,6 +371,34 @@ App = Marionette.Application.extend( {
 		} );
 	},
 
+	showFatalErrorDialog: function( options ) {
+		var defaultOptions = {
+			id: 'qazana-fatal-error-dialog',
+			headerMessage: '',
+			message: '',
+			position: {
+				my: 'center center',
+				at: 'center center'
+			},
+			strings: {
+				confirm: qazana.translate( 'learn_more' ),
+				cancel: qazana.translate( 'go_back' )
+			},
+			onConfirm: null,
+			onCancel: function() {
+				parent.history.go( -1 );
+			},
+			hide: {
+				onBackgroundClick: false,
+				onButtonClick: false
+			}
+		};
+
+		options = jQuery.extend( true, defaultOptions, options );
+
+		this.dialogsManager.createWidget( 'confirm', options ).show();
+	},
+
 	onStart: function() {
 		this.$window = Backbone.$( window );
 
@@ -391,6 +428,14 @@ App = Marionette.Application.extend( {
 
 	onPreviewLoaded: function() {
 		NProgress.done();
+
+		var previewWindow = this.$preview[0].contentWindow;
+
+		if ( ! previewWindow.qazanaFrontend ) {
+			this.onPreviewLoadingError();
+
+			return;
+		}
 
 		this.$previewContents = this.$preview.contents();
 
@@ -465,29 +510,24 @@ App = Marionette.Application.extend( {
 		}
 	},
 
+	onPreviewLoadingError: function() {
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'preview_not_loading_header' ),
+			message: this.translate( 'preview_not_loading_message' ),
+			onConfirm: function() {
+				open( qazana.config.help_preview_error_url, '_blank' );
+			}
+		} );
+	},
+
 	onPreviewElNotFound: function() {
-		var dialog = this.dialogsManager.createWidget( 'confirm', {
-			id: 'qazana-fatal-error-dialog',
-			headerMessage: qazana.translate( 'preview_el_not_found_header' ),
-			message: qazana.translate( 'preview_el_not_found_message' ),
-			position: {
-				my: 'center center',
-				at: 'center center'
-			},
-            strings: {
-				confirm: qazana.translate( 'learn_more' ),
-				cancel: qazana.translate( 'go_back' )
-            },
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'preview_el_not_found_header' ),
+			message: this.translate( 'preview_el_not_found_message' ),
 			onConfirm: function() {
 				open( qazana.config.help_the_content_url, '_blank' );
-			},
-			onCancel: function() {
-				parent.history.go( -1 );
-			},
-			hideOnButtonClick: false
+			}
 		} );
-
-		dialog.show();
 	},
 
 	setFlagEditorChange: function( status ) {

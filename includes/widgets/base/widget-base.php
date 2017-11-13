@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget Base
  *
- * Base class extended to create Elementor widgets.
+ * Base class extended to create Qazana widgets.
  *
  * This class must be extended for each widget.
  *
@@ -260,11 +260,13 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected function _get_initial_config() {
 
-		return array_merge( parent::_get_initial_config(), [
+		$config = [
 			'widget_type' => $this->get_name(),
 			'keywords' => $this->get_keywords(),
 			'categories' => $this->get_categories(),
-		] );
+		];
+
+		return array_merge( parent::_get_initial_config(), $config );
 	}
 
     /**

@@ -42,6 +42,48 @@ class Control_Repeater extends Base_Data_Control {
 			}
 		}
 		return $value;
+    }
+ 
+    /**
+	 * Import repeater.
+	 *
+	 * Used as a wrapper method for inner controls while importing Qazana
+	 * template JSON file, and replacing the old data.
+	 *
+	 * @since 1.3.0
+	 * @access public
+	 *
+	 * @param array $settings     Control settings.
+	 * @param array $control_data Optional. Control data. Default is an empty array.
+	 *
+	 * @return array Control settings.
+	 */
+	public function on_import( $settings, $control_data = [] ) {
+		if ( empty( $settings ) || empty( $control_data['fields'] ) ) {
+			return $settings;
+		}
+
+		$method = 'on_import';
+
+		foreach ( $settings as &$item ) {
+			foreach ( $control_data['fields'] as $field ) {
+				if ( empty( $field['name'] ) || empty( $item[ $field['name'] ] ) ) {
+					continue;
+				}
+
+				$control_obj = qazana()->controls_manager->get_control( $field['type'] );
+
+				if ( ! $control_obj ) {
+					continue;
+				}
+
+				if ( method_exists( $control_obj, $method ) ) {
+					$item[ $field['name'] ] = $control_obj->{$method}( $item[ $field['name'] ], $field );
+				}
+			}
+		}
+
+		return $settings;
 	}
 
 	public function content_template() {
@@ -51,8 +93,10 @@ class Control_Repeater extends Base_Data_Control {
 		</label>
 		<div class="qazana-repeater-fields"></div>
 		<div class="qazana-button-wrapper">
-			<button class="qazana-button qazana-button-default qazana-repeater-add"><span class="eicon-plus"></span><?php _e( 'Add Item', 'qazana' ); ?></button>
-		</div>
+			<button class="qazana-button qazana-button-default qazana-repeater-add" type="button">
+				<span class="eicon-plus"></span><?php _e( 'Add Item', 'qazana' ); ?>
+			</button>
+        </div>
 		<?php
 	}
 }
