@@ -1,7 +1,7 @@
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
-	ControlShadowItemView;
+	ControlBoxShadowItemView;
 
-ControlShadowItemView = ControlMultipleBaseItemView.extend( {
+ControlBoxShadowItemView = ControlMultipleBaseItemView.extend( {
 	ui: function() {
 		var ui = ControlMultipleBaseItemView.prototype.ui.apply( this, arguments );
 
@@ -11,8 +11,10 @@ ControlShadowItemView = ControlMultipleBaseItemView.extend( {
 		return ui;
 	},
 
-	childEvents: {
-		'slide @ui.sliders': 'onSlideChange'
+	events: function() {
+		return _.extend( ControlMultipleBaseItemView.prototype.events.apply( this, arguments ), {
+			'slide @ui.sliders': 'onSlideChange'
+		} );
 	},
 
 	initSliders: function() {
@@ -80,4 +82,4 @@ ControlShadowItemView = ControlMultipleBaseItemView.extend( {
 	}
 } );
 
-module.exports = ControlShadowItemView;
+module.exports = ControlBoxShadowItemView;

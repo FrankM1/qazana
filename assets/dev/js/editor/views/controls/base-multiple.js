@@ -1,7 +1,7 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' ),
 	ControlBaseMultipleItemView;
 
-ControlBaseMultipleItemView = ControlBaseItemView.extend( {
+ControlBaseMultipleItemView = ControlBaseDataView.extend( {
 
 	applySavedValue: function() {
 		var values = this.getControlValue(),

@@ -172,7 +172,7 @@ class Elements_Manager {
 			$status = DB::STATUS_DRAFT;
 		}
 
-        	if ( ! empty( $_POST['save_state'] ) && $_POST['save_state'] === 'delete' ) {
+        if ( ! empty( $_POST['save_state'] ) && $_POST['save_state'] === 'delete' ) {
 			$save_state = 'delete';
 		} else {
 			$save_state = 'save';

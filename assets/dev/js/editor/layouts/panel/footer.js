@@ -25,7 +25,6 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		'click @ui.deviceModeButtons': 'onClickResponsiveButtons',
 		'click @ui.buttonSave': 'onClickButtonSave',
 		'click @ui.buttonPublish': 'onClickButtonPublish',
-		'click @ui.watchTutorial': 'onClickWatchTutorial',
 		'click @ui.showTemplates': 'onClickShowTemplates',
 		'click @ui.saveTemplate': 'onClickSaveTemplate',
 		'click @ui.history': 'onClickHistory'
@@ -115,7 +114,7 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 		var $tool = $target.closest( '.qazana-panel-footer-tool' ),
 			isClosedTool = $tool.length && ! $tool.hasClass( 'qazana-open' );
 
-		this.ui.menuButtons.removeClass( 'qazana-open' );
+		this.ui.menuButtons.filter( ':not(.qazana-leave-open)' ).removeClass( 'qazana-open' );
 
 		if ( isClosedTool ) {
 			$tool.addClass( 'qazana-open' );
@@ -156,7 +155,6 @@ PanelFooterItemView = Marionette.ItemView.extend( {
 
 		qazana.changeDeviceMode( newDeviceMode );
 	},
-
 
 	onClickShowTemplates: function() {
 		qazana.templates.showTemplatesModal();

@@ -489,7 +489,7 @@ class Source_Local extends Source_Base {
 	public function is_template_supports_export( $template_id ) {
 		return apply_filters( 'qazana/template_library/is_template_supports_export', true, $template_id );
     }
-    
+
     /**
 	 * @access public
 	 */

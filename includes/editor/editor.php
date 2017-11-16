@@ -23,7 +23,6 @@ class Editor {
 	 * @var array
 	 */
 	private $_localize_settings = [];
-
 	 
     /**
 	 * @since 1.3.0

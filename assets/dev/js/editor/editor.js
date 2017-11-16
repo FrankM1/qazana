@@ -42,6 +42,7 @@ App = Marionette.Application.extend( {
 		},
 		controls: {
 			Base: require( 'qazana-views/controls/base' ),
+			BaseData: require( 'qazana-views/controls/base-data' ),
 			BaseMultiple: require( 'qazana-views/controls/base-multiple' ),
 			Color: require( 'qazana-views/controls/color' ),
 			Dimensions: require( 'qazana-views/controls/dimensions' ),
@@ -61,14 +62,15 @@ App = Marionette.Application.extend( {
 			Select2: require( 'qazana-views/controls/select2' ),
 			Date_time: require( 'qazana-views/controls/date-time' ),
 			Code: require( 'qazana-views/controls/code' ),
-			Box_shadow: require( 'qazana-views/controls/shadow' ),
-			Text_shadow: require( 'qazana-views/controls/shadow' ),
+			Box_shadow: require( 'qazana-views/controls/box-shadow' ),
+			Text_shadow: require( 'qazana-views/controls/box-shadow' ),
 			Structure: require( 'qazana-views/controls/structure' ),
 			Animation: require( 'qazana-views/controls/select2' ),
 			Hover_animation: require( 'qazana-views/controls/select2' ),
 			Order: require( 'qazana-views/controls/order' ),
 			Switcher: require( 'qazana-views/controls/switcher' ),
-			Number: require( 'qazana-views/controls/number' )
+			Number: require( 'qazana-views/controls/number' ),
+			Popover_toggle: require( 'qazana-views/controls/popover-toggle' )
 		},
 		templateLibrary: {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
@@ -79,6 +81,10 @@ App = Marionette.Application.extend( {
 
 	addControlView: function( controlID, ControlView ) {
 		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
+	},
+
+	checkEnvCompatibility: function() {
+		return this.envData.gecko || this.envData.webkit;
 	},
 
 	getElementData: function( modelElement ) {
@@ -124,11 +130,25 @@ App = Marionette.Application.extend( {
 	},
 
 	getControlView: function( controlID ) {
-		return this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] || this.modules.controls.Base;
+		var capitalizedControlName = controlID[0].toUpperCase() + controlID.slice( 1 ),
+			View = this.modules.controls[ capitalizedControlName ];
+
+		if ( ! View ) {
+			var controlData = this.config.controls[ controlID ],
+				isUIControl = -1 !== controlData.features.indexOf( 'ui' );
+
+			View = this.modules.controls[ isUIControl ? 'Base' : 'BaseData' ];
+		}
+
+		return View;
 	},
 
 	getPanelView: function() {
 		return this.getRegion( 'panel' ).currentView;
+	},
+
+	initEnvData: function() {
+		this.envData = _.pick( tinymce.EditorManager.Env, [ 'desktop', 'webkit', 'gecko', 'ie', 'opera' ] );
 	},
 
 	initComponents: function() {
@@ -350,7 +370,7 @@ App = Marionette.Application.extend( {
 		this.$previewContents.on( 'click', function( event ) {
 			var $target = Backbone.$( event.target ),
 				editMode = qazana.channels.dataEditMode.request( 'activeMode' ),
-				isClickInsideQazana = !! $target.closest( '#qazana' ).length,
+				isClickInsideQazana = !! $target.closest( '#qazana, .pen-menu' ).length,
 				isTargetInsideDocument = this.contains( $target[0] );
 
 			if ( isClickInsideQazana && 'edit' === editMode || ! isTargetInsideDocument ) {
@@ -411,6 +431,12 @@ App = Marionette.Application.extend( {
 		Backbone.Radio.tuneIn( 'BUILDER' );
 
 		this.initComponents();
+
+		this.initEnvData();
+
+		if ( ! this.checkEnvCompatibility() ) {
+			this.onEnvNotCompatible();
+		}
 
 		this.channels.dataEditMode.reply( 'activeMode', 'edit' );
 
@@ -508,6 +534,22 @@ App = Marionette.Application.extend( {
 		} else {
 			this.enterPreviewMode( 'preview' === activeMode );
 		}
+	},
+
+	onEnvNotCompatible: function() {
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'device_incompatible_header' ),
+			message: this.translate( 'device_incompatible_message' ),
+			strings: {
+				confirm: qazana.translate( 'proceed_anyway' )
+			},
+			hide: {
+				onButtonClick: true
+			},
+			onConfirm: function() {
+				this.hide();
+			}
+		} );
 	},
 
 	onPreviewLoadingError: function() {

@@ -62,8 +62,8 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 			disabledSchemes = _.difference( schemesTypes, qazana.schemes.getEnabledSchemesTypes() );
 
 		_.each( disabledSchemes, function( schemeType ) {
-			var scheme = qazana.schemes.getScheme( schemeType );
-			
+			var scheme  = qazana.schemes.getScheme( schemeType );
+
 			pages[ schemeType + 'Scheme' ].view = require( 'qazana-panel/pages/schemes/disabled' ).extend( {
 				disabledTitle: scheme.disabled_title
 			} );

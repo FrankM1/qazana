@@ -1,9 +1,12 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' ),
 	ControlWysiwygItemView;
 
-ControlWysiwygItemView = ControlBaseItemView.extend( {
-	childEvents: {
-		'keyup textarea.qazana-wp-editor': 'onBaseInputChange'
+ControlWysiwygItemView = ControlBaseDataView.extend( {
+
+	events: function() {
+		return _.extend( ControlBaseDataView.prototype.events.apply( this, arguments ), {
+			'keyup textarea.qazana-wp-editor': 'onBaseInputChange'
+		} );
 	},
 
 	// List of buttons to move {buttonToMove: afterButton}
@@ -24,7 +27,7 @@ ControlWysiwygItemView = ControlBaseItemView.extend( {
 	},
 
 	initialize: function() {
-		ControlBaseItemView.prototype.initialize.apply( this, arguments );
+		ControlBaseDataView.prototype.initialize.apply( this, arguments );
 
 		var self = this;
 

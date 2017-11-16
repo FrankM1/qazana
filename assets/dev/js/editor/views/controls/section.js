@@ -1,9 +1,9 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseView = require( 'qazana-views/controls/base' ),
 	ControlSectionItemView;
 
-ControlSectionItemView = ControlBaseItemView.extend( {
+ControlSectionItemView = ControlBaseView.extend( {
 	ui: function() {
-		var ui = ControlBaseItemView.prototype.ui.apply( this, arguments );
+		var ui = ControlBaseView.prototype.ui.apply( this, arguments );
 
 		ui.heading = '.qazana-panel-heading';
 

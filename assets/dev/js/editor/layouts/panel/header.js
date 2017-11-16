@@ -129,7 +129,6 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
     onClickButtonPublish: function( event ) {
         // Prevent click on save button
         event.stopPropagation();
-
         this._publishBuilder();
     }
 

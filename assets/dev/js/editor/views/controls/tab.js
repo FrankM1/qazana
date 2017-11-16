@@ -1,9 +1,12 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseView = require( 'qazana-views/controls/base' ),
 	ControlTabItemView;
 
-ControlTabItemView = ControlBaseItemView.extend( {
+ControlTabItemView = ControlBaseView.extend( {
 	triggers: {
-		'click': 'control:tab:clicked'
+		'click': {
+			event: 'control:tab:clicked',
+			stopPropagation: false
+		}
 	}
 } );
 

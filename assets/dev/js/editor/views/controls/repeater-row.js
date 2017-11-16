@@ -1,4 +1,5 @@
-var RepeaterRowView;
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' ),
+	RepeaterRowView;
 
 RepeaterRowView = Marionette.CompositeView.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-qazana-repeater-row' ),
@@ -80,6 +81,10 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 			var values = {};
 
 			self.children.each( function( child ) {
+				if ( ! ( child instanceof ControlBaseDataView ) ) {
+					return;
+				}
+
 				values[ child.model.get( 'name' ) ] = child.getControlValue();
 			} );
 

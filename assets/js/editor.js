@@ -405,7 +405,6 @@ SortableBehavior = Marionette.Behavior.extend( {
 		'sortstart': 'onSortStart',
 		'sortreceive': 'onSortReceive',
 		'sortupdate': 'onSortUpdate',
-		'sortstop': 'onSortStop',
 		'sortover': 'onSortOver',
 		'sortout': 'onSortOut'
 	},
@@ -472,6 +471,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 		} );
 
 		return '<div style="height: 84px; width: 125px;" class="qazana-sortable-helper qazana-sortable-helper-' + model.get( 'elType' ) + '"><div class="icon"><i class="' + model.getIcon() + '"></i></div><div class="qazana-element-title-wrapper"><div class="title">' + model.getTitle() + '</div></div></div>';
+	},
+
+	getChildViewContainer: function() {
+		return this.view.getChildViewContainer( this.view );
 	},
 
 	deactivate: function() {
@@ -598,10 +601,6 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 	onAddChild: function( view ) {
 		view.$el.attr( 'data-model-cid', view.model.cid );
-	},
-
-	getChildViewContainer: function() {
-		return this.view.getChildViewContainer( this.view );
 	}
 } );
 
@@ -817,6 +816,7 @@ TemplateLibraryManager = function() {
 			data: {
 				source: source,
 				edit_mode: true,
+				display: true,
 				template_id: id
 			}
 		};
@@ -2756,7 +2756,6 @@ PanelHeaderItemView = Marionette.ItemView.extend( {
     onClickButtonPublish: function( event ) {
         // Prevent click on save button
         event.stopPropagation();
-
         this._publishBuilder();
     }
 
@@ -7174,8 +7173,10 @@ BaseElementView = BaseContainer.extend( {
 
 	toggleEditTools: true,
 
-	allowRender: true,
-
+    allowRender: true,
+    
+	renderAttributes: {},
+    
 	className: function() {
 		return 'qazana-element qazana-element-edit-mode ' + this.getElementUniqueID();
 	},
@@ -7183,7 +7184,7 @@ BaseElementView = BaseContainer.extend( {
 	attributes: function() {
 		var type = this.model.get( 'elType' );
 
-		if ( 'widget'  === type ) {
+		if ( 'widget' === type ) {
 			type = this.model.get( 'widgetType' );
 		}
 
@@ -7360,6 +7361,59 @@ BaseElementView = BaseContainer.extend( {
 		}
 
 		validators[ controlName ].push( validator );
+    },
+    
+    addRenderAttribute: function( element, key, value, overwrite ) {
+		var self = this;
+
+		if ( 'object' === typeof element ) {
+			jQuery.each( element, function( elementKey ) {
+				self.addRenderAttribute( elementKey, this, null, overwrite );
+			} );
+
+			return self;
+		}
+
+		if ( 'object' === typeof key ) {
+			jQuery.each( key, function( attributeKey ) {
+				self.addRenderAttribute( element, attributeKey, this, overwrite );
+			} );
+
+			return self;
+		}
+
+		if ( ! self.renderAttributes[ element ] ) {
+			self.renderAttributes[ element ] = {};
+		}
+
+		if ( ! self.renderAttributes[ element ][ key ] ) {
+			self.renderAttributes[ element ][ key ] = [];
+		}
+
+		if ( ! Array.isArray( value ) ) {
+			value = [ value ];
+		}
+
+		if ( overwrite ) {
+			self.renderAttributes[ element ][ key ] = value;
+		} else {
+			self.renderAttributes[ element ][ key ] = self.renderAttributes[ element ][ key ].concat( value );
+		}
+	},
+
+	getRenderAttributeString: function( element ) {
+		if ( ! this.renderAttributes[ element ] ) {
+			return '';
+		}
+
+		var renderAttributes = this.renderAttributes[ element ],
+			attributes = [];
+
+		jQuery.each( renderAttributes, function( attributeKey ) {
+			attributes.push( attributeKey + '="' + _.escape( this.join( ' ' ) ) + '"' );
+		} );
+
+		return attributes.join( ' ' );
 	},
 
 	isCollectionFilled: function() {
@@ -7567,6 +7621,10 @@ BaseElementView = BaseContainer.extend( {
             
         }, 200);
     
+    },
+    
+    onBeforeRender: function() {
+		this.renderAttributes = {};
 	},
 
 	onRender: function() {
@@ -10687,24 +10745,6 @@ WidgetView = BaseElementView.extend( {
 		return this._templateType;
 	},
 
-	onModelBeforeRemoteRender: function() {
-		this.$el.addClass( 'qazana-loading' );
-	},
-
-	onBeforeDestroy: function() {
-		// Remove old style from the DOM.
-		qazana.$previewContents.find( '#qazana-style-' + this.model.cid ).remove();
-	},
-
-	onModelRemoteRender: function() {
-		if ( this.isDestroyed ) {
-			return;
-		}
-
-		this.$el.removeClass( 'qazana-loading' );
-		this.render();
-	},
-
 	getHTMLContent: function( html ) {
 		var htmlCache = this.getEditModel().getHtmlCache();
 
@@ -10722,6 +10762,41 @@ WidgetView = BaseElementView.extend( {
 		} );
 
 		return this;
+	},
+
+	addInlineEditingAttributes: function( key, toolbar ) {
+		this.addRenderAttribute( key, {
+			'class': 'qazana-inline-editing',
+			'data-qazana-setting-key': key
+		} );
+
+		if ( toolbar ) {
+			this.addRenderAttribute( key, {
+				'data-qazana-inline-editing-toolbar': toolbar
+			} );
+		}
+	},
+
+	getRepeaterSettingKey: function( settingKey, repeaterKey, repeaterItemIndex ) {
+		return [ repeaterKey, repeaterItemIndex, settingKey ].join( '.' );
+	},
+
+	onModelBeforeRemoteRender: function() {
+		this.$el.addClass( 'qazana-loading' );
+	},
+
+	onBeforeDestroy: function() {
+		// Remove old style from the DOM.
+		qazana.$previewContents.find( '#qazana-style-' + this.model.cid ).remove();
+	},
+
+	onModelRemoteRender: function() {
+		if ( this.isDestroyed ) {
+			return;
+		}
+
+		this.$el.removeClass( 'qazana-loading' );
+		this.render();
 	},
 
 	onRender: function() {
