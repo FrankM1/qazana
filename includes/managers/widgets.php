@@ -6,19 +6,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Widgets_Manager {
-	/**
+
+    /**
 	 * @var Widget_Base[]
 	 */
 	private $_widget_types = null;
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	 */
     public function __construct() {
-
         add_action( 'qazana/includes', [ $this, 'require_files' ] );
-
         add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
         add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
     }
 
+	/**
+	 * @since 1.0.0
+	 * @access private
+	*/
     private function _init_widgets() {
 
         $this->_widget_types = [];
@@ -82,9 +89,7 @@ class Widgets_Manager {
                 qazana()->widget_loader->locate_widget( $widget_filename .'.php', true );
             }
 
-            $widget_instance = new $class_name();
-
-            $this->register_widget_type( $widget_instance );
+            $this->register_widget_type( new $class_name );
         }
 
         $this->_register_wp_widgets();
@@ -92,6 +97,10 @@ class Widgets_Manager {
 		do_action( 'qazana/widgets/widgets_registered', $this );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access private
+	 */
     private function _register_wp_widgets() {
 
         global $wp_widget_factory;
@@ -105,7 +114,7 @@ class Widgets_Manager {
         /**
          * Allow override of allowed widgets
          *
-         * @since 0.6.5
+         * @since 1.0.0
          *
          * @param array $allowed_widgets.
          */
@@ -123,6 +132,10 @@ class Widgets_Manager {
         }
     }
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	 */
     public function require_files() {
 
         $default_files = [];
@@ -149,6 +162,10 @@ class Widgets_Manager {
 
     }
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function register_widget_type( Widget_Base $widget ) {
 		if ( is_null( $this->_widget_types ) ) {
 			$this->_init_widgets();

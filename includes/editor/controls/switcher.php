@@ -53,9 +53,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $return_value Optional. The value returned when checked.
  *                             Default is 'yes'.
  * @param string $label_off    Optional. The label for the "unchecked" state
- *                             Default is `__( 'No', 'elementor' )`.
+ *                             Default is `__( 'No', 'qazana' )`.
  * @param string $label_on     Optional. The label for the "checked" state.
- *                             Default is `__( 'Yes', 'elementor' )`.
+ *                             Default is `__( 'Yes', 'qazana' )`.
  * @param string $separator    Optional. Set the position of the control separator.
  *                             Available values are 'default', 'before', 'after'
  *                             and 'none'. 'default' will position the separator

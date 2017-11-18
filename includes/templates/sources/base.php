@@ -4,25 +4,94 @@ namespace Qazana\Template_Library;
 use Qazana\Plugin;
 use Qazana\Utils;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 abstract class Source_Base {
 
+	/**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function get_id();
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function get_title();
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function register_data();
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function get_items( $args = [] );
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function get_item( $template_id );
+    
+    /**
+	 * @abstract
+	 * @since 1.5.0
+	 * @access public
+	*/
 	abstract public function get_data( array $args );
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function delete_template( $template_id );
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function save_item( $template_data );
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function update_item( $new_data );
+    
+    /**
+	 * @abstract
+	 * @since 1.0.0
+	 * @access public
+	*/
 	abstract public function export_template( $template_id );
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function __construct() {
 		$this->register_data();
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access protected
+	*/
 	protected function replace_elements_ids( $content ) {
 		return qazana()->db->iterate_data( $content, function( $element ) {
 			$element['id'] = Utils::generate_random_string();
@@ -32,6 +101,8 @@ abstract class Source_Base {
 	}
 
 	/**
+	 * @since 1.0.0
+	 * @access protected
 	 * @param array  $content a set of elements.
 	 * @param string $method  (on_export|on_import).
 	 *
@@ -81,6 +152,8 @@ abstract class Source_Base {
 	}
 
 	/**
+	 * @since 1.0.0
+	 * @access protected
 	 * @param \Qazana\Controls_Stack $element
 	 * @param string                    $method
 	 *

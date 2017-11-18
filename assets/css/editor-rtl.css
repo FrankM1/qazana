@@ -1315,6 +1315,8 @@ select {
         background-image: -o-linear-gradient(top, #f3f3f3, #fff);
         background-image: linear-gradient(to bottom, #f3f3f3, #fff);
         border-bottom: 3px solid #0085ba; }
+      .qazana-panel .qazana-panel-navigation .qazana-panel-navigation-tab.qazana-tab-control-lightbox a:before {
+        content: '\f2d2'; }
       .qazana-panel .qazana-panel-navigation .qazana-panel-navigation-tab a {
         display: block;
         text-align: center;

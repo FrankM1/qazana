@@ -59,6 +59,16 @@ HandlerModule = ViewModule.extend( {
 			}, qazana.channels.editor );
 		}
 
+		if ( self.onEditSettingsChange ) {
+			qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change:editSettings', function( changedModel, view ) {
+				if ( view.model.cid !== self.getModelCID() ) {
+					return;
+				}
+
+				self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
+			}, qazana.channels.editor );
+		}
+
 		[ 'page', 'general' ].forEach( function( settingsType ) {
 			var listenerMethodName = 'on' + settingsType.charAt( 0 ).toUpperCase() + settingsType.slice( 1 ) + 'SettingsChange';
 

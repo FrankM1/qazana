@@ -1,23 +1,44 @@
 <?php
 namespace Qazana\Template_Library;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+use Qazana\PageSettings\Page;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Source_Theme extends Source_Base {
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
     public function get_id() {
         return 'theme';
     }
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
     public function get_title() {
         return __( 'Theme', 'qazana' );
     }
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	*/
     public function register_data() {}
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	*/
     public function get_items( $args = [] ) {
 
-        $templates = array();
+        $templates = [];
 
         $templates_data = apply_filters( 'qazana_theme_template_presets', array() );
 
@@ -31,6 +52,8 @@ class Source_Theme extends Source_Base {
     }
 
 	/**
+	 * @since 1.0.0
+	 * @access public
 	 * @param array $template_data
 	 *
 	 * @return array
@@ -45,29 +68,49 @@ class Source_Theme extends Source_Base {
 			'author' => $template_data['author'],
 			'categories' => [],
 			'keywords' => [],
+			'hasPageSettings' => ( ! empty( $template_data['has_page_settings'] ) && '1' === $template_data['has_page_settings'] ),
 			'url' => $template_data['url'],
 		];
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function save_item( $template_data ) {
 		return false;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function update_item( $new_data ) {
 		return false;
 	}
 
-	public function delete_template( $item_id ) {
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function delete_template( $template_id ) {
 		return false;
 	}
 
-	public function export_template( $item_id ) {
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function export_template( $template_id ) {
 		return false;
 	}
 
-    public function get_data( array $args, $context = 'display' ) {
-
-        $data = apply_filters( 'qazana_theme_template_content', array(), $item_id );
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function get_data( array $args, $context = 'display' ) {
+        $data = apply_filters( 'qazana_theme_template_content', array(), $args['template_id'] );
 
         if ( empty( $data ) || ! is_array( $data ) ) {
             return false;
@@ -91,5 +134,4 @@ class Source_Theme extends Source_Base {
 
 		return $data;
 	}
-
 }

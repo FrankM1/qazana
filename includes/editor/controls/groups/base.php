@@ -363,7 +363,7 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 * Used to add the group prefix to controls with conditions, to
 	 * distinguish them from other controls with the same name.
 	 *
-	 * This way Elementor can apply condition logic to a specific control in a
+	 * This way Qazana can apply condition logic to a specific control in a
 	 * group control.
 	 *
 	 * @since 1.2.0
@@ -395,7 +395,7 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 * Handle selectors.
 	 *
 	 * Used to process the CSS selector of group control fields. When using
-	 * group control, Elementor needs to apply the selector to different fields.
+	 * group control, Qazana needs to apply the selector to different fields.
 	 * This method handels the process.
 	 *
 	 * In addition, it handels selector values from other fields and process the
