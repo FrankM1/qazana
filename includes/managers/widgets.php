@@ -161,6 +161,10 @@ class Widgets_Manager {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function unregister_widget_type( $name ) {
 		if ( ! isset( $this->_widget_types[ $name ] ) ) {
 			return false;
@@ -171,6 +175,10 @@ class Widgets_Manager {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_widget_types( $widget_name = null ) {
 		if ( is_null( $this->_widget_types ) ) {
 			$this->_init_widgets();
@@ -186,6 +194,10 @@ class Widgets_Manager {
 		return $this->_widget_types;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_widget_types_config() {
 		$config = [];
 
@@ -200,6 +212,10 @@ class Widgets_Manager {
 		return $config;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function ajax_render_widget() {
 
         if ( ! qazana()->editor->verify_request_nonce() ) {
@@ -249,6 +265,10 @@ class Widgets_Manager {
 		);
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function ajax_get_wp_widget_form() {
 
         if ( qazana()->editor->verify_request_nonce() ) {
@@ -284,12 +304,20 @@ class Widgets_Manager {
 		wp_send_json_success( $widget_obj->get_form() );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function render_widgets_content() {
 		foreach ( $this->get_widget_types() as $widget ) {
 			$widget->print_template();
 		}
 	}
 
+	/**
+	 * @since 1.3.0
+	 * @access public
+	*/
 	public function get_widgets_frontend_settings_keys() {
 		$keys = [];
 

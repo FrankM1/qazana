@@ -58,7 +58,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
 				'prefix_class' => 'qazana-',
 				'label_on' => 'On',
 				'label_off' => 'Off',
-				'return_value' => '_element-inline',
+				'return_value' => 'element-inline',
 			]
 		);
 

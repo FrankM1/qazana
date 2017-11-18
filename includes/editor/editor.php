@@ -7,16 +7,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Editor
+ *
+ * @since 1.0.0
+ */
 class Editor {
-    
-    const EDITING_NONCE_KEY = 'qazana_editing';
-    
-    const EDITING_CAPABILITY = 'edit_pages';
-    
+
+	const EDITING_NONCE_KEY = 'qazana-editing';
+
+	const EDITING_CAPABILITY = 'edit_pages';
+
+	/**
+	 * Post ID.
+	 *
+	 * Holds the ID of the current post being edited.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int Post ID.
+	 */
 	private $_post_id;
 
+	/**
+	 * Whether edit mode is active.
+	 *
+	 * Used to determine whether we are in edit mode.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var bool Whether edit mode is active.
+	 */
 	private $_is_edit_mode;
 
+	/**
+	 * Editor templates.
+	 *
+	 * Holds the ID of the current post being edited.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var array Whether edit mode is active.
+	 */
 	private $_editor_templates = [];
 
 	/**
@@ -24,10 +59,16 @@ class Editor {
 	 */
 	private $_localize_settings = [];
 	 
-    /**
-	 * @since 1.3.0
-	 * @access private
-	*/
+    	/**
+	 * Init.
+	 *
+	 * Initialize Qazana editor. Fired by `init` action.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param bool $die Optional. Whether to die at the end. Default is `true`.
+	 */
 	private function init_editor_templates() {
 		$template_names = [
 			'global',
@@ -163,6 +204,18 @@ class Editor {
 		die;
 	}
 
+	/**
+	 * Whether edit mode is active.
+	 *
+	 * Used to determine whether we are in the edit mode.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param int $post_id Optional. Post ID. Default is `null`, the current post ID.
+	 *
+	 * @return bool Whether edit mode is active.
+	 */
 	public function is_edit_mode( $post_id = null ) {
 		if ( null !== $this->_is_edit_mode ) {
 			return $this->_is_edit_mode;
@@ -194,7 +247,14 @@ class Editor {
 	}
 
 	/**
-	 * @param $post_id
+	 * Lock post.
+	 *
+	 * Mark the post as currently being edited by the current user.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param int $post_id The ID of the post being edited.
 	 */
 	public function lock_post( $post_id ) {
 		if ( ! function_exists( 'wp_set_post_lock' ) ) {
@@ -205,9 +265,16 @@ class Editor {
 	}
 
 	/**
-	 * @param $post_id
+	 * Get locked user.
 	 *
-	 * @return bool|\WP_User
+	 * Check what user is currently editing the post.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param int $post_id The ID of the post being edited.
+	 *
+	 * @return false|\WP_User User information or false if the post is not locked.
 	 */
 	public function get_locked_user( $post_id ) {
 		if ( ! function_exists( 'wp_check_post_lock' ) ) {
@@ -222,10 +289,20 @@ class Editor {
 		return get_user_by( 'id', $locked_user );
 	}
 
+	/**
+	 * Print panel HTML.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function print_panel_html() {
 		include( 'editor-templates/editor-wrapper.php' );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function enqueue_scripts() {
 		remove_action( 'wp_enqueue_scripts', [ $this, __FUNCTION__ ], 999999 );
 
@@ -408,10 +485,6 @@ class Editor {
 
 		do_action( 'qazana/editor/before_enqueue_scripts' );
 
-		// Remove all TinyMCE plugins.
-		remove_all_filters( 'mce_buttons', 10 );
-		remove_all_filters( 'mce_external_plugins', 10 );
-
 		wp_enqueue_script( 'qazana-editor' );
 
 		// Tweak for WP Admin menu icons
@@ -446,7 +519,7 @@ class Editor {
                 'items'           => qazana()->schemes_manager->get_registered_schemes_data(),
                 'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
             ],
-            'wp_editor'              => $this->_get_wp_editor_config(),
+			'wp_editor'              => $this->get_wp_editor_config(),
             'settings'               => SettingsManager::get_settings_managers_config(),
             'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
             'qazana_site'            => 'https://radiumthemes.com/plugins/qazana',
@@ -487,7 +560,9 @@ class Editor {
                 'preview_el_not_found_message'             => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
                 'preview_not_loading_header'               => __( 'The preview could not be loaded', 'qazana' ),
                 'preview_not_loading_message'              => __( 'We\'re sorry, but something went wrong. Click on \'Learn more\' and follow each of the steps to quickly solve it.', 'qazana' ),
-                'session_expired_header'                   => __( 'Timeout', 'qazana' ),
+		'device_incompatible_header' => __( 'Your browser isn\'t compatible', 'qazana' ),
+		'device_incompatible_message' => __( 'Your browser isn\'t compatible with all of Qazana\'s editing features. We recommend you switch to another browser like Chrome or Firefox.', 'qazana' ),
+		'session_expired_header' => __( 'Timeout', 'qazana' ),
                 'session_expired_message'                  => __( 'Your session has expired. Please reload the page to continue editing.', 'qazana' ),
                 'learn_more'                               => __( 'Learn More', 'qazana' ),
                 'reload_page'                              => __( 'Reload Page', 'qazana' ),
@@ -512,15 +587,17 @@ class Editor {
                 'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
                 'no'                                       => __( 'No', 'qazana' ),
                 'yes'                                      => __( 'Yes', 'qazana' ),
+		'unknown_value' => __( 'Unknown Value', 'qazana' ),
                 'type_here'                                => __( 'Type Here', 'qazana' ),
+		'proceed_anyway' => __( 'Proceed Anyway', 'qazana' ),
             ]
-		];
+	];
 
-		$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+	$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
 
-		$this->add_localize_settings( $localize_settings );
+	$this->add_localize_settings( $localize_settings );
 
-		// Very important that this be loaded before 'qazana-editor' - for use by extensions
+	// Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );
 
         qazana()->controls_manager->enqueue_control_scripts();
@@ -528,7 +605,11 @@ class Editor {
         do_action( 'qazana/editor/after_enqueue_scripts' );
     }
 
-    public function enqueue_styles() {
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */    
+	public function enqueue_styles() {
 
 		do_action( 'qazana/editor/before_enqueue_styles' );
 
@@ -599,8 +680,26 @@ class Editor {
 		do_action( 'qazana/editor/after_enqueue_styles' );
     }
 
-	protected function _get_wp_editor_config() {
+	/**
+	 * @since 1.0.0
+	 * @access private
+	 */
+	private function get_wp_editor_config() {
+		// Remove all TinyMCE plugins.
+		remove_all_filters( 'mce_buttons', 10 );
+		remove_all_filters( 'mce_external_plugins', 10 );
+
+		if ( ! class_exists( '\_WP_Editors', false ) ) {
+			require( ABSPATH . WPINC . '/class-wp-editor.php' );
+		}
+
+		// WordPress 4.8 and higher
+		if ( method_exists( '\_WP_Editors', 'print_tinymce_scripts' ) ) {
+			\_WP_Editors::print_default_editor_scripts();
+			\_WP_Editors::print_tinymce_scripts();
+		}
 		ob_start();
+
 		wp_editor(
 			'%%EDITORCONTENT%%',
 			'qazanawpeditor',
@@ -610,9 +709,22 @@ class Editor {
 				'drag_drop_upload' => true,
 			]
 		);
-		return ob_get_clean();
+
+		$config = ob_get_clean();
+
+		// Don't call \_WP_Editors methods again
+		remove_action( 'admin_print_footer_scripts', [ '_WP_Editors', 'editor_js' ], 50 );
+		remove_action( 'admin_print_footer_scripts', [ '_WP_Editors', 'print_default_editor_scripts' ], 45 );
+
+		\_WP_Editors::editor_js();
+
+		return $config;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function editor_head_trigger() {
 		do_action( 'qazana/editor/wp_head' );
 	}
@@ -621,8 +733,8 @@ class Editor {
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @param string $template - Can be either a link to template file or template HTML content
-	 * @param string $type Optional. Whether to handle the template as path or text
+	 * @param string $template Can be either a link to template file or template HTML content.
+	 * @param string $type     Optional. Whether to handle the template as path or text. Default is `path`.
 	 */
 	public function add_editor_template( $template, $type = 'path' ) {
 		if ( 'path' === $type ) {
@@ -636,6 +748,10 @@ class Editor {
 		$this->_editor_templates[] = $template;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function wp_footer() {
 
 		qazana()->controls_manager->render_controls();
@@ -658,6 +774,9 @@ class Editor {
 	}
 
 	/**
+	 * @since 1.0.0
+	 * @access public
+	 *
 	 * @param bool $edit_mode
 	 */
 	public function set_edit_mode( $edit_mode ) {

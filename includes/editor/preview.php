@@ -13,7 +13,7 @@ class Preview {
 	 * Initialize the preview mode. Fired by `init` action.
 	 *
 	 * @since 1.0.0
-	 * @return void
+	 * @access public
 	 */
 	public function init() {
 		if ( is_admin() || ! $this->is_preview_mode() ) {
@@ -39,23 +39,34 @@ class Preview {
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
 		// Tell to WP Cache plugins do not cache this request.
-        Utils::do_not_cache();
-        
-        do_action( 'qazana/preview/init', $this );
-    }
-    
-    /**
+		Utils::do_not_cache();
+
+		do_action( 'qazana/preview/init', $this );
+	}
+
+	/**
+	 * Retrieve post ID.
+	 *
+	 * Get the ID of the current post.
+	 *
+	 * @since 1.0.0
 	 * @access public
+	 * 
+	 * @return int Post ID.
 	 */
 	public function get_post_id() {
 		return $this->post_id;
 	}
 
 	/**
-	 * Method detect if we are in the preview mode (iFrame).
+	 * Whether preview mode is active.
+	 *
+	 * Used to determine whether we are in the preview mode (iframe).
 	 *
 	 * @since 1.0.0
-	 * @return bool
+	 * @access public
+	 *
+	 * @return bool Whether preview mode is active.
 	 */
 	public function is_preview_mode() {
 		if ( ! User::is_current_user_can_edit() ) {
@@ -70,22 +81,25 @@ class Preview {
 	}
 
 	/**
-	 * Do not show the content from the page. Just print empty start HTML.
-	 * The Javascript will add the content later.
+	 * Builder wrapper.
+	 *
+	 * Used to add an empty HTML wrapper for the builder, the javascript will add
+	 * the content later.
 	 *
 	 * @since 1.0.0
+	 * @access public
 	 *
-	 * @return string
+	 * @return string HTML wrapper for the builder.
 	 */
 	public function builder_wrapper() {
 		return '<div id="qazana" class="qazana qazana-edit-mode"></div>';
 	}
 
 	/**
-	 * Enqueue preview scripts and styles.
+	 * Enqueue preview styles.
 	 *
 	 * @since 1.0.0
-	 * @return void
+	 * @access private
 	 */
 	private function enqueue_styles() {
 		// Hold-on all jQuery plugins after all HTML markup render.
@@ -109,6 +123,12 @@ class Preview {
 		do_action( 'qazana/preview/enqueue_styles' );
 	}
 
+	/**
+	 * Enqueue preview scripts.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 */
 	private function enqueue_scripts() {
 
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -127,12 +147,13 @@ class Preview {
 		do_action( 'qazana/preview/enqueue_scripts' );
 	}
 
-    /**
-     * Preview constructor.
-     *
-     * @since 1.0.0
-     */
-    public function __construct() {
-        add_action( 'template_redirect', [ $this, 'init' ] );
-    }
+	/**
+	 * Preview constructor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function __construct() {
+		add_action( 'template_redirect', [ $this, 'init' ], 0 );
+	}
 }

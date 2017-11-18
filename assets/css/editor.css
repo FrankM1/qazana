@@ -2113,6 +2113,23 @@ select {
               transform: translateX(-50%) translateY(-50%); }
   .qazana-panel .qazana-control-type-hidden {
     display: none !important; }
+  .qazana-panel .qazana-control-type-popover_toggle .qazana-control-input-wrapper {
+    text-align: right; }
+  .qazana-panel .qazana-control-type-popover_toggle .qazana-control-popover-toggle-simple-toggle {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+    padding: 6px 0;
+    color: #a0a5aa;
+    text-transform: uppercase;
+    border-radius: 3px;
+    border: 1px solid;
+    cursor: pointer; }
+  .qazana-panel .qazana-control-type-popover_toggle .qazana-choices-label {
+    font-size: 10px;
+    text-transform: uppercase; }
+    .qazana-panel .qazana-control-type-popover_toggle .qazana-choices-label i {
+      padding-left: 2px; }
   .qazana-panel .wp-picker-container.wp-picker-active {
     position: absolute;
     z-index: 1;

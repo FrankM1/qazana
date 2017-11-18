@@ -980,7 +980,6 @@
 // Order control
 @import 'controls/order';
 
-// Hidden control
-.qazana-control-type-hidden {
-  display: none !important;
-}
+@import "controls/hidden";
+
+@import "controls/popover-toggle";

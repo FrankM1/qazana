@@ -22,7 +22,8 @@ class Controls_Manager {
 
 	const HIDDEN = 'hidden';
 	const HEADING = 'heading';
-	const RAW_HTML = 'raw_html';
+    const RAW_HTML = 'raw_html';
+    const POPOVER_TOGGLE = 'popover_toggle';
 	const SECTION = 'section';
 	const TAB = 'tab';
 	const TABS = 'tabs';
@@ -142,7 +143,8 @@ class Controls_Manager {
 
 			self::HIDDEN,
 			self::HEADING,
-			self::RAW_HTML,
+            self::RAW_HTML,
+            self::POPOVER_TOGGLE,
 			self::SECTION,
 			self::TAB,
 			self::TABS,
@@ -173,9 +175,9 @@ class Controls_Manager {
 			self::ANIMATION_OUT,
 			self::ORDER,
 		];
-		
+	
 		foreach ( $available_controls as $control_id ) {
-			
+	
 			$control_filename = str_replace( '_', '-', $control_id );
 			$control_filename =  qazana()->includes_dir . "editor/controls/{$control_filename}.php";
 			require( $control_filename );

@@ -1,31 +1,80 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Accordion Widget
+ */
 class Widget_Accordion extends Widget_Base {
 
+	/**
+	 * Retrieve accordion widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'accordion';
 	}
 
+	/**
+	 * Retrieve accordion widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Accordion', 'qazana' );
 	}
 
+	/**
+	 * Retrieve accordion widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-accordion';
 	}
 
+	/**
+	 * Retrieve the list of categories the accordion widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
 	}
+
+	/**
+	 * Register accordion widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->_register_accordion_controls();
 		$this->_register_accordion_icons_controls();
 		$this->_register_style_controls();
 	}
 
+	
 	protected function _register_accordion_controls() {
 		$this->start_controls_section(
 			'section_title',
