@@ -1,0 +1,15 @@
+.qazana-control-type-section {
+	margin-top: 10px;
+	padding: 0;
+
+	& + .qazana-control {
+
+		&:not(.qazana-control-type-section) {
+			padding-top: 15px;
+
+			&:before {
+				display: none;
+			}
+		}
+	}
+}

@@ -1,26 +1,36 @@
-// Compatibility qazana editor for themes and plugins
-
+// Compatibility qazana editor for themes and plugins (Preview)
 
 body.qazana-editor-active {
 
-	// Hack for pojo.me themes
-	&.layout-section {
+	.qazana {
 
-		.entry-content {
-			overflow: visible;
-		}
-	}
+		&.qazana-edit-mode {
 
-	// Hack for bluchic.com themes
-	.article {
-		overflow: visible;
-	}
+			// Hack for pojo.me themes
+			&.layout-section {
 
-	// Hack for Zerif Pro theme
-	.qazana-element-overlay {
+				.entry-content {
+					overflow: visible;
+				}
+			}
 
-		.qazana-editor-element-settings {
-			clear: unset;
+			// Hack for bluchic.com themes
+			.article {
+				overflow: visible;
+			}
+
+			// Hack for Zerif Pro theme
+			.qazana-element-overlay {
+
+				.qazana-editor-element-settings {
+					clear: unset;
+				}
+			}
+
+			// Hack for some stupid themes
+			.qazana-element.qazana-section {
+				overflow: visible;
+			}
 		}
 	}
 }
@@ -32,9 +42,12 @@ body.qazana-editor-active {
 		animation-fill-mode: none !important;
 	}
 
-	// Fixes Make theme issue
-	.qazana-editor-element-settings {
+	// Hack for Make theme issue
+	ul.qazana-editor-element-settings {
 		word-break: normal;
+
+		// Hack for Divi theme
+		padding: 0;
 	}
 
 	// Hack for jQuery Masonry Image Gallery plugin

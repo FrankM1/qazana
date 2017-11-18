@@ -64,10 +64,6 @@
 	display: inline-block;
 }
 
-.qazana-tab-close {
-	display: none !important;
-}
-
 // select2
 .select2-container {
 	width: 100% !important;
@@ -225,6 +221,37 @@
 
 		&:hover {
 			background-color: lighten($editor-orange, 10%);
+		}
+	}
+}
+
+.qazana-controls-popover {
+	display: none;
+	position: absolute;
+	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+	left: 0;
+	right: 0;
+	margin: -10px auto 5px;
+	padding-top: 15px;
+	width: 90%;
+	z-index: 1;
+	background-color: #fff;
+
+	$triangle-size: 10px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: -$triangle-size * 2;
+		right: 20px;
+		border: $triangle-size solid transparent;
+		border-bottom-color: #fff;
+	}
+
+	div.qazana-control { // Harder selector to override default settings
+
+		&:before {
+			content: none;
 		}
 	}
 }

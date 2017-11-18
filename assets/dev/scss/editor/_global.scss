@@ -1,5 +1,5 @@
 
-// Loading Qazana
+// Loading Editor screen
 
 #qazana-loading {
 	position: fixed;
@@ -40,6 +40,8 @@
 	font-size: 10px;
 }
 
+// Loading after APPLY button
+
 #qazana-preview-loading {
 	display: flex;
 	align-items: center;
@@ -66,8 +68,10 @@
 	}
 }
 
+
 // Modal Confirm (the_content missing)
 #qazana-fatal-error-dialog {
+
 	button.dialog-ok {
 		color: $editor-info;
 	}
@@ -101,4 +105,3 @@
 		text-transform: uppercase;
 	}
 }
-

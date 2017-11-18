@@ -12,52 +12,10 @@
 	.qazana-panel-navigation-tab {
 		display: table-cell;
 
-		&.qazana-tab-control-content {
-			a:before {
-				content: '\f040';
-			}
-		}
-
-		&.qazana-tab-control-style {
-			a:before {
-				content: '\f042';
-			}
-		}
-
-		&.qazana-tab-control-advanced, &.qazana-tab-control-settings {
-			a:before {
-				content: '\f013';
-			}
-		}
-
-		&.qazana-tab-control-responsive {
-			a:before {
-				content: '\f10a';
-			}
-		}
-
-		&.qazana-tab-control-layout {
-			a:before {
-				content: '\f0db';
-			}
-		}
-
-		&.qazana-tab-control-column {
-			a:before {
-				content: '\f0db';
-			}
-		}
-
 		&.active {
 			background-image: linear-gradient(to bottom, #f3f3f3, #fff);
 			border-bottom: 3px solid $editor-accent;
-        }
-        
-        &.qazana-tab-control-lightbox {
-            a:before {
-                content: '\f2d2';
-            }
-        }
+		}
 
 		a {
 			display: block;
@@ -73,5 +31,41 @@
 				margin-bottom: 6px;
 			}
 		}
+	}
+}
+
+.qazana-tab-control-content {
+	a:before {
+		content: '\f040';
+	}
+}
+
+.qazana-tab-control-style {
+	a:before {
+		content: '\f042';
+	}
+}
+
+.qazana-tab-control-advanced, .qazana-tab-control-settings, .qazana-tab-control-general_style {
+	a:before {
+		content: '\f013';
+	}
+}
+
+.qazana-tab-control-responsive {
+	a:before {
+		content: '\f10a';
+	}
+}
+
+.qazana-tab-control-layout, .qazana-tab-control-column {
+	a:before {
+		content: '\f0db';
+	}
+}
+
+.qazana-tab-control-lightbox {
+	a:before {
+		content: '\f2d2';
 	}
 }
