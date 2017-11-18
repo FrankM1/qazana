@@ -500,8 +500,8 @@ class Editor {
 
 		if ( empty( $page_title_selector ) ) {
 			$page_title_selector = 'h1.entry-title';
-		}
-
+        }
+        
         $localize_settings = [
 			'version'             => qazana_get_version(),
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
@@ -520,21 +520,21 @@ class Editor {
                 'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
             ],
 			'wp_editor'              => $this->get_wp_editor_config(),
-            'settings'               => SettingsManager::get_settings_managers_config(),
-            'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
-            'qazana_site'            => 'https://radiumthemes.com/plugins/qazana',
-            'help_the_content_url'   => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
-            'assets_url'             => qazana()->core_assets_url,
-            'data'                   => $editor_data,
-            'locked_user'            => $locked_user,
-            'is_rtl'                 => is_rtl(),
-            'locale'                 => get_locale(),
-            'viewportBreakpoints'    => Responsive::get_breakpoints(),
-            'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
-            'page_title_selector'    => $page_title_selector,
-            'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
-            'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
-            'i18n'                   => [
+			'settings'               => SettingsManager::get_settings_managers_config(),
+			'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
+			'qazana_site'            => 'https://radiumthemes.com/plugins/qazana',
+			'help_the_content_url'   => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
+			'assets_url'             => qazana()->core_assets_url,
+			'data'                   => $editor_data,
+			'locked_user'            => $locked_user,
+			'is_rtl'                 => is_rtl(),
+			'locale'                 => get_locale(),
+			'viewportBreakpoints'    => Responsive::get_breakpoints(),
+			'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
+			'page_title_selector'    => $page_title_selector,
+			'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
+			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
+			'i18n'                   => [
                 'qazana'                                   => __( 'Qazana', 'qazana' ),
                 'dialog_confirm_delete'                    => __( 'Are you sure you want to remove this {0}?', 'qazana' ),
                 'dialog_user_taken_over'                   => __( '{0} has taken over and is currently editing. Do you want to take over this page editing?', 'qazana' ),
@@ -560,9 +560,9 @@ class Editor {
                 'preview_el_not_found_message'             => __( 'You must call \'the_content\' function in the current template, in order for Qazana to work on this page.', 'qazana' ),
                 'preview_not_loading_header'               => __( 'The preview could not be loaded', 'qazana' ),
                 'preview_not_loading_message'              => __( 'We\'re sorry, but something went wrong. Click on \'Learn more\' and follow each of the steps to quickly solve it.', 'qazana' ),
-		'device_incompatible_header' => __( 'Your browser isn\'t compatible', 'qazana' ),
-		'device_incompatible_message' => __( 'Your browser isn\'t compatible with all of Qazana\'s editing features. We recommend you switch to another browser like Chrome or Firefox.', 'qazana' ),
-		'session_expired_header' => __( 'Timeout', 'qazana' ),
+                'device_incompatible_header'               => __( 'Your browser isn\'t compatible', 'qazana' ),
+                'device_incompatible_message'              => __( 'Your browser isn\'t compatible with all of Qazana\'s editing features. We recommend you switch to another browser like Chrome or Firefox.', 'qazana' ),
+                'session_expired_header'                   => __( 'Timeout', 'qazana' ),
                 'session_expired_message'                  => __( 'Your session has expired. Please reload the page to continue editing.', 'qazana' ),
                 'learn_more'                               => __( 'Learn More', 'qazana' ),
                 'reload_page'                              => __( 'Reload Page', 'qazana' ),
@@ -587,9 +587,9 @@ class Editor {
                 'import_template_dialog_message_attention' => __( 'Attention! Importing may override previous settings.', 'qazana' ),
                 'no'                                       => __( 'No', 'qazana' ),
                 'yes'                                      => __( 'Yes', 'qazana' ),
-		'unknown_value' => __( 'Unknown Value', 'qazana' ),
+                'unknown_value'                            => __( 'Unknown Value', 'qazana' ),
                 'type_here'                                => __( 'Type Here', 'qazana' ),
-		'proceed_anyway' => __( 'Proceed Anyway', 'qazana' ),
+                'proceed_anyway'                           => __( 'Proceed Anyway', 'qazana' ),
             ]
 	];
 

@@ -267,14 +267,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 		#>
 	</div>
 </script>
-
-<script type="text/template" id="tmpl-qazana-panel-page-settings">
-	<div class="qazana-panel-navigation">
-		<# _.each( qazana.config.page_settings.tabs, function( tabTitle, tabSlug ) { #>
-			<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
-				<a href="#">{{{ tabTitle }}}</a>
-			</div>
-			<# } ); #>
-	</div>
-	<div id="qazana-panel-page-settings-controls"></div>
-</script>
