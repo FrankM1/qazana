@@ -225,7 +225,7 @@ class Accordion extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'tab_wrapper_border',
-				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-accordion-tititemle',
+				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-accordion-item',
 			]
         );
                 

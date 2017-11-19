@@ -77,7 +77,7 @@ class Tabs extends Widget_Base {
 	 * @access public
 	 */
     public function add_element_dependencies() {
-        $this->add_frontend_stylesheet( 'qazana-extension-' . $this->get_name() );
+        $this->add_frontend_stylesheet( 'qazana-extension-tabs' );
     }
 
     /**

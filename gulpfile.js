@@ -227,3 +227,38 @@ gulp.task("extensionscss", function() {
         .pipe(filter("**/*.css")) // Filtering stream to only css files
         .pipe(browserSync.stream()) ); // Reloads style.min.css if that is enqueued.
 });
+
+/**
+ * Watch Tasks.
+ *
+ * Watches for file changes and runs specific tasks.
+ */
+gulp.task(
+    "default",
+    ["extensionscss", "browser-sync"],
+    function() {
+      gulp.watch(projectPHPWatchFiles, reload); // Reload on PHP file changes.
+      gulp.watch(ExtenstioncssRC, ["extensionscss"]); // Reload on SCSS file changes.
+    }
+  );
+  
+  /**
+   * Watch Tasks.
+   *
+   * Watches for file changes and runs specific tasks.
+   */
+  gulp.task("buildFrontend", ["browser-sync"], function() {
+    gulp.watch(projectPHPWatchFiles, reload); // Reload on PHP file changes.
+    gulp.watch(ExtenstioncssRC, ["extensionscss"]); // Reload on SCSS file changes.
+  });
+  
+  gulp.task("css", ["extensionscss", "browser-sync"], function() {
+    gulp.watch(ExtenstioncssRC, ["extensionscss"]); // Reload on SCSS file changes.
+  });
+  
+  gulp.task(
+    "bundleRelease",
+    ["translate", "images", "buildFiles", "buildZip"],
+    function() {}
+  );
+  

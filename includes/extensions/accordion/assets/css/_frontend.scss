@@ -22,7 +22,11 @@ $direction: ltr;
 		padding: 15px 20px;
 		font-weight: bold;
 		line-height: 1;
-		cursor: pointer;
+        cursor: pointer;
+        
+        &:focus {
+            outline: none;
+        }
 
 		.qazana-accordion-icon {
 			display: inline-block;

@@ -33,7 +33,6 @@ class Widgets_Manager {
         $build_widgets_filename = [
             'common',
 
-            'accordion',
             'alert',
             'audio',
             'button',
@@ -54,10 +53,8 @@ class Widgets_Manager {
             'sidebar',
             'social-icons',
             'spacer',
-            'tabs',
             'testimonial',
             'text-editor',
-			'toggle',
             'tooltip',
             'video',
         ];
