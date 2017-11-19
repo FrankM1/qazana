@@ -28,8 +28,17 @@ class Piechart extends Widget_Base {
 		return [ 'general-elements' ];
 	}
 
+    /**
+	 * Retrieve the scripts and stylesheets needed by this widget.
+	 *
+	 * Used to add scripts only when needed.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_element_dependencies() {
-		$this->add_frontend_script('jquery-circle-progress');
+        $this->add_frontend_script('jquery-circle-progress');
+        $this->add_frontend_stylesheet( 'qazana-extension-' . $this->get_name() );
     }
 
 	protected function _register_controls() {

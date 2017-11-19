@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 use Qazana\Utils;
 
-class PieChart extends Base {
+class Accordion extends Base {
 
     /**
 	 * Unique extension name
@@ -11,7 +11,7 @@ class PieChart extends Base {
 	 * @return string
 	 */
     public function get_name() {
-        return 'piechart';
+        return 'accordion';
     }
         
     /**
@@ -20,7 +20,7 @@ class PieChart extends Base {
      * @return string
      */
     public function get_title() {
-        return __( 'PieChart', 'qazana' );
+        return __( 'Accordion', 'qazana' );
     }
 
     /**
@@ -30,34 +30,16 @@ class PieChart extends Base {
      */
     public function get_widgets() {
         return [
-            'Piechart'
+            'accordion'
         ];
     }
 
 	public function __construct() {
-        add_action( 'qazana/frontend/after_register_scripts', [ $this, 'enqueue_scripts' ] );
-        add_action( 'qazana/frontend/after_register_styles', [ $this, 'register_styles' ] );
+		add_action( 'qazana/frontend/after_register_styles', [ $this, 'register_styles' ] );
 	}
 
-   	public function enqueue_scripts() {
-
-		$suffix = Utils::is_script_debug() ? '' : '.min';
-
-		wp_register_script(
-            'jquery-circle-progress',
-            qazana()->core_assets_url . 'lib/jquery-circle-progress/circle-progress' . $suffix . '.js',
-            [],
-            '1.2.2',
-            true
-        );
-
-		if ( qazana()->preview->is_preview_mode() ) {
-			wp_enqueue_script( 'jquery-circle-progress' );
-	   }
-   }
-
-   public function register_styles() {
-     
+   	public function register_styles() {
+		 
         $suffix = Utils::is_script_debug() ? '' : '.min';
         
         $direction_suffix = is_rtl() ? '-rtl' : '';
@@ -75,6 +57,6 @@ class PieChart extends Base {
             wp_enqueue_style( 'qazana-extension-' . $this->get_name() );
         }
         
-    }
+   }
 
 }

@@ -1,6 +1,11 @@
 //
 // Accordion
 //
+$direction: ltr;
+
+@import 'helpers/variables';
+@import "helpers/mixins";
+@import "helpers/direction";
 
 .qazana-accordion {
 	text-align: $start;
@@ -13,7 +18,7 @@
 		}
 	}
 
-	.qazana-accordion-title {
+	.qazana-tab-title {
 		padding: 15px 20px;
 		font-weight: bold;
 		line-height: 1;
@@ -24,6 +29,7 @@
 			width: 1.5em;
 
 			&.qazana-accordion-icon- {
+
 				&right {
 					float: right;
 					text-align: right;
@@ -37,8 +43,8 @@
 		}
 	}
 
-	.qazana-accordion-content {
-		display: none;
+	.qazana-tab-content {
+	    display: none;
 		padding: 15px 20px;
 		border-top: 1px solid $gray-light;
 	}
@@ -46,8 +52,10 @@
 
 // Responsive mode
 @media (max-width: $screen-sm-max) {
+
 	.qazana-accordion {
-		.qazana-accordion-title {
+
+		.qazana-tab-title {
 			padding: 12px 15px;
 
 			.qazana-accordion-icon {
@@ -55,7 +63,7 @@
 			}
 		}
 
-		.qazana-accordion-content {
+		.qazana-tab-content {
 			padding: 7px 15px;
 		}
 	}

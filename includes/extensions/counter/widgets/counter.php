@@ -30,7 +30,7 @@ class Counter extends Widget_Base {
 
 	public function add_element_dependencies() {
 		$this->add_frontend_script('odometer');
-		$this->add_frontend_stylesheet('odometer-theme-default');
+		$this->add_frontend_stylesheet('qazana-extension-counter');
     }
 
 	protected function _register_controls() {

@@ -389,8 +389,8 @@ class Widget_Text_Editor extends Widget_Base {
 	protected function _content_template() {
 
 		?>
-		<div class="qazana-text-editor qazana-clearfix qazana-align-{{ settings.align }} qazana-inline-editing" data-qazana-setting-key="editor" data-qazana-inline-editing-toolbar="advanced">
-			<div class="qazana-wrapper">{{{ settings.editor }}}</div>
+		<div class="qazana-text-editor qazana-clearfix qazana-align-{{ settings.align }}">
+			<div class="qazana-wrapper qazana-inline-editing" data-qazana-setting-key="editor" data-qazana-inline-editing-toolbar="advanced">{{{ settings.editor }}}</div>
 		</div>
 		<?php
 
