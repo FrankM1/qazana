@@ -537,7 +537,8 @@ var Video = function( $backgroundVideoContainer, $ ) {
 			},
 			playerVars: {
 				controls: 0,
-				showinfo: 0
+                showinfo: 0,
+                rel: 0
 			}
 		} );
 

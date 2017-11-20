@@ -493,7 +493,7 @@ class Accordion extends Widget_Base {
 							<span class="qazana-accordion-icon qazana-accordion-icon-{{ settings.icon_align }}">
                                 <i class="{{ settings.icon }}"></i>
 							</span>
-							<span class="qazana-accordion-title-wrapper">{{{ item.tab_title }}}</span>
+							<span class="qazana-tab-title-text">{{{ item.tab_title }}}</span>
 						</div>
 						<div {{ view.getRenderAttributeString( tabContentKey ) }}>{{{ item.tab_content }}}</div>
                     </div>

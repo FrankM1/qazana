@@ -15,7 +15,11 @@ $direction: ltr;
 		line-height: 1;
 		padding: 15px;
 		border-bottom: 1px solid $gray-light;
-		cursor: pointer;
+        cursor: pointer;
+        
+        &:focus {
+            outline: none;
+        }
 
 		.qazana-tab-icon {
 			display: inline-block;
@@ -29,7 +33,7 @@ $direction: ltr;
 			}
 		}
 
-		&.active {
+		&.qazana-active {
 			border-bottom: none;
 
 			.qazana-tab-icon {

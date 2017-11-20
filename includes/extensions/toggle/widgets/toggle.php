@@ -63,7 +63,19 @@ class Toggle extends Widget_Base {
 	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+    
+    /**
+	 * Retrieve the scripts and stylesheets needed by this widget.
+	 *
+	 * Used to add scripts only when needed.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+    public function add_element_dependencies() {
+        $this->add_frontend_stylesheet( 'qazana-extension-' . $this->get_name() );
+    }
 
 	/**
 	 * Register toggle widget controls.
@@ -134,6 +146,18 @@ class Toggle extends Widget_Base {
             ]
         );
 
+        $this->add_responsive_control(
+			'title_padding',
+			[
+				'label' => __( 'Padding', 'qazana' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-toggle .qazana-tab-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_control(
 			'title_background',
 			[
@@ -189,7 +213,7 @@ class Toggle extends Widget_Base {
 		$this->start_controls_section(
 			'section_content_style',
 			[
-				'label' => __( 'Accordion Content', 'qazana' ),
+				'label' => __( 'Toggle Content', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -279,10 +303,10 @@ class Toggle extends Widget_Base {
 				$this->add_inline_editing_attributes( $tab_content_setting_key, 'advanced' );
 				?>
 				<div class="qazana-tab-title" tabindex="<?php echo $id_int . $tab_count; ?>" data-tab="<?php echo $tab_count; ?>">
-					<span class="qazana-toggle-icon">
+					<span class="qazana-tab-icon">
 						<i class="fa"></i>
 					</span>
-					<?php echo $item['tab_title']; ?>
+					<span class="qazana-tab-title-text"><?php echo $item['tab_title']; ?></span>
 				</div>
 				<div <?php echo $this->get_render_attribute_string( $tab_content_setting_key ); ?>><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 			<?php endforeach; ?>
@@ -317,10 +341,10 @@ class Toggle extends Widget_Base {
 					view.addInlineEditingAttributes( tabContentKey, 'advanced' );
 					#>
 					<div class="qazana-tab-title" tabindex="{{ tabindex + tabCount }}" data-tab="{{ tabCount }}">
-						<span class="qazana-toggle-icon">
+						<span class="qazana-tab-icon">
 							<i class="fa"></i>
 						</span>
-						{{{ item.tab_title }}}
+						<span class="qazana-tab-title-text">{{{ item.tab_title }}}</span>
 					</div>
 					<div {{{ view.getRenderAttributeString( tabContentKey ) }}}>{{{ item.tab_content }}}</div>
 				<# } );
