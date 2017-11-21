@@ -54,7 +54,7 @@ class Admin {
     /**
      * @var bool Minimum capability to access Tools and Settings
      */
-    public $minimum_capability = 'manage_options'; //'keep_gate'; //patch till user management is fully functional
+    public $minimum_capability = 'manage_options'; // 'keep_gate'; //patch till user management is fully functional
 
     /** Separator *************************************************************/
 
@@ -87,11 +87,9 @@ class Admin {
      * @uses Qazana_Admin::setup_actions() Setup the hooks and actions
      */
     public function __construct() {
-
         $this->setup_globals();
         $this->includes();
         $this->setup_actions();
-
     }
 
     /**
@@ -100,7 +98,6 @@ class Admin {
      * @since 1.0.0
      */
     private function setup_globals() {
-
         $qazana = qazana();
 
         $this->admin_dir    = trailingslashit( $qazana->includes_dir . 'admin' ); // Admin path
@@ -154,7 +151,6 @@ class Admin {
 
         add_action( 'qazana_admin_menu',              array( $this, 'admin_menus' ) ); // Add menu item to settings menu
         add_action( 'qazana_admin_notices',           array( $this, 'activation_notice' ) ); // Add notice if not using a Qazana theme
-        //add_action( 'qazana_register_admin_settings', array( $this, 'register_admin_settings' ) ); // Add settings
         add_action( 'qazana_activation',              array( $this, 'new_install' ) ); // Add menu item to settings menu
 
         add_action( 'admin_enqueue_scripts',                    array( $this, 'enqueue_styles' ) ); // Add enqueued CSS
@@ -172,7 +168,7 @@ class Admin {
         /* Filters ***********************************************************/
 
         // Modify Qazana's admin links
-        add_filter( 'plugin_action_links_' . qazana()->basename, array( $this, 'modify_plugin_action_links' )  );
+        add_filter( 'plugin_action_links_' . qazana()->basename, array( $this, 'modify_plugin_action_links' ) );
 
         /* Network Admin *****************************************************/
 
@@ -197,6 +193,7 @@ class Admin {
         $this->editor_admin   = new Admin\Post\Editor();
         $this->settings_panel = new Admin\Settings\Panel();
         $this->settings_tools = new Admin\Settings\Tools();
+
         $this->admin_api      = new Admin\Api();
         $this->admin_tracker  = new Admin\Tracker();
         $this->system_info    = new Admin\System\Info\Main();
@@ -282,71 +279,6 @@ class Admin {
         }
 
         qazana_create_initial_content();
-    }
-
-    /**
-     * Register the settings.
-     *
-     * @since 1.0.0
-     *
-     * @uses add_settings_section() To add our own settings section
-     * @uses add_settings_field() To add various settings fields
-     * @uses register_setting() To register various settings
-     *
-     * @todo Put fields into multidimensional array
-     */
-    public function register_admin_settings() {
-
-        // Bail if no sections available
-        $sections = qazana_admin_get_settings_sections();
-
-        if ( empty( $sections ) ) {
-            return false;
-        }
-
-        // Are we using settings integration?
-        //$settings_integration = true;
-
-        // Loop through sections
-        foreach ( ( array ) $sections as $section_id => $section ) {
-
-            // Only proceed if current user can see this section
-            if ( ! current_user_can( $section_id ) ) {
-                continue;
-            }
-
-            // Only add section and fields if section has fields
-            $fields = qazana_admin_get_settings_fields_for_section( $section_id );
-            if ( empty( $fields ) ) {
-                continue;
-            }
-
-            // Toggle the section if core integration is on
-            if ( ( true === $settings_integration ) && ! empty( $section['page'] ) ) {
-                $page = $section['page'];
-            } else {
-                $page = qazana()->slug;
-
-                $this->general_settings_key = $section_id;
-                $this->plugin_settings_tabs[$this->general_settings_key] = $section['title'];
-                $page = $this->general_settings_key;
-            }
-
-            // Add the section
-            add_settings_section( $section_id, $section['title'], $section['callback'], $page );
-
-            // Loop through fields for this section
-            foreach ( ( array ) $fields as $field_id => $field ) {
-
-                // Add the field
-                if ( !empty( $field['callback'] ) && !empty( $field['title'] ) ) {
-                    add_settings_field( $field_id, $field['title'], $field['callback'], $page, $section_id, $field['args'] );
-                }
-
-                // Register the setting
-                register_setting( $page, $field_id, $field['sanitize_callback'] );
-            }
-        }
     }
 
     /**

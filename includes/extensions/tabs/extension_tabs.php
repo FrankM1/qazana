@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 use Qazana\Utils;
 
-class Accordion extends Base {
+class Tabs extends Base {
 
     /**
 	 * Unique extension name

@@ -119,7 +119,7 @@ class Widgets_Manager {
 		$black_list = apply_filters( 'qazana/widgets/black_list', $blacklist );
 
         foreach ( $wp_widget_factory->widgets as $widget_class => $widget_obj ) {
-			
+	
     		if ( in_array( $widget_class, $black_list ) ) {
     			continue;
     		}
