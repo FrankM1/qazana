@@ -359,7 +359,7 @@ class Widget_Text_Editor extends Widget_Base {
 			$this->add_render_attribute( 'editor', 'class', 'qazana-align-' . $this->get_responsive_settings( 'align' ) );
 		}
 
-		?><div <?php echo $this->get_render_attribute_string( 'editor' ); ?>>
+		?><div <?php $this->render_attribute_string( 'editor' ); ?>>
 			<div class="qazana-wrapper"><?php echo $editor_content; ?></div>
 		</div><?php
 

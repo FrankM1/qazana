@@ -629,7 +629,7 @@ class Widget_Video extends Widget_Base {
             $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-has-text' );
         } 
 		
-		?><div <?php echo $this->get_render_attribute_string( 'video-wrapper' ); ?>><?php 
+		?><div <?php $this->render_attribute_string( 'video-wrapper' ); ?>><?php 
 
 		echo $video_html;
 

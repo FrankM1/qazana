@@ -460,7 +460,7 @@ class Piechart extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		?><div <?php echo $this->get_render_attribute_string( 'piechart' ); ?>>
+		?><div <?php $this->render_attribute_string( 'piechart' ); ?>>
 			<div class="piechart-number">
 				<span class="qazana-piechart-number-progress">
 					<span class="qazana-piechart-number-prefix"><?php echo $settings['prefix']; ?></span>

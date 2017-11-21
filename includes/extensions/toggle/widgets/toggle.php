@@ -308,7 +308,7 @@ class Toggle extends Widget_Base {
 					</span>
 					<span class="qazana-tab-title-text"><?php echo $item['tab_title']; ?></span>
 				</div>
-				<div <?php echo $this->get_render_attribute_string( $tab_content_setting_key ); ?>><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
+				<div <?php $this->render_attribute_string( $tab_content_setting_key ); ?>><?php echo $this->parse_text_editor( $item['tab_content'] ); ?></div>
 			<?php endforeach; ?>
 		</div>
 		<?php

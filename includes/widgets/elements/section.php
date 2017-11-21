@@ -1238,7 +1238,7 @@ class Element_Section extends Element_Base {
 			?>
 
             <div class="qazana-container qazana-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
-                <div <?php echo $this->get_render_attribute_string( 'row' ); ?>>
+                <div <?php $this->render_attribute_string( 'row' ); ?>>
         <?php
     }
 

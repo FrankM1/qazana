@@ -411,11 +411,11 @@ class Widget_Button extends Widget_Base {
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
 
-        ?><div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-            <a <?php echo $this->get_render_attribute_string( 'button' ); ?>>
-                <span <?php echo $this->get_render_attribute_string( 'content-wrapper' ); ?>>
+        ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
+            <a <?php $this->render_attribute_string( 'button' ); ?>>
+                <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
                     <?php if ( $this->get_settings('icon') ) : ?>
-                        <span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
+                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
                             <i class="<?php echo esc_attr( $this->get_settings('icon') ); ?>"></i>
                         </span>
                     <?php endif; ?>

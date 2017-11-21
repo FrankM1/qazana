@@ -400,7 +400,7 @@ class Widget_Social_Icons extends Widget_Base {
 				}
 
 				?>
-				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo $social . $class_animation; ?>" <?php echo $this->get_render_attribute_string( $link_key ); ?>>
+				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo $social . $class_animation; ?>" <?php $this->render_attribute_string( $link_key ); ?>>
 					<i class="<?php echo $item['social']; ?>"></i>
 				</a>
 			<?php endforeach; ?>

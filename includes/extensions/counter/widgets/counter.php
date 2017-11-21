@@ -371,7 +371,7 @@ class Counter extends Widget_Base {
 		<div class="qazana-counter">
 			<div class="qazana-counter-number-wrapper">
 				<span class="qazana-counter-number-prefix"><?php echo $settings['prefix']; ?></span>
-				<span <?php echo $this->get_render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
+				<span <?php $this->render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
 				<span class="qazana-counter-number-suffix"><?php echo $settings['suffix']; ?></span>
 			</div>
 			<?php if ( $settings['title'] ) : ?>

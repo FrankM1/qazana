@@ -313,14 +313,14 @@ class Widget_Image extends Widget_Base {
 				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
 			}
 		} ?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php $this->render_attribute_string( 'wrapper' ); ?>>
 		<?php
 		if ( $has_caption ) : ?>
 			<figure class="wp-caption">
 		<?php endif;
 
 		if ( $link ) : ?>
-			<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+			<a <?php $this->render_attribute_string( 'link' ); ?>>
 		<?php endif;
 
 		echo Group_Control_Image_Size::get_attachment_image_html( $settings );

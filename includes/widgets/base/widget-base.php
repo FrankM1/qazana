@@ -472,7 +472,7 @@ abstract class Widget_Base extends Element_Base {
 	public function before_render() {
 	    $this->_add_render_attributes();
 		?>
-		<div <?php echo $this->get_render_attribute_string( '_wrapper' ); ?>>
+		<div <?php $this->render_attribute_string( '_wrapper' ); ?>>
 		<?php
 	}
 

@@ -216,8 +216,8 @@ class Widget_Progress extends Widget_Base {
 			<span class="qazana-progress-percentage"><?php echo $settings['percent']['size']; ?>%</span>
 		<?php } ?>
 
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?> role="timer">
-			<div <?php echo $this->get_render_attribute_string( 'progress-bar' ); ?>>
+		<div <?php $this->render_attribute_string( 'wrapper' ); ?> role="timer">
+			<div <?php $this->render_attribute_string( 'progress-bar' ); ?>>
 			</div>
 		</div>
 	<?php }

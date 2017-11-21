@@ -234,7 +234,11 @@ abstract class Element_Base extends Controls_Stack {
 		}
 
 		return implode( ' ', $attributes );
-	}
+    }
+
+	public function render_attribute_string( $element ) {
+        echo $this->get_render_attribute_string( $element );
+    }
 
 	public function print_element() {
 

@@ -274,14 +274,14 @@ class Widget_Alert extends Widget_Base {
 
 		$this->add_inline_editing_attributes( 'alert_title', 'none' );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<span <?php echo $this->get_render_attribute_string( 'alert_title' ); ?>><?php echo $settings['alert_title']; ?></span>
+		<div <?php $this->render_attribute_string( 'wrapper' ); ?>>
+			<span <?php $this->render_attribute_string( 'alert_title' ); ?>><?php echo $settings['alert_title']; ?></span>
 			<?php if ( ! empty( $settings['alert_description'] ) ) {
 				$this->add_render_attribute( 'alert_description', 'class', 'qazana-alert-description' );
 
 				$this->add_inline_editing_attributes( 'alert_description' );
 				?>
-				<span <?php echo $this->get_render_attribute_string( 'alert_description' ); ?>><?php echo $settings['alert_description']; ?></span>
+				<span <?php $this->render_attribute_string( 'alert_description' ); ?>><?php echo $settings['alert_description']; ?></span>
 			<?php }
 			if ( 'show' === $settings['show_dismiss'] ) { ?>
 				<button type="button" class="qazana-alert-dismiss">X</button>

@@ -667,7 +667,7 @@ class Widget_Icon_Box extends Widget_Base {
 			}
 		}
 
-		?><div <?php echo $this->get_render_attribute_string( '_wrapper' ); ?>><?php
+		?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
 	}
 
 	protected function get_render_icon() {
