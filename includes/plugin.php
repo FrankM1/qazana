@@ -196,7 +196,6 @@ class Plugin {
      */
     public function __call( $name = '', $args = [] ) {
         unset( $name, $args );
-
         return;
     }
 

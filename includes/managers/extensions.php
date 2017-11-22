@@ -11,7 +11,7 @@ final class Manager {
      * @var array
      */
 	public $loader;
-    
+
     /**
      * Extension data
      *
@@ -80,7 +80,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions/before", $this );
+        do_action( 'qazana/extensions/before', $this );
 
         foreach ( $folders as $folder ) {
             $this->register_extension( $folder, $path );
@@ -91,7 +91,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions", $this );
+        do_action( 'qazana/extensions', $this );
 
     }
 
@@ -126,7 +126,7 @@ final class Manager {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
             }
 
-            $this->extensions[ $folder ] = new $extension_class ( $this );
+            $this->extensions[ $folder ] = new $extension_class( $this );
         }
     }
 
@@ -325,12 +325,12 @@ final class Manager {
         foreach ( $this->extensions as $extension_id => $extension_data ) {
 
             $extension_data = $this->get_extension_data( $extension_id );
- 
+
             if ( $extension_data['required'] ) {
                 continue;
             }
 
-            //$this->add_extension_settings_section( $extension_id );
+            // $this->add_extension_settings_section( $extension_id );
 		}
 
     }

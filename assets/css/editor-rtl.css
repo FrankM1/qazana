@@ -2140,7 +2140,7 @@ select {
   .qazana-panel .qazana-control-type-hidden {
     display: none !important; }
   .qazana-panel .qazana-control-type-popover_toggle .qazana-control-input-wrapper {
-    text-align: right; }
+    text-align: left; }
   .qazana-panel .qazana-control-type-popover_toggle .qazana-control-popover-toggle-simple-toggle {
     display: inline-block;
     width: 50px;
