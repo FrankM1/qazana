@@ -30,7 +30,7 @@ class Counter extends Widget_Base {
 
 	public function add_element_dependencies() {
 		$this->add_frontend_script('odometer');
-		$this->add_frontend_stylesheet('odometer-theme-default');
+		$this->add_frontend_stylesheet('qazana-extension-counter');
     }
 
 	protected function _register_controls() {
@@ -371,7 +371,7 @@ class Counter extends Widget_Base {
 		<div class="qazana-counter">
 			<div class="qazana-counter-number-wrapper">
 				<span class="qazana-counter-number-prefix"><?php echo $settings['prefix']; ?></span>
-				<span <?php echo $this->get_render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
+				<span <?php $this->render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
 				<span class="qazana-counter-number-suffix"><?php echo $settings['suffix']; ?></span>
 			</div>
 			<?php if ( $settings['title'] ) : ?>

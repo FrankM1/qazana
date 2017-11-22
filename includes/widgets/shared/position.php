@@ -18,7 +18,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
         );
 
         $element->add_responsive_control(
-            'element_position',
+            '_element_position',
             [
                 'type'    => Controls_Manager::SELECT,
                 'label'   => esc_html__( 'Position', 'qazana' ),
@@ -63,7 +63,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
 		);
 
         $element->add_responsive_control(
-            'element_left',
+            '_element_left',
             [
                 'label'   => esc_html__( 'Left', 'qazana' ),
                 'type'    => Controls_Manager::SLIDER,
@@ -86,12 +86,12 @@ function add_position_options_to_widget($element, $section_id, $args) {
                     '{{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}} !important;',
                 ],
                 'condition' => [
-                    'element_position!' => array('','static'),
+                    '_element_position!' => array('','static'),
                 ],
             ]
         );
         $element->add_responsive_control(
-            'element_top',
+            '_element_top',
             [
                 'label'   => esc_html__( 'Top', 'qazana' ),
                 'type'    => Controls_Manager::SLIDER,
@@ -114,13 +114,13 @@ function add_position_options_to_widget($element, $section_id, $args) {
                     '{{WRAPPER}}' => 'top: {{SIZE}}{{UNIT}};',
                 ],
                 'condition' => [
-                    'element_position!' => array( '','static'),
+                    '_element_position!' => array( '','static'),
                 ],
             ]
         );
 
         $element->add_control(
-            'element_rotate',
+            '_element_rotate',
             [
                 'label'        => esc_html__( 'Rotate Item', 'qazana' ),
                 'type'         => Controls_Manager::SWITCHER,
@@ -132,7 +132,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
         );
 
         $element->add_control(
-            'element_rotate_degrees',
+            '_element_rotate_degrees',
             [
                 'label'   => esc_html__( 'Rotate', 'qazana' ),
                 'type'    => Controls_Manager::SLIDER,
@@ -150,13 +150,13 @@ function add_position_options_to_widget($element, $section_id, $args) {
                     '{{WRAPPER}}' => 'transform: rotate({{SIZE}}deg);',
                 ],
                 'condition' => [
-                    'element_rotate' => 'yes',
+                    '_element_rotate' => 'yes',
                 ],
             ]
         );
 
         $element->add_control(
-            'element_transform_origin',
+            '_element_transform_origin',
             [
                 'label'     => esc_html__( 'Transform Origin', 'qazana' ),
                 'type'      => Controls_Manager::TEXT,
@@ -165,13 +165,13 @@ function add_position_options_to_widget($element, $section_id, $args) {
                     '{{WRAPPER}}' => 'transform-origin: {{VALUE}};',
                 ],
                 'condition' => [
-                    'element_rotate' => 'yes',
+                    '_element_rotate' => 'yes',
                 ],
             ]
         );
 
         $element->add_control(
-            'element_overflow',
+            '_element_overflow',
             [
                 'label'   => esc_html__( 'Overflow', 'qazana' ),
                 'type'    => Controls_Manager::SELECT,

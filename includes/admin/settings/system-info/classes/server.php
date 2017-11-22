@@ -1,8 +1,8 @@
 <?php
-namespace Qazana\System_Info\Classes;
+namespace Qazana\Admin\System\Info\Classes;
 
 use Qazana\Template_Api;
-use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\Admin\System\Info\Classes\Abstracts\Base_Reporter;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

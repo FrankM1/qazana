@@ -61,10 +61,10 @@
   &.qazana-control-deprecated {
     color: $editor-warning;
 
-    .qazana-control-description {
-      color: $editor-warning;
-    }
-  }
+		.qazana-control-field-description {
+			color: $editor-warning;
+		}
+	}
 
   &.qazana-control-hidden-label {
      > * > .qazana-control-title,
@@ -135,11 +135,11 @@
 }
 
 .qazana-label-block {
-   > .qazana-control-content {
-     > .qazana-control-field {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
+
+	> .qazana-control-content {
+
+		> .qazana-control-field {
+			flex-wrap: wrap;
 
        > .qazana-control-input-wrapper {
         flex-basis: 100%;
@@ -263,12 +263,22 @@
     }
   }
 
-  label {
-    padding: 0 2px;
-    text-transform: uppercase;
-    font-size: 9px;
-    cursor: pointer;
-  }
+	label {
+		cursor: pointer;
+		padding: 0 2px;
+		text-transform: uppercase;
+		font-size: 9px;
+	}
+}
+
+@if $direction == rtl {
+
+	.qazana-control-start-end {
+
+		.eicon-h-align-left, .eicon-h-align-right {
+			transform: rotate(180deg);
+		}
+	}
 }
 
 .qazana-control-responsive-switchers {
@@ -337,248 +347,6 @@
   text-transform: uppercase;
 }
 
-// Media Control
-.qazana-control-type-media {
-  .qazana-control-media {
-    padding: 7px;
-    height: 150px;
-    border: 1px solid;
-
-    &:not(:hover) {
-      border-color: $editor-lightest;
-
-      .qazana-control-media-upload-button {
-        background-color: $editor-lightest;
-      }
-    }
-
-    &:hover {
-      border-color: $editor-light;
-
-      .qazana-control-media-upload-button {
-        background-color: $editor-light;
-      }
-    }
-
-    &.media-empty {
-      .qazana-control-media-image-area {
-        display: none;
-      }
-    }
-
-    &:not(.media-empty) {
-      .qazana-control-media-upload-button {
-        display: none;
-      }
-    }
-
-     > * {
-      position: relative;
-      height: 100%;
-      cursor: pointer;
-    }
-  }
-
-  .fa-plus-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #ffffff;
-    font-size: 20px;
-    transform: translateX(-50%) translateY(-50%);
-  }
-
-  .qazana-control-media-image-area {
-    &:not(:hover) {
-      .qazana-control-media-delete {
-        display: none;
-      }
-    }
-
-    &:hover {
-      .qazana-control-media-image {
-        opacity: .5;
-      }
-    }
-  }
-
-  .qazana-control-media-delete {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 9.5px;
-    background-color: $editor-light;
-    color: #ffffff;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 11px;
-  }
-
-  .qazana-control-media-image {
-    height: 100%;
-    background-size: cover;
-  }
-}
-// Dimensions Control
-// Dimensions Control
-.qazana-control-type-dimensions {
-  .qazana-control-dimensions {
-    overflow: hidden;
-  }
-
-  li {
-    float: left;
-    width: 20%;
-
-    input,
-    .qazana-link-dimensions {
-      display: block;
-      text-align: center;
-      width: 100%;
-      border-color: $editor-light;
-      height: 27px;
-    }
-
-    input {
-      border-left: none;
-      border-radius: 0;
-      padding: 4px 0;
-
-
-
-      &:focus {
-         + .qazana-control-dimension-label {
-          color: $editor-light;
-        }
-      }
-    }
-
-    .qazana-link-dimensions {
-      border: 1px solid $editor-light;
-      border-left: none;
-      background-color: #ffffff;
-      padding: 0;
-      outline: none;
-      border-radius: 0 3px 3px 0;
-      cursor: pointer;
-    }
-
-    &:first-child {
-      input {
-        border-left: 1px solid $editor-light;
-        border-radius: 3px 0 0 3px;
-      }
-    }
-  }
-
-  .qazana-control-dimension-label {
-    display: block;
-    text-align: center;
-    color: $editor-lightest;
-    font-size: 9px;
-    text-transform: uppercase;
-    padding-top: 5px;
-  }
-
-  .qazana-link-dimensions {
-    &.unlinked {
-      background-color: #ffffff;
-
-      .qazana-linked {
-        display: none;
-      }
-    }
-
-    &:not(.unlinked) {
-      background-color: $editor-light;
-
-      .qazana-unlinked {
-        display: none;
-      }
-    }
-
-    .qazana-linked {
-      color: #ffffff;
-    }
-  }
-}
-
-// URL Control
-.qazana-control-type-url {
-  .qazana-control-url-external-hide {
-    .qazana-control-url-more {
-      display: none;
-    }
-  }
-
-  .qazana-control-url-external-show {
-    input {
-      padding-right: 46px;
-    }
-  }
-
-  .qazana-control-input-wrapper {
-    position: relative;
-  }
-
-  .qazana-control-url {
-    &-more {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 26px;
-      border-left: 1px solid;
-      border-radius: 0 3px 3px 0;
-      font-size: 10px;
-      cursor: pointer;
-
-      i {
-        font-size: 13px;
-      }
-
-      &-input {
-        display: none;
-
-        &:not(:checked) {
-           + .qazana-control-url-more-options {
-            display: none;
-          }
-        }
-      }
-
-      &-options {
-        padding-top: 10px;
-      }
-    }
-
-    &-option {
-      padding: 5px;
-      font-size: 12px;
-    }
-  }
-
-  input[type=url] {
-    direction: ltr; // Force ltr also in RTL languages
-
-    &:not(:focus) {
-       + .qazana-control-url-more {
-        border-color: $editor-lightest;
-      }
-    }
-
-    &:focus {
-       + .qazana-control-url-more {
-        border-color: $editor-light;
-      }
-    }
-  }
-}
-
 // = Choices control for alignment
 .qazana-control-align,
 .qazana-control-position,
@@ -588,399 +356,44 @@
   }
 }
 
-// Section control
-.qazana-control-type-section {
-  margin-top: 10px;
-  padding: 0;
+@import "controls/media";
 
-  & + .qazana-control {
-    &:not(.qazana-control-type-section) {
-      padding-top: 15px;
+@import "controls/dimensions";
 
-      &:before {
-        display: none;
-      }
-    }
-  }
-}
+@import "controls/url";
 
-// Color Picker control
-.qazana-control-type-color {
-  .qazana-control-input-wrapper {
-    height: 27px; //Fix jumping of panel when the wp-picker is active
-  }
-}
+@import "controls/section";
 
-// Wysiwyg control
-.qazana-control-type-wysiwyg {
-  &.qazana-rich-editing-disabled {
-    .wp-editor-container {
-      margin-top: 10px;
-    }
-  }
+@import "controls/color";
 
-  * {
-    box-sizing: content-box;
-  }
+@import "controls/wysiwyg";
 
-  .wp-editor-container {
-    border: 1px solid $editor-background;
-    border-radius: 3px;
-  }
+@import "controls/icon";
 
-  #insert-media-button {
-    margin-top: 7px;
-    padding: 3px 7px;
-    height: initial;
-    background-color: $editor-background;
-    font-size: 10px;
-    line-height: 1;
-  }
+@import "controls/gallery";
 
-  .ed_button {
-    width: initial;
-    height: 22px;
-  }
+@import "controls/structure";
 
-  .wp-media-buttons-icon {
-    margin: 0;
-    height: 14px;
+@import "controls/image-dimensions";
 
-    &:before {
-      font-size: 14px;
-    }
-  }
+@import "controls/code";
 
-  .wp-switch-editor {
-    padding: 3px 9px 4px;
-    border: none;
-    border-radius: 3px 3px 0 0;
-    color: $editor-dark;
-    font-size: 10px;
-  }
+@import "controls/wp-widget";
 
-  .html-active {
-    .switch-tmce {
-      background-color: transparent;
-    }
+@import "controls/tabs";
 
-    .switch-html {
-      background-color: $editor-background;
-    }
-  }
+@import "controls/repeater";
 
-  .tmce-active {
-    .switch-tmce {
-      background-color: $editor-background;
-    }
+@import "controls/textarea";
 
-    .switch-html {
-      background-color: transparent;
-    }
-  }
-
-  .mce-toolbar-grp,
-  .quicktags-toolbar {
-    background-color: $editor-background;
-  }
-
-  .mce-toolbar-grp {
-     > div {
-      padding: 0 3px;
-    }
-  }
-
-  .qazana-wp-editor {
-    box-sizing: border-box;
-  }
-
-  .mce-ico {
-    color: $editor-dark;
-    font-size: 16px;
-  }
-
-  .mce-btn {
-    margin-right: 0;
-    margin-left: 0;
-
-    &.mce-active,
-    &:active,
-    &:hover {
-      border-color: $editor-lightest;
-    }
-  }
-
-  .mce-path {
-    padding: 5px 10px;
-  }
-
-  .mce-path-item {
-    color: $editor-dark;
-    font-size: 12px;
-  }
-}
-
-// Icon control
-.qazana-control-type-icon {
-  .select2-selection__rendered {
-    .fa {
-      margin-right: 3px;
-    }
-  }
-}
-
-// Gallery control
-.qazana-control-type-gallery {
-  &.qazana-gallery-empty {
-    .qazana-control-gallery-clear,
-    .qazana-control-gallery-thumbnails {
-      display: none;
-    }
-  }
-
-  .qazana-control-media {
-    //	padding-top: 20px; //temp remove for some space in gallery widget
-  }
-
-  .qazana-control-gallery-thumbnails {
-    overflow: hidden;
-    margin-top: 20px;
-    cursor: pointer;
-  }
-
-  .qazana-control-gallery-thumbnail {
-    float: $start;
-    margin-bottom: 10px;
-    width: 40px;
-    height: 40px;
-    background-position: 50% 50%;
-    background-size: cover;
-
-    &:not(:nth-child(5n)) {
-      @include margin-end(10px);
-    }
-  }
-
-  .qazana-control-gallery-add {
-    margin-top: 10px;
-    width: 100%;
-    height: 30px;
-    background-color: $editor-light;
-    color: #ffffff;
-    text-transform: uppercase;
-  }
-
-  .qazana-control-gallery-clear {
-    color: $editor-warning;
-    cursor: pointer;
-  }
-}
-
-// Structure control
-.qazana-control-type-structure {
-  .qazana-control-structure-preset {
-    padding: 3px;
-    border: 1px solid $editor-background;
-    border-radius: 3px;
-
-    &:not(.qazana-control-structure-current-preset) {
-      display: inline-block;
-      height: 50px;
-      cursor: pointer;
-
-      svg {
-        height: 100%;
-      }
-    }
-
-    path {
-      fill: $editor-background;
-    }
-  }
-
-  .qazana-control-structure-current-preset {
-    margin-top: 15px;
-
-    // For Safari
-    svg {
-      display: block;
-      width: 100%;
-    }
-  }
-
-  .qazana-control-structure-reset {
-    padding: 10px 0 0 2px;
-    color: $editor-light;
-    font-size: 11px;
-    cursor: pointer;
-
-    i {
-      @include margin-end(8px);
-    }
-  }
-
-  .qazana-control-structure-title,
-  .qazana-control-structure-more-presets-title {
-    color: $editor-darkest;
-    font-weight: bold;
-    padding: 13.5px 20px;
-    position: relative;
-
-    &:after,
-    &:before {
-      position: absolute;
-      right: 0;
-      left: 0;
-      content: '';
-    }
-
-    &:before {
-      top: 0;
-      background-color: $editor-background;
-      transform: translateY(-100%);
-    }
-
-    &:after {
-      bottom: 0;
-      height: 1px;
-      background-color: $editor-background;
-    }
-  }
-
-  .qazana-control-structure-title {
-    margin: 10px -20px 0;
-
-    &:before {
-      height: 10px;
-      box-shadow: inset 0 2px 4px rgba(127,127,127,.1);
-    }
-  }
-
-  .qazana-control-structure-more-presets-title {
-    margin: 15px -20px 0;
-
-    &:before {
-      height: 3px;
-    }
-  }
-
-  .qazana-control-structure-more-presets {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    input {
-      display: none;
-
-      &:checked + .qazana-control-structure-preset {
-        border: 1px solid $editor-light;
-
-        path {
-          fill: $editor-light;
-        }
-      }
-    }
-  }
-
-  .qazana-control-structure-preset-wrapper {
-    margin-top: 15px;
-  }
-
-  .qazana-control-structure-preset-title {
-    padding-top: 5px;
-    color: $editor-light;
-    text-align: center;
-    font-style: italic;
-    font-size: 11px;
-  }
-}
-
-// Image dimensions control
-.qazana-control-type-image_dimensions {
-  .qazana-control-field-description {
-    margin: 0 0 15px;
-    line-height: 1.4;
-  }
-
-  .qazana-control-input-wrapper {
-    overflow: hidden;
-  }
-
-  .qazana-image-dimensions-field {
-    float: $start;
-    width: 70px;
-
-    input {
-      &:focus {
-         + .qazana-image-dimensions-field-description {
-          color: $editor-light;
-        }
-      }
-    }
-  }
-
-  .qazana-image-dimensions-separator {
-    float: $start;
-    padding-top: 4px;
-    width: 20px;
-    text-align: center;
-  }
-
-  .qazana-image-dimensions-field-description {
-    margin-top: 5px;
-    color: $editor-lightest;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 9px;
-  }
-
-  .qazana-image-dimensions-apply-button {
-    float: $end;
-    width: 70px;
-    height: 27px;
-  }
-}
-
-// Code Editor
-.qazana-control-type-code {
-  padding: 0 10px 15px;
-}
-
-// WP Widgets
-.qazana-control-type-wp_widget {
-  .widget-inside {
-    // Overwrite WP Default
-    display: block;
-  }
-
-  .quicktags-toolbar {
-    input {
-      width: auto;
-    }
-  }
-}
-
-// Tabs Control
-@import 'controls/tabs';
-
-// Repeater control
-@import 'controls/repeater';
-
-// Textarea control
-@import 'controls/textarea';
-
-// Box-shadow control
-@import 'controls/box-shadow';
+@import "controls/box-shadow";
 
 @import "controls/text-shadow";
 
-// Switcher control
-@import 'controls/switcher';
+@import "controls/switcher";
 
-// Order control
-@import 'controls/order';
+@import "controls/order";
 
-// Hidden control
-.qazana-control-type-hidden {
-  display: none !important;
-}
+@import "controls/hidden";
+
+@import "controls/popover-toggle";

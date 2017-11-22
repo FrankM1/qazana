@@ -95,7 +95,7 @@ class Manager extends BaseManager {
 		}
 
 		wp_update_post( $post );
-
+        
 		if ( self::is_cpt_custom_templates_supported() ) {
 			$template = 'default';
 

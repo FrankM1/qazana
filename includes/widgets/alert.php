@@ -1,26 +1,73 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Alert Widget
+ */
 class Widget_Alert extends Widget_Base {
 
+	/**
+	 * Retrieve alert widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'alert';
 	}
 
+	/**
+	 * Retrieve alert widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Alert', 'qazana' );
 	}
 
+	/**
+	 * Retrieve alert widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-alert';
 	}
 
+	/**
+	 * Retrieve the list of categories the alert widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
 	}
 
+	/**
+	 * Register alert widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_alert',
@@ -61,7 +108,7 @@ class Widget_Alert extends Widget_Base {
 				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'placeholder' => __( 'Your Description', 'qazana' ),
-				'default' => __( 'I am description. Click the edit button to change this text.', 'qazana' ),
+				'default' => __( 'I am description. Click edit button to change this text.', 'qazana' ),
 				'separator' => 'none',
 				'show_label' => false,
 			]
@@ -77,6 +124,15 @@ class Widget_Alert extends Widget_Base {
 					'show' => __( 'Show', 'qazana' ),
 					'hide' => __( 'Hide', 'qazana' ),
 				],
+			]
+		);
+
+		$this->add_control(
+			'view',
+			[
+				'label' => __( 'View', 'qazana' ),
+				'type' => Controls_Manager::HIDDEN,
+				'default' => 'traditional',
 			]
 		);
 
@@ -193,6 +249,14 @@ class Widget_Alert extends Widget_Base {
 
 	}
 
+	/**
+	 * Render alert widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
 		$settings = $this->get_settings();
 
@@ -204,42 +268,55 @@ class Widget_Alert extends Widget_Base {
 			$this->add_render_attribute( 'wrapper', 'class', 'qazana-alert qazana-alert-' . $settings['alert_type'] );
 		}
 
-		echo '<div ' . $this->get_render_attribute_string( 'wrapper' ) . ' role="alert">';
-		$html = sprintf( '<span class="qazana-alert-title">%1$s</span>', $settings['alert_title'] );
+		$this->add_render_attribute( 'wrapper', 'role', 'alert' );
 
-		if ( ! empty( $settings['alert_description'] ) ) {
-			$html .= sprintf( '<span class="qazana-alert-description">%s</span>', $settings['alert_description'] );
-		}
+		$this->add_render_attribute( 'alert_title', 'class', 'qazana-alert-title' );
 
-		if ( ! empty( $settings['show_dismiss'] ) && 'show' === $settings['show_dismiss'] ) {
-			$html .= '<button type="button" class="qazana-alert-dismiss">X</button>';
-		}
+		$this->add_inline_editing_attributes( 'alert_title', 'none' );
+		?>
+		<div <?php $this->render_attribute_string( 'wrapper' ); ?>>
+			<span <?php $this->render_attribute_string( 'alert_title' ); ?>><?php echo $settings['alert_title']; ?></span>
+			<?php if ( ! empty( $settings['alert_description'] ) ) {
+				$this->add_render_attribute( 'alert_description', 'class', 'qazana-alert-description' );
 
-		echo $html;
-
-		echo '</div>';
+				$this->add_inline_editing_attributes( 'alert_description' );
+				?>
+				<span <?php $this->render_attribute_string( 'alert_description' ); ?>><?php echo $settings['alert_description']; ?></span>
+			<?php }
+			if ( 'show' === $settings['show_dismiss'] ) { ?>
+				<button type="button" class="qazana-alert-dismiss">X</button>
+			<?php } ?>
+		</div>
+		<?php
 	}
 
+	/**
+	 * Render alert widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
-		<#
-		var html = '<div class="qazana-alert qazana-alert-' + settings.alert_type + '" role="alert">';
-		if ( '' !== settings.title ) {
-			html += '<span class="qazana-alert-title">' + settings.alert_title + '</span>';
+		<# if ( settings.alert_title ) {
+			view.addRenderAttribute( {
+				alert_title: { class: 'qazana-alert-title' },
+				alert_description: { class: 'qazana-alert-description' }
+			} );
 
-			if ( '' !== settings.description ) {
-				html += '<span class="qazana-alert-description">' + settings.alert_description + '</span>';
-			}
-
-			if ( 'show' === settings.show_dismiss ) {
-				html += '<button type="button" class="qazana-alert-dismiss">X</button>';
-			}
-
-			html += '</div>';
-		
-			print( html );
-		}
-		#>
+			view.addInlineEditingAttributes( 'alert_title', 'none' );
+			view.addInlineEditingAttributes( 'alert_description' );
+			#>
+			<div class="qazana-alert qazana-alert-{{ settings.alert_type }}" role="alert">
+				<span {{{ view.getRenderAttributeString( 'alert_title' ) }}}>{{{ settings.alert_title }}}</span>
+				<span {{{ view.getRenderAttributeString( 'alert_description' ) }}}>{{{ settings.alert_description }}}</span>
+				<# if ( 'show' === settings.show_dismiss ) { #>
+					<button type="button" class="qazana-alert-dismiss">X</button>
+				<# } #>
+			</div>
+		<# } #>
 		<?php
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Qazana\System_Info\Classes\Abstracts;
+namespace Qazana\Admin\System\Info\Classes\Abstracts;
 
 use Qazana\System_Info\Helpers\Model_Helper;
 

@@ -1,16 +1,29 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * WordPress Widget
+ */
 class Widget_WordPress extends Widget_Base {
 
 	/**
+	 * WordPress widget name.
+	 *
+	 * @access private
+	 *
 	 * @var string
 	 */
 	private $_widget_name = null;
 
 	/**
+	 * WordPress widget instance.
+	 *
+	 * @access private
+	 *
 	 * @var \WP_Widget
 	 */
 	private $_widget_instance = null;
@@ -21,6 +34,14 @@ class Widget_WordPress extends Widget_Base {
 		parent::__construct( $data, $args );
 	}
 
+	/**
+	 * Retrieve WordPress name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'wp-widget-' . $this->get_widget_instance()->id_base;
 	}
@@ -38,10 +59,30 @@ class Widget_WordPress extends Widget_Base {
 		return 'eicon-wordpress';
 	}
 
+	/**
+	 * Whether the reload preview is required or not.
+	 *
+	 * Used to determine whether the reload preview is required.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return bool Whether the reload preview is required.
+	 */
 	public function is_reload_preview_required() {
 		return true;
 	}
 
+	/**
+	 * Retrieve WordPress widget form.
+	 *
+	 * Returns the WordPress widget form, to be used in Qazana.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget form.
+	 */
 	public function get_form() {
 		$instance = $this->get_widget_instance();
 
@@ -56,6 +97,13 @@ class Widget_WordPress extends Widget_Base {
 	}
 
 	/**
+	 * Retrieve WordPress widget instance.
+	 *
+	 * Returns an instance of WordPress widget, to be used in Qazana.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
 	 * @return \WP_Widget
 	 */
 	public function get_widget_instance() {
@@ -73,6 +121,16 @@ class Widget_WordPress extends Widget_Base {
 		return $this->_widget_instance;
 	}
 
+	/**
+	 * Retrieve WordPress widget parsed settings.
+	 *
+	 * Returns the WordPress widget settings, to be used in Qazana.
+	 *
+	 * @access protected
+	 * @since 1.0.0
+	 *
+	 * @return \WP_Widget
+	 */
 	protected function _get_parsed_settings() {
 		$settings = parent::_get_parsed_settings();
 
@@ -83,17 +141,34 @@ class Widget_WordPress extends Widget_Base {
 		return $settings;
 	}
 
+	/**
+	 * Register WordPress widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->add_control(
 			'wp',
 			[
-				'label' => __( 'Form', 'qazana' ),
-				'type' => Controls_Manager::WP_WIDGET,
-				'widget' => $this->get_name(),
+				'label'   => __( 'Form', 'qazana' ),
+				'type'    => Controls_Manager::WP_WIDGET,
+				'widget'  => $this->get_name(),
 				'id_base' => $this->get_widget_instance()->id_base,
 			]
 		);
 	}
+
+	/**
+	 * Render WordPress widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 
 	public function render() {
 		$empty_widget_args = [
@@ -104,10 +179,46 @@ class Widget_WordPress extends Widget_Base {
 			'after_title' => '</h5>',
 		];
 
+		$empty_widget_args = apply_filters( 'qazana/widgets/wordpress/widget_args', $empty_widget_args, $this ); // WPCS: spelling ok.
+
 		$this->get_widget_instance()->widget( $empty_widget_args, $this->get_settings( 'wp' ) );
 	}
 
-	protected function _content_template() {}
+	/**
+	 * Render WordPress widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function content_template() {}
 
+	/**
+	 * WordPress widget constructor.
+	 *
+	 * Used to run WordPress widget constructor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array $data Widget data. Default is an empty array.
+	 * @param array $args Widget arguments. Default is null.
+	 */
+	public function __construct( $data = [], $args = null ) {
+		$this->_widget_name = $args['widget_name'];
+		parent::__construct( $data, $args );
+	}
+
+	/**
+	 * Render WordPress widget as plain content.
+	 *
+	 * Override the default render behavior, don't render widget content.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array $instance Widget instance. Default is empty array.
+	 */
 	public function render_plain_content( $instance = [] ) {}
 }

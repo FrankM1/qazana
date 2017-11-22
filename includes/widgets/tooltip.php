@@ -261,8 +261,8 @@ class Widget_Tooltip extends Widget_Base {
 			$this->add_render_attribute( 'tooltip-wrapper', 'class', 'v--show');
 		}
 
-		?><div <?php echo $this->get_render_attribute_string( 'tooltip-wrapper' ); ?>>
-			<div <?php echo $this->get_render_attribute_string( 'tooltip-icon' ); ?>>
+		?><div <?php $this->render_attribute_string( 'tooltip-wrapper' ); ?>>
+			<div <?php $this->render_attribute_string( 'tooltip-icon' ); ?>>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="-255 347 100 100" width="14" height="14" class="svg-replaced" shape-rendering="geometricPrecision">
 					<path d="M-204.8 370.3c-8 0-14.6 6.5-14.6 14.6 0 2.1 1.7 3.7 3.7 3.7s3.7-1.7 3.7-3.7c0-3.9 3.2-7.1 7.1-7.1 4.1 0 7.1 2.9 7.1 6.8v.3c0 2.2-.6 7.4-7.7 8.5-1.8.3-3.2 1.8-3.2 3.7v10.1c0 2.1 1.7 3.7 3.7 3.7s3.7-1.7 3.7-3.7v-7.1c9.4-2.9 10.9-11 10.9-15.5.2-8-6.4-14.3-14.4-14.3zM-204.8 415.4c-2.7 0-4.8 2.2-4.8 4.8s2.2 4.8 4.8 4.8c2.6 0 4.8-2.2 4.8-4.8s-2.2-4.8-4.8-4.8z"></path>
 					<path d="M-204.8 348.4c-26.9 0-48.8 21.9-48.8 48.8s21.9 48.8 48.8 48.8 48.8-21.9 48.8-48.8-21.9-48.8-48.8-48.8zm0 90.2c-22.8 0-41.4-18.6-41.4-41.4 0-22.8 18.6-41.4 41.4-41.4s41.4 18.6 41.4 41.4c-.1 22.8-18.6 41.4-41.4 41.4z"></path>

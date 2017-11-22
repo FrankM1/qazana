@@ -1,22 +1,59 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Video Widget
+ */
 class Widget_Video extends Widget_Base {
 
+	/**
+	 * Retrieve video widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'video';
 	}
 
+	/**
+	 * Retrieve video widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Video', 'qazana' );
 	}
 
+	/**
+	 * Retrieve video widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-youtube';
 	}
 
+	/**
+	 * Register video widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_video',
@@ -171,14 +208,24 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
-		// Vimeo
+		$this->add_control(
+			'yt_privacy',
+			[
+				'label' => __( 'Privacy Mode', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'description' => __( 'When you turn on privacy mode, YouTube won\'t store information about visitors on your website unless they play the video.', 'qazana' ),
+				'condition' => [
+					'video_type' => 'youtube',
+				],
+			]
+		);
+
+		// Vimeo.
 		$this->add_control(
 			'vimeo_autoplay',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'No', 'qazana' ),
-				'label_on' => __( 'Yes', 'qazana' ),
 				'condition' => [
 					'video_type' => 'vimeo',
 				],
@@ -190,8 +237,6 @@ class Widget_Video extends Widget_Base {
 			[
 				'label' => __( 'Loop', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'No', 'qazana' ),
-				'label_on' => __( 'Yes', 'qazana' ),
 				'condition' => [
 					'video_type' => 'vimeo',
 				],
@@ -584,7 +629,7 @@ class Widget_Video extends Widget_Base {
             $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-has-text' );
         } 
 		
-		?><div <?php echo $this->get_render_attribute_string( 'video-wrapper' ); ?>><?php 
+		?><div <?php $this->render_attribute_string( 'video-wrapper' ); ?>><?php 
 
 		echo $video_html;
 
@@ -648,6 +693,14 @@ class Widget_Video extends Widget_Base {
 		return $params;
 	}
 
+	/**
+	 * Retrieve video widget hosted parameters.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @return array Video hosted parameters.
+	 */
 	protected function get_hosted_params() {
 		$settings = $this->get_settings();
 
@@ -672,6 +725,16 @@ class Widget_Video extends Widget_Base {
 		return $params;
 	}
 
+	/**
+	 * Whether the video widget has an overlay image or not.
+	 *
+	 * Used to determine whether an overlay image was set for the video.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @return bool Whether an image overlay was set for the video.
+	 */
 	protected function has_image_overlay() {
 		$settings = $this->get_settings();
 

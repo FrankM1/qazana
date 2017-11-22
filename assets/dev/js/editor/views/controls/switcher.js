@@ -1,6 +1,6 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' );
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' );
 
-module.exports = ControlBaseItemView.extend( {
+module.exports = ControlBaseDataView.extend( {
 	setInputValue: function( input, value ) {
 		// Make sure is string value
 		// TODO: Remove in v1.6

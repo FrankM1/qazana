@@ -1,22 +1,60 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Button Widget
+ */
 class Widget_Button extends Widget_Base {
 
+	/**
+	 * Retrieve button widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'button';
 	}
 
+	/**
+	 * Retrieve button widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Button', 'qazana' );
 	}
 
+	/**
+	 * Retrieve button widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-button';
 	}
 
+	/**
+	 * Retrieve button sizes.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @return array An array containing button sizes.
+	 */
 	public static function get_button_sizes() {
 		return [
 			'xs' => __( 'Extra Small', 'qazana' ),
@@ -27,6 +65,14 @@ class Widget_Button extends Widget_Base {
 		];
 	}
 
+	/**
+	 * Register button widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_button',
@@ -365,11 +411,11 @@ class Widget_Button extends Widget_Base {
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
 
-        ?><div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-            <a <?php echo $this->get_render_attribute_string( 'button' ); ?>>
-                <span <?php echo $this->get_render_attribute_string( 'content-wrapper' ); ?>>
+        ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
+            <a <?php $this->render_attribute_string( 'button' ); ?>>
+                <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
                     <?php if ( $this->get_settings('icon') ) : ?>
-                        <span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
+                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
                             <i class="<?php echo esc_attr( $this->get_settings('icon') ); ?>"></i>
                         </span>
                     <?php endif; ?>

@@ -1,5 +1,22 @@
 .qazana-control-type-switcher {
 
+	&.qazana-label-inline {
+
+		> .qazana-control-content {
+
+			.qazana-control-field {
+
+				.qazana-control-title {
+					width: 70%;
+				}
+
+				.qazana-control-input-wrapper {
+					width: 30%;
+				}
+			}
+		}
+	}
+
 	.qazana-control-input-wrapper {
 		text-align: $end;
 	}
@@ -16,10 +33,7 @@
 	}
 
 	.qazana-switch-input {
-		position: absolute;
-		top: 0;
-		left: 0;
-		opacity: 0;
+		display: none;
 	}
 
 	.qazana-switch-label {

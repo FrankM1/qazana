@@ -1,28 +1,93 @@
 <?php
-namespace Qazana;
+namespace Qazana\Extensions\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class Widget_Tabs extends Widget_Base {
+use Qazana\Controls_Manager;
+use Qazana\Utils;
+use Qazana\Widget_Base as Widget_Base;
+use Qazana\Group_Control_Border;
+use Qazana\Scheme_Color;
+use Qazana\Group_Control_Typography;
+use Qazana\Scheme_Typography;
 
+/**
+ * Tabs Widget
+ */
+class Tabs extends Widget_Base {
+
+    /**
+	 * Retrieve tabs widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'tabs';
 	}
 
+    /**
+	 * Retrieve tabs widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Tabs', 'qazana' );
 	}
 
+    /**
+	 * Retrieve tabs widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-tabs';
 	}
 
+    /**
+	 * Retrieve the list of categories the tabs widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+    
+    /**
+	 * Retrieve the scripts and stylesheets needed by this widget.
+	 *
+	 * Used to add scripts only when needed.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+    public function add_element_dependencies() {
+        $this->add_frontend_stylesheet( 'qazana-extension-tabs' );
+    }
 
+    /**
+	 * Register tabs widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_tabs',
@@ -242,6 +307,14 @@ class Widget_Tabs extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+    /**
+	 * Render tabs widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
 		$tabs = $this->get_settings( 'tabs' );
 		?>
@@ -270,6 +343,14 @@ class Widget_Tabs extends Widget_Base {
 		<?php
 	}
 
+    /**
+	 * Render tabs widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<div class="qazana-tabs" data-active-tab="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}" role="tablist">

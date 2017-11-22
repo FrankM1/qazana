@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Schemes_Manager {
 
@@ -18,6 +20,10 @@ class Schemes_Manager {
 		'color-picker' => 'Scheme_Color_Picker',
 	];
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function register_scheme( $scheme_class ) {
 		/** @var Scheme_Base $scheme_instance */
 		$scheme_instance = new $scheme_class();
@@ -25,6 +31,10 @@ class Schemes_Manager {
 		$this->_registered_schemes[ $scheme_instance::get_type() ] = $scheme_instance;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function unregister_scheme( $id ) {
 		if ( ! isset( $this->_registered_schemes[ $id ] ) ) {
 			return false;
@@ -33,10 +43,18 @@ class Schemes_Manager {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_registered_schemes() {
 		return $this->_registered_schemes;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_registered_schemes_data() {
 		$data = [];
 
@@ -51,6 +69,10 @@ class Schemes_Manager {
 		return $data;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_schemes_defaults() {
 		$data = [];
 
@@ -64,6 +86,10 @@ class Schemes_Manager {
 		return $data;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_system_schemes() {
 		$data = [];
 
@@ -74,6 +100,10 @@ class Schemes_Manager {
 		return $data;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_scheme( $id ) {
 		$schemes = $this->get_registered_schemes();
 
@@ -83,6 +113,10 @@ class Schemes_Manager {
 		return $schemes[ $id ];
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_scheme_value( $scheme_type, $scheme_value ) {
 		$scheme = $this->get_scheme( $scheme_type );
 		if ( ! $scheme ) {
@@ -92,8 +126,13 @@ class Schemes_Manager {
 		return $scheme->get_scheme_value()[ $scheme_value ];
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function ajax_apply_scheme() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+	
+        if ( ! qazana()->editor->verify_request_nonce() ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -111,12 +150,21 @@ class Schemes_Manager {
 		wp_send_json_success();
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function print_schemes_templates() {
 		foreach ( $this->get_registered_schemes() as $scheme ) {
 			$scheme->print_template();
 		}
 	}
 
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public static function get_enabled_schemes() {
 		if ( null === self::$_enabled_schemes ) {
 			$enabled_schemes = [];
@@ -132,6 +180,10 @@ class Schemes_Manager {
 		return self::$_enabled_schemes;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access private
+	*/
 	private function register_default_schemes() {
 
 		include( qazana()->includes_dir  . 'editor/interfaces/scheme.php' );
@@ -144,6 +196,10 @@ class Schemes_Manager {
 		}
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function __construct() {
 		$this->register_default_schemes();
 

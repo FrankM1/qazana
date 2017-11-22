@@ -17,17 +17,16 @@ class Bwp_Minify extends Base {
 	}
 
     public function __construct() {
-        add_action( 'init', [ __CLASS__, 'init' ] );
+        add_action( 'init', [ $this, 'init' ] );
     }
 
-    public static function init() {
+    public function init() {
 
 		// Disable minifier files in Editor from Better Wordpress Minifier plugin
         add_filter( 'bwp_minify_is_loadable', function( $retval ) {
             if ( qazana()->editor->is_edit_mode() ) {
-                $retval = false;
+                return false;
             }
-
             return $retval;
         } );
 

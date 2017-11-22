@@ -42,6 +42,7 @@ App = Marionette.Application.extend( {
 		},
 		controls: {
 			Base: require( 'qazana-views/controls/base' ),
+			BaseData: require( 'qazana-views/controls/base-data' ),
 			BaseMultiple: require( 'qazana-views/controls/base-multiple' ),
 			Color: require( 'qazana-views/controls/color' ),
 			Dimensions: require( 'qazana-views/controls/dimensions' ),
@@ -61,14 +62,15 @@ App = Marionette.Application.extend( {
 			Select2: require( 'qazana-views/controls/select2' ),
 			Date_time: require( 'qazana-views/controls/date-time' ),
 			Code: require( 'qazana-views/controls/code' ),
-			Box_shadow: require( 'qazana-views/controls/shadow' ),
-			Text_shadow: require( 'qazana-views/controls/shadow' ),
+			Box_shadow: require( 'qazana-views/controls/box-shadow' ),
+			Text_shadow: require( 'qazana-views/controls/box-shadow' ),
 			Structure: require( 'qazana-views/controls/structure' ),
 			Animation: require( 'qazana-views/controls/select2' ),
 			Hover_animation: require( 'qazana-views/controls/select2' ),
 			Order: require( 'qazana-views/controls/order' ),
 			Switcher: require( 'qazana-views/controls/switcher' ),
-			Number: require( 'qazana-views/controls/number' )
+			Number: require( 'qazana-views/controls/number' ),
+			Popover_toggle: require( 'qazana-views/controls/popover-toggle' )
 		},
 		templateLibrary: {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
@@ -79,6 +81,10 @@ App = Marionette.Application.extend( {
 
 	addControlView: function( controlID, ControlView ) {
 		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
+	},
+
+	checkEnvCompatibility: function() {
+		return this.envData.gecko || this.envData.webkit;
 	},
 
 	getElementData: function( modelElement ) {
@@ -124,11 +130,25 @@ App = Marionette.Application.extend( {
 	},
 
 	getControlView: function( controlID ) {
-		return this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] || this.modules.controls.Base;
+		var capitalizedControlName = controlID[0].toUpperCase() + controlID.slice( 1 ),
+			View = this.modules.controls[ capitalizedControlName ];
+
+		if ( ! View ) {
+			var controlData = this.config.controls[ controlID ],
+				isUIControl = -1 !== controlData.features.indexOf( 'ui' );
+
+			View = this.modules.controls[ isUIControl ? 'Base' : 'BaseData' ];
+		}
+
+		return View;
 	},
 
 	getPanelView: function() {
 		return this.getRegion( 'panel' ).currentView;
+	},
+
+	initEnvData: function() {
+		this.envData = _.pick( tinymce.EditorManager.Env, [ 'desktop', 'webkit', 'gecko', 'ie', 'opera' ] );
 	},
 
 	initComponents: function() {
@@ -246,10 +266,19 @@ App = Marionette.Application.extend( {
 		hotKeysHandlers[ keysDictionary.del ] = {
 			deleteElement: {
 				isWorthHandling: function( event ) {
-					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName(),
-						isInputTarget = $( event.target ).is( ':input, .qazana-input' );
+					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName();
 
-					return isEditorOpen && ! isInputTarget;
+					if ( ! isEditorOpen ) {
+						return false;
+					}
+
+					var $target = $( event.target );
+
+					if ( $target.is( ':input, .qazana-input' ) ) {
+						return false;
+					}
+
+					return ! $target.closest( '.qazana-inline-editing' ).length;
 				},
 				handle: function() {
 					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).removeElement();
@@ -341,7 +370,7 @@ App = Marionette.Application.extend( {
 		this.$previewContents.on( 'click', function( event ) {
 			var $target = Backbone.$( event.target ),
 				editMode = qazana.channels.dataEditMode.request( 'activeMode' ),
-				isClickInsideQazana = !! $target.closest( '#qazana' ).length,
+				isClickInsideQazana = !! $target.closest( '#qazana, .pen-menu' ).length,
 				isTargetInsideDocument = this.contains( $target[0] );
 
 			if ( isClickInsideQazana && 'edit' === editMode || ! isTargetInsideDocument ) {
@@ -362,6 +391,34 @@ App = Marionette.Application.extend( {
 		} );
 	},
 
+	showFatalErrorDialog: function( options ) {
+		var defaultOptions = {
+			id: 'qazana-fatal-error-dialog',
+			headerMessage: '',
+			message: '',
+			position: {
+				my: 'center center',
+				at: 'center center'
+			},
+			strings: {
+				confirm: qazana.translate( 'learn_more' ),
+				cancel: qazana.translate( 'go_back' )
+			},
+			onConfirm: null,
+			onCancel: function() {
+				parent.history.go( -1 );
+			},
+			hide: {
+				onBackgroundClick: false,
+				onButtonClick: false
+			}
+		};
+
+		options = jQuery.extend( true, defaultOptions, options );
+
+		this.dialogsManager.createWidget( 'confirm', options ).show();
+	},
+
 	onStart: function() {
 		this.$window = Backbone.$( window );
 
@@ -374,6 +431,12 @@ App = Marionette.Application.extend( {
 		Backbone.Radio.tuneIn( 'BUILDER' );
 
 		this.initComponents();
+
+		this.initEnvData();
+
+		if ( ! this.checkEnvCompatibility() ) {
+			this.onEnvNotCompatible();
+		}
 
 		this.channels.dataEditMode.reply( 'activeMode', 'edit' );
 
@@ -391,6 +454,14 @@ App = Marionette.Application.extend( {
 
 	onPreviewLoaded: function() {
 		NProgress.done();
+
+		var previewWindow = this.$preview[0].contentWindow;
+
+		if ( ! previewWindow.qazanaFrontend ) {
+			this.onPreviewLoadingError();
+
+			return;
+		}
 
 		this.$previewContents = this.$preview.contents();
 
@@ -465,29 +536,40 @@ App = Marionette.Application.extend( {
 		}
 	},
 
-	onPreviewElNotFound: function() {
-		var dialog = this.dialogsManager.createWidget( 'confirm', {
-			id: 'qazana-fatal-error-dialog',
-			headerMessage: qazana.translate( 'preview_el_not_found_header' ),
-			message: qazana.translate( 'preview_el_not_found_message' ),
-			position: {
-				my: 'center center',
-				at: 'center center'
+	onEnvNotCompatible: function() {
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'device_incompatible_header' ),
+			message: this.translate( 'device_incompatible_message' ),
+			strings: {
+				confirm: qazana.translate( 'proceed_anyway' )
 			},
-            strings: {
-				confirm: qazana.translate( 'learn_more' ),
-				cancel: qazana.translate( 'go_back' )
-            },
+			hide: {
+				onButtonClick: true
+			},
+			onConfirm: function() {
+				this.hide();
+			}
+		} );
+	},
+
+	onPreviewLoadingError: function() {
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'preview_not_loading_header' ),
+			message: this.translate( 'preview_not_loading_message' ),
+			onConfirm: function() {
+				open( qazana.config.help_preview_error_url, '_blank' );
+			}
+		} );
+	},
+
+	onPreviewElNotFound: function() {
+		this.showFatalErrorDialog( {
+			headerMessage: this.translate( 'preview_el_not_found_header' ),
+			message: this.translate( 'preview_el_not_found_message' ),
 			onConfirm: function() {
 				open( qazana.config.help_the_content_url, '_blank' );
-			},
-			onCancel: function() {
-				parent.history.go( -1 );
-			},
-			hideOnButtonClick: false
+			}
 		} );
-
-		dialog.show();
 	},
 
 	setFlagEditorChange: function( status ) {

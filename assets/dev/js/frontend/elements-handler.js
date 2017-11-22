@@ -61,7 +61,17 @@ ElementsHandler = function( $ ) {
 		addElementsHandlers();
 
 		runElementsHandlers();
-	};
+    };
+    
+    this.reInit = function( $scope ) {
+        
+        var $elements = $scope.find( '.qazana-element' );
+
+        $elements.each( function() {
+            self.runReadyTrigger( $( this ) );
+        } );
+
+    };
 
 	this.getHandlers = function( handlerName ) {
 		if ( handlerName ) {

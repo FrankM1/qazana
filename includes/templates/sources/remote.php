@@ -1,26 +1,43 @@
 <?php
 namespace Qazana\Template_Library;
 
-use Elementor\Core\Settings\Page\Model;
+use Qazana\Core\Settings\Page\Model as Page;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Source_Remote extends Source_Base {
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_id() {
 		return 'remote';
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_title() {
 		return __( 'Remote', 'qazana' );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function register_data() {}
 
-	public function get_items( $args = ['supports'] ) {
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
+	public function get_items( $args = [] ) {
 		$templates_data = Template_Api::get_templates_data();
 
 		$templates = [];
+
 		if ( ! empty( $templates_data ) ) {
 			foreach ( $templates_data as $template_data ) {
 				$templates[] = $this->get_item( $template_data );
@@ -35,6 +52,8 @@ class Source_Remote extends Source_Base {
 	}
 
 	/**
+	 * @since 1.0.0
+	 * @access public
 	 * @param array $template_data
 	 *
 	 * @return array
@@ -57,22 +76,42 @@ class Source_Remote extends Source_Base {
 		];
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function save_item( $template_data ) {
 		return false;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function update_item( $new_data ) {
 		return false;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function delete_template( $template_id ) {
 		return false;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function export_template( $template_id ) {
 		return false;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_data( array $args, $context = 'display' ) {
 		$data = Template_Api::get_template_content( $args['template_id'] );
 
@@ -84,7 +123,7 @@ class Source_Remote extends Source_Base {
 		$data['data'] = $this->process_export_import_content( $data['data'], 'on_import' );
 
 		if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
-			$page = new Model( [
+			$page = new Page( [
 				'settings' => $data['page_settings'],
 			] );
 

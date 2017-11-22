@@ -1,0 +1,17 @@
+.qazana-control-type-color {
+	// This chaining is required in order to let the `width` rules override the default
+	> .qazana-control-content {
+
+		> .qazana-control-field {
+
+			> .qazana-control-title {
+				width: 70%;
+			}
+
+			> .qazana-control-input-wrapper {
+				height: 27px; //Fix jumping of panel when the wp-picker is active
+				width: 30%;
+			}
+		}
+	}
+}

@@ -11,8 +11,12 @@ BaseElementView = BaseContainer.extend( {
 
 	toggleEditTools: true,
 
+	allowRender: true,
+
+	renderAttributes: {},
+
 	className: function() {
-		return this.getElementUniqueID();
+		return 'qazana-element qazana-element-edit-mode ' + this.getElementUniqueID();
 	},
 
 	attributes: function() {
@@ -62,6 +66,10 @@ BaseElementView = BaseContainer.extend( {
 		return this.model.get( 'elType' );
 	},
 
+	getIDInt: function() {
+		return parseInt( this.getID(), 16 );
+	},
+
 	getChildType: function() {
 		return qazana.helpers.getElementChildType( this.getElementType() );
 	},
@@ -81,11 +89,13 @@ BaseElementView = BaseContainer.extend( {
 		return qazana.hooks.applyFilters( 'element/view', ChildView, model, this );
 	},
 
+	// TODO: backward compatibility method since 1.3.0
 	templateHelpers: function() {
-		return {
-			elementModel: this.model,
-			editModel: this.getEditModel()
-		};
+		var templateHelpers = BaseContainer.prototype.templateHelpers.apply( this, arguments );
+
+		return jQuery.extend( templateHelpers, {
+			editModel: this.getEditModel() // @deprecated. Use view.getEditModel() instead.
+		} );
 	},
 
 	getTemplateType: function() {
@@ -189,6 +199,59 @@ BaseElementView = BaseContainer.extend( {
 		}
 
 		validators[ controlName ].push( validator );
+	},
+
+	addRenderAttribute: function( element, key, value, overwrite ) {
+		var self = this;
+
+		if ( 'object' === typeof element ) {
+			jQuery.each( element, function( elementKey ) {
+				self.addRenderAttribute( elementKey, this, null, overwrite );
+			} );
+
+			return self;
+		}
+
+		if ( 'object' === typeof key ) {
+			jQuery.each( key, function( attributeKey ) {
+				self.addRenderAttribute( element, attributeKey, this, overwrite );
+			} );
+
+			return self;
+		}
+
+		if ( ! self.renderAttributes[ element ] ) {
+			self.renderAttributes[ element ] = {};
+		}
+
+		if ( ! self.renderAttributes[ element ][ key ] ) {
+			self.renderAttributes[ element ][ key ] = [];
+		}
+
+		if ( ! Array.isArray( value ) ) {
+			value = [ value ];
+		}
+
+		if ( overwrite ) {
+			self.renderAttributes[ element ][ key ] = value;
+		} else {
+			self.renderAttributes[ element ][ key ] = self.renderAttributes[ element ][ key ].concat( value );
+		}
+	},
+
+	getRenderAttributeString: function( element ) {
+		if ( ! this.renderAttributes[ element ] ) {
+			return '';
+		}
+
+		var renderAttributes = this.renderAttributes[ element ],
+			attributes = [];
+
+		jQuery.each( renderAttributes, function( attributeKey ) {
+			attributes.push( attributeKey + '="' + _.escape( this.join( ' ' ) ) + '"' );
+		} );
+
+		return attributes.join( ' ' );
 	},
 
 	isCollectionFilled: function() {
@@ -329,6 +392,13 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	renderOnChange: function( settings ) {
+		
+		var self = this;
+
+		if ( ! this.allowRender ) {
+			return;
+		}
+
 		// Make sure is correct model
 		if ( settings instanceof BaseSettingsModel ) {
 			var hasChanged = settings.hasChanged(),
@@ -338,9 +408,14 @@ BaseElementView = BaseContainer.extend( {
 			_.each( settings.changedAttributes(), function( settingValue, settingKey ) {
 				var control = settings.getControl( settingKey );
 
+				if ( '_column_size' === settingKey ) {
+					isRenderRequired = true;
+					return;
+				}
+
 				if ( ! control ) {
 					isRenderRequired = true;
-
+					isContentChanged = true;
 					return;
 				}
 
@@ -370,14 +445,24 @@ BaseElementView = BaseContainer.extend( {
 		// Re-render the template
 		var templateType = this.getTemplateType(),
 			editModel = this.getEditModel();
-
-		if ( 'js' === templateType ) {
-			this.getEditModel().setHtmlCache();
-			this.render();
-			editModel.renderOnLeave = true;
-		} else {
-			editModel.renderRemoteServer();
-		}
+            
+        // Add a slight delay for re-render
+        setTimeout( function() {
+            
+            if ( 'js' === templateType ) {
+                self.getEditModel().setHtmlCache();
+                self.render();
+                editModel.renderOnLeave = true;
+            } else {
+                editModel.renderRemoteServer();
+            }
+            
+        }, 200);
+    
+    },
+    
+    onBeforeRender: function() {
+		this.renderAttributes = {};
 	},
 
 	onRender: function() {
@@ -401,7 +486,8 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	onEditSettingsChanged: function( changedModel ) {
-		this.renderOnChange( changedModel );
+		qazana.channels.editor
+			.trigger( 'change:editSettings', changedModel, this );
 	},
 
 	onSettingsChanged: function( changedModel ) {

@@ -1101,7 +1101,7 @@ class Element_Section extends Element_Base {
 
 	}
 
-	protected function _render_settings() {
+	protected function render_edit_tools() {
 		?>
 		<div class="qazana-element-overlay">
 			<ul class="qazana-editor-element-settings qazana-editor-section-settings">
@@ -1238,7 +1238,7 @@ class Element_Section extends Element_Base {
 			?>
 
             <div class="qazana-container qazana-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
-                <div <?php echo $this->get_render_attribute_string( 'row' ); ?>>
+                <div <?php $this->render_attribute_string( 'row' ); ?>>
         <?php
     }
 

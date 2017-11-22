@@ -1,3 +1,9 @@
+$direction: ltr;
+
+@import 'helpers/variables';
+@import "helpers/mixins";
+@import "helpers/direction";
+
 //
 // Counter
 //
@@ -43,3 +49,4 @@
 		}
 	}
 }
+

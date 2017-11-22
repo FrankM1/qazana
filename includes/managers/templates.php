@@ -195,7 +195,6 @@ class Template_Manager {
 	}
 
 	public function export_template( array $args ) {
-		// TODO: Add nonce for security.
 		$validate_args = $this->ensure_args( [ 'source', 'template_id' ], $args );
 
 		if ( is_wp_error( $validate_args ) ) {
@@ -254,6 +253,10 @@ class Template_Manager {
 	}
 
 	private function handle_ajax_request( $ajax_request ) {
+
+        if ( ! qazana()->editor->verify_request_nonce() ) {
+			wp_send_json_error( new \WP_Error( 'token_expired' ) );
+        }
 
 		$result = call_user_func( [ $this, $ajax_request ], $_REQUEST );
 

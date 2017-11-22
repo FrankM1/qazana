@@ -204,7 +204,7 @@ class Widget_Heading extends Widget_Base {
 
 		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'heading' ), $settings['title'] );
 
-		?><div <?php echo $this->get_render_attribute_string( 'heading-wrapper' ); ?>>
+		?><div <?php $this->render_attribute_string( 'heading-wrapper' ); ?>>
             <?php echo $title_html; ?>
         </div><?php
 

@@ -1,18 +1,47 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Common Widget
+ */
 class Widget_Common extends Widget_Base {
 
+	/**
+	 * Retrieve common widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'common';
 	}
 
+	/**
+	 * Whether to show the common widget in the panel or not.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return bool Whether to show the widget in the panel.
+	 */
 	public function show_in_panel() {
 		return false;
 	}
 
+	/**
+	 * Register common widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'_section_style',
@@ -261,7 +290,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'responsive_description',
+			'_responsive_description',
 			[
 				'raw' => __( 'Attention: The display settings (show/hide for mobile, tablet or desktop) will only take effect once you are on the preview or live page, and not while you\'re in editing mode in Qazana.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
@@ -270,7 +299,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'hide_desktop',
+			'_hide_desktop',
 			[
 				'label' => __( 'Hide On Desktop', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
@@ -283,7 +312,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'hide_tablet',
+			'_hide_tablet',
 			[
 				'label' => __( 'Hide On Tablet', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
@@ -296,7 +325,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'hide_mobile',
+			'_hide_mobile',
 			[
 				'label' => __( 'Hide On Mobile', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,

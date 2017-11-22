@@ -255,7 +255,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		] );
 		
 		?><div class="qazana-slides-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
-			<div <?php echo $this->get_render_attribute_string( 'slides' ); ?>>
+			<div <?php $this->render_attribute_string( 'slides' ); ?>>
 				
 				<div class="slick-slideshow-large-container-biggie">
 					<div class="slick-slides slick-slides-biggie">

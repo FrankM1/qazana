@@ -21,15 +21,24 @@ class Piechart extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-piechart';
+		return 'eicon-counter-circle';
 	}
 
 	public function get_categories() {
 		return [ 'general-elements' ];
 	}
 
+    /**
+	 * Retrieve the scripts and stylesheets needed by this widget.
+	 *
+	 * Used to add scripts only when needed.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_element_dependencies() {
-		$this->add_frontend_script('jquery-circle-progress');
+        $this->add_frontend_script('jquery-circle-progress');
+        $this->add_frontend_stylesheet( 'qazana-extension-' . $this->get_name() );
     }
 
 	protected function _register_controls() {
@@ -451,7 +460,7 @@ class Piechart extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		?><div <?php echo $this->get_render_attribute_string( 'piechart' ); ?>>
+		?><div <?php $this->render_attribute_string( 'piechart' ); ?>>
 			<div class="piechart-number">
 				<span class="qazana-piechart-number-progress">
 					<span class="qazana-piechart-number-prefix"><?php echo $settings['prefix']; ?></span>

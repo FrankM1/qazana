@@ -1,7 +1,7 @@
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' ),
 	ControlSelect2ItemView;
 
-ControlSelect2ItemView = ControlBaseItemView.extend( {
+ControlSelect2ItemView = ControlBaseDataView.extend( {
 	getSelect2Options: function() {
 		var placeholder = this.ui.select.children( 'option:first[value=""]' ).text();
 

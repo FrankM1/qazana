@@ -1,7 +1,9 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Fonts {
 
@@ -10,6 +12,11 @@ class Fonts {
 	const EARLYACCESS = 'earlyaccess';
 	const LOCAL = 'local';
 
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public static function get_fonts() {
 		return [
 			// System fonts.
@@ -21,7 +28,7 @@ class Fonts {
 			'Trebuchet MS' => self::SYSTEM,
 			'Georgia' => self::SYSTEM,
 
-			// Google Fonts (last update: 09/07/2017).
+			// Google Fonts (last update: 29/10/2017).
 			'ABeeZee' => self::GOOGLE,
 			'Abel' => self::GOOGLE,
 			'Abhaya Libre' => self::GOOGLE,
@@ -56,7 +63,6 @@ class Fonts {
 			'Amarante' => self::GOOGLE,
 			'Amaranth' => self::GOOGLE,
 			'Amatic SC' => self::GOOGLE,
-			'Amatica SC' => self::GOOGLE,
 			'Amethysta' => self::GOOGLE,
 			'Amiko' => self::GOOGLE,
 			'Amiri' => self::GOOGLE,
@@ -75,6 +81,7 @@ class Fonts {
 			'Arbutus' => self::GOOGLE,
 			'Arbutus Slab' => self::GOOGLE,
 			'Architects Daughter' => self::GOOGLE,
+			'Archivo' => self::GOOGLE,
 			'Archivo Black' => self::GOOGLE,
 			'Archivo Narrow' => self::GOOGLE,
 			'Aref Ruqaa' => self::GOOGLE,
@@ -87,6 +94,7 @@ class Fonts {
 			'Arvo' => self::GOOGLE,
 			'Arya' => self::GOOGLE,
 			'Asap' => self::GOOGLE,
+			'Asap Condensed' => self::GOOGLE,
 			'Asar' => self::GOOGLE,
 			'Asset' => self::GOOGLE,
 			'Assistant' => self::GOOGLE,
@@ -108,11 +116,13 @@ class Fonts {
 			'Bahiana' => self::GOOGLE,
 			'Baloo' => self::GOOGLE,
 			'Baloo Bhai' => self::GOOGLE,
+			'Baloo Bhaijaan' => self::GOOGLE,
 			'Baloo Bhaina' => self::GOOGLE,
 			'Baloo Chettan' => self::GOOGLE,
 			'Baloo Da' => self::GOOGLE,
 			'Baloo Paaji' => self::GOOGLE,
 			'Baloo Tamma' => self::GOOGLE,
+			'Baloo Tammudu' => self::GOOGLE,
 			'Baloo Thambi' => self::GOOGLE,
 			'Balthazar' => self::GOOGLE,
 			'Bangers' => self::GOOGLE,
@@ -266,13 +276,17 @@ class Fonts {
 			'Eater' => self::GOOGLE,
 			'Economica' => self::GOOGLE,
 			'Eczar' => self::GOOGLE,
-			'Ek Mukta' => self::GOOGLE,
 			'El Messiri' => self::GOOGLE,
 			'Electrolize' => self::GOOGLE,
 			'Elsie' => self::GOOGLE,
 			'Elsie Swash Caps' => self::GOOGLE,
 			'Emblema One' => self::GOOGLE,
 			'Emilys Candy' => self::GOOGLE,
+			'Encode Sans' => self::GOOGLE,
+			'Encode Sans Condensed' => self::GOOGLE,
+			'Encode Sans Expanded' => self::GOOGLE,
+			'Encode Sans Semi Condensed' => self::GOOGLE,
+			'Encode Sans Semi Expanded' => self::GOOGLE,
 			'Engagement' => self::GOOGLE,
 			'Englebert' => self::GOOGLE,
 			'Enriqueta' => self::GOOGLE,
@@ -290,6 +304,7 @@ class Fonts {
 			'Faster One' => self::GOOGLE,
 			'Fasthand' => self::GOOGLE,
 			'Fauna One' => self::GOOGLE,
+			'Faustina' => self::GOOGLE,
 			'Federant' => self::GOOGLE,
 			'Federo' => self::GOOGLE,
 			'Felipa' => self::GOOGLE,
@@ -450,6 +465,12 @@ class Fonts {
 			'Lekton' => self::GOOGLE,
 			'Lemon' => self::GOOGLE,
 			'Lemonada' => self::GOOGLE,
+			'Libre Barcode 128' => self::GOOGLE,
+			'Libre Barcode 128 Text' => self::GOOGLE,
+			'Libre Barcode 39' => self::GOOGLE,
+			'Libre Barcode 39 Extended' => self::GOOGLE,
+			'Libre Barcode 39 Extended Text' => self::GOOGLE,
+			'Libre Barcode 39 Text' => self::GOOGLE,
 			'Libre Baskerville' => self::GOOGLE,
 			'Libre Franklin' => self::GOOGLE,
 			'Life Savers' => self::GOOGLE,
@@ -479,6 +500,7 @@ class Fonts {
 			'Mako' => self::GOOGLE,
 			'Mallanna' => self::GOOGLE,
 			'Mandali' => self::GOOGLE,
+			'Manuale' => self::GOOGLE,
 			'Marcellus' => self::GOOGLE,
 			'Marcellus SC' => self::GOOGLE,
 			'Marck Script' => self::GOOGLE,
@@ -538,6 +560,9 @@ class Fonts {
 			'Mr De Haviland' => self::GOOGLE,
 			'Mrs Saint Delafield' => self::GOOGLE,
 			'Mrs Sheppards' => self::GOOGLE,
+			'Mukta' => self::GOOGLE,
+			'Mukta Mahee' => self::GOOGLE,
+			'Mukta Malar' => self::GOOGLE,
 			'Mukta Vaani' => self::GOOGLE,
 			'Muli' => self::GOOGLE,
 			'Mystery Quest' => self::GOOGLE,
@@ -711,6 +736,10 @@ class Fonts {
 			'Sacramento' => self::GOOGLE,
 			'Sahitya' => self::GOOGLE,
 			'Sail' => self::GOOGLE,
+			'Saira' => self::GOOGLE,
+			'Saira Condensed' => self::GOOGLE,
+			'Saira Extra Condensed' => self::GOOGLE,
+			'Saira Semi Condensed' => self::GOOGLE,
 			'Salsa' => self::GOOGLE,
 			'Sanchez' => self::GOOGLE,
 			'Sancreek' => self::GOOGLE,
@@ -725,6 +754,8 @@ class Fonts {
 			'Scope One' => self::GOOGLE,
 			'Seaweed Script' => self::GOOGLE,
 			'Secular One' => self::GOOGLE,
+			'Sedgwick Ave' => self::GOOGLE,
+			'Sedgwick Ave Display' => self::GOOGLE,
 			'Sevillana' => self::GOOGLE,
 			'Seymour One' => self::GOOGLE,
 			'Shadows Into Light' => self::GOOGLE,
@@ -851,9 +882,15 @@ class Fonts {
 			'Yrsa' => self::GOOGLE,
 			'Zeyada' => self::GOOGLE,
 			'Zilla Slab' => self::GOOGLE,
+			'Zilla Slab Highlight' => self::GOOGLE,
 		];
 	}
 
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public static function get_font_type( $name ) {
 		$fonts = self::get_fonts();
 
@@ -864,6 +901,11 @@ class Fonts {
 		return $fonts[ $name ];
 	}
 
+	/**
+	 * @static
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public static function get_fonts_by_groups( $groups = [] ) {
 		return array_filter( self::get_fonts(), function( $font ) use ( $groups ) {
 			return in_array( $font, $groups );

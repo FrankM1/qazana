@@ -38,7 +38,7 @@ class Qazana_Library extends \WP_Widget {
 		if ( User::is_current_user_can_edit() ) {
 			echo '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $instance['template_id'] ) ) .'"><i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'</a>';
 		}
-	
+
 		echo $args['after_widget'];
 	}
 

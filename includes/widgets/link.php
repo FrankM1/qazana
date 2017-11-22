@@ -304,10 +304,10 @@ class Widget_Link extends Widget_Base {
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-link-icon' );
 
 		?>
-		<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+		<a <?php $this->render_attribute_string( 'link' ); ?>>
 			<span class="qazana-link-wrapper">
 				<?php if ( $this->get_settings('link_icon') ) : ?>
-					<span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
+					<span <?php $this->render_attribute_string( 'icon-align' ); ?>>
 						<i class="<?php echo esc_attr( $this->get_settings('link_icon') ); ?>"></i>
 					</span>
 				<?php endif; ?>

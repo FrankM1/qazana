@@ -60,7 +60,7 @@ class Template extends Widget_Base {
 		$types = [];
 
 		foreach ( $templates as $template ) {
-			$options[ $template['template_id'] ] = $template['title'] . '(' . $template['type'] . ')';
+			$options[ $template['template_id'] ] = $template['title'] . ' (' . $template['type'] . ')';
 			$types[ $template['template_id'] ] = $template['type'];
 		}
 
@@ -68,7 +68,7 @@ class Template extends Widget_Base {
 			'template_id',
 			[
 				'label' => __( 'Choose Template', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
+				'type' => Controls_Manager::SELECT2,
 				'default' => '0',
 				'options' => $options,
 				'types' => $types,
@@ -84,9 +84,16 @@ class Template extends Widget_Base {
 		$template_id = $this->get_settings( 'template_id' );
 
 		?><div class="qazana-template">
-			<?php echo qazana()->frontend->get_builder_content_for_display( $template_id ); ?>
+            <?php 
+
+            echo qazana()->frontend->get_builder_content_for_display( $template_id );
+
+            if ( User::is_current_user_can_edit() ) {
+                echo '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $template_id ) ) .'"><i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'</a>';
+            }
+            ?>
 		</div><?php
-		
+
 	}
 
 	public function render_plain_content() {}

@@ -4,7 +4,8 @@
 
 .qazana-form-fields-wrapper {
 	display: flex;
-	flex-wrap: wrap;
+    flex-wrap: wrap;
+    align-items: center;
 
 	&.qazana-labels-above {
 		> .qazana-field-group {

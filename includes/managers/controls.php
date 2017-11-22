@@ -22,7 +22,8 @@ class Controls_Manager {
 
 	const HIDDEN = 'hidden';
 	const HEADING = 'heading';
-	const RAW_HTML = 'raw_html';
+    const RAW_HTML = 'raw_html';
+    const POPOVER_TOGGLE = 'popover_toggle';
 	const SECTION = 'section';
 	const TAB = 'tab';
 	const TABS = 'tabs';
@@ -142,7 +143,8 @@ class Controls_Manager {
 
 			self::HIDDEN,
 			self::HEADING,
-			self::RAW_HTML,
+            self::RAW_HTML,
+            self::POPOVER_TOGGLE,
 			self::SECTION,
 			self::TAB,
 			self::TABS,
@@ -173,9 +175,9 @@ class Controls_Manager {
 			self::ANIMATION_OUT,
 			self::ORDER,
 		];
-		
+	
 		foreach ( $available_controls as $control_id ) {
-			
+	
 			$control_filename = str_replace( '_', '-', $control_id );
 			$control_filename =  qazana()->includes_dir . "editor/controls/{$control_filename}.php";
 			require( $control_filename );
@@ -371,7 +373,7 @@ class Controls_Manager {
 		}
 
 		if ( ! $options['overwrite'] && isset( $this->stacks[ $stack_id ]['controls'][ $control_id ] ) ) {
-			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. - ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
+			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with same name. ' . $control_id . ' in the ' . $stack_id . ' element', '1.0.0' );
 
 			return false;
 		}
@@ -431,13 +433,22 @@ class Controls_Manager {
 		return $this->stacks[ $stack_id ]['controls'][ $control_id ];
 	}
 
-	public function update_control_in_stack( Controls_Stack $element, $control_id, $control_data ) {
+    /**
+	 * @since 1.0.0
+	 * @access public
+	*/
+	public function update_control_in_stack( Controls_Stack $element, $control_id, $control_data, array $options = [] ) {
 		$old_control_data = $this->get_control_from_stack( $element->get_unique_name(), $control_id );
+
 		if ( is_wp_error( $old_control_data ) ) {
 			return false;
 		}
 
-		$control_data = array_merge( $old_control_data, $control_data );
+		if ( ! empty( $options['recursive'] ) ) {
+			$control_data = array_replace_recursive( $old_control_data, $control_data );
+		} else {
+			$control_data = array_merge( $old_control_data, $control_data );
+		}
 
 		return $this->add_control_to_stack( $element, $control_id, $control_data, [ 'overwrite' => true ] );
 	}

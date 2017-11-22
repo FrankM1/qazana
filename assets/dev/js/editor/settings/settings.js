@@ -17,8 +17,10 @@ module.exports = Module.extend( {
 
 	initSettings: function() {
 		var self = this;
+
 		_.each( qazana.config.settings, function( config, name ) {
 			var Manager = self.modules[ name ] || self.modules.base;
+
 			self[ name ] = new Manager( config );
 		} );
 	}

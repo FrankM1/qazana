@@ -124,7 +124,7 @@ abstract class Element_Base extends Controls_Stack {
 		}
 		?>
 		<script type="text/html" id="tmpl-qazana-<?php echo $this->get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
-			<?php $this->_render_settings(); ?>
+			<?php $this->render_edit_tools(); ?>
 			<?php echo $content_template; ?>
 		</script>
 		<?php
@@ -234,7 +234,11 @@ abstract class Element_Base extends Controls_Stack {
 		}
 
 		return implode( ' ', $attributes );
-	}
+    }
+
+	public function render_attribute_string( $element ) {
+        echo $this->get_render_attribute_string( $element );
+    }
 
 	public function print_element() {
 
@@ -276,7 +280,7 @@ abstract class Element_Base extends Controls_Stack {
 
 	protected function _content_template() {}
 
-	protected function _render_settings() {}
+	protected function render_edit_tools() {}
 
 	/**
 	 * @return boolean
@@ -316,19 +320,11 @@ abstract class Element_Base extends Controls_Stack {
 			$this->add_render_attribute( '_wrapper', 'id', trim( $settings['_element_id'] ) );
 		}
 
-		if ( ! qazana()->editor->is_edit_mode() ) {
-			$frontend_settings = array_intersect_key( $settings, array_flip( $this->get_frontend_settings_keys() ) );
+		$frontend_settings = $this->get_frontend_settings();
 
-			foreach ( $frontend_settings as $key => $setting ) {
-				if ( in_array( $setting, [ null, '' ], true ) ) {
-					unset( $frontend_settings[ $key ] );
-				}
-			}
-
-			if ( $frontend_settings ) {
-				$this->add_render_attribute( '_wrapper', 'data-settings', wp_json_encode( $frontend_settings ) );
-			}
-		}
+        if ( $frontend_settings ) {
+            $this->add_render_attribute( '_wrapper', 'data-settings', wp_json_encode( $frontend_settings ) );
+        }
 	}
 
 	public function render() {}
@@ -409,12 +405,13 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	public function __construct( array $data = [], array $args = null ) {
-		parent::__construct( $data );
 
 		if ( $data ) {
 			$this->_is_type_instance = false;
 		} elseif ( $args ) {
 			$this->_default_args = $args;
-		}
+        }
+
+		parent::__construct( $data );
 	}
 }

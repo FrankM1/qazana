@@ -440,7 +440,7 @@ class Widget_Icon extends Widget_Base {
 			$this->add_render_attribute( 'i', 'class', $settings['icon'] );
 		}
 
-		?><div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
 			<<?php echo $icon_tag . ' ' . $this->get_render_attribute_string( 'icon-wrapper' ); ?>>
 				<?php echo $this->get_render_icon(); ?>
 			</<?php echo $icon_tag; ?>>

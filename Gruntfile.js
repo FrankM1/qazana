@@ -1,10 +1,13 @@
 module.exports = function( grunt ) {
     'use strict';
 
+    require('jit-grunt')(grunt);
+    
+    // require it at the top and pass in the grunt instance
+	require('time-grunt')(grunt);
+    
     var remapify = require( 'remapify' ),
         pkgInfo = grunt.file.readJSON( 'package.json' );
-
-    require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
     // Project configuration
     grunt.initConfig( {
@@ -223,7 +226,7 @@ module.exports = function( grunt ) {
 
                     processors: [
                         require( 'autoprefixer' )( {
-                            browsers: 'last 2 versions, Safari > 5'
+                            browsers: 'last 8 versions, Safari > 5'
                         } )
                     ]
                 },

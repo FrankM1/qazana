@@ -1,7 +1,7 @@
 <?php
-namespace Qazana\System_Info;
+namespace Qazana\Admin\System\Info;
 
-use Qazana\System_Info\Classes\Abstracts\Base_Reporter;
+use Qazana\Admin\System\Info\Classes\Abstracts\Base_Reporter;
 use Qazana\System_Info\Helpers\Model_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,13 +18,13 @@ class Main {
 	private $settings = [];
 
 	private static $reports = [
-		'server' => [],
-		'wordpress' => [],
-		'theme' => [],
-		'user' => [],
-		'plugins' => [],
+		'server'          => [],
+		'wordpress'       => [],
+		'theme'           => [],
+		'user'            => [],
+		'plugins'         => [],
 		'network_plugins' => [],
-		'mu_plugins' => [],
+		'mu_plugins'      => [],
 	];
 
 	public function __construct() {

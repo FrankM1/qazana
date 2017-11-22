@@ -27,17 +27,27 @@ class Counter extends Base {
 	public function enqueue_styles() {
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
-
+        $direction_suffix = is_rtl() ? '-rtl' : '';
+        
         wp_register_style(
             'odometer-theme-default',
             qazana()->core_assets_url . 'lib/odometer/themes/odometer-theme-default' . $suffix . '.css',
             [],
             qazana_get_version()
         );
+    
+        wp_register_style(
+            'qazana-extension-counter',
+            $this->extension_url( 'assets/css/direction/style' . $direction_suffix . $suffix . '.css' ),
+            [
+                'qazana-frontend', 'odometer-theme-default'
+            ],
+            qazana_get_version()
+        );
 
-		if ( qazana()->preview->is_preview_mode() ) {
-			wp_enqueue_style( 'odometer-theme-default' );
-		}
+        if ( qazana()->preview->is_preview_mode() ) {
+            wp_enqueue_style( 'qazana-extension-counter' );
+        }
 	}
 
    	public function enqueue_scripts() {

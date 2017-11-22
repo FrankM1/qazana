@@ -20,9 +20,9 @@ abstract class Manager {
 		if ( Utils::is_ajax() ) {
 			add_action( 'wp_ajax_qazana_save_' . $this->get_name() . '_settings', [ $this, 'ajax_save_settings' ] );
 		}
-		
-		add_action( 'qazana/editor/panel_templates', [ $this, 'add_editor_template' ] );
-		
+
+		add_action( 'qazana/after/init_classes', [ $this, 'on_qazana_init' ] );
+
 		add_action( 'qazana/' . $this->get_css_file_name() . '-css-file/parse', [ $this, 'add_settings_css_rules' ] );
 	}
 
@@ -62,7 +62,9 @@ abstract class Manager {
 
 		$this->save_settings( $data, $id );
 
-		wp_send_json_success();
+		$success_response_data = apply_filters( 'qazana/' . $this->get_name() . '/settings/success_response_data', [], $id, $data );
+
+		wp_send_json_success( $success_response_data );
 	}
 
 	final public function save_settings( array $settings, $id = 0 ) {
@@ -94,26 +96,26 @@ abstract class Manager {
 		$model = $this->get_model_for_css_file( $css_file );
 
 		$css_file->add_controls_stack_style_rules( $model, $model->get_style_controls(), $model->get_settings(), [ '{{WRAPPER}}' ], [ $model->get_css_wrapper_selector() ] );
-		
+
 		$custom_css = $model->get_settings( 'custom_css' );
 
 		$custom_css = trim( $custom_css );
-		
+
 		if ( empty( $custom_css ) ) {
 			return;
 		}
-		
+
 		$custom_css = str_replace( 'selector', $model->get_css_wrapper_selector(), $custom_css );
 
 		// Add a css comment
 		$custom_css = '/* Start custom CSS for page-settings */' . $custom_css . '/* End custom CSS */';
 
 		$css_file->get_stylesheet()->add_raw_css( $custom_css );
-		
+
 	}
 
-	public function add_editor_template() {
-		qazana()->editor->add_editor_template( $this->get_editor_template() );
+	public function on_qazana_init() {
+		qazana()->editor->add_editor_template( $this->get_editor_template(), 'text' );
 	}
 
 	/**
@@ -157,16 +159,17 @@ abstract class Manager {
 	protected function ajax_before_save_settings( array $data, $id ) {}
 
 	protected function print_editor_template_content( $name ) {
-		
-		?><div class="qazana-panel-navigation">
+		?>
+		<div class="qazana-panel-navigation">
 			<# _.each( qazana.config.settings.<?php echo $name; ?>.tabs, function( tabTitle, tabSlug ) { #>
 				<div class="qazana-panel-navigation-tab qazana-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
 					<a href="#">{{{ tabTitle }}}</a>
 				</div>
 			<# } ); #>
 		</div>
-		<div id="qazana-panel-<?php echo $name; ?>-settings-controls"></div><?php
 
+		<div id="qazana-panel-<?php echo $name; ?>-settings-controls"></div>
+		<?php
 	}
 
 	/**

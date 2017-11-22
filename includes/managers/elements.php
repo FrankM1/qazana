@@ -1,10 +1,11 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Elements_Manager {
-
 	/**
 	 * @var Element_Base[]
 	 */
@@ -154,7 +155,7 @@ class Elements_Manager {
 	}
 
 	public function ajax_save_builder() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+        if ( ! qazana()->editor->verify_request_nonce() ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -172,7 +173,7 @@ class Elements_Manager {
 			$status = DB::STATUS_DRAFT;
 		}
 
-        	if ( ! empty( $_POST['save_state'] ) && $_POST['save_state'] === 'delete' ) {
+        if ( ! empty( $_POST['save_state'] ) && $_POST['save_state'] === 'delete' ) {
 			$save_state = 'delete';
 		} else {
 			$save_state = 'save';

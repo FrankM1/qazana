@@ -6,19 +6,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Widgets_Manager {
-	/**
+
+    /**
 	 * @var Widget_Base[]
 	 */
 	private $_widget_types = null;
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	 */
     public function __construct() {
-
         add_action( 'qazana/includes', [ $this, 'require_files' ] );
-
         add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
         add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
     }
 
+	/**
+	 * @since 1.0.0
+	 * @access private
+	*/
     private function _init_widgets() {
 
         $this->_widget_types = [];
@@ -26,7 +33,6 @@ class Widgets_Manager {
         $build_widgets_filename = [
             'common',
 
-            'accordion',
             'alert',
             'audio',
             'button',
@@ -47,10 +53,8 @@ class Widgets_Manager {
             'sidebar',
             'social-icons',
             'spacer',
-            'tabs',
             'testimonial',
             'text-editor',
-			'toggle',
             'tooltip',
             'video',
         ];
@@ -82,9 +86,7 @@ class Widgets_Manager {
                 qazana()->widget_loader->locate_widget( $widget_filename .'.php', true );
             }
 
-            $widget_instance = new $class_name();
-
-            $this->register_widget_type( $widget_instance );
+            $this->register_widget_type( new $class_name );
         }
 
         $this->_register_wp_widgets();
@@ -92,6 +94,10 @@ class Widgets_Manager {
 		do_action( 'qazana/widgets/widgets_registered', $this );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access private
+	 */
     private function _register_wp_widgets() {
 
         global $wp_widget_factory;
@@ -105,7 +111,7 @@ class Widgets_Manager {
         /**
          * Allow override of allowed widgets
          *
-         * @since 0.6.5
+         * @since 1.0.0
          *
          * @param array $allowed_widgets.
          */
@@ -113,7 +119,7 @@ class Widgets_Manager {
 		$black_list = apply_filters( 'qazana/widgets/black_list', $blacklist );
 
         foreach ( $wp_widget_factory->widgets as $widget_class => $widget_obj ) {
-			
+	
     		if ( in_array( $widget_class, $black_list ) ) {
     			continue;
     		}
@@ -123,6 +129,10 @@ class Widgets_Manager {
         }
     }
 
+    /**
+	 * @since 1.0.0
+	 * @access public
+	 */
     public function require_files() {
 
         $default_files = [];
@@ -149,6 +159,10 @@ class Widgets_Manager {
 
     }
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function register_widget_type( Widget_Base $widget ) {
 		if ( is_null( $this->_widget_types ) ) {
 			$this->_init_widgets();
@@ -161,6 +175,10 @@ class Widgets_Manager {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function unregister_widget_type( $name ) {
 		if ( ! isset( $this->_widget_types[ $name ] ) ) {
 			return false;
@@ -171,6 +189,10 @@ class Widgets_Manager {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_widget_types( $widget_name = null ) {
 		if ( is_null( $this->_widget_types ) ) {
 			$this->_init_widgets();
@@ -186,6 +208,10 @@ class Widgets_Manager {
 		return $this->_widget_types;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function get_widget_types_config() {
 		$config = [];
 
@@ -200,8 +226,13 @@ class Widgets_Manager {
 		return $config;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function ajax_render_widget() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+
+        if ( ! qazana()->editor->verify_request_nonce() ) {
 			wp_send_json_error( new \WP_Error( 'token_expired' ) );
 		}
 
@@ -228,6 +259,7 @@ class Widgets_Manager {
 		// Start buffering
 		ob_start();
 
+        /** @var Widget_Base $widget */
 		$widget = qazana()->elements_manager->create_element_instance( $data );
 
 		if ( ! $widget ) {
@@ -247,8 +279,13 @@ class Widgets_Manager {
 		);
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function ajax_get_wp_widget_form() {
-		if ( empty( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'qazana-editing' ) ) {
+
+        if ( qazana()->editor->verify_request_nonce() ) {
 			die;
 		}
 
@@ -281,12 +318,20 @@ class Widgets_Manager {
 		wp_send_json_success( $widget_obj->get_form() );
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @access public
+	*/
 	public function render_widgets_content() {
 		foreach ( $this->get_widget_types() as $widget ) {
 			$widget->print_template();
 		}
 	}
 
+	/**
+	 * @since 1.3.0
+	 * @access public
+	*/
 	public function get_widgets_frontend_settings_keys() {
 		$keys = [];
 
@@ -299,5 +344,61 @@ class Widgets_Manager {
 		}
 
 		return $keys;
+    }
+
+    /**
+	 * Retrieve inline editing configuration.
+	 *
+	 * Returns general inline editing configurations like toolbar types etc.
+	 *
+	 * @access public
+	 * @since 1.3.0
+	 *
+	 * @return array {
+	 *     Inline editing configuration.
+	 *
+	 *     @type array $toolbar {
+	 *         Toolbar types and the actions each toolbar includes.
+	 *         Note: Wysiwyg controls uses the advanced toolbar, textarea controls
+	 *         uses the basic toolbar and text controls has no toolbar.
+	 *
+	 *         @type array $basic    Basic actions included in the edit tool.
+	 *         @type array $advanced Advanced actions included in the edit tool.
+	 *     }
+	 * }
+	 */
+	public function get_inline_editing_config() {
+		$basic_tools = [
+			'bold',
+			'underline',
+			'italic',
+		];
+
+		$advanced_tools = array_merge( $basic_tools, [
+			'createlink',
+			'unlink',
+			'h1' => [
+				'h1',
+				'h2',
+				'h3',
+				'h4',
+				'h5',
+				'h6',
+				'p',
+				'blockquote',
+				'pre',
+			],
+			'list' => [
+				'insertOrderedList',
+				'insertUnorderedList',
+			],
+		] );
+
+		return [
+			'toolbar' => [
+				'basic' => $basic_tools,
+				'advanced' => $advanced_tools,
+			],
+		];
 	}
 }

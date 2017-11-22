@@ -140,6 +140,17 @@ abstract class Controls_Stack {
 	 */
 	public function get_id() {
 		return $this->_id;
+    }
+
+    /**
+	 * Retrieve the generic ID as integer.
+	 *
+	 * @access public
+	 *
+	 * @return string The converted ID.
+	 */
+	public function get_id_int() {
+		return hexdec( $this->_id );
 	}
 
 	/**
@@ -333,7 +344,7 @@ abstract class Controls_Stack {
 				if ( ! empty( $args['section'] ) || ! empty( $args['tab'] ) ) {
 					_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) .'`.', '1.0.0' );
 				}
-	
+
 				$args = array_replace_recursive( $target_section_args, $args );
 
 				if ( null !== $target_tab ) {
@@ -379,11 +390,12 @@ abstract class Controls_Stack {
 	 * @param string $control_id Control ID.
 	 * @param array  $args       Control arguments. Only the new fields you want
 	 *                           to update.
-	 *
+	 * @param array  $options    Optional. Some additional options.
+     *
 	 * @return bool
 	 */
-	public function update_control( $control_id, array $args ) {
-		return qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args );
+	public function update_control( $control_id, array $args, array $options = [] ) {
+		return qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args, $options );
 	}
 	/**
 	 * Retrieve position information.
@@ -677,7 +689,7 @@ abstract class Controls_Stack {
 			$id_suffix = self::RESPONSIVE_DESKTOP === $device_name ? '' : '_' . $device_name;
 
 			if ( ! empty( $options['overwrite'] ) ) {
-				$this->update_control( $id . $id_suffix, $control_args );
+				$this->update_control( $id . $id_suffix, $control_args, [ 'recursive' => ! empty( $options['overwrite_recursive'] ) ] );
 			} else {
 				$this->add_control( $id . $id_suffix, $control_args, $options );
 			}
@@ -696,8 +708,8 @@ abstract class Controls_Stack {
 	 * @param string $id   Responsive control ID.
 	 * @param array  $args Responsive control arguments.
 	 */
-	final public function update_responsive_control( $id, array $args ) {
-		$this->add_responsive_control( $id, $args, [ 'overwrite' => true ] );
+	final public function update_responsive_control( $id, array $args, $recursive = false ) {
+		$this->add_responsive_control( $id, $args, [ 'overwrite' => true, 'overwrite_recursive' => $recursive ] );
 	}
 
 	/**
@@ -987,7 +999,7 @@ abstract class Controls_Stack {
 		$this->add_control( $section_id, $args );
 
 		if ( null !== $this->_current_section ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`', $this->_current_section['section'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_section['section'] ) ); // XSS ok.
 		}
 
 		$this->_current_section = $this->get_section_args( $section_id );
@@ -1043,7 +1055,7 @@ abstract class Controls_Stack {
 	 */
 	public function start_controls_tabs( $tabs_id ) {
 		if ( null !== $this->_current_tab ) {
-			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`', $this->_current_tab['tabs_wrapper'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_tab['tabs_wrapper'] ) ); // XSS ok.
 		}
 
 		$this->add_control(
@@ -1093,7 +1105,7 @@ abstract class Controls_Stack {
 	 */
 	public function start_controls_tab( $tab_id, $args ) {
 		if ( ! empty( $this->_current_tab['inner_tab'] ) ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`', $this->_current_tab['inner_tab'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_tab['inner_tab'] ) ); // XSS ok.
 		}
 
 		$args['type'] = Controls_Manager::TAB;
@@ -1148,7 +1160,7 @@ abstract class Controls_Stack {
 	 */
 	final public function start_injection( array $position ) {
 		if ( $this->injection_point ) {
-			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`).' );
+			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_name() .'`.' );
 		}
 
 		$this->injection_point = $this->get_position_info( $position );

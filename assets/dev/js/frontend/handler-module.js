@@ -6,14 +6,20 @@ HandlerModule = ViewModule.extend( {
 
 	onElementChange: null,
 
+	onEditSettingsChange: null,
+
 	onGeneralSettingsChange: null,
 
 	onPageSettingsChange: null,
 
+	isEdit: null,
+
 	__construct: function( settings ) {
 		this.$element  = settings.$element;
 
-		if ( qazanaFrontend.isEditMode() ) {
+		this.isEdit = this.$element.hasClass( 'qazana-element-edit-mode' );
+
+		if ( this.isEdit ) {
 			this.addEditorListener();
 		}
 	},
@@ -49,7 +55,17 @@ HandlerModule = ViewModule.extend( {
 					return;
 				}
 
-				self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
+				self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
+			}, qazana.channels.editor );
+		}
+
+		if ( self.onEditSettingsChange ) {
+			qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change:editSettings', function( changedModel, view ) {
+				if ( view.model.cid !== self.getModelCID() ) {
+					return;
+				}
+
+				self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
 			}, qazana.channels.editor );
 		}
 
@@ -122,17 +138,17 @@ HandlerModule = ViewModule.extend( {
 
 		}
 
-		return self.getItems( elementSettings, setting );
+		return this.getItems( elementSettings, setting );
 	},
 
 	getEditSettings: function( setting ) {
-		if ( ! qazanaFrontend.isEditMode() ) {
-			return {};
+		var attributes = {};
+
+		if ( this.isEdit ) {
+			attributes = qazanaFrontend.config.elements.editSettings[ this.getModelCID() ].attributes;
 		}
 
-		var editSettings = qazanaFrontend.config.elements.editSettings[ this.getModelCID() ];
-
-		return this.getItems( editSettings.attributes, setting );
+		return this.getItems( attributes, setting );
 	}
 } );
 

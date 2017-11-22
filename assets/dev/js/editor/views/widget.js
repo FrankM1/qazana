@@ -26,6 +26,19 @@ WidgetView = BaseElementView.extend( {
 		return events;
 	},
 
+	behaviors: function() {
+		var behaviors = BaseElementView.prototype.behaviors.apply( this, arguments );
+
+		_.extend( behaviors, {
+			InlineEditing: {
+				behaviorClass: require( 'qazana-behaviors/inline-editing' ),
+				inlineEditingClass: 'qazana-inline-editing'
+			}
+		} );
+
+		return qazana.hooks.applyFilters( 'elements/widget/behaviors', behaviors, this );
+	},
+
 	initialize: function() {
 		BaseElementView.prototype.initialize.apply( this, arguments );
 
@@ -80,24 +93,6 @@ WidgetView = BaseElementView.extend( {
 		return this._templateType;
 	},
 
-	onModelBeforeRemoteRender: function() {
-		this.$el.addClass( 'qazana-loading' );
-	},
-
-	onBeforeDestroy: function() {
-		// Remove old style from the DOM.
-		qazana.$previewContents.find( '#qazana-style-' + this.model.cid ).remove();
-	},
-
-	onModelRemoteRender: function() {
-		if ( this.isDestroyed ) {
-			return;
-		}
-
-		this.$el.removeClass( 'qazana-loading' );
-		this.render();
-	},
-
 	getHTMLContent: function( html ) {
 		var htmlCache = this.getEditModel().getHtmlCache();
 
@@ -115,6 +110,41 @@ WidgetView = BaseElementView.extend( {
 		} );
 
 		return this;
+	},
+
+	addInlineEditingAttributes: function( key, toolbar ) {
+		this.addRenderAttribute( key, {
+			'class': 'qazana-inline-editing',
+			'data-qazana-setting-key': key
+		} );
+
+		if ( toolbar ) {
+			this.addRenderAttribute( key, {
+				'data-qazana-inline-editing-toolbar': toolbar
+			} );
+		}
+	},
+
+	getRepeaterSettingKey: function( settingKey, repeaterKey, repeaterItemIndex ) {
+		return [ repeaterKey, repeaterItemIndex, settingKey ].join( '.' );
+	},
+
+	onModelBeforeRemoteRender: function() {
+		this.$el.addClass( 'qazana-loading' );
+	},
+
+	onBeforeDestroy: function() {
+		// Remove old style from the DOM.
+		qazana.$previewContents.find( '#qazana-style-' + this.model.cid ).remove();
+	},
+
+	onModelRemoteRender: function() {
+		if ( this.isDestroyed ) {
+			return;
+		}
+
+		this.$el.removeClass( 'qazana-loading' );
+		this.render();
 	},
 
 	onRender: function() {
