@@ -4,7 +4,7 @@
  * Description: Front-end page builder for WordPress with live drag and drop editing. Build high quality responsive websites and landing pages visually. Any theme, anywhere.
  * Plugin URI: https://qazana.net/
  * Author: RadiumThemes.com
- * Version: 1.2.1
+ * Version: 1.3.1
  * Author URI: https://qazana.net/
  *
  * Text Domain: qazana
@@ -25,7 +25,7 @@
  * Description: The most advanced frontend drag & drop page builder. Create high-end, pixel perfect websites at record speeds. Any theme, any page, any design.
  * Plugin URI: https://elementor.com/
  * Author: Elementor.com
- * Version: 0.10.2
+ * Version: 1.3.1
  * Author URI: https://elementor.com/
  *
  * Elementor is free software: you can redistribute it and/or modify
