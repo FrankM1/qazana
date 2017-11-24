@@ -1,6 +1,6 @@
 <?php
 
-class Elementor_Test_Base extends WP_UnitTestCase {
+class Qazana_Test_Base extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();

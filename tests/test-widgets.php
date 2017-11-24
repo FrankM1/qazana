@@ -1,6 +1,6 @@
 <?php
 
-class Elementor_Test_Widgets extends WP_UnitTestCase {
+class Qazana_Test_Widgets extends WP_UnitTestCase {
 
 	public function test_getInstance() {
 		$this->assertInstanceOf( '\Qazana\Widgets_Manager', qazana()->widgets_manager );
