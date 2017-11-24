@@ -2,7 +2,7 @@
 namespace Qazana\Admin\System\Info;
 
 use Qazana\Admin\System\Info\Classes\Abstracts\Base_Reporter;
-use Qazana\System_Info\Helpers\Model_Helper;
+use Qazana\System\Info\Helpers\Model;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -44,7 +44,7 @@ class Main {
 	 * @return \WP_Error|false|Base_Reporter
 	 */
 	public function create_reporter( array $properties ) {
-		$properties = Model_Helper::prepare_properties( $this->get_settings( 'reporter_properties' ), $properties );
+		$properties = Model::prepare_properties( $this->get_settings( 'reporter_properties' ), $properties );
 
 		$reporter_class = $properties['class_name'] ? $properties['class_name'] : $this->get_reporter_class( $properties['name'] );
 

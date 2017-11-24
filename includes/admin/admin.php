@@ -5,7 +5,7 @@
  */
 namespace Qazana\Admin;
 
-use Qazana\System_Info;
+use Qazana\System\Info;
 use Qazana\Utils;
 use Qazana\Admin\Tracker;
 

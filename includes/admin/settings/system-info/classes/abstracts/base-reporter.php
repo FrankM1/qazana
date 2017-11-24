@@ -1,7 +1,7 @@
 <?php
 namespace Qazana\Admin\System\Info\Classes\Abstracts;
 
-use Qazana\System_Info\Helpers\Model_Helper;
+use Qazana\System\Info\Helpers\Model;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -49,7 +49,7 @@ abstract class Base_Reporter {
 	}
 
 	final public static function filter_possible_properties( $properties ) {
-		return Model_Helper::filter_possible_properties( self::get_properties_keys(), $properties );
+		return Model::filter_possible_properties( self::get_properties_keys(), $properties );
 	}
 
 	final public function set_properties( $key, $value = null ) {
