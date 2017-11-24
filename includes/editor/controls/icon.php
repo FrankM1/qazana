@@ -101,7 +101,7 @@ class Control_Icon extends Base_Data_Control {
 	 */
 	protected function get_default_settings() {
 		return [
-			'icons' => $this->get_icons(),
+			'options' => $this->get_icons(),
 		];
 	}
 
@@ -123,9 +123,7 @@ class Control_Icon extends Base_Data_Control {
 				<select class="qazana-control-icon" data-setting="{{ data.name }}" data-placeholder="<?php _e( 'Select an Icon', 'qazana' ); ?>">
                     <option value=""><?php _e( 'Select an Icon', 'qazana' ); ?></option>
                     <?php foreach ( $this->get_icons() as $group => $iconset ) {
-
-							if ( empty( $iconset ) ) continue; ?>
-
+                        if ( empty( $iconset ) ) continue; ?>
                         <optgroup label="<?php echo ucfirst( str_replace( "-", " ", $group) ); ?>">
                             <?php foreach ( $iconset as $key => $value ) { ?>
         					<option value="<?php echo $key; ?>"><?php echo ucfirst( str_replace( "-", " ", $value) ); ?></option>

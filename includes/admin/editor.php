@@ -12,7 +12,6 @@ class Editor {
      * Admin constructor.
      */
     public function __construct() {
-
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 

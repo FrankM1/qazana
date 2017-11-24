@@ -29,15 +29,15 @@ add_action( 'admin_init',              'qazana_admin_init' );
 add_action( 'admin_head',              'qazana_admin_head' );
 add_action( 'admin_notices',           'qazana_admin_notices' );
 
+// Initialize the admin area
+add_action( 'qazana_init', 'qazana_admin' );
+
 // Hook on to admin_init
 add_action( 'qazana_admin_init', 'qazana_setup_updater', 999 );
 
 add_action( 'qazana_admin_init', 'qazana_register_admin_style' );
 add_action( 'qazana_admin_init', 'qazana_register_admin_settings' );
 add_action( 'qazana_admin_init', 'qazana_do_activation_redirect', 1 );
-
-// Initialize the admin area
-add_action( 'qazana_init', 'qazana_admin' );
 
 // Activation
 add_action( 'qazana_activation', 'qazana_delete_rewrite_rules' );

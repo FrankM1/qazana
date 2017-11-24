@@ -3,17 +3,18 @@
 /**
  * Main Qazana Admin Class.
  */
-namespace Qazana;
+namespace Qazana\Admin;
 
 use Qazana\System_Info;
 use Qazana\Utils;
+use Qazana\Admin\Tracker;
 
 /**
  * Loads Qazana plugin admin area.
  *
  * @since 1.0.0
  */
-class Admin {
+class Run {
 
     /** Directory *************************************************************/
 
@@ -119,17 +120,6 @@ class Admin {
         if ( Utils::is_ajax() ) {
             require_once( qazana()->includes_dir . 'managers/image.php' );
         }
-
-        require( $this->admin_dir . 'upgrades.php' );
-        require( $this->admin_dir . 'editor.php' );
-        require( $this->admin_dir . 'api.php' );
-
-        require( $this->admin_dir . 'settings/controls.php' );
-        require( $this->admin_dir . 'settings/validations.php' );
-        require( $this->admin_dir . 'settings/panel.php' );
-        require( $this->admin_dir . 'settings/tools.php' );
-        require( $this->admin_dir . 'settings/system-info/main.php' );
-        require( $this->admin_dir . 'tracker.php' );
     }
 
     /**
@@ -176,7 +166,7 @@ class Admin {
         add_action( 'network_admin_menu',  array( $this, 'network_admin_menus' ) );
 
         /* Dependencies ******************************************************/
-        add_action( 'qazana_admin_loaded',  array( $this, 'init_classes' ) );
+       add_action( 'qazana_admin_loaded',  array( $this, 'init_classes' ) );
 
         // Allow plugins to modify these actions
         do_action_ref_array( 'qazana_admin_loaded', array( &$this ) );
@@ -190,16 +180,16 @@ class Admin {
      * @return [type] [description]
      */
     public function init_classes() {
-        $this->editor_admin   = new Admin\Post\Editor();
-        $this->settings_panel = new Admin\Settings\Panel();
-        $this->settings_tools = new Admin\Settings\Tools();
+        $this->editor_admin   = new Post\Editor();
+        $this->settings_panel = new Settings\Panel();
+        $this->settings_tools = new Settings\Tools();
 
-        $this->admin_api      = new Admin\Api();
-        $this->admin_tracker  = new Admin\Tracker();
-        $this->system_info    = new Admin\System\Info\Main();
+        $this->admin_api      = new Api();
+        $this->admin_tracker  = new Tracker();
+        $this->system_info    = new System\Info\Main();
 
         if ( Utils::is_ajax() ) {
-            new Images_Manager();
+            new \Qazana\Images_Manager();
         }
     }
 
@@ -553,7 +543,7 @@ class Admin {
             'qazana-admin-feedback',
             'QazanaAdminFeedbackArgs',
             [
-                'is_tracker_opted_in' => Admin\Tracker::is_allow_track(),
+                'is_tracker_opted_in' => Tracker::is_allow_track(),
                 'i18n' => [
                     'submit_n_deactivate' => __( 'Submit & Deactivate', 'qazana' ),
                     'skip_n_deactivate' => __( 'Skip & Deactivate', 'qazana' ),

@@ -334,7 +334,7 @@ class Plugin {
         require_once $this->includes_dir . 'core/settings/page/manager.php';
         require_once $this->includes_dir . 'core/settings/page/model.php';
 
-        // require_once( $this->includes_dir . 'core/settings/settings.php' );
+        // require_once $this->includes_dir . 'core/settings/settings.php' );
         require_once $this->includes_dir . 'core/settings/page/template.php';
 
         require_once $this->includes_dir . 'common/functions.php';
@@ -385,9 +385,19 @@ class Plugin {
         require_once $this->includes_dir . 'core/filters.php';
 
         if ( is_admin() ) {
-            require_once $this->includes_dir . 'admin/admin.php';
             require_once $this->includes_dir . 'admin/functions.php';
             require_once $this->includes_dir . 'admin/actions.php';
+
+            require_once $this->includes_dir . 'admin/api.php';
+            require_once $this->includes_dir . 'admin/editor.php';
+            require_once $this->includes_dir . 'admin/settings/controls.php';
+            require_once $this->includes_dir . 'admin/settings/panel.php';
+            require_once $this->includes_dir . 'admin/settings/system-info/main.php';
+            require_once $this->includes_dir . 'admin/settings/tools.php';
+            require_once $this->includes_dir . 'admin/settings/validations.php';
+            require_once $this->includes_dir . 'admin/tracker.php';
+            require_once $this->includes_dir . 'admin/upgrades.php';
+            require_once $this->includes_dir . 'admin/admin.php';
         }
 
         if ( defined( 'WP_CLI' ) ) {

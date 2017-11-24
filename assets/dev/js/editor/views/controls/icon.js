@@ -10,7 +10,7 @@ ControlIconView = ControlBaseItemView.extend( {
 	},
 
 	filterIcons: function() {
-		var icons = this.model.get( 'icons' ),
+		var icons = this.model.get( 'options' ),
 			include = this.model.get( 'include' ),
 			exclude = this.model.get( 'exclude' );
 
@@ -21,7 +21,7 @@ ControlIconView = ControlBaseItemView.extend( {
 				filteredIcons[ iconKey ] = icons[ iconKey ];
 			} );
 
-			this.model.set( 'icons', filteredIcons );
+			this.model.set( 'options', filteredIcons );
 			return;
 		}
 
@@ -52,7 +52,7 @@ ControlIconView = ControlBaseItemView.extend( {
 		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
 
 		helpers.getIconsByGroups = _.bind( function( groups ) {
-			var icons = this.model.get( 'icons' ),
+			var icons = this.model.get( 'options' ),
 				filterIcons = {};
 
 			_.each( icons, function( iconType, iconName ) {

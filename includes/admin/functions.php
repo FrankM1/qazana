@@ -12,7 +12,7 @@
   * @uses Qazana_Admin
   */
  function qazana_admin() {
-     qazana()->admin = new Qazana\Admin();
+     qazana()->admin = new Qazana\Admin\Run();
  }
 
 /**
@@ -42,7 +42,7 @@ function qazana_do_activation_redirect() {
     delete_transient( '_qazana_activation_redirect' );
 
     // Bail if activating from network, or bulk
-    if ( is_network_admin( ) || isset( $_GET['activate-multi'] ) ) {
+    if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
         return;
     }
 

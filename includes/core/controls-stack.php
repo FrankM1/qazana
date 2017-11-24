@@ -435,7 +435,7 @@ abstract class Controls_Stack {
 			'control' === $position['type'] && in_array( $position['at'], [ 'start', 'end' ] ) ||
 			'section' === $position['type'] && in_array( $position['at'], [ 'before', 'after' ] )
 		) {
-			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Invalid position arguments. Use `before` / `after` for control or `start` / `end` for section.', '1.7.0' );
+			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Invalid position arguments. Use `before` / `after` for control or `start` / `end` for section.', '1.3.0' );
 
 			return false;
 		}
@@ -1143,11 +1143,11 @@ abstract class Controls_Stack {
 	 * be injected to a specific position in the stack, until you stop the
 	 * injection using `end_injection()` method.
 	 *
-	 * @since 1.7.0
+	 * @since 1.3.0
 	 * @access public
 	 *
 	 * @param array $position {
-	 *     The position where to srart the injection.
+	 *     The position where to start the injection.
 	 *
 	 *     @type string $type Injection type, either `control` or `section`.
 	 *                        Default is `control`.
@@ -1173,7 +1173,7 @@ abstract class Controls_Stack {
 	 * it stops adding new controls to this point and continue to add controls
 	 * to the regular position in the stack.
 	 *
-	 * @since 1.7.0
+	 * @since 1.3.0
 	 * @access public
 	 */
 	final public function end_injection() {
