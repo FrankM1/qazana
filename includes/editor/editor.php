@@ -763,12 +763,8 @@ class Editor {
         $this->init_editor_templates();
 
 		foreach ( $this->_editor_templates as $editor_template ) {
-			if ( file_exists( $editor_template ) ) {
-				include $editor_template;
-			} else {
-				echo $editor_template;
-			}
-		}
+			echo $editor_template;
+        }
 
 		do_action( 'qazana/editor/footer' );
 	}
