@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+		<link rel="pingback" href="http://example.org/xmlrpc.php">
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Post title 34 &#8211; Test Blog</title>
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Test Blog &raquo; Feed" href="http://example.org/?feed=rss2" />
+<link rel="alternate" type="application/rss+xml" title="Test Blog &raquo; Comments Feed" href="http://example.org/?feed=comments-rss2" />
+<link rel="alternate" type="application/rss+xml" title="Test Blog &raquo; Post title 34 Comments Feed" href="http://example.org/?feed=rss2&#038;p=8" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"wpemoji":"http:\/\/example.org\/wp-includes\/js\/wp-emoji.js?ver=4.9-alpha-40870-src","twemoji":"http:\/\/example.org\/wp-includes\/js\/twemoji.js?ver=4.9-alpha-40870-src"}};
+			( function( window, document, settings ) {
+	var src, ready, ii, tests;
+
+	/*
+	 * Create a canvas element for testing native browser support
+	 * of emoji.
+	 */
+	var canvas = document.createElement( 'canvas' );
+	var context = canvas.getContext && canvas.getContext( '2d' );
+
+	/**
+	 * Detect if the browser supports rendering emoji or flag emoji. Flag emoji are a single glyph
+	 * made of two characters, so some browsers (notably, Firefox OS X) don't support them.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param type {String} Whether to test for support of "flag" or "emoji4" emoji.
+	 * @return {Boolean} True if the browser can render emoji, false if it cannot.
+	 */
+	function browserSupportsEmoji( type ) {
+		var stringFromCharCode = String.fromCharCode,
+			flag, flag2, emoji41, emoji42;
+
+		if ( ! context || ! context.fillText ) {
+			return false;
+		}
+
+		// Cleanup from previous test.
+		context.clearRect( 0, 0, canvas.width, canvas.height );
+
+		/*
+		 * Chrome on OS X added native emoji rendering in M41. Unfortunately,
+		 * it doesn't work when the font is bolder than 500 weight. So, we
+		 * check for bold rendering support to avoid invisible emoji in Chrome.
+		 */
+		context.textBaseline = 'top';
+		context.font = '600 32px Arial';
+
+		switch ( type ) {
+			case 'flag':
+				/*
+				 * Test for UN flag compatibility. This is the least supported of the letter locale flags,
+				 * so gives us an easy test for full support.
+				 *
+				 * To test for support, we try to render it, and compare the rendering to how it would look if
+				 * the browser doesn't render it correctly ([U] + [N]).
+				 */
+				context.fillText( stringFromCharCode( 55356, 56826, 55356, 56819 ), 0, 0 );
+				flag = canvas.toDataURL();
+
+				context.clearRect( 0, 0, canvas.width, canvas.height );
+
+				// Add a zero width space between the characters, to force rendering as characters.
+				context.fillText( stringFromCharCode( 55356, 56826, 8203, 55356, 56819 ), 0, 0 );
+				flag2 = canvas.toDataURL();
+
+				if ( flag !== flag2 ) {
+					return false;
+				}
+
+				/*
+				 * Test for English flag compatibility. England is a country in the United Kingdom, it
+				 * does not have a two letter locale code but rather an five letter sub-division code.
+				 *
+				 * To test for support, we try to render it, and compare the rendering to how it would look if
+				 * the browser doesn't render it correctly (black flag emoji + [G] + [B] + [E] + [N] + [G]).
+				 */
+				// Cleanup from previous test.
+				context.clearRect( 0, 0, canvas.width, canvas.height );
+
+				context.fillText( stringFromCharCode( 55356, 57332, 56128, 56423, 56128, 56418, 56128, 56421, 56128, 56430, 56128, 56423, 56128, 56447 ), 0, 0 );
+				flag = canvas.toDataURL();
+
+				context.clearRect( 0, 0, canvas.width, canvas.height );
+
+				context.fillText( stringFromCharCode( 55356, 57332, 8203, 56128, 56423, 8203, 56128, 56418, 8203, 56128, 56421, 8203, 56128, 56430, 8203, 56128, 56423, 8203, 56128, 56447 ), 0, 0 );
+				flag2 = canvas.toDataURL();
+
+				return flag !== flag2;
+			case 'emoji4':
+				/*
+				 * Emoji 5 has faries of all genders.
+				 *
+				 * To test for support, try to render a new emoji (fairy, male), then compares
+				 * it to how it would look if the browser doesn't render it correctly
+				 * (fairy + male sign).
+				 */
+				context.fillText( stringFromCharCode( 55358, 56794, 8205, 9794, 65039 ), 0, 0 );
+				emoji41 = canvas.toDataURL();
+
+				context.clearRect( 0, 0, canvas.width, canvas.height );
+
+				context.fillText( stringFromCharCode( 55358, 56794, 8203, 9794, 65039 ), 0, 0 );
+				emoji42 = canvas.toDataURL();
+
+				return emoji41 !== emoji42;
+		}
+
+		return false;
+	}
+
+	function addScript( src ) {
+		var script = document.createElement( 'script' );
+
+		script.src = src;
+		script.defer = script.type = 'text/javascript';
+		document.getElementsByTagName( 'head' )[0].appendChild( script );
+	}
+
+	tests = Array( 'flag', 'emoji4' );
+
+	settings.supports = {
+		everything: true,
+		everythingExceptFlag: true
+	};
+
+	for( ii = 0; ii < tests.length; ii++ ) {
+		settings.supports[ tests[ ii ] ] = browserSupportsEmoji( tests[ ii ] );
+
+		settings.supports.everything = settings.supports.everything && settings.supports[ tests[ ii ] ];
+
+		if ( 'flag' !== tests[ ii ] ) {
+			settings.supports.everythingExceptFlag = settings.supports.everythingExceptFlag && settings.supports[ tests[ ii ] ];
+		}
+	}
+
+	settings.supports.everythingExceptFlag = settings.supports.everythingExceptFlag && ! settings.supports.flag;
+
+	settings.DOMReady = false;
+	settings.readyCallback = function() {
+		settings.DOMReady = true;
+	};
+
+	if ( ! settings.supports.everything ) {
+		ready = function() {
+			settings.readyCallback();
+		};
+
+		if ( document.addEventListener ) {
+			document.addEventListener( 'DOMContentLoaded', ready, false );
+			window.addEventListener( 'load', ready, false );
+		} else {
+			window.attachEvent( 'onload', ready );
+			document.attachEvent( 'onreadystatechange', function() {
+				if ( 'complete' === document.readyState ) {
+					settings.readyCallback();
+				}
+			} );
+		}
+
+		src = settings.source || {};
+
+		if ( src.concatemoji ) {
+			addScript( src.concatemoji );
+		} else if ( src.wpemoji && src.twemoji ) {
+			addScript( src.twemoji );
+			addScript( src.wpemoji );
+		}
+	}
+
+} )( window, document, window._wpemojiSettings );
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='buttons-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/css/buttons.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='mediaelement-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/mediaelement/mediaelementplayer.min.css?ver=2.22.0' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-mediaelement-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/mediaelement/wp-mediaelement.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='media-views-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/css/media-views.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='imgareaselect-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/imgareaselect/imgareaselect.css?ver=0.9.8' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-color-picker-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-admin/css/color-picker.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='media-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-admin/css/media.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/font-awesome/css/font-awesome.css?ver=4.7.0' type='text/css' media='all' />
+<link rel='stylesheet' id='select2-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/select2/css/select2.css?ver=4.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='qazana-icons-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/eicons/css/qazana-icons.css?ver=1.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-auth-check-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-includes/css/wp-auth-check.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<link rel='stylesheet' id='google-font-roboto-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A300%2C400%2C500%2C700&#038;ver=1.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='jquery-simple-dtpicker-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/jquery-simple-dtpicker/jquery.simple-dtpicker.css?ver=1.12.0' type='text/css' media='all' />
+<link rel='stylesheet' id='qazana-editor-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/css/editor.css?ver=1.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='twentysixteen-fonts-css'  href='https://fonts.googleapis.com/css?family=Merriweather%3A400%2C700%2C900%2C400italic%2C700italic%2C900italic%7CMontserrat%3A400%2C700%7CInconsolata%3A400&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/genericons/genericons.css?ver=3.4.1' type='text/css' media='all' />
+<link rel='stylesheet' id='twentysixteen-style-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/style.css?ver=4.9-alpha-40870-src' type='text/css' media='all' />
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/css/ie.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/css/ie8.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/css/ie7.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<link rel='stylesheet' id='qazana-animations-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/css/animations.min.css?ver=1.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='qazana-frontend-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/css/frontend.css?ver=1.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='editor-preview-css'  href='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/css/editor-preview.css?ver=1.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/jquery-migrate.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+jQuery.holdReady( true );
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"7","time":"1511554981","secure":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/utils.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/plupload/plupload.full.min.js?ver=2.1.8'></script>
+<!--[if lt IE 8]>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/json2.js?ver=2015-05-03'></script>
+<![endif]-->
+<!--[if lt IE 9]>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel='https://api.w.org/' href='http://example.org/?rest_route=/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://example.org/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="file:///srv/www/wordpress-develop/public_html/src/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.9-alpha-40870-src" />
+<link rel="canonical" href="http://example.org/?p=8" />
+<link rel='shortlink' href='http://example.org/?p=8' />
+<link rel="alternate" type="application/json+oembed" href="http://example.org/?rest_route=%2Foembed%2F1.0%2Fembed&#038;url=http%3A%2F%2Fexample.org%2F%3Fp%3D8" />
+<link rel="alternate" type="text/xml+oembed" href="http://example.org/?rest_route=%2Foembed%2F1.0%2Fembed&#038;url=http%3A%2F%2Fexample.org%2F%3Fp%3D8&#038;format=xml" />
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		</head>
+
+<body class="post-template-default single single-post postid-8 single-format-standard logged-in">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					
+											<p class="site-title"><a href="http://example.org/" rel="home">Test Blog</a></p>
+											<p class="site-description">Just another WordPress site</p>
+									</div><!-- .site-branding -->
+
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+		
+			
+			
+<article id="post-8" class="post-8 post type-post status-publish format-standard hentry category-uncategorized">
+	<header class="entry-header">
+		
+		<h2 class="entry-title"><a href="http://example.org/?p=8" rel="bookmark">Post title 34</a></h2>	</header><!-- .entry-header -->
+
+				<div class="entry-summary">
+				<p>Post excerpt 34</p>
+			</div><!-- .entry-summary -->
+		
+	
+	<div class="entry-content">
+		<div id="qazana" class="qazana qazana-edit-mode"></div>	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><img alt='' src='http://1.gravatar.com/avatar/42a0e09219ced252388e6196c56c242c?s=49&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/42a0e09219ced252388e6196c56c242c?s=98&amp;d=mm&amp;r=g 2x' class='avatar avatar-49 photo' height='49' width='49' /><span class="screen-reader-text">Author </span> <a class="url fn n" href="http://example.org/?author=12">User 33</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="http://example.org/?p=8" rel="bookmark"><time class="entry-date published updated" datetime="2017-11-24T20:23:01+00:00">November 24, 2017</time></a></span>		<span class="edit-link"><a class="post-edit-link" href="file:///srv/www/wordpress-develop/public_html/src/wp-admin/post.php?post=8&#038;action=edit">Edit<span class="screen-reader-text"> "Post title 34"</span></a></span>	</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+		</main><!-- .site-main -->
+	</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="search-2" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="http://example.org/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</section>		<section id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widget-title">Recent Posts</h2>		<ul>
+					<li>
+				<a href="http://example.org/?p=8">Post title 34</a>
+						</li>
+				</ul>
+		</section>		<section id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2><ul id="recentcomments"></ul></section><section id="archives-2" class="widget widget_archive"><h2 class="widget-title">Archives</h2>		<ul>
+			<li><a href='http://example.org/?m=201711'>November 2017</a></li>
+		</ul>
+		</section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">Categories</h2>		<ul>
+	<li class="cat-item cat-item-1"><a href="http://example.org/?cat=1" >Uncategorized</a>
+</li>
+		</ul>
+</section><section id="meta-2" class="widget widget_meta"><h2 class="widget-title">Meta</h2>			<ul>
+			<li><a href="file:///srv/www/wordpress-develop/public_html/src/wp-admin/">Site Admin</a></li>			<li><a href="http://example.org/wp-login.php?action=logout&#038;_wpnonce=cc435298bd">Log out</a></li>
+			<li><a href="http://example.org/?feed=rss2">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://example.org/?feed=comments-rss2">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="http://example.org/" rel="home">Test Blog</a></span>
+				<a href="https://wordpress.org/">Proudly powered by WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+var heartbeatSettings = {"ajaxurl":"\/wp-admin\/admin-ajax.php","nonce":"294dcccead"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/heartbeat.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var authcheckL10n = {"beforeunload":"Your session has expired. You can log in again from this page or go to the login page.","interval":"180"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/wp-auth-check.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/core.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/widget.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/mouse.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/sortable.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/resizable.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/underscore.js?ver=1.8.3'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/backbone.js?ver=1.2.3'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/backbone/backbone.marionette.js?ver=2.4.5'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/backbone/backbone.radio.js?ver=1.0.4'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/perfect-scrollbar/perfect-scrollbar.jquery.js?ver=0.6.12'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/nprogress/nprogress.js?ver=0.2.0'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/tipsy/tipsy.js?ver=1.0.0'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/imagesloaded.min.js?ver=3.2.0'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/select2/js/select2.js?ver=4.0.2'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/jquery-simple-dtpicker/jquery.simple-dtpicker.js?ver=1.12.0'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/jquery/ui/position.js?ver=1.11.4'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/dialog/dialog.js?ver=3.2.5'></script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js?ver=1.2.5'></script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ext-language_tools.js?ver=1.2.5'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/jquery-hover-intent/jquery-hover-intent.js?ver=1.0.0'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/js/editor.js?ver=1.8.5'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/shortcode.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/wp-util.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/wp-backbone.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpMediaModelsL10n = {"settings":{"ajaxurl":"\/wp-admin\/admin-ajax.php","post":{"id":0}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/media-models.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pluploadL10n = {"queue_limit_exceeded":"You have attempted to queue too many files.","file_exceeds_size_limit":"%s exceeds the maximum upload size for this site.","zero_byte_file":"This file is empty. Please try another.","invalid_filetype":"Sorry, this file type is not permitted for security reasons.","not_an_image":"This file is not an image. Please try another.","image_memory_exceeded":"Memory exceeded. Please try another smaller file.","image_dimensions_exceeded":"This is larger than the maximum size. Please try another.","default_error":"An error occurred in the upload. Please try again later.","missing_upload_url":"There was a configuration error. Please contact the server administrator.","upload_limit_exceeded":"You may only upload 1 file.","http_error":"HTTP error.","upload_failed":"Upload failed.","big_upload_failed":"Please try uploading this file with the %1$sbrowser uploader%2$s.","big_upload_queued":"%s exceeds the maximum upload size for the multi-file uploader when used in your browser.","io_error":"IO error.","security_error":"Security error.","file_cancelled":"File canceled.","upload_stopped":"Upload stopped.","dismiss":"Dismiss","crunching":"Crunching\u2026","deleted":"moved to the trash.","error_uploading":"\u201c%s\u201d has failed to upload."};
+var _wpPluploadSettings = {"defaults":{"runtimes":"html5,flash,silverlight,html4","file_data_name":"async-upload","url":"\/wp-admin\/async-upload.php","flash_swf_url":"http:\/\/example.org\/wp-includes\/js\/plupload\/plupload.flash.swf","silverlight_xap_url":"http:\/\/example.org\/wp-includes\/js\/plupload\/plupload.silverlight.xap","filters":{"max_file_size":"2097152b","mime_types":[{"extensions":"jpg,jpeg,jpe,gif,png,bmp,tiff,tif,ico,asf,asx,wmv,wmx,wm,avi,divx,flv,mov,qt,mpeg,mpg,mpe,mp4,m4v,ogv,webm,mkv,3gp,3gpp,3g2,3gp2,txt,asc,c,cc,h,srt,csv,tsv,ics,rtx,css,htm,html,vtt,dfxp,mp3,m4a,m4b,ra,ram,wav,ogg,oga,mid,midi,wma,wax,mka,rtf,js,pdf,class,tar,zip,gz,gzip,rar,7z,psd,xcf,doc,pot,pps,ppt,wri,xla,xls,xlt,xlw,mdb,mpp,docx,docm,dotx,dotm,xlsx,xlsm,xlsb,xltx,xltm,xlam,pptx,pptm,ppsx,ppsm,potx,potm,ppam,sldx,sldm,onetoc,onetoc2,onetmp,onepkg,oxps,xps,odt,odp,ods,odg,odc,odb,odf,wp,wpd,key,numbers,pages"}]},"multipart_params":{"action":"upload-attachment","_wpnonce":"d8b1923e20"}},"browser":{"mobile":false,"supported":true},"limitExceeded":false};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/plupload/wp-plupload.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var mejsL10n = {"language":"en-US","strings":{"Close":"Close","Fullscreen":"Fullscreen","Turn off Fullscreen":"Turn off Fullscreen","Go Fullscreen":"Go Fullscreen","Download File":"Download File","Download Video":"Download Video","Play":"Play","Pause":"Pause","Captions\/Subtitles":"Captions\/Subtitles","None":"None","Time Slider":"Time Slider","Skip back %1 seconds":"Skip back %1 seconds","Video Player":"Video Player","Audio Player":"Audio Player","Volume Slider":"Volume Slider","Mute Toggle":"Mute Toggle","Unmute":"Unmute","Mute":"Mute","Use Up\/Down Arrow keys to increase or decrease volume.":"Use Up\/Down Arrow keys to increase or decrease volume.","Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds."}};
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=2.22.0'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/mediaelement/wp-mediaelement.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpMediaViewsL10n = {"url":"URL","addMedia":"Add Media","search":"Search","select":"Select","cancel":"Cancel","update":"Update","replace":"Replace","remove":"Remove","back":"Back","selected":"%d selected","dragInfo":"Drag and drop to reorder media files.","uploadFilesTitle":"Upload Files","uploadImagesTitle":"Upload Images","mediaLibraryTitle":"Media Library","insertMediaTitle":"Insert Media","createNewGallery":"Create a new gallery","createNewPlaylist":"Create a new playlist","createNewVideoPlaylist":"Create a new video playlist","returnToLibrary":"\u2190 Return to library","allMediaItems":"All media items","allDates":"All dates","noItemsFound":"No items found.","insertIntoPost":"Insert into post","unattached":"Unattached","trash":"Trash","uploadedToThisPost":"Uploaded to this post","warnDelete":"You are about to permanently delete this item from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkDelete":"You are about to permanently delete these items from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkTrash":"You are about to trash these items.\n  'Cancel' to stop, 'OK' to delete.","bulkSelect":"Bulk Select","cancelSelection":"Cancel Selection","trashSelected":"Trash Selected","untrashSelected":"Untrash Selected","deleteSelected":"Delete Selected","deletePermanently":"Delete Permanently","apply":"Apply","filterByDate":"Filter by date","filterByType":"Filter by type","searchMediaLabel":"Search Media","searchMediaPlaceholder":"Search media items...","noMedia":"No media files found.","attachmentDetails":"Attachment Details","insertFromUrlTitle":"Insert from URL","setFeaturedImageTitle":"Featured Image","setFeaturedImage":"Set featured image","createGalleryTitle":"Create Gallery","editGalleryTitle":"Edit Gallery","cancelGalleryTitle":"\u2190 Cancel Gallery","insertGallery":"Insert gallery","updateGallery":"Update gallery","addToGallery":"Add to gallery","addToGalleryTitle":"Add to Gallery","reverseOrder":"Reverse order","imageDetailsTitle":"Image Details","imageReplaceTitle":"Replace Image","imageDetailsCancel":"Cancel Edit","editImage":"Edit Image","chooseImage":"Choose Image","selectAndCrop":"Select and Crop","skipCropping":"Skip Cropping","cropImage":"Crop Image","cropYourImage":"Crop your image","cropping":"Cropping\u2026","suggestedDimensions":"Suggested image dimensions: %1$s by %2$s pixels.","cropError":"There has been an error cropping your image.","audioDetailsTitle":"Audio Details","audioReplaceTitle":"Replace Audio","audioAddSourceTitle":"Add Audio Source","audioDetailsCancel":"Cancel Edit","videoDetailsTitle":"Video Details","videoReplaceTitle":"Replace Video","videoAddSourceTitle":"Add Video Source","videoDetailsCancel":"Cancel Edit","videoSelectPosterImageTitle":"Select Poster Image","videoAddTrackTitle":"Add Subtitles","playlistDragInfo":"Drag and drop to reorder tracks.","createPlaylistTitle":"Create Audio Playlist","editPlaylistTitle":"Edit Audio Playlist","cancelPlaylistTitle":"\u2190 Cancel Audio Playlist","insertPlaylist":"Insert audio playlist","updatePlaylist":"Update audio playlist","addToPlaylist":"Add to audio playlist","addToPlaylistTitle":"Add to Audio Playlist","videoPlaylistDragInfo":"Drag and drop to reorder videos.","createVideoPlaylistTitle":"Create Video Playlist","editVideoPlaylistTitle":"Edit Video Playlist","cancelVideoPlaylistTitle":"\u2190 Cancel Video Playlist","insertVideoPlaylist":"Insert video playlist","updateVideoPlaylist":"Update video playlist","addToVideoPlaylist":"Add to video playlist","addToVideoPlaylistTitle":"Add to Video Playlist","settings":{"tabs":[],"tabUrl":"http:\/\/example.org\/wp-admin\/media-upload.php?chromeless=1","mimeTypes":{"image":"Images","audio":"Audio","video":"Video"},"captions":true,"nonce":{"sendToEditor":"2cf2f36d2f","wpRestApi":"99a88d3618"},"post":{"id":4,"nonce":"8fb9d902de","featuredImageId":-1},"defaultProps":{"link":"none","align":"","size":""},"attachmentCounts":{"audio":1,"video":1},"oEmbedProxyUrl":"http:\/\/example.org\/?rest_route=\/oembed\/1.0\/proxy","embedExts":["mp3","ogg","m4a","wav","mp4","m4v","webm","ogv","flv"],"embedMimes":{"mp3":"audio\/mpeg","ogg":"audio\/ogg","m4a":"audio\/mpeg","wav":"audio\/wav","mp4":"video\/mp4","m4v":"video\/mp4","webm":"video\/webm","ogv":"video\/ogg","flv":"video\/x-flv"},"contentWidth":840,"months":[],"mediaTrash":0}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/media-views.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/media-editor.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/media-audiovideo.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/imgareaselect/jquery.imgareaselect.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-admin/js/image-edit.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/js/skip-link-focus-fix.js?ver=20160816'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/comment-reply.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-content/themes/twentysixteen/js/functions.js?ver=20160816'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/waypoints/waypoints-for-editor.js?ver=4.0.2'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/swiper/swiper.jquery.js?ver=3.4.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var qazanaFrontendConfig = {"isEditMode":"1","settings":{"page":[],"general":{"qazana_global_image_lightbox":"yes","qazana_enable_lightbox_in_editor":"yes"}},"is_rtl":"","post":{"id":8,"title":"Post title 34","excerpt":"Post excerpt 34"},"urls":{"assets":"file:\/\/\/srv\/www\/global-wp-content\/public_html\/plugins\/qazana\/assets\/"},"elements":{"data":{},"editSettings":{},"keys":{"section":["background_background","background_video_link","shape_divider_top","shape_divider_top_negative","shape_divider_bottom","shape_divider_bottom_negative","animation","animation_delay"],"column":["animation","animation_delay"],"common":["_animation","_animation_delay"],"heading":["_animation","_animation_delay"],"image":["_animation","_animation_delay"],"text-editor":["drop_cap","_animation","_animation_delay"],"video":["lightbox","aspect_ratio","lightbox_content_position","lightbox_content_animation","_animation","_animation_delay"],"button":["_animation","_animation_delay"],"divider":["_animation","_animation_delay"],"spacer":["_animation","_animation_delay"],"image-box":["_animation","_animation_delay"],"google_maps":["_animation","_animation_delay"],"icon":["_animation","_animation_delay"],"icon-box":["_animation","_animation_delay"],"image-gallery":["_animation","_animation_delay"],"image-carousel":["slides_to_show","slides_to_show_tablet","slides_to_show_mobile","slides_to_scroll","navigation","pause_on_hover","autoplay","autoplay_speed","infinite","effect","speed","direction","_animation","_animation_delay"],"icon-list":["_animation","_animation_delay"],"counter":["_animation","_animation_delay"],"progress":["_animation","_animation_delay"],"testimonial":["_animation","_animation_delay"],"tabs":["_animation","_animation_delay"],"accordion":["_animation","_animation_delay"],"toggle":["_animation","_animation_delay"],"social-icons":["_animation","_animation_delay"],"alert":["_animation","_animation_delay"],"audio":["_animation","_animation_delay"],"shortcode":["_animation","_animation_delay"],"html":["_animation","_animation_delay"],"menu-anchor":["_animation","_animation_delay"],"sidebar":["_animation","_animation_delay"]}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/js/frontend.js?ver=1.8.5'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/slick/slick.js?ver=1.6.0'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/jquery-numerator/jquery-numerator.js?ver=0.2.1'></script>
+<script type='text/javascript' src='file:///srv/www/global-wp-content/public_html/plugins/qazana/assets/lib/inline-editor/js/inline-editor.js?ver=4.9-alpha-40870-src'></script>
+<script type='text/javascript' src='file:///srv/www/wordpress-develop/public_html/src/wp-includes/js/wp-embed.js?ver=4.9-alpha-40870-src'></script>
+<script src="file:///srv/www/global-wp-content/public_html/plugins/qazana/tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.js"></script><script src="file:///srv/www/global-wp-content/public_html/plugins/qazana/tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.ext.js"></script><script src="file:///srv/www/global-wp-content/public_html/plugins/qazana/tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.drag-n-drop.js"></script></body>
+</html>
