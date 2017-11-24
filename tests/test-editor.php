@@ -22,18 +22,36 @@ class Qazana_Test_Editor extends WP_UnitTestCase {
 		ob_end_clean();
 
 		$scripts = [
-			'jquery-ui-sortable',
-			'jquery-ui-resizable',
 			'backbone-marionette',
 			'backbone-radio',
-			'perfect-scrollbar',
-			'nprogress',
-			'tipsy',
-			'imagesloaded',
 			'heartbeat',
+			'imagesloaded',
+			'jquery-ui-resizable',
+			'jquery-ui-sortable',
+			'nprogress',
+			'perfect-scrollbar',
 			'qazana-dialog',
+			'tipsy',
+            'ace',
+            'ace-language-tools',
+            'backbone-marionette',
+            'backbone-radio',
+            'heartbeat',
+            'hoverIntent',
+            'imagesloaded',
+            'jquery-easing',
+            'jquery-fonticonpicker',
+            'jquery-select2',
+            'jquery-simple-dtpicker',
+            'jquery-ui-resizable',
+            'jquery-ui-sortable',
+            'nprogress',
+            'perfect-scrollbar',
+            'qazana-dialog',
+            'tipsy',
+            'wp-auth-check',
 
-			'qazana-editor',
+            'qazana-editor',
 		];
 
 		foreach ( $scripts as $script ) {
@@ -45,11 +63,16 @@ class Qazana_Test_Editor extends WP_UnitTestCase {
 		qazana()->editor->enqueue_styles();
 
 		$styles = [
-			'font-awesome',
-			'select2',
-			'qazana-icons',
 			'wp-auth-check',
-			'google-font-roboto',
+            'font-awesome',
+            'google-font-noto-sans',
+            'google-font-roboto',
+            'jquery-fonticonpicker',
+            'jquery-fonticonpicker-grey',
+            'jquery-simple-dtpicker',
+            'qazana-icons',
+            'select2',
+            'wp-auth-check',
 
 			'qazana-editor',
 		];

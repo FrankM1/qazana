@@ -8,7 +8,7 @@ class Qazana_Test_Base extends WP_UnitTestCase {
 		wp_set_current_user( $this->factory->user->create( [ 'role' => 'administrator' ] ) );
 
 		// Make sure the main class is running
-		qazana();
+		\Qazana\Plugin::instance();
 
 		// Run fake actions
 		do_action( 'init' );
@@ -20,20 +20,20 @@ class Qazana_Test_Base extends WP_UnitTestCase {
 	}
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Plugin', qazana() );
+		$this->assertInstanceOf( '\Qazana\Plugin', \Qazana\Plugin::$instance );
 	}
 
 	/**
 	 * @expectedIncorrectUsage __clone
 	 */
 	public function test_Clone() {
-		$obj_cloned = clone qazana();
+		$obj_cloned = clone \Qazana\Plugin::$instance;
 	}
 
 	/**
 	 * @expectedIncorrectUsage __wakeup
 	 */
 	public function test_Wakeup() {
-		unserialize( serialize( qazana() ) );
+		unserialize( serialize( \Qazana\Plugin::$instance ) );
 	}
 }

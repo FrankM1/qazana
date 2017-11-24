@@ -13,7 +13,7 @@ class Qazana_Test_Qunit_Preview extends WP_UnitTestCase {
 
 		$GLOBALS['post'] = $this->factory->post->create_and_get();
 
-		add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'builder' );
+		add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'qazana' );
 
 		query_posts( [ 'p' => $GLOBALS['post']->ID, 'post_type' => 'any' ] );
 
@@ -32,7 +32,7 @@ class Qazana_Test_Qunit_Preview extends WP_UnitTestCase {
 
 		$html = ob_get_clean();
 
-		$plugin_path = str_replace( '\\', '/', ELEMENTOR_PATH );
+		$plugin_path = str_replace( '\\', '/', qazana()->plugin_dir );
 		$quint = '' .
 		'<script src="file://' . $plugin_path . 'tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.js"></script>' .
 		'<script src="file://' . $plugin_path . 'tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.ext.js"></script>' .
