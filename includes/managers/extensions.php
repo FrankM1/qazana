@@ -3,6 +3,8 @@ namespace Qazana\Extensions;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use Qazana\Admin\Settings\Panel ;
+
 final class Manager {
 
     /**
@@ -57,7 +59,9 @@ final class Manager {
         $this->load_extensions();
 
         add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_widgets' ] );
-        add_action( 'qazana/admin/settings/after',          [ $this, 'register_admin_fields' ], 21 ); // After the base settings
+        if ( is_admin() ) {
+			//add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
+        }
 	}
 
     /**
@@ -320,7 +324,7 @@ final class Manager {
 		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ]->get_config() : false;
 	}
 
-    public function register_admin_fields() {
+    public function register_admin_fields( Panel $settings ) {
 
         foreach ( $this->extensions as $extension_id => $extension_data ) {
 
@@ -330,44 +334,26 @@ final class Manager {
                 continue;
             }
 
-            // $this->add_extension_settings_section( $extension_id );
+            $extension_data = $this->get_extension_data( $extension_id );
+
+            $section = 'qazana_extension ' . $extension_id . '_editor_section';
+            $field_id = 'qazana_extension_' . $extension_data['name'];
+
+            $settings->add_section( Panel::TAB_INTEGRATIONS, $section, [
+                'callback' => function() use ($extension_data) { },
+                'fields' => [
+                    $field_id => [
+                        'label' => $extension_data['title'],
+                        'field_args' => [
+                            'type' => 'checkbox',
+                            'sub_desc' => __( 'Enable Extension', 'qazana' ),
+                            'std' => $extension_data['default_activation'],
+                            'value' => true,
+                        ],
+                    ],
+                ],
+            ] );
 		}
-
     }
 
-    public function add_extension_settings_section( $extension_id ) {
-
-        $extension_data = $this->get_extension_data( $extension_id );
-
-        $section = 'qazana_extension ' . $extension_id . '_editor_section';
-
-        $controls_class_name = 'Qazana\Settings_Controls';
-
-        add_settings_section(
-            $section,
-            $extension_data['title'],
-            function () {
-                // echo $extension_data['description'];
-            },
-            qazana()->slug
-        );
-
-        $field_id = 'qazana_extension_' . $extension_data['name'];
-
-        add_settings_field(
-            $field_id,
-            __( 'Enable Extension', 'qazana' ),
-            [ $controls_class_name, 'render' ],
-            qazana()->slug,
-            $section,
-            [
-                'id' => $field_id,
-                'type' => 'checkbox',
-                'value' => true,
-                'std' => $extension_data['default_activation'],
-            ]
-        );
-
-        register_setting( qazana()->slug, $field_id );
-    }
 }
