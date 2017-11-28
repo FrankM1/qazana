@@ -59,6 +59,7 @@ final class Manager {
         $this->load_extensions();
 
         add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_widgets' ] );
+
         if ( is_admin() ) {
 			//add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
         }
