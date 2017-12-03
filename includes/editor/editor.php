@@ -58,8 +58,8 @@ class Editor {
 	 * @var array
 	 */
 	private $_localize_settings = [];
-	 
-    	/**
+
+    /**
 	 * Init.
 	 *
 	 * Initialize Qazana editor. Fired by `init` action.
