@@ -10,6 +10,16 @@ if ( !defined( 'ABSPATH' ) ) {
  * Main class plugin
  */
 class Plugin {
+
+    /**
+     * Current plugin object.
+     *
+     * @since 1.0.0
+     *
+     * @var object
+     */
+	public static $instance = null;
+
     /**
      * Current version of the plugin.
      *
