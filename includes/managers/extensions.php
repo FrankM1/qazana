@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use Qazana\Admin\Settings\Panel ;
+use Qazana\Admin\Settings\Panel;
 
 final class Manager {
 
@@ -51,7 +51,7 @@ final class Manager {
 
         $this->load_extensions();
 
-        add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_widgets' ] );
+        add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_all_widgets' ] );
 
         if ( is_admin() ) {
 			// add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
@@ -148,45 +148,23 @@ final class Manager {
                     $this->load_extension( $dependency );
                 }
             }
-
         }
-
     }
 
     /**
-     * Load a single Extension for use
+     * Load a single Extension for use - bypasses activation settings
      *
      * @since       1.3.0
      * @return      void
      */
     public function load_extension( $extension_id ) {
 
-        $widget_manager = qazana()->widgets_manager;
-
         if ( ! is_object( $this->get_extensions( $extension_id ) ) ) {
             foreach ( $this->path as $folder ) {
                 $this->register_extension( $extension_id, $folder );
             }
         }
-
-        if ( ! empty( $this->get_skins( $extension_id ) ) ) {
-            $this->load_skins( $this->get_name( $extension_id ), $this->get_skins( $extension_id ) );
-        }
-
-        if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
-            $this->register_widgets( $this->get_name( $extension_id ), $this->get_widgets( $extension_id ) );
-
-            foreach ( $this->get_widgets( $this->get_name( $extension_id ) ) as $widget ) {
-
-                $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
-
-                if ( ! class_exists( $class_name ) ) {
-                    return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
-                }
-
-                $widget_manager->register_widget_type( new $class_name() );
-            }
-        }
+        // $this->load_extension_widgets( $extension_id );
     }
 
     /**
@@ -268,6 +246,7 @@ final class Manager {
             }
 
             if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
+                qazana_write_log( $file ); 
                 require_once $file;
             }
         }
@@ -281,39 +260,50 @@ final class Manager {
 
     }
 
-	public function load_widgets() {
+	public function load_all_widgets() {
 
         if ( empty( $this->extensions ) ) {
             return;
         }
 
-		$widget_manager = qazana()->widgets_manager;
-
         foreach ( $this->extensions as $extension_id => $extension_object ) {
 
 			$extension_data = $extension_object->get_config();
 
-            if ( ! $this->is_extension_active( $this->get_name( $extension_id ) ) ) {
+            if ( ! $this->is_extension_active( $extension_id ) ) {
                 continue;
             }
 
-            if ( ! empty( $this->get_skins( $extension_id ) ) ) {
-                $this->load_skins( $this->get_name( $extension_id ), $this->get_skins( $extension_id ) );
-            }
+            $this->load_extension_widgets( $extension_id );
+        }
+    }
 
-            if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
-                $this->register_widgets( $this->get_name( $extension_id ), $this->get_widgets( $extension_id ) );
+    /**
+     * Load a single Extension's widgets
+     *
+     * @since       1.3.0
+     * @return      void
+     */
+    public function load_extension_widgets( $extension_id ) {
 
-        		foreach ( $this->get_widgets( $this->get_name( $extension_id ) ) as $widget ) {
+        $widget_manager = qazana()->widgets_manager;
 
-                    $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+        if ( ! empty( $this->get_skins( $extension_id ) ) ) {
+            $this->load_skins( $extension_id, $this->get_skins( $extension_id ) );
+        }
 
-                    if ( ! class_exists( $class_name ) ) {
-                        return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
-                    }
+        if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
+            $this->register_widgets( $extension_id, $this->get_widgets( $extension_id ) );
 
-                    $widget_manager->register_widget_type( new $class_name() );
-        		}
+            foreach ( $this->get_widgets( $extension_id ) as $widget ) {
+
+                $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+
+                if ( ! class_exists( $class_name ) ) {
+                    return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
+                }
+
+                $widget_manager->register_widget_type( new $class_name() );
             }
         }
     }
@@ -333,7 +323,7 @@ final class Manager {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        if ( $extension_data['widgets'] ) {
+        if ( ! empty( $extension_data['widgets'] ) ) {
 			return $extension_data['widgets'];
 		}
 
@@ -344,7 +334,7 @@ final class Manager {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        if ( $extension_data['skins'] ) {
+        if ( ! empty( $extension_data['skins'] ) ) {
 			return $extension_data['skins'];
 		}
 
@@ -388,8 +378,8 @@ final class Manager {
 
             $extension_data = $this->get_extension_data( $extension_id );
 
-            $section = 'qazana_extension ' . $extension_id . '_editor_section';
-            $field_id = 'qazana_extension_' . $extension_data['name'];
+            $section    = 'qazana_extension ' . $extension_id . '_editor_section';
+            $field_id   = 'qazana_extension_' . $extension_data['name'];
 
             $settings->add_section( Panel::TAB_INTEGRATIONS, $section, [
                 'callback' => function() use ($extension_data) { },
