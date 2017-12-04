@@ -27,18 +27,11 @@ final class Manager {
 	private $reflection;
 
     /**
-     * Extension data
-     *
-     * @var array
-     */
-	private $extensions = null;
-
-    /**
      * Extension instances are stored here
      *
      * @var array
      */
-    private $instance = array();
+	private $extensions = array();
 
     /**
      * __construct
@@ -61,7 +54,7 @@ final class Manager {
         add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_widgets' ] );
 
         if ( is_admin() ) {
-			//add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
+			// add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
         }
 	}
 
@@ -107,7 +100,7 @@ final class Manager {
       * @access      public
       * @return      void
       */
-    public function register_extension( $folder, $path, $single= null ) {
+    public function register_extension( $folder, $path ) {
 
         $path = trailingslashit( $path );
 
@@ -131,14 +124,8 @@ final class Manager {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
             }
 
-            if ( $single ) {
-                qazana_write_log( $this->extensions[ $folder ] );
-            }
-
             $this->extensions[ $folder ] = new $extension_class( $this );
         }
-
-        
     }
 
     /**
@@ -162,8 +149,6 @@ final class Manager {
                 }
             }
 
-            $this->instance[ $extension_id ] = $extension_instance;
-
         }
 
     }
@@ -176,27 +161,27 @@ final class Manager {
      */
     public function load_extension( $extension_id ) {
 
-        if ( ! is_object( $this->get_extensions( $extension_id )  ) ) {
+        $widget_manager = qazana()->widgets_manager;
+
+        if ( ! is_object( $this->get_extensions( $extension_id ) ) ) {
             foreach ( $this->path as $folder ) {
-                $this->register_extension( $extension_id, $folder, true );
+                $this->register_extension( $extension_id, $folder );
             }
         }
 
-        $extension_data = $this->instance[$extension_id];
-
-        if ( ! empty( $extension_data['skins'] ) ) {
-            $this->load_skins( $extension_data['name'], $extension_data['skins'] );
+        if ( ! empty( $this->get_skins( $extension_id ) ) ) {
+            $this->load_skins( $this->get_name( $extension_id ), $this->get_skins( $extension_id ) );
         }
 
-        if ( ! empty( $extension_data['widgets'] ) ) {
-            $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
+        if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
+            $this->register_widgets( $this->get_name( $extension_id ), $this->get_widgets( $extension_id ) );
 
-            foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
+            foreach ( $this->get_widgets( $this->get_name( $extension_id ) ) as $widget ) {
 
                 $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
 
                 if ( ! class_exists( $class_name ) ) {
-                    return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
+                    return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
                 }
 
                 $widget_manager->register_widget_type( new $class_name() );
@@ -298,39 +283,50 @@ final class Manager {
 
 	public function load_widgets() {
 
-        if ( empty( $this->instance ) ) {
+        if ( empty( $this->extensions ) ) {
             return;
         }
 
 		$widget_manager = qazana()->widgets_manager;
 
-        foreach ( $this->instance as $extension => $extension_object ) {
+        foreach ( $this->extensions as $extension_id => $extension_object ) {
 
 			$extension_data = $extension_object->get_config();
 
-            if ( ! $this->is_extension_active( $extension_data['name'] ) ) {
+            if ( ! $this->is_extension_active( $this->get_name( $extension_id ) ) ) {
                 continue;
             }
 
-            if ( ! empty( $extension_data['skins'] ) ) {
-                $this->load_skins( $extension_data['name'], $extension_data['skins'] );
+            if ( ! empty( $this->get_skins( $extension_id ) ) ) {
+                $this->load_skins( $this->get_name( $extension_id ), $this->get_skins( $extension_id ) );
             }
 
-            if ( ! empty( $extension_data['widgets'] ) ) {
-                $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
+            if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
+                $this->register_widgets( $this->get_name( $extension_id ), $this->get_widgets( $extension_id ) );
 
-        		foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
+        		foreach ( $this->get_widgets( $this->get_name( $extension_id ) ) as $widget ) {
 
                     $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
 
                     if ( ! class_exists( $class_name ) ) {
-                        return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
+                        return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
                     }
 
                     $widget_manager->register_widget_type( new $class_name() );
         		}
             }
         }
+    }
+
+    public function get_name( $extension_id ) {
+
+        $extension_data = $this->get_extension_data( $extension_id );
+
+        if ( $extension_data['name'] ) {
+			return $extension_data['name'];
+		}
+
+		return false;
 	}
 
 	public function get_widgets( $extension_id ) {
@@ -341,18 +337,18 @@ final class Manager {
 			return $extension_data['widgets'];
 		}
 
-		return $this->extensions;
+		return false;
 	}
 
     public function get_skins( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        if ( $extension_data['widgets'] ) {
-			return $extension_data['widgets'];
+        if ( $extension_data['skins'] ) {
+			return $extension_data['skins'];
 		}
 
-		return $this->extensions;
+		return false;
 	}
 
 	public function is_extension_active( $extension_id ) {
@@ -377,7 +373,7 @@ final class Manager {
 	}
 
 	public function get_extension_data( $extension_id ) {
-		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ]->get_config() : false;
+		return isset( $this->extensions[ $extension_id ] ) ? $this->extensions[ $extension_id ]->get_config() : false;
 	}
 
     public function register_admin_fields( Panel $settings ) {
