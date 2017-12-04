@@ -43,20 +43,24 @@ final class Manager {
 
         $this->reflection = new \ReflectionClass( $this );
 
+        $this->register_all_extensions();
+        $this->load_extensions();
+
+        add_action( 'qazana/loaded',                     [ $this, 'load_extensions' ] );
+        add_action( 'qazana/widgets/widgets_registered', [ $this, 'load_widgets' ] );
+
+        if ( is_admin() ) {
+			// add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
+        }
+    }
+
+    public function register_all_extensions() {
         if ( $this->path ) {
             foreach ( $this->path as $folder ) {
                 $this->register_extensions( $folder );
             }
         }
-
-        $this->load_extensions();
-
-        add_action( 'qazana/widgets/widgets_registered',    [ $this, 'load_all_widgets' ] );
-
-        if ( is_admin() ) {
-			// add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
-        }
-	}
+    }
 
     /**
      * Register Extensions for use
@@ -246,7 +250,6 @@ final class Manager {
             }
 
             if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
-                qazana_write_log( $file ); 
                 require_once $file;
             }
         }
@@ -260,7 +263,7 @@ final class Manager {
 
     }
 
-	public function load_all_widgets() {
+	public function load_widgets() {
 
         if ( empty( $this->extensions ) ) {
             return;
