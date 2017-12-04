@@ -107,7 +107,7 @@ final class Manager {
       * @access      public
       * @return      void
       */
-    public function register_extension( $folder, $path ) {
+    public function register_extension( $folder, $path, $single= null ) {
 
         $path = trailingslashit( $path );
 
@@ -123,7 +123,7 @@ final class Manager {
          * @param string                    extension class file path
          * @param string $extension_class   extension class name
          */
-        $class_file = "$path/$folder/extension_{$folder}.php";
+        $class_file = "$path$folder/extension_{$folder}.php";
 
         if ( $file = $this->loader->locate_widget( "$folder/extension_{$folder}.php", true ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
 
@@ -131,8 +131,14 @@ final class Manager {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
             }
 
+            if ( $single ) {
+                qazana_write_log( $this->extensions[ $folder ] );
+            }
+
             $this->extensions[ $folder ] = new $extension_class( $this );
         }
+
+        
     }
 
     /**
@@ -143,13 +149,59 @@ final class Manager {
      */
     public function load_extensions() {
 
-        if ( empty( $this->extensions ) )
+        if ( empty( $this->extensions ) ) {
             return;
-
-        foreach ( $this->extensions as $extension_id => $extension_data ) {
-            $this->instance[ $extension_id ] = $extension_data;
         }
 
+        foreach ( $this->extensions as $extension_id => $extension_instance ) {
+
+            if ( ! empty( $extension_instance->get_config()['dependencies'] ) ) {
+                $dependencies = $extension_instance->get_config()['dependencies'];
+                foreach ( $dependencies as $dependency ) {
+                    $this->load_extension( $dependency );
+                }
+            }
+
+            $this->instance[ $extension_id ] = $extension_instance;
+
+        }
+
+    }
+
+    /**
+     * Load a single Extension for use
+     *
+     * @since       1.3.0
+     * @return      void
+     */
+    public function load_extension( $extension_id ) {
+
+        if ( ! is_object( $this->get_extensions( $extension_id )  ) ) {
+            foreach ( $this->path as $folder ) {
+                $this->register_extension( $extension_id, $folder, true );
+            }
+        }
+
+        $extension_data = $this->instance[$extension_id];
+
+        if ( ! empty( $extension_data['skins'] ) ) {
+            $this->load_skins( $extension_data['name'], $extension_data['skins'] );
+        }
+
+        if ( ! empty( $extension_data['widgets'] ) ) {
+            $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
+
+            foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
+
+                $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+
+                if ( ! class_exists( $class_name ) ) {
+                    return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
+                }
+
+                $widget_manager->register_widget_type( new $class_name() );
+            }
+        }
     }
 
     /**
@@ -167,8 +219,9 @@ final class Manager {
          */
         do_action( "qazana/extensions/widgets/before", $this );
 
-        if ( empty( $widgets ) )
+        if ( empty( $widgets ) ) {
             return;
+        }
 
         foreach ( $widgets as $widget ) {
 
@@ -209,8 +262,9 @@ final class Manager {
          */
         do_action( "qazana/extensions/skins/before", $this );
 
-        if ( empty( $skins ) )
+        if ( empty( $skins ) ) {
             return;
+        }
 
         foreach ( $skins as $skin ) {
 
@@ -222,7 +276,7 @@ final class Manager {
     			)
     		);
 
-            $class_name = $this->reflection->getNamespaceName() .'\Widgets\\' . ucfirst($extension) . '\Skins\Skin_' . ucfirst($skin);
+            $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . ucfirst( $skin );
 
             if ( class_exists( $class_name ) ) {
                 continue;
@@ -244,8 +298,9 @@ final class Manager {
 
 	public function load_widgets() {
 
-        if ( empty( $this->instance ) )
+        if ( empty( $this->instance ) ) {
             return;
+        }
 
 		$widget_manager = qazana()->widgets_manager;
 
@@ -265,10 +320,10 @@ final class Manager {
                 $this->register_widgets( $extension_data['name'], $extension_data['widgets'] );
 
         		foreach ( $this->get_widgets( $extension_data['name'] ) as $widget ) {
- 
+
                     $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
- 
-                    if( ! class_exists( $class_name ) ) {
+
+                    if ( ! class_exists( $class_name ) ) {
                         return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $extension_data['name'] );
                     }
 
@@ -318,7 +373,7 @@ final class Manager {
 	}
 
 	public function get_extensions( $extension_id = null ) {
-		return isset( $this->instance[ $extension_id ] ) ? $this->instance[ $extension_id ] : $this->instance;
+		return isset( $this->extensions[ $extension_id ] ) ? $this->extensions[ $extension_id ] : $this->extensions;
 	}
 
 	public function get_extension_data( $extension_id ) {
