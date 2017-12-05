@@ -11008,7 +11008,8 @@ WidgetView = BaseElementView.extend( {
         self.$el
 	        .attr( 'data-element_type', editModel.get( 'widgetType' ) + '.' + skinType )
             .removeClass( 'qazana-widget-empty' )
-	        .addClass( 'qazana-widget-' + editModel.get( 'widgetType' ) + ' qazana-widget-can-edit' )
+            .addClass( 'qazana-widget-' + editModel.get( 'widgetType' ) + ' qazana-widget-can-edit' )
+            .addClass( editModel.get( 'widgetType' ) + '-skin-' + skinType )
             .children( '.qazana-widget-empty-icon' )
             .remove();
 

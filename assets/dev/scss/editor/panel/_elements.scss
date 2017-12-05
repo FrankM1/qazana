@@ -13,9 +13,13 @@
 }
 
 #qazana-panel-elements {
-	overflow: hidden;
-	padding: 0 5px;
-
+    overflow: hidden;
+    padding: 0 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 .qazana-element-wrapper {
