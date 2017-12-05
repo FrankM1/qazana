@@ -64,7 +64,11 @@ module.exports = HandleDuplicateBehavior;
 var InlineEditingBehavior;
 
 InlineEditingBehavior = Marionette.Behavior.extend( {
+	editor: null,
+
 	editing: false,
+
+	stayInEditing: false,
 
 	$currentEditingArea: null,
 
@@ -173,7 +177,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			event.preventDefault();
 		} );
 
-		this.$currentEditingArea.on( 'blur', _.bind( this.onInlineEditingBlur, this ) );
+		this.$currentEditingArea.on( 'blur', this.onInlineEditingBlur.bind( this ) );
 	},
 
 	stopEditing: function() {
@@ -188,8 +192,12 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 		 * we need to rerender the area. To prevent multiple renderings, we will render only areas that
 		 * use advanced toolbars.
 		 */
-		if ( 'advanced' === this.$currentEditingArea.data().qazanaInlineEditingToolbar ) {
+		var toolbar = this.$currentEditingArea.data().qazanaInlineEditingToolbar;
+
+		if ( 'advanced' === toolbar ) {
 			this.view.getEditModel().renderRemoteServer();
+		} else if ( ! toolbar ) {
+			this.view.render();
 		}
 	},
 
@@ -217,7 +225,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			var selection = qazanaFrontend.getElements( 'window' ).getSelection(),
 				$focusNode = jQuery( selection.focusNode );
 
-			if ( $focusNode.closest( '.pen-input-wrapper' ).length ) {
+			if ( self.stayInEditing || $focusNode.closest( '.pen-input-wrapper' ).length ) {
 				return;
 			}
 
@@ -225,9 +233,6 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 		}, 20 );
 	},
 
-	onInlineEditingUpdate: function() {
-		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.editor.getContent() );
-	}
 } );
 
 module.exports = InlineEditingBehavior;
