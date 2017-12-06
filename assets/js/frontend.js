@@ -115,7 +115,8 @@ module.exports = ElementsHandler;
 		EventManager = require( 'qazana-utils/hooks' ),
 		Module = require( 'qazana-frontend/handler-module' ),
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
-		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+        YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+        VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
 		CarouselModule = require( 'qazana-frontend/utils/carousel' );
@@ -150,7 +151,8 @@ module.exports = ElementsHandler;
 
 		var initOnReadyComponents = function() {
 			self.utils = {
-				youtube: new YouTubeModule(),
+                youtube: new YouTubeModule(),
+                vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
 				lightbox: new LightboxModule()
 				//carousel: new CarouselModule()
@@ -312,7 +314,7 @@ if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
 
-},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":20,"qazana-frontend/utils/anchors":21,"qazana-frontend/utils/carousel":22,"qazana-frontend/utils/lightbox":23,"qazana-frontend/utils/youtube":24,"qazana-utils/hooks":25,"qazana-utils/hot-keys":26}],3:[function(require,module,exports){
+},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":20,"qazana-frontend/utils/anchors":21,"qazana-frontend/utils/carousel":22,"qazana-frontend/utils/lightbox":23,"qazana-frontend/utils/vimeo":24,"qazana-frontend/utils/youtube":25,"qazana-utils/hooks":26,"qazana-utils/hot-keys":27}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
@@ -469,7 +471,7 @@ HandlerModule = ViewModule.extend( {
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":28}],4:[function(require,module,exports){
+},{"../utils/view-module":29}],4:[function(require,module,exports){
 var TabsModule = require( 'qazana-frontend/handlers/base-tabs' );
 
 module.exports = function( $scope ) {
@@ -1362,7 +1364,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":28}],21:[function(require,module,exports){
+},{"../../utils/view-module":29}],21:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -1431,7 +1433,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":28}],22:[function(require,module,exports){
+},{"../../utils/view-module":29}],22:[function(require,module,exports){
 var addNav = function($scope, $slick, settings) {
     
     $scope = $scope.closest('.qazana-widget-container');
@@ -2033,7 +2035,56 @@ LightboxModule = ViewModule.extend( {
 
 module.exports = LightboxModule;
 
-},{"../../utils/view-module":28}],24:[function(require,module,exports){
+},{"../../utils/view-module":29}],24:[function(require,module,exports){
+var ViewModule = require( '../../utils/view-module' );
+
+module.exports = ViewModule.extend( {
+    getDefaultSettings: function() {
+		return {
+			isInserted: false,
+			APISrc: 'https://f.vimeocdn.com/js/froogaloop2.min.js', // using froogaloop2. New vimeo js api is dead buggy
+			selectors: {
+				firstScript: 'script:first'
+			}
+		};
+	},
+
+	getDefaultElements: function() {
+		return {
+			$firstScript: jQuery( this.getSettings( 'selectors.firstScript' ) )
+		};
+	},
+
+	insertVimeoAPI: function() {
+		this.setSettings( 'isInserted', true );
+		this.elements.$firstScript.before( jQuery( '<script>', { src: this.getSettings( 'APISrc' ) } ) );
+	},
+
+	onVimeoApiReady: function( callback ) {
+		var self = this;
+
+		if ( ! self.getSettings( 'IsInserted' ) ) {
+			self.insertVimeoAPI();
+		}
+
+		if ( window.$f ) {
+			callback( $f );
+		} else {
+			// If not ready check again by timeout..
+			setTimeout( function() {
+				self.onVimeoApiReady( callback );
+			}, 350 );
+		}
+	},
+
+	getVimeoIDFromURL: function( url ) {
+		var videoIDParts = url.match( /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/ );
+		return videoIDParts && videoIDParts[1];
+    }
+    
+} );
+
+},{"../../utils/view-module":29}],25:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -2083,7 +2134,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":28}],25:[function(require,module,exports){
+},{"../../utils/view-module":29}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2342,7 +2393,7 @@ var EventManager = function() {
 
 module.exports = EventManager;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var HotKeys = function() {
 	var hotKeysHandlers = this.hotKeysHandlers = {};
 
@@ -2394,7 +2445,7 @@ var HotKeys = function() {
 
 module.exports = new HotKeys();
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -2586,7 +2637,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -2612,5 +2663,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":27}]},{},[2])
+},{"qazana-utils/module":28}]},{},[2])
 //# sourceMappingURL=frontend.js.map

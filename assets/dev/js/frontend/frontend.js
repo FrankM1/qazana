@@ -4,7 +4,8 @@
 		EventManager = require( 'qazana-utils/hooks' ),
 		Module = require( 'qazana-frontend/handler-module' ),
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
-		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+        YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+        VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
 		CarouselModule = require( 'qazana-frontend/utils/carousel' );
@@ -39,7 +40,8 @@
 
 		var initOnReadyComponents = function() {
 			self.utils = {
-				youtube: new YouTubeModule(),
+                youtube: new YouTubeModule(),
+                vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
 				lightbox: new LightboxModule()
 				//carousel: new CarouselModule()
