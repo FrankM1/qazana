@@ -87,7 +87,7 @@ function qazana_write_log( $log, $type = '1' ) {
 }
 
 /**
- * The main function responsible for returning the one true Video Central Instance
+ * The main function responsible for returning the one true Qazana Instance
  * to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -111,7 +111,7 @@ function qazana() {
 /*
  * Hook Qazana early onto the 'plugins_loaded' action.
  *
- * This gives all other plugins the chance to load before Video Central, to get their
+ * This gives all other plugins the chance to load before Qazana, to get their
  * actions, filters, and overrides setup without Qazana being in the way.
  */
 if ( defined( 'QAZANA_LATE_LOAD' ) ) {
