@@ -220,7 +220,7 @@ class Frontend {
 	/**
 	 * Remove content filter.
 	 *
-	 * When the Qazana generated content rendered, we remove the filter to prevent multiple accuracies. This way we
+	 * When the Qazana generated content is rendered, we remove the filter to prevent multiple accuracies. This way we
 	 * make sure Qazana renders the content only once.
 	 *
 	 * @since 1.3.0
@@ -229,12 +229,22 @@ class Frontend {
 	public function remove_content_filter() {
 		remove_filter( 'the_content', [ $this, 'apply_builder_in_content' ], self::THE_CONTENT_FILTER_PRIORITY );
     }
-  
+
     public function register_scripts() {
 
 		do_action( 'qazana/frontend/before_register_scripts' );
 
-		$suffix = Utils::is_script_debug() ? '' : '.min';
+        $suffix = Utils::is_script_debug() ? '' : '.min';
+
+        wp_register_script(
+			'jquery-swiper',
+			qazana()->core_assets_url . 'lib/swiper/swiper.jquery' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'3.4.2',
+			true
+		);
 
         wp_register_script(
             'waypoints',
@@ -247,10 +257,22 @@ class Frontend {
         );
 
         wp_register_script(
+			'qazana-dialog',
+			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
+			[
+				'jquery-ui-position',
+			],
+			'3.2.5',
+			true
+		);
+
+        wp_register_script(
             'qazana-frontend',
             qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
-				'waypoints',
+                'waypoints',
+                'qazana-dialog',
+				'jquery-swiper',
             ],
             qazana_get_version(),
             true

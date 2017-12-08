@@ -82,15 +82,18 @@ ElementsHandler = function( $ ) {
 		return handlers;
 	};
 
-	this.runReadyTrigger = function( $scope ) {
+    this.runReadyTrigger = function( $scope ) {
+
+        // Initializing the `$scope` as frontend jQuery instance
+		$scope = jQuery( $scope );
+
 		var elementType = $scope.attr( 'data-element_type' );
 
 		if ( ! elementType ) {
 			return;
 		}
 
-		// Initializing the `$scope` as frontend jQuery instance
-		$scope = jQuery( $scope );
+        var elementName = $scope.attr( 'data-element_type' ).split( '.' )[0];
 
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
 
@@ -100,6 +103,7 @@ ElementsHandler = function( $ ) {
 			qazanaFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
 		}
 
+		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementName, $scope, $ );
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 	};
 

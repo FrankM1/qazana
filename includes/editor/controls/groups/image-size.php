@@ -315,9 +315,23 @@ class Group_Control_Image_Size extends Group_Control_Base {
 			if ( ! $has_custom_size ) {
 				$attachment_size = 'full';
 			}
-		}
+        }
+        
+        // TEMP : add handler function
+        if ( function_exists( 'rocket_cdn_attachment_image_src' ) ) {
+            // Remove WP Rocket CDN which cause conflict
+            remove_filter( 'wp_get_attachment_image_src' , 'rocket_cdn_attachment_image_src', PHP_INT_MAX );
+            remove_filter( 'wp_get_attachment_url' , 'rocket_cdn_file', PHP_INT_MAX );
+        }
 
 		$image_src = wp_get_attachment_image_src( $attachment_id, $attachment_size );
+
+        // TEMP : add handler function
+        if ( function_exists( 'rocket_cdn_attachment_image_src' ) ) {
+            // Add WP Rocket CDN
+            add_filter( 'wp_get_attachment_image_src', 'rocket_cdn_attachment_image_src', PHP_INT_MAX );
+            add_filter( 'wp_get_attachment_url', 'rocket_cdn_file', PHP_INT_MAX );
+        }
 
 		return ! empty( $image_src[0] ) ? $image_src[0] : '';
 	}
