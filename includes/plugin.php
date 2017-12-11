@@ -384,8 +384,6 @@ class Plugin {
         // vendor classes
         require_once $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php';
 
-        require_once $this->includes_dir . 'widgets/base/element-base.php';
-        require_once $this->includes_dir . 'widgets/base/widget-base.php';
         require_once $this->includes_dir . 'widgets/shared/carousel.php';
         require_once $this->includes_dir . 'widgets/shared/position.php';
 

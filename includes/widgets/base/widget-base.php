@@ -21,7 +21,7 @@ abstract class Widget_Base extends Element_Base {
 	 *
 	 * Used in cases where the widget has no content. When widgets uses only
 	 * skins to display dynamic content generated on the server. For example the
-	 * posts widget in Elemenrot Pro. Default is true, the widget has content
+	 * posts widget. Default is true, the widget has content
 	 * template.
 	 *
 	 * @access protected

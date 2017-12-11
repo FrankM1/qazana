@@ -316,7 +316,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 				$attachment_size = 'full';
 			}
         }
-        
+
         // TEMP : add handler function
         if ( function_exists( 'rocket_cdn_attachment_image_src' ) ) {
             // Remove WP Rocket CDN which cause conflict

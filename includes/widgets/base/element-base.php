@@ -109,7 +109,7 @@ abstract class Element_Base extends Controls_Stack {
 	public function is_reload_preview_required() {
 		return false;
 	}
-	
+
 	public function print_template() {
 		ob_start();
 

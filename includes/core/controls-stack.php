@@ -101,11 +101,11 @@ abstract class Controls_Stack {
 	 *
 	 * Holds the injection point in the stack where the control will be inserted.
 	 *
-	 * @access private
+	 * @access protected
 	 *
 	 * @var null|array
 	 */
-	private $injection_point;
+	protected $injection_point;
 
 	/**
 	 * Retrieve the name.

@@ -240,7 +240,8 @@ class Frontend {
 			'jquery-swiper',
 			qazana()->core_assets_url . 'lib/swiper/swiper.jquery' . $suffix . '.js',
 			[
-				'jquery',
+                'jquery',
+                'qazana-dialog',
 			],
 			'3.4.2',
 			true
@@ -260,6 +261,7 @@ class Frontend {
 			'qazana-dialog',
 			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
 			[
+                'jquery',
 				'jquery-ui-position',
 			],
 			'3.2.5',
@@ -271,8 +273,7 @@ class Frontend {
             qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
             [
                 'waypoints',
-                'qazana-dialog',
-				'jquery-swiper',
+				//'jquery-swiper',
             ],
             qazana_get_version(),
             true
