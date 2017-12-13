@@ -1,7 +1,6 @@
 <?php
 namespace Qazana\Template_Library;
 
-
 use Qazana\PageSettings\Page;
 
 if ( ! defined( 'ABSPATH' ) ) {
