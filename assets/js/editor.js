@@ -5540,19 +5540,22 @@ helpers = {
  		return (url.match(p)) ? RegExp.$1 : false;
   	},
 
-	isActiveControl: function( controlModel, values ) {
-		var condition;
+    isActiveControl: function( controlModel, values ) {
+		var condition,
+			conditions;
 
 		// TODO: Better way to get this?
 		if ( _.isFunction( controlModel.get ) ) {
 			condition = controlModel.get( 'condition' );
+			conditions = controlModel.get( 'conditions' );
 		} else {
 			condition = controlModel.condition;
+			conditions = controlModel.conditions;
 		}
 
-		// Repeater items conditions
-		if ( controlModel.conditions ) {
-			return qazana.conditions.check( controlModel.conditions, values );
+		// Multiple conditions with relations.
+		if ( conditions ) {
+			return qazana.conditions.check( conditions, values );
 		}
 
 		if ( _.isEmpty( condition ) ) {
@@ -5560,7 +5563,6 @@ helpers = {
 		}
 
 		var hasFields = _.filter( condition, function( conditionValue, conditionName ) {
-
 			var conditionNameParts = conditionName.match( /([a-z_0-9]+)(?:\[([a-z_]+)])?(!?)$/i ),
 				conditionRealName = conditionNameParts[1],
 				conditionSubKey = conditionNameParts[2],
