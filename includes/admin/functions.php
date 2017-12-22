@@ -12,7 +12,9 @@
   * @uses Qazana_Admin
   */
  function qazana_admin() {
-     qazana()->admin = new Qazana\Admin\Run();
+    if ( is_admin() ) {
+        qazana()->admin = new Qazana\Admin\Run();
+    }
  }
 
 /**

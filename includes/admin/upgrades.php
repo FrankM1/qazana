@@ -1,5 +1,5 @@
 <?php
-namespace Qazana;
+namespace Qazana\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -19,5 +19,3 @@ class Upgrades {
         }
     }
 }
-
-Upgrades::add_actions();

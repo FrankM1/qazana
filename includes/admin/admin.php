@@ -188,6 +188,8 @@ class Run {
         $this->admin_tracker  = new Tracker();
         $this->system_info    = new System\Info\Main();
 
+        Upgrades::add_actions();
+
         if ( Utils::is_ajax() ) {
             new \Qazana\Images_Manager();
         }
