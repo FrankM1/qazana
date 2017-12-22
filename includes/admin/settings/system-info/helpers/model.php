@@ -1,11 +1,11 @@
 <?php
-namespace Qazana\System_Info\Helpers;
+namespace Qazana\System\Info\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-final class Model_Helper {
+final class Model {
 
 	private function __construct() {}
 

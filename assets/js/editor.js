@@ -86,32 +86,20 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	startEditing: function( $element ) {
-		if (
-			this.editing ||
-			'edit' !== qazana.channels.dataEditMode.request( 'activeMode' ) ||
-			this.view.model.isRemoteRequestActive()
-		) {
+		if ( this.editing ) {
 			return;
 		}
 
 		this.$currentEditingArea = $element;
 
 		var elementData = this.$currentEditingArea.data(),
-			elementDataToolbar = elementData.qazanaInlineEditingToolbar,
-			mode = 'advanced' === elementDataToolbar ? 'advanced' : 'basic',
-			editModel = this.view.getEditModel(),
-			inlineEditingConfig = qazana.config.inlineEditing,
-			contentHTML = editModel.getSetting( this.getEditingSettingKey() );
-
-		if ( 'advanced' === mode ) {
-			contentHTML = wp.editor.autop( contentHTML );
-		}
+			editModel = this.view.getEditModel();
 
 		/**
 		 *  Replace rendered content with unrendered content.
 		 *  This way the user can edit the original content, before shortcodes and oEmbeds are fired.
 		 */
-		this.$currentEditingArea.html( contentHTML );
+		this.$currentEditingArea.html( editModel.getSetting( this.getEditingSettingKey() ) );
 
 		var QazanaInlineEditor = qazanaFrontend.getElements( 'window' ).QazanaInlineEditor;
 
@@ -119,17 +107,14 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 
 		this.view.allowRender = false;
 
-		// Avoid retrieving of old content (e.g. in case of sorting)
-		this.view.model.setHtmlCache( '' );
+		var inlineEditingConfig = qazana.config.inlineEditing,
+			elementDataToolbar = elementData.qazanaInlineEditingToolbar;
 
-		this.editor = new QazanaInlineEditor( {
+		this.pen = new QazanaInlineEditor( {
 			linksInNewWindow: true,
 			stay: false,
 			editor: this.$currentEditingArea[0],
-			mode: mode,
 			list: 'none' === elementDataToolbar ? [] : inlineEditingConfig.toolbar[ elementDataToolbar || 'basic' ],
-			cleanAttrs: ['id', 'class', 'name'],
-			placeholder: qazana.translate( 'type_here' ) + '...',
 			toolbarIconsPrefix: 'eicon-editor-',
 			toolbarIconsDictionary: {
 				externalLink: {
@@ -162,7 +147,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			}
 		} );
 
-		var $menuItems = jQuery( this.editor._menu ).children();
+		var $menuItems = jQuery( this.pen._menu ).children();
 
 		/**
 		 * When the edit area is not focused (on blur) the inline editing is stopped.
@@ -173,13 +158,15 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			event.preventDefault();
 		} );
 
-		this.$currentEditingArea.on( 'blur', _.bind( this.onInlineEditingBlur, this ) );
+		this.$currentEditingArea
+			.focus()
+			.on( 'blur', _.bind( this.onInlineEditingBlur, this ) );
 	},
 
 	stopEditing: function() {
 		this.editing = false;
 
-		this.editor.destroy();
+		this.pen.destroy();
 
 		this.view.allowRender = true;
 
@@ -226,7 +213,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	onInlineEditingUpdate: function() {
-		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.editor.getContent() );
+		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.$currentEditingArea.html() );
 	}
 } );
 
@@ -5553,19 +5540,22 @@ helpers = {
  		return (url.match(p)) ? RegExp.$1 : false;
   	},
 
-	isActiveControl: function( controlModel, values ) {
-		var condition;
+    isActiveControl: function( controlModel, values ) {
+		var condition,
+			conditions;
 
 		// TODO: Better way to get this?
 		if ( _.isFunction( controlModel.get ) ) {
 			condition = controlModel.get( 'condition' );
+			conditions = controlModel.get( 'conditions' );
 		} else {
 			condition = controlModel.condition;
+			conditions = controlModel.conditions;
 		}
 
-		// Repeater items conditions
-		if ( controlModel.conditions ) {
-			return qazana.conditions.check( controlModel.conditions, values );
+		// Multiple conditions with relations.
+		if ( conditions ) {
+			return qazana.conditions.check( conditions, values );
 		}
 
 		if ( _.isEmpty( condition ) ) {
@@ -5573,7 +5563,6 @@ helpers = {
 		}
 
 		var hasFields = _.filter( condition, function( conditionValue, conditionName ) {
-
 			var conditionNameParts = conditionName.match( /([a-z_0-9]+)(?:\[([a-z_]+)])?(!?)$/i ),
 				conditionRealName = conditionNameParts[1],
 				conditionSubKey = conditionNameParts[2],
@@ -9342,7 +9331,7 @@ ControlIconView = ControlBaseItemView.extend( {
 	},
 
 	filterIcons: function() {
-		var icons = this.model.get( 'icons' ),
+		var icons = this.model.get( 'options' ),
 			include = this.model.get( 'include' ),
 			exclude = this.model.get( 'exclude' );
 
@@ -9353,7 +9342,7 @@ ControlIconView = ControlBaseItemView.extend( {
 				filteredIcons[ iconKey ] = icons[ iconKey ];
 			} );
 
-			this.model.set( 'icons', filteredIcons );
+			this.model.set( 'options', filteredIcons );
 			return;
 		}
 
@@ -9384,7 +9373,7 @@ ControlIconView = ControlBaseItemView.extend( {
 		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
 
 		helpers.getIconsByGroups = _.bind( function( groups ) {
-			var icons = this.model.get( 'icons' ),
+			var icons = this.model.get( 'options' ),
 				filterIcons = {};
 
 			_.each( icons, function( iconType, iconName ) {
@@ -9927,13 +9916,24 @@ ControlRepeaterItemView = ControlBaseDataView.extend( {
 
 	onSortStop: function( event, ui ) {
 		// Reload TinyMCE editors (if exist), it's a bug that TinyMCE content is missing after stop dragging
-		ui.item.find( '.qazana-wp-editor' ).each( function() {
-			var editor = tinymce.get( this.id ),
-				settings = editor.settings;
+		var self = this,
+			sortedIndex = ui.item.index();
 
-			settings.height = Backbone.$( editor.getContainer() ).height();
-			tinymce.execCommand( 'mceRemoveEditor', true, this.id );
-			tinymce.init( settings );
+		if ( -1 === sortedIndex ) {
+			return;
+		}
+
+		var sortedRowView = self.children.findByIndex( ui.item.index() ),
+			rowControls = sortedRowView.children._views;
+
+		jQuery.each( rowControls, function() {
+			if ( 'wysiwyg' === this.model.get( 'type' ) ) {
+				sortedRowView.render();
+
+				delete self.currentEditableChild;
+
+				return false;
+			}
 		} );
 	},
 
@@ -10995,7 +10995,33 @@ WidgetView = BaseElementView.extend( {
 
 		this.$el.removeClass( 'qazana-loading' );
 		this.render();
-	},
+    },
+    
+    alterClass : function ( self, removals, additions ) {
+        
+        if ( removals.indexOf( '*' ) === -1 ) {
+            // Use native jQuery methods if there is no wildcard matching
+            self.removeClass( removals );
+            return !additions ? self : self.addClass( additions );
+        }
+    
+        var patt = new RegExp( '\\s' + 
+                removals.
+                    replace( /\*/g, '[A-Za-z0-9-_]+' ).
+                    split( ' ' ).
+                    join( '\\s|\\s' ) + 
+                '\\s', 'g' );
+    
+        self.each( function ( i, it ) {
+            var cn = ' ' + it.className + ' ';
+            while ( patt.test( cn ) ) {
+                cn = cn.replace( patt, ' ' );
+            }
+            it.className = $.trim( cn );
+        });
+    
+        return !additions ? self : self.addClass( additions );
+    },
 
 	onRender: function() {
         var self = this;
@@ -11003,12 +11029,14 @@ WidgetView = BaseElementView.extend( {
 		BaseElementView.prototype.onRender.apply( self, arguments );
 
 	    var editModel = self.getEditModel(),
-	        skinType = editModel.getSetting( '_skin' ) || 'default';
+            skinType = editModel.getSetting( '_skin' ) || 'default';
+            
+        self.alterClass( self.$el, editModel.get( 'widgetType' ) + '-*', editModel.get( 'widgetType' ) + '-skin-' + skinType  );
 
         self.$el
 	        .attr( 'data-element_type', editModel.get( 'widgetType' ) + '.' + skinType )
             .removeClass( 'qazana-widget-empty' )
-	        .addClass( 'qazana-widget-' + editModel.get( 'widgetType' ) + ' qazana-widget-can-edit' )
+            .addClass( 'qazana-widget-' + editModel.get( 'widgetType' ) + ' qazana-widget-can-edit' )
             .children( '.qazana-widget-empty-icon' )
             .remove();
 

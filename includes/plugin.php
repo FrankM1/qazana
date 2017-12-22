@@ -1,8 +1,7 @@
 <?php
-
 namespace Qazana;
 
-if ( !defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -10,6 +9,16 @@ if ( !defined( 'ABSPATH' ) ) {
  * Main class plugin
  */
 class Plugin {
+
+    /**
+     * Current plugin object.
+     *
+     * @since 1.0.0
+     *
+     * @var object
+     */
+	public static $instance = null;
+
     /**
      * Current version of the plugin.
      *
@@ -290,7 +299,7 @@ class Plugin {
             add_action( 'qazana_' . $class_action, [$this, $class_action], 5 );
         }
 
-        // All Qazana actions are setup (includes video-central-core-hooks.php)
+        // All Qazana actions are setup (includes qazana-core-hooks.php)
         do_action_ref_array( 'qazana_after_setup_actions', [&$this] );
 
         // Add Page Templates
@@ -334,7 +343,7 @@ class Plugin {
         require_once $this->includes_dir . 'core/settings/page/manager.php';
         require_once $this->includes_dir . 'core/settings/page/model.php';
 
-        // require_once( $this->includes_dir . 'core/settings/settings.php' );
+        // require_once $this->includes_dir . 'core/settings/settings.php' );
         require_once $this->includes_dir . 'core/settings/page/template.php';
 
         require_once $this->includes_dir . 'common/functions.php';
@@ -375,8 +384,6 @@ class Plugin {
         // vendor classes
         require_once $this->includes_dir . 'vendor/mobiledetect/Mobile_Detect.php';
 
-        require_once $this->includes_dir . 'widgets/base/element-base.php';
-        require_once $this->includes_dir . 'widgets/base/widget-base.php';
         require_once $this->includes_dir . 'widgets/shared/carousel.php';
         require_once $this->includes_dir . 'widgets/shared/position.php';
 
@@ -384,10 +391,20 @@ class Plugin {
         require_once $this->includes_dir . 'core/actions.php';
         require_once $this->includes_dir . 'core/filters.php';
 
+        require_once $this->includes_dir . 'admin/settings/controls.php';
+        require_once $this->includes_dir . 'admin/settings/panel.php';
+        require_once $this->includes_dir . 'admin/settings/system-info/main.php';
+        require_once $this->includes_dir . 'admin/settings/tools.php';
+        require_once $this->includes_dir . 'admin/settings/validations.php';
+
         if ( is_admin() ) {
-            require_once $this->includes_dir . 'admin/admin.php';
             require_once $this->includes_dir . 'admin/functions.php';
             require_once $this->includes_dir . 'admin/actions.php';
+            require_once $this->includes_dir . 'admin/api.php';
+            require_once $this->includes_dir . 'admin/editor.php';
+            require_once $this->includes_dir . 'admin/tracker.php';
+            require_once $this->includes_dir . 'admin/upgrades.php';
+            require_once $this->includes_dir . 'admin/admin.php';
         }
 
         if ( defined( 'WP_CLI' ) ) {

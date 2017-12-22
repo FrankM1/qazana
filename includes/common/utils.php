@@ -47,6 +47,7 @@ class Utils {
 
         $video_id = false;
         $video_data = array();
+        $video_data['host'] = '';
 
         // get video id
         if ( strpos( $url, 'youtu' ) ) {

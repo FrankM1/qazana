@@ -24,7 +24,7 @@ class Group_Control_Hover_Animations extends Group_Control_Base {
         	'default' => 'shadow-bottom',
 			'label_block' => true,
 			'options' => [
-				'' => __( 'None', 'qazana'),
+				'none' => __( 'None', 'qazana'),
 				'custom' => __( 'Custom', 'qazana'),
 				'grow' => __( 'Grow', 'qazana'),
 				'shadow-bottom' => __( 'Shadow Bottom', 'qazana'),

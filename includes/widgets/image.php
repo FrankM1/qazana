@@ -3,16 +3,43 @@ namespace Qazana;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/**
+ * Image Widget
+ */
 class Widget_Image extends Widget_Base {
 
+	/**
+	 * Retrieve image widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'image';
 	}
 
+	/**
+	 * Retrieve image widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Image', 'qazana' );
 	}
 
+	/**
+	 * Retrieve image widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-insert-image';
 	}
@@ -21,6 +48,14 @@ class Widget_Image extends Widget_Base {
 		return [ 'general-elements' ];
 	}
 
+	/**
+	 * Register image widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_image',
@@ -113,6 +148,23 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'open_lightbox',
+			[
+				'label' => __( 'Lightbox', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'default',
+				'options' => [
+					'default' => __( 'Default', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
+				],
+				'condition' => [
+					'link_to' => 'file',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -178,7 +230,7 @@ class Widget_Image extends Widget_Base {
 				'name' => 'hover_animation',
 				'fields_options' => [
 					'type' => [
-						'default' => 'grow',
+						'default' => '',
 					],
 				],
 			]
@@ -285,6 +337,14 @@ class Widget_Image extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render image widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
 		$settings = $this->get_settings();
 
@@ -303,7 +363,11 @@ class Widget_Image extends Widget_Base {
 		$link = $this->get_link_url( $settings );
 
 		if ( $link ) {
-			$this->add_render_attribute( 'link', 'href', $link['url'] );
+			$this->add_render_attribute( 'link', [
+				'href' => $link['url'],
+				'class' => 'qazana-clickable',
+				'data-qazana-open-lightbox' => $settings['open_lightbox'],
+			] );
 
 			if ( ! empty( $link['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
@@ -314,8 +378,7 @@ class Widget_Image extends Widget_Base {
 			}
 		} ?>
 		<div <?php $this->render_attribute_string( 'wrapper' ); ?>>
-		<?php
-		if ( $has_caption ) : ?>
+		<?php if ( $has_caption ) : ?>
 			<figure class="wp-caption">
 		<?php endif;
 
@@ -340,6 +403,14 @@ class Widget_Image extends Widget_Base {
 		<?php
 	}
 
+	/**
+	 * Render image widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<# if ( '' !== settings.image.url ) {
@@ -348,7 +419,7 @@ class Widget_Image extends Widget_Base {
 				url: settings.image.url,
 				size: settings.image_size,
 				dimension: settings.image_custom_dimension,
-				model: editModel
+				model: view.getEditModel()
 			};
 
 			var image_url = qazana.imagesManager.getImageUrl( image );
@@ -380,16 +451,17 @@ class Widget_Image extends Widget_Base {
 			}
 
 			if ( link_url ) {
-					#><a href="{{ link_url }}"><#
+			    #><a class="qazana-clickable" data-qazana-open-lightbox="{{ settings.open_lightbox }}" href="{{ link_url }}"><#
 			}
-						#><img src="{{ image_url }}" class="{{ imgClass }}" /><#
+            
+                #><img src="{{ image_url }}" class="{{ imgClass }}" /><#
 
 			if ( link_url ) {
-					#></a><#
+			    #></a><#
 			}
 
 			if ( hasCaption ) {
-					#><figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption><#
+				#><figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption><#
 			}
 
 			if ( hasCaption ) {
@@ -401,6 +473,16 @@ class Widget_Image extends Widget_Base {
 		<?php
 	}
 
+	/**
+	 * Retrieve image widget link URL.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @param object $instance
+	 *
+	 * @return array|string|false An array/string containing the link URL, or false if no link.
+	 */
 	private function get_link_url( $instance ) {
 		if ( 'none' === $instance['link_to'] ) {
 			return false;

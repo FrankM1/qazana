@@ -99,7 +99,24 @@ class Widget_Text_Editor extends Widget_Base {
 					'{{WRAPPER}} .qazana-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
-		);
+        );
+        
+        $this->add_responsive_control(
+            'bottom_space',
+            [
+                'label' => __( 'Bottom Spacing', 'qazana' ),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-wrapper p' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
 
 		$this->add_responsive_control(
 			'align',
@@ -127,23 +144,6 @@ class Widget_Text_Editor extends Widget_Base {
 				'prefix_class' => 'qazana-align-',
 				'render_type'  => 'template',
 			]
-        );
-
-        $this->add_responsive_control(
-            'bottom_space',
-            [
-                'label' => __( 'Bottom Spacing', 'qazana' ),
-                'type'  => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 100,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .qazana-wrapper p' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-                ],
-            ]
         );
 
 		$this->end_controls_section();

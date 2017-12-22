@@ -29,7 +29,20 @@ abstract class Base {
 	 *
 	 * @return string
 	 */
-	public function get_title() {}
+    public function get_title() {}
+
+    /**
+	 * Extension dependencies
+     *
+     * Reliably have an extension as child of another.
+	 *
+     * @since 1.3.0
+     *
+	 * @return array of names of parent extensions
+	 */
+	public function get_dependencies() {
+		return [];
+	}
 
 	/**
 	 * Extension widgets
@@ -106,7 +119,8 @@ abstract class Base {
 			'required' => $this->required,
 			'default_activation' => $this->default_activation,
 			'widgets' => $this->get_widgets(),
-			'skins' => $this->get_skins(),
+            'skins' => $this->get_skins(),
+            'dependencies' => $this->get_dependencies(),
 		];
 	}
 

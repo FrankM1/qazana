@@ -78,8 +78,10 @@ class Api {
 
     public function get_upgrade_notice() {
         $data = $this->_get_info_data();
-        if ( empty( $data['upgrade_notice'] ) )
+ 
+        if ( empty( $data['upgrade_notice'] ) ) {
             return false;
+        }
 
         return $data['upgrade_notice'];
     }

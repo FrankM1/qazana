@@ -22,5 +22,10 @@
 
 .panel-elements-category-items {
 	overflow: hidden;
-	padding: 0 5px;
+    padding: 0 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
 }

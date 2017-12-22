@@ -1143,11 +1143,9 @@ class Element_Section extends Element_Base {
 			if ( settings.background_video_fallback ) { #>
 				<div class="qazana-background-video-fallback" style="background-image: url({{ settings.background_video_fallback.url }})"></div>
 			<# }
-		}
+		} #>
 
-		if ( 'classic' === settings.background_overlay_background ) { #>
-			<div class="qazana-background-overlay"></div>
-		<# } #>
+        <div class="qazana-background-overlay"></div>
 
 		<div class="qazana-shape qazana-shape-top"></div>
 		<div class="qazana-shape qazana-shape-bottom"></div>

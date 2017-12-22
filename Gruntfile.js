@@ -1,7 +1,10 @@
 module.exports = function( grunt ) {
     'use strict';
 
-    require('jit-grunt')(grunt);
+    require('jit-grunt')(grunt, {
+        usebanner: 'grunt-banner',
+        replace: 'grunt-text-replace'
+    });
     
     // require it at the top and pass in the grunt instance
 	require('time-grunt')(grunt);

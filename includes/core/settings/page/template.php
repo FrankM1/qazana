@@ -4,7 +4,7 @@ namespace Qazana;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Template class for Video Central.
+ * Template class for Qazana.
  *
  * @since 1.0.0
  */

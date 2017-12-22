@@ -152,7 +152,7 @@ class Tracker {
 	}
 
 	private static function _get_system_reports_data() {
-		$reports = qazana()->admin->system_info->load_reports( System_Info\Main::get_allowed_reports() );
+		$reports = qazana()->admin->system_info->load_reports( System\Info\Main::get_allowed_reports() );
 
 		$system_reports = [];
 		foreach ( $reports as $report_key => $report_details ) {

@@ -1,4 +1,4 @@
-=== Qazana for WordPress ===
+=== Qazana Layout builder for WordPress ===
 Contributors: frankgitonga, radiumthemes
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8T9VMQZ8URY4
 License: GPLv2+
@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl.html
 Tags: page qazana, editor, landing page, drag-and-drop, builder, visual composer, visual editor, visual builder, wysiwyg, design, website builder, landing page builder, front-end builder, frontend editor, frontend builder, theme builder, site-builder, layout builder, drag-and-drop, builder, editor, responsive, mobile, layout, front end, frontend, Page Layout, squeeze page, page builder plugin, drag-n-drop page builder, qazana
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.1.1
+Stable tag: 1.3.1
 
 Qazana is the ultimate page layout builder for WordPress.
 

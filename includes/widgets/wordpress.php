@@ -28,12 +28,6 @@ class Widget_WordPress extends Widget_Base {
 	 */
 	private $_widget_instance = null;
 
-	public function __construct( $data = [], $args = null ) {
-		$this->_widget_name = $args['widget_name'];
-
-		parent::__construct( $data, $args );
-	}
-
 	/**
 	 * Retrieve WordPress name.
 	 *

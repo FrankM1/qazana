@@ -96,7 +96,7 @@ HandlerModule = ViewModule.extend( {
 		return this.$element.data( 'model-cid' );
 	},
 
-	getElementSettings: function( setting ) {
+    getElementSettings: function( setting ) {
 		var elementSettings = {},
 			modelCID = this.getModelCID(),
 			self = this,
@@ -106,19 +106,13 @@ HandlerModule = ViewModule.extend( {
 		
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			settings = qazanaFrontend.config.elements.data[ modelCID ];
-			settingsKeys = qazanaFrontend.config.elements.keys[ settings.attributes.widgetType || settings.attributes.elType ];
 
 			jQuery.each( settings.getActiveControls(), function( controlKey ) {
-
-				if ( -1 !== settingsKeys.indexOf( controlKey ) ) {
-
-					var newControlKey = controlKey;
-					if ( skinName !== 'default' ) {
-						newControlKey = controlKey.replace( skinName + '_', '' );
-					}
-					elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
-				}
-
+                var newControlKey = controlKey;
+                if ( skinName !== 'default' ) {
+                    newControlKey = controlKey.replace( skinName + '_', '' );
+                } 
+                elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
 			} );
 
 		} else {
@@ -139,7 +133,7 @@ HandlerModule = ViewModule.extend( {
 		}
 
 		return this.getItems( elementSettings, setting );
-	},
+    },
 
 	getEditSettings: function( setting ) {
 		var attributes = {};
