@@ -417,57 +417,6 @@ HandlerModule = ViewModule.extend( {
 		return this.$element.data( 'model-cid' );
 	},
 
-	getElementSettings2: function( setting ) {
-		var elementSettings = {},
-			modelCID = this.getModelCID(),
-			self = this,
-			settings,
-			elementName = self.getElementName().replace(/-/g, '_'),
-			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
-		
-		if ( qazanaFrontend.isEditMode() && modelCID ) {
-			settings = qazanaFrontend.config.elements.data[ modelCID ];
-			settingsKeys = qazanaFrontend.config.elements.keys[ settings.attributes.widgetType || settings.attributes.elType ];
-
-			jQuery.each( settings.getActiveControls(), function( controlKey ) {
-
-                if ( skinName === 'default' ) {
-
-                    if ( -1 !== settingsKeys.indexOf( controlKey ) ) {
-                        elementSettings[ controlKey ] = settings.attributes[ controlKey ];
-                    } 
-            
-                } else {
-
-                    if ( -1 === settingsKeys.indexOf( controlKey ) ) {
-                        var newControlKey = controlKey.replace( skinName + '_', '' );
-                    } 
-
-                    elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
-                }
-
-			} );
-
-		} else {
-
-			settings = this.$element.data( 'settings' ) || {};
-
-			if ( settings && skinName !== 'default' ) {
-				jQuery.each( settings, function( controlKey ) {
-					var newControlKey = controlKey;
-					newControlKey = controlKey.replace( skinName + '_', '' );
-					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
-				} );
-
-			} else {
-				elementSettings = settings;
-			}
-
-		}
-
-		return this.getItems( elementSettings, setting );
-    },
-
     getElementSettings: function( setting ) {
 		var elementSettings = {},
 			modelCID = this.getModelCID(),
