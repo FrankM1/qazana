@@ -84,7 +84,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
                 'autoplay!' => '',
             ],
         ]
-    );    
+    );
 
     $element->add_control(
         'infinite',
@@ -217,9 +217,9 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     }
 
     $element->start_controls_section(
-        'section_style_navigation',
+        'section_style_navigation_arrows',
         [
-            'label'     => __( 'Navigation', 'qazana' ),
+            'label'     => __( 'Navigation Arrows', 'qazana' ),
             'tab'       => Controls_Manager::TAB_STYLE,
             'condition' => [
                 'navigation!' => 'none',
@@ -228,7 +228,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     );
 
     $element->start_controls_tabs( 'tabs_arrows_navigation' );
- 
+
     $element->start_controls_tab(
         'tab_arrows_navigation_default',
         [
@@ -248,7 +248,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
                 ],
             ],
             'selectors' => [
-                '{{WRAPPER}} div.slick-navigation .prev i, {{WRAPPER}} div.slick-navigation .next i' => 'font-size: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'font-size: {{SIZE}}{{UNIT}};',
             ],
             'condition' => [
                 'navigation' => [ 'arrows', 'both' ],
@@ -262,14 +262,34 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
             'label'     => __( 'Color', 'qazana' ),
             'type'      => Controls_Manager::COLOR,
             'selectors' => [
-                '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}};',
             ],
             'condition' => [
                 'navigation' => [ 'arrows', 'both' ],
             ],
         ]
     );
-  
+
+    $element->add_group_control(
+        Group_Control_Border::get_type(),
+        [
+            'name' => 'arrows_border',
+            'selector' => '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next',
+        ]
+    );
+
+    $element->add_control(
+        'arrows_border_radius',
+        [
+            'label'      => __( 'Border Radius', 'qazana' ),
+            'type'       => Controls_Manager::DIMENSIONS,
+            'size_units' => [ 'px', '%' ],
+            'selectors'  => [
+                '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+        ]
+    );
+
     $element->add_control(
         'arrows_position',
         [
@@ -297,7 +317,32 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
 
             ],
             'condition' => [
-                'navigation' => [ 'dots', 'both' ],
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'arrows_v_position',
+        [
+            'label' => __( 'Vertical Position', 'qazana' ),
+            'type'  => Controls_Manager::SLIDER,
+            'range' => [
+                '%' => [
+                    'min' => -150,
+                    'max' => 150,
+                ],
+            ],
+            'size_units' => [ '%', 'px' ],
+            'default' => array(
+                'unit' => '%',
+                'size' => '50',
+            ),
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation a.prev, {{WRAPPER}} div.slick-navigation a.next' => 'top: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
             ],
         ]
     );
@@ -317,7 +362,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
             'label'     => __( 'Color', 'qazana' ),
             'type'      => Controls_Manager::COLOR,
             'selectors' => [
-                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}}; box-shadow: 0 0 1px {{VALUE}};',
+                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}};',
             ],
             'condition' => [
                 'navigation' => [ 'arrows', 'both' ],
@@ -326,7 +371,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     );
 
     $element->end_controls_tab();
-    
+
     $element->end_controls_tabs();
 
     $element->end_controls_section();
@@ -359,7 +404,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
     );
 
     $element->start_controls_tabs( 'tabs_bullet_navigation' );
- 
+
     $element->start_controls_tab(
         'tab_bullet_navigation_default',
         [
@@ -410,9 +455,30 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
     );
 
     $element->add_control(
+        'dots_h_position',
+        [
+            'label' => __( 'Horizontal Position', 'qazana' ),
+            'type'  => Controls_Manager::SLIDER,
+            'range' => [
+                '%' => [
+                    'min' => -150,
+                    'max' => 150,
+                ],
+            ],
+            'size_units' => [ '%', 'px' ],
+            'selectors' => [
+                '{{WRAPPER}} .slick-dots' => 'left: {{SIZE}}{{UNIT}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'dots', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
         'dots_position_bottom',
         [
-            'label' => __( 'Position', 'qazana' ),
+            'label' => __( 'Vertical Position', 'qazana' ),
             'type'  => Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
@@ -521,7 +587,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
     );
 
     $element->end_controls_tab();
- 
+
     $element->end_controls_tabs();
 
     $element->end_controls_section();

@@ -230,7 +230,7 @@ class Widget_Image extends Widget_Base {
 				'name' => 'hover_animation',
 				'fields_options' => [
 					'type' => [
-						'default' => 'grow',
+						'default' => '',
 					],
 				],
 			]

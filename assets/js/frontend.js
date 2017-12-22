@@ -417,7 +417,7 @@ HandlerModule = ViewModule.extend( {
 		return this.$element.data( 'model-cid' );
 	},
 
-	getElementSettings: function( setting ) {
+	getElementSettings2: function( setting ) {
 		var elementSettings = {},
 			modelCID = this.getModelCID(),
 			self = this,
@@ -431,14 +431,20 @@ HandlerModule = ViewModule.extend( {
 
 			jQuery.each( settings.getActiveControls(), function( controlKey ) {
 
-				if ( -1 !== settingsKeys.indexOf( controlKey ) ) {
+                if ( skinName === 'default' ) {
 
-					var newControlKey = controlKey;
-					if ( skinName !== 'default' ) {
-						newControlKey = controlKey.replace( skinName + '_', '' );
-					}
-					elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
-				}
+                    if ( -1 !== settingsKeys.indexOf( controlKey ) ) {
+                        elementSettings[ controlKey ] = settings.attributes[ controlKey ];
+                    } 
+            
+                } else {
+
+                    if ( -1 === settingsKeys.indexOf( controlKey ) ) {
+                        var newControlKey = controlKey.replace( skinName + '_', '' );
+                    } 
+
+                    elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
+                }
 
 			} );
 
@@ -460,7 +466,46 @@ HandlerModule = ViewModule.extend( {
 		}
 
 		return this.getItems( elementSettings, setting );
-	},
+    },
+
+    getElementSettings: function( setting ) {
+		var elementSettings = {},
+			modelCID = this.getModelCID(),
+			self = this,
+			settings,
+			elementName = self.getElementName().replace(/-/g, '_'),
+			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
+		
+		if ( qazanaFrontend.isEditMode() && modelCID ) {
+			settings = qazanaFrontend.config.elements.data[ modelCID ];
+
+			jQuery.each( settings.getActiveControls(), function( controlKey ) {
+                var newControlKey = controlKey;
+                if ( skinName !== 'default' ) {
+                    newControlKey = controlKey.replace( skinName + '_', '' );
+                } 
+                elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
+			} );
+
+		} else {
+
+			settings = this.$element.data( 'settings' ) || {};
+
+			if ( settings && skinName !== 'default' ) {
+				jQuery.each( settings, function( controlKey ) {
+					var newControlKey = controlKey;
+					newControlKey = controlKey.replace( skinName + '_', '' );
+					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
+				} );
+
+			} else {
+				elementSettings = settings;
+			}
+
+		}
+
+		return this.getItems( elementSettings, setting );
+    },
 
 	getEditSettings: function( setting ) {
 		var attributes = {};

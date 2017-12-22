@@ -9916,13 +9916,24 @@ ControlRepeaterItemView = ControlBaseDataView.extend( {
 
 	onSortStop: function( event, ui ) {
 		// Reload TinyMCE editors (if exist), it's a bug that TinyMCE content is missing after stop dragging
-		ui.item.find( '.qazana-wp-editor' ).each( function() {
-			var editor = tinymce.get( this.id ),
-				settings = editor.settings;
+		var self = this,
+			sortedIndex = ui.item.index();
 
-			settings.height = Backbone.$( editor.getContainer() ).height();
-			tinymce.execCommand( 'mceRemoveEditor', true, this.id );
-			tinymce.init( settings );
+		if ( -1 === sortedIndex ) {
+			return;
+		}
+
+		var sortedRowView = self.children.findByIndex( ui.item.index() ),
+			rowControls = sortedRowView.children._views;
+
+		jQuery.each( rowControls, function() {
+			if ( 'wysiwyg' === this.model.get( 'type' ) ) {
+				sortedRowView.render();
+
+				delete self.currentEditableChild;
+
+				return false;
+			}
 		} );
 	},
 

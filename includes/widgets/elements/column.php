@@ -152,7 +152,7 @@ class Element_Column extends Element_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'background',
-				'selector' => '{{WRAPPER}} > .qazana-element-populated',
+				'selector' => '{{WRAPPER}} > .qazana-element-populated, {{WRAPPER}} > .qazana-element-populated > .qazana-widget-wrap',
 			]
 		);
 
@@ -169,7 +169,7 @@ class Element_Column extends Element_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'background_hover',
-				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated, {{WRAPPER}}:hover > .qazana-element-populated > .qazana-widget-wrap',
 			]
 		);
 
@@ -723,7 +723,7 @@ class Element_Column extends Element_Base {
 		if ( ! empty( $settings['hover_animation'] ) ) {
             $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 		}
-		
+	
 	}
 
 	protected function _get_default_child_type( array $element_data ) {

@@ -25,7 +25,11 @@ class Qazana_Library extends \WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		echo $args['before_widget'];
+        echo $args['before_widget'];
+
+        if ( empty( $instance['template_id'] ) ) {
+            return;
+        }
 
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];

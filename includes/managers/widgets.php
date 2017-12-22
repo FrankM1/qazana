@@ -17,9 +17,9 @@ class Widgets_Manager {
 	 * @access public
 	 */
     public function __construct() {
-        add_action( 'qazana/includes', [ $this, 'require_files' ] );
         add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
         add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
+        $this->require_files(); // Load these immediately for use by extensions
     }
 
 	/**
