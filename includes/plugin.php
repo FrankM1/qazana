@@ -391,6 +391,7 @@ class Plugin {
         require_once $this->includes_dir . 'core/actions.php';
         require_once $this->includes_dir . 'core/filters.php';
 
+        /** Admin *************************************************************/
         require_once $this->includes_dir . 'admin/settings/controls.php';
         require_once $this->includes_dir . 'admin/settings/panel.php';
         require_once $this->includes_dir . 'admin/settings/system-info/main.php';
@@ -405,6 +406,7 @@ class Plugin {
         require_once $this->includes_dir . 'admin/upgrades.php';
         require_once $this->includes_dir . 'admin/admin.php';
 
+        /** WP Cli *************************************************************/
         if ( defined( 'WP_CLI' ) ) {
             require_once $this->includes_dir . 'wp-cli/commands.php';
         }
