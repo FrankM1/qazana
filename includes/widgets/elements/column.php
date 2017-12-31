@@ -152,7 +152,7 @@ class Element_Column extends Element_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'background',
-				'selector' => '{{WRAPPER}} > .qazana-element-populated, {{WRAPPER}} > .qazana-element-populated > .qazana-widget-wrap',
+				'selector' => '{{WRAPPER}} > .qazana-element-populated',
 			]
 		);
 
@@ -169,7 +169,7 @@ class Element_Column extends Element_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'background_hover',
-				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated, {{WRAPPER}}:hover > .qazana-element-populated > .qazana-widget-wrap',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated',
 			]
 		);
 

@@ -39,13 +39,13 @@ class Tabs extends Base {
 	}
 
    	public function register_styles() {
-		 
+
         $suffix = Utils::is_script_debug() ? '' : '.min';
-        
+
         $direction_suffix = is_rtl() ? '-rtl' : '';
 
         wp_register_style(
-            'qazana-extension-' . $this->get_name(),
+            'qazana-extension-tabs',
             $this->extension_url( 'assets/css/direction/style' . $direction_suffix . $suffix . '.css' ),
             [
                 'qazana-frontend',
@@ -54,9 +54,8 @@ class Tabs extends Base {
         );
 
         if ( qazana()->preview->is_preview_mode() ) {
-            wp_enqueue_style( 'qazana-extension-' . $this->get_name() );
+            wp_enqueue_style( 'qazana-extension-tabs' );
         }
-        
-   }
 
+   }
 }

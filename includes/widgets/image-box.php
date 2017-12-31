@@ -17,9 +17,29 @@ class Widget_Image_Box extends Widget_Base {
 		return 'eicon-image-box';
 	}
 
+    /**
+	 * Retrieve widget categories.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'photo', 'image', 'box', 'media' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(

@@ -44,9 +44,29 @@ class Widget_Image extends Widget_Base {
 		return 'eicon-insert-image';
 	}
 
+    /**
+	 * Retrieve widget categories.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'photo', 'image', 'thumbnail', 'media' ];
+    }
 
 	/**
 	 * Register image widget controls.

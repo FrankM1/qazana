@@ -32,7 +32,19 @@ class Widget_Text_Editor extends Widget_Base {
 	 */
 	public function get_title() {
 		return __( 'Text Editor', 'qazana' );
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'editor', 'text', 'description' ];
+    }
 
 	/**
 	 * Retrieve text editor widget icon.

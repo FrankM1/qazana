@@ -55,9 +55,11 @@ class Qazana_Test_Elements extends WP_UnitTestCase {
 				}
 
 				foreach ( $control['selectors'] as $selector => $css_property ) {
+                    if ( empty( $selector ) ) {
+                        continue;
+                    }
 					foreach ( explode( ',', $selector ) as $item ) {
 						preg_match( '/\{\{(WRAPPER)|(ID)\}\}/', $item, $matches );
-
 						$this->assertTrue( !! $matches );
 					}
 				}

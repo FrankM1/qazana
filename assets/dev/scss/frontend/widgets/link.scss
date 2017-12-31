@@ -5,7 +5,6 @@
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: center;
   }
 
   &.qazana-align-icon-right .qazana-link-wrapper {
@@ -21,6 +20,24 @@
       margin-right: 5px;
     }
   }
+}
+
+.qazana-align- {
+    &right .qazana-link-wrapper{
+        justify-content: flex-end;
+    }
+
+    &left .qazana-link-wrapper{
+        justify-content: flex-start;
+    }
+
+    &center .qazana-link-wrapper{
+        justify-content: center;
+    }
+
+    &justify .qazana-link-wrapper {
+        justify-content: space-between;
+    }
 }
 
 // Icon Hover

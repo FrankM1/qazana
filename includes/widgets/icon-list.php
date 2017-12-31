@@ -19,7 +19,19 @@ class Widget_Icon_List extends Widget_Base {
 
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'list', 'icon' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(
@@ -329,11 +341,25 @@ class Widget_Icon_List extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render icon list widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
 		$settings = $this->get_settings();
 		?>
 		<ul class="qazana-icon-list-items">
-			<?php foreach ( $settings['icon_list'] as $index => $item ) : ?>
+			<?php foreach ( $settings['icon_list'] as $index => $item ) :
+				$repeater_setting_key = $this->get_repeater_setting_key( 'text', 'icon_list', $index );
+
+				$this->add_render_attribute( $repeater_setting_key, 'class', 'qazana-icon-list-text' );
+
+				$this->add_inline_editing_attributes( $repeater_setting_key );
+				?>
 				<li class="qazana-icon-list-item" >
 					<?php
 					if ( ! empty( $item['link']['url'] ) ) {
@@ -349,15 +375,16 @@ class Widget_Icon_List extends Widget_Base {
 							$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
 						}
 
-						echo '<a ' . $this->get_render_attribute_string( $link_key ) .  '>';
+						echo '<a ' . $this->get_render_attribute_string( $link_key ) . '>';
 					}
 
-					if ( $item['icon'] ) : ?>
+					if ( $item['icon'] ) :
+					?>
 						<span class="qazana-icon-list-icon">
 							<i class="<?php echo esc_attr( $item['icon'] ); ?>"></i>
 						</span>
 					<?php endif; ?>
-					<span class="qazana-icon-list-text"><?php echo $item['text']; ?></span>
+					<span <?php echo $this->get_render_attribute_string( $repeater_setting_key ); ?>><?php echo $item['text']; ?></span>
 					<?php
 					if ( ! empty( $item['link']['url'] ) ) {
 						echo '</a>';
@@ -365,17 +392,32 @@ class Widget_Icon_List extends Widget_Base {
 					?>
 				</li>
 				<?php
-			endforeach; ?>
+			endforeach;
+			?>
 		</ul>
 		<?php
 	}
 
+    /**
+	 * Render icon list widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
-		<ul class="qazana-icon-list-items">
+			<ul class="qazana-icon-list-items">
 			<#
 			if ( settings.icon_list ) {
-				_.each( settings.icon_list, function( item ) { #>
+				_.each( settings.icon_list, function( item, index ) {
+					var iconTextKey = view.getRepeaterSettingKey( 'text', 'icon_list', index );
+
+					view.addRenderAttribute( iconTextKey, 'class', 'qazana-icon-list-text' );
+
+					view.addInlineEditingAttributes( iconTextKey );
+					#>
 					<li class="qazana-icon-list-item">
 						<# if ( item.link && item.link.url ) { #>
 							<a href="{{ item.link.url }}">
@@ -383,7 +425,7 @@ class Widget_Icon_List extends Widget_Base {
 						<span class="qazana-icon-list-icon">
 							<i class="{{ item.icon }}"></i>
 						</span>
-						<span class="qazana-icon-list-text">{{{ item.text }}}</span>
+						<span {{{ view.getRenderAttributeString( iconTextKey ) }}}>{{{ item.text }}}</span>
 						<# if ( item.link && item.link.url ) { #>
 							</a>
 						<# } #>

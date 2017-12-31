@@ -17,9 +17,29 @@ class Widget_Social_Icons extends Widget_Base {
 		return 'eicon-social-icons';
 	}
 
+    /**
+	 * Retrieve widget categories.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'social', 'share', 'icon' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(
@@ -174,7 +194,7 @@ class Widget_Social_Icons extends Widget_Base {
 		);
 
 		$this->start_controls_tabs( 'tabs_icon_styles' );
-		
+
 		$this->start_controls_tab(
 			"tab_default_styles",
 			[
@@ -311,7 +331,7 @@ class Widget_Social_Icons extends Widget_Base {
 		);
 
 		$this->end_controls_tab();
-		
+	
 		$this->start_controls_tab(
 			"tab_hover_style",
 			[
@@ -366,9 +386,9 @@ class Widget_Social_Icons extends Widget_Base {
 		);
 
 		$this->end_controls_tab();
-		
+
 		$this->end_controls_tabs();
-		
+
 		$this->end_controls_section();
 
 	}
@@ -386,7 +406,7 @@ class Widget_Social_Icons extends Widget_Base {
 
 				$social = preg_replace('/^[^-]*-\s*/', '', $item['social']);
 				$social = str_replace( ' ', '-', $social );
-				
+
 				$link_key = 'link_' . $index;
 
 				$this->add_render_attribute( $link_key, 'href', $item['link']['url'] );

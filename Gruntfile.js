@@ -55,7 +55,24 @@ module.exports = function( grunt ) {
 					expand: true
 				} ]
 			}
-		},
+        },
+        
+        makepot: {
+            target: {
+                options: {
+                    domainPath: 'languages',
+                    mainFile: 'qazana.php',
+                    potFilename: 'qazana-en_US.po',
+                    processPot: function(pot) {
+                        pot.headers['report-msgid-bugs-to'] = 'frank@radiumthemes.com';
+                        pot.headers['language-team'] = 'RadiumThemes <http://radiumthemes.com>';
+                        pot.headers['Last-Translator'] = 'Franklin Gitonga <frank@radiumthemes.com>';
+                        return pot;
+                    },
+                    type: 'wp-plugin'
+                }
+            }
+        },
 
         sass: {
             dist: {

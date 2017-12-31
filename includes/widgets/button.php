@@ -44,7 +44,19 @@ class Widget_Button extends Widget_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-button';
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'button', 'link', 'url' ];
+    }
 
 	/**
 	 * Retrieve button sizes.

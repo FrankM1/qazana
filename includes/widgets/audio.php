@@ -53,7 +53,19 @@ class Widget_Audio extends Widget_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-headphones';
-	}
+    }
+ 
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'audio', 'media', 'mp3' ];
+    }
 
 	/**
 	 * Retrieve the list of categories the audio widget belongs to.

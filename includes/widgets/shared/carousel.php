@@ -18,6 +18,8 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
 
     $slides_to_show = range( 1, 10 );
     $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+    $slides_to_show[''] = __( 'Default', 'qazana' );
+    array_unshift( $slides_to_show, '' );
 
     $element->add_responsive_control(
         'slidesToShow',
@@ -26,7 +28,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'type'               => Controls_Manager::SELECT,
             'default'            => 2,
             'options'            => $slides_to_show,
-            'frontend_available' => true
+            'frontend_available' => true,
         ]
     );
 
@@ -40,7 +42,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'condition' => [
                 'slidesToShow!' => '1',
             ],
-            'frontend_available' => true
+            'frontend_available' => true,
         ]
     );
 
@@ -53,7 +55,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'label_off'          => __( 'No', 'qazana' ),
             'return_value'       => 'yes',
             'default'            => 'yes',
-            'frontend_available' => true
+            'frontend_available' => true,
         ]
     );
 
@@ -144,12 +146,13 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'type'    => Controls_Manager::SELECT,
             'default' => 'both',
             'options' => [
+                ''       => __( 'Default', 'qazana' ),
                 'both'   => __( 'Arrows and Dots', 'qazana' ),
                 'arrows' => __( 'Arrows', 'qazana' ),
                 'dots'   => __( 'Dots', 'qazana' ),
                 'none'   => __( 'None', 'qazana' ),
             ],
-            'frontend_available' => true
+            'frontend_available' => true,
         ]
     );
 

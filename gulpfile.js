@@ -34,7 +34,7 @@ var productURL              = './'; // Theme/Plugin URL. Leave it like it is, si
 
 // Translation related.
 var text_domain             = 'qazana'; // Your textdomain here.
-var destFile                = 'qazana.pot'; // Name of the transalation file.
+var destFile                = 'qazana-en_US.pot'; // Name of the transalation file.
 var packageName             = 'qazana'; // Package name.
 var bugReport               = 'https://radiumthemes.com/contact/'; // Where can users report bugs.
 var lastTranslator          = 'Franklin Gitonga <frank@radiumthemes.com>'; // Last translator Email ID.
@@ -261,4 +261,28 @@ gulp.task(
     ["translate", "images", "buildFiles", "buildZip"],
     function() {}
   );
+
+ /**
+  * WP POT Translation File Generator.
+  *
+  * * This task does the following:
+  *     1. Gets the source of all the PHP files
+  *     2. Sort files in stream by path or any custom sort comparator
+  *     3. Applies wpPot with the variable set at the top of this file
+  *     4. Generate a .pot file of i18n that can be used for l10n to build .mo file
+  */
+ gulp.task( 'i18n', function () {
+    return gulp.src( projectPHPWatchFiles )
+        .pipe(sort())
+        .pipe(wpPot( {
+            domain        : text_domain,
+            package       : packageName,
+            bugReport     : bugReport,
+            lastTranslator: lastTranslator,
+            team          : team
+        } ))
+       .pipe(gulp.dest(translatePath + '/' + destFile ))
+       .pipe( notify( { message: 'TASK: "translate" Completed! 💯', onLast: true } ) )
+
+});
   
