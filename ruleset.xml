@@ -1,40 +1,99 @@
-<ruleset name="Radium Themes PHPMD rule set"
-         xmlns="http://pmd.sf.net/ruleset/1.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
-                     http://pmd.sf.net/ruleset_xml_schema.xsd"
-         xsi:noNamespaceSchemaLocation="
-                     http://pmd.sf.net/ruleset_xml_schema.xsd">
-    <description>Custom code checks for Radium WordPress themes.</description>
-    <rule ref="rulesets/unusedcode.xml" />
-    <rule ref="rulesets/codesize.xml">
-            <exclude name="NPathComplexity" />
-            <exclude name="ExcessiveClassLength" />
-            <exclude name="ExcessivePublicCount" />
-            <exclude name="TooManyFields" />
-            <exclude name="TooManyMethods" />
-            <exclude name="CyclomaticComplexity" />
-            <exclude name="ExcessiveClassComplexity" />
-    </rule>
+<?xml version="1.0"?>
+<ruleset name="WordPress.Qazana">
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki -->
+	<!-- See https://github.com/wimg/PHPCompatibility -->
 
-    <!-- Import entire naming rule set and exclude rules -->
-    <rule ref="rulesets/naming.xml">
-        <exclude name="ShortVariable" />
-        <exclude name="LongVariable" />
-    </rule>
+	<!-- Set a description for this ruleset. -->
+	<description>
+        Qazana Coding Standard
+	</description>
 
-    <rule ref="rulesets/controversial.xml">
-        <exclude name="CamelCasePropertyName" />
-        <exclude name="CamelCaseParameterName" />
-        <exclude name="CamelCaseVariableName" />
-        <exclude name="CamelCaseClassName" />
-        <exclude name="CamelCaseMethodName" />
-    </rule>
+	<!-- Pass some flags to PHPCS:
+		 p flag: Show progress of the run.
+		 s flag: Show sniff codes in all reports.
+		 v flag: Print verbose output.
+		 n flag: Do not print warnings.
+	-->
+	<arg value="sn"/>
 
- <rule ref="rulesets/design.xml" />
- <rule ref="rulesets/cleancode.xml">
-     <exclude name="ElseExpression" />
-     <exclude name="StaticAccess" />
- </rule>
+	<!-- Only check the PHP, CSS and SCSS files. JS files are checked separately with JSCS and JSHint. -->
+	<arg name="extensions" value="php,css,scss/css"/>
 
+	<!-- Check all files in this directory and the directories below it. -->
+	<file>.</file>
+
+    <exclude-pattern>vendor/</exclude-pattern>
+    <exclude-pattern>includes/vendor/</exclude-pattern>
+	<exclude-pattern>build/</exclude-pattern>
+	<exclude-pattern>node_modules/</exclude-pattern>
+    <exclude-pattern>bower_components/</exclude-pattern>
+	<exclude-pattern>tests/*.php</exclude-pattern>
+
+	<!-- Include the WordPress ruleset, with exclusions. -->
+	<rule ref="WordPress">
+        <exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+        <exclude name="Squiz.Commenting.InlineComment.NotCapital" />
+
+        <exclude name="Generic.Files.LineLength"/>
+        <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis"/>
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis"/>
+        <exclude name="WordPress.Arrays.ArrayDeclaration"/>
+        <exclude name="WordPress.PHP.YodaConditions"/>
+        <exclude name="WordPress.XSS.EscapeOutput"/>
+        <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
+        <exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
+        <!--<exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket"/> -->
+	</rule>
+
+	<!-- Verify that the text_domain is set to the desired text-domain.
+		 Multiple valid text domains can be provided as a comma-delimited list. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="qazana" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="qazana" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false" />
+		</properties>
+	</rule>
+
+	<!-- Add one extra word delimiter. -->
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="-"/>
+		</properties>
+	</rule>
+
+	<!-- Add several extra word delimiters. -->
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="-/."/>
+		</properties>
+	</rule>
+
+	<!-- Verify that no WP functions are used which are deprecated or have been removed.
+		 The minimum version set here should be in line with the minimum WP version
+		 as set in the "Requires at least" tag in the readme.txt file. -->
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="4.5" />
+		</properties>
+	</rule>
 </ruleset>

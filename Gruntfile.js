@@ -486,4 +486,8 @@ module.exports = function( grunt ) {
         'shell:git_add_all',
         'release'
     ] );
+
+    grunt.registerTask( 'markdown', [
+        'wp_readme_to_markdown',
+    ] );
 };
