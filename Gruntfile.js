@@ -305,15 +305,6 @@ module.exports = function( grunt ) {
             }
         },
 
-        bumpup: {
-            options: {
-                updateProps: {
-                    pkg: 'package.json'
-                }
-            },
-            file: 'package.json'
-        },
-
         replace: {
             plugin_main: {
                 src: [ 'qazana.php' ],
@@ -391,9 +382,10 @@ module.exports = function( grunt ) {
                     '!phpcs.ruleset.xml',
 					'!README.md',
 					'!phpunit.xml',
-					'!Gruntfile.js',
-                    '!gulp.js',
-					'!package.json',
+                    '!Gruntfile.js',
+                    '!gulpfile.js',
+                    '!package.json',
+                    '!package-lock.json',
 					'!npm-debug.log',
 					'!composer.json',
 					'!composer.lock',
@@ -481,7 +473,6 @@ module.exports = function( grunt ) {
 
     grunt.registerTask( 'publish', [
         'compile-build',
-        //'bumpup',
         'replace',
         'shell:git_add_all',
         'release'
