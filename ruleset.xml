@@ -96,5 +96,4 @@
 			<property name="minimum_supported_version" value="4.5" />
 		</properties>
 	</rule>
-
 </ruleset>
