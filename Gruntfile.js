@@ -488,6 +488,6 @@ module.exports = function( grunt ) {
     ] );
 
     grunt.registerTask( 'markdown', [
-        'wp_readme_to_markdown',
+        'wp_readme_to_markdown'
     ] );
 };
