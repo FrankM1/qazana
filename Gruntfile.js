@@ -481,7 +481,7 @@ module.exports = function( grunt ) {
 
     grunt.registerTask( 'publish', [
         'compile-build',
-        'bumpup',
+        //'bumpup',
         'replace',
         'shell:git_add_all',
         'release'
