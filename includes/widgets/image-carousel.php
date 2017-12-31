@@ -19,9 +19,29 @@ class Widget_Image_Carousel extends Widget_Base {
 		return 'eicon-slider-push';
 	}
 
+    /**
+	 * Retrieve widget categories.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'photo', 'image', 'gallery', 'carousel', 'slider', 'media' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(

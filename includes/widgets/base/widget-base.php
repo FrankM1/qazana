@@ -212,8 +212,8 @@ abstract class Widget_Base extends Element_Base {
 				$this->add_control(
 					'_skin',
 					[
-						'label' => __( 'Skin', 'qazana' ),
-						'type' => Controls_Manager::HIDDEN,
+						'label'   => __( 'Skin', 'qazana' ),
+						'type'    => Controls_Manager::HIDDEN,
 						'default' => $default_value,
 					]
 				);
@@ -221,10 +221,11 @@ abstract class Widget_Base extends Element_Base {
 				$this->add_control(
 					'_skin',
 					[
-						'label' => __( 'Skin', 'qazana' ),
-						'type' => Controls_Manager::SELECT,
-						'default' => $default_value,
-						'options' => $skin_options,
+						'label'       => __( 'Skin', 'qazana' ),
+						'type'        => Controls_Manager::SELECT,
+						'default'     => $default_value,
+						'options'     => $skin_options,
+						'render_type' => 'template',
 					]
 				);
 			}

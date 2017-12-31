@@ -77,6 +77,7 @@ class Widget_Tooltip extends Widget_Base {
 				'type'    => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
+                    ''       => __( 'Default', 'qazana' ),
 					'red'    => __( 'Red', 'qazana' ),
 					'green'  => __( 'Green', 'qazana' ),
 					'custom' => __( 'Custom', 'qazana' ),

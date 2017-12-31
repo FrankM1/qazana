@@ -19,7 +19,19 @@ class Widget_Menu_Anchor extends Widget_Base {
 
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'anchor', 'menu', 'link', 'url' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(

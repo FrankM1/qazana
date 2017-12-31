@@ -391,22 +391,22 @@ class Plugin {
         require_once $this->includes_dir . 'core/actions.php';
         require_once $this->includes_dir . 'core/filters.php';
 
+        /** Admin *************************************************************/
         require_once $this->includes_dir . 'admin/settings/controls.php';
         require_once $this->includes_dir . 'admin/settings/panel.php';
         require_once $this->includes_dir . 'admin/settings/system-info/main.php';
         require_once $this->includes_dir . 'admin/settings/tools.php';
         require_once $this->includes_dir . 'admin/settings/validations.php';
 
-        if ( is_admin() ) {
-            require_once $this->includes_dir . 'admin/functions.php';
-            require_once $this->includes_dir . 'admin/actions.php';
-            require_once $this->includes_dir . 'admin/api.php';
-            require_once $this->includes_dir . 'admin/editor.php';
-            require_once $this->includes_dir . 'admin/tracker.php';
-            require_once $this->includes_dir . 'admin/upgrades.php';
-            require_once $this->includes_dir . 'admin/admin.php';
-        }
+        require_once $this->includes_dir . 'admin/functions.php';
+        require_once $this->includes_dir . 'admin/actions.php';
+        require_once $this->includes_dir . 'admin/api.php';
+        require_once $this->includes_dir . 'admin/editor.php';
+        require_once $this->includes_dir . 'admin/tracker.php';
+        require_once $this->includes_dir . 'admin/upgrades.php';
+        require_once $this->includes_dir . 'admin/admin.php';
 
+        /** WP Cli *************************************************************/
         if ( defined( 'WP_CLI' ) ) {
             require_once $this->includes_dir . 'wp-cli/commands.php';
         }

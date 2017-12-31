@@ -19,7 +19,19 @@ class Widget_Icon_Box extends Widget_Base {
 
 	public function get_categories() {
 		return [ 'general-elements' ];
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'icon', 'box' ];
+    }
 
 	protected function _register_controls() {
 		$this->_register_section_icon_controls();

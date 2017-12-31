@@ -101,11 +101,7 @@ function qazana_write_log( $log, $type = '1' ) {
  */
 function qazana() {
     // In tests we run the instance manually.
-    if ( ! defined( 'QAZANA_TESTS' ) ) {
-        $instance = Qazana\Plugin::instance();
-
-        return $instance;
-    }
+    return Qazana\Plugin::instance();
 }
 
 /*

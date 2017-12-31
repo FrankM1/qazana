@@ -435,7 +435,7 @@ class Editor {
 			'1.2.5',
 			true
         );
- 
+
         wp_register_script(
 			'ace-language-tools',
 			'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ext-language_tools.js',
@@ -501,7 +501,7 @@ class Editor {
 		if ( empty( $page_title_selector ) ) {
 			$page_title_selector = 'h1.entry-title';
         }
-        
+
         $localize_settings = [
 			'version'             => qazana_get_version(),
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),

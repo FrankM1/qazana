@@ -22,16 +22,6 @@ class Qazana_Test_Editor extends WP_UnitTestCase {
 		ob_end_clean();
 
 		$scripts = [
-			'backbone-marionette',
-			'backbone-radio',
-			'heartbeat',
-			'imagesloaded',
-			'jquery-ui-resizable',
-			'jquery-ui-sortable',
-			'nprogress',
-			'perfect-scrollbar',
-			'qazana-dialog',
-			'tipsy',
             'ace',
             'ace-language-tools',
             'backbone-marionette',
@@ -48,10 +38,9 @@ class Qazana_Test_Editor extends WP_UnitTestCase {
             'nprogress',
             'perfect-scrollbar',
             'qazana-dialog',
+            'qazana-editor',
             'tipsy',
             'wp-auth-check',
-
-            'qazana-editor',
 		];
 
 		foreach ( $scripts as $script ) {
@@ -63,18 +52,16 @@ class Qazana_Test_Editor extends WP_UnitTestCase {
 		qazana()->editor->enqueue_styles();
 
 		$styles = [
+			'qazana-editor',
 			'wp-auth-check',
             'font-awesome',
             'google-font-noto-sans',
-            'google-font-roboto',
             'jquery-fonticonpicker',
             'jquery-fonticonpicker-grey',
             'jquery-simple-dtpicker',
             'qazana-icons',
             'select2',
             'wp-auth-check',
-
-			'qazana-editor',
 		];
 
 		foreach ( $styles as $style ) {

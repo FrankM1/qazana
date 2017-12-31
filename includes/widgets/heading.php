@@ -15,7 +15,19 @@ class Widget_Heading extends Widget_Base {
 
 	public function get_icon() {
 		return 'eicon-type-tool';
-	}
+    }
+
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'heading', 'text', 'title' ];
+    }
 
 	protected function _register_controls() {
 		$this->start_controls_section(
@@ -53,9 +65,9 @@ class Widget_Heading extends Widget_Base {
 			[
 				'label' => __( 'Size', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'default',
+				'default' => '',
 				'options' => [
-					'default' => __( 'Default', 'qazana' ),
+					'' => __( 'Default', 'qazana' ),
 					'small' => __( 'Small', 'qazana' ),
 					'medium' => __( 'Medium', 'qazana' ),
 					'large' => __( 'Large', 'qazana' ),
