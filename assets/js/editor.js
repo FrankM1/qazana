@@ -9319,13 +9319,13 @@ ControlMediaItemView = ControlBaseDataView.extend( {
 module.exports = ControlMediaItemView;
 
 },{"qazana-views/controls/base-data":88}],100:[function(require,module,exports){
-var ControlBaseItemView = require( 'qazana-views/controls/base' ),
+var ControlBaseDataView = require( 'qazana-views/controls/base-data' ),
 	ControlIconView;
 
-ControlIconView = ControlBaseItemView.extend( {
+ControlIconView = ControlBaseDataView.extend( {
 
 	initialize: function() {
-		ControlBaseItemView.prototype.initialize.apply( this, arguments );
+		ControlBaseDataView.prototype.initialize.apply( this, arguments );
 
 		this.filterIcons();
 	},
@@ -9370,7 +9370,7 @@ ControlIconView = ControlBaseItemView.extend( {
 	},
 
 	templateHelpers: function() {
-		var helpers = ControlBaseItemView.prototype.templateHelpers.apply( this, arguments );
+		var helpers = ControlBaseDataView.prototype.templateHelpers.apply( this, arguments );
 
 		helpers.getIconsByGroups = _.bind( function( groups ) {
 			var icons = this.model.get( 'options' ),
@@ -9392,7 +9392,7 @@ ControlIconView = ControlBaseItemView.extend( {
 
 module.exports = ControlIconView;
 
-},{"qazana-views/controls/base":91}],101:[function(require,module,exports){
+},{"qazana-views/controls/base-data":88}],101:[function(require,module,exports){
 var ControlMultipleBaseItemView = require( 'qazana-views/controls/base-multiple' ),
 	ControlImageDimensionsItemView;
 

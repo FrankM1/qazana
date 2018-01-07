@@ -2684,7 +2684,8 @@ body.qazana-editor-preview #qazana-mode-switcher {
     height: 60px;
     line-height: 60px;
     border-radius: 50%;
-    margin-left: -30px; }
+    margin-left: -30px;
+    text-align: center; }
 .dialog-options-widget .dialog-buttons-wrapper > button,
 .dialog-confirm-widget .dialog-buttons-wrapper > button {
   width: 50%; }

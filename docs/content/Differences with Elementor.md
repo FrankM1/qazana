@@ -12,7 +12,7 @@ We've evaluated the best Elementor has to offer and built on top that in order t
 ## What's Included?
 
 - [Extension management]
-    - We've included a very robust extension maanagement systemm that can be used to extend any aspect of the plugin add add new elements, options, skins etc. This feature can be used from within themes and plugins to override, modify or remove existing features.
+    - We've included a very robust extension maanagement system that can be used to extend any aspect of the plugin add add new elements, options, skins etc. This feature can be used from within themes and plugins to override, modify or remove existing features.
 - [New Widgets]
     - Piecharts
     - Odometer and number counters

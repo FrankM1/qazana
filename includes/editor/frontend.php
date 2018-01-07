@@ -79,7 +79,7 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	protected function get_dependencies( $post_id ) {
+	public function get_dependencies( $post_id ) {
 
 		if ( $this->_is_excerpt ) {
 			return;
@@ -588,7 +588,7 @@ class Frontend {
 		if ( get_the_ID() === (int) $post_id ) {
 			$content = '';
 			if ( qazana()->editor->is_edit_mode() ) {
-				$content = '<div class="qazana-alert qazana-alert-danger">' . __( 'Invalid Data: The Template ID cannot be the same as the currently edited template. Please choose a different one.', 'qazana' ) . '</div>';
+				$content = '<div class="qazana-alert qazana-alert-danger">' . __( 'Invalid Data: The Template ID cannot be the same as the currently edited template. Please select a different one.', 'qazana' ) . '</div>';
 			}
 
 			return $content;

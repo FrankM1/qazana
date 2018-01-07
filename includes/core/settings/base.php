@@ -36,7 +36,7 @@ abstract class Base {
      * @access public
     */
     public function __construct() {
-        add_action( 'admin_init', [$this, 'register_settings_fields'] );
+        add_action( 'admin_init', [ $this, 'register_settings_fields' ] );
     }
 
     /**
@@ -61,7 +61,7 @@ abstract class Base {
             return;
         }
 
-        if ( !isset( $tab_args['sections'] ) ) {
+        if ( ! isset( $tab_args['sections'] ) ) {
             $tab_args['sections'] = [];
         }
 
@@ -75,7 +75,7 @@ abstract class Base {
     public final function add_section( $tab_id, $section_id, array $section_args = [] ) {
         $this->ensure_tabs();
 
-        if ( !isset( $this->tabs[ $tab_id ] ) ) {
+        if ( ! isset( $this->tabs[ $tab_id ] ) ) {
             // If the requested tab doesn't exists, use the first tab
             $tab_id = key( $this->tabs );
         }
@@ -99,12 +99,12 @@ abstract class Base {
     public final function add_field( $tab_id, $section_id, $field_id, array $field_args ) {
         $this->ensure_tabs();
 
-        if ( !isset( $this->tabs[ $tab_id ] ) ) {
+        if ( ! isset( $this->tabs[ $tab_id ] ) ) {
             // If the requested tab doesn't exists, use the first tab
             $tab_id = key( $this->tabs );
         }
 
-        if ( !isset( $this->tabs[ $tab_id ]['sections'][ $section_id ] ) ) {
+        if ( ! isset( $this->tabs[ $tab_id ]['sections'][ $section_id ] ) ) {
             // If the requested section doesn't exists, use the first section
             $section_id = key( $this->tabs[ $tab_id ]['sections'] );
         }
@@ -151,7 +151,7 @@ abstract class Base {
 
                     $field['field_args']['id'] = $full_field_id;
 
-                    $field_classes = [$full_field_id];
+                    $field_classes = [ $full_field_id ];
 
                     if ( !empty( $field['class'] ) ) {
                         $field_classes[] = $field['field_args']['class'];
@@ -162,7 +162,7 @@ abstract class Base {
                     add_settings_field(
 						$full_field_id,
 						isset( $field['label'] ) ? $field['label'] : '',
-						[$controls_class_name, 'render'],
+						[ $controls_class_name, 'render' ],
 						qazana()->slug,
 						$full_section_id,
 						$field['field_args']

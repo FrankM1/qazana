@@ -2,7 +2,7 @@
 /**
  * Template Name: Qazana Canvas
  *
- * This template is used for displaying the Visual composer qazana
+ * This template is used for displaying a Qazana Layout on a blank page.
  *
  * @package Qazana
  * @since 1.0.0
