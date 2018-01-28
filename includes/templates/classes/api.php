@@ -21,7 +21,7 @@ class Template_Api {
      * [__construct description]
      */
     public function __construct() {
-        add_action( 'wp_ajax_qazana_reset_remote_library', array( $this, 'ajax_reset_api_data' ) );
+        add_action( 'wp_ajax_qazana_reset_library', array( $this, 'ajax_reset_api_data' ) );
     }
 
     /**

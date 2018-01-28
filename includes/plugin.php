@@ -223,7 +223,7 @@ class Plugin {
     private function setup_globals() {
         /* Versions **********************************************************/
 
-        $this->version = '1.2.0';
+        $this->version = '1.3.0';
         $this->db_version = '120';
 
         /* Paths *************************************************************/

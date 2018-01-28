@@ -210,7 +210,10 @@ class Widget_Tooltip extends Widget_Base {
                     'value' => Scheme_Color::COLOR_4,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .qazana-tooltip__content' => 'border-top-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--north, {{WRAPPER}} .qazana-tooltip__content.v--north-east, {{WRAPPER}} .qazana-tooltip__content.v--north-west' => 'border-top-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--west'                                                                                                                      => 'border-left-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--south, {{WRAPPER}} .qazana-tooltip__content.v--south-east, {{WRAPPER}} .qazana-tooltip__content.v--south-west' => 'border-bottom-color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-tooltip__content.v--east'                                                                                                                      => 'border-color: transparent {{VALUE}} transparent transparent;',
                 ],
             ]
         );
@@ -234,9 +237,6 @@ class Widget_Tooltip extends Widget_Base {
                 'selectors'  => [
                     '{{WRAPPER}} .qazana-tooltip__content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
-                'condition' => [
-					'button_border!' => '',
-				],
             ]
         );
 

@@ -268,17 +268,12 @@ abstract class Controls_Stack {
 
 		$settings = $this->get_controls_settings();
 
-		$active_controls = array_reduce(
-			array_keys( $controls ), function( $active_controls, $control_key ) use ( $controls, $settings ) {
-				$control = $controls[ $control_key ];
-
-				if ( $this->is_control_visible( $control, $settings ) ) {
-					$active_controls[ $control_key ] = $control;
-				}
-
-				return $active_controls;
-			}, []
-		);
+        $active_controls = [];
+		foreach ( $controls as $control_key => $control ) {
+			if ( $this->is_control_visible( $control, $settings ) ) {
+				$active_controls[ $control_key ] = $control;
+			}
+		}
 
 		return $active_controls;
 	}
@@ -806,7 +801,7 @@ abstract class Controls_Stack {
 		if ( $setting_key ) {
 			if ( qazana_is_mobile() && ! empty( $this->_settings[ $setting_key . '_mobile' ] ) ) {
 				$setting_key = $setting_key . '_mobile';
-		    } else if( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_tablet' ] ) ) {
+		    } elseif ( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_tablet' ] ) ) {
 		        $setting_key = $setting_key . '_tablet';
 		    }
 		}

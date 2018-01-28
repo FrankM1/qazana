@@ -75,12 +75,13 @@ class Import_Images {
             return $attachment;
         }
 
+        if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+        }
+
         // as per wp-admin/includes/upload.php
         $post_id = wp_insert_attachment( $post, $upload['file'] );
-        wp_update_attachment_metadata(
-            $post_id,
-            wp_generate_attachment_metadata( $post_id, $upload['file'] )
-        );
+        wp_update_attachment_metadata( $post_id, wp_generate_attachment_metadata( $post_id, $upload['file'] ) );
         update_post_meta( $post_id, '_qazana_source_image_hash', $this->_get_hash_image( $attachment['url'] ) );
 
         $new_attachment = [

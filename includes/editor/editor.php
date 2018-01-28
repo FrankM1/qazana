@@ -16,7 +16,7 @@ class Editor {
 
 	const EDITING_NONCE_KEY = 'qazana-editing';
 
-	const EDITING_CAPABILITY = 'edit_pages';
+	const EDITING_CAPABILITY = 'edit_posts';
 
 	/**
 	 * Post ID.
@@ -311,8 +311,6 @@ class Editor {
 		// Set the global data like $authordata and etc
 		setup_postdata( $this->_post_id );
 
-        $editor_data = qazana()->db->get_builder( $this->_post_id, DB::STATUS_DRAFT );
-
         // Reset global variable
         $wp_styles = new \WP_Styles();
         $wp_scripts = new \WP_Scripts();
@@ -525,7 +523,7 @@ class Editor {
 			'qazana_site'            => 'https://radiumthemes.com/plugins/qazana',
 			'help_the_content_url'   => 'https://radiumthemes.com/plugins/qazana/the-content-missing/',
 			'assets_url'             => qazana()->core_assets_url,
-			'data'                   => $editor_data,
+			'data'                   => qazana()->db->get_builder( $this->_post_id, DB::STATUS_DRAFT ),
 			'locked_user'            => $locked_user,
 			'is_rtl'                 => is_rtl(),
 			'locale'                 => get_locale(),

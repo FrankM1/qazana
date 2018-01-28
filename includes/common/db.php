@@ -124,7 +124,7 @@ class DB {
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
 		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
 
-		if ( self::STATUS_DRAFT === $status && isset( $_GET['qazana'] ) ) {
+		if ( self::STATUS_DRAFT === $status && ( isset( $_GET['action'] ) && $_GET['action'] === 'qazana' ) ) {
 			$draft_data = $this->_get_json_meta( $post_id, '_qazana_draft_data' );
 
 			if ( ! empty( $draft_data ) ) {

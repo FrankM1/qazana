@@ -147,7 +147,7 @@ class Template_Manager {
 			} 
 			return true;
 		}
-		
+	
 		return false;
 	}
 
