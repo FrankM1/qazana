@@ -321,17 +321,6 @@ module.exports = function( grunt ) {
                 ]
             },
 
-            /*plugin_init: {
-                src: [ 'includes/plugin.php' ],
-                overwrite: true,
-                replacements: [
-                    {
-                        from: /$this->version = \d{1,1}\.\d{1,2}\.\d{1,2}/g,
-                        to: '$this->version = \'<%= pkg.version %>\''
-                    },
-                ]
-            },*/
-
             readme: {
                 src: [ 'readme.txt' ],
                 overwrite: true,
