@@ -365,7 +365,35 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
             'label'     => __( 'Color', 'qazana' ),
             'type'      => Controls_Manager::COLOR,
             'selectors' => [
-                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'arrows_hover_background_color',
+        [
+            'label'     => __( 'Background Color', 'qazana' ),
+            'type'      => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'background-color: {{VALUE}};',
+            ],
+            'condition' => [
+                'navigation' => [ 'arrows', 'both' ],
+            ],
+        ]
+    );
+
+    $element->add_control(
+        'arrows_hover_border_color',
+        [
+            'label'     => __( 'Border Color', 'qazana' ),
+            'type'      => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'border-color: {{VALUE}};',
             ],
             'condition' => [
                 'navigation' => [ 'arrows', 'both' ],
