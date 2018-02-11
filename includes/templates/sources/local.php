@@ -725,7 +725,7 @@ class Source_Local extends Source_Base {
 	 * @access private
 	*/
 	private function prepare_template_export( $template_id ) {
-        
+
 		$template_data = $this->get_data( [
 			'template_id' => $template_id,
 		]);
@@ -791,7 +791,6 @@ class Source_Local extends Source_Base {
 			// template library bulk actions.
 			add_filter( 'bulk_actions-edit-qazana_library', [ $this, 'admin_add_bulk_export_action' ] );
 			add_filter( 'handle_bulk_actions-edit-qazana_library', [ $this, 'admin_export_multiple_templates' ], 10, 3 );
-
 		}
 
 		add_action( 'template_redirect', [ $this, 'block_template_frontend' ] );

@@ -32,7 +32,7 @@ Class Loader {
 
         $base_path  = ! empty($base['path'] ) ? $base['path'] : qazana()->plugin_dir;
         $base_url   = ! empty($base['url'] ) ? $base['url'] : qazana()->plugin_url;
-        
+
         $this->_stack = array(
             get_stylesheet_directory(),
             get_template_directory(),

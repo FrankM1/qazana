@@ -29,7 +29,7 @@
 
 // Project related.
 var project                 = 'qazana'; // Project Name.
-var projectURL              = 'qazana.dev'; // Project URL. Could be something like localhost:8888.
+var projectURL              = 'qazana.test'; // Project URL. Could be something like localhost:8888.
 var productURL              = './'; // Theme/Plugin URL. Leave it like it is, since our gulpfile.js lives in the root folder.
 
 // Translation related.

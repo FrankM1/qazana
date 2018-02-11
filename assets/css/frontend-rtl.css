@@ -1542,7 +1542,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     position: relative; }
   .slick-slideshow-large-container-smalls .slick-slide.is-selected:before,
   .slick-slideshow-photo-gallery-container-smalls .slick-slide.is-selected:before {
-    font-family: 'icomoon' !important;
+    font-family: 'eicons';
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -2075,8 +2075,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   bottom: 100%;
   margin-bottom: 22px;
   left: 50%;
-  margin-left: -150px;
-  border-top: 3px solid #eeb523; }
+  margin-left: -150px; }
   .qazana-tooltip__content:before {
     z-index: -1;
     content: '';
@@ -2094,19 +2093,22 @@ body.qazana-page .qazana-widget-menu-anchor {
     border-width: 8px;
     border-style: solid;
     border-color: #ffffff transparent transparent; }
+  .qazana-tooltip__content.v--north {
+    border-top: 3px solid #eeb523; }
   .qazana-tooltip__content.v--north-east {
     margin-left: -40px; }
   .qazana-tooltip__content.v--north-east:after {
     left: 0;
     margin-left: 28px; }
   .qazana-tooltip__content.v--east {
-    margin-left: 50%;
     top: 50%;
-    -webkit-transform: translate(10px, -50%);
-        -ms-transform: translate(10px, -50%);
-            transform: translate(10px, -50%);
+    -webkit-transform: translate(40%, -54%);
+        -ms-transform: translate(40%, -54%);
+            transform: translate(40%, -54%);
     bottom: auto;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    margin-left: 22px;
+    border-right: 3px solid #eeb523; }
   .qazana-tooltip__content.v--east:after {
     right: 100%;
     left: auto;
@@ -2123,7 +2125,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     margin-left: -40px;
     bottom: auto;
     margin-top: 22px;
-    border-top: none;
     padding-top: 20px;
     padding-bottom: 17px;
     border-bottom: 3px solid #eeb523; }
@@ -2141,7 +2142,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     margin-bottom: 0;
     bottom: auto;
     margin-top: 22px;
-    border-top: none;
     padding-top: 20px;
     padding-bottom: 17px;
     border-bottom: 3px solid #eeb523; }
@@ -2160,7 +2160,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     right: 50%;
     margin-right: -40px;
     margin-top: 22px;
-    border-top: none;
     padding-top: 20px;
     padding-bottom: 17px;
     border-bottom: 3px solid #eeb523; }
@@ -2178,10 +2177,11 @@ body.qazana-page .qazana-widget-menu-anchor {
     left: auto;
     bottom: 50%;
     margin-bottom: 0;
-    -webkit-transform: translateY(50%);
-        -ms-transform: translateY(50%);
-            transform: translateY(50%);
-    margin-right: 22px; }
+    -webkit-transform: translate(-54%, 50%);
+        -ms-transform: translate(-54%, 50%);
+            transform: translate(-54%, 50%);
+    margin-right: 22px;
+    border-left: 3px solid #eeb523; }
   .qazana-tooltip__content.v--west:after {
     left: 100%;
     right: auto;
@@ -2208,6 +2208,10 @@ body.qazana-page .qazana-widget-menu-anchor {
     border-top-color: #789820; }
   .qazana-tooltip__content.v--border-green.v--south, .qazana-tooltip__content.v--border-green.v--south-east, .qazana-tooltip__content.v--border-green.v--south-west {
     border-bottom-color: #789820; }
+  .qazana-tooltip__content > *:last-child {
+    margin-bottom: 0; }
+  .qazana-tooltip__content p:last-child {
+    margin: 0; }
 
 .qazana-tooltip.v--show .qazana-tooltip__content {
   display: block; }

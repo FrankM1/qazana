@@ -121,6 +121,7 @@ class Plugin {
         // Only run these methods if they haven't been ran previously
         if ( null === $instance ) {
             $instance = new self();
+            $instance->init_plugin_version();
             $instance->setup_globals();
             $instance->includes();
             $instance->setup_actions();
@@ -222,9 +223,7 @@ class Plugin {
      */
     private function setup_globals() {
         /* Versions **********************************************************/
-
-        $this->version = '1.2.0';
-        $this->db_version = '120';
+        $this->db_version = '120'; // Bumped up on api changes that need a db update for compatibility
 
         /* Paths *************************************************************/
 
@@ -424,32 +423,30 @@ class Plugin {
 
         $paths = [
 			'path' => $this->plugin_dir,
-			'uri' => $this->plugin_url,
+			'uri'  => $this->plugin_url,
         ];
 
         Core\Settings\Manager::run();
 
-        $this->db = new DB();
-        $this->icons_manager = new Icons_Manager();
-        $this->controls_manager = new Controls_Manager();
-        $this->schemes_manager = new Schemes_Manager();
-        $this->elements_manager = new Elements_Manager();
-        $this->widget_loader = new Loader( $paths, $this->widget_locations );
-        $this->widgets_manager = new Widgets_Manager();
-        $this->skins_manager = new Skins_Manager();
-        $this->posts_css_manager = new Posts_CSS_Manager();
-        $this->customcss = new Custom_Css();
-        $this->editor = new Editor();
-        $this->preview = new Preview();
-        $this->frontend = new Frontend();
-        $this->heartbeat = new Heartbeat();
-        $this->templates_manager = new Template_Manager();
-        $this->cron = new Cron();
-
-        $this->extensions_loader = new Loader( $paths, $this->extensions_locations );
+        $this->db                 = new DB();
+        $this->icons_manager      = new Icons_Manager();
+        $this->controls_manager   = new Controls_Manager();
+        $this->schemes_manager    = new Schemes_Manager();
+        $this->elements_manager   = new Elements_Manager();
+        $this->widget_loader      = new Loader( $paths, $this->widget_locations );
+        $this->widgets_manager    = new Widgets_Manager();
+        $this->skins_manager      = new Skins_Manager();
+        $this->posts_css_manager  = new Posts_CSS_Manager();
+        $this->customcss          = new Custom_Css();
+        $this->editor             = new Editor();
+        $this->preview            = new Preview();
+        $this->frontend           = new Frontend();
+        $this->heartbeat          = new Heartbeat();
+        $this->templates_manager  = new Template_Manager();
+        $this->cron               = new Cron();
+        $this->extensions_loader  = new Loader( $paths, $this->extensions_locations );
         $this->extensions_manager = new Extensions\Manager( $this->extensions_loader );
-
-        $this->mobile_detect = new MobileDetect();
+        $this->mobile_detect      = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
 
         do_action( 'qazana/after/init_classes' );
@@ -566,4 +563,19 @@ class Plugin {
     public function get_db_version() {
         return $this->db_version;
     }
+
+    /**
+	 * Get plugin version
+	 *
+	 * @param $name
+	 *
+	 * @return array
+	 */
+	public function init_plugin_version() {
+		$file = plugin_dir_path( QAZANA__FILE__ ) . 'qazana.php';
+		if ( ! $this->version && file_exists( $file ) && function_exists( 'get_plugin_data' ) ) {
+			$plugin	 = get_plugin_data( $file );
+			$this->version	 = $plugin['Version'];
+		}
+	}
 }

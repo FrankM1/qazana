@@ -42,8 +42,8 @@ class Model extends BaseModel {
 	public function get_panel_page_settings() {
 		return [
 			'title' => __( 'Page Settings', 'qazana' ),
-			'menu' => [
-				'icon' => 'fa fa-cog',
+			'menu'  => [
+				'icon'       => 'fa fa-cog',
 				'beforeItem' => 'clear-page',
 			],
 		];
@@ -60,23 +60,23 @@ class Model extends BaseModel {
 	protected function _register_controls() {
 
 		do_action( 'qazana/core/settings/before/'. $this->get_name(), $this );
-		
+
 		$this->start_controls_section(
 			'section_page_settings',
 			[
 				'label' => __( 'Page Settings', 'qazana' ),
-				'tab' => Controls_Manager::TAB_SETTINGS,
+				'tab'   => Controls_Manager::TAB_SETTINGS,
 			]
 		);
 
 		$this->add_control(
 			'post_title',
 			[
-				'label' => __( 'Title', 'qazana' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => $this->post->post_title,
+				'label'       => __( 'Title', 'qazana' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => $this->post->post_title,
 				'label_block' => true,
-				'separator' => 'none',
+				'separator'   => 'none',
 			]
 		);
 
@@ -89,13 +89,13 @@ class Model extends BaseModel {
 		$this->add_control(
 			'hide_title',
 			[
-				'label' => __( 'Hide Title', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
+				'label'     => __( 'Hide Title', 'qazana' ),
+				'type'      => Controls_Manager::SWITCHER,
 				'label_off' => __( 'No', 'qazana' ),
-				'label_on' => __( 'Yes', 'qazana' ),
+				'label_on'  => __( 'Yes', 'qazana' ),
 				// translators: %s: Setting Page link
 				'description' => sprintf( __( 'Not working? You can set a different selector for the title in the <a href="%s" target="_blank">Settings page</a>.', 'qazana' ), admin_url( 'admin.php?page=' . qazana()->slug ) ),
-				'selectors' => [
+				'selectors'   => [
 					'{{WRAPPER}} ' . $page_title_selector => 'display: none',
 				],
 				'export' => '__return_true',
@@ -114,11 +114,11 @@ class Model extends BaseModel {
 			$this->add_control(
 				'template',
 				[
-					'label' => __( 'Template', 'qazana' ),
-					'type' => Controls_Manager::SELECT,
+					'label'   => __( 'Template', 'qazana' ),
+					'type'    => Controls_Manager::SELECT,
 					'default' => 'default',
 					'options' => $options,
-					'export' => function( $value ) {
+					'export'  => function( $value ) {
 						return Manager::TEMPLATE_CANVAS === $value;
 					},
 				]
@@ -133,8 +133,8 @@ class Model extends BaseModel {
 			$this->add_control(
 				'post_status',
 				[
-					'label' => __( 'Status', 'qazana' ),
-					'type' => Controls_Manager::SELECT,
+					'label'   => __( 'Status', 'qazana' ),
+					'type'    => Controls_Manager::SELECT,
 					'default' => $this->post->post_status,
 					'options' => get_post_statuses(),
 				]
@@ -147,15 +147,15 @@ class Model extends BaseModel {
 			'section_page_style',
 			[
 				'label' => __( 'Page Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
 			[
-				'name' => 'background',
-				'label' => __( 'Background', 'qazana' ),
+				'name'           => 'background',
+				'label'          => __( 'Background', 'qazana' ),
 				'fields_options' => [
 					'__all' => [
 						'export' => '__return_true',
@@ -167,10 +167,10 @@ class Model extends BaseModel {
 		$this->add_responsive_control(
 			'padding',
 			[
-				'label' => __( 'Padding', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Padding', 'qazana' ),
+				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+				'selectors'  => [
 					'{{WRAPPER}}' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
 				'export' => '__return_true',
@@ -183,16 +183,16 @@ class Model extends BaseModel {
 			'_section_custom_css',
 			[
 				'label' => __( 'Custom CSS', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
 			'custom_css',
 			[
-				'type' => Controls_Manager::CODE,
-				'label' => __( 'Add your own custom CSS here', 'qazana' ),
-				'language' => 'css',
+				'type'        => Controls_Manager::CODE,
+				'label'       => __( 'Add your own custom CSS here', 'qazana' ),
+				'language'    => 'css',
 				'render_type' => 'ui',
 			]
 		);
@@ -200,8 +200,8 @@ class Model extends BaseModel {
 		$this->add_control(
 			'_custom_css_description',
 			[
-				'raw' => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
-				'type' => Controls_Manager::RAW_HTML,
+				'raw'             => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
+				'type'            => Controls_Manager::RAW_HTML,
 				'content_classes' => 'qazana-descriptor',
 			]
 		);
@@ -209,6 +209,5 @@ class Model extends BaseModel {
 		$this->end_controls_section();
 
 		do_action( 'qazana/core/settings/after/'. $this->get_name(), $this );
-	
 	}
 }

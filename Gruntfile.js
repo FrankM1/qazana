@@ -307,30 +307,19 @@ module.exports = function( grunt ) {
 
         replace: {
             plugin_main: {
-                src: [ 'qazana.php' ],
+                src: [ 'qazana.php', 'includes/plugin.php' ],
                 overwrite: true,
                 replacements: [
+                    {
+                        from: /this->version = '.*?'/g,
+                        to: 'this->version = \'<%= pkg.version %>\''
+                    },
                     {
                         from: /Version: \d{1,1}\.\d{1,2}\.\d{1,2}/g,
                         to: 'Version: <%= pkg.version %>'
-                    },
-                    {
-                        from: /BUILDER_VERSION', '.*?'/g,
-                        to: 'BUILDER_VERSION\', \'<%= pkg.version %>\''
                     }
                 ]
             },
-
-            /*plugin_init: {
-                src: [ 'includes/plugin.php' ],
-                overwrite: true,
-                replacements: [
-                    {
-                        from: /$this->version = \d{1,1}\.\d{1,2}\.\d{1,2}/g,
-                        to: '$this->version = \'<%= pkg.version %>\''
-                    },
-                ]
-            },*/
 
             readme: {
                 src: [ 'readme.txt' ],
