@@ -19,6 +19,18 @@ class Widget_Progress extends Widget_Base {
 
 	public function get_categories() {
 		return [ 'general-elements' ];
+    }
+    
+    /**
+	 * Retrieve widget keywords.
+	 *
+	 * @since 1.0.10
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'skill' ];
 	}
 
 	protected function _register_controls() {
@@ -38,7 +50,7 @@ class Widget_Progress extends Widget_Base {
 				'default' => __( 'My Skill', 'qazana' ),
 				'label_block' => true,
 			]
-		);
+        );
 
 		$this->add_control(
 			'progress_type',
@@ -161,10 +173,10 @@ class Widget_Progress extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Title Style', 'qazana' ),
+				'label' => __( 'Title', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
-		);
+        );
 
 		$this->add_control(
 			'title_color',
@@ -188,7 +200,56 @@ class Widget_Progress extends Widget_Base {
 				'selector' => '{{WRAPPER}} .qazana-title',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
+        );
+
+        $this->add_responsive_control( 'title_spacing', [
+            'type'        => Controls_Manager::SLIDER,
+            'label'       => esc_html__( 'Bottom spacing', 'qazana' ),
+            'description' => esc_html__( 'Space below title.', 'qazana' ),
+            'range'       => [
+                'px' => [
+                    'min' => 0,
+                    'max' => 100,
+                ],
+            ],
+            'selectors'          => [
+                '{{WRAPPER}} .qazana-progress-wrapper' => 'margin-top: {{SIZE}}px',
+            ],
+        ]);
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'section_description',
+			[
+				'label' => __( 'Description', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+        );
+
+		$this->add_control(
+			'description_color',
+			[
+				'label' => __( 'Text Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .qazana-progress-text, {{WRAPPER}} .qazana-progress-percentage' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_2,
+				],
+			]
 		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'description_typography',
+				'selector' => '{{WRAPPER}} .qazana-progress-text, {{WRAPPER}} .qazana-progress-percentage',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+			]
+        );
 
 		$this->end_controls_section();
 	}

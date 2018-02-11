@@ -1542,7 +1542,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     position: relative; }
   .slick-slideshow-large-container-smalls .slick-slide.is-selected:before,
   .slick-slideshow-photo-gallery-container-smalls .slick-slide.is-selected:before {
-    font-family: 'icomoon' !important;
+    font-family: 'eicons';
     speak: none;
     font-style: normal;
     font-weight: normal;

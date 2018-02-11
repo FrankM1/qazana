@@ -629,6 +629,13 @@ class Editor {
             qazana_get_version()
         );
 
+        wp_register_style(
+			'font-awesome',
+			qazana()->core_assets_url . 'lib/font-awesome/css/font-awesome' . $suffix . '.css',
+			[],
+			'4.7.0'
+		);
+
 		wp_register_style(
 			'google-font-noto-sans',
 			'https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i',

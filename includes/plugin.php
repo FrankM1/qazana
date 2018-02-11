@@ -121,6 +121,7 @@ class Plugin {
         // Only run these methods if they haven't been ran previously
         if ( null === $instance ) {
             $instance = new self();
+            $instance->init_plugin_version();
             $instance->setup_globals();
             $instance->includes();
             $instance->setup_actions();
@@ -222,9 +223,7 @@ class Plugin {
      */
     private function setup_globals() {
         /* Versions **********************************************************/
-
-        $this->version = '1.3.0';
-        $this->db_version = '120';
+        $this->db_version = '120'; // Bumped up on api changes that need a db update for compatibility
 
         /* Paths *************************************************************/
 
@@ -564,4 +563,19 @@ class Plugin {
     public function get_db_version() {
         return $this->db_version;
     }
+
+    /**
+	 * Get plugin version
+	 *
+	 * @param $name
+	 *
+	 * @return array
+	 */
+	public function init_plugin_version() {
+		$file = plugin_dir_path( QAZANA__FILE__ ) . 'qazana.php';
+		if ( ! $this->version && file_exists( $file ) && function_exists( 'get_plugin_data' ) ) {
+			$plugin	 = get_plugin_data( $file );
+			$this->version	 = $plugin['Version'];
+		}
+	}
 }

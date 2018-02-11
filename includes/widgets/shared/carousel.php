@@ -309,9 +309,9 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
             'default' => array(
                 'unit'     => 'px',
                 'top'      => 0,
-                'right'    => '-40',
+                'right'    => '-60',
                 'bottom'   => 0,
-                'left'     => '-40',
+                'left'     => '-60',
                 'isLinked' => false,
             ),
             'selectors' => [

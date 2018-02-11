@@ -429,11 +429,11 @@ class Widget_Social_Icons extends Widget_Base {
 	}
 
 	protected function _content_template() {
-		?>
+        ?>
 		<div class="qazana-social-icons-wrapper qazana-social-icons-{{ settings.icon_color }} qazana-social-icons-align-{{ settings.align }}">
 			<# _.each( settings.social_icon_list, function( item ) {
 				var link = item.link ? item.link.url : '',
-					social = item.social.replace( /^[^-]*-\s*/ );
+                    social = item.social.replace( 'fa fa-', '' );
  				#>
 				<a class="qazana-icon qazana-social-icon qazana-social-icon-{{ social }} qazana-animation-{{ settings.hover_animation }}" href="{{ link }}">
 					<i class="{{ item.social }}"></i>

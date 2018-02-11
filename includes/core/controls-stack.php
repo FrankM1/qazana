@@ -820,7 +820,6 @@ abstract class Controls_Stack {
 	 *
 	 * @return array The settings.
 	 */
-
 	public function get_settings( $setting_key = null ) {
 		return self::_get_items( $this->_settings, $setting_key );
 	}

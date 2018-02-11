@@ -369,6 +369,13 @@ class Frontend {
         );
 
         wp_register_style(
+			'font-awesome',
+			qazana()->core_assets_url . 'lib/font-awesome/css/font-awesome' . $suffix . '.css',
+			[],
+			'4.7.0'
+		);
+
+        wp_register_style(
             'qazana-frontend',
             qazana()->core_assets_url . 'css/frontend' . $direction_suffix . $suffix . '.css',
             [
@@ -460,7 +467,7 @@ class Frontend {
 
 	public function enqueue_font( $font ) {
 		$font_type = Fonts::get_font_type( $font );
-		$cache_id = $font_type . $font;
+		$cache_id = sanitize_title_with_dashes( $font_type . $font );
 
 		if ( in_array( $cache_id, $this->registered_fonts ) ) {
 			return;
