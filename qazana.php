@@ -4,7 +4,7 @@
  * Description: Front-end page builder for WordPress with live drag and drop editing. Build high quality responsive websites and landing pages visually. Any theme, anywhere.
  * Plugin URI: https://qazana.net/
  * Author: RadiumThemes.com
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author URI: https://qazana.net/
  *
  * Text Domain: qazana
