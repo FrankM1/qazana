@@ -451,6 +451,13 @@ module.exports = function( grunt ) {
         'postcss'
     ] );
 
+    grunt.registerTask( 'publish', [
+        'compile-build',
+        'replace',
+        'shell:git_add_all',
+        'release'
+    ] );
+
     grunt.registerTask( 'build', [
         'compile-build',
         'usebanner',
@@ -458,13 +465,6 @@ module.exports = function( grunt ) {
         'copy',
         'compress',
         'default' // Remove banners for GitHub
-    ] );
-
-    grunt.registerTask( 'publish', [
-        'compile-build',
-        'replace',
-        'shell:git_add_all',
-        'release'
     ] );
 
     grunt.registerTask( 'markdown', [
