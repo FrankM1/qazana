@@ -10282,31 +10282,30 @@ ControlWPWidgetItemView = ControlBaseDataView.extend( {
 	},
 
 	onReady: function() {
+        var self = this;
+
 		qazana.ajax.send( 'editor_get_wp_widget_form', {
 			data: {
 				// Fake Widget ID
-				id: this.model.cid,
-				widget_type: this.model.get( 'widget' ),
-				data: JSON.stringify( this.elementSettingsModel.toJSON() )
+				id: self.model.cid,
+				widget_type: self.model.get( 'widget' ),
+				data: JSON.stringify( self.elementSettingsModel.toJSON() )
 			},
-			success: _.bind( function( data ) {
-				this.ui.form.html( data );
-
+			success: function( data ) {
+				self.ui.form.html( data );
 				// WP >= 4.8
 				if ( wp.textWidgets ) {
-					this.ui.form.addClass( 'open' );
+					self.ui.form.addClass( 'open' );
 					var event = new jQuery.Event( 'widget-added' );
-					wp.textWidgets.handleWidgetAdded( event, this.ui.form );
-					wp.mediaWidgets.handleWidgetAdded( event, this.ui.form );
-
+					wp.textWidgets.handleWidgetAdded( event, self.ui.form );
+					wp.mediaWidgets.handleWidgetAdded( event, self.ui.form );
 					// WP >= 4.9
 					if ( wp.customHtmlWidgets ) {
-						wp.customHtmlWidgets.handleWidgetAdded( event, this.ui.form );
+						wp.customHtmlWidgets.handleWidgetAdded( event, self.ui.form );
 					}
 				}
-
-				qazana.hooks.doAction( 'panel/widgets/' + this.model.get( 'widget' ) + '/controls/wp_widget/loaded', this );
-			}, this )
+				qazana.hooks.doAction( 'panel/widgets/' + self.model.get( 'widget' ) + '/controls/wp_widget/loaded', self );
+			}
 		} );
 	}
 } );

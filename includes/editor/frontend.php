@@ -394,6 +394,8 @@ class Frontend {
 		wp_enqueue_style( 'qazana-icons' );
 		wp_enqueue_style( 'qazana-frontend' );
 
+        do_action( 'qazana/frontend/after_enqueue_styles' );
+
 		if ( ! qazana()->preview->is_preview_mode() ) {
 			$this->parse_global_css_code();
 
@@ -401,7 +403,6 @@ class Frontend {
 			$css_file->enqueue();
 		}
 
-		do_action( 'qazana/frontend/after_enqueue_styles' );
 	}
 
 	/**

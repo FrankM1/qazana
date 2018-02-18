@@ -300,10 +300,10 @@ class Widgets_Manager {
 		$data = json_decode( stripslashes( $_POST['data'] ), true );
 
 		$element_data = [
-			'id' => $_POST['id'],
-			'elType' => 'widget',
+			'id'         => $_POST['id'],
+			'elType'     => 'widget',
 			'widgetType' => $_POST['widget_type'],
-			'settings' => $data,
+			'settings'   => $data,
 		];
 
 		/**
