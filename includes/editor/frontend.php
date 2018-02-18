@@ -320,9 +320,9 @@ class Frontend {
 			$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
 
 			$qazana_frontend_config['elements'] = [
-				'data' => (object) [],
+				'data'         => (object) [],
 				'editSettings' => (object) [],
-				'keys' => $elements_frontend_keys,
+				'keys'         => $elements_frontend_keys,
 			];
 		}
 

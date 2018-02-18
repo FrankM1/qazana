@@ -73,7 +73,6 @@ function add_position_options_to_widget($element, $section_id, $args) {
                 'range' => [
                     'px' => [
                         'min'  => -1000,
-                        'max'  => 1000,
                         'step' => 1,
                     ],
                     '%' => [
@@ -90,6 +89,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
                 ],
             ]
         );
+
         $element->add_responsive_control(
             '_element_top',
             [
@@ -101,7 +101,6 @@ function add_position_options_to_widget($element, $section_id, $args) {
                 'range' => [
                     'px' => [
                         'min'  => -1000,
-                        'max'  => 1000,
                         'step' => 1,
                     ],
                     '%' => [

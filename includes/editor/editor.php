@@ -589,13 +589,13 @@ class Editor {
                 'type_here'                                => __( 'Type Here', 'qazana' ),
                 'proceed_anyway'                           => __( 'Proceed Anyway', 'qazana' ),
             ]
-	];
+	    ];
 
-	$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+	    $localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
 
-	$this->add_localize_settings( $localize_settings );
+	    $this->add_localize_settings( $localize_settings );
 
-	// Very important that this be loaded before 'qazana-editor' - for use by extensions
+	    // Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );
 
         qazana()->controls_manager->enqueue_control_scripts();
@@ -783,7 +783,7 @@ class Editor {
 	public function set_edit_mode( $edit_mode ) {
 		$this->_is_edit_mode = $edit_mode;
     }
- 
+
     /**
 	 * @since 1.3.0
 	 * @access public

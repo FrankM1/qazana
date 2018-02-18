@@ -94,7 +94,7 @@ function qazana_init() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'qazana_init'
+ * @uses do_action() Calls 'qazana_init_classes'
  */
 function qazana_init_classes() {
     do_action( __FUNCTION__ );

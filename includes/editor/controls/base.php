@@ -34,6 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *                            true.
  * @param bool   $label_block Optional. Whether to display the label in a
  *                            separate line. Default is false.
+ * @param bool   $custom_class Optional. Whether to add a custom class to the control.
+ *                             Default is false.
  */
 abstract class Base_Control {
 
@@ -47,13 +49,14 @@ abstract class Base_Control {
 	 * @var array
 	 */
 	private $_base_settings = [
-		'label' => '',
-		'title' => '',
-		'placeholder' => '',
-		'description' => '',
-		'separator' => 'default',
-		'show_label' => true,
-		'label_block' => false,
+		'label'        => '',
+		'title'        => '',
+		'placeholder'  => '',
+		'description'  => '',
+		'separator'    => 'default',
+		'show_label'   => true,
+		'label_block'  => false,
+		'custom_class' => '',
 	];
 
 	/**

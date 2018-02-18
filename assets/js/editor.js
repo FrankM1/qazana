@@ -8627,13 +8627,18 @@ ControlBaseView = Marionette.CompositeView.extend( {
 
 	onRender: function() {
 		var layoutType = this.model.get( 'label_block' ) ? 'block' : 'inline',
-			showLabel = this.model.get( 'show_label' ),
+            showLabel = this.model.get( 'show_label' ),
+            elCustomClass = this.model.get( 'custom_class' ),
 			elClasses = 'qazana-label-' + layoutType;
 
 		elClasses += ' qazana-control-separator-' + this.model.get( 'separator' );
 
 		if ( ! showLabel ) {
 			elClasses += ' qazana-control-hidden-label';
+        }
+        
+        if ( elCustomClass ) {
+            elClasses += ' qazana-control-custom-class-' + elCustomClass;
 		}
 
 		this.$el.addClass( elClasses );

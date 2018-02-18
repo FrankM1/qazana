@@ -1,7 +1,7 @@
 <?php
 namespace Qazana;
 
-add_action( 'qazana/element/after_section_start', '\Qazana\register_controls_section_carousel_settings', 10, 3);
+add_action( 'qazana/element/after_section_start', '\Qazana\register_controls_section_carousel_settings', 10, 3 );
 /**
  * Undocumented function
  *
@@ -16,9 +16,9 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         return;
     }
 
-    $slides_to_show = range( 1, 10 );
-    $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
-    $slides_to_show[''] = __( 'Default', 'qazana' );
+                    $slides_to_show = range( 1, 10 );
+                    $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+    $slides_to_show['']             = __( 'Default', 'qazana' );
     array_unshift( $slides_to_show, '' );
 
     $element->add_responsive_control(
@@ -98,6 +98,53 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'return_value'       => 'yes',
             'default'            => 'yes',
             'frontend_available' => true,
+        ]
+    );
+
+    $element->add_control(
+        'centerMode',
+        [
+            'label'              => __( 'centerMode', 'qazana' ),
+            'type'               => Controls_Manager::SWITCHER,
+            'label_on'           => __( 'Yes', 'qazana' ),
+            'label_off'          => __( 'No', 'qazana' ),
+            'return_value'       => 'yes',
+            'frontend_available' => true,
+        ]
+    );
+
+    $element->add_control(
+        'centerPadding',
+        [
+            'label'   => __( 'Center padding', 'qazana' ),
+            'type'    => Controls_Manager::SLIDER,
+            'default' => [
+                'size' => 200,
+            ],
+            'range' => [
+                'px' => [
+                    'min'  => 0,
+                    'step' => 1,
+                ],
+            ],
+            'size_units' => [ 'px' ],
+            'condition'  => [
+                'centerMode!' => '',
+            ],
+            'frontend_available' => true,
+        ]
+    );
+
+    $element->add_control(
+        'overflow_visible',
+        [
+            'label'     => __( 'Overflow visible', 'qazana' ),
+            'type'      => Controls_Manager::SWITCHER,
+            'label_on'  => __( 'Yes', 'qazana' ),
+            'label_off' => __( 'No', 'qazana' ),
+            'selectors' => [
+                '{{WRAPPER}} .slick-list' => 'overflow: visible;',
+            ],
         ]
     );
 
@@ -201,10 +248,10 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'description' => esc_html__( 'Selector of another carousel to sync with (e.g., ".my-other-nav-carousel")', 'qazana' ),
         ]
     );
-    
+
 }
 
-add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_arrows_navigation', 10, 3);
+add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_arrows_navigation', 10, 3 );
 /**
  * Undocumented function
  *
@@ -274,9 +321,9 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     );
 
     $element->add_group_control(
-        Group_Control_Border::get_type(),
+        Group_Control_Border:: get_type(),
         [
-            'name' => 'arrows_border',
+            'name'     => 'arrows_border',
             'selector' => '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next',
         ]
     );
@@ -337,7 +384,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
                 ],
             ],
             'size_units' => [ '%', 'px' ],
-            'default' => array(
+            'default'    => array(
                 'unit' => '%',
                 'size' => '50',
             ),
@@ -408,7 +455,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     $element->end_controls_section();
 }
 
-add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_bullets_navigation', 10, 3);
+add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_bullets_navigation', 10, 3 );
 /**
  * Undocumented function
  *
@@ -497,7 +544,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
                 ],
             ],
             'size_units' => [ '%', 'px' ],
-            'selectors' => [
+            'selectors'  => [
                 '{{WRAPPER}} .slick-dots' => 'left: {{SIZE}}{{UNIT}};',
             ],
             'condition' => [
