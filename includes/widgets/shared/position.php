@@ -182,6 +182,7 @@ function add_position_options_to_widget($element, $section_id, $args) {
                 ],
                 'selectors' => [
                     '{{WRAPPER}}' => 'overflow: {{VALUE}};',
+                    '.qazana-editor-active {{WRAPPER}} ' => 'overflow: visible;',
                 ],
             ]
         );

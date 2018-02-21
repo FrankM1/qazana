@@ -18,8 +18,8 @@ class Maintenance_Mode extends Base {
      */
     public function __construct() {
 
-        require('classes/hooks.php');
-        
+        require( 'classes/hooks.php' );
+
         $is_enabled = (bool) self::get( 'mode' ) && (bool) self::get( 'template_id' );
 
         if ( is_admin() ) {
@@ -27,7 +27,7 @@ class Maintenance_Mode extends Base {
         }
 
         if ( ! $is_enabled ) {
-            return;
+           return;
         }
 
         add_action( 'admin_bar_menu', [ $this, 'add_menu_in_admin_bar' ], 300 );
@@ -47,10 +47,12 @@ class Maintenance_Mode extends Base {
 
             $compare_roles = array_intersect( $user->roles, $exclude_roles );
 
-            if ( !empty( $compare_roles ) ) {
+            if ( ! empty( $compare_roles ) ) {
                 return;
             }
         }
+
+        do_action( 'qazana/maintenance/template_redirect' );
 
         add_filter( 'body_class', [$this, 'body_class'] );
         add_action( 'template_redirect', [$this, 'template_redirect'], 1 );
@@ -114,7 +116,7 @@ class Maintenance_Mode extends Base {
         // Setup global post for Qazana\frontend so `_has_qazana_in_page = true`.
         $GLOBALS['post'] = get_post( self::get( 'template_id' ) );
 
-        add_filter( 'template_include', [$this, 'template_include'], 1 );
+        add_filter( 'template_include', [ $this, 'template_include'], 1 );
     }
 
     /**
