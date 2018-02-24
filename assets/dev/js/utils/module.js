@@ -144,6 +144,15 @@ var Module = function() {
 		} );
 	};
 
+    this.getDeviceName = function() {
+        if ( jQuery('body').hasClass( 'mobile' ) ) {
+            return 'mobile';
+        } else if ( jQuery('body').hasClass( 'tablet' ) ) {
+            return 'tablet';
+        }
+        return '';
+    }
+
 	init();
 };
 

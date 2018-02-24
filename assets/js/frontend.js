@@ -418,13 +418,14 @@ HandlerModule = ViewModule.extend( {
 	},
 
     getElementSettings: function( setting ) {
-		var elementSettings = {},
+        var elementSettings = {},
+            settings,
 			modelCID = this.getModelCID(),
 			self = this,
-			settings,
 			elementName = self.getElementName().replace(/-/g, '_'),
-			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
-		
+			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default',
+            handHeldDevice = this.getDeviceName();
+
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			settings = qazanaFrontend.config.elements.data[ modelCID ];
 
@@ -439,6 +440,8 @@ HandlerModule = ViewModule.extend( {
 		} else {
 
 			settings = this.$element.data( 'settings' ) || {};
+            
+            elementSettings = settings;
 
 			if ( settings && skinName !== 'default' ) {
 				jQuery.each( settings, function( controlKey ) {
@@ -446,12 +449,17 @@ HandlerModule = ViewModule.extend( {
 					newControlKey = controlKey.replace( skinName + '_', '' );
 					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
 				} );
-
-			} else {
-				elementSettings = settings;
 			}
 
-		}
+        }
+
+        if ( handHeldDevice ) {
+            jQuery.each( elementSettings, function( controlKey ) {
+                if ( typeof elementSettings[ controlKey + '_' + handHeldDevice ] !== 'undefined' ) {
+                   elementSettings[ controlKey ] = elementSettings[ controlKey + '_' + handHeldDevice ];  // rewrite main value with mobile version 
+                }
+            } );
+        } 
 
 		return this.getItems( elementSettings, setting );
     },
@@ -2589,6 +2597,15 @@ var Module = function() {
 			callback.apply( self, params );
 		} );
 	};
+
+    this.getDeviceName = function() {
+        if ( jQuery('body').hasClass( 'mobile' ) ) {
+            return 'mobile';
+        } else if ( jQuery('body').hasClass( 'tablet' ) ) {
+            return 'tablet';
+        }
+        return '';
+    }
 
 	init();
 };

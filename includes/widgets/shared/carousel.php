@@ -27,6 +27,8 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
             'label'              => __( 'Slides to Show', 'qazana' ),
             'type'               => Controls_Manager::SELECT,
             'default'            => 2,
+            'tablet_default'     => 2,
+            'mobile_default'     => 1,
             'options'            => $slides_to_show,
             'frontend_available' => true,
         ]

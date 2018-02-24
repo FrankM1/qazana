@@ -63,7 +63,7 @@ class Wordpress_Importer extends Base {
      *
      * @return void
      */
-    public function on_wxr_importer_end_remap_images() {
+    public static function on_wxr_importer_end_remap_images() {
         global $wpdb;
 
         // All qazana enabled posts and templates
