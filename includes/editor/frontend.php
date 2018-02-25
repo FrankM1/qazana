@@ -288,7 +288,15 @@ class Frontend {
 
 		wp_enqueue_script( 'qazana-frontend' );
 
-		$post = get_post();
+        if ( $post = get_post() ) {
+            $post_ID      = $post->ID;
+            $post_title   = $post->post_title;
+            $post_excerpt = $post->post_excerpt;
+        } else {
+            $post_ID      = 0;
+            $post_title   = null;
+            $post_excerpt = null;
+        }
 
 		$qazana_frontend_config = [
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
@@ -300,9 +308,9 @@ class Frontend {
 			'settings'       => SettingsManager::get_settings_frontend_config(),
 			'is_rtl'         => is_rtl(),
 			'post'           => [
-				'id'      => $post->ID,
-				'title'   => $post->post_title,
-				'excerpt' => $post->post_excerpt,
+				'id'      => $post_ID,
+				'title'   => $post_title,
+				'excerpt' => $post_excerpt,
 			],
 			'urls' => [
 				'assets' => qazana()->core_assets_url,

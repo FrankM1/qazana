@@ -502,7 +502,7 @@ var Module = function() {
             return 'tablet';
         }
         return '';
-    }
+    };
 
 	init();
 };
