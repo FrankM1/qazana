@@ -211,7 +211,6 @@ class Group_Control_Typography extends Group_Control_Base {
 			'type' => Controls_Manager::SLIDER,
 			'range' => [
 				'px' => [
-					'min' => -5,
 					'max' => 20,
 					'step' => 0.1,
 				],

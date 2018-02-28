@@ -8,9 +8,9 @@ class Hueman_Theme extends Base {
         $active_theme = wp_get_theme();
 
         return [
-        	'title' => __( 'Hueman Theme Compatibility', 'qazana' ),
-            'name' => 'hueman_theme',
-        	'required' => true,
+        	'title'              => __( 'Hueman Theme Compatibility', 'qazana' ),
+        	'name'               => 'hueman_theme',
+        	'required'           => false,
         	'default_activation' => ( $active_theme->get( 'Name' ) === 'hueman' ),
         ];
 

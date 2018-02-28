@@ -1189,6 +1189,11 @@ a.qazana-edit-template {
                 transform: translateY(100%); }
       .qazana-widget-icon-box.qazana-view-animated-1 .qazana-icon-box-title {
         margin-top: 25px; }
+    .qazana-widget-icon-box.qazana-view-align-left .qazana-icon-box {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; }
     .qazana-widget-icon-box.qazana-view-align-left .qazana-icon {
       position: absolute;
       left: 0; }
@@ -3244,6 +3249,9 @@ body.qazana-page .qazana-widget-menu-anchor {
 @media (min-width: 1025px) {
   body:not(.qazana-editor-active) .qazana-hidden-desktop {
     display: none; } }
+body:not(.qazana-editor-active) .qazana-editor-active .qazana-hidden-phone,
+body:not(.qazana-editor-active) .qazana-editor-active .qazana-hidden-tablet,
+body:not(.qazana-editor-active) .qazana-editor-active .qazana-hidden-desktop,
 body:not(.qazana-editor-active) .qazana-hidden {
   display: none; }
 

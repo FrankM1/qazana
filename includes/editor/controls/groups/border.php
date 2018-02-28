@@ -89,7 +89,8 @@ class Group_Control_Border extends Group_Control_Base {
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'border-style: {{VALUE}};',
-			],
+            ],
+            'responsive' => true,
 		];
 
 		$fields['width'] = [
@@ -100,7 +101,8 @@ class Group_Control_Border extends Group_Control_Base {
 			],
 			'condition' => [
 				'border!' => '',
-			],
+            ],
+            'responsive' => true,
 		];
 
 		$fields['color'] = [
@@ -112,7 +114,8 @@ class Group_Control_Border extends Group_Control_Base {
 			],
 			'condition' => [
 				'border!' => '',
-			],
+            ],
+            'responsive' => true,
 		];
 
 		return $fields;

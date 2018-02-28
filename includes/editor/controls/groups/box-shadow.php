@@ -85,7 +85,8 @@ class Group_Control_Box_Shadow extends Group_Control_Base {
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'box-shadow: {{HORIZONTAL}}px {{VERTICAL}}px {{BLUR}}px {{SPREAD}}px {{COLOR}} {{box_shadow_position.VALUE}};',
-			],
+            ],
+            'responsive' => true,
 		];
 
 		$controls['box_shadow_position'] = [
@@ -99,7 +100,8 @@ class Group_Control_Box_Shadow extends Group_Control_Base {
 				'box_shadow_type!' => '',
 			],
 			'default' => ' ',
-			'render_type' => 'ui',
+            'render_type' => 'ui',
+            'responsive' => true,
 		];
 
 		return $controls;

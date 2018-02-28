@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Widget_Testimonial extends Widget_Base {
 
 	public $carousel = true;
-	
+
 	public function get_name() {
 		return 'testimonial';
 	}
@@ -24,11 +24,11 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
-		$this->add_frontend_script('jquery-slick');
+		$this->add_frontend_script( 'jquery-slick' );
 	}
 
 	protected function _register_controls() {
-	
+
 		$this->start_controls_section(
 			'section_testimonial',
 			[
@@ -85,7 +85,7 @@ class Widget_Testimonial extends Widget_Base {
 
 		$repeater->start_controls_tab( 'style', [ 'label' => __( 'Style', 'qazana' ) ] );
 
-		$repeater->add_control(
+		$repeater->add_responsive_control(
 			'testimonial_image_position',
 			[
 				'label' => __( 'Image Position', 'qazana' ),
@@ -102,7 +102,7 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
-		$repeater->add_control(
+		$repeater->add_responsive_control(
 			'testimonial_alignment',
 			[
 				'label' => __( 'Alignment', 'qazana' ),
@@ -600,10 +600,7 @@ class Widget_Testimonial extends Widget_Base {
 										$has_image = ' qazana-has-image';
 									}
 
-									$testimonial_alignment = $item['testimonial_alignment'] ? ' qazana-testimonial-text-align-' . $item['testimonial_alignment'] : '';
-									$testimonial_image_position = $item['testimonial_image_position'] ? ' qazana-testimonial-image-position-' . $item['testimonial_image_position'] : '';
-
-									?><div class="qazana-testimonial-wrapper<?php echo $testimonial_alignment; ?>">
+									?><div class="qazana-testimonial-wrapper qazana-testimonial-text-align-<?php echo $this->get_item_responsive_settings( 'testimonial_alignment', $item ); ?>">
 										<div class="qazana-testimonial-content-wrapper">
 
 											<?php if ( ! empty( $item['testimonial_content'] ) ) : ?>
@@ -612,7 +609,7 @@ class Widget_Testimonial extends Widget_Base {
 												</div>
 											<?php endif; ?>
 
-											<div class="qazana-testimonial-meta<?php if ( $has_image ) echo $has_image; ?><?php echo $testimonial_image_position; ?>">
+											<div class="qazana-testimonial-meta<?php if ( $has_image ) echo $has_image; ?><?php echo $this->get_item_responsive_settings( 'testimonial_image_position', $item ); ?>">
 												<div class="qazana-testimonial-meta-inner">
 													<?php if ( isset( $image_url ) ) : ?>
 														<div class="qazana-testimonial-image">

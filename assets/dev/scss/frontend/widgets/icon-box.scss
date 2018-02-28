@@ -149,13 +149,12 @@
             .qazana-icon-box-title {
                 margin-top: 25px;
             }
-
-            .qazana-icon-box-icon {}
-
-            .qazana-icon-box-content {}
         }
 
         &.qazana-view-align-left {
+            .qazana-icon-box {
+                display: flex;
+            }
             .qazana-icon {
                 position: absolute;
                 left: 0;

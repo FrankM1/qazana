@@ -1,25 +1,27 @@
 //
 // Visibility by Devices (based on breakpoints)
 //
-
 @media (max-width: $screen-sm-max) {
-	.qazana-hidden-phone {
-		display: none;
-	}
+    .qazana-hidden-phone {
+        display: none;
+    }
 }
 
 @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-	.qazana-hidden-tablet {
-		display: none;
-	}
+    .qazana-hidden-tablet {
+        display: none;
+    }
 }
 
 @media (min-width: $screen-lg-min) {
-	.qazana-hidden-desktop {
-		display: none;
-	}
+    .qazana-hidden-desktop {
+        display: none;
+    }
 }
 
+.qazana-editor-active .qazana-hidden-phone,
+.qazana-editor-active .qazana-hidden-tablet,
+.qazana-editor-active .qazana-hidden-desktop,
 .qazana-hidden {
-	display: none;
+    display: none;
 }

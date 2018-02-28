@@ -799,14 +799,27 @@ abstract class Controls_Stack {
 	public function get_responsive_settings( $setting_key = null ) {
 
 		if ( $setting_key ) {
-			if ( qazana_is_mobile() && ! empty( $this->_settings[ $setting_key . '_mobile' ] ) ) {
-				$setting_key = $setting_key . '_mobile';
-		    } elseif ( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_tablet' ] ) ) {
-		        $setting_key = $setting_key . '_tablet';
+			if ( qazana_is_mobile() && ! empty( $this->_settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
+		    } elseif ( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
+		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
 		    }
 		}
 
 		return self::_get_items( $this->_settings, $setting_key );
+    }
+
+    public function get_item_responsive_settings( $setting_key, $settings ) {
+
+		if ( $setting_key ) {
+			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_MOBILE ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
+		    } elseif ( qazana_is_tablet() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_TABLET ] ) ) {
+		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
+		    }
+		}
+
+		return self::_get_items( $settings, $setting_key );
 	}
 
 	/**
