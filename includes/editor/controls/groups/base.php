@@ -67,10 +67,6 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		// For php < 7
 		reset( $filtered_fields );
 
-		if ( $this->get_options( 'popover' ) ) {
-			$filtered_fields = $this->set_popover( $filtered_fields );
-		}
-
 		if ( isset( $this->args['separator'] ) ) {
 			$filtered_fields[ key( $filtered_fields ) ]['separator'] = $this->args['separator'];
 		}
@@ -83,6 +79,10 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 			$element->start_injection( $options['position'] );
 
 			unset( $options['position'] );
+		}
+
+		if ( $this->get_options( 'popover' ) ) {
+			$this->start_popover( $element );
 		}
 
 		foreach ( $filtered_fields as $field_id => $field_args ) {
@@ -99,6 +99,10 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 			} else {
 				$element->add_control( $id , $field_args, $options );
 			}
+		}
+
+		if ( $this->get_options( 'popover' ) ) {
+			$element->end_popover();
 		}
 
 		if ( $has_injection ) {
@@ -175,14 +179,27 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		return 'qazana-group-control-' . static::get_type() . ' qazana-group-control';
 	}
 
-	abstract protected function init_fields();
 	/**
 	 * Init fields.
 	 *
 	 * Initialize group control fields.
 	 *
+	 * @abstract
 	 * @since 1.2.2
 	 * @access protected
+	 */
+	abstract protected function init_fields();
+
+	/**
+	 * Retrieve default options.
+	 *
+	 * Get the default options of the group control. Used to return the
+	 * default options while initializing the group control.
+	 *
+	 * @since 1.2.2
+	 * @access protected
+	 *
+	 * @return array Default group control options.
 	 */
 	protected function get_default_options() {
 		return [];
@@ -315,7 +332,6 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 				'starter_value' => 'custom',
 				'starter_title' => '',
 				'toggle_type' => 'switcher',
-				'toggle_title' => __( 'Set', 'qazana' ),
 			],
 		];
 
@@ -331,8 +347,6 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 * @access private
 	 *
 	 * @param array $args Group control settings value.
-	 *
-	 * @return array Control default settings.
 	 */
 	private function init_args( $args ) {
 		$this->args = array_merge( $this->get_default_args(), $this->get_child_default_args(), $args );
@@ -435,29 +449,39 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		return $selectors;
 	}
 
-	private function set_popover( array $fields ) {
+	/**
+	 * Start popover.
+	 *
+	 * Starts a group controls popover.
+	 *
+	 * @since 1.2.2
+	 * @access private
+	 * @param Controls_Stack $element Element.
+	 */
+	private function start_popover( Controls_Stack $element ) {
 		$popover_options = $this->get_options( 'popover' );
 
-		$fields[ key( $fields ) ]['popover']['start'] = true;
+		$settings = $this->get_args();
 
-		$popover_toggle_field = [
-			$popover_options['starter_name'] => [
-				'type' => Controls_Manager::POPOVER_TOGGLE,
-				'label' => $popover_options['starter_title'],
-				'toggle_type' => $popover_options['toggle_type'],
-				'toggle_title' => $popover_options['toggle_title'],
-				'return_value' => $popover_options['starter_value'],
-			]
+		if ( ! empty( $settings['label'] ) ) {
+			$label = $settings['label'];
+		} else {
+			$label = $popover_options['starter_title'];
+		}
+
+		$control_params = [
+			'type' => Controls_Manager::POPOVER_TOGGLE,
+			'label' => $label,
+			'toggle_type' => $popover_options['toggle_type'],
+			'return_value' => $popover_options['starter_value'],
 		];
 
-		$fields = $popover_toggle_field + $fields;
+		if ( ! empty( $settings['condition'] ) ) {
+			$control_params['condition'] = $settings['condition'];
+		}
 
-		end( $fields );
+		$element->add_control( $this->get_controls_prefix() . $popover_options['starter_name'], $control_params );
 
-		$fields[ key( $fields ) ]['popover']['end'] = true;
-
-		reset( $fields );
-
-		return $fields;
+		$element->start_popover();
 	}
 }

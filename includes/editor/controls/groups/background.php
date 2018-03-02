@@ -73,7 +73,7 @@ class Group_Control_Background extends Group_Control_Base {
 	 *
 	 * Get background control type.
 	 *
-	 * @since 1.2.2
+	 * @since 1.0.0
 	 * @access public
 	 * @static
 	 *
@@ -85,9 +85,9 @@ class Group_Control_Background extends Group_Control_Base {
 
 	/**
 	 * Retrieve background types.
-	 * 
+	 *
 	 * Gat available background types.
-	 * 
+	 *
 	 * @since 1.2.2
 	 * @access public
 	 * @static
@@ -344,10 +344,21 @@ class Group_Control_Background extends Group_Control_Base {
 				'fixed' => _x( 'Fixed', 'Background Control', 'qazana' ),
 			],
 			'selectors' => [
-				'(tablet+){{SELECTOR}}' => 'background-attachment: {{VALUE}};',
+				'(desktop+){{SELECTOR}}' => 'background-attachment: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
+				'image[url]!' => '',
+			],
+		];
+
+		$fields['attachment_alert'] = [
+			'type' => Controls_Manager::RAW_HTML,
+			'content_classes' => 'qazana-control-field-description',
+			'raw' => __( 'Note: Attachment Fixed works only on desktop.', 'qazana' ),
+			'separator' => 'none',
+			'condition' => [
+				'attachment' => 'fixed',
 				'image[url]!' => '',
 			],
 		];
@@ -469,7 +480,7 @@ class Group_Control_Background extends Group_Control_Base {
 
 		$fields['video_fallback'] = [
 			'label' => _x( 'Background Fallback', 'Background Control', 'qazana' ),
-			'description' => __( 'This cover image will replace the background video on mobile or tablet.', 'qazana' ),
+			'description' => __( 'This cover image will replace the background video on mobile and tablet devices.', 'qazana' ),
 			'type' => Controls_Manager::MEDIA,
 			'label_block' => true,
 			'condition' => [

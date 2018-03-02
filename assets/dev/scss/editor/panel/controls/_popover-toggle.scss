@@ -1,27 +1,46 @@
 .qazana-control-type-popover_toggle {
 
-	.qazana-control-input-wrapper {
-		text-align: $end;;
+	input {
+		display: none;
 	}
 
-	.qazana-control-popover-toggle-simple-toggle {
-		display: inline-block;
-		width: 50px;
-		text-align: center;
-		padding: 6px 0;
-		color: $editor-light;
-		text-transform: uppercase;
-		border-radius: 3px;
-		border: 1px solid;
+	label {
 		cursor: pointer;
 	}
-	
-	.qazana-choices-label {
-		font-size: 10px;
-		text-transform: uppercase;
 
-		i {
-			@include padding-start(2px);
+	.qazana-control-input-wrapper {
+		direction: getInverseDirection();
+	}
+
+	.qazana-control-popover-toggle-toggle {
+
+		&:checked {
+
+			+ .qazana-control-popover-toggle-toggle-label {
+				color: $editor-info;
+			}
 		}
+
+		&:not(:checked) {
+
+			~ .qazana-control-popover-toggle-reset-label {
+				display: none;
+			}
+		}
+	}
+
+	.qazana-control-popover-toggle-reset-label {
+		color: $editor-lighter;
+		@include padding-end(5px);
+	}
+
+	.qazana-control-popover-toggle-toggle-label {
+		width: 50px;
+		height: 27px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 3px;
+		border: 1px solid $editor-lightest;
 	}
 }

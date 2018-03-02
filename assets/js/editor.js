@@ -1708,6 +1708,12 @@ App = Marionette.Application.extend( {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
+	backgroundClickListeners: {
+		popover: {
+			element: '.qazana-controls-popover',
+			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label'
+		}
+	},
 
 	_defaultDeviceMode: 'desktop',
 
@@ -2023,6 +2029,14 @@ App = Marionette.Application.extend( {
 		} );
 	},
 
+	addBackgroundClickArea: function( element ) {
+		element.addEventListener( 'click', this.onBackgroundClick.bind( this ), true );
+	},
+
+	addBackgroundClickListener: function( key, listener ) {
+		this.backgroundClickListeners[ key ] = listener;
+	},
+
 	showFatalErrorDialog: function( options ) {
 		var defaultOptions = {
 			id: 'qazana-fatal-error-dialog',
@@ -2078,6 +2092,8 @@ App = Marionette.Application.extend( {
 
 		this.initClearPageDialog();
 
+		this.addBackgroundClickArea( document );
+
 		this.$window.trigger( 'qazana:init' );
 
 		this.initPreview();
@@ -2120,6 +2136,9 @@ App = Marionette.Application.extend( {
 		this.schemes.printSchemesStyle();
 
 		this.preventClicksInsideEditor();
+
+		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[0] );
+
 
 		var Preview = require( 'qazana-views/preview' ),
 			PanelLayoutView = require( 'qazana-layouts/panel/panel' );
@@ -2219,6 +2238,26 @@ App = Marionette.Application.extend( {
 			if ( qazana.isEditorChanged() ) {
 				return qazana.translate( 'before_unload_alert' );
 			}
+		} );
+	},
+
+	onBackgroundClick: function( event ) {
+		jQuery.each( this.backgroundClickListeners, function() {
+			var elementToHide = this.element,
+				$clickedTarget = jQuery( event.target );
+
+			// If it's a label that associated with an input
+			if ( $clickedTarget[0].control ) {
+				$clickedTarget = $clickedTarget.add( $clickedTarget[0].control );
+			}
+
+			if ( this.ignore && $clickedTarget.closest( this.ignore ).length ) {
+				return;
+			}
+
+			var $clickedTargetClosestElement = $clickedTarget.closest( elementToHide );
+
+			jQuery( elementToHide ).not( $clickedTargetClosestElement ).hide();
 		} );
 	},
 
@@ -5449,7 +5488,7 @@ helpers = {
 			return;
 		}
 
-		var fontType = qazana.config.controls.font.fonts[ font ],
+		var fontType = qazana.config.controls.font.options[ font ],
 			fontUrl,
 
 			subsets = {
@@ -5481,6 +5520,8 @@ helpers = {
 			qazana.$previewContents.find( 'link:last' ).after( '<link href="' + fontUrl + '" rel="stylesheet" type="text/css">' );
 		}
 		this._enqueuedFonts.push( font );
+
+		qazana.channels.editor.trigger( 'font:insertion', fontType, font );
 	},
 
 	getElementChildType: function( elementType, container ) {
@@ -8034,8 +8075,7 @@ ControlsStack = Marionette.CompositeView.extend( {
 	className: 'qazana-panel-controls-stack',
 
 	classes: {
-		popover: 'qazana-controls-popover',
-		popoverToggle: 'qazana-control-popover-toggle-toggle'
+		popover: 'qazana-controls-popover'
 	},
 
 	activeTab: null,
@@ -8056,15 +8096,10 @@ ControlsStack = Marionette.CompositeView.extend( {
 	},
 
 	events: function() {
-		var events = {
-			'click': 'onClick',
+		return {
 			'click @ui.tabs': 'onClickTabControl',
 			'click @ui.reloadButton': 'onReloadButtonClick'
 		};
-
-		events[ 'click .' + this.classes.popover ] = 'onPopoverClick';
-
-		return events;
 	},
 
 	modelEvents: {
@@ -8160,10 +8195,6 @@ ControlsStack = Marionette.CompositeView.extend( {
 		} );
 	},
 
-	hidePopovers: function() {
-		this.$el.find( '.' + this.classes.popover ).hide();
-	},
-
 	removePopovers: function() {
 		this.$el.find( '.' + this.classes.popover ).remove();
 	},
@@ -8191,20 +8222,6 @@ ControlsStack = Marionette.CompositeView.extend( {
 
 	onModelDestroy: function() {
 		this.destroy();
-	},
-
-	onClick: function( event ) {
-		if ( jQuery( event.target ).closest( '.' + this.classes.popover + ',.' + this.classes.popoverToggle ).length ) {
-			return;
-		}
-
-		this.hidePopovers();
-	},
-
-	onPopoverClick: function( event ) {
-		var $currentPopover = jQuery( event.target ).closest( '.' + this.classes.popover );
-
-		this.$el.find( '.' + this.classes.popover ).not( $currentPopover ).hide();
 	},
 
 	onClickTabControl: function( event ) {
@@ -8489,12 +8506,18 @@ ControlBaseMultipleItemView = ControlBaseDataView.extend( {
 	getControlValue: function( key ) {
 		var values = this.elementSettingsModel.get( this.model.get( 'name' ) );
 
-		if ( ! Backbone.$.isPlainObject( values ) ) {
+		if ( ! jQuery.isPlainObject( values ) ) {
 			return {};
 		}
 
 		if ( key ) {
-			return values[ key ] || '';
+			var value = values[ key ];
+
+			if ( undefined === value ) {
+				value = '';
+			}
+
+			return value;
 		}
 
 		return qazana.helpers.cloneObject( values );
@@ -9136,20 +9159,20 @@ module.exports = ControlSelect2View.extend( {
 	},
 
 	templateHelpers: function() {
-		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments );
+		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments ),
+			fonts = this.model.get( 'options' );
 
-		helpers.getFontsByGroups = _.bind( function( groups ) {
-			var fonts = this.model.get( 'fonts' ),
-				filteredFonts = {};
+		helpers.getFontsByGroups = function( groups ) {
+			var filteredFonts = {};
 
 			_.each( fonts, function( fontType, fontName ) {
 				if ( _.isArray( groups ) && _.contains( groups, fontType ) || fontType === groups ) {
-					filteredFonts[ fontName ] = fontType;
+					filteredFonts[ fontName ] = fontName;
 				}
 			} );
 
 			return filteredFonts;
-		}, this );
+		};
 
 		return helpers;
 	}
@@ -9619,7 +9642,7 @@ ControlPopoverStarterView = ControlChooseView.extend( {
 	ui: function() {
 		var ui = ControlChooseView.prototype.ui.apply( this, arguments );
 
-		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle';
+		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle-label';
 
 		return ui;
 	},

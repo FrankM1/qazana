@@ -5,19 +5,109 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana fonts class.
+ *
+ * Qazana fonts handler class is responsible for registering the supported
+ * fonts used by Qazana.
+ *
+ * @since 1.0.0
+ */
 class Fonts {
 
+	/**
+	 * The system font name.
+	 */
 	const SYSTEM = 'system';
+
+	/**
+	 * The google font name.
+	 */
 	const GOOGLE = 'googlefonts';
+
+	/**
+	 * The google early access font name.
+	 */
 	const EARLYACCESS = 'earlyaccess';
+
+	/**
+	 * The local font name.
+	 */
 	const LOCAL = 'local';
 
 	/**
+	 * Used to hold additional fonts
+	 */
+	private static $additional_fonts =  null;
+
+	/**
+	 * Used to hold font types/groups
+	 */
+	private static $font_groups =  null;
+
+	/**
+	 * Get font Groups.
+	 *
+	 * Retrieve the list of font groups.
+	 *
+	 * @since 1.3.1
+	 * @access public
 	 * @static
+	 *
+	 * @return array Supported font groups/types.
+	 */
+	public static function get_font_groups() {
+		if ( null === self::$font_groups ) {
+			$font_groups = [
+				self::SYSTEM => __( 'System', 'qazana' ),
+				self::GOOGLE => __( 'Google', 'qazana' ),
+				self::EARLYACCESS => __( 'Google Early Access', 'qazana' ),
+			];
+
+			self::$font_groups = apply_filters( 'qazana/fonts/groups', $font_groups );
+		}
+
+		return self::$font_groups;
+	}
+
+	/**
+	 * Get fonts.
+	 *
+	 * Retrieve the list of supported fonts.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 *
+	 * @return array Supported fonts.
+	 */
 	public static function get_fonts() {
+		if ( null === self::$additional_fonts ) {
+			/**
+			 * Allows adding additional fonts to qazana
+			 *
+			 * @since 1.9.4
+			 *
+			 * @param array $additional_fonts
+			 */
+			self::$additional_fonts = apply_filters( 'qazana/fonts/additional_fonts', [] );
+		}
+
+		return array_merge( self::get_native_fonts(), self::$additional_fonts );
+	}
+
+	/**
+	 * Get Qazana native fonts.
+	 *
+	 * Retrieve the list of supported fonts.
+	 *
+	 * @since 1.3.1
+	 * @access private
+	 * @static
+	 *
+	 * @return array Supported fonts.
+	 */
+	private static function get_native_fonts() {
 		return [
 			// System fonts.
 			'Arial' => self::SYSTEM,
@@ -28,7 +118,7 @@ class Fonts {
 			'Trebuchet MS' => self::SYSTEM,
 			'Georgia' => self::SYSTEM,
 
-			// Google Fonts (last update: 29/10/2017).
+			// Google Fonts (last update: 19/11/2017).
 			'ABeeZee' => self::GOOGLE,
 			'Abel' => self::GOOGLE,
 			'Abhaya Libre' => self::GOOGLE,
@@ -126,6 +216,9 @@ class Fonts {
 			'Baloo Thambi' => self::GOOGLE,
 			'Balthazar' => self::GOOGLE,
 			'Bangers' => self::GOOGLE,
+			'Barlow' => self::GOOGLE,
+			'Barlow Condensed' => self::GOOGLE,
+			'Barlow Semi Condensed' => self::GOOGLE,
 			'Barrio' => self::GOOGLE,
 			'Basic' => self::GOOGLE,
 			'Battambang' => self::GOOGLE,
@@ -266,9 +359,6 @@ class Fonts {
 			'Dr Sugiyama' => self::GOOGLE,
 			'Droid Arabic Kufi' => self::EARLYACCESS, // Hack for Google Early Access.
 			'Droid Arabic Naskh' => self::EARLYACCESS, // Hack for Google Early Access.
-			'Droid Sans' => self::GOOGLE,
-			'Droid Sans Mono' => self::GOOGLE,
-			'Droid Serif' => self::GOOGLE,
 			'Duru Sans' => self::GOOGLE,
 			'Dynalight' => self::GOOGLE,
 			'EB Garamond' => self::GOOGLE,
@@ -794,6 +884,7 @@ class Fonts {
 			'Space Mono' => self::GOOGLE,
 			'Special Elite' => self::GOOGLE,
 			'Spectral' => self::GOOGLE,
+			'Spectral SC' => self::GOOGLE,
 			'Spicy Rice' => self::GOOGLE,
 			'Spinnaker' => self::GOOGLE,
 			'Spirax' => self::GOOGLE,
@@ -864,6 +955,7 @@ class Fonts {
 			'Voces' => self::GOOGLE,
 			'Volkhov' => self::GOOGLE,
 			'Vollkorn' => self::GOOGLE,
+			'Vollkorn SC' => self::GOOGLE,
 			'Voltaire' => self::GOOGLE,
 			'Waiting for the Sunrise' => self::GOOGLE,
 			'Wallpoet' => self::GOOGLE,
@@ -887,9 +979,17 @@ class Fonts {
 	}
 
 	/**
-	 * @static
+	 * Get font type.
+	 *
+	 * Retrieve the font type for a given font.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 * @static
+	 *
+	 * @param string $name Font name.
+	 *
+	 * @return string|false Font type, or false if font doesn't exist.
 	 */
 	public static function get_font_type( $name ) {
 		$fonts = self::get_fonts();
@@ -902,9 +1002,17 @@ class Fonts {
 	}
 
 	/**
-	 * @static
+	 * Get fonts by group.
+	 *
+	 * Retrieve all the fonts belong to specific group.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 * @static
+	 *
+	 * @param array $groups Optional. Font group. Default is an empty array.
+	 *
+	 * @return array Font type, or false if font doesn't exist.
 	 */
 	public static function get_fonts_by_groups( $groups = [] ) {
 		return array_filter( self::get_fonts(), function( $font ) use ( $groups ) {

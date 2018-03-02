@@ -74,7 +74,7 @@ class Control_Section extends Base_UI_Control {
 		?>
 		<div class="qazana-panel-heading">
 			<div class="qazana-panel-heading-toggle qazana-section-toggle" data-collapse_id="{{ data.name }}">
-				<i class="fa"></i>
+				<i class="fa" aria-hidden="true"></i>
 			</div>
 			<div class="qazana-panel-heading-title qazana-section-title">{{{ data.label }}}</div>
 		</div>

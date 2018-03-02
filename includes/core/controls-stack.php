@@ -8,6 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Controls Stack
  *
+ * A base abstract class that provides the needed properties and methods to
+ * manage and handle controls in the editor panel to inheriting classes.
+ *
+ * @since 1.0.0
  * @abstract
  */
 abstract class Controls_Stack {
@@ -97,19 +101,33 @@ abstract class Controls_Stack {
 	private $_current_tab;
 
 	/**
+	 * Current popover.
+	 *
+	 * Holds the current popover while inserting a set of controls.
+	 *
+	 * @access private
+	 *
+	 * @var null|array
+	 */
+	private $current_popover;
+
+	/**
 	 * Injection point.
 	 *
 	 * Holds the injection point in the stack where the control will be inserted.
 	 *
-	 * @access protected
+	 * @access private
 	 *
 	 * @var null|array
 	 */
-	protected $injection_point;
+	private $injection_point;
 
 	/**
-	 * Retrieve the name.
+	 * Get element name.
 	 *
+	 * Retrieve the element name.
+	 *
+	 * @since 1.0.0
 	 * @access public
 	 * @abstract
 	 *
@@ -118,7 +136,7 @@ abstract class Controls_Stack {
 	abstract public function get_name();
 
 	/**
-	 * Retrieve unique name.
+	 * Get unique name.
 	 *
 	 * Some classes need to use unique names, this method allows you to create them.
 	 * By default it returns the regular name.
@@ -243,15 +261,7 @@ abstract class Controls_Stack {
 	 * @return mixed Controls list.
 	 */
 	public function get_controls( $control_id = null ) {
-		$stack = qazana()->controls_manager->get_element_stack( $this );
-
-		if ( null === $stack ) {
-			$this->_init_controls();
-
-			return $this->get_controls();
-		}
-
-		return self::_get_items( $stack['controls'], $control_id );
+		return self::_get_items( $this->get_stack()['controls'], $control_id );
 	}
 
 	/**
@@ -304,7 +314,7 @@ abstract class Controls_Stack {
 	 * @param array  $args    Control arguments.
 	 * @param array  $options Control options. Default is an empty array.
 	 *
-	 * @return bool
+	 * @return bool True if control added, False otherwise.
 	 */
 	public function add_control( $id, array $args, $options = [] ) {
 		$default_options = [
@@ -337,7 +347,7 @@ abstract class Controls_Stack {
 
 			if ( null !== $target_section_args ) {
 				if ( ! empty( $args['section'] ) || ! empty( $args['tab'] ) ) {
-					_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) .'`.', '1.0.0' );
+					_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) .'`.', '1.0.0' );
 				}
 
 				$args = array_replace_recursive( $target_section_args, $args );
@@ -346,7 +356,7 @@ abstract class Controls_Stack {
 					$args = array_merge( $args, $target_tab );
 				}
 			} elseif ( empty( $args['section'] ) && ( ! $options['overwrite'] || is_wp_error( qazana()->controls_manager->get_control_from_stack( $this->get_unique_name(), $id ) ) ) ) {
-				wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id .'`.' );
+				wp_die( get_called_class() . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id .'`.' );
 			}
 		}
 		if ( $options['position'] ) {
@@ -354,6 +364,14 @@ abstract class Controls_Stack {
 		}
 
 		unset( $options['position'] );
+
+		if ( $this->current_popover && ! $this->current_popover['initialized'] ) {
+			$args['popover'] = [
+				'start' => true,
+			];
+
+			$this->current_popover['initialized'] = true;
+		}
 
 		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
 	}
@@ -390,14 +408,54 @@ abstract class Controls_Stack {
 	 * @return bool
 	 */
 	public function update_control( $control_id, array $args, array $options = [] ) {
-		return qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args, $options );
+		$is_updated = qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args, $options );
+
+		if ( ! $is_updated ) {
+			return false;
+		}
+
+		$control = $this->get_controls( $control_id );
+
+		if ( Controls_Manager::SECTION === $control['type'] ) {
+			$section_args = $this->get_section_args( $control_id );
+
+			$section_controls = $this->get_section_controls( $control_id );
+
+			foreach ( $section_controls as $section_control_id => $section_control ) {
+				$this->update_control( $section_control_id, $section_args );
+			}
+		}
+
+		return true;
 	}
 	/**
-	 * Retrieve position information.
+	 * Get stack.
 	 *
-	 * Get the position while injecting data, based on the element type.
+	 * Retrieve the stack of controls.
 	 *
-	 * @since 1.2.0
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @return array Stack of controls.
+	 */
+	public function get_stack() {
+		$stack = qazana()->controls_manager->get_element_stack( $this );
+
+		if ( null === $stack ) {
+			$this->_init_controls();
+
+			return $this->get_stack();
+		}
+
+		return $stack;
+	}
+
+	/**
+	 * Get position information.
+	 *
+	 * Retrieve the position while injecting data, based on the element type.
+	 *
+	 * @since 1.0.0
 	 * @access public
 	 *
 	 * @param array $position {
@@ -430,22 +488,22 @@ abstract class Controls_Stack {
 			'control' === $position['type'] && in_array( $position['at'], [ 'start', 'end' ] ) ||
 			'section' === $position['type'] && in_array( $position['at'], [ 'before', 'after' ] )
 		) {
-			_doing_it_wrong( __CLASS__ . '::' . __FUNCTION__, 'Invalid position arguments. Use `before` / `after` for control or `start` / `end` for section.', '1.3.0' );
+			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'Invalid position arguments. Use `before` / `after` for control or `start` / `end` for section.', '1.3.0' );
 
 			return false;
 		}
 
-		$registered_controls = qazana()->controls_manager->get_element_stack( $this )['controls'];
-
-		$controls_keys = array_keys( $registered_controls );
-
-		$target_control_index = array_search( $position['of'], $controls_keys );
+		$target_control_index = $this->get_control_index( $position['of'] );
 
 		if ( false === $target_control_index ) {
 			return false;
 		}
 
 		$target_section_index = $target_control_index;
+
+		$registered_controls = $this->get_controls();
+
+		$controls_keys = array_keys( $registered_controls );
 
 		while ( Controls_Manager::SECTION !== $registered_controls[ $controls_keys[ $target_section_index ] ]['type'] ) {
 			$target_section_index--;
@@ -487,6 +545,86 @@ abstract class Controls_Stack {
 	}
 
 	/**
+	 * Get control key.
+	 *
+	 * Retrieve the key of the control based on a given index of the control.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @param string $control_index Control index.
+	 *
+	 * @return int Control key.
+	 */
+	final public function get_control_key( $control_index ) {
+		$registered_controls = $this->get_controls();
+
+		$controls_keys = array_keys( $registered_controls );
+
+		return $controls_keys[ $control_index ];
+	}
+
+	/**
+	 * Get control index.
+	 *
+	 * Retrieve the index of the control based on a given key of the control.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @param string $control_key Control key.
+	 *
+	 * @return false|int Control index.
+	 */
+	final public function get_control_index( $control_key ) {
+		$controls = $this->get_controls();
+
+		$controls_keys = array_keys( $controls );
+
+		return array_search( $control_key, $controls_keys );
+	}
+
+	/**
+	 * Get section controls.
+	 *
+	 * Retrieve all controls under a specific section.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @param string $section_id Section ID.
+	 *
+	 * @return array Section controls
+	 */
+	final public function get_section_controls( $section_id ) {
+		$section_index = $this->get_control_index( $section_id );
+
+		$section_controls = [];
+
+		$registered_controls = $this->get_controls();
+
+		$controls_keys = array_keys( $registered_controls );
+
+		while ( true ) {
+			$section_index++;
+
+			if ( ! isset( $controls_keys[ $section_index ] ) ) {
+				break;
+			}
+
+			$control_key = $controls_keys[ $section_index ];
+
+			if ( Controls_Manager::SECTION === $registered_controls[ $control_key ]['type'] ) {
+				break;
+			}
+
+			$section_controls[ $control_key ] = $registered_controls[ $control_key ];
+		};
+
+		return $section_controls;
+	}
+
+	/**
 	 * Add new group control to stack.
 	 *
 	 * Register a set of related controls grouped together as a single unified
@@ -511,7 +649,7 @@ abstract class Controls_Stack {
 		$group = qazana()->controls_manager->get_control_groups( $group_name );
 
 		if ( ! $group ) {
-			wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
+			wp_die( get_called_class() . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
 		}
 
 		$group->add_controls( $this, $args, $options );
@@ -606,9 +744,7 @@ abstract class Controls_Stack {
 	 * @return array Tabs controls.
 	 */
 	final public function get_tabs_controls() {
-		$stack = qazana()->controls_manager->get_element_stack( $this );
-
-		return $stack['tabs'];
+		return $this->get_stack()['tabs'];
 	}
 
 	/**
@@ -621,7 +757,8 @@ abstract class Controls_Stack {
 	 *
 	 * @param string $id      Responsive control ID.
 	 * @param array  $args    Responsive control arguments.
-	 * @param array  $options Responsive control options. Default is an empty array.
+	 * @param array  $options Optional. Responsive control options. Default is
+	 *                        an empty array.
 	 */
 	final public function add_responsive_control( $id, array $args, $options = [] ) {
 		$args['responsive'] = [];
@@ -684,7 +821,7 @@ abstract class Controls_Stack {
 			$id_suffix = self::RESPONSIVE_DESKTOP === $device_name ? '' : '_' . $device_name;
 
 			if ( ! empty( $options['overwrite'] ) ) {
-				$this->update_control( $id . $id_suffix, $control_args, [ 'recursive' => ! empty( $options['overwrite_recursive'] ) ] );
+				$this->update_control( $id . $id_suffix, $control_args, [ 'recursive' => ! empty( $options['recursive'] ) ] );
 			} else {
 				$this->add_control( $id . $id_suffix, $control_args, $options );
 			}
@@ -703,8 +840,8 @@ abstract class Controls_Stack {
 	 * @param string $id   Responsive control ID.
 	 * @param array  $args Responsive control arguments.
 	 */
-	final public function update_responsive_control( $id, array $args, $recursive = false ) {
-		$this->add_responsive_control( $id, $args, [ 'overwrite' => true, 'overwrite_recursive' => $recursive ] );
+	final public function update_responsive_control( $id, array $args, array $options = [] ) {
+		$this->add_responsive_control( $id, $args, [ 'overwrite' => true, 'recursive' => ! empty( $options['recursive'] ) ] );
 	}
 
 	/**
@@ -782,6 +919,27 @@ abstract class Controls_Stack {
 	}
 
 	/**
+	 * Get controls pointer index.
+	 *
+	 * Retrieve pointer index where the next control should be added.
+	 *
+	 * While using injection point, it will return the injection point index. Otherwise index of the last control plus
+	 * one.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @return int Controls pointer index.
+	 */
+	public function get_pointer_index() {
+		if ( null !== $this->injection_point ) {
+			return $this->injection_point['index'];
+		}
+
+		return count( $this->get_controls() );
+	}
+
+	/**
 	 * Retrieve the raw data.
 	 *
 	 * Get all the items or, when requested, a specific item.
@@ -807,9 +965,9 @@ abstract class Controls_Stack {
 		}
 
 		return self::_get_items( $this->_settings, $setting_key );
-    }
+    	}
 
-    public function get_item_responsive_settings( $setting_key, $settings ) {
+    	public function get_item_responsive_settings( $setting_key, $settings ) {
 
 		if ( $setting_key ) {
 			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_MOBILE ] ) ) {
@@ -1139,6 +1297,47 @@ abstract class Controls_Stack {
 	 */
 	public function end_controls_tab() {
 		unset( $this->_current_tab['inner_tab'] );
+    }
+
+	/**
+	 * Start popover.
+	 *
+	 * Used to add a new set of controls in a popover. When you use this method,
+	 * all the registered controls from this point will be assigned to this
+	 * popover, until you close the popover using `end_popover()` method.
+	 *
+	 * This method should be used inside `_register_controls()`.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 */
+	final public function start_popover() {
+		$this->current_popover = [
+			'initialized' => false,
+		];
+	}
+
+	/**
+	 * End popover.
+	 *
+	 * Used to close an existing open popover. When you use this method it stops
+	 * adding new controls to this popover.
+	 *
+	 * This method should be used inside `_register_controls()`.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 */
+	final public function end_popover() {
+		$this->current_popover = null;
+
+		$last_control_key = $this->get_control_key( $this->get_pointer_index() - 1 );
+
+ 		$this->update_control( $last_control_key, [
+			'popover' => [
+				'end' => true,
+			],
+		], [ 'recursive' => true ] );
 	}
 
 	/**
@@ -1185,6 +1384,14 @@ abstract class Controls_Stack {
 	 */
 	final public function end_injection() {
 		$this->injection_point = null;
+	}
+
+	/**
+	 * @access public
+	 * @return array|null
+	 */
+	final public function get_injection_point() {
+		return $this->injection_point;
 	}
 
 	/**
@@ -1286,10 +1493,11 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve section arguments.
+	 * Get section arguments.
 	 *
-	 * Get the section arguments based on section ID.
+	 * Retrieve the section arguments based on section ID.
 	 *
+	 * @since 1.0.0
 	 * @access protected
 	 *
 	 * @param string $section_id Section ID.
@@ -1344,8 +1552,8 @@ abstract class Controls_Stack {
 	 *
 	 * @access public
 	 *
-	 * @param array $data The data. Default is an empty array.
-	 **/
+	 * @param array $data Optional. Control stack data. Default is an empty array.
+	 */
 	public function __construct( array $data = [] ) {
 		if ( $data ) {
 			$this->_init( $data );

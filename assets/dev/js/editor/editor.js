@@ -76,6 +76,12 @@ App = Marionette.Application.extend( {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
+	backgroundClickListeners: {
+		popover: {
+			element: '.qazana-controls-popover',
+			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label'
+		}
+	},
 
 	_defaultDeviceMode: 'desktop',
 
@@ -391,6 +397,14 @@ App = Marionette.Application.extend( {
 		} );
 	},
 
+	addBackgroundClickArea: function( element ) {
+		element.addEventListener( 'click', this.onBackgroundClick.bind( this ), true );
+	},
+
+	addBackgroundClickListener: function( key, listener ) {
+		this.backgroundClickListeners[ key ] = listener;
+	},
+
 	showFatalErrorDialog: function( options ) {
 		var defaultOptions = {
 			id: 'qazana-fatal-error-dialog',
@@ -446,6 +460,8 @@ App = Marionette.Application.extend( {
 
 		this.initClearPageDialog();
 
+		this.addBackgroundClickArea( document );
+
 		this.$window.trigger( 'qazana:init' );
 
 		this.initPreview();
@@ -488,6 +504,9 @@ App = Marionette.Application.extend( {
 		this.schemes.printSchemesStyle();
 
 		this.preventClicksInsideEditor();
+
+		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[0] );
+
 
 		var Preview = require( 'qazana-views/preview' ),
 			PanelLayoutView = require( 'qazana-layouts/panel/panel' );
@@ -587,6 +606,26 @@ App = Marionette.Application.extend( {
 			if ( qazana.isEditorChanged() ) {
 				return qazana.translate( 'before_unload_alert' );
 			}
+		} );
+	},
+
+	onBackgroundClick: function( event ) {
+		jQuery.each( this.backgroundClickListeners, function() {
+			var elementToHide = this.element,
+				$clickedTarget = jQuery( event.target );
+
+			// If it's a label that associated with an input
+			if ( $clickedTarget[0].control ) {
+				$clickedTarget = $clickedTarget.add( $clickedTarget[0].control );
+			}
+
+			if ( this.ignore && $clickedTarget.closest( this.ignore ).length ) {
+				return;
+			}
+
+			var $clickedTargetClosestElement = $clickedTarget.closest( elementToHide );
+
+			jQuery( elementToHide ).not( $clickedTargetClosestElement ).hide();
 		} );
 	},
 

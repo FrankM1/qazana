@@ -5,7 +5,7 @@ ControlPopoverStarterView = ControlChooseView.extend( {
 	ui: function() {
 		var ui = ControlChooseView.prototype.ui.apply( this, arguments );
 
-		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle';
+		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle-label';
 
 		return ui;
 	},

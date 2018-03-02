@@ -112,7 +112,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 			]
         );
-        
+
         $this->add_responsive_control(
             'bottom_space',
             [

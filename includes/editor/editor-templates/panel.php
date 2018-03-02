@@ -214,10 +214,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		$scheme_fields = array_intersect_key( $typography_fields, array_flip( $scheme_fields_keys ) );
 
-		$system_fonts = Fonts::get_fonts_by_groups( [ Fonts::SYSTEM ] );
-
-		$google_fonts = Fonts::get_fonts_by_groups( [ Fonts::GOOGLE, Fonts::EARLYACCESS ] );
-
 		foreach ( $scheme_fields as $option_name => $option ) :
 		?>
 			<div class="qazana-panel-scheme-typography-item">
@@ -226,27 +222,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php if ( 'select' === $option['type'] ) : ?>
 						<select name="<?php echo $option_name; ?>" class="qazana-panel-scheme-typography-item-field">
 							<?php foreach ( $option['options'] as $field_key => $field_value ) : ?>
-								<option value="<?php echo $field_key; ?>"><?php echo $field_value; ?></option>
+								<option value="<?php echo esc_attr( $field_key ); ?>"><?php echo $field_value; ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php elseif ( 'font' === $option['type'] ) : ?>
-						<select name="<?php echo $option_name; ?>" class="qazana-panel-scheme-typography-item-field">
-							<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
-
-							<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
-								<?php foreach ( $system_fonts as $font_title => $font_type ) : ?>
-									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
-								<?php endforeach; ?>
-							</optgroup>
-
-							<optgroup label="<?php _e( 'Google', 'qazana' ); ?>">
-								<?php foreach ( $google_fonts as $font_title => $font_type ) : ?>
-									<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
-								<?php endforeach; ?>
-							</optgroup>
+						<select name="<?php echo esc_attr( $option_name ); ?>" class="qazana-panel-scheme-typography-item-field">
+							<option value=""><?php esc_html_e( 'Default', 'qazana' ); ?></option>
+							<?php foreach ( Fonts::get_font_groups() as $group_type => $group_label ) : ?>
+								<optgroup label="<?php echo esc_attr( $group_label ); ?>">
+									<?php foreach ( Fonts::get_fonts_by_groups( [ $group_type ] ) as $font_title => $font_type ) : ?>
+										<option value="<?php echo esc_attr( $font_title ); ?>"><?php echo $font_title; ?></option>
+									<?php endforeach; ?>
+								</optgroup>
+							<?php endforeach; ?>
 						</select>
 					<?php elseif ( 'text' === $option['type'] ) : ?>
-						<input name="<?php echo $option_name; ?>" class="qazana-panel-scheme-typography-item-field" />
+						<input name="<?php echo esc_attr( $option_name ); ?>" class="qazana-panel-scheme-typography-item-field" />
 					<?php endif; ?>
 				</div>
 			</div>
