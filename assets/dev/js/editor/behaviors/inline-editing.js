@@ -23,20 +23,32 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	startEditing: function( $element ) {
-		if ( this.editing ) {
+		if (
+			this.editing ||
+			'edit' !== qazana.channels.dataEditMode.request( 'activeMode' ) ||
+			this.view.model.isRemoteRequestActive()
+		) {
 			return;
 		}
 
 		this.$currentEditingArea = $element;
 
 		var elementData = this.$currentEditingArea.data(),
-			editModel = this.view.getEditModel();
+			elementDataToolbar = elementData.qazanaInlineEditingToolbar,
+			mode = 'advanced' === elementDataToolbar ? 'advanced' : 'basic',
+			editModel = this.view.getEditModel(),
+			inlineEditingConfig = qazana.config.inlineEditing,
+			contentHTML = editModel.getSetting( this.getEditingSettingKey() );
+
+		if ( 'advanced' === mode ) {
+			contentHTML = wp.editor.autop( contentHTML );
+		}
 
 		/**
 		 *  Replace rendered content with unrendered content.
 		 *  This way the user can edit the original content, before shortcodes and oEmbeds are fired.
 		 */
-		this.$currentEditingArea.html( editModel.getSetting( this.getEditingSettingKey() ) );
+		this.$currentEditingArea.html( contentHTML );
 
 		var QazanaInlineEditor = qazanaFrontend.getElements( 'window' ).QazanaInlineEditor;
 
@@ -44,14 +56,17 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 
 		this.view.allowRender = false;
 
-		var inlineEditingConfig = qazana.config.inlineEditing,
-			elementDataToolbar = elementData.qazanaInlineEditingToolbar;
+		// Avoid retrieving of old content (e.g. in case of sorting)
+		this.view.model.setHtmlCache( '' );
 
-		this.pen = new QazanaInlineEditor( {
+		this.editor = new QazanaInlineEditor( {
 			linksInNewWindow: true,
 			stay: false,
 			editor: this.$currentEditingArea[0],
+			mode: mode,
 			list: 'none' === elementDataToolbar ? [] : inlineEditingConfig.toolbar[ elementDataToolbar || 'basic' ],
+			cleanAttrs: ['id', 'class', 'name'],
+			placeholder: qazana.translate( 'type_here' ) + '...',
 			toolbarIconsPrefix: 'eicon-editor-',
 			toolbarIconsDictionary: {
 				externalLink: {
@@ -84,7 +99,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			}
 		} );
 
-		var $menuItems = jQuery( this.pen._menu ).children();
+		var $menuItems = jQuery( this.editor._menu ).children();
 
 		/**
 		 * When the edit area is not focused (on blur) the inline editing is stopped.
@@ -95,15 +110,13 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			event.preventDefault();
 		} );
 
-		this.$currentEditingArea
-			.focus()
-			.on( 'blur', _.bind( this.onInlineEditingBlur, this ) );
+		this.$currentEditingArea.on( 'blur', this.onInlineEditingBlur.bind( this ) );
 	},
 
 	stopEditing: function() {
 		this.editing = false;
 
-		this.pen.destroy();
+		this.editor.destroy();
 
 		this.view.allowRender = true;
 
@@ -150,7 +163,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	onInlineEditingUpdate: function() {
-		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.$currentEditingArea.html() );
+		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.editor.getContent() );
 	}
 } );
 
