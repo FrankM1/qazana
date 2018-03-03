@@ -868,9 +868,9 @@ select {
       right: 22px;
       border: 8px solid transparent;
       border-bottom-color: #fff; }
-    .qazana-panel .qazana-controls-popover div.elementor-control {
+    .qazana-panel .qazana-controls-popover div.qazana-control {
       background-color: transparent; }
-      .qazana-panel .qazana-controls-popover div.elementor-control:before {
+      .qazana-panel .qazana-controls-popover div.qazana-control:before {
         content: none; }
   .qazana-panel #qazana-global-templates .qazana-panel-nerd-box,
   .qazana-panel #qazana-panel-global .qazana-panel-nerd-box {
