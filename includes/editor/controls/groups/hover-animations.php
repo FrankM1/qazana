@@ -127,4 +127,13 @@ class Group_Control_Hover_Animations extends Group_Control_Base {
 		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
 	}
 
+	protected function get_default_options() {
+		return [
+			'popover' => [
+				'starter_name' => 'hover_animations',
+				'starter_title' => _x( 'Hover Animations', 'Animations Control', 'qazana' ),
+			],
+		];
+	}
+
 }
