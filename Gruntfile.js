@@ -467,6 +467,15 @@ module.exports = function( grunt ) {
         'default' // Remove banners for GitHub
     ] );
 
+    grunt.registerTask( 'push-wordpress-org', [
+    ] );
+
+    grunt.registerTask( 'release', [
+        'publish',
+        'build',
+        'push-wordpress-org'
+    ] );
+
     grunt.registerTask( 'markdown', [
         'wp_readme_to_markdown'
     ] );
