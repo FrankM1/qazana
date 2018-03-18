@@ -451,6 +451,10 @@ module.exports = function( grunt ) {
         'postcss'
     ] );
 
+    grunt.registerTask( 'markdown', [
+        'wp_readme_to_markdown'
+    ] );
+
     grunt.registerTask( 'publish', [
         'compile-build',
         'replace',
@@ -470,13 +474,10 @@ module.exports = function( grunt ) {
     grunt.registerTask( 'push-wordpress-org', [
     ] );
 
-    grunt.registerTask( 'release', [
+    grunt.registerTask( 'publishRelease', [
         'publish',
         'build',
         'push-wordpress-org'
     ] );
-
-    grunt.registerTask( 'markdown', [
-        'wp_readme_to_markdown'
-    ] );
+    
 };
