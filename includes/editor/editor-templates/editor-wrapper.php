@@ -6,6 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $wp_version;
+
+$body_classes = [
+	'qazana-editor-active',
+	'wp-version-' . str_replace( '.', '-', $wp_version ),
+];
+
+if ( is_rtl() ) {
+	$body_classes[] = 'rtl';
+}
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -18,7 +27,7 @@ global $wp_version;
 		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
 	</script>
 </head>
-<body class="qazana-editor-active wp-version-<?php echo str_replace( '.', '-', $wp_version ); ?>">
+<body class="<?php echo implode( ' ', $body_classes ); ?>">
 <div id="qazana-editor-wrapper">
 	<div id="qazana-preview">
 		<div id="qazana-loading">
@@ -35,6 +44,7 @@ global $wp_version;
 </div>
 <?php
 	wp_footer();
+	/** This action is documented in wp-admin/admin-footer.php */
 	do_action( 'admin_print_footer_scripts' );
 ?>
 </body>

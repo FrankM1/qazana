@@ -6,17 +6,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Widget Base
+ * Widget Base.
  *
- * Base class extended to create Qazana widgets.
+ * An abstract class to register new Qazana widgets. It extended the
+ * `Element_Base` class to inherit its properties.
  *
- * This class must be extended for each widget.
+ * This abstract class must be extended in order to register new widgets.
  *
+ * @since 1.0.0
  * @abstract
  */
 abstract class Widget_Base extends Element_Base {
 
-    /**
+	/**
 	 * Whether the widget has content.
 	 *
 	 * Used in cases where the widget has no content. When widgets uses only
@@ -30,7 +32,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected $_has_template_content = true;
 
-    /**
+    	/**
 	 * Retrieve element type.
 	 *
 	 * Get the element type, in this case `widget`.
@@ -45,7 +47,7 @@ abstract class Widget_Base extends Element_Base {
 		return 'widget';
 	}
 
-    /**
+    	/**
 	 * Retrieve default edit tools.
 	 *
 	 * Get the default edit tools of the widget. This method is used to set
@@ -73,7 +75,7 @@ abstract class Widget_Base extends Element_Base {
 		];
 	}
 
-    /**
+    	/**
 	 * Retrieve widget icon.
 	 *
 	 * @since 1.0.0
@@ -85,7 +87,7 @@ abstract class Widget_Base extends Element_Base {
 		return 'eicon-apps';
 	}
 
-    /**
+    	/**
 	 * Retrieve widget keywords.
 	 *
 	 * @since 1.0.10
@@ -97,7 +99,7 @@ abstract class Widget_Base extends Element_Base {
 		return [];
 	}
 
-    /**
+    	/**
 	 * Retrieve widget categories.
 	 *
 	 * @since 1.0.10
@@ -109,7 +111,7 @@ abstract class Widget_Base extends Element_Base {
 		return [ 'basic' ];
 	}
 
-    /**
+    	/**
 	 * Widget base constructor.
 	 *
 	 * Initializing the widget base class.
@@ -132,16 +134,76 @@ abstract class Widget_Base extends Element_Base {
 		if ( $is_type_instance ) {
 			$this->_register_skins();
 
+			/**
+			 * Widget skin init.
+			 *
+			 * Fires when Qazana widget is being initialized.
+			 *
+			 * The dynamic portion of the hook name, `$widget_name`, refers to the widget name.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param Widget_Base $this The current widget.
+			 */
 			do_action( 'qazana/widget/' . $this->get_name() . '/skins_init', $this );
 		}
 
 		$this->add_actions();
+	}
 
+	/**
+	 * Get stack.
+	 *
+	 * Retrieve the widget stack of controls.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @param bool $with_common_controls Optional. Whether to include the common controls. Default is true.
+	 *
+	 * @return array Widget stack of controls.
+	 */
+	public function get_stack( $with_common_controls = true ) {
+		$stack = parent::get_stack();
+
+		if ( $with_common_controls && 'common' !== $this->get_unique_name() ) {
+			/** @var Widget_Common $common_widget */
+			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
+
+			$stack['controls'] = array_merge( $stack['controls'], $common_widget->get_controls() );
+
+			$stack['tabs'] = array_merge( $stack['tabs'], $common_widget->get_tabs_controls() );
+		}
+
+		return $stack;
+	}
+
+	/**
+	 * Get widget controls pointer index.
+	 *
+	 * Retrieve widget pointer index where the next control should be added.
+	 *
+	 * While using injection point, it will return the injection point index. Otherwise index of the last control of the
+	 * current widget itself without the common controls, plus one.
+	 *
+	 * @since 1.3.1
+	 * @access public
+	 *
+	 * @return int Widget controls pointer index.
+	 */
+	public function get_pointer_index() {
+		$injection_point = $this->get_injection_point();
+
+		if ( null !== $injection_point ) {
+			return $injection_point['index'];
+		}
+
+		return count( $this->get_stack( false )['controls'] );
 	}
 
 	public function add_actions() {}
 
-    /**
+    	/**
 	 * Show in panel.
 	 *
 	 * Whether to show the widget in the panel or not. By default returns true.
@@ -155,7 +217,7 @@ abstract class Widget_Base extends Element_Base {
 		return true;
 	}
 
-    /**
+	/**
 	 * Start widget controls section.
 	 *
 	 * Used to add a new section of controls to the widget. Regular controls and
@@ -182,7 +244,7 @@ abstract class Widget_Base extends Element_Base {
 		}
 	}
 
-    /**
+	/**
 	 * Register the Skin Control if the widget has skins.
 	 *
 	 * An internal method that is used to add a skin control to the widget.
@@ -249,10 +311,14 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected function _register_skins() {}
 
-    /**
-	 * Retrieve initial config.
+	/**
+	 * Get initial config.
 	 *
-	 * Get the initial widget configuration.
+	 * Retrieve the current widget initial configuration.
+	 *
+	 * Adds more configuration on top of the controls list, the tabs assignet to
+	 * the control, element name, type, icon and more. This method also adds
+	 * widget type, keywords and categories.
 	 *
 	 * @since 1.0.0
 	 * @access protected
@@ -260,7 +326,6 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array The initial widget config.
 	 */
 	protected function _get_initial_config() {
-
 		$config = [
 			'widget_type' => $this->get_name(),
 			'keywords' => $this->get_keywords(),
@@ -270,7 +335,7 @@ abstract class Widget_Base extends Element_Base {
 		return array_merge( parent::_get_initial_config(), $config );
 	}
 
-    /**
+	/**
 	 * Print widget template.
 	 *
 	 * Used to generate the widget template on the editor, using a Backbone
@@ -315,11 +380,13 @@ abstract class Widget_Base extends Element_Base {
 			<ul class="qazana-editor-element-settings qazana-editor-widget-settings">
 				<li class="qazana-editor-element-setting qazana-editor-element-trigger" title="<?php printf( __( 'Edit %s', 'qazana' ), __( 'Widget', 'qazana' ) ); ?>">
 					<i class="eicon-edit"></i>
+					<span class="qazana-screen-only"><?php printf( __( 'Edit %s', 'qazana' ), __( 'Widget', 'qazana' ) ); ?></span>
 				</li>
 				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
 					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
+						<i class="eicon-<?php echo $edit_tool['icon']; ?>" aria-hidden="true"></i>
 						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-						<i class="eicon-<?php echo $edit_tool['icon']; ?>"></i>
+						
 					</li>
 				<?php endforeach; ?>
 			</ul>

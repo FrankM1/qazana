@@ -86,20 +86,32 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	startEditing: function( $element ) {
-		if ( this.editing ) {
+		if (
+			this.editing ||
+			'edit' !== qazana.channels.dataEditMode.request( 'activeMode' ) ||
+			this.view.model.isRemoteRequestActive()
+		) {
 			return;
 		}
 
 		this.$currentEditingArea = $element;
 
 		var elementData = this.$currentEditingArea.data(),
-			editModel = this.view.getEditModel();
+			elementDataToolbar = elementData.qazanaInlineEditingToolbar,
+			mode = 'advanced' === elementDataToolbar ? 'advanced' : 'basic',
+			editModel = this.view.getEditModel(),
+			inlineEditingConfig = qazana.config.inlineEditing,
+			contentHTML = editModel.getSetting( this.getEditingSettingKey() );
+
+		if ( 'advanced' === mode ) {
+			contentHTML = wp.editor.autop( contentHTML );
+		}
 
 		/**
 		 *  Replace rendered content with unrendered content.
 		 *  This way the user can edit the original content, before shortcodes and oEmbeds are fired.
 		 */
-		this.$currentEditingArea.html( editModel.getSetting( this.getEditingSettingKey() ) );
+		this.$currentEditingArea.html( contentHTML );
 
 		var QazanaInlineEditor = qazanaFrontend.getElements( 'window' ).QazanaInlineEditor;
 
@@ -107,14 +119,17 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 
 		this.view.allowRender = false;
 
-		var inlineEditingConfig = qazana.config.inlineEditing,
-			elementDataToolbar = elementData.qazanaInlineEditingToolbar;
+		// Avoid retrieving of old content (e.g. in case of sorting)
+		this.view.model.setHtmlCache( '' );
 
-		this.pen = new QazanaInlineEditor( {
+		this.editor = new QazanaInlineEditor( {
 			linksInNewWindow: true,
 			stay: false,
 			editor: this.$currentEditingArea[0],
+			mode: mode,
 			list: 'none' === elementDataToolbar ? [] : inlineEditingConfig.toolbar[ elementDataToolbar || 'basic' ],
+			cleanAttrs: ['id', 'class', 'name'],
+			placeholder: qazana.translate( 'type_here' ) + '...',
 			toolbarIconsPrefix: 'eicon-editor-',
 			toolbarIconsDictionary: {
 				externalLink: {
@@ -147,7 +162,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			}
 		} );
 
-		var $menuItems = jQuery( this.pen._menu ).children();
+		var $menuItems = jQuery( this.editor._menu ).children();
 
 		/**
 		 * When the edit area is not focused (on blur) the inline editing is stopped.
@@ -158,15 +173,13 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 			event.preventDefault();
 		} );
 
-		this.$currentEditingArea
-			.focus()
-			.on( 'blur', _.bind( this.onInlineEditingBlur, this ) );
+		this.$currentEditingArea.on( 'blur', this.onInlineEditingBlur.bind( this ) );
 	},
 
 	stopEditing: function() {
 		this.editing = false;
 
-		this.pen.destroy();
+		this.editor.destroy();
 
 		this.view.allowRender = true;
 
@@ -213,7 +226,7 @@ InlineEditingBehavior = Marionette.Behavior.extend( {
 	},
 
 	onInlineEditingUpdate: function() {
-		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.$currentEditingArea.html() );
+		this.view.getEditModel().setSetting( this.getEditingSettingKey(), this.editor.getContent() );
 	}
 } );
 
@@ -1708,6 +1721,12 @@ App = Marionette.Application.extend( {
 			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
 		}
 	},
+	backgroundClickListeners: {
+		popover: {
+			element: '.qazana-controls-popover',
+			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label'
+		}
+	},
 
 	_defaultDeviceMode: 'desktop',
 
@@ -2023,6 +2042,14 @@ App = Marionette.Application.extend( {
 		} );
 	},
 
+	addBackgroundClickArea: function( element ) {
+		element.addEventListener( 'click', this.onBackgroundClick.bind( this ), true );
+	},
+
+	addBackgroundClickListener: function( key, listener ) {
+		this.backgroundClickListeners[ key ] = listener;
+	},
+
 	showFatalErrorDialog: function( options ) {
 		var defaultOptions = {
 			id: 'qazana-fatal-error-dialog',
@@ -2078,6 +2105,8 @@ App = Marionette.Application.extend( {
 
 		this.initClearPageDialog();
 
+		this.addBackgroundClickArea( document );
+
 		this.$window.trigger( 'qazana:init' );
 
 		this.initPreview();
@@ -2120,6 +2149,9 @@ App = Marionette.Application.extend( {
 		this.schemes.printSchemesStyle();
 
 		this.preventClicksInsideEditor();
+
+		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[0] );
+
 
 		var Preview = require( 'qazana-views/preview' ),
 			PanelLayoutView = require( 'qazana-layouts/panel/panel' );
@@ -2219,6 +2251,26 @@ App = Marionette.Application.extend( {
 			if ( qazana.isEditorChanged() ) {
 				return qazana.translate( 'before_unload_alert' );
 			}
+		} );
+	},
+
+	onBackgroundClick: function( event ) {
+		jQuery.each( this.backgroundClickListeners, function() {
+			var elementToHide = this.element,
+				$clickedTarget = jQuery( event.target );
+
+			// If it's a label that associated with an input
+			if ( $clickedTarget[0].control ) {
+				$clickedTarget = $clickedTarget.add( $clickedTarget[0].control );
+			}
+
+			if ( this.ignore && $clickedTarget.closest( this.ignore ).length ) {
+				return;
+			}
+
+			var $clickedTargetClosestElement = $clickedTarget.closest( elementToHide );
+
+			jQuery( elementToHide ).not( $clickedTargetClosestElement ).hide();
 		} );
 	},
 
@@ -4903,13 +4955,14 @@ Ajax = {
 	},
 
 	send: function( action, options ) {
-		var ajaxParams = qazana.helpers.cloneObject( this.config.ajaxParams );
+		var self = this,
+			ajaxParams = qazana.helpers.cloneObject( this.config.ajaxParams );
 
 		options = options || {};
 
 		action = this.config.actionPrefix + action;
 
-		Backbone.$.extend( ajaxParams, options );
+		jQuery.extend( ajaxParams, options );
 
 		if ( ajaxParams.data instanceof FormData ) {
 			ajaxParams.data.append( 'action', action );
@@ -4937,10 +4990,35 @@ Ajax = {
 				ajaxParams.error = function( data ) {
 					errorCallback( data );
 				};
+			} else {
+				ajaxParams.error = function( XMLHttpRequest ) {
+					if ( 0 === XMLHttpRequest.readyState && 'abort' === XMLHttpRequest.statusText ) {
+						return;
+					}
+
+					var message = self.createErrorMessage( XMLHttpRequest );
+                    			console.log(message);
+				};
 			}
 		}
 
-		return Backbone.$.ajax( ajaxParams );
+		return jQuery.ajax( ajaxParams );
+	},
+
+	createErrorMessage: function( XMLHttpRequest ) {
+		var message;
+		if ( 4 === XMLHttpRequest.readyState ) {
+			message = qazana.translate( 'server_error' );
+			if ( 200 !== XMLHttpRequest.status ) {
+				message += ' (' + XMLHttpRequest.status + ' ' + XMLHttpRequest.statusText + ')';
+			}
+		} else if ( 0 === XMLHttpRequest.readyState ) {
+			message = qazana.translate( 'server_connection_lost' );
+		} else {
+			message = qazana.translate( 'unknown_error' );
+		}
+
+		return message + '.';
 	}
 };
 
@@ -5449,7 +5527,7 @@ helpers = {
 			return;
 		}
 
-		var fontType = qazana.config.controls.font.fonts[ font ],
+		var fontType = qazana.config.controls.font.options[ font ],
 			fontUrl,
 
 			subsets = {
@@ -5481,6 +5559,8 @@ helpers = {
 			qazana.$previewContents.find( 'link:last' ).after( '<link href="' + fontUrl + '" rel="stylesheet" type="text/css">' );
 		}
 		this._enqueuedFonts.push( font );
+
+		qazana.channels.editor.trigger( 'font:insertion', fontType, font );
 	},
 
 	getElementChildType: function( elementType, container ) {
@@ -8034,8 +8114,7 @@ ControlsStack = Marionette.CompositeView.extend( {
 	className: 'qazana-panel-controls-stack',
 
 	classes: {
-		popover: 'qazana-controls-popover',
-		popoverToggle: 'qazana-control-popover-toggle-toggle'
+		popover: 'qazana-controls-popover'
 	},
 
 	activeTab: null,
@@ -8056,15 +8135,10 @@ ControlsStack = Marionette.CompositeView.extend( {
 	},
 
 	events: function() {
-		var events = {
-			'click': 'onClick',
+		return {
 			'click @ui.tabs': 'onClickTabControl',
 			'click @ui.reloadButton': 'onReloadButtonClick'
 		};
-
-		events[ 'click .' + this.classes.popover ] = 'onPopoverClick';
-
-		return events;
 	},
 
 	modelEvents: {
@@ -8160,10 +8234,6 @@ ControlsStack = Marionette.CompositeView.extend( {
 		} );
 	},
 
-	hidePopovers: function() {
-		this.$el.find( '.' + this.classes.popover ).hide();
-	},
-
 	removePopovers: function() {
 		this.$el.find( '.' + this.classes.popover ).remove();
 	},
@@ -8191,20 +8261,6 @@ ControlsStack = Marionette.CompositeView.extend( {
 
 	onModelDestroy: function() {
 		this.destroy();
-	},
-
-	onClick: function( event ) {
-		if ( jQuery( event.target ).closest( '.' + this.classes.popover + ',.' + this.classes.popoverToggle ).length ) {
-			return;
-		}
-
-		this.hidePopovers();
-	},
-
-	onPopoverClick: function( event ) {
-		var $currentPopover = jQuery( event.target ).closest( '.' + this.classes.popover );
-
-		this.$el.find( '.' + this.classes.popover ).not( $currentPopover ).hide();
 	},
 
 	onClickTabControl: function( event ) {
@@ -8489,12 +8545,18 @@ ControlBaseMultipleItemView = ControlBaseDataView.extend( {
 	getControlValue: function( key ) {
 		var values = this.elementSettingsModel.get( this.model.get( 'name' ) );
 
-		if ( ! Backbone.$.isPlainObject( values ) ) {
+		if ( ! jQuery.isPlainObject( values ) ) {
 			return {};
 		}
 
 		if ( key ) {
-			return values[ key ] || '';
+			var value = values[ key ];
+
+			if ( undefined === value ) {
+				value = '';
+			}
+
+			return value;
 		}
 
 		return qazana.helpers.cloneObject( values );
@@ -9136,20 +9198,20 @@ module.exports = ControlSelect2View.extend( {
 	},
 
 	templateHelpers: function() {
-		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments );
+		var helpers = ControlSelect2View.prototype.templateHelpers.apply( this, arguments ),
+			fonts = this.model.get( 'options' );
 
-		helpers.getFontsByGroups = _.bind( function( groups ) {
-			var fonts = this.model.get( 'fonts' ),
-				filteredFonts = {};
+		helpers.getFontsByGroups = function( groups ) {
+			var filteredFonts = {};
 
 			_.each( fonts, function( fontType, fontName ) {
 				if ( _.isArray( groups ) && _.contains( groups, fontType ) || fontType === groups ) {
-					filteredFonts[ fontName ] = fontType;
+					filteredFonts[ fontName ] = fontName;
 				}
 			} );
 
 			return filteredFonts;
-		}, this );
+		};
 
 		return helpers;
 	}
@@ -9619,7 +9681,7 @@ ControlPopoverStarterView = ControlChooseView.extend( {
 	ui: function() {
 		var ui = ControlChooseView.prototype.ui.apply( this, arguments );
 
-		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle';
+		ui.popoverToggle = 'label.qazana-control-popover-toggle-toggle-label';
 
 		return ui;
 	},

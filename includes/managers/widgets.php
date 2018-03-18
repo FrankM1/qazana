@@ -59,6 +59,10 @@ class Widgets_Manager {
             'video',
         ];
 
+        if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
+            return;
+        }
+
         /**
          * Allow override of registered widget defaults
          *

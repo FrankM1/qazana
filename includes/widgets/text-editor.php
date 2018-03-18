@@ -112,7 +112,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 			]
         );
-        
+
         $this->add_responsive_control(
             'bottom_space',
             [
@@ -153,7 +153,6 @@ class Widget_Text_Editor extends Widget_Base {
 						'icon'  => 'fa fa-align-justify',
 					],
 				],
-				'prefix_class' => 'qazana-align-',
 				'render_type'  => 'template',
 			]
         );

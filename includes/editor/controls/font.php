@@ -84,7 +84,8 @@ class Control_Font extends Base_Data_Control {
 	 */
 	protected function get_default_settings() {
 		return [
-			'fonts' => Fonts::get_fonts(),
+			'groups' => Fonts::get_font_groups(),
+			'options' => Fonts::get_fonts(),
 		];
 	}
 
@@ -105,28 +106,22 @@ class Control_Font extends Base_Data_Control {
 			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<select id="<?php echo $control_uid; ?>" class="qazana-control-font-family" data-setting="{{ data.name }}">
-					<option value=""><?php _e( 'Default', 'qazana' ); ?></option>
-					<optgroup label="<?php _e( 'System', 'qazana' ); ?>">
-						<# _.each( getFontsByGroups( 'system' ), function( fontType, fontName ) { #>
-						<option value="{{ fontName }}">{{{ fontName }}}</option>
-						<# } ); #>
-					</optgroup>
-					<?php /*
-					<optgroup label="<?php _e( 'Local', 'qazana' ); ?>">
-						<# _.each( getFontsByGroups( 'local' ), function( fontType, fontName ) { #>
-						<option value="{{ fontName }}">{{{ fontName }}}</option>
-						<# } ); #>
-					</optgroup> */ ?>
-					<optgroup label="<?php _e( 'Google', 'qazana' ); ?>">
-						<# _.each( getFontsByGroups( [ 'googlefonts', 'earlyaccess' ] ), function( fontType, fontName ) { #>
-						<option value="{{ fontName }}">{{{ fontName }}}</option>
-						<# } ); #>
-					</optgroup>
+					<option value=""><?php esc_html_e( 'Default', 'qazana' ); ?></option>
+					<# _.each( data.groups, function( group_label, group_name ) {
+						var groupFonts = getFontsByGroups( group_name );
+						if ( ! _.isEmpty( groupFonts ) ) { #>
+						<optgroup label="{{ group_label }}">
+							<# _.each( groupFonts, function( fontType, fontName ) { #>
+								<option value="{{ fontName }}">{{{ fontName }}}</option>
+							<# } ); #>
+						</optgroup>
+						<# }
+					}); #>
 				</select>
 			</div>
 		</div>
 		<# if ( data.description ) { #>
-		<div class="qazana-control-field-description">{{{ data.description }}}</div>
+			<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
 	}

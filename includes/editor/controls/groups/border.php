@@ -123,10 +123,7 @@ class Group_Control_Border extends Group_Control_Base {
 
 	protected function get_default_options() {
 		return [
-			'popover' => [
-				'starter_title' => _x( 'Border', 'Border Control', 'qazana' ),
-				'toggle_type' => 'simple',
-			],
+			'popover' => false,
 		];
 	}
 }

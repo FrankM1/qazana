@@ -131,6 +131,10 @@ class Group_Control_Typography extends Group_Control_Base {
 				'px' => [
 					'min' => 1,
 					'max' => 200,
+                ],
+                'em' => [
+					'min' => 1,
+					'max' => 200,
 				],
 			],
 			'responsive' => true,
@@ -208,11 +212,20 @@ class Group_Control_Typography extends Group_Control_Base {
 
 		$fields['letter_spacing'] = [
 			'label' => _x( 'Letter Spacing', 'Typography Control', 'qazana' ),
-			'type' => Controls_Manager::SLIDER,
+            'type' => Controls_Manager::SLIDER,
+            'default' => [
+				'unit' => 'px',
+			],
 			'range' => [
 				'px' => [
-					'max' => 20,
+                    'min' => -30,
+					'max' => 30,
 					'step' => 0.1,
+                ],
+                'em' => [
+                    'min' => -10,
+                    'max' => 10,
+                    'step' => 0.1,
 				],
 			],
 			'responsive' => true,

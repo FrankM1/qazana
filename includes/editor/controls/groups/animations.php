@@ -65,6 +65,15 @@ class Group_Control_Animations extends Group_Control_Base {
         ];
 
 		return $fields;
+    }
+ 
+    protected function get_default_options() {
+		return [
+			'popover' => [
+				'starter_name' => 'animations',
+				'starter_title' => _x( 'Animations', 'Animations Control', 'qazana' ),
+			],
+		];
 	}
 
 }

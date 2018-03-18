@@ -78,7 +78,10 @@ class Control_Structure extends Base_Data_Control {
 				<div class="qazana-control-structure-preset qazana-control-structure-current-preset">
 					{{{ qazana.presetsFactory.getPresetSVG( currentPreset.preset, 233, 72, 5 ).outerHTML }}}
 				</div>
-				<div class="qazana-control-structure-reset"><i class="fa fa-undo"></i><?php _e( 'Reset Structure', 'qazana' ); ?></div>
+				<div class="qazana-control-structure-reset" aria-hidden="true">
+					<i class="fa fa-undo"></i>
+					<?php _e( 'Reset Structure', 'qazana' ); ?>
+				</div>
 				<#
 				var morePresets = getMorePresets();
 
