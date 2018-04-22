@@ -1170,7 +1170,7 @@ class Element_Section extends Element_Base {
 		$html_tag = $this->get_settings( 'html_tag' );
 
 		if ( empty( $html_tag ) ) {
-			$html_tag = 'section';
+			$html_tag = 'div';
 		}
 
 		return $html_tag;

@@ -401,7 +401,7 @@ class Widget_Icon extends Widget_Base {
 		}
 
 		if ( $settings['icon_type'] === 'image' ) {
-			$output = '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" /></span>';
+			$output = '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" alt="icon"/></span>';
 		} else {
 			$output = '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
 		}

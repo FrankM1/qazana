@@ -658,7 +658,7 @@ class Widget_Icon_Box extends Widget_Base {
 
         if ( ! empty( $settings['link']['url'] ) ) {
             $this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
-            $icon_tag = 'a';
+            $this->icon_tag = 'a';
 
             if ( ! empty( $settings['link']['is_external'] ) ) {
                 $this->add_render_attribute( 'link', 'target', '_blank' );
@@ -688,8 +688,6 @@ class Widget_Icon_Box extends Widget_Base {
 
 		$output = null;
 
-		$icon_tag = 'span';
-
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
 
 		$icon_attributes = $this->get_render_attribute_string( 'icon' );
@@ -697,15 +695,19 @@ class Widget_Icon_Box extends Widget_Base {
 
 		if ( ! empty( $settings['icon'] ) ) {
 
-			$output .= '<'. implode( ' ', [ $icon_tag, $icon_attributes, $link_attributes ] ) .'>';
+            if ( 'a' === $this->icon_tag ) {
+                $output .= '<'. implode( ' ', [ $this->icon_tag, $icon_attributes, $link_attributes ] ) .'>';
+            } else {
+                $output .= '<'. $this->icon_tag .' '. $icon_attributes .'>';
+            }
 
 			if ( $settings['icon_type'] === 'image' ) {
-				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" /></span>';
+				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" alt="icon" /></span>';
 			} else {
 				$output .= '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
 			}
 
-			$output .= '</'. $icon_tag .'>';
+			$output .= '</'. $this->icon_tag .'>';
 
 		}
 
@@ -718,12 +720,8 @@ class Widget_Icon_Box extends Widget_Base {
 
 		$output = null;
 
-		$icon_tag = 'span';
-
-		$link_attributes = $this->get_render_attribute_string( 'link' );
-
 		$output .= '<'. $settings['title_size'] .' class="qazana-icon-box-title">';
-			$output .= '<'. implode( ' ', [ $icon_tag, $link_attributes ] ) .'>'. $settings['title_text'] .' </'. $icon_tag.'>';
+            $output .= '<span>'. $settings['title_text'] .'</span>';
 		$output .= '</'. $settings['title_size'].' >';
 		$output .= '<p class="qazana-icon-box-description">'. $settings['description_text'] .' </p>';
 
@@ -734,10 +732,6 @@ class Widget_Icon_Box extends Widget_Base {
 	protected function render_style_1() {
 
         $settings = $this->get_settings();
-
-        $icon_tag = 'span';
-
-        $link_attributes = $this->get_render_attribute_string( 'link' );
 
 		if ( ! empty( $settings['icon'] ) ) {
 
@@ -756,11 +750,7 @@ class Widget_Icon_Box extends Widget_Base {
 
         $settings = $this->get_settings();
 
-        $icon_tag = 'span';
-
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation_type'] ] );
-
-        $link_attributes = $this->get_render_attribute_string( 'link' );
 
 	    ?><div class="qazana-icon-box-icon front">
 	        <div class="front-inner-wrap">
@@ -768,7 +758,7 @@ class Widget_Icon_Box extends Widget_Base {
 				<?php echo $this->get_render_icon(); ?>
 
 		        <<?php echo $settings['title_size']; ?> class="qazana-icon-box-title">
-		            <<?php echo implode( ' ', [ $icon_tag, $link_attributes ] ); ?>><?php echo $settings['title_text']; ?></<?php echo $icon_tag; ?>>
+		            <span><?php echo $settings['title_text']; ?></span>
 		        </<?php echo $settings['title_size']; ?>>
 
 	        </div>
@@ -785,7 +775,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
 
-        $icon_tag = 'span';
+        $this->icon_tag = 'span';
 
         $link_attributes = $this->get_render_attribute_string( 'link' );
 
@@ -801,11 +791,11 @@ class Widget_Icon_Box extends Widget_Base {
 	public function render() {
 		$settings = $this->get_settings();
 
-		$icon_tag = 'span';
+		$this->icon_tag = 'span';
 
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
-			$icon_tag = 'a';
+			$this->icon_tag = 'a';
 
 			if ( ! empty( $settings['link']['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
@@ -818,25 +808,20 @@ class Widget_Icon_Box extends Widget_Base {
 
 		$this->add_render_attribute( 'i', 'class', $settings['icon'] );
 
-		?>
-		<div class="qazana-icon-box-wrapper">
+		?><div class="qazana-icon-box-wrapper">
             <div class="height-adjust"></div>
-            <div class="qazana-icon-box-inner">
+            <div class="qazana-icon-box-inner"><?php
 
-            <?php
+                if ( $settings['view'] === 'animated-1' ) {
+                    $this->render_style_2();
+                } elseif( $settings['view'] === 'align-left' ) {
+                    $this->render_style_3();
+                } else {
+                    $this->render_style_1();
+                }
 
-            if( $settings['view'] === 'animated-1' ) {
-                $this->render_style_2();
-			} elseif( $settings['view'] === 'align-left' ) {
-                $this->render_style_3();
-            } else {
-                $this->render_style_1();
-            }
-
-            ?>
-            </div>
-		</div>
-		<?php
+            ?></div>
+		</div><?php
 	}
 
 	protected function _content_template() { }
