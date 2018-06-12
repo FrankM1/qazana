@@ -611,7 +611,7 @@ class Widget_Video extends Widget_Base {
 
 		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-video-wrapper' );
 		
-		if ( ! $settings['lightbox'] ) {
+		if ( $this->get_settings( 'lightbox' ) ) {
 			$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-fit-aspect-ratio' );
 		}
 
