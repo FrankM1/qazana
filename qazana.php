@@ -44,7 +44,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'QAZANA__FILE__', __FILE__ );
 
-if ( ! version_compare( PHP_VERSION, '5.4', '>=' ) ) {
+/**
+ * Qazana check PHP version.
+ *
+ * Check when the site doesn't have the minimum required PHP version.
+ *
+ * @since 1.3.1
+ *
+ * @return void
+ */
+function qazana_is_php_version_compatible() {
+	if ( ! version_compare( PHP_VERSION, '5.4', '>=' ) ) {
+		return false;
+	}
+	return true;
+}
+
+if ( ! qazana_is_php_version_compatible() ) {
     add_action( 'admin_notices', 'qazana_fail_php_version' );
 } else {
     require plugin_dir_path( QAZANA__FILE__ ) . 'includes/plugin.php';
@@ -99,6 +115,9 @@ function qazana_write_log( $log, $type = '1' ) {
  * @return The one true Qazana Instance
  */
 function qazana() {
+    if ( ! qazana_is_php_version_compatible() ) {
+        return;
+    }  
     // In tests we run the instance manually.
     return Qazana\Plugin::instance();
 }
