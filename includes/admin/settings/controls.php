@@ -42,16 +42,14 @@ class Controls {
 		if ( empty( $field['classes'] ) ) {
 			$field['classes'] = [ 'regular-text' ];
 		}
-		?>
-		<input type="<?php echo esc_attr( $field['type'] ); ?>" class="<?php echo esc_attr( implode( ' ', $field['classes'] ) ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo esc_attr( get_option( $field['id'], $field['std'] ) ); ?>"<?php echo ! empty( $field['placeholder'] ) ? ' placeholder="' . $field['placeholder'] . '"' : ''; ?> />
-		<?php
-		if ( ! empty( $field['sub_desc'] ) ) :
+		?><input type="<?php echo esc_attr( $field['type'] ); ?>" class="<?php echo esc_attr( implode( ' ', $field['classes'] ) ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo esc_attr( get_option( $field['id'], $field['std'] ) ); ?>"<?php echo ! empty( $field['placeholder'] ) ? ' placeholder="' . $field['placeholder'] . '"' : ''; ?> /><?php
+        
+        if ( ! empty( $field['sub_desc'] ) ) :
 			echo $field['sub_desc'];
 		endif;
-		?>
-		<?php if ( ! empty( $field['desc'] ) ) : ?>
-			<p class="description"><?php echo $field['desc']; ?></p>
-		<?php endif;
+        
+        if ( ! empty( $field['desc'] ) ) : ?><p class="description"><?php echo $field['desc']; ?></p><?php endif;
+
     }
 
     /**
@@ -62,16 +60,13 @@ class Controls {
 	private static function _checkbox( array $field ) {
 		?>
 		<label>
-			<input type="<?php echo esc_attr( $field['type'] ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo $field['value']; ?>"<?php checked( $field['value'], get_option( $field['id'], $field['std'] ) ); ?> />
-			<?php
+			<input type="<?php echo esc_attr( $field['type'] ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo $field['value']; ?>"<?php checked( $field['value'], get_option( $field['id'], $field['std'] ) ); ?> /><?php
 			if ( ! empty( $field['sub_desc'] ) ) :
 				echo $field['sub_desc'];
 			endif;
 			?>
 		</label>
-		<?php if ( ! empty( $field['desc'] ) ) : ?>
-			<p class="description"><?php echo $field['desc']; ?></p>
-		<?php endif;
+		<?php if ( ! empty( $field['desc'] ) ) : ?><p class="description"><?php echo $field['desc']; ?></p><?php endif;
 	}
 
 	/**

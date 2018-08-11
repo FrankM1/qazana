@@ -1,0 +1,20 @@
+// Canvas Page template
+.page-template-qazana_canvas {
+
+	&.qazana-page {
+
+		&:before {
+			display: none; // Twenty Fifteen Theme
+		}
+	}
+}
+
+.qazana-post__thumbnail__link {
+	transition: none; // Avoid size calculation failures on some themes
+}
+
+#left-area ul.qazana-icon-list-items,
+.qazana .qazana-element ul.qazana-icon-list-items,
+#qazana .qazana-element ul.qazana-icon-list-items {
+	padding: 0;
+}

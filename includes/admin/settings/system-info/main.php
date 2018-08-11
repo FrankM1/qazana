@@ -35,7 +35,9 @@ class Main {
 
 	private function require_files() {
 		require __DIR__ . '/classes/abstracts/base-reporter.php';
-		require __DIR__ . '/helpers/model.php';
+        require __DIR__ . '/helpers/model.php';
+        require __DIR__ . '/classes/debug/debug.php';
+        require __DIR__ . '/classes/debug/debug-reporter.php';
 	}
 
 	/**

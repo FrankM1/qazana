@@ -31,24 +31,29 @@
 }
 
 .qazana-view-stacked {
+
 	.qazana-icon {
-		padding: 0.5em;
+		padding: .5em;
 		background-color: $gray;
 		color: #fff;
 	}
 }
 
 .qazana-view-framed {
+
 	.qazana-icon {
-		padding: 0.5em;
+		padding: .5em;
 		color: $gray;
 		border: 3px solid $gray;
 		background-color: transparent;
+
 	}
 }
 
-.qazana-shape- {
-	&circle {
+.qazana-shape {
+
+	&-circle {
+
 		.qazana-icon {
 			border-radius: 50%;
 		}

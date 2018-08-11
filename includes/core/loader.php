@@ -17,49 +17,27 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 Class Loader {
 
-    public $_stack;
+    private $_stack = array();
 
-    public $_stack_uri;
+    private $_stack_uri = array();
 
-    public $_locations;
-
-    /**
-     * __construct
-     *
-     * @param [type] $locations [description]
-     */
-    function __construct( $base, $locations = array() ) {
-
-        $base_path  = ! empty($base['path'] ) ? $base['path'] : qazana()->plugin_dir;
-        $base_url   = ! empty($base['url'] ) ? $base['url'] : qazana()->plugin_url;
-
-        $this->_stack = array(
-            get_stylesheet_directory(),
-            get_template_directory(),
-            $base_path,
-        );
-
-        $this->_stack_uri = array(
-            get_stylesheet_directory_uri(),
-            get_template_directory_uri(),
-            $base_url,
-        );
-
-        $this->_locations = $locations;
-
-    }
+    private $_locations = array();
 
     /**
-     * The main filter used for theme compatibility and displaying custom
-     * widget files.
-     *
-     * @since 1.0.0
-     * @uses apply_filters()
-     * @param string $template
-     * @return string Template file to use
+     * Initialize Loader
      */
-    function file_include( $template = '' ) {
-    	return apply_filters( __FUNCTION__, $template );
+    public function __construct() {  }
+
+    /**
+    * Add a new extension path
+    */
+    public function add_stack( $base, $locations ) {
+        $this->_stack[] = $base['path'];
+        $this->_stack_uri[] = $base['uri'];
+
+        foreach ( $locations as $location ) {
+            $this->_locations[] = $location;
+        }
     }
 
     /**
@@ -70,7 +48,7 @@ Class Loader {
      *
      * @return array The filtered value after all hooked functions are applied to it.
      */
-    function get_file_locations() {
+    protected function get_file_locations() {
         return $this->_locations;
     }
 
@@ -82,7 +60,7 @@ Class Loader {
      *
      * @return array The filtered value after all hooked functions are applied to it.
      */
-    function get_file_stack() {
+    protected function get_file_stack() {
         return $this->_stack;
     }
 
@@ -94,11 +72,11 @@ Class Loader {
      *
      * @return array The filtered value after all hooked functions are applied to it.
      */
-    function get_file_stack_uri() {
+    protected function get_file_stack_uri() {
         return $this->_stack_uri;
     }
 
-    function locate_folder( $folder_names ) {
+    public function locate_folder( $folder_names ) {
 
         // No file found yet
     	$located            = false;
@@ -147,7 +125,7 @@ Class Loader {
      *                            Has no effect if $load is false.
      * @return string The widget filename if one is located.
      */
-    function locate_widget( $file_names, $load = false, $require_once = true ) {
+    public function locate_widget( $file_names, $load = false, $require_once = true ) {
 
     	// No file found yet
     	$located            = false;
@@ -200,7 +178,7 @@ Class Loader {
      *                            Has no effect if $load is false.
      * @return string The widget filename if one is located.
      */
-    function locate_widget_url( $file_names, $folder_url = false ) {
+    public function locate_widget_url( $file_names, $folder_url = false ) {
 
     	// No file found yet
     	$located            = false;
@@ -241,7 +219,6 @@ Class Loader {
     	return $located;
     }
 
-
     /**
      * Add widget locations to widget files being searched for
      *
@@ -250,23 +227,23 @@ Class Loader {
      * @param array $widgets
      * @return array()
      */
-    function merge_files_stack_locations( ) {
+    public function merge_files_stack_locations() {
 
         $retval = array();
 
         // Get widget locations
-        $stacks = $this->get_file_stack();
+        $stacks = array_unique( $this->get_file_stack() );
     	// Get alternate locations
-    	$locations = $this->get_file_locations();
-
+        $locations = array_unique( $this->get_file_locations() );
+        
     	// Loop through locations and stacks and combine
     	foreach ( (array) $stacks as $stack ) {
-    		foreach ( (array) $locations as $custom_location ) {
-    			$retval[] = untrailingslashit( trailingslashit( $stack ) . $custom_location );
+    		foreach ( (array) $locations as $location ) {
+    			$retval[] = untrailingslashit( trailingslashit( $stack ) . $location );
             }
         }
 
-    	return $retval;
+    	return array_unique( $retval );
     }
 
     /**
@@ -277,14 +254,14 @@ Class Loader {
      * @param array $widgets
      * @return array()
      */
-    function merge_files_stack_urls( ) {
+    public function merge_files_stack_urls( ) {
 
         $retval = array();
 
         // Get widget locations
-        $stacks = $this->get_file_stack_uri();
+        $stacks = array_unique( $this->get_file_stack_uri() );
     	// Get alternate locations
-    	$locations = $this->get_file_locations();
+    	$locations = array_unique( $this->get_file_locations() );
 
     	// Loop through locations and stacks and combine
     	foreach ( (array) $stacks as $stack ) {
@@ -293,8 +270,6 @@ Class Loader {
             }
         }
 
-    	return $retval;
+    	return array_unique( $retval );
     }
-
-
 }

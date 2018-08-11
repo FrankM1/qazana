@@ -1,0 +1,216 @@
+#qazana-navigator {
+	position: fixed;
+	top: 100px;
+	width: 250px;
+	height: 300px;
+	@include end(30px);
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+	user-select: none;
+	overflow: hidden; // Ensure the bottom border radius is visible
+	z-index: 2;
+	display: none;
+
+	&__inner {
+		height: 100%;
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px;
+		border-bottom: 1px solid $editor-background;
+	}
+
+	&__toggle-all {
+		font-size: 14px;
+		cursor: pointer;
+	}
+
+	&__close {
+		font-size: 12px;
+		cursor: pointer;
+	}
+
+	&__elements {
+		height: calc(100% - 50px);
+		overflow: auto;
+		position: relative;
+		background-color: $editor-background;
+	}
+
+	&__footer {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		bottom: 0;
+		text-align: center;
+		background-color: #fff;
+		box-shadow: 1px 2px 15px 0 rgba(0, 0, 0, 0.13);
+
+		.qazana-navigator-docked & {
+			display: none;
+		}
+	}
+}
+
+.qazana-navigator {
+
+	&__item {
+		display: flex;
+		height: 32px;
+		@include padding-end(15px);
+		font-size: 11px;
+		border-bottom: 1px solid $editor-background;
+		cursor: pointer;
+
+		&:not(.qazana-active) {
+
+			.qazana-navigator__element__list-toggle {
+
+				i {
+					transform: rotate(getValueByDirection(-90deg, 90deg));
+				}
+			}
+		}
+
+		> * {
+			display: flex;
+			align-items: center;
+		}
+
+		+ .qazana-navigator__elements {
+			display: none;
+		}
+	}
+
+	&__elements {
+
+		.qazana-empty-view {
+			padding: 10px;
+			border-bottom: 1px solid $editor-background;
+
+			&__title {
+				@include margin-start(23px);
+				color: $editor-lighter;
+				font-size: 10px;
+				font-style: italic;
+			}
+		}
+
+		.ui-sortable-helper {
+			background-color: #fff;
+			box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.1);
+			transform: rotate(4deg);
+			border: 1px solid $editor-background;
+			pointer-events: none;
+		}
+
+		.ui-sortable-placeholder {
+			background-color: $editor-background-light;
+		}
+	}
+
+	&__element {
+
+		&.qazana-dragging-on-child {
+
+			> .qazana-navigator__elements {
+
+				> .qazana-empty-view {
+					border-top: 2px solid $editor-info;
+
+					.qazana-empty-view__title {
+						display: none;
+					}
+
+					+ .ui-sortable-placeholder {
+						display: none;
+					}
+				}
+			}
+		}
+
+		&:not(.qazana-navigator__element--has-children) {
+
+			.qazana-navigator__element__list-toggle {
+				visibility: hidden;
+			}
+		}
+
+		&:not(.qazana-navigator__element--hidden) {
+
+			> .qazana-navigator__item {
+
+				.qazana-navigator__element__toggle {
+					color: $editor-info;
+				}
+
+				&:not(:hover) {
+
+					.qazana-navigator__element__toggle {
+						display: none;
+					}
+				}
+			}
+
+			&:not(.ui-sortable-helper) {
+
+				> .qazana-navigator__item {
+
+					&.qazana-editing {
+						background-image: linear-gradient(to top, darken($editor-info, 10%), $editor-info);
+
+						> * {
+							color: #fff;
+						}
+					}
+				}
+			}
+		}
+
+		&__list-toggle {
+			@include margin-end(7px);
+			transition: transform .3s;
+		}
+
+		&__element-type {
+			@include margin-end(8px);
+		}
+
+		&__title {
+			flex-grow: 1;
+			outline: none;
+			align-self: center;
+		}
+
+		&__toggle {
+			text-align: $end;
+		}
+
+		&--hidden {
+
+			.qazana-navigator__element__title,
+			.qazana-navigator__element__toggle {
+				opacity: .5;
+			}
+		}
+
+		&-column {
+			background-color: lighten($editor-background-light, 3%);
+
+			> .qazana-navigator__item {
+
+				.qazana-navigator__element__element-type {
+					color: $editor-light;
+				}
+			}
+		}
+
+		&-section {
+			background-color: #fff;
+		}
+	}
+}

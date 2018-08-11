@@ -1,122 +1,121 @@
-var PanelMenuItemView = require( 'qazana-panel/pages/menu/views/item' ),
+var PanelMenuGroupView = require( 'qazana-panel/pages/menu/views/group' ),
 	PanelMenuPageView;
 
-PanelMenuPageView = Marionette.CollectionView.extend( {
+PanelMenuPageView = Marionette.CompositeView.extend( {
 	id: 'qazana-panel-page-menu',
 
-	childView: PanelMenuItemView,
+	template: '#tmpl-qazana-panel-menu',
+
+	childView: PanelMenuGroupView,
+
+	childViewContainer: '#qazana-panel-page-menu-content',
 
 	initialize: function() {
-		this.collection = PanelMenuPageView.getItems();
+		this.collection = PanelMenuPageView.getGroups();
 	},
 
-	onChildviewClick: function( childView ) {
-		var menuItemType = childView.model.get( 'type' );
+	onDestroy: function() {
+		var arrowClass = 'eicon-arrow-' + ( qazana.config.is_rtl ? 'right' : 'left' );
 
-		switch ( menuItemType ) {
-			case 'page':
-				var pageName = childView.model.get( 'pageName' ),
-					pageTitle = childView.model.get( 'title' );
-
-				qazana.getPanelView().setPage( pageName, pageTitle );
-				break;
-
-			case 'link':
-				var link = childView.model.get( 'link' ),
-					isNewTab = childView.model.get( 'newTab' );
-
-				if ( isNewTab ) {
-					open( link, '_blank' );
-				} else {
-					location.href = childView.model.get( 'link' );
-				}
-
-				break;
-
-			default:
-				var callback = childView.model.get( 'callback' );
-
-				if ( _.isFunction( callback ) ) {
-					callback.call( childView );
-				}
-		}
+		qazana.panel.currentView.getHeaderView().ui.menuIcon.removeClass( arrowClass ).addClass( 'eicon-menu-bar' );
 	}
 }, {
-	items: null,
+	groups: null,
 
-	initItems: function() {
-		this.items = new Backbone.Collection( [
-			{
-				name: 'global-colors',
-				icon: 'fa fa-paint-brush',
-				title: qazana.translate( 'global_colors' ),
-				type: 'page',
-				pageName: 'colorScheme'
-			},
-			{
-				name: 'global-fonts',
-				icon: 'fa fa-font',
-				title: qazana.translate( 'global_fonts' ),
-				type: 'page',
-				pageName: 'typographyScheme'
-			},
-			{
-				name: 'color-picker',
-				icon: 'fa fa-eyedropper',
-				title: qazana.translate( 'color_picker' ),
-				type: 'page',
-				pageName: 'colorPickerScheme'
-			},
-			{
-				name: 'clear-page',
-				icon: 'fa fa-eraser',
-				title: qazana.translate( 'clear_page' ),
-				callback: function() {
-					qazana.clearPage();
-				}
-			},
-			{
-				name: 'qazana-settings',
-				icon: 'fa fa-cogs',
-				title: qazana.translate( 'qazana_settings' ),
-				type: 'link',
-				link: qazana.config.settings_page_link,
-				newTab: true
-			},
-			{
-				name: 'about-qazana',
-				icon: 'fa fa-info-circle',
-				title: qazana.translate( 'about_qazana' ),
-				type: 'link',
-				link: qazana.config.qazana_site,
-				newTab: true
-			}
-		] );
+	initGroups: function() {
+		var menus = [];
+
+        if (qazana.config.user.is_administrator) {
+            menus = [{
+                    name: 'style',
+                    title: qazana.translate('global_style'),
+                    items: [{
+                            name: 'global-colors',
+                            icon: 'fa fa-paint-brush',
+                            title: qazana.translate('global_colors'),
+                            type: 'page',
+                            pageName: 'colorScheme'
+                        },
+                        {
+                            name: 'global-fonts',
+                            icon: 'fa fa-font',
+                            title: qazana.translate('global_fonts'),
+                            type: 'page',
+                            pageName: 'typographyScheme'
+                        },
+                        {
+                            name: 'color-picker',
+                            icon: 'fa fa-eyedropper',
+                            title: qazana.translate('color_picker'),
+                            type: 'page',
+                            pageName: 'colorPickerScheme'
+                        },
+                        {
+                            name: 'clear-page',
+                            icon: 'fa fa-eraser',
+                            title: qazana.translate('clear_page'),
+                            callback: function () {
+                                qazana.clearPage();
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: 'settings',
+                    title: qazana.translate('settings'),
+                    items: [{
+                            name: 'qazana-settings',
+                            icon: 'fa fa-cogs',
+                            title: qazana.translate('qazana_settings'),
+                            type: 'link',
+                            link: qazana.config.settings_page_link,
+                            newTab: true
+                        },
+                        {
+                            name: 'about-qazana',
+                            icon: 'fa fa-info-circle',
+                            title: qazana.translate('about_qazana'),
+                            type: 'link',
+                            link: qazana.config.qazana_site,
+                            newTab: true
+                        }
+                    ]
+                }
+            ];
+        }
+
+		this.groups = new Backbone.Collection( menus );
 	},
 
-	getItems: function() {
-		if ( ! this.items ) {
-			this.initItems();
+	getGroups: function() {
+		if ( ! this.groups ) {
+			this.initGroups();
 		}
 
-		return this.items;
+		return this.groups;
 	},
 
-	addItem: function( itemData, before ) {
-		var items = this.getItems(),
-			options = {};
+	addItem: function( itemData, groupName, before ) {
+		var group = this.getGroups().findWhere( { name: groupName } );
+
+		if ( ! group ) {
+			return;
+		}
+
+		var items = group.get( 'items' ),
+			beforeItem;
 
 		if ( before ) {
-			var beforeItem = items.findWhere( { name: before } );
-
-			if ( beforeItem ) {
-				options.at = items.indexOf( beforeItem );
-			}
+			beforeItem = _.findWhere( items, { name: before } );
 		}
 
-		items.add( itemData, options );
-	}
+		if ( beforeItem ) {
+			items.splice( items.indexOf( beforeItem ), 0, itemData );
+		} else {
+			items.push( itemData );
+		}
 
+	}
 } );
 
 module.exports = PanelMenuPageView;

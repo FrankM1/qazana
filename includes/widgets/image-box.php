@@ -1,45 +1,83 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana image box widget.
+ *
+ * Qazana widget that displays an image, a headline and a text.
+ *
+ * @since 1.0.0
+ */
 class Widget_Image_Box extends Widget_Base {
 
-	public function get_name() {
-		return 'image-box';
-	}
-
-	public function get_title() {
-		return __( 'Image Box', 'qazana' );
-	}
-
-	public function get_icon() {
-		return 'eicon-image-box';
-	}
-
-    /**
-	 * Retrieve widget categories.
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve image box widget name.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @return array Widget categories.
+	 * @return string Widget name.
 	 */
-	public function get_categories() {
-		return [ 'general-elements' ];
-    }
+	public function get_name() {
+		return 'image-box';
+	}
 
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve image box widget title.
 	 *
 	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
+	public function get_title() {
+		return __( 'Image Box', 'qazana' );
+	}
+
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve image box widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
+	public function get_icon() {
+		return 'eicon-image-box';
+	}
+
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'photo', 'image', 'box', 'media' ];
-    }
+		return [ 'image', 'photo', 'visual', 'box', 'media' ];
+	}
+	
+	/**
+	 * Register image box widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 
 	protected function _register_controls() {
 		$this->start_controls_section(
@@ -54,9 +92,21 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Choose Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
+				'dynamic' => [
+					'active' => true,
+				],
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
 				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Image_Size::get_type(),
+			[
+				'name' => 'thumbnail', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `thumbnail_size` and `thumbnail_custom_dimension`.
+				'default' => 'full',
+				'separator' => 'none',
 			]
 		);
 
@@ -65,8 +115,11 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Title & Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
 				'default' => __( 'This is the heading', 'qazana' ),
-				'placeholder' => __( 'Your Title', 'qazana' ),
+				'placeholder' => __( 'Enter your title', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -76,9 +129,11 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'default' => __( 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
-				'placeholder' => __( 'Your Description', 'qazana' ),
-				'title' => __( 'Input image text here', 'qazana' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => __( 'Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
+				'placeholder' => __( 'Enter your description', 'qazana' ),
 				'separator' => 'none',
 				'rows' => 10,
 				'show_label' => false,
@@ -90,7 +145,10 @@ class Widget_Image_Box extends Widget_Base {
 			[
 				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'qazana' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
 				'separator' => 'before',
 			]
 		);
@@ -126,15 +184,15 @@ class Widget_Image_Box extends Widget_Base {
 				'label' => __( 'Title HTML Tag', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'h1' => __( 'H1', 'qazana' ),
-					'h2' => __( 'H2', 'qazana' ),
-					'h3' => __( 'H3', 'qazana' ),
-					'h4' => __( 'H4', 'qazana' ),
-					'h5' => __( 'H5', 'qazana' ),
-					'h6' => __( 'H6', 'qazana' ),
-					'div' => __( 'div', 'qazana' ),
-					'span' => __( 'span', 'qazana' ),
-					'p' => __( 'p', 'qazana' ),
+					'h1' => 'H1',
+					'h2' => 'H2',
+					'h3' => 'H3',
+					'h4' => 'H4',
+					'h5' => 'H5',
+					'h6' => 'H6',
+					'div' => 'div',
+					'span' => 'span',
+					'p' => 'p',
 				],
 				'default' => 'h3',
 			]
@@ -153,7 +211,7 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_responsive_control(
 			'image_space',
 			[
-				'label' => __( 'Image Spacing', 'qazana' ),
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 15,
@@ -168,6 +226,7 @@ class Widget_Image_Box extends Widget_Base {
 					'{{WRAPPER}}.qazana-position-right .qazana-image-box-img' => 'margin-left: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.qazana-position-left .qazana-image-box-img' => 'margin-right: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.qazana-position-top .qazana-image-box-img' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}} .qazana-image-box-img' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -175,8 +234,12 @@ class Widget_Image_Box extends Widget_Base {
 		$this->add_responsive_control(
 			'image_size',
 			[
-				'label' => __( 'Image Size', 'qazana' ),
+				'label' => __( 'Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 30,
+					'unit' => '%',
+				],
 				'tablet_default' => [
 					'unit' => '%',
 				],
@@ -196,10 +259,26 @@ class Widget_Image_Box extends Widget_Base {
 			]
 		);
 
+		$this->start_controls_tabs( 'image_effects' );
+
+		$this->start_controls_tab( 'normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters',
+				'selector' => '{{WRAPPER}} .qazana-image-box-img img',
+			]
+		);
+
 		$this->add_control(
 			'image_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
+				'label' => __( 'Opacity', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -209,8 +288,36 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-image-box-wrapper .qazana-image-box-img img' => 'opacity: {{SIZE}};',
+					'{{WRAPPER}} .qazana-image-box-img img' => 'opacity: {{SIZE}};',
 				],
+			]
+		);
+
+		$this->add_control(
+			'background_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image-box-img img' => 'transition-duration: {{SIZE}}s',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab( 'hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
 			]
 		);
 
@@ -220,6 +327,36 @@ class Widget_Image_Box extends Widget_Base {
 				'name' => 'hover_animation',
 			]
 		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters_hover',
+				'selector' => '{{WRAPPER}}:hover .qazana-image-box-img img',
+			]
+		);
+
+		$this->add_control(
+			'image_opacity_hover',
+			[
+				'label' => __( 'Opacity', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'max' => 1,
+						'min' => 0.10,
+						'step' => 0.01,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}:hover .qazana-image-box-img img' => 'opacity: {{SIZE}};',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 
@@ -363,35 +500,45 @@ class Widget_Image_Box extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render image box widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );
 
 		$html = '<div class="qazana-image-box-wrapper">';
 
+		if ( ! empty( $settings['link']['url'] ) ) {
+			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
+
+			if ( $settings['link']['is_external'] ) {
+				$this->add_render_attribute( 'link', 'target', '_blank' );
+			}
+
+			if ( ! empty( $settings['link']['nofollow'] ) ) {
+				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			}
+		}
+
 		if ( ! empty( $settings['image']['url'] ) ) {
-			$this->add_render_attribute( 'image', 'src', qazana_maybe_ssl_url($settings['image']['url']) );
+			$this->add_render_attribute( 'image', 'src', $settings['image']['url'] );
 			$this->add_render_attribute( 'image', 'alt', Control_Media::get_image_alt( $settings['image'] ) );
 			$this->add_render_attribute( 'image', 'title', Control_Media::get_image_title( $settings['image'] ) );
 
-			if ( $settings['hover_animation_type'] ) {
-				$this->add_render_attribute( 'image', 'class', 'qazana-hover-animation-' . $settings['hover_animation_type'] );
+			if ( $this->get_settings_for_display('hover_animation') ) {
+				$this->add_render_attribute( 'image', 'class', 'qazana-animation-' . $this->get_settings_for_display('hover_animation') );
 			}
 
-			$image_html = '<img ' . $this->get_render_attribute_string( 'image' ) . '>';
+			$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'image' );
 
 			if ( ! empty( $settings['link']['url'] ) ) {
-				$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
-
-				if ( $settings['link']['is_external'] ) {
-					$this->add_render_attribute( 'link', 'target', '_blank' );
-				}
-
-				if ( ! empty( $settings['link']['nofollow'] ) ) {
-					$this->add_render_attribute( 'link', 'rel', 'nofollow' );
-				}
-
 				$image_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $image_html . '</a>';
 			}
 
@@ -402,23 +549,25 @@ class Widget_Image_Box extends Widget_Base {
 			$html .= '<div class="qazana-image-box-content">';
 
 			if ( ! empty( $settings['title_text'] ) ) {
+				$this->add_render_attribute( 'title_text', 'class', 'qazana-image-box-title' );
+
+				$this->add_inline_editing_attributes( 'title_text', 'none' );
+
 				$title_html = $settings['title_text'];
 
 				if ( ! empty( $settings['link']['url'] ) ) {
-					$target = '';
-
-					if ( ! empty( $settings['link']['is_external'] ) ) {
-						$target = ' target="_blank"';
-					}
-
-					$title_html = sprintf( '<a href="%s"%s>%s</a>', $settings['link']['url'], $target, $title_html );
+					$title_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $title_html . '</a>';
 				}
 
-				$html .= sprintf( '<%1$s class="qazana-image-box-title">%2$s</%1$s>', $settings['title_size'], $title_html );
+				$html .= sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['title_size'], $this->get_render_attribute_string( 'title_text' ), $title_html );
 			}
 
 			if ( ! empty( $settings['description_text'] ) ) {
-				$html .= sprintf( '<p class="qazana-image-box-description">%s</p>', $settings['description_text'] );
+				$this->add_render_attribute( 'description_text', 'class', 'qazana-image-box-description' );
+
+				$this->add_inline_editing_attributes( 'description_text' );
+
+				$html .= sprintf( '<p %1$s>%2$s</p>', $this->get_render_attribute_string( 'description_text' ), $settings['description_text'] );
 			}
 
 			$html .= '</div>';
@@ -429,13 +578,31 @@ class Widget_Image_Box extends Widget_Base {
 		echo $html;
 	}
 
+	/**
+	 * Render image box widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<#
 		var html = '<div class="qazana-image-box-wrapper">';
 
 		if ( settings.image.url ) {
-			var imageHtml = '<img src="' + settings.image.url + '" class="qazana-hover-animation-' + settings.hover_animation + '" />';
+			var image = {
+				id: settings.image.id,
+				url: settings.image.url,
+				size: settings.thumbnail_size,
+				dimension: settings.thumbnail_custom_dimension,
+				model: view.getEditModel()
+			};
+
+			var image_url = qazana.imagesManager.getImageUrl( image );
+
+			var imageHtml = '<img src="' + image_url + '" class="qazana-animation-' + settings.hover_animation + '" />';
 
 			if ( settings.link.url ) {
 				imageHtml = '<a href="' + settings.link.url + '">' + imageHtml + '</a>';
@@ -456,11 +623,19 @@ class Widget_Image_Box extends Widget_Base {
 					title_html = '<a href="' + settings.link.url + '">' + title_html + '</a>';
 				}
 
-				html += '<' + settings.title_size  + ' class="qazana-image-box-title">' + title_html + '</' + settings.title_size  + '>';
+				view.addRenderAttribute( 'title_text', 'class', 'qazana-image-box-title' );
+
+				view.addInlineEditingAttributes( 'title_text', 'none' );
+
+				html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
 			}
 
 			if ( settings.description_text ) {
-				html += '<p class="qazana-image-box-description">' + settings.description_text + '</p>';
+				view.addRenderAttribute( 'description_text', 'class', 'qazana-image-box-description' );
+
+				view.addInlineEditingAttributes( 'description_text' );
+
+				html += '<p ' + view.getRenderAttributeString( 'description_text' ) + '>' + settings.description_text + '</p>';
 			}
 
 			html += '</div>';

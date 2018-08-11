@@ -43,25 +43,30 @@
 
 .qazana-widget-progress {
 	.qazana-progress-wrapper {
+
 		&.progress-info {
+
 			.qazana-progress-bar {
 				background-color: $info;
 			}
 		}
 
 		&.progress-success {
+
 			.qazana-progress-bar {
 				background-color: $success;
 			}
 		}
 
 		&.progress-warning {
+
 			.qazana-progress-bar {
 				background-color: $warning;
 			}
 		}
 
 		&.progress-danger {
+
 			.qazana-progress-bar {
 				background-color: $danger;
 			}
@@ -75,6 +80,7 @@
 
 // Responsive mode
 @media (max-width: $screen-sm-max) {
+
 	.qazana-progress-wrapper {
 		height: 25px;
 		line-height: 25px;

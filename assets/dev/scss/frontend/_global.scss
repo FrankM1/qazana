@@ -1,98 +1,92 @@
 //
-
 // Global selectors for Qazana Front-End
-
 //
 
 .qazana {
-  * {
-    &,
-    &:before,
-    &:after {
-      box-sizing: border-box;
-    }
-  }
 
-  // Reset Style for some themes and browsers
-  hyphens: manual;
+	* {
+		&, &:before, &:after {
+			box-sizing: border-box;
+		}
+	}
 
-  a {
-    box-shadow: none;
-    text-decoration: none;
-  }
+	// Reset Style for some themes and browsers
+	hyphens: manual;
 
-  hr {
-    margin: 0;
-    background-color: transparent;
-  }
+	a {
+		box-shadow: none;
+		text-decoration: none;
+	}
 
-  img {
-    height: auto;
-    max-width: 100%;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
+	hr {
+		margin: 0;
+		background-color: transparent;
+	}
 
-  .qazana-widget:not(.qazana-widget-text-editor) figure {
-    margin: 0;
-  }
+	img {
+		height: auto;
+		max-width: 100%;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+	}
 
-  // Responsive Embed
-  embed,
-  iframe,
-  object,
-  video {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-    line-height: 1;
-    border: none;
-  }
+	.qazana-widget:not(.qazana-widget-text-editor) figure {
+			margin: 0;
+	}
 
-  .qazana-custom-embed {
-    line-height: 0;
+	// Responsive Embed
+	embed,
+	iframe,
+	object,
+	video {
+		max-width: 100%;
+		width: 100%;
+		margin: 0;
+		line-height: 1;
+		border: none;
+	}
 
-    //for google maps margin bottom
-  }
+	.qazana-custom-embed {
+		line-height: 0; //for google maps margin bottom
+	}
 
-  // Background Video
-  .qazana-background-video-container {
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    overflow: hidden;
-    transition: opacity 1s;
+	// Background Video
+	.qazana-background-video-container {
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		position: absolute;
+		overflow: hidden;
+		z-index: $ground-layer;
+		transition: opacity 1s;
 
-    &.qazana-loading {
-      opacity: 0;
-    }
-  }
+		&.qazana-loading {
+			opacity: 0;
+		}
+	}
 
-  .qazana-background-video-embed {
-    max-width: none;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+	.qazana-background-video-embed {
+		max-width: none; //Stretch the background video on all section
+		position: absolute;
+		top: 50%;
+		left: 0; //reset when the parent has set text-align: center;
+		transform: translateY(-50%);
+	}
 
-  .qazana-background-video {
-    position: absolute;
-    max-width: none;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-  }
+	.qazana-background-video {
+		position: absolute;
+		max-width: none;
+		top: 50%;
+		left: 50%;
+		transform: translateY(-50%) translateX(-50%);
+	}
 
-  .qazana-html5-video {
-    object-fit: cover;
-
-    // For HTML5 portrait video
-  }
-
-  // End Background Video
+	.qazana-html5-video {
+		object-fit: cover; // For HTML5 portrait video
+	}
+	// End Background Video
 
   .qazana-background-overlay {
     height: 100%;
@@ -105,7 +99,7 @@
 }
 
 .qazana-invisible {
-  visibility: hidden;
+	visibility: hidden;
 }
 
 // Alignment Classes
@@ -117,15 +111,17 @@
     .qazana-wrapper {
       margin: 0 auto;
     }
-  }
 
-  &right {
-    text-align: right;
 
-    .qazana-wrapper {
+	}
+
+	&right {
+		text-align: right;
+
+		.qazana-wrapper {
       margin-left: auto;
     }
-  }
+	}
 
   &left {
     text-align: left;
@@ -133,33 +129,53 @@
     .qazana-wrapper {
       margin-right: auto;
     }
-  }
+	}
 }
 
 .qazana-custom-embed-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
 
-  i {
-    font-size: 100px;
-    color: #ffffff;
-    opacity: 0.8;
-    text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
-    transition: all 0.5s;
-  }
+	i {
+		font-size: 100px;
+		color: #fff;
+		opacity: 0.8;
+		text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
+		transition: all .5s;
+	}
 
-  &.qazana-playing {
-    i {
-      font-family: "FontAwesome";
-      animation: fa-spin 2s infinite linear;
+	&.qazana-playing {
 
-      &:before {
-        content: "\f1ce";
-      }
-    }
-  }
+		i {
+			font-family: 'FontAwesome';
+			animation: fa-spin 2s infinite linear;
+
+			&:before {
+				content: "\f1ce";
+			}
+		}
+	}
+}
+
+.qazana-swiper-button {
+	position: absolute;
+	display: inline-flex; // Position exactly in center
+	z-index: 1;
+	cursor: pointer;
+	font-size: 25px;
+	color: $slides_gui;
+	top: 50%;
+	transform: translateY(-50%);
+
+	&.swiper-button-disabled {
+		opacity: 0.3;
+	}
+}
+
+.qazana-tag {
+	display: inline-flex;
 }
 
 // Alignment for Tablet

@@ -35,7 +35,7 @@ class Validations {
 	 * @access public
 	*/
 	public static function clear_cache( $input ) {
-		qazana()->posts_css_manager->clear_cache();
+		qazana()->files_manager->clear_cache();
 
 		return $input;
 	}

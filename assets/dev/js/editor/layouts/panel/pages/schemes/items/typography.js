@@ -30,7 +30,7 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 		var self = this;
 
 		this.ui.inputFields.add( this.ui.selectFields ).each( function() {
-			var $this = Backbone.$( this ),
+			var $this = jQuery( this ),
 				name = $this.attr( 'name' ),
 				value = self.model.get( 'value' )[ name ];
 
@@ -43,12 +43,12 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend( {
 	},
 
 	toggleVisibility: function() {
-		this.ui.heading.toggleClass( 'qazana-open' );
+		this.$el.toggleClass( 'qazana-open' );
 	},
 
 	changeUIValue: function( newValue ) {
 		this.ui.allFields.each( function() {
-			var $this = Backbone.$( this ),
+			var $this = jQuery( this ),
 				thisName = $this.attr( 'name' ),
 				newFieldValue = newValue[ thisName ];
 

@@ -1,26 +1,98 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana alert widget.
+ *
+ * Qazana widget that displays a collapsible display of content in an toggle
+ * style, allowing the user to open multiple items.
+ *
+ * @since 1.0.0
+ */
 class Widget_Tooltip extends Widget_Base {
 
+    /**
+     * Get widget name.
+     *
+     * Retrieve alert widget name.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @return string Widget name.
+     */
 	public function get_name() {
 		return 'tooltip';
 	}
 
+    /**
+     * Get widget title.
+     *
+     * Retrieve alert widget title.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @return string Widget title.
+     */
 	public function get_title() {
 		return __( 'Tooltip', 'qazana' );
 	}
 
+    /**
+     * Get widget icon.
+     *
+     * Retrieve alert widget icon.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @return string Widget icon.
+     */
 	public function get_icon() {
 		return 'fa fa-question-circle-o';
 	}
 
+    /**
+     * Get widget keywords.
+     *
+     * Retrieve the list of keywords the widget belongs to.
+     *
+     * @since 2.1.0
+     * @access public
+     *
+     * @return array Widget keywords.
+     */
+    public function get_keywords() {
+        return ['tip', 'hover', 'message'];
+    }
+
+    /**
+     * Retrieve the list of categories the alert widget belongs to.
+     *
+     * Used to determine where to display the widget in the editor.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @return array Widget categories.
+     */
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
+    /**
+     * Register alert widget controls.
+     *
+     * Adds different input fields to allow the user to change and customize the widget settings.
+     *
+     * @since 1.0.0
+     * @access protected
+     */
 	protected function _register_controls() {
 
 		$this->start_controls_section(
@@ -251,6 +323,14 @@ class Widget_Tooltip extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+    /**
+     * Render alert widget output on the frontend.
+     *
+     * Written in PHP and used to generate the final HTML.
+     *
+     * @since 1.0.0
+     * @access protected
+     */
 	public function render() {
 
 		$settings = $this->get_settings();
@@ -274,8 +354,19 @@ class Widget_Tooltip extends Widget_Base {
 
 	}
 
+    /**
+     * Render alert widget output in the editor.
+     *
+     * Written as a Backbone JavaScript template and used to generate the live preview.
+     *
+     * @since 1.0.0
+     * @access protected
+     */
 	protected function _content_template() {
-		?>
+        ?>
+        <# 
+			view.addInlineEditingAttributes( 'tooltip_text', 'none' );
+		#>
 		<div class="qazana-tooltip v--{{{ settings.tooltip_state }}}">
 			<span class="qazana-tooltip-icon">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="-255 347 100 100" width="14" height="14" class="svg-replaced" shape-rendering="geometricPrecision">
@@ -283,7 +374,7 @@ class Widget_Tooltip extends Widget_Base {
 					<path d="M-204.8 348.4c-26.9 0-48.8 21.9-48.8 48.8s21.9 48.8 48.8 48.8 48.8-21.9 48.8-48.8-21.9-48.8-48.8-48.8zm0 90.2c-22.8 0-41.4-18.6-41.4-41.4 0-22.8 18.6-41.4 41.4-41.4s41.4 18.6 41.4 41.4c-.1 22.8-18.6 41.4-41.4 41.4z"></path>
 				</svg>
 			</span>
-			<div class="qazana-tooltip__content v--{{{ settings.tooltip_position }}} v--border-{{{ settings.tooltip_position }}}">{{ settings.tooltip_editor }}</div>
+			<div class="qazana-tooltip__content v--{{{ settings.tooltip_position }}} v--border-{{{ settings.tooltip_position }}}" {{{ view.getRenderAttributeString( 'tooltip_text' ) }}}>>{{ settings.tooltip_editor }}</div>
 		</div>
 		<?php
 	}

@@ -10,7 +10,7 @@ class Wpmudev_Domain_Mapping extends Base {
         return [
         	'title' => __( 'Wpmudev Domain Mapping Compatibility', 'qazana' ),
             'name' => 'wpmudev_domain_mapping',
-        	'required' => true,
+        	'required' => false,
             'default_activation' => $domain_mapping_exist,
         ];
 

@@ -1,12 +1,18 @@
 <?php
 namespace Qazana;
 
+use Qazana\Extensions\DynamicTags as TagsModule;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Audio Widget
+ * Qazana audio widget.
+ *
+ * Qazana widget that displays an audio player.
+ *
+ * @since 1.0.0
  */
 class Widget_Audio extends Widget_Base {
 
@@ -20,6 +26,8 @@ class Widget_Audio extends Widget_Base {
 	protected $_current_instance = [];
 
 	/**
+	 * Get widget name.
+	 *
 	 * Retrieve audio widget name.
 	 *
 	 * @since 1.0.0
@@ -32,6 +40,8 @@ class Widget_Audio extends Widget_Base {
 	}
 
 	/**
+	 * Get widget title.
+	 *
 	 * Retrieve audio widget title.
 	 *
 	 * @since 1.0.0
@@ -44,6 +54,8 @@ class Widget_Audio extends Widget_Base {
 	}
 
 	/**
+	 * Get widget icon.
+	 *
 	 * Retrieve audio widget icon.
 	 *
 	 * @since 1.0.0
@@ -53,18 +65,20 @@ class Widget_Audio extends Widget_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-headphones';
-    }
- 
-    /**
-	 * Retrieve widget keywords.
+	}
+
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'audio', 'media', 'mp3' ];
+		return [ 'audio', 'media', 'mp3', 'player', 'soundcloud', 'embed' ];
     }
 
 	/**
@@ -78,7 +92,7 @@ class Widget_Audio extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
 	/**
@@ -100,8 +114,15 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label'   => __( 'Link', 'qazana' ),
-				'type'    => Controls_Manager::URL,
+				'label' => __( 'Link', 'qazana' ),
+				'type' => Controls_Manager::URL,
+				'dynamic' => [
+					'active' => true,
+					'categories' => [
+						TagsModule::POST_META_CATEGORY,
+						TagsModule::URL_CATEGORY,
+					],
+				],
 				'default' => [
 					'url' => 'https://soundcloud.com/shchxango/john-coltrane-1963-my-favorite',
 				],
@@ -112,12 +133,12 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'visual',
 			[
-				'label'   => __( 'Visual Player', 'qazana' ),
-				'type'    => Controls_Manager::SELECT,
+				'label' => __( 'Visual Player', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
 				'default' => 'no',
 				'options' => [
 					'yes' => __( 'Yes', 'qazana' ),
-					'no'  => __( 'No', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
 				],
 			]
 		);
@@ -125,8 +146,8 @@ class Widget_Audio extends Widget_Base {
 		$this->add_control(
 			'sc_options',
 			[
-				'label'     => __( 'Additional Options', 'qazana' ),
-				'type'      => Controls_Manager::HEADING,
+				'label' => __( 'Additional Options', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
@@ -135,84 +156,98 @@ class Widget_Audio extends Widget_Base {
 			'sc_auto_play',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
-				'type'  => Controls_Manager::SWITCHER,
+				'type' => Controls_Manager::SWITCHER,
 			]
 		);
 
 		$this->add_control(
 			'sc_buying',
 			[
-				'label'     => __( 'Buy Button', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Buy Button', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_liking',
 			[
-				'label'     => __( 'Like Button', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Like Button', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_download',
 			[
-				'label'     => __( 'Download Button', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Download Button', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'sc_show_artwork',
+			[
+				'label' => __( 'Artwork', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
+				'condition' => [
+					'visual' => 'no',
+				],
 			]
 		);
 
 		$this->add_control(
 			'sc_sharing',
 			[
-				'label'     => __( 'Share Button', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Share Button', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_comments',
 			[
-				'label'     => __( 'Comments', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Comments', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_playcount',
 			[
-				'label'     => __( 'Play Counts', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Play Counts', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
 		$this->add_control(
 			'sc_show_user',
 			[
-				'label'     => __( 'Username', 'qazana' ),
-				'type'      => Controls_Manager::SWITCHER,
+				'label' => __( 'Username', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on'  => __( 'Show', 'qazana' ),
-				'default'   => 'yes',
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 			]
 		);
 
@@ -220,15 +255,15 @@ class Widget_Audio extends Widget_Base {
 			'sc_color',
 			[
 				'label' => __( 'Controls Color', 'qazana' ),
-				'type'  => Controls_Manager::COLOR,
+				'type' => Controls_Manager::COLOR,
 			]
 		);
 
 		$this->add_control(
 			'view',
 			[
-				'label'   => __( 'View', 'qazana' ),
-				'type'    => Controls_Manager::HIDDEN,
+				'label' => __( 'View', 'qazana' ),
+				'type' => Controls_Manager::HIDDEN,
 				'default' => 'soundcloud',
 			]
 		);
@@ -246,7 +281,7 @@ class Widget_Audio extends Widget_Base {
 	 * @access protected
 	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( empty( $settings['link'] ) ) {
 			return;
@@ -275,6 +310,8 @@ class Widget_Audio extends Widget_Base {
 	 * @access public
 	 *
 	 * @param string $html The HTML returned by the oEmbed provider.
+	 *
+	 * @return string Filtered audio widget oEmbed HTML.
 	 */
 	public function filter_oembed_result( $html ) {
 		$param_keys = [
@@ -286,6 +323,7 @@ class Widget_Audio extends Widget_Base {
 			'show_comments',
 			'show_playcount',
 			'show_user',
+			'show_artwork',
 		];
 
 		$params = [];

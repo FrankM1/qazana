@@ -5,12 +5,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana preview.
+ *
+ * Qazana preview handler class is responsible for initializing Qazana in
+ * preview mode.
+ *
+ * @since 1.0.0
+ */
 class Preview {
 
-    private $post_id;
+	/**
+	 * Post ID.
+	 *
+	 * Holds the ID of the current post being previewed.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int Post ID.
+	 */
+	private $post_id;
 
 	/**
-	 * Initialize the preview mode. Fired by `init` action.
+	 * Init.
+	 *
+	 * Initialize Qazana preview mode.
+	 *
+	 * Fired by `template_redirect` action.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -20,8 +42,11 @@ class Preview {
 			return;
 		}
 
-        $this->post_id = get_the_ID();
-        
+		$this->post_id = get_the_ID();
+
+		// Don't redirect to permalink.
+		remove_action( 'template_redirect', 'redirect_canonical' );
+
 		// Compatibility with Yoast SEO plugin when 'Removes unneeded query variables from the URL' enabled.
 		// TODO: Move this code to `includes/compatibility.php`.
 		if ( class_exists( 'WPSEO_Frontend' ) ) {
@@ -38,9 +63,21 @@ class Preview {
 
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
+		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
+
 		// Tell to WP Cache plugins do not cache this request.
 		Utils::do_not_cache();
 
+		/**
+		 * Preview init.
+		 *
+		 * Fires on Qazana preview init, after Qazana preview has finished
+		 * loading but before any headers are sent.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Preview $this The current preview.
+		 */
 		do_action( 'qazana/preview/init', $this );
 	}
 
@@ -49,9 +86,9 @@ class Preview {
 	 *
 	 * Get the ID of the current post.
 	 *
-	 * @since 1.0.0
+	 * @since 1.8.0
 	 * @access public
-	 * 
+	 *
 	 * @return int Post ID.
 	 */
 	public function get_post_id() {
@@ -66,14 +103,20 @@ class Preview {
 	 * @since 1.0.0
 	 * @access public
 	 *
+	 * @param int $post_id Optional. Post ID. Default is `0`.
+	 *
 	 * @return bool Whether preview mode is active.
 	 */
-	public function is_preview_mode() {
-		if ( ! User::is_current_user_can_edit() ) {
+	public function is_preview_mode( $post_id = 0 ) {
+		if ( empty( $post_id ) ) {
+			$post_id = get_the_ID();
+		}
+
+		if ( ! User::is_current_user_can_edit( $post_id ) ) {
 			return false;
 		}
 
-		if ( ! isset( $_GET['qazana-preview'] ) ) {
+		if ( ! isset( $_GET['qazana-preview'] ) || $post_id !== (int) $_GET['qazana-preview'] ) {
 			return false;
 		}
 
@@ -89,14 +132,32 @@ class Preview {
 	 * @since 1.0.0
 	 * @access public
 	 *
+	 * @param string $content The content of the builder.
+	 *
 	 * @return string HTML wrapper for the builder.
 	 */
-	public function builder_wrapper() {
-		return '<div id="qazana" class="qazana qazana-edit-mode"></div>';
+	public function builder_wrapper( $content ) {
+		if ( get_the_ID() === $this->post_id ) {
+			$classes = 'qazana-edit-mode';
+
+			$document = qazana()->documents->get( $this->post_id );
+
+			if ( $document ) {
+				$classes .= ' ' . $document->get_container_classes();
+			}
+
+			$content = '<div id="qazana" class="' . $classes . '"></div>';
+		}
+
+		return $content;
 	}
 
 	/**
 	 * Enqueue preview styles.
+	 *
+	 * Registers all the preview styles and enqueues them.
+	 *
+	 * Fired by `wp_enqueue_scripts` action.
 	 *
 	 * @since 1.0.0
 	 * @access private
@@ -112,26 +173,45 @@ class Preview {
 		$direction_suffix = is_rtl() ? '-rtl' : '';
 
 		wp_register_style(
+			'qazana-select2',
+			qazana()->core_assets_url  . 'lib/e-select2/css/e-select2' . $suffix . '.css',
+			[],
+			'4.0.6-rc.1'
+		);
+
+		wp_register_style(
 			'editor-preview',
 			qazana()->core_assets_url . 'css/editor-preview' . $direction_suffix . $suffix . '.css',
-			[],
+			['qazana-select2'],
 			qazana_get_version()
 		);
 
 		wp_enqueue_style( 'editor-preview' );
 
+		/**
+		 * Preview enqueue styles.
+		 *
+		 * Fires after Qazana preview styles are enqueued.
+		 *
+		 * @since 1.0.0
+		 */
 		do_action( 'qazana/preview/enqueue_styles' );
 	}
 
 	/**
 	 * Enqueue preview scripts.
 	 *
+	 * Registers all the preview scripts and enqueues them.
+	 *
+	 * Fired by `wp_enqueue_scripts` action.
+	 *
 	 * @since 1.0.0
 	 * @access private
 	 */
 	private function enqueue_scripts() {
+		qazana()->frontend->register_scripts();
 
-        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+        $suffix = Utils::is_script_debug() ? '' : '.min';
 
         wp_enqueue_script(
             'qazana-inline-editor',
@@ -141,14 +221,41 @@ class Preview {
             true
         );
 
-		qazana()->frontend->register_scripts();
-		qazana()->frontend->enqueue_scripts();
-		
+		/**
+		 * Preview enqueue scripts.
+		 *
+		 * Fires after Qazana preview scripts are enqueued.
+		 *
+		 * @since 1.5.4
+		 */
 		do_action( 'qazana/preview/enqueue_scripts' );
 	}
 
 	/**
+	 * Qazana Preview footer scripts and styles.
+	 *
+	 * Handle styles and scripts from frontend.
+	 *
+	 * Fired by `wp_footer` action.
+	 *
+	 * @since 2.0.9
+	 * @access public
+	 */
+	public function wp_footer() {
+		$frontend = qazana()->frontend;
+		if ( $frontend->has_qazana_in_page() ) {
+			// Has header/footer/widget-template - enqueue all style/scripts/fonts.
+			$frontend->wp_footer();
+		} else {
+			// Enqueue only scripts.
+			$frontend->enqueue_scripts();
+		}
+	}
+
+	/**
 	 * Preview constructor.
+	 *
+	 * Initializing Qazana preview.
 	 *
 	 * @since 1.0.0
 	 * @access public

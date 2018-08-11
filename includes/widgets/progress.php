@@ -1,38 +1,83 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana progress widget.
+ *
+ * Qazana widget that displays an escalating progress bar.
+ *
+ * @since 1.0.0
+ */
 class Widget_Progress extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve progress widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'progress';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve progress widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Progress Bar', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve progress widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-skill-bar';
 	}
 
-	public function get_categories() {
-		return [ 'general-elements' ];
-    }
-    
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.10
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'skill' ];
+		return [ 'progress', 'bar' ];
 	}
 
+	/**
+	 * Register progress widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_progress',
@@ -46,11 +91,14 @@ class Widget_Progress extends Widget_Base {
 			[
 				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
 				'placeholder' => __( 'Enter your title', 'qazana' ),
 				'default' => __( 'My Skill', 'qazana' ),
 				'label_block' => true,
 			]
-        );
+		);
 
 		$this->add_control(
 			'progress_type',
@@ -115,6 +163,9 @@ class Widget_Progress extends Widget_Base {
 			[
 				'label' => __( 'Inner Text', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
 				'placeholder' => __( 'e.g. Web Designer', 'qazana' ),
 				'default' => __( 'Web Designer', 'qazana' ),
 				'label_block' => true,
@@ -173,10 +224,10 @@ class Widget_Progress extends Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Title', 'qazana' ),
+				'label' => __( 'Title Style', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
-        );
+		);
 
 		$this->add_control(
 			'title_color',
@@ -254,11 +305,26 @@ class Widget_Progress extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render progress widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'wrapper', 'class', 'qazana-progress-wrapper' );
-
+		$this->add_render_attribute( 'wrapper', [
+			'class' => 'qazana-progress-wrapper',
+			'role' => 'progressbar',
+			'aria-valuemin' => '0',
+			'aria-valuemax' => '100',
+			'aria-valuenow' => $settings['percent']['size'],
+			'aria-valuetext' => $settings['inner_text'],
+        ] );
+        
 		if ( ! empty( $settings['progress_type'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'progress-' . $settings['progress_type'] );
 		}
@@ -278,13 +344,32 @@ class Widget_Progress extends Widget_Base {
 		<?php } ?>
 
 		<div <?php $this->render_attribute_string( 'wrapper' ); ?> role="timer">
-			<div <?php $this->render_attribute_string( 'progress-bar' ); ?>>
-			</div>
+			<div <?php $this->render_attribute_string( 'progress-bar' ); ?>></div>
 		</div>
-	<?php }
+	<?php
+	}
 
+	/**
+	 * Render progress widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
+		<#
+		view.addRenderAttribute( 'progressWrapper', {
+			'class': [ 'qazana-progress-wrapper', 'progress-' + settings.progress_type ],
+			'role': 'progressbar',
+			'aria-valuemin': '0',
+			'aria-valuemax': '100',
+			'aria-valuenow': settings.percent.size,
+			'aria-valuetext': settings.inner_text
+		} );
+		view.addInlineEditingAttributes( 'progressWrapper' );
+		#>
 		<# if ( settings.title ) { #>
 		<span class="qazana-title">{{{ settings.title }}}</span><#
 		} #>
@@ -293,8 +378,7 @@ class Widget_Progress extends Widget_Base {
 			<span class="qazana-progress-percentage">{{{ settings.percent.size }}}%</span>
 		<# } #>
 		<div class="qazana-progress-wrapper progress-{{ settings.progress_type }}" role="timer">
-			<div class="qazana-progress-bar" data-max="{{ settings.percent.size }}">
-			</div>
+			<div class="qazana-progress-bar" data-max="{{ settings.percent.size }}"></div>
 		</div>
 		<?php
 	}

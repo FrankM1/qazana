@@ -97,9 +97,22 @@ module.exports = function( grunt ) {
 							cwd: 'assets/dev/js/editor',
 							src: '**/*.js',
 							expose: 'qazana-editor'
-						},
+                        },
                         {
-                            cwd: 'assets/dev/js/editor/behaviors',
+                            cwd: 'assets/dev/js/admin',
+                            src: '**/*.js',
+                            expose: 'qazana-admin'
+                        }, {
+                            cwd: 'assets/dev/js/frontend',
+                            src: '**/*.js',
+                            expose: 'qazana-frontend'
+                        }, {
+                            cwd: 'includes/extensions',
+                            src: '**/*.js',
+                            expose: 'qazana-extensions'
+                        },
+                        {
+                            cwd: 'assets/dev/js/editor/elements/views/behaviors',
                             src: '**/*.js',
                             expose: 'qazana-behaviors'
                         },
@@ -107,16 +120,14 @@ module.exports = function( grunt ) {
                             cwd: 'assets/dev/js/editor/layouts',
                             src: '**/*.js',
                             expose: 'qazana-layouts'
-                        },
-                        {
-                            cwd: 'assets/dev/js/editor/models',
+                        }, {
+                            cwd: 'assets/dev/js/editor/controls',
                             src: '**/*.js',
-                            expose: 'qazana-models'
-                        },
-                        {
-                            cwd: 'assets/dev/js/editor/collections',
+                            expose: 'qazana-controls'
+                        }, {
+                            cwd: 'assets/dev/js/editor/elements',
                             src: '**/*.js',
-                            expose: 'qazana-collections'
+                            expose: 'qazana-elements'
                         },
                         {
                             cwd: 'assets/dev/js/editor/views',
@@ -144,20 +155,20 @@ module.exports = function( grunt ) {
                             expose: 'qazana-panel'
                         },
                         {
+                            cwd: 'assets/dev/js/editor/components/dynamic-tags',
+                            src: '**/*.js',
+                            expose: 'qazana-dynamic-tags'
+                        },
+                        {
                             cwd: 'assets/dev/js/editor/components/template-library',
                             src: '**/*.js',
                             expose: 'qazana-templates'
                         },
                         {
-                            cwd: 'assets/dev/js/frontend',
+                            cwd: 'assets/dev/js/editor/components/validator',
                             src: '**/*.js',
-                            expose: 'qazana-frontend'
-                        },
-						{
-							cwd: 'includes/extensions',
-							src: '**/*.js',
-							expose: 'qazana-extensions'
-						}
+                            expose: 'qazana-validator'
+                        }
                     ] );
                 }
             },
@@ -171,8 +182,14 @@ module.exports = function( grunt ) {
                     ],
                     'assets/js/admin.js': [ 'assets/dev/js/admin/admin.js' ],
                     'assets/js/admin-feedback.js': [ 'assets/dev/js/admin/admin-feedback.js' ],
-                    'assets/js/frontend.js': [ 'assets/dev/js/frontend/frontend.js' ]
+                    'assets/js/frontend.js': [ 'assets/dev/js/frontend/frontend.js' ],
 
+                    // Extensions
+                    'includes/extensions/themebuilder/assets/js/admin.js': ['includes/extensions/themebuilder/assets/js/admin/admin.js'],
+                    'includes/extensions/themebuilder/assets/js/editor.js': ['includes/extensions/themebuilder/assets/js/editor/editor.js'],
+                    'includes/extensions/themebuilder/assets/js/frontend.js': ['includes/extensions/themebuilder/assets/js/frontend/frontend.js'],
+
+                    'includes/extensions/assets-manager/assets/js/admin.js': ['includes/extensions/assets-manager/assets/js/admin/admin.js']
                 },
                 options: pkgInfo.browserify
             }

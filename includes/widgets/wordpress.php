@@ -6,7 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WordPress Widget
+ * Qazana WordPress widget.
+ *
+ * Qazana widget that displays all the WordPress widgets.
+ *
+ * @since 1.0.0
  */
 class Widget_WordPress extends Widget_Base {
 
@@ -29,7 +33,7 @@ class Widget_WordPress extends Widget_Base {
 	private $_widget_instance = null;
 
 	/**
-	 * Retrieve WordPress name.
+	 * Retrieve WordPress widget name.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -40,17 +44,63 @@ class Widget_WordPress extends Widget_Base {
 		return 'wp-widget-' . $this->get_widget_instance()->id_base;
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve WordPress widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return $this->get_widget_instance()->name;
 	}
 
+	/**
+	 * Get widget categories.
+	 *
+	 * Retrieve the list of categories the WordPress widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories. Returns either a WordPress category or Pojo category.
+	 */
 	public function get_categories() {
-		$category = 'wordpress';
+		$category = 'wordpress'; // WPCS: spelling ok.
 		return [ $category ];
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve WordPress widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon. Returns either a WordPress icon or Pojo icon.
+	 */
 	public function get_icon() {
 		return 'eicon-wordpress';
+	}
+
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'wordpress', 'widget' ];
 	}
 
 	/**
@@ -123,7 +173,7 @@ class Widget_WordPress extends Widget_Base {
 	 * @access protected
 	 * @since 1.0.0
 	 *
-	 * @return \WP_Widget
+	 * @return array Parsed settings.
 	 */
 	protected function _get_parsed_settings() {
 		$settings = parent::_get_parsed_settings();
@@ -147,9 +197,9 @@ class Widget_WordPress extends Widget_Base {
 		$this->add_control(
 			'wp',
 			[
-				'label'   => __( 'Form', 'qazana' ),
-				'type'    => Controls_Manager::WP_WIDGET,
-				'widget'  => $this->get_name(),
+				'label' => __( 'Form', 'qazana' ),
+				'type' => Controls_Manager::WP_WIDGET,
+				'widget' => $this->get_name(),
 				'id_base' => $this->get_widget_instance()->id_base,
 			]
 		);
@@ -165,7 +215,7 @@ class Widget_WordPress extends Widget_Base {
 	 */
 
 	public function render() {
-		$empty_widget_args = [
+		$default_widget_args = [
 			'widget_id' => $this->get_name(),
 			'before_widget' => '',
 			'after_widget' => '',
@@ -173,9 +223,19 @@ class Widget_WordPress extends Widget_Base {
 			'after_title' => '</h5>',
 		];
 
-		$empty_widget_args = apply_filters( 'qazana/widgets/wordpress/widget_args', $empty_widget_args, $this ); // WPCS: spelling ok.
+		/**
+		 * WordPress widget args.
+		 *
+		 * Filters the WordPress widget arguments when they are rendered in Qazana panel.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array            $default_widget_args Default widget arguments.
+		 * @param Widget_WordPress $this                The WordPress widget.
+		 */
+		$default_widget_args = apply_filters( 'qazana/widgets/wordpress/widget_args', $default_widget_args, $this ); // WPCS: spelling ok.
 
-		$this->get_widget_instance()->widget( $empty_widget_args, $this->get_settings( 'wp' ) );
+		$this->get_widget_instance()->widget( $default_widget_args, $this->get_settings( 'wp' ) );
 	}
 
 	/**
@@ -201,6 +261,7 @@ class Widget_WordPress extends Widget_Base {
 	 */
 	public function __construct( $data = [], $args = null ) {
 		$this->_widget_name = $args['widget_name'];
+
 		parent::__construct( $data, $args );
 	}
 

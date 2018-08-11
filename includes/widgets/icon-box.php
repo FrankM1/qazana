@@ -1,38 +1,83 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana icon box widget.
+ *
+ * Qazana widget that displays an icon, a headline and a text.
+ *
+ * @since 1.0.0
+ */
 class Widget_Icon_Box extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve icon box widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'icon-box';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve icon box widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Icon Box', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve icon box widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-icon-box';
 	}
 
-	public function get_categories() {
-		return [ 'general-elements' ];
-    }
-
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'icon', 'box' ];
-    }
+		return [ 'icon box', 'icon' ];
+	}
 
+	/**
+	 * Register icon box widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->_register_section_icon_controls();
 		$this->_register_section_style_content_controls();
@@ -125,6 +170,7 @@ class Widget_Icon_Box extends Widget_Base {
 				'default'   => 'circle',
 				'condition' => [
 					'view!' => 'default',
+					'icon!' => '',
 				],
 				'prefix_class' => 'qazana-shape-',
 			]
@@ -133,10 +179,13 @@ class Widget_Icon_Box extends Widget_Base {
 		$this->add_control(
 			'title_text',
 			[
-				'label'       => __( 'Title & Description', 'qazana' ),
-				'type'        => Controls_Manager::TEXT,
-				'default'     => __( 'This is the heading', 'qazana' ),
-				'placeholder' => __( 'Your Title', 'qazana' ),
+				'label' => __( 'Title & Description', 'qazana' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => __( 'This is the heading', 'qazana' ),
+				'placeholder' => __( 'Enter your title', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -144,32 +193,37 @@ class Widget_Icon_Box extends Widget_Base {
 		$this->add_control(
 			'description_text',
 			[
-				'label'       => '',
-				'type'        => Controls_Manager::TEXTAREA,
-				'default'     => __( 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
-				'placeholder' => __( 'Your Description', 'qazana' ),
-				'title'       => __( 'Input icon text here', 'qazana' ),
-				'rows'        => 10,
-				'separator'   => 'none',
-				'show_label'  => false,
+				'label' => '',
+				'type' => Controls_Manager::TEXTAREA,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => __( 'Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'qazana' ),
+				'placeholder' => __( 'Enter your description', 'qazana' ),
+				'rows' => 10,
+				'separator' => 'none',
+				'show_label' => false,
 			]
 		);
 
 		$this->add_control(
 			'link',
 			[
-				'label'       => __( 'Link to', 'qazana' ),
-				'type'        => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'qazana' ),
-				'separator'   => 'before',
+				'label' => __( 'Link to', 'qazana' ),
+				'type' => Controls_Manager::URL,
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
+				'separator' => 'before',
 			]
 		);
 
 		$this->add_responsive_control(
 			'position',
 			[
-				'label'   => __( 'Icon Position', 'qazana' ),
-				'type'    => Controls_Manager::CHOOSE,
+				'label' => __( 'Icon Position', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
 				'default' => 'top',
 				'options' => [
 					'left' => [
@@ -196,18 +250,18 @@ class Widget_Icon_Box extends Widget_Base {
 		$this->add_control(
 			'title_size',
 			[
-				'label'   => __( 'Title HTML Tag', 'qazana' ),
-				'type'    => Controls_Manager::SELECT,
+				'label' => __( 'Title HTML Tag', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'h1'   => __( 'H1', 'qazana' ),
-					'h2'   => __( 'H2', 'qazana' ),
-					'h3'   => __( 'H3', 'qazana' ),
-					'h4'   => __( 'H4', 'qazana' ),
-					'h5'   => __( 'H5', 'qazana' ),
-					'h6'   => __( 'H6', 'qazana' ),
-					'div'  => __( 'div', 'qazana' ),
-					'span' => __( 'span', 'qazana' ),
-					'p'    => __( 'p', 'qazana' ),
+					'h1' => 'H1',
+					'h2' => 'H2',
+					'h3' => 'H3',
+					'h4' => 'H4',
+					'h5' => 'H5',
+					'h6' => 'H6',
+					'div' => 'div',
+					'span' => 'span',
+					'p' => 'p',
 				],
 				'default' => 'h3',
 			]
@@ -652,7 +706,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	public function before_render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 	    $this->_add_render_attributes();
 
@@ -684,7 +738,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function get_render_icon() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$output = null;
 
@@ -716,7 +770,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function get_render_description() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$output = null;
 
@@ -731,7 +785,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function render_style_1() {
 
-        $settings = $this->get_settings();
+        $settings = $this->get_settings_for_display();
 
 		if ( ! empty( $settings['icon'] ) ) {
 
@@ -748,7 +802,7 @@ class Widget_Icon_Box extends Widget_Base {
 
     protected function render_style_2() {
 
-        $settings = $this->get_settings();
+        $settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation_type'] ] );
 
@@ -771,7 +825,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function render_style_3() {
 
-        $settings = $this->get_settings();
+        $settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
 
@@ -787,9 +841,18 @@ class Widget_Icon_Box extends Widget_Base {
 		</div><?php
 
     }
+	
+	/**
+	 * Render icon box widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$this->icon_tag = 'span';
 

@@ -1,29 +1,32 @@
 //
 // Grid
 //
+
 .qazana {
-  &:after {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
 
-    @media (min-width: $screen-lg-min) {
-      content: 'desktop';
-    }
+	&:after {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0,0,0,0);
+		border: 0;
 
-    @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-      content: 'tablet';
-    }
+		@media (min-width: $screen-lg-min) {
+			content: 'desktop';
+		}
 
-    @media (max-width: $screen-sm-max) {
-      content: 'mobile';
-    }
-  }
+		@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+			content: 'tablet';
+		}
+
+		@media (max-width: $screen-sm-max) {
+			content: 'mobile';
+		}
+
+	}
 }
 
 // Section
@@ -32,10 +35,10 @@
 
 	// Container
 	.qazana-container {
-		position: relative;
 		display: flex;
 		margin-right: auto;
 		margin-left: auto;
+		position: relative;
 	}
 
 	// Max-width of container depending on section settings
@@ -53,19 +56,23 @@
 
 	// In section min-height / fit to screen mode
 	&.qazana-section-items- {
+
 		&top {
+
 			> .qazana-container {
 				align-items: flex-start;
 			}
 		}
 
 		&middle {
+
 			> .qazana-container {
 				align-items: center;
 			}
 		}
 
 		&bottom {
+
 			> .qazana-container {
 				align-items: flex-end;
 			}
@@ -85,12 +92,17 @@
 	}
 }
 
+
 // In columns stretch mode
 
 .qazana-container {
+
 	> .qazana-row {
+
 		> .qazana-column {
+
 			> .qazana-column-wrap {
+
 				.qazana-section-content-top > & {
 					align-items: flex-start;
 				}
@@ -109,12 +121,12 @@
 
 // Row
 .qazana-row {
-	display: flex;
 	width: 100%;
+	display: flex;
 
-  @media (max-width: $screen-md-max) {
-    flex-wrap: wrap;
-  }
+	@media (max-width: $screen-md-max) {
+		flex-wrap: wrap;
+	}
 }
 
 @media (max-width: 1024px) {
@@ -138,19 +150,25 @@
 // Columns
 .qazana-column {
 	position: relative;
-	display: flex;
 	min-height: 1px;
+	display: flex;
+
 }
+
 @mixin qazana-grid-classes {
-	 @each $sizeKey, $size in $column-sizes{
-		&.qazana-col-#{$sizeKey},
-		&[data-col="#{$sizeKey}"] {
+
+	@each $sizeKey, $size in $column-sizes {
+
+		&.qazana-col-#{$sizeKey}, &[data-col="#{$sizeKey}"] {
 			width: $size;
 		}
 	}
 }
+
 @mixin qazana-responsive($breakpoint-name) {
-	 @each $size-name, $size in $column-sizes{
+
+	@each $size-name, $size in $column-sizes {
+
 		&.qazana-#{$breakpoint-name}-#{$size-name} {
 			width: $size;
 		}
@@ -162,7 +180,7 @@
 .qazana-row {
 	> .qazana-column {
 		> .qazana-element-populated {
-			.qazana-column-gap-narrow > & {
+			.qazana-column-gap-narrow  > & {
 				padding: 5px;
 			}
 
@@ -187,7 +205,9 @@
 
 // Columns Gap for Inner section
 .qazana-inner-section {
+
 	.qazana-column-gap-no {
+
 		.qazana-element-populated {
 			padding: 0;
 		}
@@ -200,23 +220,29 @@
 
 // Responsive Grid
 @media (min-width: $screen-md-min) {
+
 	.qazana-column {
 		@include qazana-grid-classes;
 	}
 }
 
 .qazana-column {
+
 	@media (max-width: $screen-xs-max) {
-		 @include qazana-responsive(xs);
+		@include qazana-responsive(xs);
 	}
+
 	@media (max-width: $screen-sm-max) {
-		 @include qazana-responsive(sm);
+		@include qazana-responsive(sm);
 	}
+
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-		 @include qazana-responsive(md);
+		@include qazana-responsive(md);
 	}
 }
+
 @media (max-width: $screen-sm-max) {
+
 	.qazana-column {
 		width: 100%;
 	}
@@ -226,26 +252,51 @@
 	}
 }
 
-#grid {
-	position: fixed;
-	top: -20px;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 999;
-	display: none;
-	overflow-y: hidden;
-	pointer-events: none;
 
-	.vc_col-lg-1 {
-		padding: 0.5rem 40px;
-		min-height: 0.125rem;
-		height: 2000px;
+// Minimal simple Grid
+
+ul.qazana-icon-list-items.qazana-inline-items {
+	display: flex;
+	flex-wrap: wrap;
+
+	.qazana-inline-item {
+		word-break: break-word;
+	}
+}
+
+// Simple 12 Columns responsive grid
+.qazana-grid {
+	display: grid;
+
+	.qazana-grid-item {
+		word-break: break-word;
 	}
 
-	.shadow {
-		width: 100%;
-		height: 100%;
-		background: rgba(0,0,0,0.05);
+	@mixin grid_loop($device) {
+		@for $i from 1 through 12 {
+
+			&#{$device}-#{$i} {
+				.qazana-grid {
+					grid-template-columns: repeat(#{$i} , 1fr);
+				}
+			}
+		}
+	}
+
+	@include grid_loop('');
+
+	@media (max-width: $screen-md-max) {
+		@include grid_loop(-tablet);
+	}
+
+	@media (max-width: $screen-sm-max) {
+		@include grid_loop(-mobile);
+	}
+}
+
+.qazana-grid-0 {
+	.qazana-grid {
+		display: flex;
+		overflow: hidden;
 	}
 }

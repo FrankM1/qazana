@@ -10,7 +10,7 @@ class Counter extends Base {
         return [
         	'title' => __( 'Counter', 'qazana' ),
             'name' => 'counter',
-        	'required' => true,
+        	'required' => false,
         	'default_activation' => true,
 			'widgets' => [
 				'Counter'

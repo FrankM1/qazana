@@ -16,7 +16,7 @@ Schemes = function() {
 	};
 
 	var initElements = function() {
-		elements.$style = Backbone.$( '<style>', {
+		elements.$style = jQuery( '<style>', {
 			id: 'qazana-style-scheme'
 		});
 

@@ -10,7 +10,7 @@ class Autoptimize extends Base {
         return [
         	'title' => __( 'Autoptimize Compatibility', 'qazana' ),
             'name' => 'autoptimize',
-        	'required' => true,
+        	'required' => false,
             'default_activation' => $autoptimize_minify_exist,
         ];
 

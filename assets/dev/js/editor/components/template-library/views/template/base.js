@@ -3,7 +3,16 @@ var TemplateLibraryInsertTemplateBehavior = require( 'qazana-templates/behaviors
 
 TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 	className: function() {
-		return 'qazana-template-library-template qazana-template-library-template-' + this.model.get( 'source' );
+		var classes = 'qazana-template-library-template',
+			source = this.model.get( 'source' );
+
+		classes += ' qazana-template-library-template-' + source;
+
+		if ( 'remote' === source ) {
+			classes += ' qazana-template-library-template-' + this.model.get( 'type' );
+		}
+
+		return classes;
 	},
 
 	ui: function() {

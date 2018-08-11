@@ -12,7 +12,7 @@ class WPSEO extends Base {
         return [
         	'title' => __( 'WPSEO Compatibility', 'qazana' ),
             'name' => 'wpseo',
-        	'required' => true,
+        	'required' => false,
         	'default_activation' => $wpseo_exists,
         ];
 

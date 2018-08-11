@@ -12,6 +12,7 @@ Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, opti
 };
 
 App = Marionette.Application.extend( {
+	previewLoadedOnce: false,
 	helpers: require( 'qazana-editor-utils/helpers' ),
 	heartbeat: require( 'qazana-editor-utils/heartbeat' ),
 	imagesManager: require( 'qazana-editor-utils/images-manager' ),
@@ -21,72 +22,147 @@ App = Marionette.Application.extend( {
 	templates: require( 'qazana-templates/manager' ),
 	ajax: require( 'qazana-editor-utils/ajax' ),
 	conditions: require( 'qazana-editor-utils/conditions' ),
-	history:  require( 'qazana-extensions/history/assets/js/module' ),
-	hotKeys: require( 'qazana-editor-utils/hot-keys' ),
+	hotKeys: require( 'qazana-utils/hot-keys' ),
+	history: require('qazana-extensions/history/assets/js/module'),
 
 	channels: {
-		editor: Backbone.Radio.channel( 'BUILDER:editor' ),
-		data: Backbone.Radio.channel( 'BUILDER:data' ),
-		panelElements: Backbone.Radio.channel( 'BUILDER:panelElements' ),
-		dataEditMode: Backbone.Radio.channel( 'BUILDER:editmode' ),
-		deviceMode: Backbone.Radio.channel( 'BUILDER:deviceMode' ),
-		templates: Backbone.Radio.channel( 'BUILDER:templates' )
+		editor: Backbone.Radio.channel( 'QAZANA:editor' ),
+		data: Backbone.Radio.channel( 'QAZANA:data' ),
+		panelElements: Backbone.Radio.channel( 'QAZANA:panelElements' ),
+		dataEditMode: Backbone.Radio.channel( 'QAZANA:editmode' ),
+		deviceMode: Backbone.Radio.channel( 'QAZANA:deviceMode' ),
+		templates: Backbone.Radio.channel( 'QAZANA:templates' )
 	},
 
 	// Exporting modules that can be used externally
 	modules: {
-		element: require( 'qazana-models/element' ),
-		WidgetView: require( 'qazana-views/widget' ),
-		panel: {
-			Menu: require( 'qazana-panel/pages/menu/menu' )
+		Module: require( 'qazana-utils/module' ),
+		components: {
+			templateLibrary: {
+				views: {
+					parts: {
+						headerParts: {
+							logo: require( 'qazana-templates/views/parts/header-parts/logo' )
+						}
+					},
+					BaseModalLayout: require( 'qazana-templates/views/base-modal-layout' )
+				}
+			},
+			saver: {
+				behaviors: {
+                    HeaderSaver: require('./components/saver/behaviors/header-saver'),
+					FooterSaver: require( './components/saver/behaviors/footer-saver' )
+				}
+			}
 		},
 		controls: {
-			Base: require( 'qazana-views/controls/base' ),
-			BaseData: require( 'qazana-views/controls/base-data' ),
-			BaseMultiple: require( 'qazana-views/controls/base-multiple' ),
-			Color: require( 'qazana-views/controls/color' ),
-			Dimensions: require( 'qazana-views/controls/dimensions' ),
-			Image_dimensions: require( 'qazana-views/controls/image-dimensions' ),
-			Media: require( 'qazana-views/controls/media' ),
-			Slider: require( 'qazana-views/controls/slider' ),
-			Wysiwyg: require( 'qazana-views/controls/wysiwyg' ),
-			Choose: require( 'qazana-views/controls/choose' ),
-			Url: require( 'qazana-views/controls/base-multiple' ),
-			Font: require( 'qazana-views/controls/font' ),
-			Section: require( 'qazana-views/controls/section' ),
-			Tab: require( 'qazana-views/controls/tab' ),
-			Repeater: require( 'qazana-views/controls/repeater' ),
-			Wp_widget: require( 'qazana-views/controls/wp_widget' ),
-			Icon: require( 'qazana-views/controls/icon' ),
-			Gallery: require( 'qazana-views/controls/gallery' ),
-			Select2: require( 'qazana-views/controls/select2' ),
-			Date_time: require( 'qazana-views/controls/date-time' ),
-			Code: require( 'qazana-views/controls/code' ),
-			Box_shadow: require( 'qazana-views/controls/box-shadow' ),
-			Text_shadow: require( 'qazana-views/controls/box-shadow' ),
-			Structure: require( 'qazana-views/controls/structure' ),
-			Animation: require( 'qazana-views/controls/select2' ),
-			Hover_animation: require( 'qazana-views/controls/select2' ),
-			Order: require( 'qazana-views/controls/order' ),
-			Switcher: require( 'qazana-views/controls/switcher' ),
-			Number: require( 'qazana-views/controls/number' ),
-			Popover_toggle: require( 'qazana-views/controls/popover-toggle' )
+			Animation: require( 'qazana-controls/select2' ),
+			Base: require( 'qazana-controls/base' ),
+			BaseData: require( 'qazana-controls/base-data' ),
+			BaseMultiple: require( 'qazana-controls/base-multiple' ),
+			Box_shadow: require( 'qazana-controls/box-shadow' ),
+			Button: require( 'qazana-controls/button' ),
+			Choose: require( 'qazana-controls/choose' ),
+			Code: require( 'qazana-controls/code' ),
+			Color: require( 'qazana-controls/color' ),
+			Date_time: require( 'qazana-controls/date-time' ),
+			Dimensions: require( 'qazana-controls/dimensions' ),
+			Font: require( 'qazana-controls/font' ),
+			Gallery: require( 'qazana-controls/gallery' ),
+			Hover_animation: require( 'qazana-controls/select2' ),
+			Icon: require( 'qazana-controls/icon' ),
+			Image_dimensions: require( 'qazana-controls/image-dimensions' ),
+			Media: require( 'qazana-controls/media' ),
+			Number: require( 'qazana-controls/number' ),
+			Order: require( 'qazana-controls/order' ),
+			Popover_toggle: require( 'qazana-controls/popover-toggle' ),
+			Repeater: require( 'qazana-controls/repeater' ),
+			RepeaterRow: require( 'qazana-controls/repeater-row' ),
+			Section: require( 'qazana-controls/section' ),
+			Select: require( 'qazana-controls/select' ),
+			Select2: require( 'qazana-controls/select2' ),
+			Slider: require( 'qazana-controls/slider' ),
+			Structure: require( 'qazana-controls/structure' ),
+			Switcher: require( 'qazana-controls/switcher' ),
+			Tab: require( 'qazana-controls/tab' ),
+			Text_shadow: require( 'qazana-controls/box-shadow' ),
+			Url: require( 'qazana-controls/url' ),
+			Wp_widget: require( 'qazana-controls/wp_widget' ),
+			Wysiwyg: require( 'qazana-controls/wysiwyg' )
 		},
-		templateLibrary: {
-			ElementsCollectionView: require( 'qazana-panel/pages/elements/views/elements' )
+		elements: {
+			models: {
+				BaseSettings: require( 'qazana-elements/models/base-settings' ),
+				Element: require( 'qazana-elements/models/element' )
+			},
+			views: {
+				Widget: require( 'qazana-elements/views/widget' )
+			}
+		},
+		layouts: {
+			panel: {
+				pages: {
+					elements: {
+						views: {
+							Global: require( 'qazana-panel/pages/elements/views/global' ),
+							Elements: require( 'qazana-panel/pages/elements/views/elements' )
+						}
+					},
+					menu: {
+						Menu: require( 'qazana-panel/pages/menu/menu' )
+					}
+				}
+			}
+		},
+		views: {
+			ControlsStack: require( 'qazana-views/controls-stack' )
 		}
 	},
+
 	backgroundClickListeners: {
 		popover: {
 			element: '.qazana-controls-popover',
-			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label'
+			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label, .select2-container'
+		},
+		tagsList: {
+			element: '.qazana-tags-list',
+			ignore: '.qazana-control-dynamic-switcher'
 		}
+	},
+
+	// TODO: Temp modules bc method since 2.0.0
+	initModulesBC: function() {
+		var bcModules = {
+			ControlsStack: this.modules.views.ControlsStack,
+			element: {
+				Model: this.modules.elements.models.Element
+			},
+			RepeaterRowView: this.modules.controls.RepeaterRow,
+			WidgetView: this.modules.elements.views.Widget,
+			panel: {
+				Menu: this.modules.layouts.panel.pages.menu.Menu
+			},
+			saver: {
+				headerBehavior: this.modules.components.saver.behaviors.HeaderSaver,
+				footerBehavior: this.modules.components.saver.behaviors.FooterSaver
+			},
+			SettingsModel: this.modules.elements.models.BaseSettings,
+			templateLibrary: {
+				ElementsCollectionView: this.modules.layouts.panel.pages.elements.views.Elements
+			}
+		};
+
+		jQuery.extend( this.modules, bcModules );
+	},
+
+	userCan: function( capability ) {
+		return -1 === this.config.user.restrictions.indexOf( capability );
 	},
 
 	_defaultDeviceMode: 'desktop',
 
 	addControlView: function( controlID, ControlView ) {
-		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
+		this.modules.controls[ qazana.helpers.firstLetterUppercase( controlID ) ] = ControlView;
 	},
 
 	checkEnvCompatibility: function() {
@@ -129,14 +205,24 @@ App = Marionette.Application.extend( {
 				return;
 			}
 
-			controls[ controlKey ] = _.extend( {}, self.config.controls[ controlData.type ], controlData  );
+			controls[ controlKey ] = controlData;
+		} );
+
+		return controls;
+	},
+
+	mergeControlsSettings: function( controls ) {
+		var  self = this;
+
+		_.each( controls, function( controlData, controlKey ) {
+			controls[ controlKey ] = jQuery.extend( true, {}, self.config.controls[ controlData.type ], controlData  );
 		} );
 
 		return controls;
 	},
 
 	getControlView: function( controlID ) {
-		var capitalizedControlName = controlID[0].toUpperCase() + controlID.slice( 1 ),
+		var capitalizedControlName = qazana.helpers.firstLetterUppercase( controlID ),
 			View = this.modules.controls[ capitalizedControlName ];
 
 		if ( ! View ) {
@@ -150,28 +236,43 @@ App = Marionette.Application.extend( {
 	},
 
 	getPanelView: function() {
-		return this.getRegion( 'panel' ).currentView;
+		return this.panel.currentView;
+	},
+
+	getPreviewView: function() {
+		return this.sections.currentView;
 	},
 
 	initEnvData: function() {
-		this.envData = _.pick( tinymce.EditorManager.Env, [ 'desktop', 'webkit', 'gecko', 'ie', 'opera' ] );
+		this.envData = _.pick( tinymce.Env, [ 'desktop', 'mac', 'webkit', 'gecko', 'ie', 'opera' ] );
 	},
 
 	initComponents: function() {
 		var EventManager = require( 'qazana-utils/hooks' ),
-			Settings = require( 'qazana-editor/settings/settings' );
+			DynamicTags = require( 'qazana-dynamic-tags/manager' ),
+			Settings = require( 'qazana-editor/components/settings/settings' ),
+			Saver = require( 'qazana-editor/components/saver/manager' ),
+			Notifications = require( 'qazana-editor-utils/notifications' );
 
 		this.hooks = new EventManager();
 
+		this.saver = new Saver();
+
 		this.settings = new Settings();
-		
+
+		this.dynamicTags = new DynamicTags();
+
 		this.templates.init();
 
 		this.initDialogsManager();
 
-		this.heartbeat.init();
+		this.notifications = new Notifications();
 
 		this.ajax.init();
+
+		this.initHotKeys();
+
+		this.initEnvData();
 	},
 
 	initDialogsManager: function() {
@@ -179,7 +280,7 @@ App = Marionette.Application.extend( {
 	},
 
 	initElements: function() {
-		var ElementModel = qazana.modules.element,
+		var ElementCollection = require( 'qazana-elements/collections/elements' ),
 			config = this.config.data;
 
 		// If it's an reload, use the not-saved data
@@ -187,28 +288,34 @@ App = Marionette.Application.extend( {
 			config = this.elements.toJSON();
 		}
 
-		this.elements = new ElementModel.Collection( config );
+		this.elements = new ElementCollection( config );
+
+		this.elementsModel = new Backbone.Model( {
+			elements: this.elements
+		} );
 	},
 
 	initPreview: function() {
-		this.$previewWrapper = Backbone.$( '#qazana-preview' );
+		var $ = jQuery;
 
-		this.$previewResponsiveWrapper = Backbone.$( '#qazana-preview-responsive-wrapper' );
+		this.$previewWrapper = $( '#qazana-preview' );
+
+		this.$previewResponsiveWrapper = $( '#qazana-preview-responsive-wrapper' );
 
 		var previewIframeId = 'qazana-preview-iframe';
 
 		// Make sure the iFrame does not exist.
 		if ( ! this.$preview ) {
-			this.$preview = Backbone.$( '<iframe>', {
+			this.$preview = $( '<iframe>', {
 				id: previewIframeId,
-				src: this.config.preview_link + '&' + ( new Date().getTime() ),
+				src: this.config.document.urls.preview,
 				allowfullscreen: 1
 			} );
 
 			this.$previewResponsiveWrapper.append( this.$preview );
 		}
 
-		this.$preview.on( 'load', _.bind( this.onPreviewLoaded, this ) );
+		this.$preview.on( 'load', this.onPreviewLoaded.bind( this ) );
 	},
 
 	initFrontend: function() {
@@ -247,7 +354,7 @@ App = Marionette.Application.extend( {
 					cancel: qazana.translate( 'cancel' )
 				},
 				onConfirm: function() {
-					self.getRegion( 'sections' ).currentView.collection.reset();
+					self.elements.reset();
 				}
 			} );
 
@@ -257,12 +364,14 @@ App = Marionette.Application.extend( {
 
 	initHotKeys: function() {
 		var keysDictionary = {
-			del: 46,
+			c: 67,
 			d: 68,
+			del: 46,
 			l: 76,
 			m: 77,
 			p: 80,
-			s: 83
+			s: 83,
+			v: 86
 		};
 
 		var $ = jQuery,
@@ -284,7 +393,7 @@ App = Marionette.Application.extend( {
 						return false;
 					}
 
-					return ! $target.closest( '.qazana-inline-editing' ).length;
+					return ! $target.closest( '[contenteditable="true"]' ).length;
 				},
 				handle: function() {
 					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).removeElement();
@@ -315,7 +424,7 @@ App = Marionette.Application.extend( {
 					return hotKeysManager.isControlEvent( event ) && event.shiftKey;
 				},
 				handle: function() {
-					qazana.templates.showTemplatesModal();
+					qazana.templates.startModal();
 				}
 			}
 		};
@@ -358,7 +467,87 @@ App = Marionette.Application.extend( {
 					return hotKeysManager.isControlEvent( event );
 				},
 				handle: function() {
-					qazana.getPanelView().getFooterView()._publishBuilder();
+					qazana.saver.saveDraft();
+				}
+			}
+		};
+
+		hotKeysHandlers[ keysDictionary.c ] = {
+			copyElement: {
+				isWorthHandling: function( event ) {
+					if ( ! hotKeysManager.isControlEvent( event ) ) {
+						return false;
+					}
+
+					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName();
+
+					if ( ! isEditorOpen ) {
+						return false;
+					}
+
+					var frontendWindow = qazanaFrontend.getElements( 'window' ),
+						textSelection = getSelection() + frontendWindow.getSelection();
+
+					if ( ! textSelection && qazana.envData.gecko ) {
+						textSelection = [ window, frontendWindow ].some( function( window ) {
+							var activeElement = window.document.activeElement;
+
+							if ( ! activeElement || -1 === [ 'INPUT', 'TEXTAREA' ].indexOf( activeElement.tagName ) ) {
+								return;
+							}
+
+							var originalInputType;
+
+							// Some of input types can't retrieve a selection
+							if ( 'INPUT' === activeElement.tagName ) {
+								originalInputType = activeElement.type;
+
+								activeElement.type = 'text';
+							}
+
+							var selection = activeElement.value.substring( activeElement.selectionStart, activeElement.selectionEnd );
+
+							activeElement.type = originalInputType;
+
+							return ! ! selection;
+						} );
+					}
+
+					return ! textSelection;
+				},
+				handle: function() {
+					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).copy();
+				}
+			}
+		};
+
+		hotKeysHandlers[ keysDictionary.v ] = {
+			pasteElement: {
+				isWorthHandling: function( event ) {
+					if ( ! hotKeysManager.isControlEvent( event ) ) {
+						return false;
+					}
+
+					return -1 !== [ 'BODY', 'IFRAME' ].indexOf( document.activeElement.tagName ) && 'BODY' === qazanaFrontend.getElements( 'window' ).document.activeElement.tagName;
+				},
+				handle: function() {
+					var targetElement = qazana.channels.editor.request( 'contextMenu:targetView' );
+
+					if ( ! targetElement ) {
+						var panel = qazana.getPanelView();
+
+						if ( 'editor' === panel.getCurrentPageName() ) {
+							targetElement = panel.getCurrentPageView().getOption( 'editedElementView' );
+						}
+					}
+
+					if ( ! targetElement ) {
+						targetElement = qazana.getPreviewView();
+					}
+
+					if ( targetElement.isPasteEnabled() ) {
+						targetElement.paste();
+					}
 				}
 			}
 		};
@@ -369,12 +558,24 @@ App = Marionette.Application.extend( {
 			} );
 		} );
 
-		hotKeysManager.bindListener( this.$window.add( qazanaFrontend.getElements( '$window' ) ) );
+		hotKeysManager.bindListener( this.$window );
+	},
+
+	initPanel: function() {
+		this.addRegions( { panel: require( 'qazana-layouts/panel/panel' ) } );
+	},
+
+	initNavigator: function() {
+		this.addRegions( { navigator: require( 'qazana-layouts/navigator/navigator' ) } );
 	},
 
 	preventClicksInsideEditor: function() {
+		this.$previewContents.on( 'submit', function( event ) {
+			event.preventDefault();
+		} );
+
 		this.$previewContents.on( 'click', function( event ) {
-			var $target = Backbone.$( event.target ),
+			var $target = jQuery( event.target ),
 				editMode = qazana.channels.dataEditMode.request( 'activeMode' ),
 				isClickInsideQazana = !! $target.closest( '#qazana, .pen-menu' ).length,
 				isTargetInsideDocument = this.contains( $target[0] );
@@ -383,7 +584,7 @@ App = Marionette.Application.extend( {
 				return;
 			}
 
-			if ( $target.closest( 'a' ).length ) {
+			if ( $target.closest( 'a:not(.qazana-clickable)' ).length ) {
 				event.preventDefault();
 			}
 
@@ -403,6 +604,10 @@ App = Marionette.Application.extend( {
 
 	addBackgroundClickListener: function( key, listener ) {
 		this.backgroundClickListeners[ key ] = listener;
+	},
+
+	removeBackgroundClickListener: function( key ) {
+		delete this.backgroundClickListeners[ key ];
 	},
 
 	showFatalErrorDialog: function( options ) {
@@ -433,8 +638,175 @@ App = Marionette.Application.extend( {
 		this.dialogsManager.createWidget( 'confirm', options ).show();
 	},
 
+	checkPageStatus: function() {
+		if ( qazana.config.current_revision_id !== qazana.config.document.id ) {
+			this.notifications.showToast( {
+				message: this.translate( 'working_on_draft_notification' ),
+				buttons: [
+					{
+						name: 'view_revisions',
+						text: qazana.translate( 'view_all_revisions' ),
+						callback: function() {
+							var panel = qazana.getPanelView();
+
+							panel.setPage( 'historyPage' );
+							panel.getCurrentPageView().activateTab( 'revisions' );
+						}
+					}
+				]
+			} );
+		}
+	},
+
+	getStorage: function( key ) {
+		var qazanaStorage = localStorage.getItem( 'qazana' );
+
+		if ( qazanaStorage ) {
+			qazanaStorage = JSON.parse( qazanaStorage );
+		} else {
+			qazanaStorage = {};
+		}
+
+		if ( key ) {
+			return qazanaStorage[ key ];
+		}
+
+		return qazanaStorage;
+	},
+
+	setStorage: function( key, value ) {
+		var qazanaStorage = this.getStorage();
+
+		qazanaStorage[ key ] = value;
+
+		localStorage.setItem( 'qazana', JSON.stringify( qazanaStorage ) );
+	},
+
+	openLibraryOnStart: function() {
+		if ( '#library' === location.hash ) {
+			qazana.templates.startModal();
+
+			location.hash = '';
+		}
+	},
+
+	enterPreviewMode: function( hidePanel ) {
+		var $elements = qazanaFrontend.getElements( '$body' );
+
+		if ( hidePanel ) {
+			$elements = $elements.add( this.$body );
+		}
+
+		$elements
+			.removeClass( 'qazana-editor-active' )
+			.addClass( 'qazana-editor-preview' );
+
+		this.$previewQazanaEl
+			.removeClass( 'qazana-edit-area-active' )
+			.addClass( 'qazana-edit-area-preview' );
+
+		if ( hidePanel ) {
+			// Handle panel resize
+			this.$previewWrapper.css( this.config.is_rtl ? 'right' : 'left', '' );
+
+			this.panel.$el.css( 'width', '' );
+		}
+	},
+
+	exitPreviewMode: function() {
+		qazanaFrontend.getElements( '$body' ).add( this.$body )
+			.removeClass( 'qazana-editor-preview' )
+			.addClass( 'qazana-editor-active' );
+
+		this.$previewQazanaEl
+			.removeClass( 'qazana-edit-area-preview' )
+			.addClass( 'qazana-edit-area-active' );
+	},
+
+	changeEditMode: function( newMode ) {
+		var dataEditMode = qazana.channels.dataEditMode,
+			oldEditMode = dataEditMode.request( 'activeMode' );
+
+		dataEditMode.reply( 'activeMode', newMode );
+
+		if ( newMode !== oldEditMode ) {
+			dataEditMode.trigger( 'switch', newMode );
+		}
+	},
+
+	reloadPreview: function() {
+		jQuery( '#qazana-preview-loading' ).show();
+
+		this.$preview[0].contentWindow.location.reload( true );
+	},
+
+	clearPage: function() {
+		this.getClearPageDialog().show();
+	},
+
+	changeDeviceMode: function( newDeviceMode ) {
+		var oldDeviceMode = this.channels.deviceMode.request( 'currentMode' );
+
+		if ( oldDeviceMode === newDeviceMode ) {
+			return;
+		}
+
+		this.$body
+			.removeClass( 'qazana-device-' + oldDeviceMode )
+			.addClass( 'qazana-device-' + newDeviceMode );
+
+		this.channels.deviceMode
+			.reply( 'previousMode', oldDeviceMode )
+			.reply( 'currentMode', newDeviceMode )
+			.trigger( 'change' );
+	},
+
+	enqueueTypographyFonts: function() {
+		var self = this,
+			typographyScheme = this.schemes.getScheme( 'typography' );
+
+		self.helpers.resetEnqueuedFontsCache();
+
+		_.each( typographyScheme.items, function( item ) {
+			self.helpers.enqueueFont( item.value.font_family );
+		} );
+	},
+
+	translate: function( stringKey, templateArgs, i18nStack ) {
+		if ( ! i18nStack ) {
+			i18nStack = this.config.i18n;
+		}
+
+		var string = i18nStack[ stringKey ];
+
+		if ( undefined === string ) {
+			string = stringKey;
+		}
+
+		if ( templateArgs ) {
+			// TODO: bc since 2.0.4
+			string = string.replace( /{(\d+)}/g, function( match, number ) {
+				return undefined !== templateArgs[ number ] ? templateArgs[ number ] : match;
+			} );
+
+			string = string.replace( /%(?:(\d+)\$)?s/g, function( match, number ) {
+				if ( ! number ) {
+					number = 1;
+				}
+
+				number--;
+
+				return undefined !== templateArgs[ number ] ? templateArgs[ number ] : match;
+			} );
+		}
+
+		return string;
+	},
+
 	onStart: function() {
-		this.$window = Backbone.$( window );
+		this.$window = jQuery( window );
+
+		this.$body = jQuery( 'body' );
 
 		NProgress.start();
 		NProgress.inc( 0.2 );
@@ -442,11 +814,11 @@ App = Marionette.Application.extend( {
 		this.config = QazanaConfig;
 
 		Backbone.Radio.DEBUG = false;
-		Backbone.Radio.tuneIn( 'BUILDER' );
+		Backbone.Radio.tuneIn( 'QAZANA' );
+
+		this.initModulesBC();
 
 		this.initComponents();
-
-		this.initEnvData();
 
 		if ( ! this.checkEnvCompatibility() ) {
 			this.onEnvNotCompatible();
@@ -455,8 +827,6 @@ App = Marionette.Application.extend( {
 		this.channels.dataEditMode.reply( 'activeMode', 'edit' );
 
 		this.listenTo( this.channels.dataEditMode, 'switch', this.onEditModeSwitched );
-
-		this.setWorkSaver();
 
 		this.initClearPageDialog();
 
@@ -480,11 +850,11 @@ App = Marionette.Application.extend( {
 		}
 
 		this.$previewContents = this.$preview.contents();
+		this.$previewQazanaEl = this.$previewContents.find( '#qazana' );
 
-		var $previewQazanaEl = this.$previewContents.find( '#qazana' );
-
-		if ( ! $previewQazanaEl.length ) {
+		if ( ! this.$previewQazanaEl.length ) {
 			this.onPreviewElNotFound();
+
 			return;
 		}
 
@@ -492,57 +862,69 @@ App = Marionette.Application.extend( {
 
 		this.initElements();
 
-		this.initHotKeys();
-
 		var iframeRegion = new Marionette.Region( {
 			// Make sure you get the DOM object out of the jQuery object
-			el: $previewQazanaEl[0]
+			el: this.$previewQazanaEl[0]
 		} );
 
 		this.schemes.init();
-
 		this.schemes.printSchemesStyle();
 
 		this.preventClicksInsideEditor();
 
 		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[0] );
 
+		if ( this.previewLoadedOnce ) {
+			this.getPanelView().setPage( 'elements', null, { autoFocusSearch: false } );
+		} else {
+			this.onFirstPreviewLoaded();
+		}
 
-		var Preview = require( 'qazana-views/preview' ),
-			PanelLayoutView = require( 'qazana-layouts/panel/panel' );
+		this.initNavigator();
 
 		this.addRegions( {
-			sections: iframeRegion,
-			panel: '#qazana-panel'
+			sections: iframeRegion
 		} );
 
-		this.getRegion( 'sections' ).show( new Preview( {
-			collection: this.elements
-		} ) );
+		var Preview = require( 'qazana-views/preview' );
 
-		this.getRegion( 'panel' ).show( new PanelLayoutView() );
+		this.sections.show( new Preview( { model: this.elementsModel } ) );
 
-		this.$previewContents
-		    .children() // <html>
-		    .addClass( 'qazana-html' )
-		    .children( 'body' )
-		    .addClass( 'qazana-editor-active' )
-			.addClass( 'qazana-page' );
+		this.$previewContents.children().addClass( 'qazana-html' );
 
-		this.setResizablePanel();
+		qazanaFrontend.getElements( '$body' ).addClass( 'qazana-editor-active' ).addClass( 'qazana-page' );
+
+		if ( ! qazana.userCan( 'design' ) ) {
+			qazanaFrontend.getElements( '$body' ).addClass( 'qazana-editor-content-only' );
+		}
 
 		this.changeDeviceMode( this._defaultDeviceMode );
 
-		Backbone.$( '#qazana-loading, #qazana-preview-loading' ).fadeOut( 600 );
+		jQuery( '#qazana-loading, #qazana-preview-loading' ).fadeOut( 600 );
 
 		_.defer( function() {
 			qazanaFrontend.getElements( 'window' ).jQuery.holdReady( false );
 		} );
 
 		this.enqueueTypographyFonts();
+
 		this.onEditModeSwitched();
 
+		this.hotKeys.bindListener( qazanaFrontend.getElements( '$window' ) );
+
 		this.trigger( 'preview:loaded' );
+	},
+
+	onFirstPreviewLoaded: function() {
+		this.initPanel();
+
+		this.heartbeat.init();
+
+		this.checkPageStatus();
+
+		this.openLibraryOnStart();
+
+		this.previewLoadedOnce = true;
 	},
 
 	onEditModeSwitched: function() {
@@ -582,37 +964,26 @@ App = Marionette.Application.extend( {
 	},
 
 	onPreviewElNotFound: function() {
-		this.showFatalErrorDialog( {
-			headerMessage: this.translate( 'preview_el_not_found_header' ),
-			message: this.translate( 'preview_el_not_found_message' ),
-			onConfirm: function() {
-				open( qazana.config.help_the_content_url, '_blank' );
-			}
-		} );
-	},
+		var args = this.$preview[0].contentWindow.qazanaPreviewErrorArgs;
 
-	setFlagEditorChange: function( status ) {
-		qazana.channels.editor
-			.reply( 'status', status )
-			.trigger( 'status:change', status );
-	},
+		if ( ! args ) {
+			args = {
+				headerMessage: this.translate( 'preview_el_not_found_header' ),
+				message: this.translate( 'preview_el_not_found_message' ),
+				confirmURL: qazana.config.help_the_content_url
+			};
+		}
 
-	isEditorChanged: function() {
-		return ( true === qazana.channels.editor.request( 'status' ) );
-	},
+		args.onConfirm = function() {
+			open( args.confirmURL, '_blank' );
+		};
 
-	setWorkSaver: function() {
-		this.$window.on( 'beforeunload', function() {
-			if ( qazana.isEditorChanged() ) {
-				return qazana.translate( 'before_unload_alert' );
-			}
-		} );
+		this.showFatalErrorDialog( args );
 	},
 
 	onBackgroundClick: function( event ) {
 		jQuery.each( this.backgroundClickListeners, function() {
-			var elementToHide = this.element,
-				$clickedTarget = jQuery( event.target );
+			var $clickedTarget = jQuery( event.target );
 
 			// If it's a label that associated with an input
 			if ( $clickedTarget[0].control ) {
@@ -623,195 +994,17 @@ App = Marionette.Application.extend( {
 				return;
 			}
 
-			var $clickedTargetClosestElement = $clickedTarget.closest( elementToHide );
+			if ( this.callback ) {
+				this.callback();
 
-			jQuery( elementToHide ).not( $clickedTargetClosestElement ).hide();
-		} );
-	},
-
-	setResizablePanel: function() {
-		var self = this,
-			side = qazana.config.is_rtl ? 'right' : 'left';
-
-		self.panel.$el.resizable( {
-			handles: qazana.config.is_rtl ? 'w' : 'e',
-			minWidth: 200,
-			maxWidth: 680,
-			start: function() {
-				self.$previewWrapper
-					.addClass( 'ui-resizable-resizing' )
-					.css( 'pointer-events', 'none' );
-			},
-			stop: function() {
-				self.$previewWrapper
-					.removeClass( 'ui-resizable-resizing' )
-					.css( 'pointer-events', '' );
-
-				qazana.channels.data.trigger( 'scrollbar:update' );
-			},
-			resize: function( event, ui ) {
-				self.$previewWrapper
-					.css( side, ui.size.width );
+				return;
 			}
+
+			var $clickedTargetClosestElement = $clickedTarget.closest( this.element );
+
+			jQuery( this.element ).not( $clickedTargetClosestElement ).hide();
 		} );
-	},
-
-	enterPreviewMode: function( hidePanel ) {
-		var $elements = this.$previewContents.find( 'body' );
-
-		if ( hidePanel ) {
-			$elements = $elements.add( 'body' );
-		}
-
-		$elements
-			.removeClass( 'qazana-editor-active' )
-			.addClass( 'qazana-editor-preview' );
-
-		if ( hidePanel ) {
-			// Handle panel resize
-			this.$previewWrapper.css( qazana.config.is_rtl ? 'right' : 'left', '' );
-
-			this.panel.$el.css( 'width', '' );
-		}
-	},
-
-	exitPreviewMode: function() {
-		this.$previewContents
-			.find( 'body' )
-			.add( 'body' )
-			.removeClass( 'qazana-editor-preview' )
-			.addClass( 'qazana-editor-active' );
-	},
-
-	changeEditMode: function( newMode ) {
-		var dataEditMode = qazana.channels.dataEditMode,
-			oldEditMode = dataEditMode.request( 'activeMode' );
-
-		dataEditMode.reply( 'activeMode', newMode );
-
-		if ( newMode !== oldEditMode ) {
-			dataEditMode.trigger( 'switch', newMode );
-		}
-	},
-
-	saveEditor: function( options ) {
-		options = _.extend( {
-			status: 'draft',
-            save_state: 'save',
-			onSuccess: null
-		}, options );
-
-		if ( qazana.elements.length === 0 ) {
-        	options.save_state = 'delete';
-        }
-
-		var self = this,
-			newData = qazana.elements.toJSON( { removeDefault: true } );
-
-		return this.ajax.send( 'save_builder', {
-	        data: {
-		        post_id: this.config.post_id,
-		        status: options.status,
-                save_state: options.save_state,
-		        data: JSON.stringify( newData )
-	        },
-			success: function( data ) {
-				self.setFlagEditorChange( false );
-
-				self.config.data = newData;
-
-				self.channels.editor.trigger( 'saved', data );
-
-				if ( _.isFunction( options.onSuccess ) ) {
-					options.onSuccess.call( this, data );
-				}
-			}
-		} );
-	},
-
-	reloadPreview: function() {
-		Backbone.$( '#qazana-preview-loading' ).show();
-
-		this.$preview[0].contentWindow.location.reload( true );
-	},
-
-	clearPage: function() {
-		this.getClearPageDialog().show();
-	},
-
-	changeDeviceMode: function( newDeviceMode ) {
-		var oldDeviceMode = this.channels.deviceMode.request( 'currentMode' );
-
-		if ( oldDeviceMode === newDeviceMode ) {
-			return;
-		}
-
-		Backbone.$( 'body' )
-			.removeClass( 'qazana-device-' + oldDeviceMode )
-			.addClass( 'qazana-device-' + newDeviceMode );
-
-		this.channels.deviceMode
-			.reply( 'previousMode', oldDeviceMode )
-			.reply( 'currentMode', newDeviceMode )
-			.trigger( 'change' );
-	},
-
-	enqueueTypographyFonts: function() {
-		var self = this,
-			typographyScheme = this.schemes.getScheme( 'typography' );
-
-		_.each( typographyScheme.items, function( item ) {
-			self.helpers.enqueueFont( item.value.font_family );
-		} );
-	},
-
-	translate: function( stringKey, templateArgs, i18nStack ) {
-		if ( ! i18nStack ) {
-			i18nStack = this.config.i18n;
-		}
-
-		var string = i18nStack[ stringKey ];
-
-		if ( undefined === string ) {
-			string = stringKey;
-		}
-
-		if ( templateArgs ) {
-			string = string.replace( /{(\d+)}/g, function( match, number ) {
-				return undefined !== templateArgs[ number ] ? templateArgs[ number ] : match;
-			} );
-		}
-
-		return string;
-	},
-
-	compareVersions: function( versionA, versionB, operator ) {
-		var prepareVersion = function( version ) {
-			version = version + '';
-
-			return version.replace( /[^\d.]+/, '.-1.' );
-		};
-
-		versionA  = prepareVersion( versionA );
-		versionB = prepareVersion( versionB );
-
-		if ( versionA === versionB ) {
-			return ! operator || /^={2,3}$/.test( operator );
-		}
-
-		var versionAParts = versionA.split( '.' ).map( Number ),
-			versionBParts = versionB.split( '.' ).map( Number ),
-			longestVersionParts = Math.max( versionAParts.length, versionBParts.length );
-
-		for ( var i = 0; i < longestVersionParts; i++ ) {
-			var valueA = versionAParts[ i ] || 0,
-				valueB = versionBParts[ i ] || 0;
-
-			if ( valueA !== valueB ) {
-				return this.conditions.compare( valueA, valueB, operator );
-			}
-		}
-	},
+	}
 } );
 
 module.exports = ( window.qazana = new App() ).start();

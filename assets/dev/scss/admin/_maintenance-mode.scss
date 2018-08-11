@@ -1,0 +1,11 @@
+
+.form-table:not(.qazana-maintenance-mode-is-enabled) {
+
+	.qazana-default-hide {
+		display: none;
+	}
+}
+
+.qazana-maintenance-mode-error{
+	color: red;
+}

@@ -10,7 +10,7 @@ class Bwp_Minify extends Base {
         return [
         	'title' => __( 'Better Wordpress Minify Compatibility', 'qazana' ),
             'name' => 'bwp_minify',
-        	'required' => true,
+        	'required' => false,
         	'default_activation' => $bwp_minify_exist,
         ];
 

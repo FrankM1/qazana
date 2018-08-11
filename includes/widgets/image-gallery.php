@@ -1,23 +1,62 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana image gallery widget.
+ *
+ * Qazana widget that displays a set of images in an aligned grid.
+ *
+ * @since 1.0.0
+ */
 class Widget_Image_Gallery extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve image gallery widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'image-gallery';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve image gallery widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Image Gallery', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve image gallery widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-gallery-grid';
 	}
 
-    /**
+    	/**
 	 * Retrieve widget categories.
 	 *
 	 * @since 1.0.0
@@ -26,21 +65,46 @@ class Widget_Image_Gallery extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general-elements' ];
-    }
+		return [ 'general' ];
+    	}
 
-    /**
-	 * Retrieve widget keywords.
+    	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'photo', 'image', 'gallery', 'media' ];
+		return [ 'image', 'photo', 'gallery', 'visual', 'media' ];
     }
+	/**
+	 * Add lightbox data to image link.
+	 *
+	 * Used to add lightbox data attributes to image link HTML.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @param string $link_html Image link HTML.
+	 *
+	 * @return string Image link HTML with lightbox data attributes.
+	 */
+	public function add_lightbox_data_to_image_link( $link_html ) {
+		return preg_replace( '/^<a/', '<a ' . $this->get_render_attribute_string( 'link' ), $link_html );
+	}
 
+	/**
+	 * Register image gallery widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_gallery',
@@ -54,14 +118,19 @@ class Widget_Image_Gallery extends Widget_Base {
 			[
 				'label' => __( 'Add Images', 'qazana' ),
 				'type' => Controls_Manager::GALLERY,
+				'show_label' => false,
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Image_Size::get_type(),
 			[
-				'name' => 'thumbnail',
+				'name' => 'thumbnail', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `thumbnail_size` and `thumbnail_custom_dimension`.
 				'exclude' => [ 'custom' ],
+				'separator' => 'none',
 			]
 		);
 
@@ -88,6 +157,23 @@ class Widget_Image_Gallery extends Widget_Base {
 					'file' => __( 'Media File', 'qazana' ),
 					'attachment' => __( 'Attachment Page', 'qazana' ),
 					'none' => __( 'None', 'qazana' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'open_lightbox',
+			[
+				'label' => __( 'Lightbox', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'default',
+				'options' => [
+					'default' => __( 'Default', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
+				],
+				'condition' => [
+					'gallery_link' => 'file',
 				],
 			]
 		);
@@ -160,7 +246,6 @@ class Widget_Image_Gallery extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'label' => __( 'Image Border', 'qazana' ),
 				'selector' => '{{WRAPPER}} .gallery-item img',
 				'separator' => 'before',
 			]
@@ -256,7 +341,6 @@ class Widget_Image_Gallery extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'typography',
-				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
 				'selector' => '{{WRAPPER}} .gallery-item .gallery-caption',
 				'condition' => [
@@ -268,8 +352,16 @@ class Widget_Image_Gallery extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render image gallery widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( ! $settings['wp_gallery'] ) {
 			return;
@@ -293,10 +385,25 @@ class Widget_Image_Gallery extends Widget_Base {
 		}
 		?>
 		<div class="qazana-image-gallery">
-			<?php echo do_shortcode( '[gallery ' . $this->get_render_attribute_string( 'shortcode' ) . ']' ); ?>
+			<?php
+			$this->add_render_attribute( 'link', [
+				'data-qazana-open-lightbox' => $settings['open_lightbox'],
+				'data-qazana-lightbox-slideshow' => $this->get_id(),
+			] );
+
+			if ( qazana()->editor->is_edit_mode() ) {
+				$this->add_render_attribute( 'link', [
+					'class' => 'qazana-clickable',
+				] );
+			}
+
+			add_filter( 'wp_get_attachment_link', [ $this, 'add_lightbox_data_to_image_link' ] );
+
+			echo do_shortcode( '[gallery ' . $this->get_render_attribute_string( 'shortcode' ) . ']' );
+
+			remove_filter( 'wp_get_attachment_link', [ $this, 'add_lightbox_data_to_image_link' ] );
+			?>
 		</div>
 		<?php
 	}
-
-	protected function _content_template() {}
 }

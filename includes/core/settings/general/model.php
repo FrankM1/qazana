@@ -8,28 +8,82 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana global settings model.
+ *
+ * Qazana global settings model handler class is responsible for registering
+ * and managing Qazana global settings models.
+ *
+ * @since 1.6.0
+ */
 class Model extends BaseModel {
 
+	/**
+	 * Get model name.
+	 *
+	 * Retrieve global settings model name.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @return string Model name.
+	 */
 	public function get_name() {
 		return 'global-settings';
 	}
+
+	/**
+	 * Get CSS wrapper selector.
+	 *
+	 * Retrieve the wrapper selector for the global settings model.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @return string CSS wrapper selector.
+	 */
 
 	public function get_css_wrapper_selector() {
 		return '';
 	}
 
+	/**
+	 * Get panel page settings.
+	 *
+	 * Retrieve the panel setting for the global settings model.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @return array {
+	 *    Panel settings.
+	 *
+	 *    @type string $title The panel title.
+	 *    @type array  $menu  The panel menu.
+	 * }
+	 */
 	public function get_panel_page_settings() {
 		return [
 			'title' => __( 'Global Settings', 'qazana' ),
 			'menu' => [
 				'icon' => 'fa fa-cogs',
-				'beforeItem' => 'clear-page',
+				'beforeItem' => 'qazana-settings',
 			],
 		];
 	}
 
+	/**
+	 * Get controls list.
+	 *
+	 * Retrieve the global settings model controls list.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 * @static
+	 *
+	 * @return array Controls list.
+	 */
 	public static function get_controls_list() {
-
 		return [
 			Controls_Manager::TAB_STYLE => [
 				'style' => [
@@ -94,7 +148,6 @@ class Model extends BaseModel {
 							'label' => __( 'Enable In Editor', 'qazana' ),
 							'type' => Controls_Manager::SWITCHER,
 							'default' => 'yes',
-							'description' => __( '', 'qazana' ),
 							'frontend_available' => true,
 						],
 						'qazana_lightbox_color' => [
@@ -124,6 +177,14 @@ class Model extends BaseModel {
 		];
 	}
 
+	/**
+	 * Register model controls.
+	 *
+	 * Used to add new controls to the global settings model.
+	 *
+	 * @since 1.6.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$controls_list = self::get_controls_list();
 

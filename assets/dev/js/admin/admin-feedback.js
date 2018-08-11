@@ -8,7 +8,7 @@
 
 		cacheElements: function() {
 			this.cache = {
-				$deactivateLink: $( '#the-list' ).find( '[data-plugin="qazana/qazana.php"] span.deactivate a' ),
+				$deactivateLink: $( '#the-list' ).find( '[data-slug="qazana"] span.deactivate a' ),
 				$dialogHeader: $( '#qazana-deactivate-feedback-dialog-header' ),
 				$dialogForm: $( '#qazana-deactivate-feedback-dialog-form' )
 			};
@@ -34,7 +34,7 @@
 
 			self.getModal = function() {
 				if ( ! modal ) {
-					modal = self.dialogsManager.createWidget( 'options', {
+					modal = self.dialogsManager.createWidget( 'lightbox', {
 						id: 'qazana-deactivate-feedback-modal',
 						headerMessage: self.cache.$dialogHeader,
 						message: self.cache.$dialogForm,
@@ -46,12 +46,12 @@
 							at: 'center'
 						},
 						onReady: function() {
-							DialogsManager.getWidgetType( 'options' ).prototype.onReady.apply( this, arguments );
+							DialogsManager.getWidgetType( 'lightbox' ).prototype.onReady.apply( this, arguments );
 
 							this.addButton( {
 								name: 'submit',
 								text: QazanaAdminFeedbackArgs.i18n.submit_n_deactivate,
-								callback: _.bind( self.sendFeedback, self )
+								callback: self.sendFeedback.bind( self )
 							} );
 
 							if ( ! QazanaAdminFeedbackArgs.is_tracker_opted_in ) {
@@ -63,6 +63,17 @@
 									}
 								} );
 							}
+						},
+
+						onShow: function() {
+							var $dialogModal = $( '#qazana-deactivate-feedback-modal' ),
+								radioSelector = '.qazana-deactivate-feedback-dialog-input';
+
+							$dialogModal.find( radioSelector ).on( 'change', function() {
+								$dialogModal.attr( 'data-feedback-selected', $( this ).val() );
+							} );
+
+							$dialogModal.find( radioSelector + ':checked' ).trigger( 'change' );
 						}
 					} );
 				}
@@ -77,7 +88,7 @@
 
 			self.getModal().getElements( 'submit' ).text( '' ).addClass( 'qazana-loading' );
 
-			$.post( ajaxurl, formData, _.bind( this.deactivate, this ) );
+			$.post( ajaxurl, formData, this.deactivate.bind( this ) );
 		},
 
 		init: function() {

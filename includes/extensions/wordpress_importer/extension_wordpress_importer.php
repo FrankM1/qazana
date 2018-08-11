@@ -97,7 +97,7 @@ class Wordpress_Importer extends Base {
 			qazana()->db->save_editor( $post_id, $data );
 		}
 
-        qazana()->posts_css_manager->clear_cache();
+        qazana()->files_manager->clear_cache();
     }
 
 }

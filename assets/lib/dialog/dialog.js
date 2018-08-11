@@ -1,5 +1,5 @@
 /*!
- * Dialogs Manager v3.2.5
+ * Dialogs Manager v4.4.2
  * https://github.com/kobizz/dialogs-manager
  *
  * Copyright Kobi Zaltzberg
@@ -27,6 +27,8 @@
 			};
 
 			var prototype = WidgetType.prototype = new Parent(typeName);
+
+			prototype.types = prototype.types.concat([typeName]);
 
 			$.extend(prototype, properties);
 
@@ -89,8 +91,6 @@
 
 			widget.init(self, properties);
 
-			widget.setMessage(properties.message);
-
 			return widget;
 		};
 
@@ -124,18 +124,35 @@
 			settings = {},
 			events = {},
 			elements = {},
-			baseClosureMethods = [ 'refreshPosition' ];
+			hideTimeOut = 0,
+			baseClosureMethods = ['refreshPosition'];
 
 		var bindEvents = function () {
 
-			elements.window.on('keyup', onWindowKeyUp);
+			var windows = [elements.window];
+
+			if (elements.iframe) {
+				windows.push(jQuery(elements.iframe[0].contentWindow));
+			}
+
+			windows.forEach(function(window) {
+				window.on('keyup', onWindowKeyUp);
+
+				if (settings.hide.onOutsideClick) {
+					window[0].addEventListener('click', hideOnOutsideClick, true);
+				}
+
+				if (settings.hide.onOutsideContextMenu) {
+					window[0].addEventListener('contextmenu', hideOnOutsideClick, true);
+				}
+
+				if (settings.position.autoRefresh) {
+					window.on('resize', self.refreshPosition);
+				}
+			});
 
 			if (settings.hide.onClick || settings.hide.onBackgroundClick) {
 				elements.widget.on('click', hideOnClick);
-			}
-
-			if (settings.position.autoRefresh) {
-				elements.window.on('resize', self.refreshPosition);
 			}
 		};
 
@@ -174,9 +191,81 @@
 			});
 		};
 
+		var fixIframePosition = function(position) {
+			if (! position.my) {
+				return;
+			}
+
+			var horizontalOffsetRegex = /left|right/,
+				extraOffsetRegex = /([+-]\d+)?$/,
+				iframeOffset = elements.iframe.offset(),
+				iframeWindow = elements.iframe[0].contentWindow,
+				myParts = position.my.split(' '),
+				fixedParts = [];
+
+			if (myParts.length === 1) {
+				if (horizontalOffsetRegex.test(myParts[0])) {
+					myParts.push('center');
+				} else {
+					myParts.unshift('center');
+				}
+			}
+
+			myParts.forEach(function(part, index) {
+				var fixedPart = part.replace(extraOffsetRegex, function(partOffset) {
+					partOffset = +partOffset || 0;
+
+					if (! index) {
+						partOffset += iframeOffset.left - iframeWindow.scrollX;
+					} else {
+						partOffset += iframeOffset.top - iframeWindow.scrollY;
+					}
+
+					if (partOffset >= 0) {
+						partOffset = '+' + partOffset;
+					}
+
+					return partOffset;
+				});
+
+				fixedParts.push(fixedPart);
+			});
+
+			position.my = fixedParts.join(' ');
+		};
+
+		var hideOnClick = function(event) {
+
+			if(isContextMenuClickEvent(event)) {
+				return;
+			}
+
+			if (settings.hide.onClick) {
+
+				if ($(event.target).closest(settings.selectors.preventClose).length) {
+					return;
+				}
+			} else if (event.target !== this) {
+				return;
+			}
+
+			self.hide();
+		};
+
+		var hideOnOutsideClick = function(event) {
+
+			if (isContextMenuClickEvent(event) || $(event.target).closest(elements.widget).length) {
+				return;
+			}
+
+			self.hide();
+		};
+
 		var initElements = function () {
 
 			self.addElement('widget');
+
+			self.addElement('header');
 
 			self.addElement('message');
 
@@ -184,24 +273,34 @@
 
 			self.addElement('container', settings.container);
 
+			if (settings.iframe) {
+				self.addElement('iframe', settings.iframe);
+			}
+
 			var id = self.getSettings('id');
 
 			if (id) {
 				self.setID(id);
 			}
 
-			var className = self.getSettings('className');
+			var classes = [];
 
-			if (className) {
-				self.getElements('widget').addClass(className);
-			}
+			$.each(self.types, function() {
+				classes.push(settings.classes.globalPrefix + '-type-' + this);
+			});
+
+			classes.push(self.getSettings('className'));
+
+			elements.widget.addClass(classes.join(' '));
 		};
 
 		var initSettings = function (parent, userSettings) {
 
-			var parentSettings = parent.getSettings();
+			var parentSettings = $.extend(true, {}, parent.getSettings());
 
 			settings = {
+				headerMessage: '',
+				message: '',
 				effects: parentSettings.effects,
 				classes: {
 					globalPrefix: parentSettings.classPrefix,
@@ -211,6 +310,7 @@
 					preventClose: '.' + parentSettings.classPrefix + '-prevent-close'
 				},
 				container: 'body',
+				iframe: null,
 				position: {
 					element: 'widget',
 					my: 'center',
@@ -223,6 +323,8 @@
 					auto: false,
 					autoDelay: 5000,
 					onClick: false,
+					onOutsideClick: true,
+					onOutsideContextMenu: false,
 					onBackgroundClick: true
 				}
 			};
@@ -248,26 +350,17 @@
 			});
 		};
 
+		var isContextMenuClickEvent = function (event) {
+			// Firefox fires `click` event on every `contextmenu` event.
+			return event.type === 'click' && event.button === 2;
+		};
+
 		var normalizeClassName = function (name) {
 
 			return name.replace(/([a-z])([A-Z])/g, function () {
 
 				return arguments[1] + '-' + arguments[2].toLowerCase();
 			});
-		};
-
-		var hideOnClick = function(event) {
-
-			if (settings.hide.onClick) {
-
-				if ($(event.target).closest(settings.selectors.preventClose).length) {
-					return;
-				}
-			} else if (event.target !== this) {
-				return;
-			}
-
-			self.hide();
 		};
 
 		var onWindowKeyUp = function(event) {
@@ -281,14 +374,30 @@
 
 		var unbindEvents = function() {
 
-			elements.window.off('keyup', onWindowKeyUp);
+			var windows = [elements.window];
+
+			if (elements.iframe) {
+				windows.push(jQuery(elements.iframe[0].contentWindow));
+			}
+
+			windows.forEach(function(window) {
+				window.off('keyup', onWindowKeyUp);
+
+				if (settings.hide.onOutsideClick) {
+					window[0].removeEventListener('click', hideOnOutsideClick, true);
+				}
+
+				if (settings.hide.onOutsideContextMenu) {
+					window[0].removeEventListener('contextmenu', hideOnOutsideClick, true);
+				}
+
+				if (settings.position.autoRefresh) {
+					window.off('resize', self.refreshPosition);
+				}
+			});
 
 			if (settings.hide.onClick || settings.hide.onBackgroundClick) {
 				elements.widget.off('click', hideOnClick);
-			}
-
-			if (settings.position.autoRefresh) {
-				elements.window.off('resize', self.refreshPosition);
 			}
 		};
 
@@ -296,23 +405,35 @@
 
 			var $newElement = elements[name] = $(element || '<div>'),
 				normalizedName = normalizeClassName(name),
-				className;
+				className = [];
 
-			if (settings.classes[name]) {
-				className = settings.classes[name];
-			} else {
-				className = settings.classes.prefix + '-' + normalizedName;
+			if (type) {
+				className.push(settings.classes.globalPrefix + '-' + type);
 			}
 
-			if (!type) {
-				type = normalizedName;
-			}
+			className.push(settings.classes.globalPrefix + '-' + normalizedName);
 
-			className += ' ' + settings.classes.globalPrefix + '-' + type;
+			className.push(settings.classes.prefix + '-' + normalizedName);
 
-			$newElement.addClass(className);
+			$newElement.addClass(className.join(' '));
 
 			return $newElement;
+		};
+
+		this.destroy = function() {
+
+			unbindEvents();
+
+			elements.widget.remove();
+
+			self.trigger('destroy');
+
+			return self;
+		};
+
+		this.getElements = function (item) {
+
+			return item ? elements[item] : elements;
 		};
 
 		this.getSettings = function (setting) {
@@ -324,6 +445,19 @@
 			}
 
 			return copy;
+		};
+
+		this.hide = function () {
+
+			clearTimeout(hideTimeOut);
+
+			callEffect('hide', arguments);
+
+			unbindEvents();
+
+			self.trigger('hide');
+
+			return self;
 		};
 
 		this.init = function (parent, properties) {
@@ -351,73 +485,30 @@
 			return self;
 		};
 
-		this.getElements = function (item) {
+		this.isVisible = function() {
 
-			return item ? elements[item] : elements;
-		};
-
-		this.hide = function () {
-
-			callEffect('hide', arguments);
-
-			unbindEvents();
-
-			self.trigger('hide');
-
-			return self;
+			return elements.widget.is(':visible');
 		};
 
 		this.on = function (eventName, callback) {
 
-			if (!events[eventName]) {
-				events[eventName] = [];
+			if ('object' === typeof eventName) {
+				$.each(eventName, function(singleEventName) {
+					self.on(singleEventName, this);
+				});
+
+				return self;
 			}
 
-			events[eventName].push(callback);
+			var eventNames = eventName.split(' ');
 
-			return self;
-		};
+			eventNames.forEach(function(singleEventName) {
+				if (! events[singleEventName]) {
+					events[singleEventName] = [];
+				}
 
-		this.setMessage = function (message) {
-
-			elements.message.html(message);
-
-			return self;
-		};
-
-		this.setID = function (id) {
-
-			self.getElements('widget').attr('id', id);
-
-			return self;
-		};
-
-		this.setSettings = function(key, value) {
-
-			if ('object' === typeof value) {
-				$.extend(true, settings[key], value);
-			} else {
-				settings[key] = value;
-			}
-
-			return self;
-		};
-
-		this.show = function () {
-
-			elements.widget.appendTo(elements.container);
-
-			callEffect('show', arguments);
-
-			self.refreshPosition();
-
-			if (settings.hide.auto) {
-				setTimeout(self.hide, settings.hide.autoDelay);
-			}
-
-			bindEvents();
-
-			self.trigger('show');
+				events[singleEventName].push(callback);
+			});
 
 			return self;
 		};
@@ -434,7 +525,64 @@
 				position.of = elements[position.of];
 			}
 
+			if (settings.iframe) {
+				fixIframePosition(position);
+			}
+
 			elements[position.element].position(position);
+		};
+
+		this.setID = function (id) {
+
+			elements.widget.attr('id', id);
+
+			return self;
+		};
+
+		this.setHeaderMessage = function (message) {
+
+			this.getElements('header').html(message);
+
+			return this;
+		};
+
+		this.setMessage = function (message) {
+
+			elements.message.html(message);
+
+			return self;
+		};
+
+		this.setSettings = function(key, value) {
+
+			if (jQuery.isPlainObject(value)) {
+				$.extend(true, settings[key], value);
+			} else {
+				settings[key] = value;
+			}
+
+			return self;
+		};
+
+		this.show = function () {
+
+			clearTimeout(hideTimeOut);
+
+			elements.widget.appendTo(elements.container).hide();
+
+			callEffect('show', arguments);
+
+			self.refreshPosition();
+
+			if (settings.hide.auto) {
+				hideTimeOut = setTimeout(self.hide, settings.hide.autoDelay);
+			}
+
+			bindEvents();
+
+			self.trigger('show');
+
+			return self;
 		};
 
 		this.trigger = function (eventName, params) {
@@ -460,12 +608,19 @@
 		};
 	};
 
+	DialogsManager.Widget.prototype.types = [];
+
 	// Inheritable widget methods
 	DialogsManager.Widget.prototype.buildWidget = function () {
 
-		var elements = this.getElements();
+		var elements = this.getElements(),
+			settings = this.getSettings();
 
-		elements.widget.html(elements.message);
+		elements.widget.append(elements.header, elements.message);
+
+		this.setHeaderMessage(settings.headerMessage);
+
+		this.setMessage(settings.message);
 	};
 
 	DialogsManager.Widget.prototype.getDefaultSettings = function () {
@@ -492,70 +647,7 @@
 
 	DialogsManager.widgetsTypes.simple = DialogsManager.Widget;
 
-	DialogsManager.addWidgetType('lightbox', {
-		getDefaultSettings: function () {
-
-			return {
-				headerMessage: '',
-				contentWidth: 'auto',
-				contentHeight: 'auto',
-				closeButton: false,
-				closeButtonClass: 'fa fa-times',
-				position: {
-					element: 'widgetContent',
-					of: 'widget',
-					autoRefresh: true
-				}
-			};
-		},
-		buildWidget: function () {
-
-			var $widgetHeader = this.addElement('widgetHeader'),
-				$widgetContent = this.addElement('widgetContent');
-
-			var elements = this.getElements();
-
-			$widgetContent.append($widgetHeader, elements.message);
-
-			elements.widget.html($widgetContent);
-
-			if (! this.getSettings('closeButton')) {
-				return;
-			}
-
-			var $closeButton = this.addElement('closeButton', '<div><i class="' + this.getSettings('closeButtonClass') + '"></i></div>');
-
-			$widgetContent.prepend($closeButton);
-		},
-		attachEvents: function() {
-			if (this.getSettings('closeButton')) {
-				this.getElements('closeButton').on('click', this.hide);
-			}
-		},
-		onReady: function(){
-
-			var elements = this.getElements(),
-				settings = this.getSettings();
-
-			if ('auto' !== settings.contentWidth) {
-				elements.message.width(settings.contentWidth);
-			}
-
-			if ('auto' !== settings.contentHeight) {
-				elements.message.height(settings.contentHeight);
-			}
-
-			this.setHeaderMessage(settings.headerMessage);
-		},
-		setHeaderMessage: function (message) {
-
-			this.getElements('widgetHeader').html(message);
-
-			return this;
-		}
-	});
-
-	DialogsManager.addWidgetType('options', DialogsManager.getWidgetType('lightbox').extend('options', {
+	DialogsManager.addWidgetType('buttons', {
 		activeKeyUp: function (event) {
 
 			var TAB_KEY = 9;
@@ -569,6 +661,10 @@
 			}
 		},
 		activeKeyDown: function (event) {
+
+			if (!this.focusedButton) {
+				return;
+			}
 
 			var TAB_KEY = 9;
 
@@ -600,13 +696,15 @@
 		addButton: function (options) {
 
 			var self = this,
-				$button = self.addElement(options.name, $('<button>').text(options.text));
+				settings = self.getSettings(),
+				buttonSettings = jQuery.extend(settings.button, options),
+				$button = self.addElement(options.name, $('<' + buttonSettings.tag + '>').text(options.text), 'button');
 
 			self.buttons.push($button);
 
 			var buttonFn = function () {
 
-				if (self.getSettings('hide').onButtonClick) {
+				if (settings.hide.onButtonClick) {
 					self.hide();
 				}
 
@@ -638,35 +736,29 @@
 		},
 		buildWidget: function () {
 
-			DialogsManager.getWidgetType('lightbox').prototype.buildWidget.apply(this, arguments);
+			DialogsManager.Widget.prototype.buildWidget.apply(this, arguments);
 
 			var $buttonsWrapper = this.addElement('buttonsWrapper');
 
-			this.getElements('widgetContent').append($buttonsWrapper);
+			this.getElements('widget').append($buttonsWrapper);
 		},
 		getClosureMethods: function () {
 
-			var closureMethods = DialogsManager.getWidgetType('lightbox').prototype.getClosureMethods.apply(this, arguments);
-
-			return closureMethods.concat([
+			return [
 				'activeKeyUp',
 				'activeKeyDown'
-			]);
+			];
 		},
 		getDefaultSettings: function () {
 
-			var settings = DialogsManager.getWidgetType('lightbox').prototype.getDefaultSettings.apply(this, arguments);
-
-			$.extend(true, settings,  {
-				position: {
-					at: 'center center-100'
-				},
+			return {
 				hide: {
 					onButtonClick: true
+				},
+				button: {
+					tag: 'button'
 				}
-			});
-
-			return settings;
+			};
 		},
 		onHide: function () {
 
@@ -699,12 +791,68 @@
 				keydown: this.activeKeyDown
 			});
 		}
+	});
+
+	DialogsManager.addWidgetType('lightbox', DialogsManager.getWidgetType('buttons').extend('lightbox', {
+		getDefaultSettings: function () {
+
+			var settings = DialogsManager.getWidgetType('buttons').prototype.getDefaultSettings.apply(this, arguments);
+
+			return $.extend(true, settings, {
+				contentWidth: 'auto',
+				contentHeight: 'auto',
+				closeButton: false,
+				closeButtonClass: 'fa fa-times',
+				position: {
+					element: 'widgetContent',
+					of: 'widget',
+					autoRefresh: true
+				}
+			});
+		},
+		buildWidget: function () {
+
+			DialogsManager.getWidgetType('buttons').prototype.buildWidget.apply(this, arguments);
+
+			var $widgetContent = this.addElement('widgetContent'),
+				elements = this.getElements();
+
+			$widgetContent.append(elements.header, elements.message, elements.buttonsWrapper);
+
+			elements.widget.html($widgetContent);
+
+			if (! this.getSettings('closeButton')) {
+				return;
+			}
+
+			var $closeButton = this.addElement('closeButton', '<div><i class="' + this.getSettings('closeButtonClass') + '"></i></div>');
+
+			$widgetContent.prepend($closeButton);
+		},
+		attachEvents: function() {
+			if (this.getSettings('closeButton')) {
+				this.getElements('closeButton').on('click', this.hide);
+			}
+		},
+		onReady: function(){
+
+			var elements = this.getElements(),
+				settings = this.getSettings();
+
+			if ('auto' !== settings.contentWidth) {
+				elements.message.width(settings.contentWidth);
+			}
+
+			if ('auto' !== settings.contentHeight) {
+				elements.message.height(settings.contentHeight);
+			}
+		}
 	}));
 
-	DialogsManager.addWidgetType('confirm', DialogsManager.getWidgetType('options').extend('confirm', {
+	DialogsManager.addWidgetType('confirm', DialogsManager.getWidgetType('lightbox').extend('confirm', {
 		onReady: function () {
 
-			DialogsManager.getWidgetType('options').prototype.onReady.apply(this, arguments);
+			DialogsManager.getWidgetType('lightbox').prototype.onReady.apply(this, arguments);
 
 			var strings = this.getSettings('strings'),
 				isDefaultCancel = this.getSettings('defaultOption') === 'cancel';
@@ -731,7 +879,7 @@
 		},
 		getDefaultSettings: function () {
 
-			var settings = DialogsManager.getWidgetType('options').prototype.getDefaultSettings.apply(this, arguments);
+			var settings = DialogsManager.getWidgetType('lightbox').prototype.getDefaultSettings.apply(this, arguments);
 
 			settings.strings = {
 				confirm: 'OK',
@@ -744,10 +892,10 @@
 		}
 	}));
 
-	DialogsManager.addWidgetType('alert', DialogsManager.getWidgetType('options').extend('alert', {
+	DialogsManager.addWidgetType('alert', DialogsManager.getWidgetType('lightbox').extend('alert', {
 		onReady: function () {
 
-			DialogsManager.getWidgetType('options').prototype.onReady.apply(this, arguments);
+			DialogsManager.getWidgetType('lightbox').prototype.onReady.apply(this, arguments);
 
 			var strings = this.getSettings('strings');
 
@@ -762,7 +910,7 @@
 		},
 		getDefaultSettings: function () {
 
-			var settings = DialogsManager.getWidgetType('options').prototype.getDefaultSettings.apply(this, arguments);
+			var settings = DialogsManager.getWidgetType('lightbox').prototype.getDefaultSettings.apply(this, arguments);
 
 			settings.strings = {
 				confirm: 'OK'
@@ -774,4 +922,7 @@
 
 	// Exporting the DialogsManager variable to global
 	global.DialogsManager = DialogsManager;
-})(typeof require === 'function' ? require('jquery') : jQuery, typeof module !== 'undefined' ? module.exports : window);
+})(
+	typeof jQuery !== 'undefined' ? jQuery : typeof require === 'function' && require('jquery'),
+	typeof module !== 'undefined' ? module.exports : window
+);

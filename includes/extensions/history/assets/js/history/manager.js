@@ -15,7 +15,8 @@ var	Manager = function() {
 		remove: qazana.translate( 'removed' ),
 		change: qazana.translate( 'edited' ),
 		move: qazana.translate( 'moved' ),
-		duplicate: qazana.translate( 'duplicated' )
+		paste_style: qazana.translate( 'style_pasted' ),
+		reset_style: qazana.translate( 'style_reset' )
 	};
 
 	var addBehaviors = function( behaviors ) {
@@ -62,16 +63,8 @@ var	Manager = function() {
 
 	var addHotKeys = function() {
 		var H_KEY = 72,
+			Y_KEY = 89,
 			Z_KEY = 90;
-
-		qazana.hotKeys.addHotKeyHandler( Z_KEY, 'historyNavigation', {
-			isWorthHandling: function( event ) {
-				return items.length && ! jQuery( event.target ).is( 'input, textarea, [contenteditable=true]' );
-			},
-			handle: function( event ) {
-				navigate( Z_KEY === event.which && event.shiftKey );
-			}
-		} );
 
 		qazana.hotKeys.addHotKeyHandler( H_KEY, 'showHistoryPage', {
 			isWorthHandling: function( event ) {
@@ -79,6 +72,24 @@ var	Manager = function() {
 			},
 			handle: function() {
 				qazana.getPanelView().setPage( 'historyPage' );
+			}
+		} );
+
+		var navigationWorthHandling = function( event ) {
+			return items.length && qazana.hotKeys.isControlEvent( event ) && ! jQuery( event.target ).is( 'input, textarea, [contenteditable=true]' );
+		};
+
+		qazana.hotKeys.addHotKeyHandler( Y_KEY, 'historyNavigationRedo', {
+			isWorthHandling: navigationWorthHandling,
+			handle: function( event ) {
+				navigate( true );
+			}
+		} );
+
+		qazana.hotKeys.addHotKeyHandler( Z_KEY, 'historyNavigation', {
+			isWorthHandling: navigationWorthHandling,
+			handle: function( event ) {
+				navigate( event.shiftKey );
 			}
 		} );
 	};
@@ -107,8 +118,11 @@ var	Manager = function() {
 			.on( 'element:before:remove', self.startRemoveElement )
 			.on( 'element:after:remove', self.endItem )
 
-			.on( 'element:before:duplicate', self.startDuplicateElement )
-			.on( 'element:after:duplicate', self.endItem )
+			.on( 'element:before:paste:style', self.startPasteStyle )
+			.on( 'element:after:paste:style', self.endItem )
+
+			.on( 'element:before:reset:style', self.startResetStyle )
+			.on( 'element:after:reset:style', self.endItem )
 
 			.on( 'section:before:drop', self.startDropElement )
 			.on( 'section:after:drop', self.endItem )
@@ -208,7 +222,7 @@ var	Manager = function() {
 	};
 
 	this.doItem = function( index ) {
-		// Don't track while restore the item
+		// Don't track while restoring the item
 		this.setActive( false );
 
 		var item = items.at( index );
@@ -253,7 +267,7 @@ var	Manager = function() {
 
 		if ( item.get( 'editing_started' ) ) {
 			if ( ! editorSaved ) {
-				qazana.setFlagEditorChange( false );
+				qazana.saver.setFlagEditorChange( false );
 			}
 		}
 	};
@@ -311,7 +325,7 @@ var	Manager = function() {
 			founded = false;
 
 		if ( ! views ) {
-			views = qazana.sections.currentView.children;
+			views = qazana.getPreviewView().children;
 		}
 
 		_.each( views._views, function( view ) {
@@ -335,7 +349,7 @@ var	Manager = function() {
 		qazana.history.history.startItem( {
 			type: 'move',
 			title: self.getModelLabel( model ),
-			elementType: model.get( 'elType' )
+			elementType: model.elType || model.get( 'elType' )
 		} );
 	};
 
@@ -365,9 +379,17 @@ var	Manager = function() {
 		} );
 	};
 
-	this.startDuplicateElement = function( model ) {
+	this.startPasteStyle = function( model ) {
 		qazana.history.history.startItem( {
-			type: 'duplicate',
+			type: 'paste_style',
+			title: self.getModelLabel( model ),
+			elementType: model.get( 'elType' )
+		} );
+	};
+
+	this.startResetStyle = function( model ) {
+		qazana.history.history.startItem( {
+			type: 'reset_style',
 			title: self.getModelLabel( model ),
 			elementType: model.get( 'elType' )
 		} );

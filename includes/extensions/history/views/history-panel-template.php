@@ -1,6 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+?>
 <script type="text/template" id="tmpl-qazana-panel-history-page">
 	<div id="qazana-panel-elements-navigation" class="qazana-panel-navigation">
-		<div id="qazana-panel-elements-navigation-history" class="qazana-panel-navigation-tab active" data-view="history"><?php esc_html_e( 'Actions', 'qazana' ); ?></div>
+		<div id="qazana-panel-elements-navigation-history" class="qazana-panel-navigation-tab qazana-active" data-view="history"><?php esc_html_e( 'Actions', 'qazana' ); ?></div>
 		<div id="qazana-panel-elements-navigation-revisions" class="qazana-panel-navigation-tab" data-view="revisions"><?php esc_html_e( 'Revisions', 'qazana' ); ?></div>
 	</div>
 	<div id="qazana-panel-history-content"></div>
@@ -30,7 +36,7 @@
 			<span class="qazana-history-item__action">{{{ action }}}</span>
 		</div>
 		<div class="qazana-history-item__icon">
-			<span class="fa"></span>
+			<span class="fa" aria-hidden="true"></span>
 		</div>
 	</div>
 </script>

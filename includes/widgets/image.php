@@ -1,14 +1,22 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
- * Image Widget
+ * Qazana image widget.
+ *
+ * Qazana widget that displays an image into the page.
+ *
+ * @since 1.0.0
  */
 class Widget_Image extends Widget_Base {
 
 	/**
+	 * Get widget name.
+	 *
 	 * Retrieve image widget name.
 	 *
 	 * @since 1.0.0
@@ -21,6 +29,8 @@ class Widget_Image extends Widget_Base {
 	}
 
 	/**
+	 * Get widget title.
+	 *
 	 * Retrieve image widget title.
 	 *
 	 * @since 1.0.0
@@ -33,6 +43,8 @@ class Widget_Image extends Widget_Base {
 	}
 
 	/**
+	 * Get widget icon.
+	 *
 	 * Retrieve image widget icon.
 	 *
 	 * @since 1.0.0
@@ -44,29 +56,35 @@ class Widget_Image extends Widget_Base {
 		return 'eicon-insert-image';
 	}
 
-    /**
-	 * Retrieve widget categories.
+	/**
+	 * Get widget categories.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of categories the image widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general-elements' ];
-    }
+		return [ 'basic' ];
+	}
 
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'photo', 'image', 'thumbnail', 'media' ];
-    }
+		return [ 'photo', 'image', 'thumbnail', 'media', 'photo', 'visual' ];
+	}
 
 	/**
 	 * Register image widget controls.
@@ -89,6 +107,9 @@ class Widget_Image extends Widget_Base {
 			[
 				'label' => __( 'Choose Image', 'qazana' ),
 				'type' => Controls_Manager::MEDIA,
+				'dynamic' => [
+					'active' => true,
+				],
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
 				],
@@ -98,9 +119,9 @@ class Widget_Image extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Image_Size::get_type(),
 			[
-				'name' => 'image', // Actually its `image_size`
-				'label' => __( 'Image Size', 'qazana' ),
+				'name' => 'image', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `image_size` and `image_custom_dimension`.
 				'default' => 'large',
+				'separator' => 'none',
 			]
 		);
 
@@ -136,8 +157,7 @@ class Widget_Image extends Widget_Base {
 				'label' => __( 'Caption', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
-				'placeholder' => __( 'Enter your caption about the image', 'qazana' ),
-				'title' => __( 'Input image caption here', 'qazana' ),
+				'placeholder' => __( 'Enter your image caption', 'qazana' ),
 			]
 		);
 
@@ -160,7 +180,10 @@ class Widget_Image extends Widget_Base {
 			[
 				'label' => __( 'Link to', 'qazana' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'qazana' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
 				'condition' => [
 					'link_to' => 'custom',
 				],
@@ -196,12 +219,46 @@ class Widget_Image extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
-			'space',
+			'width',
 			[
-				'label' => __( 'Size (%)', 'qazana' ),
+				'label' => __( 'Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 100,
+					'unit' => '%',
+				],
+				'tablet_default' => [
+					'unit' => '%',
+				],
+				'mobile_default' => [
+					'unit' => '%',
+				],
+				'size_units' => [ '%', 'px', 'vw' ],
+				'range' => [
+					'%' => [
+						'min' => 1,
+						'max' => 100,
+					],
+					'px' => [
+						'min' => 1,
+						'max' => 1000,
+					],
+					'vw' => [
+						'min' => 1,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'space',
+			[
+				'label' => __( 'Max Width', 'qazana' ) . ' (%)',
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
 					'unit' => '%',
 				],
 				'tablet_default' => [
@@ -224,13 +281,26 @@ class Widget_Image extends Widget_Base {
 		);
 
 		$this->add_control(
+			'separator_panel_style',
+			[
+				'type' => Controls_Manager::DIVIDER,
+				'style' => 'thick',
+			]
+		);
+
+		$this->start_controls_tabs( 'image_effects' );
+
+		$this->start_controls_tab( 'normal',
+			[
+				'label' => __( 'Normal', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
 			'opacity',
 			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
+				'label' => __( 'Opacity', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 1,
-				],
 				'range' => [
 					'px' => [
 						'max' => 1,
@@ -240,6 +310,65 @@ class Widget_Image extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-image img' => 'opacity: {{SIZE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters',
+				'selector' => '{{WRAPPER}} .qazana-image img',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab( 'hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
+			'opacity_hover',
+			[
+				'label' => __( 'Opacity', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'max' => 1,
+						'min' => 0.10,
+						'step' => 0.01,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image:hover img' => 'opacity: {{SIZE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters_hover',
+				'selector' => '{{WRAPPER}} .qazana-image:hover img',
+			]
+		);
+
+		$this->add_control(
+			'background_hover_transition',
+			[
+				'label' => __( 'Transition Duration', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image img' => 'transition-duration: {{SIZE}}s',
 				],
 			]
 		);
@@ -256,11 +385,14 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'label' => __( 'Image Border', 'qazana' ),
 				'selector' => '{{WRAPPER}} .qazana-image img',
 				'separator' => 'before',
 			]
@@ -296,6 +428,9 @@ class Widget_Image extends Widget_Base {
 			[
 				'label' => __( 'Caption', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'caption!' => '',
+				],
 			]
 		);
 
@@ -354,6 +489,23 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'caption_space',
+			[
+				'label' => __( 'Spacing', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .widget-image-caption' => 'margin-top: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -366,7 +518,7 @@ class Widget_Image extends Widget_Base {
 	 * @access protected
 	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( empty( $settings['image']['url'] ) ) {
 			return;
@@ -385,9 +537,14 @@ class Widget_Image extends Widget_Base {
 		if ( $link ) {
 			$this->add_render_attribute( 'link', [
 				'href' => $link['url'],
-				'class' => 'qazana-clickable',
 				'data-qazana-open-lightbox' => $settings['open_lightbox'],
 			] );
+
+			if ( qazana()->editor->is_edit_mode() ) {
+				$this->add_render_attribute( 'link', [
+					'class' => 'qazana-clickable',
+				] );
+			}
 
 			if ( ! empty( $link['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
@@ -433,7 +590,7 @@ class Widget_Image extends Widget_Base {
 	 */
 	protected function _content_template() {
 		?>
-		<# if ( '' !== settings.image.url ) {
+		<# if ( settings.image.url ) {
 			var image = {
 				id: settings.image.id,
 				url: settings.image.url,
@@ -471,17 +628,16 @@ class Widget_Image extends Widget_Base {
 			}
 
 			if ( link_url ) {
-			    #><a class="qazana-clickable" data-qazana-open-lightbox="{{ settings.open_lightbox }}" href="{{ link_url }}"><#
+					#><a class="qazana-clickable" data-qazana-open-lightbox="{{ settings.open_lightbox }}" href="{{ link_url }}"><#
 			}
-            
-                #><img src="{{ image_url }}" class="{{ imgClass }}" /><#
+						#><img src="{{ image_url }}" class="{{ imgClass }}" /><#
 
 			if ( link_url ) {
-			    #></a><#
+					#></a><#
 			}
 
 			if ( hasCaption ) {
-				#><figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption><#
+					#><figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption><#
 			}
 
 			if ( hasCaption ) {
@@ -499,24 +655,24 @@ class Widget_Image extends Widget_Base {
 	 * @since 1.0.0
 	 * @access private
 	 *
-	 * @param object $instance
+	 * @param array $settings
 	 *
 	 * @return array|string|false An array/string containing the link URL, or false if no link.
 	 */
-	private function get_link_url( $instance ) {
-		if ( 'none' === $instance['link_to'] ) {
+	private function get_link_url( $settings ) {
+		if ( 'none' === $settings['link_to'] ) {
 			return false;
 		}
 
-		if ( 'custom' === $instance['link_to'] ) {
-			if ( empty( $instance['link']['url'] ) ) {
+		if ( 'custom' === $settings['link_to'] ) {
+			if ( empty( $settings['link']['url'] ) ) {
 				return false;
 			}
-			return $instance['link'];
+			return $settings['link'];
 		}
 
 		return [
-			'url' => $instance['image']['url'],
+			'url' => $settings['image']['url'],
 		];
 	}
 }

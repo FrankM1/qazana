@@ -1,10 +1,13 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
- * Qazana controls manager class.
+ * Qazana controls manager.
  *
  * Qazana controls manager handler class is responsible for registering and
  * initializing all the supported controls, both regular controls and the group
@@ -14,53 +17,214 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  */
 class Controls_Manager {
 
+	/**
+	 * Content tab.
+	 */
 	const TAB_CONTENT = 'content';
+
+	/**
+	 * Style tab.
+	 */
 	const TAB_STYLE = 'style';
+
+	/**
+	 * Advanced tab.
+	 */
 	const TAB_ADVANCED = 'advanced';
+
+	/**
+	 * Responsive tab.
+	 */
 	const TAB_RESPONSIVE = 'responsive';
+
+	/**
+	 * Layout tab.
+	 */
 	const TAB_LAYOUT = 'layout';
+
+	/**
+	 * Settings tab.
+	 */
 	const TAB_SETTINGS = 'settings';
 
+	/**
+	 * Text control.
+	 */
 	const TEXT = 'text';
+
+	/**
+	 * Number control.
+	 */
 	const NUMBER = 'number';
+
+	/**
+	 * Textarea control.
+	 */
 	const TEXTAREA = 'textarea';
+
+	/**
+	 * Select control.
+	 */
 	const SELECT = 'select';
-	const CHECKBOX = 'checkbox';
-	const RADIO = 'radio';
+
+	/**
+	 * Switcher control.
+	 */
 	const SWITCHER = 'switcher';
 
+	/**
+	 * Button control.
+	 */
+	const BUTTON = 'button';
+
+	/**
+	 * Hidden control.
+	 */
 	const HIDDEN = 'hidden';
+
+	/**
+	 * Heading control.
+	 */
 	const HEADING = 'heading';
-    const RAW_HTML = 'raw_html';
-    const POPOVER_TOGGLE = 'popover_toggle';
+
+	/**
+	 * Raw HTML control.
+	 */
+	const RAW_HTML = 'raw_html';
+
+	/**
+	 * Popover Toggle control.
+	 */
+	const POPOVER_TOGGLE = 'popover_toggle';
+
+	/**
+	 * Section control.
+	 */
 	const SECTION = 'section';
+
+	/**
+	 * Tab control.
+	 */
 	const TAB = 'tab';
+
+	/**
+	 * Tabs control.
+	 */
 	const TABS = 'tabs';
+
+	/**
+	 * Divider control.
+	 */
 	const DIVIDER = 'divider';
 
+	/**
+	 * Color control.
+	 */
 	const COLOR = 'color';
+
+	/**
+	 * Media control.
+	 */
 	const MEDIA = 'media';
+
+	/**
+	 * Slider control.
+	 */
 	const SLIDER = 'slider';
+
+	/**
+	 * Dimensions control.
+	 */
 	const DIMENSIONS = 'dimensions';
+
+	/**
+	 * Choose control.
+	 */
 	const CHOOSE = 'choose';
+
+    /**
+     * Choose image control.
+     */
+    const CHOOSE_IMAGE = 'choose_image';
+
+	/**
+	 * WYSIWYG control.
+	 */
 	const WYSIWYG = 'wysiwyg';
+
+	/**
+	 * Code control.
+	 */
 	const CODE = 'code';
+
+	/**
+	 * Font control.
+	 */
 	const FONT = 'font';
+
+	/**
+	 * Image dimensions control.
+	 */
 	const IMAGE_DIMENSIONS = 'image_dimensions';
 
+	/**
+	 * WordPress widget control.
+	 */
 	const WP_WIDGET = 'wp_widget';
 
+	/**
+	 * URL control.
+	 */
 	const URL = 'url';
+
+	/**
+	 * Repeater control.
+	 */
 	const REPEATER = 'repeater';
+
+	/**
+	 * Icon control.
+	 */
 	const ICON = 'icon';
+
+	/**
+	 * Gallery control.
+	 */
 	const GALLERY = 'gallery';
+
+	/**
+	 * Structure control.
+	 */
 	const STRUCTURE = 'structure';
+
+	/**
+	 * Select2 control.
+	 */
 	const SELECT2 = 'select2';
+
+	/**
+	 * Date/Time control.
+	 */
 	const DATE_TIME = 'date_time';
+
+	/**
+	 * Box shadow control.
+	 */
 	const BOX_SHADOW = 'box_shadow';
+
+	/**
+	 * Text shadow control.
+	 */
 	const TEXT_SHADOW = 'text_shadow';
 	const ANIMATION_IN = 'animation_in';
-	const ANIMATION_OUT = 'animation_out';
+    const ANIMATION_OUT = 'animation_out';
+    const CHECKBOX = 'checkbox';
+	const RADIO = 'radio';
+	/**
+	 * Order control.
+	 *
+	 * @deprecated 2.0.0
+	 */
 	const ORDER = 'order';
 
 	/**
@@ -130,8 +294,6 @@ class Controls_Manager {
 			self::TAB_LAYOUT => __( 'Layout', 'qazana' ),
 			self::TAB_SETTINGS => __( 'Settings', 'qazana' ),
 		];
-
-		self::$tabs = Utils::apply_filters_deprecated( 'qazana/controls/get_available_tabs_controls', [ self::$tabs ], '1.0.0', '`' . __CLASS__ . '::add_tab( $tab_name, $tab_title )`' );
 	}
 
 	/**
@@ -154,17 +316,18 @@ class Controls_Manager {
 	}
 
 	/**
-	 * Get tab.
+	 * Add tab.
 	 *
-	 * Retrieve the tab of the current control.
+	 * This method adds a new tab to the current control.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
 	 *
-	 * @return array Control tabs.
+	 * @param string $tab_name  Tab name.
+	 * @param string $tab_label Tab label.
 	 */
-	public static function add_tab( $tab_name, $tab_title ) {
+	public static function add_tab( $tab_name, $tab_label ) {
 		if ( ! self::$tabs ) {
 			self::init_tabs();
 		}
@@ -173,7 +336,7 @@ class Controls_Manager {
 			return;
 		}
 
-		self::$tabs[ $tab_name ] = $tab_title;
+		self::$tabs[ $tab_name ] = $tab_label;
 	}
 
 	public function include_controls() {
@@ -197,6 +360,7 @@ class Controls_Manager {
 		require( qazana()->includes_dir  . 'editor/controls/groups/hover-animations.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/text-shadow.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/css-filter.php' );
 
 	}
 
@@ -227,11 +391,11 @@ class Controls_Manager {
 			self::CHECKBOX,
 			self::RADIO,
 			self::SWITCHER,
-
+			self::BUTTON,
 			self::HIDDEN,
 			self::HEADING,
-            self::RAW_HTML,
-            self::POPOVER_TOGGLE,
+			self::RAW_HTML,
+			self::POPOVER_TOGGLE,
 			self::SECTION,
 			self::TAB,
 			self::TABS,
@@ -241,7 +405,8 @@ class Controls_Manager {
 			self::MEDIA,
 			self::SLIDER,
 			self::DIMENSIONS,
-			self::CHOOSE,
+            self::CHOOSE,
+            self::CHOOSE_IMAGE,
 			self::WYSIWYG,
 			self::CODE,
 			self::FONT,
@@ -280,29 +445,52 @@ class Controls_Manager {
 		$this->control_groups['typography'] 		= new Group_Control_Typography();
 		$this->control_groups['image-size'] 		= new Group_Control_Image_Size();
 		$this->control_groups['box-shadow'] 		= new Group_Control_Box_Shadow();
+		$this->control_groups['css-filter']         = new Group_Control_Css_Filter();
 		$this->control_groups['text-shadow'] 		= new Group_Control_Text_Shadow();
 		$this->control_groups['animations'] 		= new Group_Control_Animations();
 		$this->control_groups['hover-animations'] 	= new Group_Control_Hover_Animations();
 		$this->control_groups['icon'] 		 		= new Group_Control_Icon();
 
+		/**
+		 * After controls registered.
+		 *
+		 * Fires after Qazana controls are registered.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Controls_Manager $this The controls manager.
+		 */
 		do_action( 'qazana/controls/controls_registered', $this );
 	}
 
 	/**
-	 * @since 1.0.0
+	 * Register control.
 	 *
-	 * @param $control_id
-	 * @param Base_Control $control_instance
+	 * This method adds a new control to the controls list. It adds any given
+	 * control to any given control instance.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param string       $control_id       Control ID.
+	 * @param Base_Control $control_instance Control instance, usually the
+	 *                                       current instance.
 	 */
 	public function register_control( $control_id, Base_Control $control_instance ) {
 		$this->controls[ $control_id ] = $control_instance;
 	}
 
 	/**
-	 * @param $control_id
+	 * Unregister control.
+	 *
+	 * This method removes control from the controls list.
 	 *
 	 * @since 1.0.0
-	 * @return bool
+	 * @access public
+	 *
+	 * @param string $control_id Control ID.
+	 *
+	 * @return bool True if the control was removed, False otherwise.
 	 */
 	public function unregister_control( $control_id ) {
 		if ( ! isset( $this->controls[ $control_id ] ) ) {
@@ -315,8 +503,14 @@ class Controls_Manager {
 	}
 
 	/**
+	 * Get controls.
+	 *
+	 * Retrieve the controls list from the current instance.
+	 *
 	 * @since 1.0.0
-	 * @return Base_Control[]
+	 * @access public
+	 *
+	 * @return Base_Control[] Controls list.
 	 */
 	public function get_controls() {
 		if ( null === $this->controls ) {
@@ -327,10 +521,16 @@ class Controls_Manager {
 	}
 
 	/**
-	 * @since 1.0.0
-	 * @param $control_id
+	 * Get control.
 	 *
-	 * @return bool|\Qazana\Base_Control
+	 * Retrieve a specific control from the current controls instance.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param string $control_id Control ID.
+	 *
+	 * @return bool|Base_Control Control instance, or False otherwise.
 	 */
 	public function get_control( $control_id ) {
 		$controls = $this->get_controls();
@@ -339,26 +539,37 @@ class Controls_Manager {
 	}
 
 	/**
+	 * Get controls data.
+	 *
+	 * Retrieve all the registered controls and all the data for each control.
+	 *
 	 * @since 1.0.0
-	 * @return array
+	 * @access public
+	 *
+	 * @return array {
+	 *    Control data.
+	 *
+	 *    @type array $name Control data.
+	 * }
 	 */
 	public function get_controls_data() {
 		$controls_data = [];
 
 		foreach ( $this->get_controls() as $name => $control ) {
 			$controls_data[ $name ] = $control->get_settings();
-
-			if ( $control instanceof Base_Data_Control ) {
-				$controls_data[ $name ]['default_value'] = $control->get_default_value();
-			}
 		}
 
 		return $controls_data;
 	}
 
 	/**
+	 * Render controls.
+	 *
+	 * Generate the final HTML for all the registered controls using the element
+	 * template.
+	 *
 	 * @since 1.0.0
-	 * @return void
+	 * @access public
 	 */
 	public function render_controls() {
 		foreach ( $this->get_controls() as $control ) {
@@ -435,10 +646,10 @@ class Controls_Manager {
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @param Controls_Stack $element Element stack.
+	 * @param Controls_Stack $controls_stack Controls stack.
 	 */
-	public function open_stack( Controls_Stack $element ) {
-		$stack_id = $element->get_unique_name();
+	public function open_stack( Controls_Stack $controls_stack ) {
+		$stack_id = $controls_stack->get_unique_name();
 
 		$this->stacks[ $stack_id ] = [
 			'tabs' => [],
@@ -457,7 +668,7 @@ class Controls_Manager {
 	 * @param Controls_Stack $element      Element stack.
 	 * @param string         $control_id   Control ID.
 	 * @param array          $control_data Control data.
-	 * @param array          $options      Optional. Control aditional options.
+	 * @param array          $options      Optional. Control additional options.
 	 *                                     Default is an empty array.
 	 *
 	 * @return bool True if control added, False otherwise.
@@ -547,7 +758,7 @@ class Controls_Manager {
 	 * @param string $stack_id   Stack ID.
 	 * @param string $control_id The ID of the control to remove.
 	 *
-	 * @return bool True if the stack was removed, False otherwise.
+	 * @return bool|\WP_Error True if the stack was removed, False otherwise.
 	 */
 	public function remove_control_from_stack( $stack_id, $control_id ) {
 		if ( is_array( $control_id ) ) {
@@ -603,7 +814,7 @@ class Controls_Manager {
 	 * @param Controls_Stack $element      Element stack.
 	 * @param string         $control_id   Control ID.
 	 * @param array          $control_data Control data.
-	 * @param array          $options      Optional. Control aditional options.
+	 * @param array          $options      Optional. Control additional options.
 	 *                                     Default is an empty array.
 	 *
 	 * @return bool True if control updated, False otherwise.
@@ -621,7 +832,9 @@ class Controls_Manager {
 			$control_data = array_merge( $old_control_data, $control_data );
 		}
 
-		return $this->add_control_to_stack( $element, $control_id, $control_data, [ 'overwrite' => true ] );
+		return $this->add_control_to_stack( $element, $control_id, $control_data, [
+			'overwrite' => true,
+		] );
 	}
 
 	/**

@@ -1,15 +1,16 @@
-var TemplateLibraryLayoutView = require( 'qazana-templates/views/layout' ),
+var TemplateLibraryLayoutView = require( 'qazana-templates/views/library-layout' ),
 	TemplateLibraryCollection = require( 'qazana-templates/collections/templates' ),
 	TemplateLibraryManager;
 
 TemplateLibraryManager = function() {
 	var self = this,
-		modal,
 		deleteDialog,
 		errorDialog,
 		layout,
+		config = {},
 		startIntent = {},
 		templateTypes = {},
+		filterTerms = {},
 		templatesCollection;
 
 	var initLayout = function() {
@@ -25,9 +26,7 @@ TemplateLibraryManager = function() {
 				success: function( data ) {
 					self.getTemplatesCollection().add( data );
 
-					self.setTemplatesSource( 'local' );
-
-					self.showTemplates();
+					self.setTemplatesPage( 'local' );
 				},
 				error: function( data ) {
 					self.showErrorDialog( data );
@@ -36,7 +35,7 @@ TemplateLibraryManager = function() {
 		};
 
 		_.each( [ 'page', 'section' ], function( type ) {
-			var safeData = Backbone.$.extend( true, {}, data, {
+			var safeData = jQuery.extend( true, {}, data, {
 				saveDialog: {
 					title: qazana.translate( 'save_your_template', [ qazana.translate( type ) ] )
 				}
@@ -46,8 +45,41 @@ TemplateLibraryManager = function() {
 		} );
 	};
 
+	var registerDefaultFilterTerms = function() {
+		filterTerms = {
+			text: {
+				callback: function( value ) {
+					value = value.toLowerCase();
+
+					if ( this.get( 'title' ).toLowerCase().indexOf( value ) >= 0 ) {
+						return true;
+					}
+
+					return _.any( this.get( 'tags' ), function( tag ) {
+						return tag.toLowerCase().indexOf( value ) >= 0;
+					} );
+				}
+			},
+			type: {},
+			subtype: {},
+			favorite: {}
+		};
+	};
+
+	var setIntentFilters = function() {
+		jQuery.each( startIntent.filters, function( filterKey, filterValue ) {
+			self.setFilter( filterKey, filterValue, true );
+		} );
+	};
+
 	this.init = function() {
 		registerDefaultTemplateTypes();
+
+		registerDefaultFilterTerms();
+
+		qazana.addBackgroundClickListener( 'libraryToggleMore', {
+			element: '.qazana-template-library-template-more'
+		} );
 	};
 
 	this.getTemplateTypes = function( type ) {
@@ -62,19 +94,25 @@ TemplateLibraryManager = function() {
 		templateTypes[ type ] = data;
 	};
 
-	this.deleteTemplate = function( templateModel ) {
+	this.deleteTemplate = function( templateModel, options ) {
 		var dialog = self.getDeleteDialog();
 
 		dialog.onConfirm = function() {
+			if ( options.onConfirm ) {
+				options.onConfirm();
+			}
+
 			qazana.ajax.send( 'delete_template', {
 				data: {
 					source: templateModel.get( 'source' ),
 					template_id: templateModel.get( 'template_id' )
 				},
-				success: function() {
+				success: function( response ) {
 					templatesCollection.remove( templateModel, { silent: true } );
 
-					self.showTemplates();
+					if ( options.onSuccess ) {
+						options.onSuccess( response );
+					}
 				}
 			} );
 		};
@@ -91,20 +129,24 @@ TemplateLibraryManager = function() {
 			data: {
 				page_settings: options.withPageSettings
 			},
-			success: function( response ) {
+			success: function( data ) {
 				self.closeModal();
 
 				qazana.channels.data.trigger( 'template:before:insert', templateModel );
 
-				qazana.sections.currentView.addChildModel( response.data, startIntent.importOptions || {} );
+				qazana.getPreviewView().addChildModel( data.content, startIntent.importOptions || {} );
+
 				qazana.channels.data.trigger( 'template:after:insert', templateModel );
 
 				if ( options.withPageSettings ) {
-					qazana.settings.page.model.set( response.page_settings );
+					qazana.settings.page.model.set( data.page_settings );
 				}
 			},
-			error: function( response ) {
-				self.showErrorDialog( response );
+			error: function( data ) {
+				self.showErrorDialog( data );
+			},
+			complete: function() {
+				layout.hideLoadingView();
 			}
 		} );
 	};
@@ -121,7 +163,7 @@ TemplateLibraryManager = function() {
 			data = templateType.prepareSavedData( data );
 		}
 
-		data.data = JSON.stringify( data.data );
+		data.content = JSON.stringify( data.content );
 
 		var ajaxParams = { data: data };
 
@@ -143,14 +185,25 @@ TemplateLibraryManager = function() {
 		};
 
 		if ( ajaxOptions ) {
-			Backbone.$.extend( true, options, ajaxOptions );
+			jQuery.extend( true, options, ajaxOptions );
 		}
 
 		return qazana.ajax.send( 'get_template_data', options );
 	};
 
-	this.getDeleteDialog = function() {
+	this.markAsFavorite = function( templateModel, favorite ) {
+		var options = {
+			data: {
+				source: templateModel.get( 'source' ),
+				template_id: templateModel.get( 'template_id' ),
+				favorite: favorite
+			}
+		};
 
+		return qazana.ajax.send( 'mark_template_as_favorite', options );
+	};
+
+	this.getDeleteDialog = function() {
 		if ( ! deleteDialog ) {
 			deleteDialog = qazana.dialogsManager.createWidget( 'confirm', {
 				id: 'qazana-template-library-delete-dialog',
@@ -176,17 +229,6 @@ TemplateLibraryManager = function() {
 		return errorDialog;
 	};
 
-	this.getModal = function() {
-		if ( ! modal ) {
-			modal = qazana.dialogsManager.createWidget( 'lightbox', {
-				id: 'qazana-template-library-modal',
-				closeButton: false
-			} );
-		}
-
-		return modal;
-	};
-
 	this.getLayout = function() {
 		return layout;
 	};
@@ -195,80 +237,137 @@ TemplateLibraryManager = function() {
 		return templatesCollection;
 	};
 
-	this.requestRemoteTemplates = function( callback, forceUpdate ) {
-		if ( templatesCollection && ! forceUpdate ) {
-			if ( callback ) {
-				callback();
+	this.getConfig = function( item ) {
+		if ( item ) {
+			return config[ item ];
+		}
+
+		return config;
+	};
+
+	this.requestLibraryData = function( options ) {
+		if ( templatesCollection && ! options.forceUpdate ) {
+			if ( options.onUpdate ) {
+				options.onUpdate();
 			}
 
 			return;
 		}
 
-		qazana.ajax.send( 'get_templates', {
-			success: function( data ) {
-				templatesCollection = new TemplateLibraryCollection( data );
+		if ( options.onBeforeUpdate ) {
+			options.onBeforeUpdate();
+		}
 
-				if ( callback ) {
-					callback();
+		var ajaxOptions = {
+			data: {},
+			success: function( data ) {
+				templatesCollection = new TemplateLibraryCollection( data.templates );
+
+				config = data.config;
+
+				if ( options.onUpdate ) {
+					options.onUpdate();
 				}
 			}
-		} );
+		};
+
+		if ( options.forceSync ) {
+			ajaxOptions.data.sync = true;
+		}
+
+		qazana.ajax.send( 'get_library_data', ajaxOptions );
 	};
 
 	this.startModal = function( customStartIntent ) {
-		startIntent = customStartIntent || {};
-
-		self.getModal().show();
-
-		self.setTemplatesSource( 'remote' );
-
 		if ( ! layout ) {
 			initLayout();
 		}
 
-		layout.showLoadingView();
+		layout.showModal();
 
-		self.requestRemoteTemplates( function() {
-			if ( startIntent.onReady ) {
+		self.requestLibraryData( {
+			onBeforeUpdate: layout.showLoadingView.bind( layout ),
+			onUpdate: function() {
+				var documentType = qazana.config.document.remote_type,
+					isBlockType = config.categories && -1 !== config.categories.indexOf( documentType ),
+					oldStartIntent = Object.create( startIntent );
+
+				startIntent = jQuery.extend( {
+					filters: {
+						source: 'remote',
+						type: isBlockType ? 'block' : 'page',
+						subtype: isBlockType ? documentType : null
+					},
+					onReady: self.showTemplates
+				}, customStartIntent );
+
+				var isSameIntent = _.isEqual( Object.getPrototypeOf( oldStartIntent ), startIntent );
+
+				if ( isSameIntent && 'qazana-template-library-templates' === layout.modalContent.currentView.id ) {
+					return;
+				}
+
+				layout.hideLoadingView();
+
+				setIntentFilters();
+
 				startIntent.onReady();
 			}
 		} );
 	};
 
 	this.closeModal = function() {
-		self.getModal().hide();
+		layout.hideModal();
 	};
 
-	this.setTemplatesSource = function( source, trigger ) {
-		var channel = qazana.channels.templates;
+	this.getFilter = function( name ) {
+		return qazana.channels.templates.request( 'filter:' + name );
+	};
 
-		channel.reply( 'filter:source', source );
+	this.setFilter = function( name, value, silent ) {
+		qazana.channels.templates.reply( 'filter:' + name, value );
 
-		if ( trigger ) {
-			channel.trigger( 'filter:change' );
+		if ( ! silent ) {
+			qazana.channels.templates.trigger( 'filter:change' );
+		}
+	};
+
+	this.getFilterTerms = function( termName ) {
+		if ( termName ) {
+			return filterTerms[ termName ];
+		}
+
+		return filterTerms;
+	};
+
+	this.setTemplatesPage = function( source, type, silent ) {
+		qazana.channels.templates.stopReplying();
+
+		self.setFilter( 'source', source, true );
+
+		if ( type ) {
+			self.setFilter( 'type', type, true );
+		}
+
+		if ( ! silent ) {
+			self.showTemplates();
 		}
 	};
 
 	this.showTemplates = function() {
-		layout.showTemplatesView( templatesCollection );
-	};
+		var activeSource = self.getFilter( 'source' );
 
-	this.showTemplatesModal = function() {
-		self.startModal( {
-			onReady: self.showTemplates
+		var templatesToShow = templatesCollection.filter( function( model ) {
+			if ( activeSource !== model.get( 'source' ) ) {
+				return false;
+			}
+
+			var typeInfo = templateTypes[ model.get( 'type' ) ];
+
+			return ! typeInfo || false !== typeInfo.showInLibrary;
 		} );
-	};
 
-	this.onSearchViewChangeInput = function( view ) {
-		this.changeFilter( view.ui.input.val(), 'search' );
-	};
-
-	this.changeFilter = function( filterValue ) {
-
-		qazana.channels.templates
-			.reply( 'filter:text', filterValue )
-			.trigger( 'filter:change' );
-
+		layout.showTemplatesView( new TemplateLibraryCollection( templatesToShow ) );
 	};
 
 	this.showErrorDialog = function( errorMessage ) {

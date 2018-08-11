@@ -1,26 +1,84 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana toggle widget.
+ *
+ * Qazana widget that displays a collapsible display of content in an toggle
+ * style, allowing the user to open multiple items.
+ *
+ * @since 1.0.0
+ */
 class Widget_Toggle extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve toggle widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'toggle';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve toggle widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Toggle', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve toggle widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-toggle';
 	}
 
-	public function get_categories() {
-		return [ 'general-elements' ];
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'tabs', 'accordion', 'toggle' ];
 	}
 
+	/**
+	 * Register toggle widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_toggle',
@@ -212,11 +270,18 @@ class Widget_Toggle extends Widget_Base {
 
 		$this->end_controls_section();
 	}
-
+	/**
+	 * Render toggle widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function render() {
-		$tabs = $this->get_settings( 'tabs' );
+		$tabs = $this->get_settings_for_display( 'tabs' );
 		?>
-		<div class="qazana-toggle">
+		<div class="qazana-toggle" role="tablist">
 			<?php $counter = 1; ?>
 			<?php foreach ( $tabs as $item ) : ?>
 				<div class="qazana-toggle-title" data-tab="<?php echo $counter; ?>">
@@ -234,9 +299,17 @@ class Widget_Toggle extends Widget_Base {
 		<?php
 	}
 
+	/**
+	 * Render toggle widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
-		<div class="qazana-toggle">
+		<div class="qazana-toggle" role="tablist">
 			<#
 			if ( settings.tabs ) {
 				var counter = 1;

@@ -5,24 +5,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana user.
+ *
+ * Qazana user handler class is responsible for checking if the user can edit
+ * with Qazana and displaying different admin notices.
+ *
+ * @since 1.0.0
+ */
 class User {
 
+	/**
+	 * The admin notices key.
+	 */
 	const ADMIN_NOTICES_KEY = 'qazana_admin_notices';
 
 	/**
-	 * @static
+	 * Init.
+	 *
+	 * Initialize Qazana user.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 */
 	public static function init() {
 		add_action( 'wp_ajax_qazana_set_admin_notice_viewed', [ __CLASS__, 'ajax_set_admin_notice_viewed' ] );
 	}
 
 	/**
-	 * @static
+	 * Is current user can edit.
+	 *
+	 * Whether the current user can edit the post.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 *
+	 * @param int $post_id Optional. The post ID. Default is `0`.
+	 *
+	 * @return bool Whether the current user can edit the post.
+	 */
 	public static function is_current_user_can_edit( $post_id = 0 ) {
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
@@ -66,21 +89,68 @@ class User {
 	}
 
 	/**
+	 * Is current user can edit post type.
+	 *
+	 * Whether the current user can edit any given post type.
+	 *
+	 * @since 1.9.0
+	 * @access public
 	 * @static
-	 * @since 1.0.0
+	 *
+	 * @param string The post type slug to check.
+	 *
+	 * @return bool True on success, False otherwise.
+	 */
+	public static function is_current_user_can_edit_post_type( $post_type ) {
+		if ( ! post_type_exists( $post_type ) ) {
+			return false;
+		}
+
+		if ( ! post_type_supports( $post_type, 'qazana' ) ) {
+			return false;
+		}
+
+		$user = wp_get_current_user();
+		$exclude_roles = get_option( 'qazana_exclude_user_roles', [] );
+
+		$compare_roles = array_intersect( $user->roles, $exclude_roles );
+		if ( ! empty( $compare_roles ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get user notices.
+	 *
+	 * Retrieve the list of notices for the current user.
+	 *
+	 * @since 2.0.0
 	 * @access private
-	*/
-	private static function _get_user_notices() {
+	 * @static
+	 *
+	 * @return array A list of user notices.
+	 */
+	private static function get_user_notices() {
 		return get_user_meta( get_current_user_id(), self::ADMIN_NOTICES_KEY, true );
 	}
 
 	/**
-	 * @static
+	 * Is user notice viewed.
+	 *
+	 * Whether the notice was viewed by the user.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 *
+	 * @param int $notice_id The notice ID.
+	 *
+	 * @return bool Whether the notice was viewed by the user.
+	 */
 	public static function is_user_notice_viewed( $notice_id ) {
-		$notices = self::_get_user_notices();
+		$notices = self::get_user_notices();
 		if ( empty( $notices ) || empty( $notices[ $notice_id ] ) ) {
 			return false;
 		}
@@ -89,16 +159,22 @@ class User {
 	}
 
 	/**
-	 * @static
+	 * Set admin notice as viewed.
+	 *
+	 * Flag the user admin notice as viewed using an authenticated ajax request.
+	 *
+	 * Fired by `wp_ajax_qazana_set_admin_notice_viewed` action.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 */
 	public static function ajax_set_admin_notice_viewed() {
 		if ( empty( $_POST['notice_id'] ) ) {
 			die;
 		}
 
-		$notices = self::_get_user_notices();
+		$notices = self::get_user_notices();
 		if ( empty( $notices ) ) {
 			$notices = [];
 		}

@@ -1,30 +1,68 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana menu anchor widget.
+ *
+ * Qazana widget that allows to link and menu to a specific position on the
+ * page.
+ *
+ * @since 1.0.0
+ */
 class Widget_Menu_Anchor extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve menu anchor widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'menu-anchor';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve menu anchor widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Menu Anchor', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve menu anchor widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-anchor';
 	}
 
-	public function get_categories() {
-		return [ 'general-elements' ];
-    }
-
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
@@ -33,6 +71,14 @@ class Widget_Menu_Anchor extends Widget_Base {
 		return [ 'anchor', 'menu', 'link', 'url' ];
     }
 
+	/**
+	 * Register menu anchor widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_anchor',
@@ -63,8 +109,16 @@ class Widget_Menu_Anchor extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	public function render() {
-		$anchor = $this->get_settings( 'anchor' );
+	/**
+	 * Render menu anchor widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function render() {
+		$anchor = $this->get_settings_for_display( 'anchor' );
 
 		if ( ! empty( $anchor ) ) {
 			$this->add_render_attribute( 'inner', 'id', $anchor );
@@ -76,6 +130,14 @@ class Widget_Menu_Anchor extends Widget_Base {
 		<?php
 	}
 
+	/**
+	 * Render menu anchor widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<div class="qazana-menu-anchor"{{{ settings.anchor ? ' id="' + settings.anchor + '"' : '' }}}></div>

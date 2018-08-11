@@ -2,6 +2,7 @@
 // Panel Elements
 //
 #qazana-panel-elements-navigation {
+
 	.qazana-panel-navigation-tab {
 		text-align: center;
 		padding: 10px 0;
@@ -23,9 +24,11 @@
 }
 
 .qazana-element-wrapper {
+	float: $start;
 	width: 50%;
 	padding: 5px;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 .qazana-element {
@@ -84,19 +87,32 @@
 }
 
 #qazana-panel-elements-search-input {
+	background-color: rgba(255,255,255,.7);
 	font-size: 11px;
-	border-radius: 0;
-	@include padding(10px, 27px, 10px, 0);
+	@include padding(10px, 27px, 10px, 10px);
+	font-style: italic;
 	color: $editor-light;
 	border: none;
 	transition: all 1s;
+	border-radius: 3px;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	+ i {
+		@include end(10px);
+	}
 
 	&:focus {
-		background-color: rgba(255,255,255,.7);
-		padding-left: 15px;
+		background-color: rgba(255,255,255,1);
+		@include padding-start(15px);
 
 		+ i {
 			@include end(15px);
 		}
+	}
+
+	&::placeholder {
+		color: $editor-light;
 	}
 }

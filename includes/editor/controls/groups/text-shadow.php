@@ -6,33 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Text shadow control.
+ * Qazana text shadow control.
  *
  * A base control for creating text shadow control. Displays input fields to define
- * the text shadow.
+ * the text shadow including the horizontal shadow, vertical shadow, shadow blur and
+ * shadow color.
  *
- * Creating new control in the editor (inside `Widget_Base::_register_controls()`
- * method):
- *
- *    $this->add_group_control(
- *    	Group_Control_Text_Shadow::get_type(),
- *    	[
- *    		'name' => 'text_shadow',
- *    		'selector' => '{{WRAPPER}} .wrapper',
- *    		'separator' => 'before',
- *    	]
- *    );
- *
- * @since 1.0.0
- *
- * @param string $name        The field name.
- * @param string $separator   Optional. Set the position of the control separator.
- *                            Available values are 'default', 'before', 'after'
- *                            and 'none'. 'default' will position the separator
- *                            depending on the control type. 'before' / 'after'
- *                            will position the separator before/after the
- *                            control. 'none' will hide the separator. Default
- *                            is 'default'.
+ * @since 1.6.0
  */
 class Group_Control_Text_Shadow extends Group_Control_Base {
 
@@ -41,7 +21,7 @@ class Group_Control_Text_Shadow extends Group_Control_Base {
 	 *
 	 * Holds all the text shadow control fields.
 	 *
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 * @access protected
 	 * @static
 	 *
@@ -50,11 +30,11 @@ class Group_Control_Text_Shadow extends Group_Control_Base {
 	protected static $fields;
 
 	/**
-	 * Retrieve type.
-	 *
 	 * Get text shadow control type.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the control type, in this case `text-shadow`.
+	 *
+	 * @since 1.6.0
 	 * @access public
 	 * @static
 	 *
@@ -69,7 +49,7 @@ class Group_Control_Text_Shadow extends Group_Control_Base {
 	 *
 	 * Initialize text shadow control fields.
 	 *
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 * @access protected
 	 *
 	 * @return array Control fields.
@@ -91,6 +71,17 @@ class Group_Control_Text_Shadow extends Group_Control_Base {
 		return $controls;
 	}
 
+	/**
+	 * Get default options.
+	 *
+	 * Retrieve the default options of the text shadow control. Used to return the
+	 * default options while initializing the text shadow control.
+	 *
+	 * @since 1.9.0
+	 * @access protected
+	 *
+	 * @return array Default text shadow control options.
+	 */
 	protected function get_default_options() {
 		return [
 			'popover' => [

@@ -1,0 +1,30 @@
+/*
+ * Choose image
+ */
+
+.qazana-panel .qazana-choices.qazana-choices-image {
+    display: block;
+    height: auto;
+    background-color: transparent;
+}
+
+.qazana-panel .qazana-choices.qazana-choices-image .qazana-choices-label {
+    display: inline-block;
+    float: left;
+    width: 48%;
+    margin: 4px 0;
+    border-radius: 3px;
+    border: 1px solid #39b54a;
+    padding: 3px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, .3);
+    transition: all .2s ease;
+}
+
+.qazana-panel .qazana-choices.qazana-choices-image .qazana-choices-label:nth-of-type(odd) {
+    margin-right: 4%;
+}
+
+.qazana-panel .qazana-choices.qazana-choices-image input:not(:checked)+.qazana-choices-label {
+    border-color: #f1f2f3;
+    box-shadow: none;
+}

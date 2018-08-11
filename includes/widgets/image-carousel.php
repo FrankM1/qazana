@@ -1,22 +1,76 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana image carousel widget.
+ *
+ * Qazana widget that displays a set of images in a rotating carousel or
+ * slider.
+ *
+ * @since 1.0.0
+ */
 class Widget_Image_Carousel extends Widget_Base {
 
 	public $carousel = true;
-	
+
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve image carousel widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'image-carousel';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve image carousel widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Image Carousel', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve image carousel widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-slider-push';
+	}
+
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'image', 'photo', 'visual', 'carousel', 'slider' ];
 	}
 
     /**
@@ -28,21 +82,17 @@ class Widget_Image_Carousel extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
     }
 
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Register image carousel widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
 	 *
 	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return array Widget keywords.
+	 * @access protected
 	 */
-	public function get_keywords() {
-		return [ 'photo', 'image', 'gallery', 'carousel', 'slider', 'media' ];
-    }
-
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_image_carousel',
@@ -57,6 +107,10 @@ class Widget_Image_Carousel extends Widget_Base {
 				'label' => __( 'Add Images', 'qazana' ),
 				'type' => Controls_Manager::GALLERY,
 				'default' => [],
+				'show_label' => false,
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
@@ -192,7 +246,7 @@ class Widget_Image_Carousel extends Widget_Base {
 	}
 
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( empty( $settings['carousel'] ) )
 			return;
@@ -265,7 +319,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			}
 		}
 
-		$is_rtl = ( 'rtl' ===  $this->get_settings('direction') );
+		$is_rtl = ( 'rtl' ===  $this->get_settings_for_display('direction') );
 		$direction = $is_rtl ? 'rtl' : 'ltr';
 
 		$carousel_classes = [ 'qazana-grid-wrapper', 'slick-slides-biggie', 'slick-slider' ];

@@ -1,6 +1,7 @@
 // Core variables and mixins
 @import "../helpers/variables";
 @import "../helpers/mixins";
+@import "breakpoints";
 
 // Common
 @import "../common/common";
@@ -9,24 +10,30 @@
 @import "../helpers/utilities";
 
 // Reboot CSS
-@import "_wrapper";
-@import "_global";
-@import "_buttons";
-@import "_forms";
+@import "wrapper";
+@import "global";
+@import "buttons";
+@import "forms";
 
 // Components
-@import "_perfect-scrollbar";
-@import "_nprogress";
-@import "panel/_panel";
-@import "_mode-switcher";
-@import "_revisions";
+@import "perfect-scrollbar";
+@import "nprogress";
+@import "panel/panel";
+@import "panel/control";
+@import "panel/color-picker";
+@import "mode-switcher";
 
-@import "_devices";
-@import "_tipsy";
-@import "_dialog";
-@import "_templates-modal";
-@import "_global-widgets";
-@import "_widget-templates";
+@import "devices";
+@import "tipsy";
+@import "templates-modal-wrapper";
+@import "templates-modal";
+
+@import "global-widgets";
+@import "widget-templates";
+@import "dynamic-tags";
+@import "notifications";
+@import "context-menu";
+@import "navigator/navigator";
 
 @import "../../../../includes/extensions/history/assets/scss/revisions";
 @import "../../../../includes/extensions/history/assets/scss/history";

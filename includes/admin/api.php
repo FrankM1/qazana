@@ -29,8 +29,8 @@ class Api {
 			],
 		] );
 
-	}
-
+    }
+ 
     /**
      * This function notifies the user of upgrade notices, new templates and contributors
      *
@@ -38,7 +38,7 @@ class Api {
      *
      * @return array|bool
      */
-    private function _get_info_data( $force = false ) {
+    private function get_info_data( $force = false ) {
         $cache_key = 'qazana_remote_info_api_data_' . qazana_get_version();
         $info_data = get_transient( $cache_key );
 
@@ -77,7 +77,7 @@ class Api {
     }
 
     public function get_upgrade_notice() {
-        $data = $this->_get_info_data();
+        $data = $this->get_info_data();
  
         if ( empty( $data['upgrade_notice'] ) ) {
             return false;
@@ -86,15 +86,15 @@ class Api {
         return $data['upgrade_notice'];
     }
 
-    public function ajax_remote_info_api_data() {
+    public function ajax_reset_api_data() {
         check_ajax_referer( 'qazana_reset_library', '_nonce' );
 
-        $this->_get_info_data( true );
+        $this->get_info_data( true );
 
         wp_send_json_success();
     }
 
     public function __construct() {
-        add_action( 'wp_ajax_qazana_clear_library_cache', [ $this, 'ajax_remote_info_api_data' ] );
+        add_action('wp_ajax_qazana_reset_library', [ $this, 'ajax_reset_api_data' ] );
     }
 }

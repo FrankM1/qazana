@@ -1,0 +1,51 @@
+
+#qazana-role-manager {
+	max-width: 500px;
+	margin-top: 50px;
+	
+	h3 {
+		color: $editor-dark;
+		font-weight: normal;
+		font-size: 22px;
+	}
+
+	.qazana-settings-form-page {
+		padding: 0;
+	}
+	
+	.qazana-role-row {
+		background: #ffffff;
+		color: $editor-dark;
+		margin-bottom: 2px;
+
+		.qazana-role-label {
+			display: flex;
+			padding: 15px 20px;
+			font-weight: 500;
+			cursor: pointer;
+
+			span.qazana-role-name {
+				@include padding-end(20px);
+			}
+
+			span.qazana-role-toggle {
+				text-align: $end;
+				flex-grow: 1;
+			}
+
+			span.qazana-role-excluded-indicator {
+				color: $editor-light;
+			}
+		}
+
+		.qazana-role-controls {
+			background-color: $gray-lightest;
+			padding: 20px 20px 5px;
+
+			> div {
+				margin-bottom: 15px;
+			}
+		}
+	}
+}
+

@@ -1,7 +1,6 @@
 <?php
 namespace Qazana\Extensions\Library\WP_Widgets;
 
-use Qazana\Plugin;
 use Qazana\Template_Library\Source_Local;
 use Qazana\Extensions\Library;
 use Qazana\User;

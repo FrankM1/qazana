@@ -4,84 +4,72 @@ var HandlerModule = require( 'qazana-frontend/handler-module' );
 
 var StretchedSection = HandlerModule.extend( {
 
+	stretchElement: null,
+
 	bindEvents: function() {
-		qazanaFrontend.addListenerOnce( this.$element.data( 'model-cid' ), 'resize', this.stretchSection );
+		var handlerID = this.getUniqueHandlerID();
+
+		qazanaFrontend.addListenerOnce( handlerID, 'resize', this.stretch );
+
+		qazanaFrontend.addListenerOnce( handlerID, 'sticky:stick', this.stretch, this.$element );
+
+		qazanaFrontend.addListenerOnce( handlerID, 'sticky:unstick', this.stretch, this.$element );
 	},
 
-	stretchSection: function() {
-		// Clear any previously existing css associated with this script
-		var direction = qazanaFrontend.config.is_rtl ? 'right' : 'left',
-			resetCss = {},
-			isStretched = this.$element.hasClass( 'qazana-section-stretched' );
+	unbindEvents: function() {
+		qazanaFrontend.removeListeners( this.getUniqueHandlerID(), 'resize', this.stretch );
+	},
 
-		if ( qazanaFrontend.isEditMode() || isStretched ) {
-			resetCss.width = 'auto';
+	initStretch: function() {
+		this.stretchElement = new qazanaFrontend.modules.StretchElement( {
+			element: this.$element,
+			selectors: {
+				container: this.getStretchContainer()
+			}
+		} );
+	},
 
-			resetCss[ direction ] = 0;
+	getStretchContainer: function() {
+		return qazanaFrontend.getGeneralSettings( 'qazana_stretched_section_container' ) || window;
+	},
 
-			this.$element.css( resetCss );
-		}
-
-		if ( ! isStretched ) {
+	stretch: function() {
+		if ( ! this.getElementSettings( 'stretch_section' ) ) {
 			return;
 		}
 
-		var $sectionContainer,
-			hasSpecialContainer = false;
-
-		try {
-			$sectionContainer = jQuery( qazanaFrontend.getGeneralSettings( 'qazana_stretched_section_container' ) );
-
-			if ( $sectionContainer.length ) {
-				hasSpecialContainer = true;
-			}
-		} catch ( e ) {}
-
-		if ( ! hasSpecialContainer ) {
-			$sectionContainer = qazanaFrontend.getElements( '$window' );
-		}
-
-		var containerWidth = $sectionContainer.outerWidth(),
-			sectionWidth = this.$element.outerWidth(),
-			sectionOffset = this.$element.offset().left,
-			correctOffset = sectionOffset;
-
-		if ( hasSpecialContainer ) {
-			var containerOffset = $sectionContainer.offset().left;
-
-			if ( sectionOffset > containerOffset ) {
-				correctOffset = sectionOffset - containerOffset;
-			} else {
-				correctOffset = 0;
-			}
-		}
-
-		if ( qazanaFrontend.config.is_rtl ) {
-			correctOffset = containerWidth - ( sectionWidth + correctOffset );
-		}
-
-		resetCss.width = containerWidth + 'px';
-
-		resetCss[ direction ] = -correctOffset + 'px';
-
-		this.$element.css( resetCss );
+		this.stretchElement.stretch();
 	},
 
 	onInit: function() {
 		HandlerModule.prototype.onInit.apply( this, arguments );
 
-		this.stretchSection();
+		this.initStretch();
+
+		this.stretch();
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'stretch_section' === propertyName ) {
+			if ( this.getElementSettings( 'stretch_section' ) ) {
+				this.stretch();
+			} else {
+				this.stretchElement.reset();
+			}
+		}
 	},
 
 	onGeneralSettingsChange: function( changed ) {
 		if ( 'qazana_stretched_section_container' in changed ) {
-			this.stretchSection();
+			this.stretchElement.setSettings( 'selectors.container', this.getStretchContainer() );
+
+			this.stretch();
 		}
 	}
 } );
 
-var SVGShapes = HandlerModule.extend( {
-	
+var Shapes = HandlerModule.extend( {
+
 	getDefaultSettings: function() {
 		return {
 			selectors: {
@@ -164,16 +152,53 @@ var SVGShapes = HandlerModule.extend( {
 	}
 } );
 
+var HandlesPosition = HandlerModule.extend( {
+
+    isFirst: function() {
+        return this.$element.is( '.qazana-edit-mode .qazana-top-section:first' );
+    },
+
+    getOffset: function() {
+        return this.$element.offset().top;
+    },
+
+    setHandlesPosition: function() {
+        var self = this;
+
+        if ( self.isFirst() ) {
+            var offset = self.getOffset(),
+                $handlesElement = self.$element.find( '> .qazana-element-overlay > .qazana-editor-section-settings' ),
+                insideHandleClass = 'qazana-section--handles-inside';
+
+            if ( offset < 25 ) {
+                self.$element.addClass( insideHandleClass );
+
+                if ( offset < -5 ) {
+                    $handlesElement.css( 'top', -offset );
+                } else {
+                    $handlesElement.css( 'top', '' );
+                }
+            } else {
+                self.$element.removeClass( insideHandleClass );
+            }
+        }
+    },
+
+    onInit: function() {
+        this.setHandlesPosition();
+        this.$element.on( 'mouseenter', this.setHandlesPosition );
+    }
+} );
+
 module.exports = function( $scope ) {
+	if ( qazanaFrontend.isEditMode() || $scope.hasClass( 'qazana-section-stretched' ) ) {
+		new StretchedSection( { $element: $scope } );
+	}
 
 	if ( qazanaFrontend.isEditMode() ) {
-		new SVGShapes( { $element: $scope } );
-
-		if ( $scope.hasClass( 'qazana-section-stretched' ) ) {
-			new StretchedSection( { $element: $scope } );
-		}
+		new Shapes( { $element: $scope } );
+		new HandlesPosition( { $element: $scope } );
 	}
 
 	new BackgroundVideo( { $element: $scope } );
-
 };

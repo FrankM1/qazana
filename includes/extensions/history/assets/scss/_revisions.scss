@@ -1,18 +1,28 @@
 .qazana-revision- {
 
 	&item {
-		display: flex;
-		align-items: center;
-		border: 1px solid $editor-lightest;
-		padding: 10px 15px;
-		margin-bottom: 10px;
-		font-size: 11px;
+		&__wrapper {
+			display: flex;
+			align-items: center;
+			border: 1px solid $editor-lightest;
+			padding: 10px 15px;
+			margin-bottom: 10px;
+			font-size: 11px;
+
+			&.current {
+				font-weight: bold;
+			}
+
+			.qazana-revision-item__tools-current {
+				color: $editor-accent;
+			}
+		}
 
 		&:hover:not(.qazana-revision-current-preview) {
 			background-color: fade_out($editor-background, 0.7) ;
 		}
 
-		&:not(:hover) {
+		&:not(:hover), &.qazana-revision-current-preview {
 
 			.qazana-revision-item__tools-delete {
 				display: none;
@@ -20,6 +30,10 @@
 		}
 
 		&-loading {
+
+			.qazana-revision-item__tools-current {
+				display: none;
+			}
 
 			.qazana-revision-item__tools-delete {
 				display: none;
@@ -62,4 +76,8 @@
 	&current-preview {
 		background-color: $editor-background;
 	}
+}
+
+#qazana-restore-autosave-dialog.dialog-widget {
+	background-color: rgba(0, 0, 0, 0.3);
 }

@@ -13,16 +13,18 @@ heartbeat = {
 			return modal;
 		};
 
-		Backbone.$( document ).on( {
+		jQuery( document ).on( {
 			'heartbeat-send': function( event, data ) {
 				data.qazana_post_lock = {
-					post_ID: qazana.config.post_id
+					post_ID: qazana.config.document.id
 				};
 			},
 			'heartbeat-tick': function( event, response ) {
 				if ( response.locked_user ) {
-					if ( qazana.isEditorChanged() ) {
-						qazana.saveEditor( { status: 'autosave' } );
+					if ( qazana.saver.isEditorChanged() ) {
+						qazana.saver.saveEditor( {
+							status: 'autosave'
+						} );
 					}
 
 					heartbeat.showLockMessage( response.locked_user );
@@ -53,7 +55,7 @@ heartbeat = {
 	},
 
 	initModal: function() {
-		var modal = qazana.dialogsManager.createWidget( 'options', {
+		var modal = qazana.dialogsManager.createWidget( 'lightbox', {
 			headerMessage: qazana.translate( 'take_over' )
 		} );
 

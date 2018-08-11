@@ -48,9 +48,14 @@ helpers = {
 		if ( ! _.isEmpty( fontUrl ) ) {
 			qazana.$previewContents.find( 'link:last' ).after( '<link href="' + fontUrl + '" rel="stylesheet" type="text/css">' );
 		}
+
 		this._enqueuedFonts.push( font );
 
 		qazana.channels.editor.trigger( 'font:insertion', fontType, font );
+	},
+
+	resetEnqueuedFontsCache: function() {
+		this._enqueuedFonts = [];
 	},
 
 	getElementChildType: function( elementType, container ) {
@@ -60,7 +65,7 @@ helpers = {
 
 		if ( undefined !== container[ elementType ] ) {
 
-			if ( Backbone.$.isPlainObject( container[ elementType ] ) ) {
+			if ( jQuery.isPlainObject( container[ elementType ] ) ) {
 				return Object.keys( container[ elementType ] );
 			}
 
@@ -73,7 +78,7 @@ helpers = {
 				continue;
 			}
 
-			if ( ! Backbone.$.isPlainObject( container[ type ] ) ) {
+			if ( ! jQuery.isPlainObject( container[ type ] ) ) {
 				continue;
 			}
 
@@ -91,6 +96,9 @@ helpers = {
 		return Math.random().toString( 16 ).substr( 2, 7 );
 	},
 
+	/*
+	 * @deprecated 2.0.0
+	 */
 	stringReplaceAll: function( string, replaces ) {
 		var re = new RegExp( Object.keys( replaces ).join( '|' ), 'gi' );
 
@@ -139,11 +147,15 @@ helpers = {
 				isNegativeCondition = !! conditionNameParts[3],
 				controlValue = values[ conditionRealName ];
 
+			if ( values.__dynamic__ && values.__dynamic__[ conditionRealName ] ) {
+				controlValue = values.__dynamic__[ conditionRealName ];
+			}
+
 			if ( undefined === controlValue ) {
 				return true;
 			}
 
-			if ( conditionSubKey ) {
+			if ( conditionSubKey && 'object' === typeof controlValue ) {
 				controlValue = controlValue[ conditionSubKey ];
 			}
 
@@ -151,6 +163,7 @@ helpers = {
 			// If the controlValue is a non empty array - check if the controlValue contains the conditionValue
 			// otherwise check if they are equal. ( and give the ability to check if the value is an empty array )
 			var isContains;
+
 			if ( _.isArray( conditionValue ) && ! _.isEmpty( conditionValue ) ) {
 				isContains = _.contains( conditionValue, controlValue );
 			} else if ( _.isArray( controlValue ) && ! _.isEmpty( controlValue ) ) {
@@ -169,6 +182,10 @@ helpers = {
 		return JSON.parse( JSON.stringify( object ) );
 	},
 
+	firstLetterUppercase: function( string ) {
+		return string[0].toUpperCase() + string.slice( 1 );
+	},
+
 	disableElementEvents: function( $element ) {
 		$element.each( function() {
 			var currentPointerEvents = this.style.pointerEvents;
@@ -177,7 +194,7 @@ helpers = {
 				return;
 			}
 
-			Backbone.$( this )
+			jQuery( this )
 				.data( 'backup-pointer-events', currentPointerEvents )
 				.css( 'pointer-events', 'none' );
 		} );
@@ -185,7 +202,7 @@ helpers = {
 
 	enableElementEvents: function( $element ) {
 		$element.each( function() {
-			var $this = Backbone.$( this ),
+			var $this = jQuery( this ),
 				backupPointerEvents = $this.data( 'backup-pointer-events' );
 
 			if ( undefined === backupPointerEvents ) {
@@ -231,13 +248,89 @@ helpers = {
 		);
 	},
 
-	scrollToView: function( view ) {
-		// Timeout according to preview resize css animation duration
+	scrollToView: function( $element, timeout, $parent ) {
+		if ( undefined === timeout ) {
+			timeout = 500;
+		}
+
+		var $scrolled = $parent,
+			$qazanaFrontendWindow = qazanaFrontend.getElements( '$window' );
+
+		if ( ! $parent ) {
+			$parent = $qazanaFrontendWindow;
+
+			$scrolled = qazana.$previewContents.find( 'html, body' );
+		}
+
 		setTimeout( function() {
-			qazana.$previewContents.find( 'html, body' ).animate( {
-				scrollTop: view.$el.offset().top - qazana.$preview[0].contentWindow.innerHeight / 2
-			} );
-		}, 500 );
+			var parentHeight = $parent.height(),
+				parentScrollTop = $parent.scrollTop(),
+				elementTop = $parent === $qazanaFrontendWindow ? $element.offset().top : $element[0].offsetTop,
+				topToCheck = elementTop - parentScrollTop;
+
+			if ( topToCheck > 0 && topToCheck < parentHeight ) {
+				return;
+			}
+
+			var scrolling = elementTop - parentHeight / 2;
+
+			$scrolled.stop( true ).animate( { scrollTop: scrolling }, 1000 );
+		}, timeout );
+	},
+
+	getElementInlineStyle: function( $element, properties ) {
+		var style = {},
+			elementStyle = $element[0].style;
+
+		properties.forEach( function( property ) {
+			style[ property ] = undefined !== elementStyle[ property ] ? elementStyle[ property ] : '';
+		} );
+
+		return style;
+	},
+
+	cssWithBackup: function( $element, backupState, rules ) {
+		var cssBackup = this.getElementInlineStyle( $element, Object.keys( rules ) );
+
+		$element
+			.data( 'css-backup-' + backupState, cssBackup )
+			.css( rules );
+	},
+
+	recoverCSSBackup: function( $element, backupState ) {
+		var backupKey = 'css-backup-' + backupState;
+
+		$element.css( $element.data( backupKey ) );
+
+		$element.removeData( backupKey );
+	},
+
+	compareVersions: function( versionA, versionB, operator ) {
+		var prepareVersion = function( version ) {
+			version = version + '';
+
+			return version.replace( /[^\d.]+/, '.-1.' );
+		};
+
+		versionA  = prepareVersion( versionA );
+		versionB = prepareVersion( versionB );
+
+		if ( versionA === versionB ) {
+			return ! operator || /^={2,3}$/.test( operator );
+		}
+
+		var versionAParts = versionA.split( '.' ).map( Number ),
+			versionBParts = versionB.split( '.' ).map( Number ),
+			longestVersionParts = Math.max( versionAParts.length, versionBParts.length );
+
+		for ( var i = 0; i < longestVersionParts; i++ ) {
+			var valueA = versionAParts[ i ] || 0,
+				valueB = versionBParts[ i ] || 0;
+
+			if ( valueA !== valueB ) {
+				return this.conditions.compare( valueA, valueB, operator );
+			}
+		}
 	}
 };
 

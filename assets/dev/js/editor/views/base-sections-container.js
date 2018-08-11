@@ -1,4 +1,4 @@
-var SectionView = require( 'qazana-views/section' ),
+var SectionView = require( 'qazana-elements/views/section' ),
 	BaseContainer = require( 'qazana-views/base-container' ),
 	BaseSectionsContainerView;
 
@@ -10,12 +10,6 @@ BaseSectionsContainerView = BaseContainer.extend( {
 			Sortable: {
 				behaviorClass: require( 'qazana-behaviors/sortable' ),
 				elChildType: 'section'
-			},
-			HandleDuplicate: {
-				behaviorClass: require( 'qazana-behaviors/handle-duplicate' )
-			},
-			HandleAddMode: {
-				behaviorClass: require( 'qazana-behaviors/duplicate' )
 			}
 		};
 
@@ -24,7 +18,7 @@ BaseSectionsContainerView = BaseContainer.extend( {
 
 	getSortableOptions: function() {
 		return {
-			handle: '> .qazana-element-overlay .qazana-editor-section-settings .qazana-editor-element-trigger',
+			handle: '> .qazana-element-overlay .qazana-editor-element-edit',
 			items: '> .qazana-section'
 		};
 	},
@@ -33,36 +27,17 @@ BaseSectionsContainerView = BaseContainer.extend( {
 		return [ 'section' ];
 	},
 
-	isCollectionFilled: function() {
-		return false;
-	},
-
 	initialize: function() {
+		BaseContainer.prototype.initialize.apply( this, arguments );
+
 		this
 			.listenTo( this.collection, 'add remove reset', this.onCollectionChanged )
 			.listenTo( qazana.channels.panelElements, 'element:drag:start', this.onPanelElementDragStart )
 			.listenTo( qazana.channels.panelElements, 'element:drag:end', this.onPanelElementDragEnd );
 	},
 
-	addSection: function( properties, options ) {
-		var newSection = {
-			id: qazana.helpers.getUniqueID(),
-			elType: 'section',
-			settings: {},
-			elements: []
-		};
-
-		if ( properties ) {
-			_.extend( newSection, properties );
-		}
-
-		var newModel = this.addChildModel( newSection, options );
-
-		return this.children.findByModelCid( newModel.cid );
-	},
-
 	onCollectionChanged: function() {
-		qazana.setFlagEditorChange( true );
+		qazana.saver.setFlagEditorChange( true );
 	},
 
 	onPanelElementDragStart: function() {

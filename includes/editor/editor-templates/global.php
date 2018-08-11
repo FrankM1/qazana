@@ -18,12 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 <script type="text/template" id="tmpl-qazana-add-section">
 	<div class="qazana-add-section-inner">
 		<div class="qazana-add-section-close">
-			<i class="fa fa-times"></i>
+			<i class="eicon-close" aria-hidden="true"></i>
+			<span class="qazana-screen-only"><?php _e( 'Close', 'qazana' ); ?></span>
 		</div>
 		<div class="qazana-add-new-section">
-			<button class="qazana-add-section-button qazana-button"><?php _e( 'Add New Section', 'qazana' ); ?></button>
-			<button class="qazana-add-template-button qazana-button"><?php _e( 'Add Template', 'qazana' ); ?></button>
-			<div class="qazana-add-section-drag-title"><?php _e( 'Or drag widget here', 'qazana' ); ?></div>
+			<div class="qazana-add-section-area-button qazana-add-section-button" title="<?php _e( 'Add New Section', 'qazana' ); ?>">
+                <i class="eicon-plus"></i>
+                <?php _e( 'Add New Section', 'qazana' ); ?>
+			</div>
+			<div class="qazana-add-section-area-button qazana-add-template-button" title="<?php _e( 'Add Template', 'qazana' ); ?>">
+                <i class="fa fa-folder"></i>
+                <?php _e( 'Add Template', 'qazana' ); ?>
+			</div>
+			<div class="qazana-add-section-drag-title"><?php _e( 'Drag widget here', 'qazana' ); ?></div>
 		</div>
 		<div class="qazana-select-preset">
 			<div class="qazana-select-preset-title"><?php _e( 'Select your Structure', 'qazana' ); ?></div>
@@ -41,4 +48,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</ul>
 		</div>
 	</div>
+</script>
+
+<script type="text/template" id="tmpl-qazana-tag-controls-stack-empty">
+	<?php _e( 'This tag has no settings.', 'qazana' ); ?>
 </script>

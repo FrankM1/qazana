@@ -5,36 +5,67 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana elements manager.
+ *
+ * Qazana elements manager handler class is responsible for registering and
+ * initializing all the supported elements.
+ *
+ * @since 1.0.0
+ */
 class Elements_Manager {
+
 	/**
+	 * Element types.
+	 *
+	 * Holds the list of all the element types.
+	 *
+	 * @access private
+	 *
 	 * @var Element_Base[]
 	 */
 	private $_element_types;
 
-    /**
-     * Globally acceible element instance
-     * @var array
-     */
-    private $_element_instance;
-
-    private $_categories;
-
-    public function __construct() {
-        add_action( 'after_setup_theme', [ $this, 'require_files' ] );
-        add_action( 'wp_ajax_qazana_save_builder', [ $this, 'ajax_save_builder' ] );
-    }
+	/**
+	 * Element categories.
+	 *
+	 * Holds the list of all the element categories.
+	 *
+	 * @access private
+	 *
+	 * @var
+	 */
+	private $categories;
 
 	/**
-	 * @param array $element_data
+	 * Elements constructor.
 	 *
-	 * @param array $element_args
+	 * Initializing Qazana elements manager.
 	 *
-	 * @param Element_Base $element_type
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function __construct() {
+		$this->require_files();
+	}
+
+	/**
+	 * Create element instance.
 	 *
-	 * @return Element_Base
+	 * This method creates a new element instance for any given element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array        $element_data Element data.
+	 * @param array        $element_args Optional. Element arguments. Default is
+	 *                                   an empty array.
+	 * @param Element_Base $element_type Optional. Element type. Default is null.
+	 *
+	 * @return Element_Base|null Element instance if element created, or null
+	 *                           otherwise.
 	 */
 	public function create_element_instance( array $element_data, array $element_args = [], Element_Base $element_type = null ) {
-
 		if ( null === $element_type ) {
 			if ( 'widget' === $element_data['elType'] ) {
 				$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
@@ -61,13 +92,45 @@ class Elements_Manager {
 	}
 
 	/**
-	 * Add element instance to cache
+	 * Get element categories.
 	 *
-	 * @method get_element_instance
+	 * Retrieve the list of categories the element belongs to.
 	 *
-	 * @param  string 	$element_id  unique element id
-	 * @return object 	element object class Element_Base
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Element categories.
 	 */
+	public function get_categories() {
+		if ( null === $this->categories ) {
+			$this->init_categories();
+		}
+
+		return $this->categories;
+	}
+
+	/**
+	 * Add element category.
+	 *
+	 * Register new category for the element.
+	 *
+	 * @since 1.7.12
+	 * @since 2.0.0 The third parameter was deprecated.
+	 * @access public
+	 *
+	 * @param string $category_name       Category name.
+	 * @param array  $category_properties Category properties.
+	 */
+	public function add_category( $category_name, $category_properties ) {
+		if ( null === $this->categories ) {
+			$this->get_categories();
+		}
+
+		if ( ! isset( $this->categories[ $category_name ] ) ) {
+			$this->categories[ $category_name ] = $category_properties;
+		}
+	}
+
 	public function add_element_instance( Element_Base $element ) {
 		$this->_element_instance[ $element->get_id() ] = $element;
 
@@ -89,26 +152,20 @@ class Elements_Manager {
 
 		return $this->_element_instance;
 	}
+	
+	/**
+	 * Register element type.
+	 *
+	 * Add new type to the list of registered types.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param Element_Base $element Element instance.
+	 *
+	 * @return bool Whether the element type was registered.
+	 */
 
-	public function get_categories() {
-		if ( null === $this->_categories ) {
-			$this->init_categories();
-		}
-
-		return $this->_categories;
-	}
-
-	public function add_category( $category_name, $category_properties, $offset = null ) {
-		if ( null === $this->_categories ) {
-			$this->init_categories();
-		}
-
-		if ( null === $offset ) {
-			$this->_categories[ $category_name ] = $category_properties;
-		}
-
-		$this->_categories = array_slice( $this->_categories, 0, $offset, true ) + [ $category_name => $category_properties ] + array_slice( $this->_categories, $offset, null, true );
-	}
 
 	public function register_element_type( Element_Base $element ) {
 		$this->_element_types[ $element->get_name() ] = $element;
@@ -116,6 +173,18 @@ class Elements_Manager {
 		return true;
 	}
 
+	/**
+	 * Unregister element type.
+	 *
+	 * Remove element type from the list of registered types.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param string $name Element name.
+	 *
+	 * @return bool Whether the element type was unregister, or not.
+	 */
 	public function unregister_element_type( $name ) {
 		if ( ! isset( $this->_element_types[ $name ] ) ) {
 			return false;
@@ -126,9 +195,23 @@ class Elements_Manager {
 		return true;
 	}
 
+	/**
+	 * Get element types.
+	 *
+	 * Retrieve the list of all the element types, or if a specific element name
+	 * was provided retrieve his element types.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param string $element_name Optional. Element name. Default is null.
+	 *
+	 * @return null|Element_Base|Element_Base[] Element types, or a list of all the element
+	 *                             types, or null if element does not exist.
+	 */
 	public function get_element_types( $element_name = null ) {
 		if ( is_null( $this->_element_types ) ) {
-			$this->_init_elements();
+			$this->init_elements();
 		}
 
 		if ( null !== $element_name ) {
@@ -138,6 +221,16 @@ class Elements_Manager {
 		return $this->_element_types;
 	}
 
+	/**
+	 * Get element types config.
+	 *
+	 * Retrieve the config of all the element types.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Element types config.
+	 */
 	public function get_element_types_config() {
 		$config = [];
 
@@ -148,47 +241,88 @@ class Elements_Manager {
 		return $config;
 	}
 
+	/**
+	 * Render elements content.
+	 *
+	 * Used to generate the elements templates on the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function render_elements_content() {
 		foreach ( $this->get_element_types() as $element_type ) {
 			$element_type->print_template();
 		}
 	}
 
-	public function ajax_save_builder() {
-        if ( ! qazana()->editor->verify_request_nonce() ) {
-			wp_send_json_error( new \WP_Error( 'token_expired' ) );
-		}
+	/**
+	 * Ajax discard changes.
+	 *
+	 * Ajax handler for Qazana discard_changes. Handles the discarded changes
+	 * in the builder by deleting auto-saved revisions.
+	 *
+	 * Fired by `wp_ajax_qazana_discard_changes` action.
+	 *
+	 * @since 1.9.0
+	 * @deprecated 2.0.0 Use `qazana()->documents->ajax_discard_changes()` method instead.
+	 * @access public
+	 *
+	 * @param $request
+	 *
+	 * @return bool
+	 */
+	public function ajax_discard_changes( $request ) {
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->ajax_discard_changes()' );
 
-		if ( empty( $_POST['post_id'] ) ) {
-			wp_send_json_error( new \WP_Error( 'no_post_id' ) );
-		}
-
-		if ( ! User::is_current_user_can_edit( $_POST['post_id'] ) ) {
-			wp_send_json_error( new \WP_Error( 'no_access' ) );
-		}
-
-		if ( isset( $_POST['status'] ) || in_array( $_POST['status'], [ DB::STATUS_PUBLISH, DB::STATUS_DRAFT, DB::STATUS_AUTOSAVE ] ) ) {
-			$status = $_POST['status'];
-		} else {
-			$status = DB::STATUS_DRAFT;
-		}
-
-        if ( ! empty( $_POST['save_state'] ) && $_POST['save_state'] === 'delete' ) {
-			$save_state = 'delete';
-		} else {
-			$save_state = 'save';
-		}
-
-		$posted = json_decode( stripslashes( html_entity_decode( $_POST['data'] ) ), true );
-
-		qazana()->db->save_editor( $_POST['post_id'], $posted, $status, $save_state );
-
-		$return_data = apply_filters( 'qazana/ajax_save_builder/return_data', [] );
-
-		wp_send_json_success( $return_data );
+		return qazana()->documents->ajax_discard_changes( $request );
 	}
 
-	private function _init_elements() {
+	/**
+	 * Ajax save builder.
+	 *
+	 * Ajax handler for Qazana save_builder. Handles the saved data returned
+	 * by the builder.
+	 *
+	 * Fired by `wp_ajax_qazana_save_builder` action.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 2.0.0 Use `qazana()->documents->ajax_save()` method instead.
+	 * @access public
+	 *
+	 * @param array $request
+	 *
+	 * @return mixed
+	 */
+	public function ajax_save_builder( $request ) {
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->ajax_save()' );
+
+		$return_data = qazana()->documents->ajax_save( $request );
+
+		/**
+		 * Returned ajax data.
+		 *
+		 * Filters the ajax data returned when saving the post on the builder.
+		 *
+		 * @since 1.0.0
+		 * @deprecated 2.0.0 Use `qazana/documents/ajax_save/return_data` filter instead.
+		 *
+		 * @param array $return_data The returned data. Default is an empty array.
+		 */
+		$return_data = apply_filters_deprecated( 'qazana/ajax_save_builder/return_data', [ $return_data, $request['editor_post_id'] ], '2.0.0', 'qazana/documents/ajax_save/return_data' );
+
+		return $return_data;
+	}
+
+	/**
+	 * Init elements.
+	 *
+	 * Initialize Qazana elements by registering the supported elements.
+	 * Qazana supports by default `section` element and `column` element.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 */
+	private function init_elements() {
 		$this->_element_types = [];
 
 		foreach ( [ 'section', 'column' ] as $element_name ) {
@@ -197,30 +331,80 @@ class Elements_Manager {
 			$this->register_element_type( new $class_name() );
 		}
 
+		/**
+		 * After elements registered.
+		 *
+		 * Fires after Qazana elements are registered.
+		 *
+		 * @since 1.0.0
+		 */
 		do_action( 'qazana/elements/elements_registered' );
 	}
 
-    private function init_categories() {
-        $categories = [
-            'basic' => [
-                'title' => __( 'Basic', 'qazana' ),
-                'icon' => 'eicon-font',
-            ],
-            'general-elements' => [
-                'title' => __( 'General Elements', 'qazana' ),
-                'icon' => 'eicon-font',
-            ],
-            'wordpress' => [
-                'title' => __( 'WordPress', 'qazana' ),
-                'icon' => 'eicon-wordpress',
-            ],
-        ];
+	/**
+	 * Init categories.
+	 *
+	 * Initialize the element categories.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 */
+	private function init_categories() {
+		$categories = [
+			'basic' => [
+				'title' => __( 'Basic', 'qazana' ),
+				'icon' => 'eicon-font',
+			],
+			'pro-elements' => [
+				'title' => __( 'Pro', 'qazana' ),
+			],
+			'general' => [
+				'title' => __( 'General', 'qazana' ),
+				'icon' => 'eicon-font',
+			],
+			'theme-elements' => [
+				'title' => __( 'Site', 'qazana' ),
+				'active' => false,
+			],
+			'woocommerce-elements' => [
+				'title' => __( 'WooCommerce', 'qazana' ),
+				'active' => false,
+			],
+		];
 
-        $this->_categories = apply_filters( 'qazana/elements/categories', $categories );
+		/**
+		 * When categories are registered.
+		 *
+		 * Fires after basic categories are registered, before WordPress
+		 * category have been registered.
+		 *
+		 * This is where categories registered by external developers are
+		 * added.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param Elements_Manager $this Elements manager instance.
+		 */
+		do_action( 'qazana/elements/categories_registered', $this );
 
-        return $this->_categories;
+        $this->categories = apply_filters( 'qazana/elements/categories', $categories );
 
-    }
+		$this->categories['wordpress'] = [
+			'title' => __( 'WordPress', 'qazana' ),
+			'icon' => 'eicon-wordpress',
+			'active' => false,
+		];
+	}
+
+	/**
+	 * Require files.
+	 *
+	 * Require Qazana element base class and column, section and repeater
+	 * elements.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 */
 
     public function require_files() {
 
@@ -235,7 +419,7 @@ class Elements_Manager {
 
         if ( is_array( $files ) ) {
             foreach ( $files as $file ) {
-                qazana()->widget_loader->locate_widget( $file, true );
+                qazana()->widgets_manager->loader->locate_widget( $file, true );
             }
         }
     }

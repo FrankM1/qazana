@@ -1,43 +1,141 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana column element.
+ *
+ * Qazana column handler class is responsible for initializing the column
+ * element.
+ *
+ * @since 1.0.0
+ */
 class Element_Column extends Element_Base {
 
+	/**
+	 * Element edit tools.
+	 *
+	 * Holds all the edit tools of the element. For example: delete, duplicate etc.
+	 *
+	 * @access protected
+	 * @static
+	 *
+	 * @var array
+	 */
 	protected static $_edit_tools;
 
-	protected static function get_default_edit_tools() {
-		$column_label = __( 'Column', 'qazana' );
-
-		return [
-			'duplicate' => [
-				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $column_label ),
-				'icon' => 'clone',
-			],
-			'add' => [
-				'title' => sprintf( __( 'Add %s', 'qazana' ), $column_label ),
-				'icon' => 'plus',
-			],
-			'remove' => [
-				'title' => sprintf( __( 'Remove %s', 'qazana' ), $column_label ),
-				'icon' => 'close',
-			],
-		];
-	}
-
+	/**
+	 * Get column name.
+	 *
+	 * Retrieve the column name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Column name.
+	 */
 	public function get_name() {
 		return 'column';
 	}
 
+	/**
+	 * Get element type.
+	 *
+	 * Retrieve the element type, in this case `column`.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 * @static
+	 *
+	 * @return string The type.
+	 */
+	public static function get_type() {
+		return 'column';
+	}
+
+	/**
+	 * Get column title.
+	 *
+	 * Retrieve the column title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Column title.
+	 */
 	public function get_title() {
 		return __( 'Column', 'qazana' );
 	}
 
+	/**
+	 * Get column icon.
+	 *
+	 * Retrieve the column icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Column icon.
+	 */
 	public function get_icon() {
 		return 'eicon-column';
 	}
 
+	/**
+	 * Get default edit tools.
+	 *
+	 * Retrieve the element default edit tools. Used to set initial tools.
+	 *
+	 * @since 2.1.0
+	 * @access protected
+	 * @static
+	 *
+	 * @return array Default edit tools.
+	 */
+	protected static function get_default_edit_tools() {
+		$column_label = __( 'Column', 'qazana' );
+
+		$edit_tools = [
+			'edit' => [
+				'title' => __( 'Edit', 'qazana' ),
+				'icon' => 'column',
+			],
+		];
+
+		if ( self::is_edit_buttons_enabled() ) {
+			$edit_tools += [
+				'duplicate' => [
+					/* translators: %s: Column label */
+					'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $column_label ),
+					'icon' => 'clone',
+				],
+				'add' => [
+					/* translators: %s: Column label */
+					'title' => sprintf( __( 'Add %s', 'qazana' ), $column_label ),
+					'icon' => 'plus',
+				],
+				'remove' => [
+					/* translators: %s: Column label */
+					'title' => sprintf( __( 'Remove %s', 'qazana' ), $column_label ),
+					'icon' => 'close',
+				],
+			];
+		}
+
+		return $edit_tools;
+	}
+
+	/**
+	 * Register column controls.
+	 *
+	 * Used to add new controls to the column element.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		// Section Layout.
 		$this->start_controls_section(
@@ -53,16 +151,17 @@ class Element_Column extends Element_Base {
 			[
 				'label' => __( 'Column Width', 'qazana' ) . ' (%)',
 				'type' => Controls_Manager::NUMBER,
-				'min' => 10,
-				'max' => 90,
+				'min' => 2,
+				'max' => 98,
+				'required' => true,
 				'device_args' => [
 					Controls_Stack::RESPONSIVE_TABLET => [
-						'nullable' => true,
 						'max' => 100,
+						'required' => false,
 					],
 					Controls_Stack::RESPONSIVE_MOBILE => [
-						'nullable' => true,
 						'max' => 100,
+						'required' => false,
 					],
 				],
 				'min_affected_device' => [
@@ -104,14 +203,18 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::NUMBER,
 				'placeholder' => 20,
 				'selectors' => [
-					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-bottom: {{VALUE}}px',//Need the full path for exclude the inner section
+					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-bottom: {{VALUE}}px', //Need the full path for exclude the inner section
 				],
 			]
 		);
 
 		$possible_tags = [
 			'div',
+			'header',
+			'footer',
+			'main',
 			'article',
+			'section',
 			'aside',
 			'nav',
 		];
@@ -188,6 +291,7 @@ class Element_Column extends Element_Base {
 					],
 				],
 				'render_type' => 'ui',
+				'separator' => 'before',
 			]
 		);
 
@@ -252,6 +356,37 @@ class Element_Column extends Element_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters',
+				'selector' => '{{WRAPPER}} > .qazana-element-populated >  .qazana-background-overlay',
+			]
+		);
+
+		$this->add_control(
+			'overlay_blend_mode',
+			[
+				'label' => __( 'Blend Mode', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'' => __( 'Normal', 'qazana' ),
+					'multiply' => 'Multiply',
+					'screen' => 'Screen',
+					'overlay' => 'Overlay',
+					'darken' => 'Darken',
+					'lighten' => 'Lighten',
+					'color-dodge' => 'Color Dodge',
+					'saturation' => 'Saturation',
+					'color' => 'Color',
+					'luminosity' => 'Luminosity',
+				],
+				'selectors' => [
+					'{{WRAPPER}} > .qazana-element-populated > .qazana-background-overlay' => 'mix-blend-mode: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
@@ -272,7 +407,7 @@ class Element_Column extends Element_Base {
 		$this->add_control(
 			'background_overlay_hover_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
+				'label' => __( 'Opacity', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => .5,
@@ -292,6 +427,14 @@ class Element_Column extends Element_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-element-populated >  .qazana-background-overlay',
+			]
+		);
+
 		$this->add_control(
 			'background_overlay_hover_transition',
 			[
@@ -307,6 +450,7 @@ class Element_Column extends Element_Base {
 					],
 				],
 				'render_type' => 'ui',
+				'separator' => 'before',
 			]
 		);
 
@@ -403,6 +547,7 @@ class Element_Column extends Element_Base {
 			[
 				'label' => __( 'Transition Duration', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
+				'separator' => 'before',
 				'default' => [
 					'size' => 0.3,
 				],
@@ -410,6 +555,20 @@ class Element_Column extends Element_Base {
 					'px' => [
 						'max' => 3,
 						'step' => 0.1,
+					],
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'background_background',
+							'operator' => '!==',
+							'value' => '',
+						], [
+							'name' => 'border_border',
+							'operator' => '!==',
+							'value' => '',
+						],
 					],
 				],
 				'selectors' => [
@@ -435,12 +594,12 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		if ( in_array( Scheme_Color::get_type(), Schemes_Manager::get_enabled_schemes() ) ) {
+		if ( in_array( Scheme_Color::get_type(), Schemes_Manager::get_enabled_schemes(), true ) ) {
 			$this->add_control(
 				'colors_warning',
 				[
 					'type' => Controls_Manager::RAW_HTML,
-					'raw' => __( 'Note: The following colors won\'t work if Global Colors are enabled.', 'qazana' ),
+					'raw' => __( 'Note: The following colors won\'t work if Default Colors are enabled.', 'qazana' ),
 					'content_classes' => 'qazana-panel-alert qazana-panel-alert-warning',
 				]
 			);
@@ -526,7 +685,7 @@ class Element_Column extends Element_Base {
 		$this->start_controls_section(
 			'section_advanced',
 			[
-				'label' => __( 'Element Style', 'qazana' ),
+				'label' => __( 'Advanced', 'qazana' ),
 				'type' => Controls_Manager::SECTION,
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
@@ -569,8 +728,8 @@ class Element_Column extends Element_Base {
 				'label' => __( 'CSS ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -581,54 +740,30 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'prefix_class' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_responsive',
+		// TODO: Backward comparability for deprecated controls
+		$this->add_control(
+			'screen_sm',
 			[
-				'label' => __( 'Responsive', 'qazana' ),
-				'tab' => Controls_Manager::TAB_ADVANCED,
+				'type' => Controls_Manager::HIDDEN,
 			]
 		);
 
 		$this->add_control(
 			'screen_sm_width',
 			[
-				'label' => __( 'Column Width', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'10' => '10%',
-					'11' => '11%',
-					'12' => '12%',
-					'14' => '14%',
-					'16' => '16%',
-					'20' => '20%',
-					'25' => '25%',
-					'30' => '30%',
-					'33' => '33%',
-					'40' => '40%',
-					'50' => '50%',
-					'60' => '60%',
-					'66' => '66%',
-					'70' => '70%',
-					'75' => '75%',
-					'80' => '80%',
-					'83' => '83%',
-					'90' => '90%',
-					'100' => '100%',
-				],
-				'default' => '100',
+				'type' => Controls_Manager::HIDDEN,
 				'condition' => [
 					'screen_sm' => [ 'custom' ],
 				],
 				'prefix_class' => 'qazana-sm-',
 			]
 		);
+		// END Backward comparability
 
 		$this->end_controls_section();
 	}
@@ -637,11 +772,10 @@ class Element_Column extends Element_Base {
 		?>
 		<div class="qazana-element-overlay">
 			<ul class="qazana-editor-element-settings qazana-editor-column-settings">
-				<li class="qazana-editor-element-setting qazana-editor-element-trigger" title="<?php printf( __( 'Edit %s', 'qazana' ), __( 'Column', 'qazana' ) ); ?>"><i class="eicon-column"></i></li>
 				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
 					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
+						<i class="eicon-<?php echo $edit_tool['icon']; ?>" aria-hidden="true"></i>
 						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-						<i class="eicon-<?php echo $edit_tool['icon']; ?>"></i>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -650,6 +784,14 @@ class Element_Column extends Element_Base {
 		<?php
 	}
 
+	/**
+	 * Render column output in the editor.
+	 *
+	 * Used to generate the live preview, using a Backbone JavaScript template.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<div class="qazana-column-wrap">
@@ -659,11 +801,19 @@ class Element_Column extends Element_Base {
 		<?php
 	}
 
+	/**
+	 * Before column rendering.
+	 *
+	 * Used to add stuff before the column element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function before_render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
-		$has_background_overlay = in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ||
-								  in_array( $settings['background_overlay_hover_background'], [ 'classic', 'gradient' ] );
+		$has_background_overlay = in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ], true ) ||
+								  in_array( $settings['background_overlay_hover_background'], [ 'classic', 'gradient' ], true );
 
 		$column_wrap_class = 'qazana-column-wrap';
 		if ( $this->get_children() ) {
@@ -679,6 +829,14 @@ class Element_Column extends Element_Base {
 		<?php
 	}
 
+	/**
+	 * After column rendering.
+	 *
+	 * Used to add stuff after the column element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function after_render() {
 		?>
 				</div>
@@ -687,7 +845,15 @@ class Element_Column extends Element_Base {
 		<?php
 	}
 
-	public function _add_render_attributes() {
+	/**
+	 * Add column render attributes.
+	 *
+	 * Used to add attributes to the current column wrapper HTML tag.
+	 *
+	 * @since 1.3.0
+	 * @access protected
+	 */
+	protected function _add_render_attributes() {
 		parent::_add_render_attributes();
 
 		$is_inner = $this->get_data( 'isInner' );
@@ -726,6 +892,18 @@ class Element_Column extends Element_Base {
 	
 	}
 
+	/**
+	 * Get default child type.
+	 *
+	 * Retrieve the column child type based on element data.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @param array $element_data Element ID.
+	 *
+	 * @return Element_Base Column default child type.
+	 */
 	protected function _get_default_child_type( array $element_data ) {
 		if ( 'section' === $element_data['elType'] ) {
 			return qazana()->elements_manager->get_element_types( 'section' );
@@ -734,6 +912,16 @@ class Element_Column extends Element_Base {
 		return qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
 	}
 
+	/**
+	 * Get HTML tag.
+	 *
+	 * Retrieve the column element HTML tag.
+	 *
+	 * @since 1.5.3
+	 * @access private
+	 *
+	 * @return string Column HTML tag.
+	 */
 	private function get_html_tag() {
 		$html_tag = $this->get_settings( 'html_tag' );
 

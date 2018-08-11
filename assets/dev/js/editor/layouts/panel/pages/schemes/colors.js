@@ -23,7 +23,7 @@ PanelSchemeColorsView = PanelSchemeBaseView.extend( {
 	},
 
 	onSystemSchemeClick: function( event ) {
-		var $schemeClicked = Backbone.$( event.currentTarget ),
+		var $schemeClicked = jQuery( event.currentTarget ),
 			schemeName = $schemeClicked.data( 'schemeName' ),
 			scheme = qazana.config.system_schemes[ this.getType() ][ schemeName ].items;
 

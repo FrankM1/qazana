@@ -1,11 +1,10 @@
 
-/*= Qazana Feedback
----------------------------------------*/
+//Qazana Feedback
+
 @keyframes qazana-rotation {
 	0% {
 		transform: rotate(0deg);
 	}
-
 	100% {
 		transform: rotate(359deg);
 	}
@@ -16,30 +15,19 @@
 }
 
 #qazana-deactivate-feedback-modal {
+
 	.dialog-widget-content {
 		width: 550px;
-		background-color: white;
 	}
 
 	.dialog-close-button {
-		i {
-			&:before {
-				content: '\f335';
-				font: 20px dashicons;
-			}
-		}
+		transition: $transition-hover;
 	}
 
-	.dialog-widget-header {
+	.dialog-header {
 		padding: 18px 15px;
 		box-shadow: $panel-bottom-shadow;
 		text-align: $start;
-		background-color: purple;
-		color: white;
-	}
-
-	.dialog-qazana-modal-close-button {
-		color: white;
 	}
 
 	.dialog-message {
@@ -53,6 +41,7 @@
 		box-shadow: none;
 
 		&:not(:checked) {
+
 			~ .qazana-feedback-text {
 				display: none;
 			}
@@ -78,6 +67,7 @@
 		border-top: none;
 		text-align: $start;
 		padding: 20px 30px 30px;
+		overflow: hidden;
 	}
 
 	.dialog-submit {
@@ -86,11 +76,12 @@
 		color: #fff;
 		line-height: 1;
 		padding: 12px 20px;
-		font-size: 14px;
+		font-size: 13px;
 		width: 180px;
 		height: 38px;
 
 		&.qazana-loading {
+
 			&:before {
 				display: inline-block;
 				content: '\f463';
@@ -105,10 +96,24 @@
 		color: $editor-light;
 		background: none;
 		float: $end;
+		width: auto;
+	}
+
+	&[data-feedback-selected="qazana_pro"] {
+
+		.qazana-feedback-text {
+			color: $editor-warning;
+			padding: 0;
+		}
+
+		.dialog-submit {
+			display: none;
+		}
 	}
 }
 
 #qazana-deactivate-feedback-dialog-header {
+
 	i {
 		color: $editor-accent;
 		font-size: 19px;

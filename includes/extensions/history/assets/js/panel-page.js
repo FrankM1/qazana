@@ -63,9 +63,9 @@ module.exports = Marionette.LayoutView.extend( {
 
 	activateTab: function( tabName ) {
 		this.ui.tabs
-			.removeClass( 'active' )
+			.removeClass( 'qazana-active' )
 			.filter( '[data-view="' + tabName + '"]' )
-			.addClass( 'active' );
+			.addClass( 'qazana-active' );
 
 		this.showView( tabName );
 	},

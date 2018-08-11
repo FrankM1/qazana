@@ -2,10 +2,13 @@
 	margin-top: 10px;
 	padding: 0;
 
-	& + .qazana-control {
+	&.qazana-open {
+		padding-bottom: 15px;
+	}
+
+	+ .qazana-control {
 
 		&:not(.qazana-control-type-section) {
-			padding-top: 15px;
 
 			&:before {
 				display: none;

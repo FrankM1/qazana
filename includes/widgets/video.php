@@ -1,16 +1,24 @@
 <?php
 namespace Qazana;
 
+use Qazana\Extensions\DynamicTags as TagsModule;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Video Widget
+ * Qazana video widget.
+ *
+ * Qazana widget that displays a video player.
+ *
+ * @since 1.0.0
  */
 class Widget_Video extends Widget_Base {
 
 	/**
+	 * Get widget name.
+	 *
 	 * Retrieve video widget name.
 	 *
 	 * @since 1.0.0
@@ -23,6 +31,8 @@ class Widget_Video extends Widget_Base {
 	}
 
 	/**
+	 * Get widget title.
+	 *
 	 * Retrieve video widget title.
 	 *
 	 * @since 1.0.0
@@ -35,6 +45,8 @@ class Widget_Video extends Widget_Base {
 	}
 
 	/**
+	 * Get widget icon.
+	 *
 	 * Retrieve video widget icon.
 	 *
 	 * @since 1.0.0
@@ -44,6 +56,36 @@ class Widget_Video extends Widget_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-youtube';
+	}
+
+	/**
+	 * Get widget categories.
+	 *
+	 * Retrieve the list of categories the video widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
+	public function get_categories() {
+		return [ 'basic' ];
+	}
+
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'video', 'player', 'embed', 'youtube', 'vimeo', 'dailymotion' ];
 	}
 
 	/**
@@ -65,23 +107,32 @@ class Widget_Video extends Widget_Base {
 		$this->add_control(
 			'video_type',
 			[
-				'label' => __( 'Video Type', 'qazana' ),
+				'label' => __( 'Source', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'youtube',
 				'options' => [
 					'youtube' => __( 'YouTube', 'qazana' ),
 					'vimeo' => __( 'Vimeo', 'qazana' ),
+					'dailymotion' => __( 'Dailymotion', 'qazana' ),
+					'hosted' => __( 'Self Hosted', 'qazana' ),
 				],
 			]
 		);
 
 		$this->add_control(
-			'link',
+			'youtube_url',
 			[
-				'label' => __( 'Link', 'qazana' ),
+				'label' => __( 'URL', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your YouTube link', 'qazana' ),
-				'default' => 'https://www.youtube.com/watch?v=1SkAqeshvBA',
+				'dynamic' => [
+					'active' => true,
+					'categories' => [
+						TagsModule::POST_META_CATEGORY,
+						TagsModule::URL_CATEGORY,
+					],
+				],
+				'placeholder' => __( 'Enter your YouTube URL', 'qazana' ),
+				'default' => 'https://www.youtube.com/watch?v=9uOETcuFjbE',
 				'label_block' => true,
 				'condition' => [
 					'video_type' => 'youtube',
@@ -90,11 +141,18 @@ class Widget_Video extends Widget_Base {
 		);
 
 		$this->add_control(
-			'vimeo_link',
+			'vimeo_url',
 			[
-				'label' => __( 'Vimeo Link', 'qazana' ),
+				'label' => __( 'URL', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your Vimeo link', 'qazana' ),
+				'dynamic' => [
+					'active' => true,
+					'categories' => [
+						TagsModule::POST_META_CATEGORY,
+						TagsModule::URL_CATEGORY,
+					],
+				],
+				'placeholder' => __( 'Enter your Vimeo URL', 'qazana' ),
 				'default' => 'https://vimeo.com/170933924',
 				'label_block' => true,
 				'condition' => [
@@ -104,13 +162,39 @@ class Widget_Video extends Widget_Base {
 		);
 
 		$this->add_control(
-			'hosted_link',
+			'dailymotion_url',
 			[
-				'label' => __( 'Link', 'qazana' ),
+				'label' => __( 'URL', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Enter your video link', 'qazana' ),
-				'default' => '',
+				'dynamic' => [
+					'active' => true,
+					'categories' => [
+						TagsModule::POST_META_CATEGORY,
+						TagsModule::URL_CATEGORY,
+					],
+				],
+				'placeholder' => __( 'Enter your Dailymotion URL', 'qazana' ),
+				'default' => 'https://www.dailymotion.com/video/x6koazf',
 				'label_block' => true,
+				'condition' => [
+					'video_type' => 'dailymotion',
+				],
+			]
+		);
+
+		$this->add_control(
+			'hosted_url',
+			[
+				'label' => __( 'URL', 'qazana' ),
+				'type' => Controls_Manager::MEDIA,
+				'dynamic' => [
+					'active' => true,
+					'categories' => [
+						TagsModule::POST_META_CATEGORY,
+						TagsModule::MEDIA_CATEGORY,
+					],
+				],
+				'media_type' => 'video',
 				'condition' => [
 					'video_type' => 'hosted',
 				],
@@ -118,23 +202,70 @@ class Widget_Video extends Widget_Base {
 		);
 
 		$this->add_control(
-			'aspect_ratio',
+			'start',
 			[
-				'label' => __( 'Aspect Ratio', 'qazana' ),
-				'type' => Controls_Manager::SELECT,
-				'frontend_available' => true,
-				'options' => [
-					'16:9' => '16:9',
-					'4:3' => '4:3',
-					'3:2' => '3:2',
+				'label' => __( 'Start Time', 'qazana' ),
+				'type' => Controls_Manager::NUMBER,
+				'description' => __( 'Specify a start time (in seconds)', 'qazana' ),
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'video_type',
+							'operator' => '!=',
+							'value' => 'hosted',
+						],
+						[
+							'relation' => 'and',
+							'terms' => [
+								[
+									'name' => 'video_type',
+									'value' => 'hosted',
+								],
+								[
+									'name' => 'loop',
+									'value' => '',
+								],
+							],
+						],
+					],
 				],
-				'default' => '16:9',
-				'frontend_available' => true,
 			]
 		);
 
 		$this->add_control(
-			'heading_youtube',
+			'end',
+			[
+				'label' => __( 'End Time', 'qazana' ),
+				'type' => Controls_Manager::NUMBER,
+				'description' => __( 'Specify an end time (in seconds)', 'qazana' ),
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'video_type',
+							'value' => 'youtube',
+						],
+						[
+							'relation' => 'and',
+							'terms' => [
+								[
+									'name' => 'video_type',
+									'value' => 'hosted',
+								],
+								[
+									'name' => 'loop',
+									'value' => '',
+								],
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'video_options',
 			[
 				'label' => __( 'Video Options', 'qazana' ),
 				'type' => Controls_Manager::HEADING,
@@ -142,66 +273,107 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
-		// YouTube
 		$this->add_control(
-			'yt_autoplay',
+			'autoplay',
 			[
 				'label' => __( 'Autoplay', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'No', 'qazana' ),
-				'label_on' => __( 'Yes', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
+			'mute',
+			[
+				'label' => __( 'Mute', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+			]
+		);
+
+		$this->add_control(
+			'loop',
+			[
+				'label' => __( 'Loop', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
-					'video_type' => 'youtube',
+					'video_type!' => 'dailymotion',
 				],
 			]
 		);
 
 		$this->add_control(
-			'yt_rel',
+			'controls',
+			[
+				'label' => __( 'Player Controls', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
+				'condition' => [
+					'video_type!' => 'vimeo',
+				],
+			]
+		);
+
+		$this->add_control(
+			'showinfo',
+			[
+				'label' => __( 'Video Info', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
+				'condition' => [
+					'video_type' => [ 'youtube', 'dailymotion' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'modestbranding',
+			[
+				'label' => __( 'Modest Branding', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'condition' => [
+					'video_type' => [ 'youtube' ],
+					'controls' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'logo',
+			[
+				'label' => __( 'Logo', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => __( 'Hide', 'qazana' ),
+				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
+				'condition' => [
+					'video_type' => [ 'dailymotion' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'color',
+			[
+				'label' => __( 'Controls Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'condition' => [
+					'video_type' => [ 'vimeo', 'dailymotion' ],
+				],
+			]
+		);
+
+		// YouTube.
+		$this->add_control(
+			'rel',
 			[
 				'label' => __( 'Suggested Videos', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_off' => __( 'Hide', 'qazana' ),
 				'label_on' => __( 'Show', 'qazana' ),
-				'condition' => [
-					'video_type' => 'youtube',
-				],
-			]
-		);
-
-		$this->add_control(
-			'yt_controls',
-			[
-				'label' => __( 'Player Control', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
-				'condition' => [
-					'video_type' => 'youtube',
-				],
-			]
-		);
-
-		$this->add_control(
-			'yt_showinfo',
-			[
-				'label' => __( 'Player Title & Actions', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
-				'default' => 'yes',
-				'condition' => [
-					'video_type' => 'youtube',
-				],
-			]
-		);
-
-		$this->add_control(
-			'yt_mute',
-			[
-				'label' => __( 'Mute', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
 					'video_type' => 'youtube',
 				],
@@ -221,28 +393,6 @@ class Widget_Video extends Widget_Base {
 		);
 
 		// Vimeo.
-		$this->add_control(
-			'vimeo_autoplay',
-			[
-				'label' => __( 'Autoplay', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'condition' => [
-					'video_type' => 'vimeo',
-				],
-			]
-		);
-
-		$this->add_control(
-			'vimeo_loop',
-			[
-				'label' => __( 'Loop', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'condition' => [
-					'video_type' => 'vimeo',
-				],
-			]
-		);
-
 		$this->add_control(
 			'vimeo_title',
 			[
@@ -285,17 +435,6 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'vimeo_color',
-			[
-				'label' => __( 'Controls Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'default' => '',
-				'condition' => [
-					'video_type' => 'vimeo',
-				],
-			]
-		);
 
 		$this->end_controls_section();
 
@@ -330,13 +469,24 @@ class Widget_Video extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Image_Size::get_type(),
+			[
+				'name' => 'image_overlay', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `image_overlay_size` and `image_overlay_custom_dimension`.
+				'default' => 'full',
+				'separator' => 'none',
+				'condition' => [
+					'show_image_overlay' => 'yes',
+				],
+			]
+		);
+
 		$this->add_control(
 			'show_play_icon',
 			[
 				'label' => __( 'Play Icon', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'Hide', 'qazana' ),
-				'label_on' => __( 'Show', 'qazana' ),
+				'default' => 'yes',
 				'condition' => [
 					'show_image_overlay' => 'yes',
 					'image_overlay[url]!' => '',
@@ -345,383 +495,430 @@ class Widget_Video extends Widget_Base {
 		);
 
 		$this->add_control(
-			'play_icon_type',
+			'lightbox',
 			[
-				'label' => __( 'Icon Type', 'qazana' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
+				'label' => __( 'Lightbox', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'frontend_available' => true,
+				'label_off' => __( 'Off', 'qazana' ),
+				'label_on' => __( 'On', 'qazana' ),
+				'condition' => [
+					'show_image_overlay' => 'yes',
+					'image_overlay[url]!' => '',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_video_style',
+			[
+				'label' => __( 'Video', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'aspect_ratio',
+			[
+				'label' => __( 'Aspect Ratio', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'image' => [
-						'title' => __( 'Image', 'qazana' ),
-						'icon' => 'fa fa-picture-o',
-					],
-					'icon' => [
-						'title' => __( 'Icon', 'qazana' ),
-						'icon' => 'fa fa-star',
-					],
+					'169' => '16:9',
+					'43' => '4:3',
+					'32' => '3:2',
 				],
-				'default' => 'icon',
-				'condition' => [
-					'show_image_overlay' => 'yes',
-					'image_overlay[url]!' => '',
-				],
+				'default' => '169',
+				'prefix_class' => 'qazana-aspect-ratio-',
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters',
+				'selector' => '{{WRAPPER}} .qazana-wrapper',
 			]
 		);
 
 		$this->add_control(
-			'icon',
+			'play_icon_title',
 			[
-				'label' => __( 'Icon', 'qazana' ),
-				'type' => Controls_Manager::ICON,
-				'label_block' => true,
-				'default' => 'fa fa-play-circle',
+				'label' => __( 'Play Icon', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
 				'condition' => [
 					'show_image_overlay' => 'yes',
-					'image_overlay[url]!' => '',
+					'show_play_icon' => 'yes',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'play_icon_color',
+			[
+				'label' => __( 'Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .qazana-custom-embed-play i' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'show_image_overlay' => 'yes',
+					'show_play_icon' => 'yes',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'play_icon_size',
+			[
+				'label' => __( 'Size', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 10,
+						'max' => 300,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-custom-embed-play i' => 'font-size: {{SIZE}}{{UNIT}}',
+				],
+				'condition' => [
+					'show_image_overlay' => 'yes',
+					'show_play_icon' => 'yes',
 				],
 			]
 		);
 
 		$this->add_group_control(
-			Group_Control_Background::get_type(),
+			Group_Control_Text_Shadow::get_type(),
 			[
-				'name' => 'image_background_overlay',
-				'selector' => '{{WRAPPER}} .qazana-image-background-overlay',
+				'name' => 'play_icon_text_shadow',
+				'selector' => '{{WRAPPER}} .qazana-custom-embed-play i',
+				'fields_options' => [
+					'text_shadow_type' => [
+						'label' => _x( 'Shadow', 'Text Shadow Control', 'qazana' ),
+					],
+				],
 				'condition' => [
 					'show_image_overlay' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'image_background_overlay_opacity',
-			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => .5,
-				],
-				'range' => [
-					'px' => [
-						'max' => 1,
-						'step' => 0.01,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-image-background-overlay' => 'opacity: {{SIZE}};',
-				],
-				'condition' => [
-					'image_background_overlay_background' => [ 'classic' ],
+					'show_play_icon' => 'yes',
 				],
 			]
 		);
 
 		$this->end_controls_section();
-
-		$this->_register_icon_controls();
-
-	}
-
-	protected function _register_icon_controls() {
 
 		$this->start_controls_section(
-			'section_style_icon',
+			'section_lightbox_style',
 			[
-				'label' => __( 'Icon', 'qazana' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Lightbox', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_image_overlay' => 'yes',
+					'image_overlay[url]!' => '',
+					'lightbox' => 'yes',
+				],
 			]
 		);
 
 		$this->add_control(
-			'icon_color',
+			'lightbox_color',
 			[
-				'label' => __( 'Icon Color', 'qazana' ),
+				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_1,
-				],
-				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .qazana-icon svg path ' => 'stroke: {{VALUE}};',
+					'#qazana-lightbox-{{ID}}' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'icon_size',
+			'lightbox_ui_color',
 			[
-				'label' => __( 'Icon Size', 'qazana' ),
+				'label' => __( 'UI Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'#qazana-lightbox-{{ID}} .dialog-lightbox-close-button' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'lightbox_ui_color_hover',
+			[
+				'label' => __( 'UI Hover Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'#qazana-lightbox-{{ID}} .dialog-lightbox-close-button:hover' => 'color: {{VALUE}}',
+				],
+				'separator' => 'after',
+			]
+		);
+
+		$this->add_control(
+			'lightbox_video_width',
+			[
+				'label' => __( 'Content Width', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 100
+					'unit' => '%',
 				],
 				'range' => [
-					'px' => [
-						'min' => 6,
-						'max' => 300,
+					'%' => [
+						'min' => 50,
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'(desktop+)#qazana-lightbox-{{ID}} .qazana-video-container' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'icon_padding',
+			'lightbox_content_position',
 			[
-				'label' => __( 'Icon Padding', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				'label' => __( 'Content Position', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'frontend_available' => true,
+				'options' => [
+					'' => __( 'Center', 'qazana' ),
+					'top' => __( 'Top', 'qazana' ),
 				],
-				'condition' => [
-					'view!' => 'default',
+				'selectors' => [
+					'#qazana-lightbox-{{ID}} .qazana-video-container' => '{{VALUE}}; transform: translateX(-50%);',
+				],
+				'selectors_dictionary' => [
+					'top' => 'top: 60px',
 				],
 			]
 		);
 
-		$this->add_control(
-			'icon_margin',
-			[
-				'label' => __( 'Icon Margin', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition' => [
-					'view!' => 'default',
-				],
-			]
-		);
-
-		$this->add_control(
-			'rotate',
-			[
-				'label' => __( 'Icon Rotate', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 0,
-					'unit' => 'deg',
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'transform: rotate({{SIZE}}{{UNIT}});',
-				],
-			]
-		);
-
-		$this->add_control(
-			'border_width',
-			[
-				'label' => __( 'Border Width', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition' => [
-					'view' => 'framed',
-				],
-			]
-		);
-
-		$this->add_control(
-			'border_radius',
-			[
-				'label' => __( 'Border Radius', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition' => [
-					'view!' => 'default',
-				],
-			]
-		);
+		// $this->add_control(
+		// 	'lightbox_content_animation',
+		// 	[
+		// 		'label' => __( 'Entrance Animation', 'qazana' ),
+		// 		'type' => Controls_Manager::ANIMATION,
+		// 		'default' => '',
+		// 		'frontend_available' => true,
+		// 		'label_block' => true,
+		// 	]
+		// );
 
 		$this->end_controls_section();
-	}
-
-	protected function get_render_icon() {
-
-		$settings = $this->get_settings();
-
-		$icon_tag = 'span';
-
-		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
-
-		$icon_attributes = $this->get_render_attribute_string( 'icon' );
-
-		if ( ! empty( $settings['icon'] ) ) {
-			$this->add_render_attribute( 'i', 'class', $settings['icon'] );
-		}
-
-		if ( $settings['icon_type'] === 'image' ) {
-
-			$filetype = wp_check_filetype( $settings['image']['url'] );
-
-			if ( $filetype['ext'] === 'svg' ) {
-				$this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
-				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['animation_speed'] );
-				$this->add_render_attribute( 'image', 'data-size', $settings['icon_size']['size'] );
-				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['animation_delay'] );
-				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
-				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
-			}
-		}
-
-		$output = '<'. implode( ' ', [ $icon_tag, $icon_attributes ] ) .'>';
-
-			if ( $settings['icon_type'] === 'image' ) {
-				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" /></span>';
-			} else {
-				$output .= '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
-			}
-
-		$output .= '</'. $icon_tag .'>';
-
-		return $output;
-	}
-	
-	public function render() {
-		$settings = $this->get_settings();
-
-		if ( 'hosted' !== $settings['video_type'] ) {
-
-			$video_link = 'youtube' === $settings['video_type'] ? $settings['link'] : $settings['vimeo_link'];
-
-			if ( empty( $video_link ) )
-				return;
-
-			$embed_params = $this->get_embed_params();
-
-			$video_html = Embed::get_embed_html( $video_link, $embed_params );
-
-		} else {
-
-			$video_html = wp_video_shortcode( $this->get_hosted_params() );
-		}
-
-		if ( empty( $video_html ) ) {
-			echo esc_url( $video_link );
-			return;
-		} 
-
-		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-video-wrapper' );
-		
-		if ( $this->get_settings( 'lightbox' ) ) {
-			$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-fit-aspect-ratio' );
-		}
-
-		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-open-inline' );
-
-		if ( empty( $settings['aspect_ratio'] ) ) {
-            $settings['aspect_ratio'] = '16:9';
-        }
-
-        $this->add_render_attribute( 'video-wrapper', 'data-video-aspect-ratio', $settings['aspect_ratio'] );
-        $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-aspect-ratio-' . str_replace( ':', '', $settings['aspect_ratio'] ) );
-        
-        $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-align-' . $this->get_responsive_settings('button_align') );
-        if ( ! empty( $settings['text'] ) ) {
-            $this->add_render_attribute( 'video-wrapper', 'class', 'qazana-button-has-text' );
-        } 
-		
-		?><div <?php $this->render_attribute_string( 'video-wrapper' ); ?>><?php 
-
-		echo $video_html;
-
-			if ( $this->has_image_overlay() ) : ?>
-				<div class="qazana-custom-embed-image-overlay" style="background-image: url(<?php echo $settings['image_overlay']['url']; ?>);">
-					<?php if ( $settings['show_play_icon'] ) : ?>
-						<div class="qazana-custom-embed-play">
-							<?php echo $this->get_render_icon(); ?>
-						</div>
-					<?php endif; ?>
-					<div class="qazana-image-background-overlay"></div>
-				</div>
-			<?php endif; 
-				
-		?></div><?php
-
 	}
 
 	/**
+	 * Render video widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	
+	public function render() {
+		$settings = $this->get_settings_for_display();
+
+		$video_url = $settings[ $settings['video_type'] . '_url' ];
+
+		if ( 'hosted' === $settings['video_type'] ) {
+			$video_url = $this->get_hosted_video_url();
+		}
+
+		if ( empty( $video_url ) ) {
+			return;
+		}
+
+		if ( 'hosted' === $settings['video_type'] ) {
+			ob_start();
+
+			$this->render_hosted_video();
+
+			$video_html = ob_get_clean();
+		} else {
+			$embed_params = $this->get_embed_params();
+
+			$embed_options = $this->get_embed_options();
+
+			$video_html = Embed::get_embed_html( $video_url, $embed_params, $embed_options );
+		}
+
+		if ( empty( $video_html ) ) {
+			echo esc_url( $video_url );
+
+			return;
+		}
+
+		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-wrapper' );
+
+		if ( ! $settings['lightbox'] ) {
+			$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-fit-aspect-ratio' );
+		}
+
+		$this->add_render_attribute( 'video-wrapper', 'class', 'qazana-open-' . ( $settings['lightbox'] ? 'lightbox' : 'inline' ) );
+		?>
+		<div <?php echo $this->get_render_attribute_string( 'video-wrapper' ); ?>>
+			<?php
+			if ( ! $settings['lightbox'] ) {
+				echo $video_html; // XSS ok.
+			}
+
+			if ( $this->has_image_overlay() ) {
+				$this->add_render_attribute( 'image-overlay', 'class', 'qazana-custom-embed-image-overlay' );
+
+				if ( $settings['lightbox'] ) {
+					if ( 'hosted' === $settings['video_type'] ) {
+						$lightbox_url = $video_url;
+					} else {
+						$lightbox_url = Embed::get_embed_url( $video_url, $embed_params, $embed_options );
+					}
+
+					$lightbox_options = [
+						'type' => 'video',
+						'videoType' => $settings['video_type'],
+						'url' => $lightbox_url,
+						'modalOptions' => [
+							'id' => 'qazana-lightbox-' . $this->get_id(),
+							'entranceAnimation' => $settings['lightbox_content_animation'],
+							'videoAspectRatio' => $settings['aspect_ratio'],
+						],
+					];
+
+					if ( 'hosted' === $settings['video_type'] ) {
+						$lightbox_options['videoParams'] = $this->get_hosted_params();
+					}
+
+					$this->add_render_attribute( 'image-overlay', [
+						'data-qazana-open-lightbox' => 'yes',
+						'data-qazana-lightbox' => wp_json_encode( $lightbox_options ),
+					] );
+
+					if ( qazana()->editor->is_edit_mode() ) {
+						$this->add_render_attribute( 'image-overlay', [
+							'class' => 'qazana-clickable',
+						] );
+					}
+				} else {
+					$this->add_render_attribute( 'image-overlay', 'style', 'background-image: url(' . Group_Control_Image_Size::get_attachment_image_src( $settings['image_overlay']['id'], 'image_overlay', $settings ) . ');' );
+				}
+				?>
+				<div <?php echo $this->get_render_attribute_string( 'image-overlay' ); ?>>
+					<?php if ( $settings['lightbox'] ) : ?>
+						<?php echo Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_overlay' ); ?>
+					<?php endif; ?>
+					<?php if ( 'yes' === $settings['show_play_icon'] ) : ?>
+						<div class="qazana-custom-embed-play" role="button">
+							<i class="eicon-play" aria-hidden="true"></i>
+							<span class="qazana-screen-only"><?php echo __( 'Play Video', 'qazana' ); ?></span>
+						</div>
+					<?php endif; ?>
+				</div>
+			<?php } ?>
+		</div>
+	<?php
+	}
+
+	/**
+	 * Render video widget as plain content.
+	 *
+	 * Override the default behavior, by printing the video URL insted of rendering it.
+	 *
+	 * @since 1.4.5
+	 * @access public
+	 */
+	public function render_plain_content() {
+		$settings = $this->get_settings_for_display();
+
+		$url = $settings[ $settings['video_type'] . '_url' ];
+
+		echo esc_url( $url );
+	}
+
+	/**
+	 * Get embed params.
+	 *
 	 * Retrieve video widget embed parameters.
 	 *
+	 * @since 1.5.0
 	 * @access public
 	 *
 	 * @return array Video embed parameters.
 	 */
 	public function get_embed_params() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$params = [];
+
+		if ( $settings['autoplay'] && ! $this->has_image_overlay() ) {
+			$params['autoplay'] = '1';
+		}
+
+		$params_dictionary = [];
 
 		if ( 'youtube' === $settings['video_type'] ) {
-			$youtube_options = [ 'autoplay', 'rel', 'controls', 'showinfo', 'mute' ];
+			$params_dictionary = [
+				'loop',
+				'controls',
+				'mute',
+				'showinfo',
+				'rel',
+				'modestbranding',
+			];
 
-			foreach ( $youtube_options as $option ) {
-				if ( 'autoplay' === $option && $this->has_image_overlay() ) {
-					continue;
-				}
+			if ( $settings['loop'] ) {
+				$video_properties = Embed::get_video_properties( $settings['youtube_url'] );
 
-				$value = ( 'yes' === $settings[ 'yt_' . $option ] ) ? '1' : '0';
-				$params[ $option ] = $value;
+				$params[ 'playlist' ] = $video_properties['video_id'];
 			}
+
+			$params['start'] = $settings['start'];
+
+			$params['end'] = $settings['end'];
 
 			$params['wmode'] = 'opaque';
+		} elseif ( 'vimeo' === $settings['video_type'] ) {
+			$params_dictionary = [
+				'loop',
+				'mute' => 'muted',
+				'vimeo_title' => 'title',
+				'vimeo_portrait' => 'portrait',
+				'vimeo_byline' => 'byline',
+			];
+
+			$params['color'] = str_replace( '#', '', $settings['color'] );
+
+			$params['autopause'] = '0';
+		} elseif ( 'dailymotion' === $settings['video_type'] ) {
+			$params_dictionary = [
+				'controls',
+				'mute',
+				'showinfo' => 'ui-start-screen-info',
+				'logo' => 'ui-logo',
+			];
+
+			$params['ui-highlight'] = str_replace( '#', '', $settings['color'] );
+
+			$params['start'] = $settings['start'];
+
+			$params['endscreen-enable'] = '0';
 		}
 
-		if ( 'vimeo' === $settings['video_type'] ) {
-			$vimeo_options = [ 'autoplay', 'loop', 'title', 'portrait', 'byline' ];
+		foreach ( $params_dictionary as $key => $param_name ) {
+			$setting_name = $param_name;
 
-			foreach ( $vimeo_options as $option ) {
-				if ( 'autoplay' === $option && $this->has_image_overlay() ) {
-					continue;
-				}
-
-				$value = ( 'yes' === $settings[ 'vimeo_' . $option ] ) ? '1' : '0';
-				$params[ $option ] = $value;
+			if ( is_string( $key ) ) {
+				$setting_name = $key;
 			}
 
-			$params['color'] = str_replace( '#', '', $settings['vimeo_color'] );
+			$setting_value = $settings[ $setting_name ] ? '1' : '0';
+
+			$params[ $param_name ] = $setting_value;
 		}
 
-		return $params;
-	}
-
-	/**
-	 * Retrieve video widget hosted parameters.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 *
-	 * @return array Video hosted parameters.
-	 */
-	protected function get_hosted_params() {
-		$settings = $this->get_settings();
-
-		$params = [];
-
-		$params['src'] = $settings['hosted_link'];
-
-		$hosted_options = [ 'autoplay', 'loop' ];
-
-		foreach ( $hosted_options as $key => $option ) {
-			$value = ( 'yes' === $settings[ 'hosted_' . $option ] ) ? '1' : '0';
-			$params[ $option ] = $value;
-		}
-
-		if ( ! empty( $settings['hosted_width'] ) ) {
-			$params['width'] = $settings['hosted_width'];
-		}
-
-		if ( ! empty( $settings['hosted_height'] ) ) {
-			$params['height'] = $settings['hosted_height'];
-		}
 		return $params;
 	}
 
@@ -736,10 +933,71 @@ class Widget_Video extends Widget_Base {
 	 * @return bool Whether an image overlay was set for the video.
 	 */
 	protected function has_image_overlay() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		return ! empty( $settings['image_overlay']['url'] ) && 'yes' === $settings['show_image_overlay'];
 	}
 
-	protected function _content_template() {}
+	private function get_embed_options() {
+		$settings = $this->get_settings_for_display();
+
+		$embed_options = [];
+
+		if ( 'youtube' === $settings['video_type'] ) {
+			$embed_options[ 'privacy' ] = $settings['yt_privacy'];
+		} elseif ( 'vimeo' === $settings['video_type'] ) {
+			$embed_options[ 'start' ] = $settings['start'];
+		}
+
+		return $embed_options;
+	}
+
+	private function get_hosted_params() {
+		$settings = $this->get_settings_for_display();
+
+		$video_params = [];
+
+		foreach ( [ 'autoplay', 'loop', 'controls' ] as $option_name ) {
+			if ( $settings[ $option_name ] ) {
+				$video_params[] = $option_name;
+			}
+		}
+
+		if ( $settings['mute'] ) {
+			$video_params[] = 'muted';
+		}
+
+		return $video_params;
+	}
+
+	private function get_hosted_video_url() {
+		$settings = $this->get_settings_for_display();
+
+		$video_url = $settings['hosted_url']['url'];
+
+		if ( ! $video_url ) {
+			return '';
+		}
+
+		$video_url .= '#t=';
+
+		if ( $settings['start'] ) {
+			$video_url .= $settings['start'];
+		}
+
+		if ( $settings['end'] ) {
+			$video_url .= ',' . $settings['end'];
+		}
+
+		return $video_url;
+	}
+
+	private function render_hosted_video() {
+		$video_params = $this->get_hosted_params();
+
+		$video_url = $this->get_hosted_video_url();
+		?>
+		<video class="qazana-video" src="<?php echo esc_url( $video_url ); ?>" <?php echo implode( ' ', $video_params ); ?>></video>
+		<?php
+	}
 }

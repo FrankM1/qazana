@@ -6,33 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Border control.
+ * Qazana border control.
  *
  * A base control for creating border control. Displays input fields to define
  * border type, border width and border color.
  *
- * Creating new control in the editor (inside `Widget_Base::_register_controls()`
- * method):
- *
- *    $this->add_group_control(
- *    	Group_Control_Border::get_type(),
- *    	[
- *    		'name' => 'border',
- *    		'selector' => '{{WRAPPER}} .wrapper',
- *    		'separator' => 'before',
- *    	]
- *    );
- *
  * @since 1.0.0
- *
- * @param string $name        The field name.
- * @param string $separator   Optional. Set the position of the control separator.
- *                            Available values are 'default', 'before', 'after'
- *                            and 'none'. 'default' will position the separator
- *                            depending on the control type. 'before' / 'after'
- *                            will position the separator before/after the
- *                            control. 'none' will hide the separator. Default
- *                            is 'default'.
  */
 class Group_Control_Border extends Group_Control_Base {
 
@@ -50,9 +29,9 @@ class Group_Control_Border extends Group_Control_Base {
 	protected static $fields;
 
 	/**
-	 * Retrieve type.
-	 *
 	 * Get border control type.
+	 *
+	 * Retrieve the control type, in this case `border`.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -86,11 +65,11 @@ class Group_Control_Border extends Group_Control_Base {
 				'double' => _x( 'Double', 'Border Control', 'qazana' ),
 				'dotted' => _x( 'Dotted', 'Border Control', 'qazana' ),
 				'dashed' => _x( 'Dashed', 'Border Control', 'qazana' ),
+				'groove' => _x( 'Groove', 'Border Control', 'qazana' ),
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'border-style: {{VALUE}};',
-            ],
-            'responsive' => true,
+			],
 		];
 
 		$fields['width'] = [
@@ -101,8 +80,7 @@ class Group_Control_Border extends Group_Control_Base {
 			],
 			'condition' => [
 				'border!' => '',
-            ],
-            'responsive' => true,
+			],
 		];
 
 		$fields['color'] = [
@@ -114,13 +92,23 @@ class Group_Control_Border extends Group_Control_Base {
 			],
 			'condition' => [
 				'border!' => '',
-            ],
-            'responsive' => true,
+			],
 		];
 
 		return $fields;
 	}
 
+	/**
+	 * Get default options.
+	 *
+	 * Retrieve the default options of the border control. Used to return the
+	 * default options while initializing the border control.
+	 *
+	 * @since 1.9.0
+	 * @access protected
+	 *
+	 * @return array Default border control options.
+	 */
 	protected function get_default_options() {
 		return [
 			'popover' => false,

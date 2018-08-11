@@ -4,6 +4,10 @@ namespace Qazana\WP_CLI;
 use WP_CLI;
 use WP_CLI_Command;
 
+use Qazana\Template_Library\Template_Api as Api;
+use Qazana\Template_Library\Source_Local;
+use Qazana\Utils;
+
 /**
 * WP ClI Commands for Qazana
 */
@@ -53,7 +57,7 @@ class Commands extends WP_CLI_Command {
 
 				switch_to_blog( $blog_id );
 
-				qazana()->posts_css_manager->clear_cache();
+				qazana()->files_manager->clear_cache();
 
 				WP_CLI::success( 'Regenerated the Qazana CSS for site - ' . get_option( 'home' ) );
 
@@ -62,9 +66,87 @@ class Commands extends WP_CLI_Command {
 			
 		} else {
 
-			qazana()->posts_css_manager->clear_cache();
+			qazana()->files_manager->clear_cache();
 			WP_CLI::success( 'Regenerated the Qazana CSS' );
 		}
+    }
+    
+    /**
+	 * Replace old URLs with new URLs in all Qazana pages.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *  1. wp qazana search-replace <old> <new>
+	 *      - This will replace all <old> URLs with the <new> URL.
+	 *
+	 * @alias replace-urls
+	 */
+
+	public function replace_urls( $args, $assoc_args ) {
+		if ( empty( $args[0] ) ) {
+			\WP_CLI::error( 'Please set the `old` URL' );
+		}
+
+		if ( empty( $args[1] ) ) {
+			\WP_CLI::error( 'Please set the `new` URL' );
+		}
+
+		try {
+			$results = Utils::replace_urls( $args[0], $args[1] );
+			\WP_CLI::success( $results );
+		} catch ( \Exception $e ) {
+			\WP_CLI::error( $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Sync Qazana Library.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *  1. wp qazana sync-library
+	 *      - This will sync the library with Qazana cloud library.
+	 *
+	 * @alias sync-library
+	 */
+	public function sync_library( $args, $assoc_args ) {
+		$data = Api::_get_info_data( true );
+
+		if ( empty( $data ) ) {
+			\WP_CLI::error( 'Cannot sync library.' );
+		}
+
+		\WP_CLI::success( 'Library has been synced.' );
+	}
+
+	/**
+	 * Import template files to the Library.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *  1. wp qazana import-library <file-path>
+	 *      - This will import a file or a zip of multiple files to the library.
+	 *
+	 * @alias import-library
+	 */
+	public function import_library( $args, $assoc_args ) {
+		if ( empty( $args[0] ) ) {
+			\WP_CLI::error( 'Please set file path.' );
+		}
+
+		if ( ! is_readable( $args[0] ) ) {
+			\WP_CLI::error( 'Cannot read file.' );
+		}
+		/** @var Source_Local $source */
+		$source = qazana()->templates_manager->get_source( 'local' );
+
+		$imported_items = $source->import_template( basename( $args[0] ), $args[0] );
+
+		if ( empty( $imported_items ) ) {
+			\WP_CLI::error( 'Cannot import.' );
+		}
+
+		\WP_CLI::success( count( $imported_items ) . ' item(s) has been imported.' );
 	}
 }
 

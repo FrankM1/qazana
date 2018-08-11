@@ -53,8 +53,8 @@ $progress-bg: #eeeeee;
 $progress-text: #ffffff;
 
 // Editor colors
-$editor-darkest: #23282d;
-$editor-darker: #2d2d2d;
+$editor-darkest: rgb(22, 22, 22);
+$editor-darker: #1a0316;
 $editor-dark: #444;
 
 $editor-light: #a0a5aa;
@@ -75,12 +75,17 @@ $editor-orange: #fcb92c;
 $editor-font: 'Noto Sans', Helvetica, Arial, Verdana, sans-serif;
 $editor-font-weight: 400;
 
+// WordPress
+$wp-primary: #0085ba;
+
 // Panel style
 $panel-top-shadow: -2px -5px 8px rgba(0, 0, 0, 0.1);
 $panel-bottom-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 
+$slides_gui: rgba(238, 238, 238, .9);
+
 // Panel Transition
-$transition-hover: all 0.5s;
+$transition-hover: all .5s;
 
 // Layers (Z-indexes)
 $under-layer: -1;
@@ -94,6 +99,7 @@ $fourth-layer: 110;
 $element-overlay: 999;
 $editor-layer: 9999;
 $qazana-modal: 10001;
+$super-layer: 10000;
 
 // Grid Columns
 $column-sizes: ( 10: 10%, 11: 11.111%, 12: 12.5%, 14: 14.285%, 16: 16.666%, 20: 20%, 25: 25%, 30: 30%, 33: 33.333%, 40: 40%, 50: 50%, 60: 60%, 66: 66.666%, 70: 70%, 75: 75%, 80: 80%, 83: 83.333%, 90: 90%, 100: 100% );
@@ -103,14 +109,9 @@ $panel-width: 280px;
 $panel-xl-width: 300px;
 
 // Grid Breakpoints
-$breakpoints: ( sm: 480px, /* Mobile landscape */ md: 768px, /* Tablet*/ lg: 1025px, /* Desktop*/ xl: 1440px /* Largest devices*/ );
-
-// Media Queries
-$screen-xs-max: map_get($breakpoints, sm) - 1;
-$screen-sm-min: map_get($breakpoints, sm);
-$screen-sm-max: map_get($breakpoints, md) - 1;
-$screen-md-min: map_get($breakpoints, md);
-$screen-md-max: map_get($breakpoints, lg) - 1;
-$screen-lg-min: map_get($breakpoints, lg);
-$screen-lg-max: map_get($breakpoints, xl) - 1;
-$screen-xl-min: map_get($breakpoints, xl);
+$breakpoints: ( sm: 480px, // Mobile landscape
+md: 768px, // Tablet
+lg: 1025px, // Desktop
+xl: 1440px, // Larger devices
+xxl: 1600px // Largest devices
+);

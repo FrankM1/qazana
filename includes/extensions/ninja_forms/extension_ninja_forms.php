@@ -10,7 +10,7 @@ class Ninja_Forms extends Base {
         return [
         	'title' => __( 'Ninja Forms Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
-        	'required' => true,
+        	'required' => false,
         	'default_activation' => $ninja_exists,
         ];
 

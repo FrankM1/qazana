@@ -6,48 +6,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Structure control.
+ * Qazana structure control.
  *
  * A base control for creating structure control. A private control for section
  * columns structure.
  *
- * Creating new control in the editor (inside `Widget_Base::_register_controls()`
- * method):
- *
- *    $this->add_control(
- *    	'structure',
- *    	[
- *    		'label' => __( 'Structure', 'plugin-domain' ),
- *    		'type' => Controls_Manager::STRUCTURE,
- *    		'default' => '10',
- *    		'render_type' => 'none',
- *    	]
- *    );
- *
  * @since 1.0.0
- *
- * @param string $label       Optional. The label that appears above of the
- *                            field. Default is empty.
- * @param string $description Optional. The description that appears below the
- *                            field. Default is empty.
- * @param int    $default     Optional. The field default value. Default is
- *                            empty.
- * @param string $separator   Optional. Set the position of the control separator.
- *                            Available values are 'default', 'before', 'after'
- *                            and 'none'. 'default' will position the separator
- *                            depending on the control type. 'before' / 'after'
- *                            will position the separator before/after the
- *                            control. 'none' will hide the separator. Default
- *                            is 'none'.
- * @param bool   $show_label  Optional. Whether to display the label. Default is
- *                            true.
- * @param bool   $label_block Optional. Whether to display the label in a
- *                            separate line. Default is true.
  */
 class Control_Structure extends Base_Data_Control {
 
 	/**
-	 * Retrieve structure control type.
+	 * Get structure control type.
+	 *
+	 * Retrieve the control type, in this case `structure`.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -78,8 +49,8 @@ class Control_Structure extends Base_Data_Control {
 				<div class="qazana-control-structure-preset qazana-control-structure-current-preset">
 					{{{ qazana.presetsFactory.getPresetSVG( currentPreset.preset, 233, 72, 5 ).outerHTML }}}
 				</div>
-				<div class="qazana-control-structure-reset" aria-hidden="true">
-					<i class="fa fa-undo"></i>
+				<div class="qazana-control-structure-reset">
+					<i class="fa fa-undo" aria-hidden="true"></i>
 					<?php _e( 'Reset Structure', 'qazana' ); ?>
 				</div>
 				<#
@@ -101,7 +72,7 @@ class Control_Structure extends Base_Data_Control {
 				<# } #>
 			</div>
 		</div>
-		
+
 		<# if ( data.description ) { #>
 			<div class="qazana-control-field-description">{{{ data.description }}}</div>
 		<# } #>
@@ -109,9 +80,9 @@ class Control_Structure extends Base_Data_Control {
 	}
 
 	/**
-	 * Retrieve structure control default settings.
+	 * Get structure control default settings.
 	 *
-	 * Get the default settings of the structure control. Used to return the
+	 * Retrieve the default settings of the structure control. Used to return the
 	 * default settings while initializing the structure control.
 	 *
 	 * @since 1.0.0

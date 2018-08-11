@@ -42,7 +42,13 @@ ControlsStack = Marionette.CompositeView.extend( {
 	},
 
 	initialize: function() {
+		this.initCollection();
+
 		this.listenTo( qazana.channels.deviceMode, 'change', this.onDeviceModeChange );
+	},
+
+	initCollection: function() {
+		this.collection = new Backbone.Collection( _.values( qazana.mergeControlsSettings( this.getOption( 'controls' ) ) ) );
 	},
 
 	filter: function( controlModel ) {
@@ -63,25 +69,41 @@ ControlsStack = Marionette.CompositeView.extend( {
 		return this.activeTab === sectionControlModel.get( 'tab' );
 	},
 
-	activateTab: function( $tab ) {
-		var self = this,
-			activeTab = this.activeTab = $tab.data( 'tab' );
+	activateTab: function( tabName ) {
+		this.activeTab = tabName;
 
-		this.ui.tabs.removeClass( 'active' );
+		this.ui.tabs
+			.removeClass( 'qazana-active' )
+			.filter( '[data-tab="' + tabName + '"]' )
+			.addClass( 'qazana-active' );
 
-		$tab.addClass( 'active' );
-
-		var sectionControls = this.collection.filter( function( controlModel ) {
-			return 'section' === controlModel.get( 'type' ) && self.isVisibleSectionControl( controlModel );
-		} );
-
-		if ( sectionControls[0] ) {
-			this.activateSection( sectionControls[0].get( 'name' ) );
-		}
+		this.activateFirstSection();
 	},
 
 	activateSection: function( sectionName ) {
 		this.activeSection = sectionName;
+	},
+
+	activateFirstSection: function() {
+		var self = this;
+
+		var sectionControls = self.collection.filter( function( controlModel ) {
+			return 'section' === controlModel.get( 'type' ) && self.isVisibleSectionControl( controlModel );
+		} );
+
+		if ( ! sectionControls[0] ) {
+			return;
+		}
+
+		var preActivatedSection = sectionControls.filter( function( controlModel ) {
+			return self.activeSection === controlModel.get( 'name' );
+		} );
+
+		if ( preActivatedSection[0] ) {
+			return;
+		}
+
+		self.activateSection( sectionControls[0].get( 'name' ) );
 	},
 
 	getChildView: function( item ) {
@@ -135,7 +157,7 @@ ControlsStack = Marionette.CompositeView.extend( {
 			} );
 
 		if ( activeSectionView[0] ) {
-			activeSectionView[0].ui.heading.addClass( 'qazana-open' );
+			activeSectionView[0].$el.addClass( 'qazana-open' );
 		}
 	},
 
@@ -146,7 +168,7 @@ ControlsStack = Marionette.CompositeView.extend( {
 	},
 
 	onRenderTemplate: function() {
-		this.activateTab( this.ui.tabs.eq( 0 ) );
+		this.activateTab( this.activeTab || this.ui.tabs.eq( 0 ).data( 'tab' ) );
 	},
 
 	onModelDestroy: function() {
@@ -156,13 +178,14 @@ ControlsStack = Marionette.CompositeView.extend( {
 	onClickTabControl: function( event ) {
 		event.preventDefault();
 
-		var $tab = this.$( event.currentTarget );
+		var $tab = this.$( event.currentTarget ),
+			tabName = $tab.data( 'tab' );
 
-		if ( this.activeTab === $tab.data( 'tab' ) ) {
+		if ( this.activeTab === tabName ) {
 			return;
 		}
 
-		this.activateTab( $tab );
+		this.activateTab( tabName );
 
 		this._renderChildren();
 	},
@@ -176,7 +199,7 @@ ControlsStack = Marionette.CompositeView.extend( {
 	},
 
 	onChildviewControlSectionClicked: function( childView ) {
-		var isSectionOpen = childView.ui.heading.hasClass( 'qazana-open' );
+		var isSectionOpen = childView.$el.hasClass( 'qazana-open' );
 
 		this.activateSection( isSectionOpen ? null : childView.model.get( 'name' ) );
 

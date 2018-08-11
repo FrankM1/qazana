@@ -34,8 +34,10 @@ class History extends Base {
 				'removed' => __( 'Removed', 'qazana' ),
 				'edited' => __( 'Edited', 'qazana' ),
 				'moved' => __( 'Moved', 'qazana' ),
-				'duplicated' => __( 'Duplicated', 'qazana' ),
 				'editing_started' => __( 'Editing Started', 'qazana' ),
+				'style_pasted' => __( 'Style Pasted', 'qazana' ),
+				'style_reset' => __( 'Style Reset', 'qazana' ),
+				'all_content' => __( 'All Content', 'qazana' ),
 			],
 		] );
 
@@ -43,8 +45,7 @@ class History extends Base {
 	}
 
 	public function __construct() {
-
-		add_filter( 'qazana/after/init_classes', [ $this, 'add_actions' ] );
+		add_action( 'qazana/init', [ $this, 'add_actions' ] );
 
 		if ( is_admin() ) {
 			$this->include_files();

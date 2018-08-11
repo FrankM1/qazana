@@ -1,32 +1,67 @@
 <?php
 namespace Qazana;
 
+use Qazana\Core\Ajax_Manager;
+use Qazana\Core\Utils\Exceptions;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana widgets manager.
+ *
+ * Qazana widgets manager handler class is responsible for registering and
+ * initializing all the supported Qazana widgets.
+ *
+ * @since 1.0.0
+ */
 class Widgets_Manager {
 
-    /**
+	/**
+	 * Widget types.
+	 *
+	 * Holds the list of all the widget types.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
 	 * @var Widget_Base[]
 	 */
 	private $_widget_types = null;
 
-    /**
+	/**
+	 * Init widgets.
+	 *
+	 * Initialize Qazana widgets manager. Include all the the widgets files
+	 * and register each Qazana and WordPress widget.
+	 *
 	 * @since 1.0.0
-	 * @access public
-	 */
+	 * @access private
+	*/
     public function __construct() {
-        add_action( 'wp_ajax_qazana_render_widget', [ $this, 'ajax_render_widget' ] );
-        add_action( 'wp_ajax_qazana_editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
-        $this->require_files(); // Load these immediately for use by extensions
+        add_action( 'qazana/widgets/loader/after', [ $this, 'require_files' ] ); // Load these immediately for use by extensions
+	    add_action( 'qazana/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
+
+        $this->loader = new Loader();
+      
+        do_action( 'qazana/widgets/loader/before', $this->loader );
+
+        $this->loader->add_stack( qazana()->theme_paths_child, qazana()->theme_widget_locations );
+        $this->loader->add_stack( qazana()->theme_paths, qazana()->theme_widget_locations );
+
+        do_action( 'qazana/widgets/loader', $this->loader ); // plugins can intercept the stack here. Themes will always take precedence
+
+        $this->loader->add_stack( array( 'path' => qazana()->plugin_dir, 'uri' => qazana()->plugin_url ), qazana()->plugin_widget_locations );
+
+        do_action( 'qazana/widgets/loader/after', $this->loader );
     }
 
 	/**
 	 * @since 1.0.0
 	 * @access private
 	*/
-    private function _init_widgets() {
+    private function init_widgets() {
 
         $this->_widget_types = [];
 
@@ -77,52 +112,72 @@ class Widgets_Manager {
 
         foreach ( $build_widgets_filename as $widget_filename ) {
 
-            if ( ! qazana()->widget_loader->locate_widget( $widget_filename .'.php', false ) ) {
+            if ( ! $this->loader->locate_widget( $widget_filename .'.php', false ) ) {
                 continue;
             }
 
-            $class_name = str_replace( '-', '_', $widget_filename );
-            $class_name = __NAMESPACE__ . '\Widget_' . $class_name;
+			$class_name = str_replace( '-', '_', $widget_filename );
+
+			$class_name = __NAMESPACE__ . '\Widget_' . $class_name;
 
             $class_name = apply_filters( "qazana/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
 
             if ( ! class_exists( $class_name ) ) {
-                qazana()->widget_loader->locate_widget( $widget_filename .'.php', true );
+                $this->loader->locate_widget( $widget_filename .'.php', true );
             }
 
-            $this->register_widget_type( new $class_name );
+            $this->register_widget_type( new $class_name() );
         }
 
-        $this->_register_wp_widgets();
+		$this->register_wp_widgets();
 
+		/**
+		 * After widgets registered.
+		 *
+		 * Fires after Qazana widgets are registered.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Widgets_Manager $this The widgets manager.
+		 */
 		do_action( 'qazana/widgets/widgets_registered', $this );
 	}
 
 	/**
+	 * Register WordPress widgets.
+	 *
+	 * Add native WordPress widget to the list of registered widget types.
+	 *
+	 * Exclude the widgets that are in Qazana widgets black list. Theme and
+	 * plugin authors can filter the black list.
+	 *
 	 * @since 1.0.0
 	 * @access private
 	 */
-    private function _register_wp_widgets() {
+    private function register_wp_widgets() {
 
         global $wp_widget_factory;
 
-        qazana()->widget_loader->locate_widget( 'wordpress.php', true );
+        $this->loader->locate_widget( 'wordpress.php', true );
 
 		$blacklist = [
 			'WP_Widget_Text', //unnecessary since Qazana has a text widget
 		];
 
-        /**
-         * Allow override of allowed widgets
-         *
-         * @since 1.0.0
-         *
-         * @param array $allowed_widgets.
-         */
-        // Allow themes/plugins to filter out their wordpress widgets
+        	/**
+		 * Qazana widgets black list.
+		 *
+		 * Filters the widgets black list that won't be displayed in the panel.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $black_list A black list of widgets. Default is an empty array.
+		 */
 		$black_list = apply_filters( 'qazana/widgets/black_list', $blacklist );
 
-        foreach ( $wp_widget_factory->widgets as $widget_class => $widget_obj ) {
+        $widgets = apply_filters( 'qazana/widgets_manager/widgets', $wp_widget_factory->widgets );
+
+        foreach ( $widgets as $widget_class => $widget_obj ) {
 
     		if ( in_array( $widget_class, $black_list ) ) {
     			continue;
@@ -133,10 +188,14 @@ class Widgets_Manager {
         }
     }
 
-    /**
-	 * @since 1.0.0
-	 * @access public
-	 */
+	/**
+	 * Require files.
+	 *
+	 * Require Qazana widget base class.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	*/
     public function require_files() {
 
         $default_files = [];
@@ -155,33 +214,46 @@ class Widgets_Manager {
 
         $files = apply_filters( 'qazana/widgets/require_files', $default_files );
 
-        if ( is_array( $files ) ) {
-            foreach ( $files as $file ) {
-                qazana()->widget_loader->locate_widget( $file, true );
-            }
+        foreach ( (array) $files as $file ) {
+            $this->loader->locate_widget( $file, true );
         }
-
     }
 
 	/**
+	 * Register widget type.
+	 *
+	 * Add a new widget type to the list of registered widget types.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 *
+	 * @param Widget_Base $widget Qazana widget.
+	 *
+	 * @return true True if the widget was registered.
 	*/
 	public function register_widget_type( Widget_Base $widget ) {
 		if ( is_null( $this->_widget_types ) ) {
-			$this->_init_widgets();
+			$this->init_widgets();
 		}
 
-        $this->_widget_types[ $widget->get_name() ] = $widget;
+		$this->_widget_types[ $widget->get_name() ] = $widget;
 
-        $this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
+        	$this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
 
 		return true;
 	}
 
 	/**
+	 * Unregister widget type.
+	 *
+	 * Removes widget type from the list of registered widget types.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 *
+	 * @param string $name Widget name.
+	 *
+	 * @return true True if the widget was unregistered, False otherwise.
 	*/
 	public function unregister_widget_type( $name ) {
 		if ( ! isset( $this->_widget_types[ $name ] ) ) {
@@ -194,12 +266,20 @@ class Widgets_Manager {
 	}
 
 	/**
+	 * Get widget types.
+	 *
+	 * Retrieve the registered widget types list.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 *
+	 * @param string $widget_name Optional. Widget name. Default is null.
+	 *
+	 * @return Widget_Base|Widget_Base[]|null Registered widget types.
 	*/
 	public function get_widget_types( $widget_name = null ) {
 		if ( is_null( $this->_widget_types ) ) {
-			$this->_init_widgets();
+			$this->init_widgets();
 		}
 
 		// sort alphabetically
@@ -213,17 +293,19 @@ class Widgets_Manager {
 	}
 
 	/**
+	 * Get widget types config.
+	 *
+	 * Retrieve all the registered widgets with config for each widgets.
+	 *
 	 * @since 1.0.0
 	 * @access public
+	 *
+	 * @return array Registered widget types with each widget config.
 	*/
 	public function get_widget_types_config() {
 		$config = [];
 
 		foreach ( $this->get_widget_types() as $widget_key => $widget ) {
-			if ( ! $widget->show_in_panel() ) {
-				continue;
-			}
-
 			$config[ $widget_key ] = $widget->get_config();
 		}
 
@@ -231,83 +313,83 @@ class Widgets_Manager {
 	}
 
 	/**
+	 * Ajax render widget.
+	 *
+	 * Ajax handler for Qazana render_widget.
+	 *
+	 * Fired by `wp_ajax_qazana_render_widget` action.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
-	public function ajax_render_widget() {
+	 *
+	 * @throws \Exception If current user don't have permissions to edit the post.
+	 *
+	 * @param array $request Ajax request.
+	 *
+	 * @return array {
+	 *     Rendered widget.
+	 *
+	 *     @type string $render The rendered HTML.
+	 * }
+	 */
+	public function ajax_render_widget( $request ) {
+		$document = qazana()->documents->get( $request['editor_post_id'] );
 
-        if ( ! qazana()->editor->verify_request_nonce() ) {
-			wp_send_json_error( new \WP_Error( 'token_expired' ) );
-		}
-
-		if ( empty( $_POST['post_id'] ) ) {
-			wp_send_json_error( new \WP_Error( 'no_post_id', 'No post_id' ) );
-		}
-
-		if ( ! User::is_current_user_can_edit( $_POST['post_id'] ) ) {
-			wp_send_json_error( new \WP_Error( 'no_access' ) );
+		if ( ! $document->is_editable_by_current_user() ) {
+			throw new \Exception( 'Access denied.', Exceptions::FORBIDDEN );
 		}
 
 		// Override the global $post for the render.
 		query_posts(
 			[
-				'p' => $_POST['post_id'],
+				'p' => $request['editor_post_id'],
 				'post_type' => 'any',
 			]
 		);
 
-		qazana()->db->switch_to_post( $_POST['post_id'] );
+		$editor = qazana()->editor;
+		$is_edit_mode = $editor->is_edit_mode();
+		$editor->set_edit_mode( true );
 
-		$data = json_decode( stripslashes( $_POST['data'] ), true );
+		qazana()->documents->switch_to_document( $document );
 
-		// Start buffering
-		ob_start();
+		$render_html = $document->render_element( $request['data'] );
 
-        /** @var Widget_Base $widget */
-		$widget = qazana()->elements_manager->create_element_instance( $data );
+		$editor->set_edit_mode( $is_edit_mode );
 
-		if ( ! $widget ) {
-			wp_send_json_error();
-
-			return;
-		}
-
-		$widget->render_content();
-
-		$render_html = ob_get_clean();
-
-		wp_send_json_success(
-			[
-				'render' => $render_html,
-			]
-		);
+		return [
+			'render' => $render_html,
+		];
 	}
 
 	/**
+	 * Ajax get WordPress widget form.
+	 *
+	 * Ajax handler for Qazana editor get_wp_widget_form.
+	 *
+	 * Fired by `wp_ajax_qazana_editor_get_wp_widget_form` action.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
-	public function ajax_get_wp_widget_form() {
-
-        if ( qazana()->editor->verify_request_nonce() ) {
-			die;
+	 *
+	 * @param array $request Ajax request.
+	 *
+	 * @return bool|string Rendered widget form.
+	 */
+	public function ajax_get_wp_widget_form( $request ) {
+		if ( empty( $request['widget_type'] ) ) {
+			return false;
 		}
 
-		if ( empty( $_POST['widget_type'] ) ) {
-			wp_send_json_error();
+		if ( empty( $request['data'] ) ) {
+			$request['data'] = [];
 		}
-
-		if ( empty( $_POST['data'] ) ) {
-			$_POST['data'] = [];
-		}
-
-		$data = json_decode( stripslashes( $_POST['data'] ), true );
 
 		$element_data = [
-			'id'         => $_POST['id'],
-			'elType'     => 'widget',
-			'widgetType' => $_POST['widget_type'],
-			'settings'   => $data,
+			'id' => $request['id'],
+			'elType' => 'widget',
+			'widgetType' => $request['widget_type'],
+			'settings' => $request['data'],
 		];
 
 		/**
@@ -316,13 +398,18 @@ class Widgets_Manager {
 		$widget_obj = qazana()->elements_manager->create_element_instance( $element_data );
 
 		if ( ! $widget_obj ) {
-			wp_send_json_error();
+			return false;
 		}
 
-		wp_send_json_success( $widget_obj->get_form() );
+		return $widget_obj->get_form();
 	}
 
 	/**
+	 * Render widgets content.
+	 *
+	 * Used to generate the widget templates on the editor using Underscore JS
+	 * template, for all the registered widget types.
+	 *
 	 * @since 1.0.0
 	 * @access public
 	*/
@@ -333,8 +420,15 @@ class Widgets_Manager {
 	}
 
 	/**
+	 * Get widgets frontend settings keys.
+	 *
+	 * Retrieve frontend controls settings keys for all the registered widget
+	 * types.
+	 *
 	 * @since 1.3.0
 	 * @access public
+	 *
+	 * @return array Registered widget types with settings keys for each widget.
 	*/
 	public function get_widgets_frontend_settings_keys() {
 		$keys = [];
@@ -404,5 +498,19 @@ class Widgets_Manager {
 				'advanced' => $advanced_tools,
 			],
 		];
+	}
+	/**
+	 * Register ajax actions.
+	 *
+	 * Add new actions to handle data after an ajax requests returned.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @param Ajax_Manager $ajax_manager
+	 */
+	public function register_ajax_actions( $ajax_manager ) {
+		$ajax_manager->register_ajax_action( 'render_widget', [ $this, 'ajax_render_widget' ] );
+		$ajax_manager->register_ajax_action( 'editor_get_wp_widget_form', [ $this, 'ajax_get_wp_widget_form' ] );
 	}
 }

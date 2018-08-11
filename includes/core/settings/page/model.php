@@ -5,6 +5,7 @@ use Qazana\Controls_Manager;
 use Qazana\Core\Settings\Base\Model as BaseModel;
 use Qazana\Group_Control_Background;
 use Qazana\Core\Settings\Manager as SettingsManager;
+use Qazana\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -102,7 +103,7 @@ class Model extends BaseModel {
 			]
 		);
 
-		if ( Manager::is_cpt_custom_templates_supported() ) {
+		if ( Utils::is_cpt_custom_templates_supported() ) {
 			require_once ABSPATH . '/wp-admin/includes/template.php';
 
 			$options = [

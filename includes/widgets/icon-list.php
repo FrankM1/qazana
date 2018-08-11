@@ -1,38 +1,83 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana icon list widget.
+ *
+ * Qazana widget that displays a bullet list with any chosen icons and texts.
+ *
+ * @since 1.0.0
+ */
 class Widget_Icon_List extends Widget_Base {
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve icon list widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'icon-list';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve icon list widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Icon List', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve icon list widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-bullet-list';
 	}
 
-	public function get_categories() {
-		return [ 'general-elements' ];
-    }
-
-    /**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
 	 *
-	 * @since 1.0.0
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'list', 'icon' ];
-    }
+		return [ 'icon list', 'icon', 'list' ];
+	}
 
+	/**
+	 * Register icon list widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_icon',
@@ -42,10 +87,67 @@ class Widget_Icon_List extends Widget_Base {
 		);
 
 		$this->add_control(
+			'view',
+			[
+				'label' => __( 'Layout', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => 'traditional',
+				'options' => [
+					'traditional' => [
+						'title' => __( 'Default', 'qazana' ),
+						'icon' => 'eicon-editor-list-ul',
+					],
+					'inline' => [
+						'title' => __( 'Inline', 'qazana' ),
+						'icon' => 'eicon-ellipsis-h',
+					],
+				],
+				'render_type' => 'template',
+				'classes' => 'qazana-control-start-end',
+				'label_block' => false,
+				'style_transfer' => true,
+			]
+		);
+
+		$repeater = new Repeater();
+
+		$repeater->add_control(
+			'text',
+			[
+				'label' => __( 'Text', 'qazana' ),
+				'type' => Controls_Manager::TEXT,
+				'label_block' => true,
+				'placeholder' => __( 'List Item', 'qazana' ),
+				'default' => __( 'List Item', 'qazana' ),
+			]
+		);
+
+		$repeater->add_control(
+			'icon',
+			[
+				'label' => __( 'Icon', 'qazana' ),
+				'type' => Controls_Manager::ICON,
+				'label_block' => true,
+				'default' => 'fa fa-check',
+			]
+		);
+
+		$repeater->add_control(
+			'link',
+			[
+				'label' => __( 'Link', 'qazana' ),
+				'type' => Controls_Manager::URL,
+				'label_block' => true,
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
+			]
+		);
+
+		$this->add_control(
 			'icon_list',
 			[
 				'label' => '',
 				'type' => Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
 				'default' => [
 					[
 						'text' => __( 'List Item #1', 'qazana' ),
@@ -60,31 +162,7 @@ class Widget_Icon_List extends Widget_Base {
 						'icon' => 'fa fa-dot-circle-o',
 					],
 				],
-				'fields' => [
-					[
-						'name' => 'text',
-						'label' => __( 'Text', 'qazana' ),
-						'type' => Controls_Manager::TEXT,
-						'label_block' => true,
-						'placeholder' => __( 'List Item', 'qazana' ),
-						'default' => __( 'List Item', 'qazana' ),
-					],
-					[
-						'name' => 'icon',
-						'label' => __( 'Icon', 'qazana' ),
-						'type' => Controls_Manager::ICON,
-						'label_block' => true,
-						'default' => 'fa fa-check',
-					],
-					[
-						'name' => 'link',
-						'label' => __( 'Link', 'qazana' ),
-						'type' => Controls_Manager::URL,
-						'label_block' => true,
-						'placeholder' => __( 'http://your-link.com', 'qazana' ),
-					],
-				],
-				'title_field' => '<i class="{{ icon }}"></i> {{{ text }}}',
+				'title_field' => '<i class="{{ icon }}" aria-hidden="true"></i> {{{ text }}}',
 			]
 		);
 
@@ -98,7 +176,7 @@ class Widget_Icon_List extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'space_between',
 			[
 				'label' => __( 'Space Between', 'qazana' ),
@@ -109,8 +187,12 @@ class Widget_Icon_List extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child)' => 'padding-bottom: calc({{SIZE}}{{UNIT}}/2)',
-					'{{WRAPPER}} .qazana-icon-list-item:not(:first-child)' => 'margin-top: calc({{SIZE}}{{UNIT}}/2)',
+					'{{WRAPPER}} .qazana-icon-list-items:not(.qazana-inline-items) .qazana-icon-list-item:not(:last-child)' => 'padding-bottom: calc({{SIZE}}{{UNIT}}/2)',
+					'{{WRAPPER}} .qazana-icon-list-items:not(.qazana-inline-items) .qazana-icon-list-item:not(:first-child)' => 'margin-top: calc({{SIZE}}{{UNIT}}/2)',
+					'{{WRAPPER}} .qazana-icon-list-items.qazana-inline-items .qazana-icon-list-item' => 'margin-right: calc({{SIZE}}{{UNIT}}/2); margin-left: calc({{SIZE}}{{UNIT}}/2)',
+					'{{WRAPPER}} .qazana-icon-list-items.qazana-inline-items' => 'margin-right: calc(-{{SIZE}}{{UNIT}}/2); margin-left: calc(-{{SIZE}}{{UNIT}}/2)',
+					'body.rtl {{WRAPPER}} .qazana-icon-list-items.qazana-inline-items .qazana-icon-list-item:after' => 'left: calc(-{{SIZE}}{{UNIT}}/2)',
+					'body:not(.rtl) {{WRAPPER}} .qazana-icon-list-items.qazana-inline-items .qazana-icon-list-item:after' => 'right: calc(-{{SIZE}}{{UNIT}}/2)',
 				],
 			]
 		);
@@ -123,15 +205,15 @@ class Widget_Icon_List extends Widget_Base {
 				'options' => [
 					'left' => [
 						'title' => __( 'Left', 'qazana' ),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-h-align-left',
 					],
 					'center' => [
 						'title' => __( 'Center', 'qazana' ),
-						'icon' => 'fa fa-align-center',
+						'icon' => 'eicon-h-align-center',
 					],
 					'right' => [
 						'title' => __( 'Right', 'qazana' ),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-h-align-right',
 					],
 				],
 				'prefix_class' => 'qazana-align-',
@@ -175,7 +257,8 @@ class Widget_Icon_List extends Widget_Base {
 					'divider' => 'yes',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} .qazana-icon-list-items:not(.qazana-inline-items) .qazana-icon-list-item:not(:last-child):after' => 'border-top-style: {{VALUE}}',
+					'{{WRAPPER}} .qazana-icon-list-items.qazana-inline-items .qazana-icon-list-item:not(:last-child):after' => 'border-left-style: {{VALUE}}',
 				],
 			]
 		);
@@ -191,14 +274,65 @@ class Widget_Icon_List extends Widget_Base {
 				'range' => [
 					'px' => [
 						'min' => 1,
-						'max' => 10,
+						'max' => 20,
 					],
 				],
 				'condition' => [
 					'divider' => 'yes',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-icon-list-items:not(.qazana-inline-items) .qazana-icon-list-item:not(:last-child):after' => 'border-top-width: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .qazana-inline-items .qazana-icon-list-item:not(:last-child):after' => 'border-left-width: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		
+
+		$this->add_control(
+			'divider_width',
+			[
+				'label' => __( 'Width', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'units' => [ '%' ],
+				'default' => [
+					'unit' => '%',
+				],
+				'condition' => [
+					'divider' => 'yes',
+					'view!' => 'inline',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'width: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'divider_height',
+			[
+				'label' => __( 'Height', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ '%', 'px' ],
+				'default' => [
+					'unit' => '%',
+				],
+				'range' => [
+					'px' => [
+						'min' => 1,
+						'max' => 100,
+					],
+					'%' => [
+						'min' => 1,
+						'max' => 100,
+					],
+				],
+				'condition' => [
+					'divider' => 'yes',
+					'view' => 'inline',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'height: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -217,25 +351,7 @@ class Widget_Icon_List extends Widget_Base {
 					'divider' => 'yes',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-top-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'divider_width',
-			[
-				'label' => __( 'Width', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'units' => [ '%' ],
-				'default' => [
-					'unit' => '%',
-				],
-				'condition' => [
-					'divider' => 'yes',
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'width: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .qazana-icon-list-item:not(:last-child):after' => 'border-color: {{VALUE}}',
 				],
 			]
 		);
@@ -267,6 +383,18 @@ class Widget_Icon_List extends Widget_Base {
 		);
 
 		$this->add_control(
+			'icon_color_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:hover .qazana-icon-list-icon i' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'icon_size',
 			[
 				'label' => __( 'Size', 'qazana' ),
@@ -297,22 +425,6 @@ class Widget_Icon_List extends Widget_Base {
 		);
 
 		$this->add_control(
-			'text_indent',
-			[
-				'label' => __( 'Text Indent', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'max' => 50,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-list-text' => is_rtl() ? 'padding-right: {{SIZE}}{{UNIT}};' : 'padding-left: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_control(
 			'text_color',
 			[
 				'label' => __( 'Text Color', 'qazana' ),
@@ -328,11 +440,38 @@ class Widget_Icon_List extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'text_color_hover',
+			[
+				'label' => __( 'Hover', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-item:hover .qazana-icon-list-text' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'text_indent',
+			[
+				'label' => __( 'Text Indent', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-icon-list-text' => is_rtl() ? 'padding-right: {{SIZE}}{{UNIT}};' : 'padding-left: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'icon_typography',
-				'label' => __( 'Typography', 'qazana' ),
 				'selector' => '{{WRAPPER}} .qazana-icon-list-item',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
@@ -350,10 +489,19 @@ class Widget_Icon_List extends Widget_Base {
 	 * @access protected
 	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
+
+		$this->add_render_attribute( 'icon_list', 'class', 'qazana-icon-list-items' );
+		$this->add_render_attribute( 'list_item', 'class', 'qazana-icon-list-item' );
+
+		if ( 'inline' === $settings['view'] ) {
+			$this->add_render_attribute( 'icon_list', 'class', 'qazana-inline-items' );
+			$this->add_render_attribute( 'list_item', 'class', 'qazana-inline-item' );
+		}
 		?>
-		<ul class="qazana-icon-list-items">
-			<?php foreach ( $settings['icon_list'] as $index => $item ) :
+		<ul <?php echo $this->get_render_attribute_string( 'icon_list' ); ?>>
+			<?php
+			foreach ( $settings['icon_list'] as $index => $item ) :
 				$repeater_setting_key = $this->get_repeater_setting_key( 'text', 'icon_list', $index );
 
 				$this->add_render_attribute( $repeater_setting_key, 'class', 'qazana-icon-list-text' );
@@ -378,18 +526,16 @@ class Widget_Icon_List extends Widget_Base {
 						echo '<a ' . $this->get_render_attribute_string( $link_key ) . '>';
 					}
 
-					if ( $item['icon'] ) :
-					?>
+					if ( ! empty( $item['icon'] ) ) :
+						?>
 						<span class="qazana-icon-list-icon">
-							<i class="<?php echo esc_attr( $item['icon'] ); ?>"></i>
+							<i class="<?php echo esc_attr( $item['icon'] ); ?>" aria-hidden="true"></i>
 						</span>
 					<?php endif; ?>
 					<span <?php echo $this->get_render_attribute_string( $repeater_setting_key ); ?>><?php echo $item['text']; ?></span>
-					<?php
-					if ( ! empty( $item['link']['url'] ) ) {
-						echo '</a>';
-					}
-					?>
+					<?php if ( ! empty( $item['link']['url'] ) ) : ?>
+						</a>
+					<?php endif; ?>
 				</li>
 				<?php
 			endforeach;
@@ -398,7 +544,7 @@ class Widget_Icon_List extends Widget_Base {
 		<?php
 	}
 
-    /**
+	/**
 	 * Render icon list widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
@@ -408,32 +554,44 @@ class Widget_Icon_List extends Widget_Base {
 	 */
 	protected function _content_template() {
 		?>
-			<ul class="qazana-icon-list-items">
-			<#
-			if ( settings.icon_list ) {
-				_.each( settings.icon_list, function( item, index ) {
+		<#
+			view.addRenderAttribute( 'icon_list', 'class', 'qazana-icon-list-items' );
+			view.addRenderAttribute( 'list_item', 'class', 'qazana-icon-list-item' );
+
+			if ( 'inline' == settings.view ) {
+				view.addRenderAttribute( 'icon_list', 'class', 'qazana-inline-items' );
+				view.addRenderAttribute( 'list_item', 'class', 'qazana-inline-item' );
+			}
+		#>
+		<# if ( settings.icon_list ) { #>
+			<ul {{{ view.getRenderAttributeString( 'icon_list' ) }}}>
+			<# _.each( settings.icon_list, function( item, index ) {
+
 					var iconTextKey = view.getRepeaterSettingKey( 'text', 'icon_list', index );
 
 					view.addRenderAttribute( iconTextKey, 'class', 'qazana-icon-list-text' );
 
-					view.addInlineEditingAttributes( iconTextKey );
-					#>
-					<li class="qazana-icon-list-item">
+					view.addInlineEditingAttributes( iconTextKey ); #>
+
+					<li {{{ view.getRenderAttributeString( 'list_item' ) }}}>
 						<# if ( item.link && item.link.url ) { #>
 							<a href="{{ item.link.url }}">
 						<# } #>
+						<# if ( item.icon ) { #>
 						<span class="qazana-icon-list-icon">
-							<i class="{{ item.icon }}"></i>
+							<i class="{{ item.icon }}" aria-hidden="true"></i>
 						</span>
+						<# } #>
 						<span {{{ view.getRenderAttributeString( iconTextKey ) }}}>{{{ item.text }}}</span>
 						<# if ( item.link && item.link.url ) { #>
 							</a>
 						<# } #>
 					</li>
 				<#
-				} );
-			} #>
-		</ul>
+				} ); #>
+			</ul>
+		<#	} #>
+
 		<?php
 	}
 }

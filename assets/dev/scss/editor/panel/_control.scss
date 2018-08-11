@@ -3,130 +3,323 @@
 //
 
 .qazana-control {
-  background-color: #ffffff;
-  position: relative;
-  padding: 0 20px 15px;
+	background-color: #fff;
+	position: relative;
+	padding: 0 20px 15px;
 
-  &.qazana-control-separator- {
-    &default {
-      &:before {
-        display: block;
-        margin-bottom: 15px;
-        height: 1px;
-        background-color: $editor-background;
-        content: '';
-      }
+	a {
+		font-weight: 500;
+		text-decoration: none;
+		border-bottom: 1px dotted transparent;
+		transition: all ease-in-out .3s;
 
-      // WP Widgets
-      &.qazana-control-wp {
-        margin-top: 15px;
+		&:hover {
+			border-bottom-color: inherit;
+		}
+	}
 
-        &:before {
-          background-color: transparent;
-        }
-      }
-    }
+	//Avoid collapsing margin in the repeater control
+	.qazana-control-content {
+		display: flex;
+		flex-direction: column;
+	}
 
-    &before {
-      padding-top: 15px;
+	&.qazana-control-type-divider {
+		padding: 0;
+		margin-bottom: -1px; // Cover next control's separator before
+		z-index: 1; // Cover next control's separator before
+		background-color: transparent;
 
-      &:before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: $editor-lightest;
-        content: '';
-      }
-    }
+		hr {
+			border-bottom-width: 0;
+			border-top-width: 1px;
+			border-color: $editor-background;
+			border-style: solid;
 
-    &after {
-      &:after {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: $editor-lightest;
-        content: '';
-      }
+			&.qazana-divider-style {
 
-       + .qazana-control-type-tabs {
-        padding-top: 15px;
-      }
-    }
-  }
+				&--thick {
+					border-top-width: 1px;
+				}
 
-  &.qazana-control-deprecated {
-    color: $editor-warning;
+				&--default {
+					margin-right: 20px;
+					margin-left: 20px;
+				}
+			}
+		}
+
+		+ .qazana-control:not(.qazana-control-type-section) {
+			padding-top: 15px;
+		}
+	}
+
+	&.qazana-control-separator- {
+
+		&default:not(.qazana-control-type-divider) {
+
+			// WP Widgets
+			&.qazana-control-wp {
+				margin-top: 15px;
+
+				&:before {
+					content: '';
+					height: 1px;
+					display: block;
+					margin-bottom: 15px;
+					background-color: transparent;
+				}
+			}
+		}
+
+		&before {
+			padding-top: 15px;
+
+			&:before {
+				content: '';
+				position: absolute;
+				height: 1px;
+				width: 100%;
+				top: 0;
+				left: 0;
+				background-color: $editor-lightest;
+			}
+		}
+
+		&after {
+
+			&:after {
+				content: '';
+				position: absolute;
+				height: 1px;
+				width: 100%;
+				bottom: 0;
+				left: 0;
+				background-color: $editor-lightest;
+			}
+
+			+ .qazana-control-type-tabs {
+				padding-top: 15px;
+			}
+		}
+	}
+
+	&.qazana-control-deprecated {
+		color: $editor-warning;
 
 		.qazana-control-field-description {
 			color: $editor-warning;
 		}
 	}
 
-  &.qazana-control-hidden-label {
-     > * > .qazana-control-title,
-     > * > * > .qazana-control-title {
-      // Avoid repeater titles to be affected from above
-      display: none;
-    }
-  }
+	&.qazana-control-hidden-label {
 
-  &.qazana-hidden-control {
-    display: none;
-  }
+		> * > .qazana-control-title, > * > * > .qazana-control-title { // Avoid repeater titles to be affected from above
+			display: none;
+		}
+	}
 
-  &.qazana-control-type-heading {
-    .qazana-control-title {
-      font-weight: bold;
-      margin: 0;
-    }
-  }
+	&.qazana-hidden-control {
+		display: none;
+	}
 
-  &.qazana-control-responsive- {
-    &desktop {
-      body:not(.qazana-device-desktop) & {
-        display: none;
-      }
-    }
+	&.qazana-control-type-heading {
 
-    &tablet {
-      body:not(.qazana-device-tablet) & {
-        display: none;
-      }
-    }
+		.qazana-control-title {
+			font-weight: bold;
+			margin: 0;
+		}
+	}
 
-    &mobile {
-      body:not(.qazana-device-mobile) & {
-        display: none;
-      }
-    }
-  }
+	&.qazana-control-responsive- {
 
-  &.qazana-control-type-icon {
-    .icons-selector .selector-popup {
-      width: 262px;
-    }
+		&desktop {
 
-    .icons-selector .fip-box {
-      width: 44px;
+			body:not(.qazana-device-desktop) & {
+				display: none;
+			}
+		}
 
-      i {
-        font-size: 1em;
-      }
-    }
-  }
+		&tablet {
+
+			body:not(.qazana-device-tablet) & {
+				display: none;
+			}
+		}
+
+		&mobile {
+
+			body:not(.qazana-device-mobile) & {
+				display: none;
+			}
+		}
+	}
+
+	//Select
+	&.qazana-control-type-select {
+
+		.qazana-control-input-wrapper {
+			position: relative;
+
+			select {
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				color: $editor-darkest;
+				font-size: 12px;
+				font-family: inherit;
+				font-weight: inherit;
+				font-style: inherit;
+				text-transform: inherit;
+				letter-spacing: inherit;
+				line-height: inherit;
+				flex-basis: 100%;
+				@include padding-start(5px); //fix for Chrome
+				@include padding-end(20px);
+				cursor: pointer;
+			}
+
+			&:after {
+				font-family: eicons;
+				content: '\e955';
+				font-size: 12px;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				@include end(5px);
+				pointer-events: none;
+			}
+		}
+	}
+
+	// select2
+	.select2-container {
+		width: 100% !important;
+		outline: none;
+
+		&:not(.select2-container--open):not(.select2-container--focus) {
+
+			.select2-selection--single,
+			.select2-selection--multiple {
+				border-color: $editor-lightest;
+			}
+		}
+
+		&.select2-container--open,
+		&.select2-container--focus {
+
+			.select2-selection--single,
+			.select2-selection--multiple {
+				border-color: $editor-light;
+			}
+		}
+
+		&.select2-container--default {
+
+			.select2-selection {
+				border-radius: 3px;
+			}
+
+			.select2-selection--multiple {
+
+				.select2-selection__clear {
+					display: none;
+				}
+
+				.select2-selection__choice {
+					line-height: 1.5;
+					font-size: 0.9em;
+					border: none;
+					border-radius: 0;
+				}
+			}
+
+			.select2-selection__rendered {
+				line-height: 27px;
+			}
+		}
+	}
+
+	.select2-selection {
+		outline: none;
+
+		&--single {
+			height: 27px;
+		}
+	}
+
+	.select2-selection__rendered {
+		line-height: 27px;
+	}
+
+	.select2-selection__arrow {
+		height: 27px;
+		top: 0;
+	}
+}
+
+.qazana-control,
+.qazana-panel-scheme-item {
+
+	&.qazana-open {
+
+		.qazana-panel-heading-toggle {
+
+			.fa {
+
+				&:before {
+					content: '\f0d7';
+				}
+			}
+		}
+	}
+
+	&:not(.qazana-open) {
+
+		.qazana-panel-heading-toggle {
+
+			.fa {
+
+				&:before {
+					content: getValueByDirection('\f0da', '\f0d9');
+				}
+			}
+		}
+	}
+}
+
+.qazana-panel-heading {
+	display: table;
+	table-layout: fixed;
+	height: 40px;
+	padding: 0 20px;
+	width: 100%;
+	border-bottom: 1px solid $editor-background;
+	cursor: pointer;
+
+	> * {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	&-toggle {
+		width: 20px;
+		color: $editor-darkest;
+	}
+
+	&-title {
+		color: $editor-darkest;
+		font-weight: bold;
+	}
 }
 
 // WP Widgets
 .qazana-control-wp {
-  line-height: 1.5;
+	line-height: 1.5;
 
-  p {
-    margin: 15px 0;
-  }
+	p {
+		margin: 15px 0;
+	}
 }
 
 .qazana-control-field {
@@ -141,127 +334,150 @@
 		> .qazana-control-field {
 			flex-wrap: wrap;
 
-       > .qazana-control-input-wrapper {
-        flex-basis: 100%;
-        margin-top: 10px;
-      }
-    }
-  }
+			> .qazana-control-input-wrapper {
+				width: 100%;
+				margin-top: 10px;
+			}
+		}
+	}
 
-  &.qazana-control-hidden-label {
-     > .qazana-control-content {
-       > .qazana-control-field {
-         > .qazana-control-input-wrapper {
-          margin-top: 0;
-        }
-      }
-    }
-  }
+	&.qazana-control-hidden-label:not(.qazana-control-dynamic) {
+
+		> .qazana-control-content {
+
+			> .qazana-control-field {
+
+				> .qazana-control-input-wrapper {
+					margin-top: 0;
+				}
+			}
+		}
+	}
 }
 
 .qazana-label-inline {
-   > .qazana-control-content {
-     > .qazana-control-field {
-       > .qazana-control-title {
-        width: 45%;
-        flex-shrink: 0;
-      }
 
-       > .qazana-control-input-wrapper {
-        width: 55%;
-      }
-    }
-  }
+	> .qazana-control-content {
+
+		> .qazana-control-field {
+
+			> .qazana-control-title {
+				width: 45%;
+				flex-shrink: 0;
+			}
+
+			> .qazana-control-input-wrapper {
+				width: 55%;
+			}
+		}
+	}
 }
 
 .qazana-control-field-description {
-  @extend .qazana-descriptor;
-  margin-top: 10px;
+	@extend .qazana-descriptor;
+
+	margin-top: 10px;
+}
+
+.qazana-group-control-attachment_alert {
+
+	.qazana-control-field-description {
+		margin-top: 0;
+	}
 }
 
 .qazana-required {
-  color: $editor-warning;
+	color: $editor-warning;
 }
 
 .qazana-choices {
-  display: table;
-  width: 100%;
-  height: 27px;
-  background-color: $editor-light;
-  text-align: center;
-  border-spacing: 1px;
-  border-radius: 3px;
+	display: table;
+	width: 100%;
+	height: 27px;
+	background-color: $editor-light;
+	text-align: center;
+	border-spacing: 1px;
+	border-radius: 3px;
 
-  input {
-    display: none;
+	input {
+		display: none;
 
-    &:checked + .qazana-choices-label {
-      color: #ffffff;
-    }
+		&:checked + .qazana-choices-label {
+			color: #fff;
+		}
 
-    &:not(:checked) + .qazana-choices-label {
-      background-color: #ffffff;
-      color: $editor-light;
-    }
-  }
+		&:not(:checked) + .qazana-choices-label {
+			background-color: #fff;
+			color: $editor-light;
 
-  .qazana-choices-label {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all .5s;
-  }
+			&:nth-child(2) {
+				border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);;
+			}
+
+			&:last-child {
+				border-radius: getValueByDirection(0 3px 3px 0, 3px 0 0 3px);;
+			}
+		}
+	}
+
+	.qazana-choices-label {
+		display: table-cell;
+		vertical-align: middle;
+		font-size: 12px;
+		transition: all .5s;
+		cursor: pointer;
+	}
 }
 
 .qazana-slider {
-  position: relative;
-  display: inline-block;
-  margin-top: 10px;
-  width: 67%;
-  height: 4px;
-  border-radius: 5px;
-  background-color: $editor-light;
+	display: inline-block;
+	margin-top: 10px;
+	height: 4px;
+	background-color: $editor-light;
+	border-radius: 5px;
+	position: relative;
+	width: 70%;
 
-  .ui-slider-handle {
-    position: absolute;
-    top: 50%;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    box-shadow: 1px 1px 6px rgba(0, 0, 0, .3);
-    cursor: pointer;
-    transform: translateY(-50%) translateX(-8px);
-  }
+	.ui-slider-handle {
+		height: 16px;
+		width: 16px;
+		background-color: #fff;
+		display: inline-block;
+		top: 50%;
+		transform: translateY(-50%) translateX(-8px);
+		position: absolute;
+		box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+		border-radius: 50%;
+		cursor: pointer;
+	}
 }
 
 .qazana-slider-input {
-  float: $end;
-  width: 33%;
+	width: 30%;
+	float: $end;
 
-  input {
-    float: $end;
-    width: 80%;
-  }
+	input {
+		width: 50px;
+		float: $end;
+		padding: 5px 5px;
+	}
 }
 
 .qazana-units-choices {
-  flex-grow: 1;
-  text-align: $end;
+	flex-grow: 1;
+	text-align: $end;
 
-  input {
-    display: none;
+	input {
+		display: none;
 
-    &:not(:checked) + label {
-      color: $editor-lighter;
-    }
+		&:not(:checked) + label {
+			color: $editor-lighter;
+		}
 
-    &:checked + label {
-      text-decoration: underline;
-    }
-  }
+		&:checked + label {
+			text-decoration: underline;
+		}
+	}
 
 	label {
 		cursor: pointer;
@@ -282,78 +498,104 @@
 }
 
 .qazana-control-responsive-switchers {
-  display: flex;
-  margin: 0 5px;
+	display: flex;
+	margin: 0 5px;
+
+	.qazana-responsive-switcher {
+		$icon-size: 18px;
+
+		display: inline-block;
+		border-radius: 50%;
+		height: $icon-size;
+		width: $icon-size;
+		background-color: $editor-light;
+		cursor: pointer;
+		position: relative;
+		@include margin-start(5px);
+		color: #fff;
+		font-size: 8px;
+		text-align: center;
+		transition: background-color .5s;
+
+		&:hover {
+			background-color: $editor-lighter;
+		}
+
+		i {
+			position: relative;
+			display: block;
+			line-height: $icon-size;
+
+			&:before {
+				height: $icon-size;
+				width: $icon-size;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+	}
 }
 
-.qazana-responsive-switcher {
-  $icon-size: 18px;
-  display: inline-block;
-  border-radius: 50%;
-  height: $icon-size;
-  width: $icon-size;
-  background-color: $editor-light;
-  cursor: pointer;
-  position: relative;
-  @include margin-start(5px);
-  color: #ffffff;
-  font-size: 8px;
-  text-align: center;
-  transition: background-color .5s;
+.qazana-device-desktop #qazana-panel .qazana-panel-controls-stack:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
+	background: $editor-lighter;
 
-  &:hover {
-    background-color: $editor-lighter;
-  }
-
-  i {
-    line-height: $icon-size;
-  }
-}
-
-@at-root .qazana-device-desktop #qazana-panel .qazana-panel-controls-stack:not(.qazana-responsive-switchers-open) .qazana-responsive-switcher {
-  background: $editor-lighter;
-
-  &:not(.qazana-responsive-switcher-desktop) {
-    display: none;
-  }
+	&:not(.qazana-responsive-switcher-desktop) {
+		display: none;
+	}
 }
 
 .qazana-responsive-switcher-mobile {
-  .qazana-device-mobile & {
-    background-color: $editor-info;
-  }
+
+	.qazana-device-mobile & {
+		background-color: $editor-info;
+	}
 }
 
 .qazana-responsive-switcher-tablet {
-  .qazana-device-tablet & {
-    background-color: $editor-info;
-  }
+
+	.qazana-device-tablet & {
+		background-color: $editor-info;
+	}
 }
 
 .qazana-update-preview {
-  margin: 15px 15px 0;
-  background-color: $editor-background;
-  display: flex;
-  align-items: center;
+	margin: 15px 15px 0;
+	background-color: $editor-background;
+	display: flex;
+	align-items: center;
 }
 
 .qazana-update-preview-button-wrapper {
-  flex-grow: 1;
-  text-align: $end;
+	flex-grow: 1;
+	text-align: $end;
 }
 
 .qazana-update-preview-button {
-  padding: 8px 15px;
-  text-transform: uppercase;
+	padding: 8px 15px;
+	text-transform: uppercase;
 }
 
 // = Choices control for alignment
+.qazana-control-text_align,
 .qazana-control-align,
-.qazana-control-position,
-.qazana-control-text_align {
-  .qazana-choices {
-    direction: ltr; // Force ltr also in RTL languages
-  }
+.qazana-control-position {
+
+	.qazana-choices {
+		direction: ltr; // Force ltr also in RTL languages
+	}
+}
+
+// = Set direction control by class
+.qazana-control-direction- {
+
+	&ltr {
+		direction: ltr;
+	}
+
+	&rtl {
+		direction: rtl;
+	}
 }
 
 @import "controls/media";
@@ -397,3 +639,7 @@
 @import "controls/hidden";
 
 @import "controls/popover-toggle";
+
+@import "controls/button";
+
+@import "controls/choose-image";

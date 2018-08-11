@@ -21,10 +21,12 @@ PanelSchemeColorView = PanelSchemeItemView.extend( {
 	},
 
 	onRender: function() {
-		qazana.helpers.wpColorPicker( this.ui.input, {
-			change: _.bind( function( event, ui ) {
-				this.triggerMethod( 'value:change', ui.color.toString() );
-			}, this )
+		var self = this;
+
+		qazana.helpers.wpColorPicker( self.ui.input, {
+			change: function( event, ui ) {
+				self.triggerMethod( 'value:change', ui.color.toString() );
+			}
 		} );
 	}
 } );

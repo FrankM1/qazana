@@ -76,38 +76,74 @@ class Maintenance_Mode extends Base {
         return __( 'Maintenance Mode', 'qazana' );
     }
 
-    /**
-     * @static
-     * @since 1.3.0
-     * @access public
-    */
-    public static function get( $option, $default = false ) {
-        return get_option( self::OPTION_PREFIX . $option, $default );
-    }
+	/**
+	 * Get qazana option.
+	 *
+	 * Retrieve qazana option from the database.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 * @static
+	 *
+	 * @param string $option  Option name. Expected to not be SQL-escaped.
+	 * @param mixed  $default Optional. Default value to return if the option
+	 *                        does not exist. Default is false.
+	 *
+	 * @return bool False if value was not updated and true if value was updated.
+	 */
+	public static function get( $option, $default = false ) {
+		return get_option( self::OPTION_PREFIX . $option, $default );
+	}
 
-    /**
-     * @static
-     * @since 1.3.0
-     * @access public
-    */
-    public static function set( $option, $value ) {
-        return update_option( self::OPTION_PREFIX . $option, $value );
-    }
+	/**
+	 * Set qazana option.
+	 *
+	 * Update qazana option in the database.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 * @static
+	 *
+	 * @param string $option Option name. Expected to not be SQL-escaped.
+	 * @param mixed  $value  Option value. Must be serializable if non-scalar.
+	 *                       Expected to not be SQL-escaped.
+	 *
+	 * @return bool False if value was not updated and true if value was updated.
+	 */
+	public static function set( $option, $value ) {
+		return update_option( self::OPTION_PREFIX . $option, $value );
+	}
 
-    /**
-     * @since 1.3.0
-     * @access public
-    */
-    public function body_class( $classes ) {
-        $classes[] = 'qazana-maintenance-mode';
+	/**
+	 * Body class.
+	 *
+	 * Add "Maintenance Mode" CSS classes to the body tag.
+	 *
+	 * Fired by `body_class` filter.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 *
+	 * @param array $classes An array of body classes.
+	 *
+	 * @return array An array of body classes.
+	 */
+	public function body_class( $classes ) {
+		$classes[] = 'qazana-maintenance-mode';
 
-        return $classes;
-    }
+		return $classes;
+	}
 
-    /**
-     * @since 1.3.0
-     * @access public
-    */
+	/**
+	 * Template redirect.
+	 *
+	 * Redirect to the "Maintenance Mode" template.
+	 *
+	 * Fired by `template_redirect` action.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 */
     public function template_redirect() {
         if ( qazana()->preview->is_preview_mode() ) {
             return;
@@ -137,13 +173,26 @@ class Maintenance_Mode extends Base {
             header( 'Retry-After: 600' );
         }
 
+        $template = qazana()->plugin_dir . 'templates/default/qazana.php';
+
         return $template;
     }
 
-    /**
-     * @since 1.3.0
-     * @access public
-    */
+	/**
+	 * Register settings fields.
+	 *
+	 * Adds new "Maintenance Mode" settings fields to Elementor admin page.
+	 *
+	 * The method need to receive the an instance of the Tools settings page
+	 * to add the new maintenance mode functionality.
+	 *
+	 * Fired by `qazana/admin/after_create_settings/{$page_id}` action.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 *
+	 * @param Tools $tools An instance of the Tools settings page.
+	 */
     public function register_settings_fields( Panel $tools ) {
         $templates = qazana()->templates_manager->get_source( 'local' )->get_items( ['type' => 'page'] );
 
@@ -227,10 +276,18 @@ class Maintenance_Mode extends Base {
         );
     }
 
-    /**
-     * @since 1.3.0
-     * @access public
-    */
+	/**
+	 * Add menu in admin bar.
+	 *
+	 * Adds "Maintenance Mode" items to the WordPress admin bar.
+	 *
+	 * Fired by `admin_bar_menu` filter.
+	 *
+	 * @since 1.4.0
+	 * @access public
+	 *
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 */
     public function add_menu_in_admin_bar( \WP_Admin_Bar $wp_admin_bar ) {
         $wp_admin_bar->add_node( [
             'id' => 'qazana-maintenance-on',

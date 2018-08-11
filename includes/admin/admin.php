@@ -8,6 +8,9 @@ namespace Qazana\Admin;
 use Qazana\System\Info;
 use Qazana\Utils;
 use Qazana\Admin\Tracker;
+use Qazana\Admin\System\Info\Classes\Debug;
+use Qazana\WordPress_Widgets_Manager;
+use Qazana\Heartbeat;
 
 /**
  * Loads Qazana plugin admin area.
@@ -181,12 +184,17 @@ class Run {
      */
     public function init_classes() {
         $this->editor_admin   = new Post\Editor();
+
         $this->settings_panel = new Settings\Panel();
         $this->settings_tools = new Settings\Tools();
+        $this->settings_extensions = new Settings\Extensions();
 
         $this->admin_api      = new Api();
         $this->admin_tracker  = new Tracker();
         $this->system_info    = new System\Info\Main();
+        $this->debug = new Debug();
+        $this->heartbeat = new Heartbeat();
+        $this->wordpress_widgets_manager = new WordPress_Widgets_Manager();
 
         Upgrades::add_actions();
 
@@ -364,7 +372,20 @@ class Run {
     public function enqueue_styles() {
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_enqueue_style( 'qazana-admin-app', $this->css_url . 'admin'. $suffix .'.css', array( 'dashicons' ), qazana_get_version() );
+        wp_register_style(
+            'qazana-icons',
+            qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
+            [],
+            qazana_get_version()
+        );
+
+        wp_enqueue_style( 
+            'qazana-admin-app',
+            $this->css_url . 'admin'. $suffix .'.css',
+            array( 'dashicons', 'qazana-icons' ),
+            qazana_get_version()
+        );
+
     }
 
     /** About *****************************************************************/
@@ -524,7 +545,7 @@ class Run {
             [
                 'jquery-ui-position',
             ],
-            '3.0.0',
+			'4.4.1',
             true
         );
 

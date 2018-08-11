@@ -7,6 +7,9 @@
  * @package Qazana
  * @since 1.0.0
  */
+
+qazana()->frontend->add_body_class( 'qazana-template-canvas' );
+
  ?>
  <!DOCTYPE html>
  <html <?php language_attributes(); ?> class="no-js">
@@ -19,12 +22,28 @@
  		<?php wp_head(); ?>
  	</head>
  	<body <?php body_class(); ?>>
- 	<?php
+     <?php
+     /**
+	  * Before canvas page template content.
+	  *
+	  * Fires before the content of Elementor canvas page template.
+	  *
+	  * @since 1.0.0
+	  */
  	do_action( 'qazana/page_templates/canvas/before_content' );
 
  	while ( have_posts() ) : the_post();
  		the_content();
- 	endwhile;
+    endwhile;
+     
+     /**
+	 * After canvas page template content.
+	 *
+	 * Fires after the content of Elementor canvas page template.
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'qazana/page_templates/canvas/after_content' );
 
  	wp_footer();
  	?>

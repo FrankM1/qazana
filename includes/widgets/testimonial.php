@@ -1,8 +1,17 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana testimonial widget.
+ *
+ * Qazana widget that displays customer testimonials that show social proof.
+ *
+ * @since 1.0.0
+ */
 class Widget_Testimonial extends Widget_Base {
 
 	public $carousel = true;
@@ -11,28 +20,69 @@ class Widget_Testimonial extends Widget_Base {
 		return 'testimonial';
 	}
 
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve testimonial widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget title.
+	 */
 	public function get_title() {
 		return __( 'Testimonial', 'qazana' );
 	}
 
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve testimonial widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget icon.
+	 */
 	public function get_icon() {
 		return 'eicon-testimonial';
 	}
 
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'testimonial', 'blockquote' ];
+	}
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
 	public function add_element_dependencies() {
 		$this->add_frontend_script( 'jquery-slick' );
 	}
-
+	
+	/**
+	 * Register testimonial widget controls.
+	 *
+	 * Adds different input fields to allow the user to change and customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 
 		$this->start_controls_section(
 			'section_testimonial',
 			[
-				'label' => __( 'Testimonials', 'qazana' ),
+				'label' => __( 'Testimonial', 'qazana' ),
 			]
 		);
 
@@ -56,6 +106,9 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
+				'dynamic' => [
+					'active' => true,
+				],
 				'rows' => '10',
 				'default' => 'Click the edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
 			]
@@ -77,6 +130,9 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'label' => __( 'Job', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
 				'default' => 'Designer',
 			]
 		);
@@ -470,6 +526,7 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'name' => 'image_border',
 				'selector' => '{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img',
+				'separator' => 'before',
 			]
 		);
 
@@ -487,7 +544,7 @@ class Widget_Testimonial extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Name
+		// Name.
 		$this->start_controls_section(
 			'section_style_testimonial_name',
 			[
@@ -516,7 +573,6 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'name_typography',
-				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} .qazana-testimonial-name',
 			]
@@ -524,7 +580,7 @@ class Widget_Testimonial extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Job
+		// Job.
 		$this->start_controls_section(
 			'section_style_testimonial_job',
 			[
@@ -553,7 +609,6 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'job_typography',
-				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
 				'selector' => '{{WRAPPER}} .qazana-testimonial-job',
 			]
@@ -561,22 +616,29 @@ class Widget_Testimonial extends Widget_Base {
 
 		$this->end_controls_section();
 	}
-
+	/**
+	 * Render testimonial widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function render() {
-		$settings = $this->get_settings();
-		$testimonials = $this->get_settings( 'testimonials' );
+		$settings = $this->get_settings_for_display();
+		$testimonials = $this->get_settings_for_display( 'testimonials' );
 
 		if ( empty( $settings['testimonials'] ) )
 			return;
 
 		$show_dots = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'dots', 'both' ] ) );
 		$show_arrows = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'arrows', 'both' ] ) );
-        $is_rtl = ( 'rtl' === $this->get_settings('direction') );
+        $is_rtl = ( 'rtl' === $this->get_settings_for_display('direction') );
         $direction = $is_rtl ? 'rtl' : 'ltr';
         
 		$carousel_classes = [ 'qazana-slides' ];
 
-		$carousel_classes[] = $this->get_settings('carousel_class');
+		$carousel_classes[] = $this->get_settings_for_display('carousel_class');
 		
 		$this->add_render_attribute( 'slides', [
 			'class' => $carousel_classes,

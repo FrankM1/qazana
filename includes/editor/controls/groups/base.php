@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Base group control.
+ * Qazana group control base.
  *
- * A base control for creating group control.
+ * An abstract class for creating new group controls in the panel.
  *
  * @since 1.0.0
  * @abstract
@@ -18,7 +18,7 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	/**
 	 * Arguments.
 	 *
-	 * Holds all the base group control arguments.
+	 * Holds all the group control arguments.
 	 *
 	 * @access private
 	 *
@@ -26,9 +26,34 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 */
 	private $args = [];
 
+	/**
+	 * Options.
+	 *
+	 * Holds all the group control options.
+	 *
+	 * Currently supports only the popover options.
+	 *
+	 * @access private
+	 *
+	 * @var array Group control options.
+	 */
 	private $options;
 
-	final public function get_options( $option ) {
+	/**
+	 * Get options.
+	 *
+	 * Retrieve group control options. If options are not set, it will initialize default options.
+	 *
+	 * @since 1.9.0
+	 * @access public
+	 *
+	 * @param array $option Optional. Single option.
+	 *
+	 * @return mixed Group control options. If option parameter was not specified, it will
+	 *               return an array of all the options. If single option specified, it will
+	 *               return the option value or `null` if option does not exists.
+	 */
+	final public function get_options( $option = null ) {
 		if ( null === $this->options ) {
 			$this->init_options();
 		}
@@ -129,9 +154,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	/**
-	 * Retrieve fields.
+	 * Get fields.
 	 *
-	 * Get group control fields.
+	 * Retrieve group control fields.
 	 *
 	 * @since 1.2.2
 	 * @access public
@@ -139,7 +164,8 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 * @return array Control fields.
 	 */
 	final public function get_fields() {
-		// TODO: Temp - compatibility for posts group
+
+        // TODO: Temp - compatibility for posts group
 		if ( method_exists( $this, '_get_controls' ) ) {
 			return $this->_get_controls( $this->get_args() );
 		}
@@ -152,9 +178,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	/**
-	 * Retrieve controls prefix.
+	 * Get controls prefix.
 	 *
-	 * Get the prefix of the group control, which is `{{ControlName}}_`.
+	 * Retrieve the prefix of the group control, which is `{{ControlName}}_`.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -166,9 +192,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	/**
-	 * Retrieve group control classes.
+	 * Get group control classes.
 	 *
-	 * Get the classes of the group control.
+	 * Retrieve the classes of the group control.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -191,9 +217,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	abstract protected function init_fields();
 
 	/**
-	 * Retrieve default options.
+	 * Get default options.
 	 *
-	 * Get the default options of the group control. Used to return the
+	 * Retrieve the default options of the group control. Used to return the
 	 * default options while initializing the group control.
 	 *
 	 * @since 1.2.2
@@ -206,9 +232,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	/**
-	 * Retrieve child default arguments.
+	 * Get child default arguments.
 	 *
-	 * Get the default arguments for all the child controls for a specific group
+	 * Retrieve the default arguments for all the child controls for a specific group
 	 * control.
 	 *
 	 * @since 1.2.2
@@ -325,13 +351,20 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		return $fields;
 	}
 
+	/**
+	 * Init options.
+	 *
+	 * Initializing group control options.
+	 *
+	 * @since 1.9.0
+	 * @access private
+	 */
 	private function init_options() {
 		$default_options = [
 			'popover' => [
 				'starter_name' => 'popover_toggle',
 				'starter_value' => 'custom',
 				'starter_title' => '',
-				'toggle_type' => 'switcher',
 			],
 		];
 
@@ -353,9 +386,9 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	}
 
 	/**
-	 * Retrieve default arguments.
+	 * Get default arguments.
 	 *
-	 * Get the default arguments of the group control. Used to return the
+	 * Retrieve the default arguments of the group control. Used to return the
 	 * default arguments while initializing the group control.
 	 *
 	 * @since 1.2.2
@@ -410,13 +443,15 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 *
 	 * Used to process the CSS selector of group control fields. When using
 	 * group control, Qazana needs to apply the selector to different fields.
-	 * This method handels the process.
+	 * This method handles the process.
 	 *
-	 * In addition, it handels selector values from other fields and process the
+	 * In addition, it handles selector values from other fields and process the
 	 * css.
 	 *
 	 * @since 1.2.2
 	 * @access private
+	 *
+	 * @param array $selectors An array of selectors to process.
 	 *
 	 * @return array Processed selectors.
 	 */
@@ -454,7 +489,7 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 	 *
 	 * Starts a group controls popover.
 	 *
-	 * @since 1.2.2
+	 * @since 1.9.1
 	 * @access private
 	 * @param Controls_Stack $element Element.
 	 */
@@ -472,7 +507,6 @@ abstract class Group_Control_Base implements Group_Control_Interface {
 		$control_params = [
 			'type' => Controls_Manager::POPOVER_TOGGLE,
 			'label' => $label,
-			'toggle_type' => $popover_options['toggle_type'],
 			'return_value' => $popover_options['starter_value'],
 		];
 

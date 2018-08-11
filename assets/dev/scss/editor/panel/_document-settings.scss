@@ -1,0 +1,16 @@
+//
+// Document Settings Panel (formerly Page Settings)
+//
+
+.qazana-control {
+
+	&.qazana-control-clear_page {
+		background-color: transparent;
+
+		.qazana-control-raw-html{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+}

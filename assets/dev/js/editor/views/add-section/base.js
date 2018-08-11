@@ -1,6 +1,4 @@
-var AddSectionView;
-
-AddSectionView = Marionette.ItemView.extend( {
+module.exports = Marionette.ItemView.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-qazana-add-section' ),
 
 	attributes: {
@@ -23,12 +21,21 @@ AddSectionView = Marionette.ItemView.extend( {
 		'click @ui.presets': 'onPresetSelected'
 	},
 
+	behaviors: function() {
+		return {
+			contextMenu: {
+				behaviorClass: require( 'qazana-behaviors/context-menu' ),
+				groups: this.getContextMenuGroups()
+			}
+		};
+	},
+
 	className: function() {
 		return 'qazana-add-section qazana-visible-desktop';
 	},
 
 	addSection: function( properties, options ) {
-		return qazana.sections.currentView.addSection( properties, options );
+		return qazana.getPreviewView().addChildElement( properties, jQuery.extend( {}, this.options, options ) );
 	},
 
 	setView: function( view ) {
@@ -45,10 +52,57 @@ AddSectionView = Marionette.ItemView.extend( {
 
 	getTemplatesModalOptions: function() {
 		return {
-			onReady: function() {
-				qazana.templates.showTemplates();
+			importOptions: {
+				at: this.getOption( 'at' )
 			}
 		};
+	},
+
+	getContextMenuGroups: function() {
+		var hasContent = function() {
+			return qazana.elements.length > 0;
+		};
+
+		return [
+			{
+				name: 'paste',
+				actions: [
+					{
+						name: 'paste',
+						title: qazana.translate( 'paste' ),
+						callback: this.paste.bind( this ),
+						isEnabled: this.isPasteEnabled.bind( this )
+					}
+				]
+			}, {
+				name: 'content',
+				actions: [
+					{
+						name: 'copy_all_content',
+						title: qazana.translate( 'copy_all_content' ),
+						callback: this.copy.bind( this ),
+						isEnabled: hasContent
+					}, {
+						name: 'delete_all_content',
+						title: qazana.translate( 'delete_all_content' ),
+						callback: qazana.clearPage.bind( qazana ),
+						isEnabled: hasContent
+					}
+				]
+			}
+		];
+	},
+
+	copy: function() {
+		qazana.getPreviewView().copy();
+	},
+
+	paste: function() {
+		qazana.getPreviewView().paste( this.getOption( 'at' ) );
+	},
+
+	isPasteEnabled: function() {
+		return qazana.getStorage( 'transfer' );
 	},
 
 	onAddSectionButtonClick: function() {
@@ -66,7 +120,7 @@ AddSectionView = Marionette.ItemView.extend( {
 			placeholder: false,
 			currentElementClass: 'qazana-html5dnd-current-element',
 			hasDraggingOnChildClass: 'qazana-dragging-on-child',
-			onDropping: _.bind( this.onDropping, this )
+			onDropping: this.onDropping.bind( this )
 		} );
 	},
 
@@ -100,9 +154,9 @@ AddSectionView = Marionette.ItemView.extend( {
 
 	onDropping: function() {
 		qazana.channels.data.trigger( 'section:before:drop' );
+
 		this.addSection().addElementFromPanel();
+
 		qazana.channels.data.trigger( 'section:after:drop' );
 	}
 } );
-
-module.exports = AddSectionView;

@@ -3,89 +3,105 @@
 //
 
 .qazana-panel {
-  font-family: $editor-font;
-  font-size: 13px;
-  line-height: 1.5;
-  color: $editor-darker;
 
-  // Controls
-  @import 'reset';
-  // Base
-  &#qazana-panel {
-    background-color: $editor-background;
-    position: fixed;
-    width: 280px;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    overflow: visible;
-  }
-  @media (max-width: $screen-lg-max) {
-    width: $panel-width;
-  }
-  @media (min-width: $screen-xl-min) {
-    width: $panel-xl-width;
-  }
+    // Controls
+    @import "reset";
+    // Base
 
-   > .ui-resizable-w,
-   > .ui-resizable-e {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 7px;
-    @include end(-5px);
-    cursor: ew-resize;
-  }
+	&#qazana-panel{
+		position: fixed;
+		height: 100%;
+		top: 0;
+		bottom: 0;
+		overflow: visible;
+		background-color: $editor-background;
+	}
 
-  #qazana-panel-inner {
-    position: relative;
-    height: 100%;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
-  }
+	@media (max-width: $editor-screen-lg-max) {
+		width: $panel-width;
+	}
 
-  .qazana-panel-container {
-    clear: both;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+	@media (min-width: $editor-screen-xl-min) {
+		width: $panel-xl-width;
+	}
 
-  // Main Panel
-  #qazana-panel-content-wrapper {
-    position: absolute;
-    bottom: 40px;
-    top: 100px;
-    left: 0;
-    width: 100%;
-  }
+	.ps-scrollbar-y-rail {
+		z-index: 2; // Avoid panel elements (like divider control) from appearing above the scrollbar
+	}
 
-  .qazana-panel-hide {
-    display: none;
-  }
+	> .ui-resizable-e, > .ui-resizable-w {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 7px;
+		@include end(-5px);
+		cursor: ew-resize;
+	}
 
-  // Global
-  @import 'global';
+	#qazana-panel-inner {
+        position: relative;
+		height: 100%;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+	}
 
-  // Header
-  @import 'header';
-  // Elements
-  @import 'elements';
-  // Categories
-  @import 'categories';
-  // Schemes
-  @import 'schemes';
+    .qazana-panel-container {
+      clear: both;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
 
-  // Menu
-  @import 'menu';
+	// Main Panel
+	#qazana-panel-content-wrapper {
+		position: absolute;
+		bottom: 40px;
+		top: 94px;
+		left: 0;
+		width: 100%;
+	}
 
-  // Element Edit
-  @import 'element-settings';
+	// Global
+	@import "global";
 
-  // Controls
-  @import 'control';
+    // Header
+    @import "header";
 
-  // Color Picker
-  @import 'color-picker';
+    // Elements
+    @import "elements";
 
-  //Footer
-  @import 'footer';
+    // Categories
+    @import "categories";
+
+    // Schemes
+    @import "schemes";
+
+	// Menu
+	@import "menu";
+
+	// Document Settings
+	@import "document-settings";
+
+	// Element Edit
+    @import "element-settings";
+
+    //Footer
+    @import "footer";
+}
+
+// WP Media Modal Compatibility
+.media-modal.wp-core-ui {
+
+	input {
+		width: auto;
+	}
+
+	fieldset {
+		padding: 0;
+		border: 0;
+	}
+
+	.wp-clearfix::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
 }

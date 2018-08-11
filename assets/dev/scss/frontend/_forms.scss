@@ -9,19 +9,19 @@
 
 	&.qazana-labels-above {
 		> .qazana-field-group {
-			 > .qazana-select-wrapper,
-			 > textarea,
-			.qazana-field-subgroup,
-			> input {
+
+			> input, > textarea, > .qazana-select-wrapper, .qazana-field-subgroup {
 				flex-basis: 100%;
+				max-width: 100%; // Fix for Firefox browser
 			}
 		}
 	}
 
 	&.qazana-labels-inline {
+
 		> .qazana-field-group {
-			.qazana-select-wrapper,
-			> input {
+
+			> input, .qazana-select-wrapper {
 				flex-grow: 1;
 			}
 		}
@@ -38,6 +38,7 @@
 
 	.qazana-field-textual {
 		width: 100%;
+		max-width: 100%; // Tweak for themes that set this property
 		border: 1px solid $gray;
 		background-color: transparent;
 		color: $gray-darker;
@@ -45,24 +46,12 @@
 		flex-grow: 1;
 
 		&:focus {
+			box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
 			outline: 0;
 		}
 
-		// Keep the following rules each alone!
-		&::-webkit-input-placeholder {
-			color: inherit;
-			opacity: 0.5;
-		}
-
-		&::-moz-placeholder {
-			color: inherit;
-			opacity: 0.5;
-		}
-
-		&:-ms-input-placeholder {
-			color: inherit;
-			opacity: 0.5;
-		}
+		// Input Placeholder
+		@include input-placeholder();
 	}
 
 	.qazana-select-wrapper {
@@ -72,7 +61,16 @@
 
 		select {
 			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
 			color: inherit;
+			font-size: inherit;
+			font-family: inherit;
+			font-weight: inherit;
+			font-style: inherit;
+			text-transform: inherit;
+			letter-spacing: inherit;
+			line-height: inherit;
 			flex-basis: 100%;
 			@include padding-end(20px);
 		}
@@ -85,6 +83,12 @@
 			top: 50%;
 			transform: translateY(-50%);
 			@include end(10px);
+			pointer-events: none;
+		}
+	}
+	&.qazana-field-type-select-multiple{
+		.qazana-select-wrapper:before {
+			content: '';
 		}
 	}
 }
@@ -94,18 +98,21 @@
 	flex-wrap: wrap;
 
 	.qazana-field-option {
+
 		label {
 			display: inline-block;
 		}
 	}
 
 	&.qazana-subgroup-inline {
+
 		.qazana-field-option {
 			@include padding-end(10px);
 		}
 	}
 
 	&:not(.qazana-subgroup-inline) {
+
 		.qazana-field-option {
 			flex-basis: 100%;
 		}
@@ -114,6 +121,12 @@
 
 .qazana-field-label {
 	cursor: pointer;
+
+	.qazana-mark-required &:after {
+		content: '*';
+		color: red;
+		@include padding-start(0.2em);
+	}
 }
 
 // Keep the following out from another parent selector!
@@ -121,6 +134,7 @@
 	line-height: 1.4;
 
 	&.qazana-size- {
+
 		&xs {
 			font-size: 13px;
 			min-height: 33px;
@@ -157,22 +171,25 @@
 		}
 	}
 }
+
 @mixin btn-align() {
-	&center .qazana-field-type-submit {
+
+	&center .qazana-field-type-submit{
 		justify-content: center;
 	}
 
-	&stretch .qazana-field-type-submit {
+	&stretch .qazana-field-type-submit{
+
 		button {
 			flex-basis: 100%;
 		}
 	}
 
-	&start .qazana-field-type-submit {
+	&start .qazana-field-type-submit{
 		justify-content: getValueByDirection(flex-start, flex-end);
 	}
 
-	&end .qazana-field-type-submit {
+	&end .qazana-field-type-submit{
 		justify-content: getValueByDirection(flex-end, flex-start);
 	}
 }
@@ -180,12 +197,16 @@
 .qazana-button-align- {
 	@include btn-align();
 }
-@media screen and ( max-width: $screen-md-max ) {
+
+@media screen and ( max-width: $screen-md-max ){
+
 	.qazana-tablet-button-align- {
 		@include btn-align();
 	}
 }
-@media screen and ( max-width: $screen-sm-max ) {
+
+@media screen and ( max-width: $screen-sm-max ){
+
 	.qazana-mobile-button-align- {
 		@include btn-align();
 	}
@@ -193,6 +214,7 @@
 
 // Form Messages
 .qazana-error {
+
 	.qazana-field {
 		border-color: $danger;
 	}
@@ -233,6 +255,7 @@
 
 // Form Submit Button
 .qazana-form {
+
 	.qazana-button {
 		padding-top: 0;
 		padding-bottom: 0;
@@ -252,6 +275,7 @@
 		}
 
 		&.qazana-size- {
+
 			&xs {
 				min-height: 33px;
 			}

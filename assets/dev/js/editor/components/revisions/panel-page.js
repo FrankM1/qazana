@@ -186,7 +186,7 @@ module.exports = Marionette.CompositeView.extend( {
 
 		childView.$el.addClass( 'qazana-revision-current-preview qazana-revision-item-loading' );
 
-		if ( qazana.isEditorChanged() && null === self.currentPreviewId ) {
+		if ( qazana.saver.isEditorChanged() && null === self.currentPreviewId ) {
 			qazana.saveEditor( {
 				status: 'autosave',
 				save_state: 'save',

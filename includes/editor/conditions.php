@@ -5,13 +5,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana conditions.
+ *
+ * Qazana conditions handler class introduce the compare conditions and the
+ * check conditions methods.
+ *
+ * @since 1.0.0
+ */
 class Conditions {
 
 	/**
-	 * @static
+	 * Compare conditions.
+	 *
+	 * Whether the two values comply the comparison operator.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 *
+	 * @param mixed  $left_value  First value to compare.
+	 * @param mixed  $right_value Second value to compare.
+	 * @param string $operator    Comparison operator.
+	 *
+	 * @return bool Whether the two values complies the comparison operator.
+	 */
 	public static function compare( $left_value, $right_value, $operator ) {
 		switch ( $operator ) {
 			case '==':
@@ -21,9 +39,9 @@ class Conditions {
 			case '!==':
 				return $left_value !== $right_value;
 			case 'in':
-				return -1 !== array_search( $left_value, $right_value );
+				return false !== array_search( $left_value, $right_value );
 			case '!in':
-				return -1 === array_search( $left_value, $right_value );
+				return false === array_search( $left_value, $right_value );
 			case '<':
 				return $left_value < $right_value;
 			case '<=':
@@ -38,19 +56,27 @@ class Conditions {
 	}
 
 	/**
-	 * @static
+	 * Check conditions.
+	 *
+	 * Whether the comparison conditions comply.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 * @static
+	 *
+	 * @param array $conditions The conditions to check.
+	 * @param array $comparison The comparison parameter.
+	 *
+	 * @return bool Whether the comparison conditions comply.
+	 */
 	public static function check( array $conditions, array $comparison ) {
-
 		$is_or_condition = isset( $conditions['relation'] ) && 'or' === $conditions['relation'];
 
-		$condition_succeeded = ! $is_or_condition;
+		$condition_succeed = ! $is_or_condition;
 
 		foreach ( $conditions['terms'] as $term ) {
 			if ( ! empty( $term['terms'] ) ) {
-				$comparison_result = self::check( $term, $conditions );
+				$comparison_result = self::check( $term, $comparison );
 			} else {
 				preg_match( '/(\w+)(?:\[(\w+)])?/', $term['name'], $parsed_name );
 
@@ -60,7 +86,13 @@ class Conditions {
 					$value = $value[ $parsed_name[2] ];
 				}
 
-				$comparison_result = self::compare( $value, $term['value'], $term['operator'] );
+				$operator = null;
+
+				if ( ! empty( $term['operator'] ) ) {
+					$operator = $term['operator'];
+				}
+
+				$comparison_result = self::compare( $value, $term['value'], $operator );
 			}
 
 			if ( $is_or_condition ) {
@@ -72,7 +104,6 @@ class Conditions {
 			}
 		}
 
-		return $condition_succeeded;
+		return $condition_succeed;
 	}
-
 }

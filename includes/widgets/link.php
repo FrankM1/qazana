@@ -18,7 +18,7 @@ class Widget_Link extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
     }
 
     /**
@@ -291,7 +291,7 @@ class Widget_Link extends Widget_Base {
 
 	public function render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
@@ -310,15 +310,15 @@ class Widget_Link extends Widget_Base {
 			}
 		}
 
-		$this->add_render_attribute( 'link', 'class', 'qazana-align-icon-' . $this->get_settings( 'link_icon_align' ) );
+		$this->add_render_attribute( 'link', 'class', 'qazana-align-icon-' . $this->get_settings_for_display( 'link_icon_align' ) );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-link-icon' );
 
 		?>
 		<a <?php $this->render_attribute_string( 'link' ); ?>>
 			<span class="qazana-link-wrapper">
-				<?php if ( $this->get_settings( 'link_icon' ) ): ?>
+				<?php if ( $this->get_settings_for_display( 'link_icon' ) ): ?>
 					<span <?php $this->render_attribute_string( 'icon-align' ); ?>>
-						<i class="<?php echo esc_attr( $this->get_settings( 'link_icon' ) ); ?>"></i>
+						<i class="<?php echo esc_attr( $this->get_settings_for_display( 'link_icon' ) ); ?>"></i>
 					</span>
 				<?php endif; ?>
 				<span class="qazana-text"><?php echo esc_html( $settings['link_text'] ); ?></span>
@@ -328,15 +328,20 @@ class Widget_Link extends Widget_Base {
 	}
 
 	protected function _content_template() {
-		?>
+        ?>
+        <#
+		view.addRenderAttribute( 'text', 'class', 'qazana-button-text' );
+
+		view.addInlineEditingAttributes( 'text', 'none' );
+		#>
 		<a class="qazana-link {{ settings.link_classes }} qazana-align-icon-{{ settings.link_icon_align }}" href="#">
-		<span class="qazana-link-wrapper">
+		    <span class="qazana-link-wrapper">
 				<# if ( settings.link_icon ) { #>
 					<span class="qazana-button-icon qazana-link-icon">
 					    <i class="{{ settings.link_icon }}"></i>
 					</span>
 				<# } #>
-				<span class="qazana-text">{{ settings.link_text }}</span>
+				<span class="qazana-text" {{{ view.getRenderAttributeString( 'text' ) }}}>{{ settings.link_text }}</span>
 			</span>
 		</a>
 		<?php

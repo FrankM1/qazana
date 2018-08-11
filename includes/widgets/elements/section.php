@@ -1,49 +1,125 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
+/**
+ * Qazana section element.
+ *
+ * Qazana section handler class is responsible for initializing the section
+ * element.
+ *
+ * @since 1.0.0
+ */
 class Element_Section extends Element_Base {
 
+	/**
+	 * Section edit tools.
+	 *
+	 * Holds the section edit tools.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @static
+	 *
+	 * @var array Section edit tools.
+	 */
 	protected static $_edit_tools;
 
+	/**
+	 * Section predefined columns presets.
+	 *
+	 * Holds the predefined columns width for each columns count available by
+	 * default by Qazana. Default is an empty array.
+	 *
+	 * Note that when the user creates a section he can define custom sizes for
+	 * the columns. But Qazana sets default values for predefined columns.
+	 *
+	 * For example two columns 50% width each one, or three columns 33.33% each
+	 * one. This property hold the data for those preset values.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @static
+	 *
+	 * @var array Section presets.
+	 */
 	private static $presets = [];
 
-	protected static function get_default_edit_tools() {
-		$section_label = __( 'Section', 'qazana' );
-
-		return [
-			'duplicate' => [
-				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $section_label ),
-				'icon' => 'clone',
-			],
-			'add' => [
-				'title' => sprintf( __( 'Add %s', 'qazana' ), $section_label ),
-				'icon' => 'plus',
-			],
-			'save' => [
-				'title' => sprintf( __( 'Save %s', 'qazana' ), $section_label ),
-				'icon' => 'floppy-o',
-			],
-			'remove' => [
-				'title' => sprintf( __( 'Remove %s', 'qazana' ), $section_label ),
-				'icon' => 'times',
-			],
-		];
+	/**
+	 * Get element type.
+	 *
+	 * Retrieve the element type, in this case `section`.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 * @static
+	 *
+	 * @return string The type.
+	 */
+	public static function get_type() {
+		return 'section';
 	}
 
+	/**
+	 * Get section name.
+	 *
+	 * Retrieve the section name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Section name.
+	 */
 	public function get_name() {
 		return 'section';
 	}
 
+	/**
+	 * Get section title.
+	 *
+	 * Retrieve the section title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Section title.
+	 */
 	public function get_title() {
 		return __( 'Section', 'qazana' );
 	}
 
+	/**
+	 * Get section icon.
+	 *
+	 * Retrieve the section icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Section icon.
+	 */
 	public function get_icon() {
 		return 'eicon-columns';
 	}
 
+	/**
+	 * Get presets.
+	 *
+	 * Retrieve a specific preset columns for a given columns count, or a list
+	 * of all the preset if no parameters passed.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @param int $columns_count Optional. Columns count. Default is null.
+	 * @param int $preset_index  Optional. Preset index. Default is null.
+	 *
+	 * @return array Section presets.
+	 */
 	public static function get_presets( $columns_count = null, $preset_index = null ) {
 		if ( ! self::$presets ) {
 			self::init_presets();
@@ -62,6 +138,20 @@ class Element_Section extends Element_Base {
 		return $presets;
 	}
 
+	/**
+	 * Initialize presets.
+	 *
+	 * Initializing the section presets and set the number of columns the
+	 * section can have by default. For example a column can have two columns
+	 * 50% width each one, or three columns 33.33% each one.
+	 *
+	 * Note that Qazana sections have default section presets but the user
+	 * can set custom number of columns and define custom sizes for each column.
+
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 */
 	public static function init_presets() {
 		$additional_presets = [
 			2 => [
@@ -111,6 +201,68 @@ class Element_Section extends Element_Base {
 		}
 	}
 
+	/**
+	 * Get default edit tools.
+	 *
+	 * Retrieve the section default edit tools. Used to set initial tools.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @static
+	 *
+	 * @return array Default section edit tools.
+	 */
+	protected static function get_default_edit_tools() {
+		$section_label = __( 'Section', 'qazana' );
+
+		$edit_tools = [
+			'add' => [
+				/* translators: %s: Section label */
+				'title' => sprintf( __( 'Add %s', 'qazana' ), $section_label ),
+				'icon' => 'plus',
+			],
+			'edit' => [
+				/* translators: %s: Section label */
+				'title' => sprintf( __( 'Edit %s', 'qazana' ), $section_label ),
+				'icon' => 'handle',
+			],
+		];
+
+		if ( self::is_edit_buttons_enabled() ) {
+			$edit_tools += [
+				'duplicate' => [
+					/* translators: %s: Section label */
+					'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $section_label ),
+					'icon' => 'clone',
+				],
+			];
+		}
+
+		$edit_tools += [
+			'remove' => [
+				/* translators: %s: Section label */
+				'title' => sprintf( __( 'Delete %s', 'qazana' ), $section_label ),
+				'icon' => 'close',
+			],
+		];
+
+		return $edit_tools;
+	}
+
+	/**
+	 * Get initial config.
+	 *
+	 * Retrieve the current section initial configuration.
+	 *
+	 * Adds more configuration on top of the controls list, the tabs assigned to
+	 * the control, element name, type, icon and more. This method also adds
+	 * section presets.
+	 *
+	 * @since 1.0.10
+	 * @access protected
+	 *
+	 * @return array The initial config.
+	 */
 	protected function _get_initial_config() {
 		$config = parent::_get_initial_config();
 
@@ -119,6 +271,14 @@ class Element_Section extends Element_Base {
 		return $config;
 	}
 
+	/**
+	 * Register section controls.
+	 *
+	 * Used to add new controls to the section element.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _register_controls() {
 
 		$this->start_controls_section(
@@ -135,13 +295,12 @@ class Element_Section extends Element_Base {
 				'label' => __( 'Stretch Section', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'section-stretched',
 				'prefix_class' => 'qazana-',
-				'render_type' => 'template',
 				'hide_in_inner' => true,
-				'description' => __( 'Stretch the section to the full width of the page using JS.', 'qazana' ) . sprintf( ' <a href="%s" target="_blank">%s</a>', 'https://go.qazana.com/stretch-section/', __( 'Learn more.', 'qazana' ) ),
+				'description' => __( 'Stretch the section to the full width of the page using JS.', 'qazana' ) . sprintf( ' <a href="%1$s" target="_blank">%2$s</a>', 'https://go.qazana.com/stretch-section/', __( 'Learn more.', 'qazana' ) ),
+				'render_type' => 'none',
+				'frontend_available' => true,
 			]
 		);
 
@@ -320,6 +479,7 @@ class Element_Section extends Element_Base {
 		$possible_tags = [
 			'section',
 			'header',
+			'main',
 			'footer',
 			'aside',
 			'article',
@@ -337,6 +497,7 @@ class Element_Section extends Element_Base {
 				'label' => __( 'HTML Tag', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => $options,
+				'separator' => 'before',
 			]
 		);
 
@@ -460,6 +621,7 @@ class Element_Section extends Element_Base {
 					],
 				],
 				'render_type' => 'ui',
+				'separator' => 'before',
 			]
 		);
 
@@ -505,7 +667,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'background_overlay_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
+				'label' => __( 'Opacity', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => .5,
@@ -521,6 +683,37 @@ class Element_Section extends Element_Base {
 				],
 				'condition' => [
 					'background_overlay_background' => [ 'classic', 'gradient' ],
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters',
+				'selector' => '{{WRAPPER}} .qazana-background-overlay',
+			]
+		);
+
+		$this->add_control(
+			'overlay_blend_mode',
+			[
+				'label' => __( 'Blend Mode', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'' => __( 'Normal', 'qazana' ),
+					'multiply' => 'Multiply',
+					'screen' => 'Screen',
+					'overlay' => 'Overlay',
+					'darken' => 'Darken',
+					'lighten' => 'Lighten',
+					'color-dodge' => 'Color Dodge',
+					'saturation' => 'Saturation',
+					'color' => 'Color',
+					'luminosity' => 'Luminosity',
+				],
+				'selectors' => [
+					'{{WRAPPER}} > .qazana-background-overlay' => 'mix-blend-mode: {{VALUE}}',
 				],
 			]
 		);
@@ -545,7 +738,7 @@ class Element_Section extends Element_Base {
 		$this->add_control(
 			'background_overlay_hover_opacity',
 			[
-				'label' => __( 'Opacity (%)', 'qazana' ),
+				'label' => __( 'Opacity', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => .5,
@@ -565,6 +758,14 @@ class Element_Section extends Element_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'css_filters_hover',
+				'selector' => '{{WRAPPER}}:hover > .qazana-background-overlay',
+			]
+		);
+
 		$this->add_control(
 			'background_overlay_hover_transition',
 			[
@@ -580,6 +781,7 @@ class Element_Section extends Element_Base {
 					],
 				],
 				'render_type' => 'ui',
+				'separator' => 'before',
 			]
 		);
 
@@ -675,6 +877,7 @@ class Element_Section extends Element_Base {
 			[
 				'label' => __( 'Transition Duration', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
+				'separator' => 'before',
 				'default' => [
 					'size' => 0.3,
 				],
@@ -682,6 +885,20 @@ class Element_Section extends Element_Base {
 					'px' => [
 						'max' => 3,
 						'step' => 0.1,
+					],
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'background_background',
+							'operator' => '!==',
+							'value' => '',
+						], [
+							'name' => 'border_border',
+							'operator' => '!==',
+							'value' => '',
+						],
 					],
 				],
 				'selectors' => [
@@ -812,7 +1029,7 @@ class Element_Section extends Element_Base {
 						"shape_divider_$side" => array_keys( Shapes::filter_shapes( 'has_flip' ) ),
 					],
 					'selectors' => [
-						"{{WRAPPER}} > .qazana-shape-$side .qazana-shape-fill" => 'transform: rotateY(180deg)',
+						"{{WRAPPER}} > .qazana-shape-$side svg" => 'transform: translateX(-50%) rotateY(180deg)',
 					],
 				]
 			);
@@ -860,12 +1077,12 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		if ( in_array( Scheme_Color::get_type(), Schemes_Manager::get_enabled_schemes() ) ) {
+		if ( in_array( Scheme_Color::get_type(), Schemes_Manager::get_enabled_schemes(), true ) ) {
 			$this->add_control(
 				'colors_warning',
 				[
 					'type' => Controls_Manager::RAW_HTML,
-					'raw' => __( 'Note: The following colors won\'t work if Global Colors are enabled.', 'qazana' ),
+					'raw' => __( 'Note: The following colors won\'t work if Default Colors are enabled.', 'qazana' ),
 					'content_classes' => 'qazana-panel-alert qazana-panel-alert-warning',
 				]
 			);
@@ -951,7 +1168,7 @@ class Element_Section extends Element_Base {
 		$this->start_controls_section(
 			'section_advanced',
 			[
-				'label' => __( 'Element Style', 'qazana' ),
+				'label' => __( 'Advanced', 'qazana' ),
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
 		);
@@ -1000,8 +1217,8 @@ class Element_Section extends Element_Base {
 				'label' => __( 'CSS ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -1012,8 +1229,8 @@ class Element_Section extends Element_Base {
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'prefix_class' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -1101,18 +1318,25 @@ class Element_Section extends Element_Base {
 
 	}
 
+	/**
+	 * Render section edit tools.
+	 *
+	 * Used to generate the edit tools HTML.
+	 *
+	 * @since 1.8.0
+	 * @access protected
+	 */
 	protected function render_edit_tools() {
 		?>
 		<div class="qazana-element-overlay">
 			<ul class="qazana-editor-element-settings qazana-editor-section-settings">
-				<li class="qazana-editor-element-setting qazana-editor-element-trigger qazana-active" title="<?php printf( __( 'Edit %s', 'qazana' ),  __( 'Section', 'qazana' ) ); ?>"><i class="fa fa-bars"></i></li>
-				<?php foreach ( Element_Section::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
+				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
 					<?php if ( 'add' === $edit_tool_name ) : ?>
 						<# if ( ! isInner ) { #>
 					<?php endif; ?>
-					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
-						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-						<i class="fa fa-<?php echo $edit_tool['icon']; ?>"></i>
+					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo esc_attr( $edit_tool_name ); ?>" title="<?php echo esc_attr( $edit_tool['title'] ); ?>">
+						<i class="eicon-<?php echo esc_attr( $edit_tool['icon'] ); ?>" aria-hidden="true"></i>
+						<span class="qazana-screen-only"><?php echo esc_html( $edit_tool['title'] ); ?></span>
 					</li>
 					<?php if ( 'add' === $edit_tool_name ) : ?>
 						<# } #>
@@ -1123,6 +1347,14 @@ class Element_Section extends Element_Base {
 		<?php
 	}
 
+	/**
+	 * Render section output in the editor.
+	 *
+	 * Used to generate the live preview, using a Backbone JavaScript template.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {
 		?>
 		<# if ( 'video' === settings.background_background ) {
@@ -1155,27 +1387,14 @@ class Element_Section extends Element_Base {
 		<?php
 	}
 
-	private function print_shape_divider( $side ) {
-	    $settings = $this->get_active_settings();
-	    $base_setting_key = "shape_divider_$side";
-		$negative = ! empty( $settings[ $base_setting_key . '_negative' ] );
-	    ?>
-		<div class="qazana-shape qazana-shape-<?php echo $side; ?>" data-negative="<?php echo var_export( $negative ); ?>">
-			<?php include Shapes::get_shape_path( $settings[ $base_setting_key ], ! empty( $settings[ $base_setting_key . '_negative' ] ) ); ?>
-		</div>
-		<?php
-	}
-
-	private function get_html_tag() {
-		$html_tag = $this->get_settings( 'html_tag' );
-
-		if ( empty( $html_tag ) ) {
-			$html_tag = 'div';
-		}
-
-		return $html_tag;
-	}
-
+	/**
+	 * Before section rendering.
+	 *
+	 * Used to add stuff before the section element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function before_render() {
 		$section_type = $this->get_data( 'isInner' ) ? 'inner' : 'top';
 
@@ -1186,7 +1405,7 @@ class Element_Section extends Element_Base {
 			'qazana-' . $section_type . '-section',
 		] );
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		foreach ( $this->get_class_controls() as $control ) {
 			if ( empty( $settings[ $control['name'] ] ) )
@@ -1240,14 +1459,30 @@ class Element_Section extends Element_Base {
         <?php
     }
 
+	/**
+	 * After section rendering.
+	 *
+	 * Used to add stuff after the section element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function after_render() {
 		?>
 				</div>
 			</div>
-		</<?php echo $this->get_html_tag(); ?>>
+		</<?php echo esc_html( $this->get_html_tag() ); ?>>
 		<?php
 	}
 
+	/**
+	 * Add section render attributes.
+	 *
+	 * Used to add attributes to the current section wrapper HTML tag.
+	 *
+	 * @since 1.3.0
+	 * @access public
+	 */
 	public function _add_render_attributes() {
 		parent::_add_render_attributes();
 
@@ -1263,7 +1498,60 @@ class Element_Section extends Element_Base {
 		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
 	}
 
+	/**
+	 * Get default child type.
+	 *
+	 * Retrieve the section child type based on element data.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @param array $element_data Element ID.
+	 *
+	 * @return Element_Base Section default child type.
+	 */
 	protected function _get_default_child_type( array $element_data ) {
 		return qazana()->elements_manager->get_element_types( 'column' );
+	}
+
+	/**
+	 * Get HTML tag.
+	 *
+	 * Retrieve the section element HTML tag.
+	 *
+	 * @since 1.5.3
+	 * @access private
+	 *
+	 * @return string Section HTML tag.
+	 */
+	private function get_html_tag() {
+		$html_tag = $this->get_settings( 'html_tag' );
+
+		if ( empty( $html_tag ) ) {
+			$html_tag = 'section';
+		}
+
+		return $html_tag;
+	}
+
+	/**
+	 * Print section shape divider.
+	 *
+	 * Used to generate the shape dividers HTML.
+	 *
+	 * @since 1.3.0
+	 * @access private
+	 *
+	 * @param string $side Shape divider side, used to set the shape key.
+	 */
+	private function print_shape_divider( $side ) {
+		$settings = $this->get_active_settings();
+		$base_setting_key = "shape_divider_$side";
+		$negative = ! empty( $settings[ $base_setting_key . '_negative' ] );
+		?>
+		<div class="qazana-shape qazana-shape-<?php echo esc_attr( $side ); ?>" data-negative="<?php echo var_export( $negative ); ?>">
+			<?php include Shapes::get_shape_path( $settings[ $base_setting_key ], ! empty( $settings[ $base_setting_key . '_negative' ] ) ); ?>
+		</div>
+		<?php
 	}
 }

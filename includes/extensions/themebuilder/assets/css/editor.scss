@@ -1,0 +1,230 @@
+#qazana-theme-builder-conditions {
+    margin: 40px 0 60px;
+    .qazana-control {
+        background-color: transparent;
+        padding: 0;
+    }
+    .qazana-control:before {
+        content: none;
+    }
+    .qazana-control select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border-width: 0;
+        height: 40px;
+        padding: 0 14px;
+        cursor: pointer;
+    }
+    .qazana-control-type-query {
+        width: 100px;
+    }
+    .qazana-control-type-select .qazana-control-input-wrapper:after {
+        font-family: eicons;
+        content: '\e955';
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        right: 10px;
+        font-size: 11px;
+        color: #495157;
+        line-height: 1;
+    }
+    .qazana-control-type {
+        width: 120px;
+    }
+    .qazana-control-type[data-qazana-condition-type="include"] {
+        background-color: #a4afb7;
+    }
+    .qazana-control-type[data-qazana-condition-type="include"] .qazana-control-input-wrapper:before {
+        content: '\f0fe';
+    }
+    .qazana-control-type[data-qazana-condition-type="exclude"] {
+        background-color: #c2cbd2;
+    }
+    .qazana-control-type[data-qazana-condition-type="exclude"] .qazana-control-input-wrapper:before {
+        content: '\f146';
+    }
+    .qazana-control-type .qazana-control-input-wrapper:before {
+        font-family: FontAwesome;
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        left: 13px;
+        font-size: 14px;
+        color: #fff;
+    }
+    .qazana-control-type .qazana-control-input-wrapper:after {
+        color: #fff;
+    }
+    .qazana-control-type select {
+        color: #fff;
+        text-transform: uppercase;
+        padding-left: 33px;
+    }
+    .qazana-control-type option {
+        color: #495157;
+    }
+    .qazana-theme-builder-conditions-repeater-row-controls {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        margin-right: 10px;
+        width: 70%;
+        -webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border-radius: 3px;
+    }
+    .qazana-theme-builder-conditions-repeater-row-controls .qazana-control:not(:first-child) {
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+    }
+    .qazana-theme-builder-conditions-repeater-row-controls .qazana-control:not(:first-child) select {
+        border-color: #e6e9ec;
+        border-right-width: 1px;
+        border-radius: 0;
+        background-color: #fff;
+    }
+    .qazana-repeater-fields-wrapper {
+        width: 70%;
+        margin: auto;
+    }
+    .qazana-repeater-fields {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .qazana-control-field {
+        display: block;
+    }
+    .qazana-control-title,
+    .qazana-control-spinner {
+        display: none;
+    }
+    .qazana-control-input-wrapper {
+        width: 100%;
+    }
+    .select2-selection {
+        height: 40px;
+        border: none;
+        border-radius: 0;
+    }
+    .select2-selection__rendered {
+        line-height: 40px;
+        padding-left: 15px;
+        text-align: left;
+    }
+    .select2-selection__arrow {
+        height: 30px;
+    }
+    .select2-selection__arrow b {
+        border-top-color: #495157;
+        border-width: 4px 4px 0 4px;
+        margin-top: 2px;
+        margin-left: -7px;
+    }
+    .select2-selection__placeholder {
+        color: #495157;
+        text-transform: none;
+    }
+    .qazana-repeater-tool-remove {
+        font-size: 18px;
+        cursor: pointer;
+        color: #a4afb7;
+    }
+    .qazana-button-wrapper {
+        margin-top: 50px;
+    }
+    .qazana-repeater-add {
+        font-size: 14px;
+        padding: 12px 26px;
+    }
+    &__footer {
+        position: absolute;
+        background-color: #fff;
+        width: 100%;
+        padding: 5px;
+        bottom: 0;
+        left: 0;
+        text-align: right;
+    }
+    &__publish {
+        padding: 12px 26px;
+        font-size: 14px;
+        color: #fff;
+    }
+    &__publish:not(.qazana-button-success) {
+        background-color: #c2cbd2;
+    }
+}
+
+.qazana-error .qazana-theme-builder-conditions-repeater-row-controls {
+    border: 1px solid rgba(176, 27, 27, 0.5);
+}
+
+.qazana-conditions-conflict-message {
+    margin-top: 10px;
+    font-size: 11px;
+    color: #b01b1b;
+    text-align: left;
+    padding-left: 90px;
+}
+
+.qazana-conditions-conflict-message a {
+    color: #b01b1b;
+}
+
+#qazana-panel-footer-theme-builder-button-preview-wrapper {
+    .qazana-panel-footer-sub-menu {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
+    .qazana-panel-footer-sub-menu-item {
+        display: inline-block;
+        i {
+            margin-right: 5px;
+        }
+        >* {
+            display: inline-block;
+            line-height: 40px;
+        }
+    }
+}
+
+.qazana-conditions-select2-dropdown {
+    border: none;
+    border-radius: 0;
+}
+
+.qazana-conditions-select2-dropdown .select2-results__message {
+    display: none;
+}
+
+.qazana-conditions-select2-dropdown .select2-search--dropdown .select2-search__field {
+    border-width: 0 0 1px;
+    border-radius: 0;
+}

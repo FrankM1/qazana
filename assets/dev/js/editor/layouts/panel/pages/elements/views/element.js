@@ -7,6 +7,9 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 
 	onRender: function() {
 		var self = this;
+		if ( ! qazana.userCan( 'design' ) ) {
+			return;
+		}
 
 		this.$el.html5Draggable( {
 

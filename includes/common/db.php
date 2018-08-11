@@ -1,112 +1,152 @@
 <?php
 namespace Qazana;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+use Qazana\Core\DynamicTags\Manager;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+/**
+ * Qazana database.
+ *
+ * Qazana database handler class is responsible for communicating with the
+ * DB, save and retrieve Qazana data and meta data.
+ *
+ * @since 1.0.0
+ */
 class DB {
 
+	/**
+	 * Current DB version of the editor.
+	 */
+	const DB_VERSION = '0.4';
+
+	/**
+	 * Post publish status.
+	 */
 	const STATUS_PUBLISH = 'publish';
+
+	/**
+	 * Post draft status.
+	 */
 	const STATUS_DRAFT = 'draft';
+
+	/**
+	 * Post private status.
+	 */
+	const STATUS_PRIVATE = 'private';
+
+	/**
+	 * Post autosave status.
+	 */
 	const STATUS_AUTOSAVE = 'autosave';
 
 	/**
-	 * @var array
+	 * Post pending status.
+	 */
+	const STATUS_PENDING = 'pending';
+
+	/**
+	 * Switched post data.
+	 *
+	 * Holds the switched post data.
+	 *
+	 * @since 1.5.0
+	 * @access protected
+	 *
+	 * @var array Switched post data. Default is an empty array.
 	 */
 	protected $switched_post_data = [];
 
 	/**
-	 * Save builder method.
+	 * Switched data.
+	 *
+	 * Holds the switched data.
+	 *
+	 * @since 2.0.0
+	 * @access protected
+	 *
+	 * @var array Switched data. Default is an empty array.
+	 */
+	protected $switched_data = [];
+
+	/**
+	 * Save editor.
+	 *
+	 * Save data from the editor to the database.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 2.0.0 Use `qazana()->documents->save()` method instead.
 	 *
 	 * @access public
-	 * @since 1.0.0
 	 *
-	 * @param int    $post_id
-	 * @param array  $posted
-	 * @param string $status
+	 * @param int    $post_id Post ID.
+	 * @param array  $data    Post data.
+	 * @param string $status  Optional. Post status. Default is `publish`.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function save_editor( $post_id, $posted, $status = self::STATUS_PUBLISH, $save_state = 'save' ) {
+	public function save_editor( $post_id, $data, $status = self::STATUS_PUBLISH ) {
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->save()' );
 
-		// Change the global post to current library post, so widgets can use `get_the_ID` and other post data.
-		$this->switch_to_post( $post_id );
+		$document = qazana()->documents->get( $post_id );
 
-		$editor_data = $this->_get_editor_data( $posted );
-
-        // exit if data is empty and save state is not in delete mode. Important for prevention of accidental template deletions.
-        if ( ! $editor_data && $save_state !== 'delete' ) {
-            return false;
-        }
-
-		// We need the `wp_slash` in order to avoid the unslashing during the `update_post_meta`.
-		$json_value = wp_slash( wp_json_encode( $editor_data ) );
-
-		if ( self::STATUS_PUBLISH === $status ) {
-
-			$this->remove_draft( $post_id );
-
-			// Don't use `update_post_meta` that can't handle `revision` post type
-			$is_meta_updated = update_metadata( 'post', $post_id, '_qazana_data', $json_value );
-
-			do_action( 'qazana/db/before_save', $status, $is_meta_updated );
-
-			$this->_save_plain_text( $post_id );
-		} elseif ( self::STATUS_AUTOSAVE === $status ) {
-			do_action( 'qazana/db/before_save', $status, true );
-
-			$old_autosave = wp_get_post_autosave( $post_id, get_current_user_id() );
-
-			if ( $old_autosave ) {
-				wp_delete_post_revision( $old_autosave->ID );
-			}
-
-			$autosave_id = wp_create_post_autosave( [
-				'post_ID' => $post_id,
-				'post_title' => __( 'Auto Save', 'qazana' ) . ' ' . date( 'Y-m-d H:i' ),
-				'post_modified' => current_time( 'mysql' ),
-			] );
-
-			if ( $autosave_id ) {
-				update_metadata( 'post',  $autosave_id, '_qazana_data', $json_value );
-			}
+		if ( self::STATUS_AUTOSAVE === $status ) {
+			$document = $document->get_autosave( 0, true );
 		}
 
-		update_post_meta( $post_id, '_qazana_version', qazana_get_db_version() );
-
-		// Restore global post.
-		$this->restore_current_post();
-
-		// Remove Post CSS.
-		delete_post_meta( $post_id, Post_CSS_File::META_KEY );
-
-		do_action( 'qazana/editor/after_save', $post_id, $editor_data );
+		return $document->save( [
+			'elements' => $data,
+			'settings' => [
+				'post_status' => $status,
+			],
+		] );
 	}
 
 	/**
-	 * Get & Parse the builder from DB.
+	 * Get builder.
 	 *
-	 * @access public
+	 * Retrieve editor data from the database.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param int    $post_id
-	 * @param string $status
+	 * @access public
 	 *
-	 * @return array
+	 * @param int     $post_id           Post ID.
+	 * @param string  $status            Optional. Post status. Default is `publish`.
+	 *
+	 * @return array Editor data.
 	 */
 	public function get_builder( $post_id, $status = self::STATUS_PUBLISH ) {
-		$data = $this->get_plain_editor( $post_id, $status );
+		if ( self::STATUS_DRAFT === $status ) {
+			$document = qazana()->documents->get_doc_or_auto_save( $post_id );
+		} else {
+			$document = qazana()->documents->get( $post_id );
+		}
 
-		$this->switch_to_post( $post_id );
-		$editor_data = $this->_get_editor_data( $data, true );
-		$this->restore_current_post();
+		if ( $document ) {
+			$editor_data = $document->get_elements_raw_data( null, true );
+		} else {
+			$editor_data = [];
+		}
 
 		return $editor_data;
 	}
 
 	/**
+	 * Get JSON meta.
+	 *
+	 * Retrieve post meta data, and return the JSON decoded data.
+	 *
 	 * @since 1.0.0
 	 * @access protected
-	*/
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $key     The meta key to retrieve.
+	 *
+	 * @return array Decoded JSON data from post meta.
+	 */
 	protected function _get_json_meta( $post_id, $key ) {
 		$meta = get_post_meta( $post_id, $key, true );
 
@@ -114,45 +154,105 @@ class DB {
 			$meta = json_decode( $meta, true );
 		}
 
+		if ( empty( $meta ) ) {
+			$meta = [];
+		}
+
 		return $meta;
 	}
 
 	/**
+	 * Get plain editor.
+	 *
+	 * Retrieve post data that was saved in the database. Raw data before it
+	 * was parsed by qazana.
+	 *
 	 * @since 1.0.0
+	 * @deprecated 2.0.0 Use `qazana()->documents->get_elements_data()` method instead.
+	 *
 	 * @access public
-	*/
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $status  Optional. Post status. Default is `publish`.
+	 *
+	 * @return array Post data.
+	 */
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
-		$data = $this->_get_json_meta( $post_id, '_qazana_data' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get_elements_data()' );
 
-		if ( self::STATUS_DRAFT === $status && ( isset( $_GET['action'] ) && $_GET['action'] === 'qazana' ) ) {
-			$draft_data = $this->_get_json_meta( $post_id, '_qazana_draft_data' );
+		$document = qazana()->documents->get( $post_id );
 
-			if ( ! empty( $draft_data ) ) {
-				$data = $draft_data;
-			}
-
-			if ( empty( $data ) ) {
-				$data = $this->_get_new_editor_from_wp_editor( $post_id );
-			}
+		if ( $document ) {
+			return $document->get_elements_data( $status );
 		}
 
-		return $data;
+		return [];
 	}
 
 	/**
-	 * @since 1.0.0
-	 * @access protected
-	*/
-	protected function _get_new_editor_from_wp_editor( $post_id ) {
+	 * Get auto-saved post revision.
+	 *
+	 * Retrieve the auto-saved post revision that is newer than current post.
+	 *
+	 * @since 1.9.0
+	 * @deprecated 2.0.0 Use `qazana()->documents->get_newer_autosave()` method instead.
+	 *
+	 * @access public
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return \WP_Post|false The auto-saved post, or false.
+	 */
+	public function get_newer_autosave( $post_id ) {
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get_newer_autosave()' );
+
+		$document = qazana()->documents->get( $post_id );
+
+		return $document->get_newer_autosave();
+	}
+
+	/**
+	 * Get new editor from WordPress editor.
+	 *
+	 * When editing the with Qazana the first time, the current page content
+	 * is parsed into Text Editor Widget that contains the original data.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return array Content in Qazana format.
+	 */
+	public function get_new_editor_from_wp_editor( $post_id ) {
 		$post = get_post( $post_id );
 
 		if ( empty( $post ) || empty( $post->post_content ) ) {
 			return [];
 		}
 
-		$text_editor_widget_type = qazana()->widgets_manager->get_widget_types( 'text-editor' );
+		// Check if it's only a shortcode.
+		preg_match_all( '/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER );
+		if ( ! empty( $matches ) ) {
+			foreach ( $matches as $shortcode ) {
+				if ( trim( $post->post_content ) === $shortcode[0] ) {
+					$widget_type = qazana()->widgets_manager->get_widget_types( 'shortcode' );
+					$settings = [
+						'shortcode' => $post->post_content,
+					];
+					break;
+				}
+			}
+		}
 
-		// TODO: Better coding to start template for editor.
+		if ( empty( $widget_type ) ) {
+			$widget_type = qazana()->widgets_manager->get_widget_types( 'text-editor' );
+			$settings = [
+				'editor' => $post->post_content,
+			];
+		}
+
+		// TODO: Better coding to start template for editor
 		return [
 			[
 				'id' => Utils::generate_random_string(),
@@ -164,77 +264,30 @@ class DB {
 						'elements' => [
 							[
 								'id' => Utils::generate_random_string(),
-								'elType' => $text_editor_widget_type::get_type(),
-								'widgetType' => $text_editor_widget_type->get_name(),
-								'settings' => [
-									'editor' => $post->post_content,
-								],
+								'elType' => $widget_type::get_type(),
+								'widgetType' => $widget_type->get_name(),
+								'settings' => $settings,
 							],
 						],
 					],
 				],
 			],
 		];
-	}
-
+    }
+    
 	/**
-	 * Remove draft data from DB.
+	 * Is using Qazana.
 	 *
+	 * Set whether the page is using Qazana or not.
+	 *
+	 * @since 1.5.0
 	 * @access public
-	 * @since 1.0.0
 	 *
-	 * @param $post_id
-	 *
-	 * @return void
+	 * @param int  $post_id      Post ID.
+	 * @param bool $is_qazana Optional. Whether the page is qazana page.
+	 *                           Default is true.
 	 */
-	public function remove_draft( $post_id ) {
-		delete_post_meta( $post_id, '_qazana_draft_data' );
-	}
-
-	/**
-	 * Get edit mode by Page ID
-	 *
-	 * @since 1.0.0
-	 * @param $post_id
-	 *
-	 * @return mixed
-	 */
-	public function get_edit_mode( $post_id ) {
-		return get_post_meta( $post_id, '_qazana_edit_mode', true );
-	}
-
-	/**
-	 * Setup the edit mode per Page ID
-	 *
-	 * @since 1.0.0
-	 * @param int $post_id
-	 * @param string $mode
-	 *
-	 * @return void
-	 */
-	public function set_edit_mode( $post_id, $mode = 'qazana' ) {
-
-		global $pagenow;
-
-		if ( 'qazana' === $mode ) {
-			update_post_meta( $post_id, '_qazana_edit_mode', $mode );
-			do_action('qazana/db/set_edit_mode', $mode, $post_id );
-		} else {
-			delete_post_meta( $post_id, '_qazana_edit_mode' );
-		}
-	}
-
-	/**
-	 * Set whether the page is qazana page or not
-	 *
-	 * @access public
-	 * @since 1.0.0
-	 *
-	 * @param int $post_id
-	 * @param bool $is_qazana
-	 *
-	 */
-	public function set_is_builder_page( $post_id, $is_qazana = true ) {
+	public function set_is_qazana_page( $post_id, $is_qazana = true ) {
 		if ( $is_qazana ) {
 			// Use the string `qazana` and not a boolean for rollback compatibility
 			update_post_meta( $post_id, '_qazana_edit_mode', 'qazana' );
@@ -244,52 +297,51 @@ class DB {
 	}
 
 	/**
-	 * @since 1.0.0
+	 * Render element plain content.
+	 *
+	 * When saving data in the editor, this method renders recursively the plain
+	 * content containing only the content and the HTML. No CSS data.
+	 *
+	 * @since 2.0.0
 	 * @access private
-	*/
-	private function _render_element_plain_content( $element_data ) {
+	 *
+	 * @param array $element_data Element data.
+	 */
+	private function render_element_plain_content( $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
 			$widget = qazana()->elements_manager->create_element_instance( $element_data );
 
-			if ( is_object( $widget ) ) {
+			if ( $widget ) {
 				$widget->render_plain_content();
 			}
 		}
 
 		if ( ! empty( $element_data['elements'] ) ) {
 			foreach ( $element_data['elements'] as $element ) {
-				$this->_render_element_plain_content( $element );
+				$this->render_element_plain_content( $element );
 			}
 		}
 	}
 
 	/**
-	 * @since 1.0.0
-	 * @access private
-	*/
-	private function _save_plain_text( $post_id ) {
-		ob_start();
+	 * Save plain text.
+	 *
+	 * Retrieves the raw content, removes all kind of unwanted HTML tags and saves
+	 * the content as the `post_content` field in the database.
+	 *
+	 * @since 1.9.0
+	 * @access public
+	 *
+	 * @param int $post_id Post ID.
+	 */
+	public function save_plain_text( $post_id ) {
+		// Switch $dynamic_tags to parsing mode = remove.
+		$dynamic_tags = qazana()->dynamic_tags;
+		$parsing_mode = $dynamic_tags->get_parsing_mode();
+		$dynamic_tags->set_parsing_mode( Manager::MODE_REMOVE );
 
-		$data = $this->get_plain_editor( $post_id );
-
-		if ( $data ) {
-			foreach ( $data as $element_data ) {
-				$this->_render_element_plain_content( $element_data );
-			}
-		}
-
-		$plain_text = ob_get_clean();
-
-		// Remove unnecessary tags.
-		$plain_text = preg_replace( '/<\/?div[^>]*\>/i', '', $plain_text );
-		$plain_text = preg_replace( '/<\/?span[^>]*\>/i', '', $plain_text );
-		$plain_text = preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $plain_text );
-		$plain_text = preg_replace( '/<i [^>]*><\\/i[^>]*>/', '', $plain_text );
-		$plain_text = preg_replace( '/ class=".*?"/', '', $plain_text );
-
-		// Remove empty lines.
-		$plain_text = preg_replace( '/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/', "\n", $plain_text );
+		$plain_text = $this->get_plain_text( $post_id );
 
 		wp_update_post(
 			[
@@ -297,44 +349,25 @@ class DB {
 				'post_content' => $plain_text,
 			]
 		);
+
+		// Restore parsing mode.
+		$dynamic_tags->set_parsing_mode( $parsing_mode );
 	}
 
 	/**
-	 * Sanitize posted data.
+	 * Iterate data.
 	 *
-	 * @access private
-	 * @since 1.0.0
+	 * Accept any type of Qazana data and a callback function. The callback
+	 * function runs recursively for each element and his child elements.
 	 *
-	 * @param array $data
-	 *
-	 * @param bool  $with_html_content
-	 *
-	 * @return array
-	 */
-	private function _get_editor_data( $data, $with_html_content = false ) {
-		$editor_data = [];
-
-        if ( empty ( $data ) ) {
-            return false;
-        }
-
-		foreach ( $data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
-
-			$editor_data[] = $element->get_raw_data( $with_html_content );
-		} // End Section
-
-        if ( empty ( $editor_data ) ) {
-            return false;
-        }
-
-		return $editor_data;
-	}
-
-	/**
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 *
+	 * @param array    $data_container Any type of qazana data.
+	 * @param callable $callback       A function to iterate data by.
+	 *
+	 * @return mixed Iterated data.
+	 */
 	public function iterate_data( $data_container, $callback ) {
 		if ( isset( $data_container['elType'] ) ) {
 			if ( ! empty( $data_container['elements'] ) ) {
@@ -344,7 +377,6 @@ class DB {
 			return $callback( $data_container );
 		}
 
-		if ( is_array( $data_container ) ) {
 		foreach ( $data_container as $element_key => $element_value ) {
 			$element_data = $this->iterate_data( $data_container[ $element_key ], $callback );
 
@@ -353,22 +385,64 @@ class DB {
 			}
 
 			$data_container[ $element_key ] = $element_data;
-			}
 		}
 
 		return $data_container;
 	}
 
 	/**
+	 * Safely copy Qazana meta.
+	 *
+	 * Make sure the original page was built with Qazana and the post is not
+	 * auto-save. Only then copy qazana meta from one post to another using
+	 * `copy_qazana_meta()`.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 *
+	 * @param int $from_post_id Original post ID.
+	 * @param int $to_post_id   Target post ID.
+	 */
+	public function safe_copy_qazana_meta( $from_post_id, $to_post_id ) {
+		// It's from  WP-Admin & not from Qazana.
+		if ( ! did_action( 'qazana/db/before_save' ) ) {
+
+			if ( ! qazana()->db->is_built_with_qazana( $from_post_id ) ) {
+				return;
+			}
+
+			// It's an exited Qazana auto-save
+			if ( get_post_meta( $to_post_id, '_qazana_data', true ) ) {
+				return;
+			}
+		}
+
+		$this->copy_qazana_meta( $from_post_id, $to_post_id );
+	}
+
+	/**
+	 * Copy Qazana meta.
+	 *
+	 * Duplicate the data from one post to another.
+	 *
+	 * Consider using `safe_copy_qazana_meta()` method instead.
+	 *
+	 * @since 1.1.0
+	 * @access public
+	 *
+	 * @param int $from_post_id Original post ID.
+	 * @param int $to_post_id   Target post ID.
+	 */
 	public function copy_qazana_meta( $from_post_id, $to_post_id ) {
 		$from_post_meta = get_post_meta( $from_post_id );
+		$core_meta = [
+			'_wp_page_template',
+			'_thumbnail_id',
+		];
 
 		foreach ( $from_post_meta as $meta_key => $values ) {
 			// Copy only meta with the `_qazana` prefix
-			if ( 0 === strpos( $meta_key, '_qazana' ) ) {
+			if ( 0 === strpos( $meta_key, '_qazana' ) || in_array( $meta_key, $core_meta, true ) ) {
 				$value = $values[0];
 
 				// The qazana JSON needs slashes before saving
@@ -385,26 +459,33 @@ class DB {
 	}
 
 	/**
-	 * @since 1.0.0
+	 * Is built with Qazana.
+	 *
+	 * Check whether the post was built with Qazana.
+	 *
+	 * @since 1.0.10
 	 * @access public
-	*/
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return bool Whether the post was built with Qazana.
+	 */
 	public function is_built_with_qazana( $post_id ) {
 		return ! ! get_post_meta( $post_id, '_qazana_edit_mode', true );
 	}
 
 	/**
+	 * Switch to post.
+	 *
+	 * Change the global WordPress post to the requested post.
+	 *
+	 * @since 1.5.0
 	 * @access public
-	 * @deprecated 1.4.0
+	 *
+	 * @param int $post_id Post ID to switch to.
 	 */
-	public function has_qazana_in_post( $post_id ) {
-		return $this->is_built_with_qazana( $post_id );
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	*/
 	public function switch_to_post( $post_id ) {
+		$post_id = absint( $post_id );
 		// If is already switched, or is the same post, return.
 		if ( get_the_ID() === $post_id ) {
 			$this->switched_post_data[] = false;
@@ -416,14 +497,19 @@ class DB {
 			'original_id' => get_the_ID(), // Note, it can be false if the global isn't set
 		];
 
-		$GLOBALS['post'] = get_post( $post_id );
+		$GLOBALS['post'] = get_post( $post_id ); // WPCS: override ok.
+
 		setup_postdata( $GLOBALS['post'] );
 	}
 
 	/**
-	 * @since 1.0.0
+	 * Restore current post.
+	 *
+	 * Rollback to the previous global post, rolling back from `DB::switch_to_post()`.
+	 *
+	 * @since 1.5.0
 	 * @access public
-	*/
+	 */
 	public function restore_current_post() {
 		$data = array_pop( $this->switched_post_data );
 
@@ -432,13 +518,159 @@ class DB {
 			return;
 		}
 
-		// It was switched from an empty global post, restore this state and unset the global post.
+		// It was switched from an empty global post, restore this state and unset the global post
 		if ( false === $data['original_id'] ) {
 			unset( $GLOBALS['post'] );
 			return;
 		}
 
-		$GLOBALS['post'] = get_post( $data['original_id'] );
+		$GLOBALS['post'] = get_post( $data['original_id'] ); // WPCS: override ok.
+
 		setup_postdata( $GLOBALS['post'] );
+	}
+
+
+	/**
+	 * Switch to query.
+	 *
+	 * Change the WordPress query to a new query with the requested
+	 * query variables.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @param array $query_vars New query variables.
+	 */
+	public function switch_to_query( $query_vars ) {
+		global $wp_query;
+		$current_query_vars = $wp_query->query;
+
+		// If is already switched, or is the same query, return.
+		if ( $current_query_vars === $query_vars ) {
+			$this->switched_data[] = false;
+			return;
+		}
+
+		$new_query = new \WP_Query( $query_vars );
+
+		$this->switched_data[] = [
+			'switched' => $new_query,
+			'original' => $wp_query,
+		];
+
+		$wp_query = $new_query; // WPCS: override ok.
+
+		// Ensure the global post is set only if needed
+		unset( $GLOBALS['post'] );
+
+		if ( $new_query->is_singular() && isset( $new_query->posts[0] ) ) {
+			$GLOBALS['post'] = $new_query->posts[0]; // WPCS: override ok.
+
+			setup_postdata( $GLOBALS['post'] );
+		} elseif ( $new_query->is_author() ) {
+			$GLOBALS['authordata'] = get_userdata( $new_query->get( 'author' ) ); // WPCS: override ok.
+		}
+	}
+
+	/**
+	 * Restore current query.
+	 *
+	 * Rollback to the previous query, rolling back from `DB::switch_to_query()`.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 */
+	public function restore_current_query() {
+		$data = array_pop( $this->switched_data );
+
+		// If not switched, return.
+		if ( ! $data ) {
+			return;
+		}
+
+		global $wp_query;
+
+		$wp_query = $data['original']; // WPCS: override ok.
+
+		// Ensure the global post/authordata is set only if needed.
+		unset( $GLOBALS['post'] );
+		unset( $GLOBALS['authordata'] );
+
+		if ( $wp_query->is_singular() && isset( $wp_query->posts[0] ) ) {
+			$GLOBALS['post'] = $wp_query->posts[0]; // WPCS: override ok.
+			setup_postdata( $GLOBALS['post'] );
+		} elseif ( $wp_query->is_author() ) {
+			$GLOBALS['authordata'] = get_userdata( $wp_query->get( 'author' ) ); // WPCS: override ok.
+		}
+	}
+
+	/**
+	 * Get plain text.
+	 *
+	 * Retrieve the post plain text.
+	 *
+	 * @since 1.9.0
+	 * @access public
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return string Post plain text.
+	 */
+	public function get_plain_text( $post_id ) {
+		$data = $this->get_plain_editor( $post_id );
+
+		return $this->get_plain_text_from_data( $data );
+	}
+
+	/**
+	 * Get plain text from data.
+	 *
+	 * Retrieve the post plain text from any given Qazana data.
+	 *
+	 * @since 1.9.2
+	 * @access public
+	 *
+	 * @param array $data Post ID.
+	 *
+	 * @return string Post plain text.
+	 */
+	public function get_plain_text_from_data( $data ) {
+		ob_start();
+		if ( $data ) {
+			foreach ( $data as $element_data ) {
+				$this->render_element_plain_content( $element_data );
+			}
+		}
+
+		$plain_text = ob_get_clean();
+
+		// Remove unnecessary tags.
+		$plain_text = preg_replace( '/<\/?div[^>]*\>/i', '', $plain_text );
+		$plain_text = preg_replace( '/<\/?span[^>]*\>/i', '', $plain_text );
+		$plain_text = preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $plain_text );
+		$plain_text = preg_replace( '/<i [^>]*><\\/i[^>]*>/', '', $plain_text );
+		$plain_text = preg_replace( '/ class=".*?"/', '', $plain_text );
+
+		// Remove empty lines.
+		$plain_text = preg_replace( '/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/', "\n", $plain_text );
+
+		$plain_text = trim( $plain_text );
+
+		return $plain_text;
+    }
+    
+    /**
+	 * Switch to post.
+	 *
+	 * Change the global WordPress post to the requested post.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @deprecated 1.3.0
+	 *
+	 * @param int $post_id Post ID to switch to.
+	 */
+	public function has_qazana_in_post( $post_id ) {
+		return $this->is_built_with_qazana( $post_id );
 	}
 }

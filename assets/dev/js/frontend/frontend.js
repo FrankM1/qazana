@@ -32,6 +32,8 @@
 			elements.$body = $( 'body' );
 
 			elements.$qazana = elements.$document.find( '.qazana' );
+
+			elements.$wpAdminBar = elements.$document.find( '#wpadminbar' );
 		};
 
 		var bindEvents = function() {
@@ -48,7 +50,8 @@
 			};
 
 			self.modules = {
-				StretchElement: require( 'qazana-frontend/modules/stretch-element' )
+				StretchElement: require( 'qazana-frontend/modules/stretch-element' ),
+				Masonry: require( 'qazana-utils/masonry' )
 			};
 
 			self.elementsHandler = new ElementsHandler( $ );
@@ -172,12 +175,28 @@
 				return;
 			}
 
+			this.removeListeners( listenerID, event, to );
+
 			if ( to instanceof jQuery ) {
 				var eventNS = event + '.' + listenerID;
 
-				to.off( eventNS ).on( eventNS, callback );
+				to.on( eventNS, callback );
 			} else {
-				to.off( event, null, listenerID ).on( event, callback, listenerID );
+				to.on( event, callback, listenerID );
+			}
+		};
+
+		this.removeListeners = function( listenerID, event, callback, from ) {
+			if ( ! from ) {
+				from = self.getElements( '$window' );
+			}
+
+			if ( from instanceof jQuery ) {
+				var eventNS = event + '.' + listenerID;
+
+				from.off( eventNS, callback );
+			} else {
+				from.off( event, callback, listenerID );
 			}
 		};
 
@@ -186,10 +205,23 @@
 		};
 
 		this.waypoint = function( $element, callback, options ) {
-			var correctCallback = function() {
-				var element = this.element || this;
+			var defaultOptions = {
+				offset: '100%',
+				triggerOnce: true
+			};
 
-				return callback.apply( element, arguments );
+			options = $.extend( defaultOptions, options );
+
+			var correctCallback = function() {
+				var element = this.element || this,
+					result = callback.apply( element, arguments );
+
+				// If is Waypoint new API and is frontend
+				if ( options.triggerOnce && this.destroy ) {
+					this.destroy();
+				}
+
+				return result;
 			};
 
 			return $element.qazanaWaypoint( correctCallback, options );

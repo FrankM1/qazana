@@ -2,21 +2,43 @@
 namespace Qazana\Core\Settings\General;
 
 use Qazana\Controls_Manager;
-use Qazana\CSS_File;
+use Qazana\Core\Files\CSS\Base;
+use Qazana\Core\Files\CSS\Global_CSS;
 use Qazana\Core\Settings\Base\Manager as BaseManager;
 use Qazana\Core\Settings\Base\Model as BaseModel;
-use Qazana\Global_CSS_File;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana general settings manager.
+ *
+ * Qazana general settings manager handler class is responsible for registering
+ * and managing Qazana general settings managers.
+ *
+ * @since 1.6.0
+ */
 class Manager extends BaseManager {
 
+	/**
+	 * Lightbox panel tab.
+	 */
 	const PANEL_TAB_LIGHTBOX = 'lightbox';
 
+	/**
+	 * Meta key for the general settings.
+	 */
 	const META_KEY = '_qazana_general_settings';
 
+	/**
+	 * General settings manager constructor.
+	 *
+	 * Initializing Qazana general settings manager.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 */
 	public function __construct() {
 		parent::__construct();
 
@@ -24,23 +46,44 @@ class Manager extends BaseManager {
 	}
 
 	/**
-	 * @return string
+	 * Get manager name.
+	 *
+	 * Retrieve general settings manager name.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @return string Manager name.
 	 */
 	public function get_name() {
 		return 'general';
 	}
 
 	/**
-	 * @return BaseModel
+	 * Get model for config.
+	 *
+	 * Retrieve the model for settings configuration.
+	 *
+	 * @since 1.6.0
+	 * @access public
+	 *
+	 * @return BaseModel The model object.
 	 */
 	public function get_model_for_config() {
 		return $this->get_model();
 	}
 
 	/**
-	 * @param int $id
+	 * Get saved settings.
 	 *
-	 * @return array
+	 * Retrieve the saved settings from the site options.
+	 *
+	 * @since 1.6.0
+	 * @access protected
+	 *
+	 * @param int $id Post ID.
+	 *
+	 * @return array Saved settings.
 	 */
 	protected function get_saved_settings( $id ) {
 		$model_controls = Model::get_controls_list();
@@ -65,17 +108,30 @@ class Manager extends BaseManager {
 	}
 
 	/**
+	 * Get CSS file name.
+	 *
+	 * Retrieve CSS file name for the general settings manager.
+	 *
+	 * @since 1.6.0
+	 * @access protected
 	 * @return string
+	 *
+	 * @return string CSS file name.
 	 */
 	protected function get_css_file_name() {
 		return 'global';
 	}
 
 	/**
-	 * @param array $settings
-	 * @param int   $id
+	 * Save settings to DB.
 	 *
-	 * @return void
+	 * Save general settings to the database, as site options.
+	 *
+	 * @since 1.6.0
+	 * @access protected
+	 *
+	 * @param array $settings Settings.
+	 * @param int   $id       Post ID.
 	 */
 	protected function save_settings_to_db( array $settings, $id ) {
 
@@ -103,7 +159,7 @@ class Manager extends BaseManager {
 			}
 		}
 
-		// Save all settings in one list for future usage
+		// Save all settings in one list for a future usage
 		if ( ! empty( $one_list_settings ) ) {
 			update_option( self::META_KEY, $one_list_settings );
 		} else {
@@ -112,23 +168,45 @@ class Manager extends BaseManager {
 	}
 
 	/**
-	 * @param CSS_File $css_file
+	 * Get model for CSS file.
 	 *
-	 * @return BaseModel
+	 * Retrieve the model for the CSS file.
+	 *
+	 * @since 1.6.0
+	 * @access protected
+	 *
+	 * @param Base $css_file The requested CSS file.
+	 *
+	 * @return BaseModel The model object.
 	 */
-	protected function get_model_for_css_file( CSS_File $css_file ) {
+	protected function get_model_for_css_file( Base $css_file ) {
 		return $this->get_model();
 	}
 
 	/**
-	 * @param int $id
+	 * Get CSS file for update.
 	 *
-	 * @return CSS_File
+	 * Retrieve the CSS file before updating the it.
+	 *
+	 * @since 1.6.0
+	 * @access protected
+	 *
+	 * @param int $id Post ID.
+	 *
+	 * @return Global_CSS The global CSS file object.
 	 */
 	protected function get_css_file_for_update( $id ) {
-		return new Global_CSS_File();
+		return new Global_CSS( 'global.css' );
 	}
 
+	/**
+	 * Add panel tabs.
+	 *
+	 * Register new panel tab for the lightbox settings.
+	 *
+	 * @since 1.6.0
+	 * @access private
+	 */
 	private function add_panel_tabs() {
 		Controls_Manager::add_tab( self::PANEL_TAB_LIGHTBOX, __( 'Lightbox', 'qazana' ) );
 	}

@@ -1,17 +1,19 @@
 <?php
 namespace Qazana;
 
+use Qazana\Core\DynamicTags\Manager;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Controls Stack
+ * Qazana controls stack.
  *
- * A base abstract class that provides the needed properties and methods to
+ * An abstract class that provides the needed properties and methods to
  * manage and handle controls in the editor panel to inheriting classes.
  *
- * @since 1.0.0
+ * @since 1.4.0
  * @abstract
  */
 abstract class Controls_Stack {
@@ -34,16 +36,16 @@ abstract class Controls_Stack {
 	/**
 	 * Generic ID.
 	 *
-	 * Holds the uniqe ID.
+	 * Holds the unique ID.
 	 *
 	 * @access private
 	 *
 	 * @var string
 	 */
-	private $_id;
+	private $id;
 
 	/**
-	 * Parrsed Settings.
+	 * Parsed Settings.
 	 *
 	 * Holds the settings, which is the data entered by the user and processed
 	 * by qazana.
@@ -52,7 +54,20 @@ abstract class Controls_Stack {
 	 *
 	 * @var null|array
 	 */
-	private $_settings;
+	private $settings;
+
+	private $active_settings;
+
+	private $parsed_active_settings;
+
+	/**
+	 * Parsed Dynamic Settings.
+	 *
+	 * @access private
+	 *
+	 * @var null|array
+	 */
+	private $parsed_dynamic_settings;
 
 	/**
 	 * Raw Data.
@@ -64,19 +79,19 @@ abstract class Controls_Stack {
 	 *
 	 * @var null|array
 	 */
-	private $_data;
+	private $data;
 
 	/**
 	 * The configuration.
 	 *
 	 * Holds the configuration used to generate the Qazana editor. It includes
-	 * the element name, icon, categories ect...
+	 * the element name, icon, categories, etc.
 	 *
 	 * @access private
 	 *
 	 * @var null|array
 	 */
-	private $_config;
+	private $config;
 
 	/**
 	 * Current section.
@@ -87,7 +102,7 @@ abstract class Controls_Stack {
 	 *
 	 * @var null|array
 	 */
-	private $_current_section;
+	private $current_section;
 
 	/**
 	 * Current tab.
@@ -98,7 +113,7 @@ abstract class Controls_Stack {
 	 *
 	 * @var null|array
 	 */
-	private $_current_tab;
+	private $current_tab;
 
 	/**
 	 * Current popover.
@@ -138,8 +153,8 @@ abstract class Controls_Stack {
 	/**
 	 * Get unique name.
 	 *
-	 * Some classes need to use unique names, this method allows you to create them.
-	 * By default it returns the regular name.
+	 * Some classes need to use unique names, this method allows you to create
+	 * them. By default it retrieves the regular name.
 	 *
 	 * @access public
 	 *
@@ -150,25 +165,27 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve the generic ID.
+	 * Get element ID.
 	 *
 	 * @access public
 	 *
 	 * @return string The ID.
 	 */
 	public function get_id() {
-		return $this->_id;
-    }
+		return $this->id;
+	}
 
-    /**
-	 * Retrieve the generic ID as integer.
+	/**
+	 * Get element ID.
+	 *
+	 * Retrieve the element generic ID as integer.
 	 *
 	 * @access public
 	 *
 	 * @return string The converted ID.
 	 */
 	public function get_id_int() {
-		return hexdec( $this->_id );
+		return hexdec( $this->id );
 	}
 
 	/**
@@ -202,18 +219,19 @@ abstract class Controls_Stack {
 	/**
 	 * Retrieve items.
 	 *
-	 * Utility method recieves an array with needle, and the it returns all the
-	 * Items match the needle.
+	 * Utility method that receives an array with a needle and returns all the
+	 * items that match the needle. If needle is not defined the entire haystack
+	 * will be returned.
 	 *
-	 * @access private
+	 * @access protected
 	 * @static
 	 *
-	 * @param array  $haystack Default is an empty array.
-	 * @param string $needle   Default is null.
+	 * @param array  $haystack An array of items.
+	 * @param string $needle   Optional. Needle. Default is null.
 	 *
 	 * @return mixed The whole haystack or the needle from the haystack when requested.
 	 */
-	private static function _get_items( array $haystack, $needle = null ) {
+	protected static function _get_items( array $haystack, $needle = null ) {
 		if ( $needle ) {
 			return isset( $haystack[ $needle ] ) ? $haystack[ $needle ] : null;
 		}
@@ -222,33 +240,33 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve current section.
+	 * Get current section.
 	 *
-	 * When inserting new controls, this method will return the current section.
+	 * When inserting new controls, this method will retrieve the current section.
 	 *
 	 * @access public
 	 *
 	 * @return null|array Current section.
 	 */
 	public function get_current_section() {
-		return $this->_current_section;
+		return $this->current_section;
 	}
 
 	/**
-	 * Retrieve current tab.
+	 * Get current tab.
 	 *
-	 * When inserting new controls, this method will return the current tab.
+	 * When inserting new controls, this method will retrieve the current tab.
 	 *
 	 * @access public
 	 *
 	 * @return null|array Current tab.
 	 */
 	public function get_current_tab() {
-		return $this->_current_tab;
+		return $this->current_tab;
 	}
 
 	/**
-	 * Retrieve controls.
+	 * Get controls.
 	 *
 	 * Get all the controls or, when requested, a specific control.
  	 *
@@ -265,33 +283,50 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve active controls.
+	 * Get active controls.
 	 *
-	 * Get an array of all the active controls that meet the condition field.
+	 * Retrieve an array of active controls that meet the condition field.
 	 *
+	 * If specific controls was given as a parameter, retrieve active controls
+	 * from that list, otherwise check for all the controls available.
+	 *
+	 * @since 1.4.0
+	 * @since 2.0.9 Added the `controls` and the `settings` parameters.
 	 * @access public
+	 *
+	 * @param array $controls Optional. An array of controls. Default is null.
+	 * @param array $settings Optional. Controls settings. Default is null.
 	 *
 	 * @return array Active controls.
 	 */
-	public function get_active_controls() {
-		$controls = $this->get_controls();
-
-		$settings = $this->get_controls_settings();
-
-        $active_controls = [];
-		foreach ( $controls as $control_key => $control ) {
-			if ( $this->is_control_visible( $control, $settings ) ) {
-				$active_controls[ $control_key ] = $control;
-			}
+	public function get_active_controls( array $controls = null, array $settings = null ) {
+		if ( ! $controls ) {
+			$controls = $this->get_controls();
 		}
+
+		if ( ! $settings ) {
+			$settings = $this->get_controls_settings();
+		}
+
+		$active_controls = array_reduce(
+			array_keys( $controls ), function( $active_controls, $control_key ) use ( $controls, $settings ) {
+				$control = $controls[ $control_key ];
+
+				if ( $this->is_control_visible( $control, $settings ) ) {
+					$active_controls[ $control_key ] = $control;
+				}
+
+				return $active_controls;
+			}, []
+		);
 
 		return $active_controls;
 	}
 
 	/**
-	 * Retrieve controls settings.
+	 * Get controls settings.
 	 *
-	 * Get the settings for all the controls that represent them.
+	 * Retrieve the settings for all the controls that represent them.
 	 *
 	 * @access public
 	 *
@@ -312,7 +347,7 @@ abstract class Controls_Stack {
 	 *
 	 * @param string $id      Control ID.
 	 * @param array  $args    Control arguments.
-	 * @param array  $options Control options. Default is an empty array.
+	 * @param array  $options Optional. Control options. Default is an empty array.
 	 *
 	 * @return bool True if control added, False otherwise.
 	 */
@@ -332,10 +367,10 @@ abstract class Controls_Stack {
 			$options['index'] = $this->injection_point['index']++;
 		}
 
-		if ( empty( $args['type'] ) || ! in_array( $args['type'], [ Controls_Manager::SECTION, Controls_Manager::WP_WIDGET ] ) ) {
-			$target_section_args = $this->_current_section;
+		if ( empty( $args['type'] ) || ! in_array( $args['type'], [ Controls_Manager::SECTION, Controls_Manager::WP_WIDGET ], true ) ) {
+			$target_section_args = $this->current_section;
 
-			$target_tab = $this->_current_tab;
+			$target_tab = $this->current_tab;
 
 			if ( $this->injection_point ) {
 				$target_section_args = $this->injection_point['section'];
@@ -403,8 +438,9 @@ abstract class Controls_Stack {
 	 * @param string $control_id Control ID.
 	 * @param array  $args       Control arguments. Only the new fields you want
 	 *                           to update.
-	 * @param array  $options    Optional. Some additional options.
-     *
+	 * @param array  $options    Optional. Some additional options. Default is
+	 *                           an empty array.
+	 *
 	 * @return bool
 	 */
 	public function update_control( $control_id, array $args, array $options = [] ) {
@@ -442,7 +478,7 @@ abstract class Controls_Stack {
 		$stack = qazana()->controls_manager->get_element_stack( $this );
 
 		if ( null === $stack ) {
-			$this->_init_controls();
+			$this->init_controls();
 
 			return $this->get_stack();
 		}
@@ -461,13 +497,16 @@ abstract class Controls_Stack {
 	 * @param array $position {
 	 *     The injection position.
 	 *
-	 *     @type string $type Injection type, either `control` or `section`.
-	 *                        Default is `control`.
-	 *     @type string $at   Where to inject. If `$type` is `control` accepts
-	 *                        `before` and `after`. If `$type` is `section`
-	 *                        accepts `start` and `end`. Dafault values based on
-	 *                        the `type`.
-	 *     @type string $of   Control/Section ID.
+	 *     @type string $type     Injection type, either `control` or `section`.
+	 *                            Default is `control`.
+	 *     @type string $at       Where to inject. If `$type` is `control` accepts
+	 *                            `before` and `after`. If `$type` is `section`
+	 *                            accepts `start` and `end`. Default values based on
+	 *                            the `type`.
+	 *     @type string $of       Control/Section ID.
+	 *     @type array  $fallback Fallback injection position. When the position is
+	 *                            not found it will try to fetch the fallback
+	 *                            position.
 	 * }
 	 *
 	 * @return bool|array Position info.
@@ -485,8 +524,8 @@ abstract class Controls_Stack {
 		$position = array_merge( $default_position, $position );
 
 		if (
-			'control' === $position['type'] && in_array( $position['at'], [ 'start', 'end' ] ) ||
-			'section' === $position['type'] && in_array( $position['at'], [ 'before', 'after' ] )
+			'control' === $position['type'] && in_array( $position['at'], [ 'start', 'end' ], true ) ||
+			'section' === $position['type'] && in_array( $position['at'], [ 'before', 'after' ], true )
 		) {
 			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'Invalid position arguments. Use `before` / `after` for control or `start` / `end` for section.', '1.3.0' );
 
@@ -496,6 +535,10 @@ abstract class Controls_Stack {
 		$target_control_index = $this->get_control_index( $position['of'] );
 
 		if ( false === $target_control_index ) {
+			if ( ! empty( $position['fallback'] ) ) {
+				return $this->get_position_info( $position['fallback'] );
+			}
+
 			return false;
 		}
 
@@ -634,22 +677,15 @@ abstract class Controls_Stack {
 	 * @access public
 	 *
 	 * @param string $group_name Group control name.
-	 * @param array  $args       {
-	 *     Group control arguments. Default is an empty array.
-	 *
-	 *     @type string $name      Base Control name.
-	 *     @type string $selector  CSS Selector
-	 *     @type string $scheme    Globel scheme to be used.
-	 *     @type array  $condition Display control based on predefined conditional
-	 *                             logic.
-	 * }
-	 * @param array  $options    Group control options. Default is an empty array.
+	 * @param array  $args       Group control arguments. Default is an empty array.
+	 * @param array  $options    Optional. Group control options. Default is an
+	 *                           empty array.
 	 */
 	final public function add_group_control( $group_name, array $args = [], array $options = [] ) {
 		$group = qazana()->controls_manager->get_control_groups( $group_name );
 
 		if ( ! $group ) {
-			wp_die( get_called_class() . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
+			wp_die( sprintf( '%s::%s: Group "%s" not found.', get_called_class(), __FUNCTION__, $group_name ) );
 		}
 
 		$group->add_controls( $this, $args, $options );
@@ -686,30 +722,43 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve style controls.
+	 * Get style controls.
 	 *
-	 * Get style controls for all active controls or, when requested, from a
-	 * specific set of controls.
+	 * Retrieve style controls for all active controls or, when requested, from
+	 * a specific set of controls.
 	 *
 	 * @access public
 	 *
-	 * @param array $controls Controls list. Default is null.
+	 * @param array $controls Optional. Controls list. Default is null.
+	 * @param array $settings Optional. Controls settings. Default is null.
 	 *
 	 * @return array Style controls.
 	 */
-	final public function get_style_controls( $controls = null ) {
-		if ( null === $controls ) {
-			$controls = $this->get_active_controls();
-		}
+	final public function get_style_controls( array $controls = null, array $settings = null ) {
+		$controls = $this->get_active_controls( $controls, $settings );
 
 		$style_controls = [];
 
 		foreach ( $controls as $control_name => $control ) {
-			if ( Controls_Manager::REPEATER === $control['type'] ) {
-				$control['style_fields'] = $this->get_style_controls( $control['fields'] );
+			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+
+			if ( ! $control_obj instanceof Base_Data_Control ) {
+				continue;
 			}
 
-			if ( ! empty( $control['style_fields'] ) || ! empty( $control['selectors'] ) ) {
+			$control = array_merge( $control_obj->get_settings(), $control );
+
+			if ( Controls_Manager::REPEATER === $control['type'] ) {
+				$style_fields = [];
+
+				foreach ( $this->get_settings( $control_name ) as $item ) {
+					$style_fields[] = $this->get_style_controls( $control['fields'], $item );
+				}
+
+				$control['style_fields'] = $style_fields;
+			}
+
+			if ( ! empty( $control['selectors'] ) || ! empty( $control['dynamic'] ) || ! empty( $control['style_fields'] ) ) {
 				$style_controls[ $control_name ] = $control;
 			}
 		}
@@ -718,9 +767,10 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve class controls.
+	 * Get class controls.
 	 *
-	 * From all the active controls get the controls that use the same prefix class.
+	 * Retrieve the controls that use the same prefix class from all the active
+	 * controls
 	 *
 	 * @access public
 	 *
@@ -735,9 +785,9 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve tabs controls.
+	 * Get tabs controls.
 	 *
-	 * Get all the tabs assigened to the control.
+	 * Retrieve all the tabs assigned to the control.
 	 *
 	 * @access public
 	 *
@@ -751,7 +801,7 @@ abstract class Controls_Stack {
 	 * Add new responsive control to stack.
 	 *
 	 * Register a set of controls to allow editing based on user screen size.
-	 * This method registeres three screen sizes: Desktop, Tablet and Mobile.
+	 * This method registers three screen sizes: Desktop, Tablet and Mobile.
 	 *
 	 * @access public
 	 *
@@ -821,7 +871,9 @@ abstract class Controls_Stack {
 			$id_suffix = self::RESPONSIVE_DESKTOP === $device_name ? '' : '_' . $device_name;
 
 			if ( ! empty( $options['overwrite'] ) ) {
-				$this->update_control( $id . $id_suffix, $control_args, [ 'recursive' => ! empty( $options['recursive'] ) ] );
+				$this->update_control( $id . $id_suffix, $control_args, [
+					'recursive' => ! empty( $options['recursive'] ),
+				] );
 			} else {
 				$this->add_control( $id . $id_suffix, $control_args, $options );
 			}
@@ -837,11 +889,15 @@ abstract class Controls_Stack {
 	 *
 	 * @access public
 	 *
-	 * @param string $id   Responsive control ID.
-	 * @param array  $args Responsive control arguments.
+	 * @param string $id      Responsive control ID.
+	 * @param array  $args    Responsive control arguments.
+	 * @param array  $options Optional. Additional options.
 	 */
 	final public function update_responsive_control( $id, array $args, array $options = [] ) {
-		$this->add_responsive_control( $id, $args, [ 'overwrite' => true, 'recursive' => ! empty( $options['recursive'] ) ] );
+		$this->add_responsive_control( $id, $args, [
+			'overwrite' => true,
+			'recursive' => ! empty( $options['recursive'] ),
+		] );
 	}
 
 	/**
@@ -890,17 +946,17 @@ abstract class Controls_Stack {
 	 * @return array|null The config.
 	 */
 	final public function get_config() {
-		if ( null === $this->_config ) {
-			$this->_config = $this->_get_initial_config();
+		if ( null === $this->config ) {
+			$this->config = $this->_get_initial_config();
 		}
 
-		return $this->_config;
+		return $this->config;
 	}
 
 	/**
-	 * Retrieve frontend settings keys.
+	 * Get frontend settings keys.
 	 *
-	 * Get settings keys for all frontend controls.
+	 * Retrieve settings keys for all frontend controls.
 	 *
 	 * @access public
 	 *
@@ -940,84 +996,193 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve the raw data.
+	 * Get the raw data.
 	 *
-	 * Get all the items or, when requested, a specific item.
- 	 *
+	 * Retrieve all the items or, when requested, a specific item.
+	 *
+	 * @since 1.4.0
 	 * @access public
 	 *
-	 * @param string $item The requested item. Default is null.
+	 * @param string $item Optional. The requested item. Default is null.
 	 *
-	 * @return array The raw data.
+	 * @return mixed The raw data.
 	 */
 	public function get_data( $item = null ) {
-		return self::_get_items( $this->_data, $item );
-	}
-
-	public function get_responsive_settings( $setting_key = null ) {
-
-		if ( $setting_key ) {
-			if ( qazana_is_mobile() && ! empty( $this->_settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
-				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
-		    } elseif ( qazana_is_tablet() && ! empty( $this->_settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
-		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
-		    }
-		}
-
-		return self::_get_items( $this->_settings, $setting_key );
-    	}
-
-    	public function get_item_responsive_settings( $setting_key, $settings ) {
-
-		if ( $setting_key ) {
-			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_MOBILE ] ) ) {
-				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
-		    } elseif ( qazana_is_tablet() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_TABLET ] ) ) {
-		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
-		    }
-		}
-
-		return self::_get_items( $settings, $setting_key );
+		return self::_get_items( $this->data, $item );
 	}
 
 	/**
-	 * Retrieve the settings.
+	 * Get the settings.
 	 *
-	 * Get all the settings or, when requested, a specific setting.
- 	 *
+	 * Retrieve all the settings or, when requested, a specific setting.
+	 *
+	 * @since 1.4.0
 	 * @access public
 	 *
-	 * @param string $setting The requested setting. Default is null.
+	 * @param string $setting Optional. The requested setting. Default is null.
 	 *
-	 * @return array The settings.
+	 * @return mixed The settings.
 	 */
-	public function get_settings( $setting_key = null ) {
-		return self::_get_items( $this->_settings, $setting_key );
+	public function get_settings( $setting = null ) {
+		return self::_get_items( $this->settings, $setting );
+	}
+
+	public function get_parsed_dynamic_settings( $setting = null ) {
+		if ( null === $this->parsed_dynamic_settings ) {
+			$this->parsed_dynamic_settings = $this->parse_dynamic_settings( $this->settings );
+		}
+
+		return self::_get_items( $this->parsed_dynamic_settings, $setting );
 	}
 
 	/**
-	 * Retrieve active settings.
+	 * Get active settings.
 	 *
-	 * Get the settings from all the active controls.
+	 * Retrieve the settings from all the active controls.
 	 *
+	 * @since 1.4.0
+	 * @since 2.1.0 Added the `controls` and the `settings` parameters.
 	 * @access public
+	 *
+	 * @param array $controls Optional. An array of controls. Default is null.
+	 * @param array $settings Optional. Controls settings. Default is null.
 	 *
 	 * @return array Active settings.
 	 */
-	public function get_active_settings() {
-		$settings = $this->get_settings();
+	public function get_active_settings( $settings = null, $controls = null ) {
+		$is_first_request = ! $settings && ! $this->active_settings;
 
-		$active_settings = array_intersect_key( $settings, $this->get_active_controls() );
+		if ( ! $settings ) {
+			if ( $this->active_settings ) {
+				return $this->active_settings;
+			}
 
-		$settings_mask = array_fill_keys( array_keys( $settings ), null );
+			$settings = $this->get_controls_settings();
 
-		return array_merge( $settings_mask, $active_settings );
+			$controls = $this->get_controls();
+		}
+
+		$active_settings = [];
+
+		foreach ( $settings as $setting_key => $setting ) {
+			if ( ! isset( $controls[ $setting_key ] ) ) {
+				$active_settings[ $setting_key ] = $setting;
+
+				continue;
+			}
+
+			$control = $controls[ $setting_key ];
+
+			if ( $this->is_control_visible( $control, $settings ) ) {
+				if ( Controls_Manager::REPEATER === $control['type'] ) {
+					foreach ( $setting as & $item ) {
+						$item = $this->get_active_settings( $item, $control['fields'] );
+					}
+				}
+
+				$active_settings[ $setting_key ] = $setting;
+			} else {
+				$active_settings[ $setting_key ] = null;
+			}
+		}
+
+		if ( $is_first_request ) {
+			$this->active_settings = $active_settings;
+		}
+
+		return $active_settings;
 	}
 
 	/**
-	 * Retrieve frontend settings.
+	 * Get settings for display.
 	 *
-	 * Get the settings for all frontend controls.
+	 * Retrieve all the settings or, when requested, a specific setting for display.
+	 *
+	 * Unlike `get_settings()` method, this method retrieves only active settings
+	 * that passed all the conditions, rendered all the shortcodes and all the dynamic
+	 * tags.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @param string $setting_key Optional. The key of the requested setting.
+	 *                            Default is null.
+	 *
+	 * @return array The settings.
+	 */
+	public function get_settings_for_display( $setting_key = null ) {
+		if ( ! $this->parsed_active_settings ) {
+			$this->parsed_active_settings = $this->get_active_settings( $this->get_parsed_dynamic_settings(), $this->get_controls() );
+		}
+
+		return self::_get_items( $this->parsed_active_settings, $setting_key );
+	}
+
+	/**
+	 * Parse dynamic settings.
+	 *
+	 * Retrieve the settings with rendered dynamic tags.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @param array $settings     Optional. The requested setting. Default is null.
+	 * @param array $controls     Optional. The controls array. Default is null.
+	 * @param array $all_settings Optional. All the settings. Default is null.
+	 *
+	 * @return array The settings with rendered dynamic tags.
+	 */
+	public function parse_dynamic_settings( $settings, $controls = null, $all_settings = null ) {
+		if ( null === $all_settings ) {
+			$all_settings = $this->get_settings();
+		}
+
+		if ( null === $controls ) {
+			$controls = $this->get_controls();
+		}
+
+		foreach ( $controls as $control ) {
+			$control_name = $control['name'];
+			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+
+			if ( ! $control_obj instanceof Base_Data_Control ) {
+				continue;
+			}
+
+			if ( 'repeater' === $control_obj->get_type() ) {
+				foreach ( $settings[ $control_name ] as & $field ) {
+					$field = $this->parse_dynamic_settings( $field, $control['fields'], $field );
+				}
+
+				continue;
+			}
+
+			if ( empty( $control['dynamic'] ) || ! isset( $all_settings[ Manager::DYNAMIC_SETTING_KEY ][ $control_name ] ) ) {
+				continue;
+			}
+
+			$dynamic_settings = array_merge( $control_obj->get_settings( 'dynamic' ), $control['dynamic'] );
+
+			if ( ! empty( $dynamic_settings['active'] ) && ! empty( $all_settings[ Manager::DYNAMIC_SETTING_KEY ][ $control_name ] ) ) {
+				$parsed_value = $control_obj->parse_tags( $all_settings[ Manager::DYNAMIC_SETTING_KEY ][ $control_name ], $dynamic_settings );
+
+				$dynamic_property = ! empty( $dynamic_settings['property'] ) ? $dynamic_settings['property'] : null;
+
+				if ( $dynamic_property ) {
+					$settings[ $control_name ][ $dynamic_property ] = $parsed_value;
+				} else {
+					$settings[ $control_name ] = $parsed_value;
+				}
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Get frontend settings.
+	 *
+	 * Retrieve the settings for all frontend controls.
 	 *
 	 * @access public
 	 *
@@ -1038,14 +1203,16 @@ abstract class Controls_Stack {
 	/**
 	 * Filter controls settings.
 	 *
-	 * Recieves controls, settings and a callback function to filter the settings by
+	 * Receives controls, settings and a callback function to filter the settings by
 	 * and returns filtered settings.
 	 *
 	 * @access public
 	 *
 	 * @param callable $callback The callback function.
-	 * @param array    $settings Control settings. Default is an empty array.
-	 * @param array    $controls Controls list. Default is an empty array.
+	 * @param array    $settings Optional. Control settings. Default is an empty
+	 *                           array.
+	 * @param array    $controls Optional. Controls list. Default is an empty
+	 *                           array.
 	 *
 	 * @return array Filtered settings.
 	 */
@@ -1081,7 +1248,7 @@ abstract class Controls_Stack {
 	 * @access public
 	 *
 	 * @param array $control The control.
-	 * @param array $values  Condition values. Default is null.
+	 * @param array $values  Optional. Condition values. Default is null.
 	 *
 	 * @return bool Whether the control is visible.
 	 */
@@ -1090,7 +1257,6 @@ abstract class Controls_Stack {
 			$values = $this->get_settings();
 		}
 
-		// Repeater fields
 		if ( ! empty( $control['conditions'] ) ) {
 			return Conditions::check( $control['conditions'], $values );
 		}
@@ -1112,7 +1278,7 @@ abstract class Controls_Stack {
 
 			$instance_value = $values[ $pure_condition_key ];
 
-			if ( $condition_sub_key ) {
+			if ( $condition_sub_key && is_array( $instance_value ) ) {
 				if ( ! isset( $instance_value[ $condition_sub_key ] ) ) {
 					return false;
 				}
@@ -1126,9 +1292,9 @@ abstract class Controls_Stack {
 			 * otherwise check if they are equal. ( and give the ability to check if the value is an empty array )
 			 */
 			if ( is_array( $condition_value ) && ! empty( $condition_value ) ) {
-				$is_contains = in_array( $instance_value, $condition_value );
+				$is_contains = in_array( $instance_value, $condition_value, true );
 			} elseif ( is_array( $instance_value ) && ! empty( $instance_value ) ) {
-				$is_contains = in_array( $condition_value, $instance_value );
+				$is_contains = in_array( $condition_value, $instance_value, true );
 			} else {
 				$is_contains = $instance_value === $condition_value;
 			}
@@ -1145,7 +1311,7 @@ abstract class Controls_Stack {
 	 * Start controls section.
 	 *
 	 * Used to add a new section of controls. When you use this method, all the
-	 * registered controls from this point will be assigened to this section,
+	 * registered controls from this point will be assigned to this section,
 	 * until you close the section using `end_controls_section()` method.
 	 *
 	 * This method should be used inside `_register_controls()`.
@@ -1156,25 +1322,75 @@ abstract class Controls_Stack {
 	 * @param array  $args       Section arguments.
 	 */
 	public function start_controls_section( $section_id, array $args ) {
+		$section_name = $this->get_name();
+
+		/**
+		 * Before section start.
+		 *
+		 * Fires before Qazana section starts in the editor panel.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this       The control.
+		 * @param string         $section_id Section ID.
+		 * @param array          $args       Section arguments.
+		 */
 		do_action( 'qazana/element/before_section_start', $this, $section_id, $args );
-		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_start', $this, $args );
+
+		/**
+		 * Before section start.
+		 *
+		 * Fires before Qazana section starts in the editor panel.
+		 *
+		 * The dynamic portions of the hook name, `$section_name` and `$section_id`, refers to the section name and section ID, respectively.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this The control.
+		 * @param array          $args Section arguments.
+		 */
+		do_action( "qazana/element/{$section_name}/{$section_id}/before_section_start", $this, $args );
 
 		$args['type'] = Controls_Manager::SECTION;
 
 		$this->add_control( $section_id, $args );
 
-		if ( null !== $this->_current_section ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_section['section'] ) ); // XSS ok.
+		if ( null !== $this->current_section ) {
+			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_section['section'] ) ); // XSS ok.
 		}
 
-		$this->_current_section = $this->get_section_args( $section_id );
+		$this->current_section = $this->get_section_args( $section_id );
 
 		if ( $this->injection_point ) {
-			$this->injection_point['section'] = $this->_current_section;
+			$this->injection_point['section'] = $this->current_section;
 		}
 
+		/**
+		 * After section start.
+		 *
+		 * Fires after Qazana section starts in the editor panel.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this       The control.
+		 * @param string         $section_id Section ID.
+		 * @param array          $args       Section arguments.
+		 */
 		do_action( 'qazana/element/after_section_start', $this, $section_id, $args );
-		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_start', $this, $args );
+
+		/**
+		 * After section start.
+		 *
+		 * Fires after Qazana section starts in the editor panel.
+		 *
+		 * The dynamic portions of the hook name, `$section_name` and `$section_id`, refers to the section name and section ID, respectively.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this The control.
+		 * @param array          $args Section arguments.
+		 */
+		do_action( "qazana/element/{$section_name}/{$section_id}/after_section_start", $this, $args );
 	}
 
 	/**
@@ -1188,27 +1404,77 @@ abstract class Controls_Stack {
 	 * @access public
 	 */
 	public function end_controls_section() {
+		$stack_name = $this->get_name();
+
 		// Save the current section for the action.
-		$current_section = $this->_current_section;
+		$current_section = $this->current_section;
 		$section_id = $current_section['section'];
 		$args = [
 			'tab' => $current_section['tab'],
 		];
 
+		/**
+		 * Before section end.
+		 *
+		 * Fires before Qazana section ends in the editor panel.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this       The control.
+		 * @param string         $section_id Section ID.
+		 * @param array          $args       Section arguments.
+		 */
 		do_action( 'qazana/element/before_section_end', $this, $section_id, $args );
-		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/before_section_end', $this, $args );
 
-		$this->_current_section = null;
+		/**
+		 * Before section end.
+		 *
+		 * Fires before Qazana section ends in the editor panel.
+		 *
+		 * The dynamic portions of the hook name, `$stack_name` and `$section_id`, refers to the stack name and section ID, respectively.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this The control.
+		 * @param array          $args Section arguments.
+		 */
+		do_action( "qazana/element/{$stack_name}/{$section_id}/before_section_end", $this, $args );
 
+		$this->current_section = null;
+
+		/**
+		 * After section end.
+		 *
+		 * Fires after Qazana section ends in the editor panel.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this       The control.
+		 * @param string         $section_id Section ID.
+		 * @param array          $args       Section arguments.
+		 */
 		do_action( 'qazana/element/after_section_end', $this, $section_id, $args );
-		do_action( 'qazana/element/' . $this->get_name() . '/' . $section_id . '/after_section_end', $this, $args );
+
+		/**
+		 * After section end.
+		 *
+		 * Fires after Qazana section ends in the editor panel.
+		 *
+		 * The dynamic portions of the hook name, `$stack_name` and `$section_id`, refers to the section name and section ID, respectively.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Controls_Stack $this The control.
+		 * @param array          $args Section arguments.
+		 */
+		do_action( "qazana/element/{$stack_name}/{$section_id}/after_section_end", $this, $args );
 	}
 
 	/**
 	 * Start controls tabs.
 	 *
 	 * Used to add a new set of tabs inside a section. You should use this
-	 * method before adding new indevidual tabs using `start_controls_tab()`.
+	 * method before adding new individual tabs using `start_controls_tab()`.
 	 * Each tab added after this point will be assigned to this group of tabs,
 	 * until you close it using `end_controls_tabs()` method.
 	 *
@@ -1219,8 +1485,8 @@ abstract class Controls_Stack {
 	 * @param string $tabs_id Tabs ID.
 	 */
 	public function start_controls_tabs( $tabs_id ) {
-		if ( null !== $this->_current_tab ) {
-			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_tab['tabs_wrapper'] ) ); // XSS ok.
+		if ( null !== $this->current_tab ) {
+			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_tab['tabs_wrapper'] ) ); // XSS ok.
 		}
 
 		$this->add_control(
@@ -1230,12 +1496,12 @@ abstract class Controls_Stack {
 			]
 		);
 
-		$this->_current_tab = [
+		$this->current_tab = [
 			'tabs_wrapper' => $tabs_id,
 		];
 
 		if ( $this->injection_point ) {
-			$this->injection_point['tab'] = $this->_current_tab;
+			$this->injection_point['tab'] = $this->current_tab;
 		}
 	}
 
@@ -1250,15 +1516,15 @@ abstract class Controls_Stack {
 	 * @access public
 	 */
 	public function end_controls_tabs() {
-		$this->_current_tab = null;
+		$this->current_tab = null;
 	}
 
 	/**
 	 * Start controls tab.
 	 *
 	 * Used to add a new tab inside a group of tabs. Use this method before
-	 * adding new indevidual tabs using `start_controls_tab()`.
-	 * Each tab added after this point will be assigened to this group of tabs,
+	 * adding new individual tabs using `start_controls_tab()`.
+	 * Each tab added after this point will be assigned to this group of tabs,
 	 * until you close it using `end_controls_tab()` method.
 	 *
 	 * This method should be used inside `_register_controls()`.
@@ -1269,19 +1535,19 @@ abstract class Controls_Stack {
 	 * @param array  $args   Tab arguments.
 	 */
 	public function start_controls_tab( $tab_id, $args ) {
-		if ( ! empty( $this->_current_tab['inner_tab'] ) ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`. Element name - `' . $this->get_name() .'`.', $this->_current_tab['inner_tab'] ) ); // XSS ok.
+		if ( ! empty( $this->current_tab['inner_tab'] ) ) {
+			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_tab['inner_tab'] ) ); // XSS ok.
 		}
 
 		$args['type'] = Controls_Manager::TAB;
-		$args['tabs_wrapper'] = $this->_current_tab['tabs_wrapper'];
+		$args['tabs_wrapper'] = $this->current_tab['tabs_wrapper'];
 
 		$this->add_control( $tab_id, $args );
 
-		$this->_current_tab['inner_tab'] = $tab_id;
+		$this->current_tab['inner_tab'] = $tab_id;
 
 		if ( $this->injection_point ) {
-			$this->injection_point['tab']['inner_tab'] = $this->_current_tab['inner_tab'];
+			$this->injection_point['tab']['inner_tab'] = $this->current_tab['inner_tab'];
 		}
 	}
 
@@ -1296,8 +1562,8 @@ abstract class Controls_Stack {
 	 * @access public
 	 */
 	public function end_controls_tab() {
-		unset( $this->_current_tab['inner_tab'] );
-    }
+		unset( $this->current_tab['inner_tab'] );
+	}
 
 	/**
 	 * Start popover.
@@ -1333,11 +1599,58 @@ abstract class Controls_Stack {
 
 		$last_control_key = $this->get_control_key( $this->get_pointer_index() - 1 );
 
- 		$this->update_control( $last_control_key, [
+		$args = [
 			'popover' => [
 				'end' => true,
 			],
-		], [ 'recursive' => true ] );
+		];
+
+		$options = [
+			'recursive' => true,
+		];
+
+		$this->update_control( $last_control_key, $args, $options );
+	}
+
+	/**
+	 * Print element template.
+	 *
+	 * Used to generate the element template on the editor.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 */
+	public function print_template() {
+		ob_start();
+
+		$this->_content_template();
+
+		$template_content = ob_get_clean();
+
+		$element_type = $this->get_type();
+
+		/**
+		 * Template content.
+		 *
+		 * Filters the controls stack template content before it's printed in the editor.
+		 *
+		 * The dynamic portion of the hook name, `$element_type`, refers to the element type.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string         $content_template The controls stack template in the editor.
+		 * @param Controls_Stack $this             The controls stack.
+		 */
+		$template_content = apply_filters( "qazana/{$element_type}/print_template", $template_content, $this );
+
+		if ( empty( $template_content ) ) {
+			return;
+		}
+		?>
+		<script type="text/html" id="tmpl-qazana-<?php echo esc_attr( $this->get_name() ); ?>-content">
+			<?php $this->print_template_content( $template_content ); ?>
+		</script>
+		<?php
 	}
 
 	/**
@@ -1388,7 +1701,9 @@ abstract class Controls_Stack {
 
 	/**
 	 * @access public
-	 * @return array|null
+	 *
+	 * @return array|null An array when an injection point is defined, null
+	 *                    otherwise.
 	 */
 	final public function get_injection_point() {
 		return $this->injection_point;
@@ -1402,15 +1717,15 @@ abstract class Controls_Stack {
 	 * @access public
 	 *
 	 * @param string|array $key   Setting name, or an array of key/value.
-	 * @param string|null  $value Setting value. Optional field if `$key` is an
-	 *                            array. Default is null.
+	 * @param string|null  $value Optional. Setting value. Optional field if
+	 *                            `$key` is an array. Default is null.
 	 */
 	final public function set_settings( $key, $value = null ) {
 		// strict check if override all settings.
 		if ( is_array( $key ) ) {
-			$this->_settings = $key;
+			$this->settings = $key;
 		} else {
-			$this->_settings[ $key ] = $value;
+			$this->settings[ $key ] = $value;
 		}
 	}
 
@@ -1430,9 +1745,9 @@ abstract class Controls_Stack {
 	protected function _register_controls() {}
 
 	/**
-	 * Retrieve default data.
+	 * Get default data.
 	 *
-	 * Get the default data. Used to reset the data on initialization.
+	 * Retrieve the default data. Used to reset the data on initialization.
 	 *
 	 * @access protected
 	 *
@@ -1446,10 +1761,10 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve parsed settings.
+	 * Get parsed settings.
 	 *
-	 * Get the parsed settings for all the controls that represent them. The
-	 * parser set default values and process the settings.
+	 * Retrieve the parsed settings for all the controls that represent them.
+	 * The parser set default values and process the settings.
 	 *
 	 * Classes that extend `Controls_Stack` can add new process to the settings
 	 * parser.
@@ -1459,7 +1774,7 @@ abstract class Controls_Stack {
 	 * @return array Parsed settings.
 	 */
 	protected function _get_parsed_settings() {
-		$settings = $this->_data['settings'];
+		$settings = $this->data['settings'];
 
 		foreach ( $this->get_controls() as $control ) {
 			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
@@ -1468,7 +1783,7 @@ abstract class Controls_Stack {
 				continue;
 			}
 
-			$control = array_merge( $control, $control_obj->get_settings() );
+			$control = array_merge_recursive( $control_obj->get_settings(), $control );
 
 			$settings[ $control['name'] ] = $control_obj->get_value( $control, $settings );
 		}
@@ -1477,10 +1792,70 @@ abstract class Controls_Stack {
 	}
 
 	/**
-	 * Retrieve initial config.
+	 * Sanitize initial data.
 	 *
-	 * Get the element initial configuration.
+	 * Performs data cleaning and sanitization.
 	 *
+	 * @since 2.0.0
+	 * @access protected
+	 *
+	 * @param array $data     Data to sanitize.
+	 * @param array $controls Optional. An array of controls. Default is an
+	 *                        empty array.
+	 *
+	 * @return array Sanitized data.
+	 */
+	protected function sanitize_initial_data( $data, array $controls = [] ) {
+		if ( ! $controls ) {
+			$controls = $this->get_controls();
+		}
+
+		$settings = $data['settings'];
+
+		foreach ( $controls as $control ) {
+			if ( 'repeater' === $control['type'] ) {
+				if ( empty( $settings[ $control['name'] ] ) ) {
+					continue;
+				}
+
+				foreach ( $settings[ $control['name'] ] as $index => $repeater_row_data ) {
+					$sanitized_row_data = $this->sanitize_initial_data( [
+						'settings' => $repeater_row_data,
+					], $control['fields'] );
+
+					$settings[ $control['name'] ][ $index ] = $sanitized_row_data['settings'];
+				}
+
+				continue;
+			}
+
+			$is_dynamic = isset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
+
+			if ( ! $is_dynamic ) {
+				continue;
+			}
+
+			$value_to_check = $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ];
+
+			$tag_text_data = qazana()->dynamic_tags->tag_text_to_tag_data( $value_to_check );
+
+			if ( ! qazana()->dynamic_tags->get_tag_info( $tag_text_data['name'] ) ) {
+				unset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
+			}
+		}
+
+		$data['settings'] = $settings;
+
+		return $data;
+	}
+
+	/**
+	 * Get initial config.
+	 *
+	 * Retrieve the current element initial configuration - controls list and
+	 * the tabs assigned to the control.
+	 *
+	 * @since 1.4.0
 	 * @access protected
 	 *
 	 * @return array The initial config.
@@ -1517,13 +1892,51 @@ abstract class Controls_Stack {
 	}
 
 	/**
+	 * Render element.
+	 *
+	 * Generates the final HTML on the frontend.
+	 *
+	 * @since 2.0.0
+	 * @access protected
+	 */
+	protected function render() {}
+
+	/**
+	 * Print content template.
+	 *
+	 * Used to generate the content template on the editor, using a
+	 * Backbone JavaScript template.
+	 *
+	 * @access protected
+	 * @since 2.0.0
+	 *
+	 * @param string $template_content Template content.
+	 */
+	protected function print_template_content( $template_content ) {
+		echo $template_content;
+	}
+
+	/**
+	 * Render element output in the editor.
+	 *
+	 * Used to generate the live preview, using a Backbone JavaScript template.
+	 *
+	 * @since 2.0.0
+	 * @access protected
+	 */
+	protected function _content_template() {}
+
+	/**
+
+	/**
 	 * Initialize controls.
 	 *
 	 * Register the all controls added by `_register_controls()`.
 	 *
-	 * @access private
+	 * @since 2.0.0
+	 * @access protected
 	 */
-	private function _init_controls() {
+	protected function init_controls() {
 		qazana()->controls_manager->open_stack( $this );
 
 		$this->_register_controls();
@@ -1535,13 +1948,17 @@ abstract class Controls_Stack {
 	 * Set the raw data, the ID and the parsed settings.
 	 *
 	 * @access protected
+	 *
+	 * @param array $data Initial data.
 	 */
 	protected function _init( $data ) {
-		$this->_data = array_merge( $this->get_default_data(), $data );
+		$this->data = array_merge( $this->get_default_data(), $data );
 
-		$this->_id = $data['id'];
+		$this->id = $data['id'];
 
-		$this->_settings = $this->_get_parsed_settings();
+		$this->data = $this->sanitize_initial_data( $this->data );
+
+		$this->settings = $this->_get_parsed_settings();
 	}
 
 	/**
@@ -1580,5 +1997,30 @@ abstract class Controls_Stack {
 	 */
 	public function is_edit_mode() {
         return qazana()->editor->is_edit_mode();
+    }
+        
+    public function get_responsive_settings( $setting_key = null ) {
+		if ( $setting_key ) {
+			if ( qazana_is_mobile() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
+		    } elseif ( qazana_is_tablet() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
+		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
+		    }
+		}
+
+		return $this->active_settings ? self::_get_items( $this->active_settings, $setting_key ) : null;
+    }
+
+    public function get_item_responsive_settings( $setting_key, $settings ) {
+
+		if ( $setting_key ) {
+			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_MOBILE ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
+		    } elseif ( qazana_is_tablet() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_TABLET ] ) ) {
+		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
+		    }
+		}
+
+        return $settings ? self::_get_items( $settings, $setting_key ) : null;
 	}
 }

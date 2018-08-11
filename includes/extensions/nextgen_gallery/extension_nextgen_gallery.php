@@ -10,7 +10,7 @@ class NextGen_Gallery extends Base {
         return [
         	'title' => __( 'Ninja_Forms Compatibility', 'qazana' ),
             'name' => 'ninja_forms',
-        	'required' => true,
+        	'required' => false,
         	'default_activation' => $NextGen_exist,
         ];
 

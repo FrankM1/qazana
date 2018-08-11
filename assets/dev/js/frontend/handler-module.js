@@ -4,6 +4,8 @@ var ViewModule = require( '../utils/view-module' ),
 HandlerModule = ViewModule.extend( {
 	$element: null,
 
+	editorListeners: null,
+
 	onElementChange: null,
 
 	onEditSettingsChange: null,
@@ -20,8 +22,16 @@ HandlerModule = ViewModule.extend( {
 		this.isEdit = this.$element.hasClass( 'qazana-element-edit-mode' );
 
 		if ( this.isEdit ) {
-			this.addEditorListener();
+			this.addEditorListeners();
 		}
+	},
+
+	findElement: function( selector ) {
+		var $mainElement = this.$element;
+
+		return $mainElement.find( selector ).filter( function() {
+			return jQuery( this ).closest( '.qazana-element' ).is( $mainElement );
+		} );
 	},
 
 	getUniqueHandlerID: function( cid, $element ) {
@@ -36,9 +46,22 @@ HandlerModule = ViewModule.extend( {
 		return cid + $element.attr( 'data-element_type' ) + this.getConstructorID();
 	},
 
-	addEditorListener: function() {
-		var self = this,
-			uniqueHandlerID = self.getUniqueHandlerID();
+	initEditorListeners: function() {
+		var self = this;
+
+		self.editorListeners = [
+			{
+				event: 'element:destroy',
+				to: qazana.channels.data,
+				callback: function( removedModel ) {
+					if ( removedModel.cid !== self.getModelCID() ) {
+						return;
+					}
+
+					self.onDestroy();
+				}
+			}
+		];
 
 		if ( self.onElementChange ) {
 			var elementName = self.getElementName(),
@@ -48,35 +71,71 @@ HandlerModule = ViewModule.extend( {
 				eventName += ':' + elementName;
 			}
 
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, eventName, function( controlView, elementView ) {
-				var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
+			self.editorListeners.push( {
+				event: eventName,
+				to: qazana.channels.editor,
+				callback: function( controlView, elementView ) {
+					var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
 
-				if ( elementViewHandlerID !== uniqueHandlerID ) {
-					return;
+					if ( elementViewHandlerID !== self.getUniqueHandlerID() ) {
+						return;
+					}
+
+					self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
 				}
-
-				self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
-			}, qazana.channels.editor );
+			} );
 		}
 
 		if ( self.onEditSettingsChange ) {
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change:editSettings', function( changedModel, view ) {
-				if ( view.model.cid !== self.getModelCID() ) {
-					return;
-				}
+			self.editorListeners.push( {
+				event: 'change:editSettings',
+				to: qazana.channels.editor,
+				callback: function( changedModel, view ) {
+					if ( view.model.cid !== self.getModelCID() ) {
+						return;
+					}
 
-				self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
-			}, qazana.channels.editor );
+					self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
+				}
+			} );
 		}
 
 		[ 'page', 'general' ].forEach( function( settingsType ) {
-			var listenerMethodName = 'on' + settingsType.charAt( 0 ).toUpperCase() + settingsType.slice( 1 ) + 'SettingsChange';
+			var listenerMethodName = 'on' + qazana.helpers.firstLetterUppercase( settingsType ) + 'SettingsChange';
 
 			if ( self[ listenerMethodName ] ) {
-				qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change', function( model ) {
-					self[ listenerMethodName ]( model.changed );
-				}, qazana.settings[ settingsType ].model );
+				self.editorListeners.push( {
+					event: 'change',
+					to: qazana.settings[ settingsType ].model,
+					callback: function( model ) {
+						self[ listenerMethodName ]( model.changed );
+					}
+				} );
 			}
+		} );
+	},
+
+	getEditorListeners: function() {
+		if ( ! this.editorListeners ) {
+			this.initEditorListeners();
+		}
+
+		return this.editorListeners;
+	},
+
+	addEditorListeners: function() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach( function( listener ) {
+			qazanaFrontend.addListenerOnce( uniqueHandlerID, listener.event, listener.callback, listener.to );
+		} );
+	},
+
+	removeEditorListeners: function() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach( function( listener ) {
+			qazanaFrontend.removeListeners( uniqueHandlerID, listener.event, null, listener.to );
 		} );
 	},
 
@@ -153,6 +212,14 @@ HandlerModule = ViewModule.extend( {
 		}
 
 		return this.getItems( attributes, setting );
+	},
+
+	onDestroy: function() {
+		this.removeEditorListeners();
+
+		if ( this.unbindEvents ) {
+			this.unbindEvents();
+		}
 	}
 } );
 

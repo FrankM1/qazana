@@ -1,33 +1,49 @@
 // Core variables and mixins
 @import "../helpers/variables";
+@import "../editor/breakpoints";
+@import "breakpoints/breakpoints";
 @import "../helpers/mixins";
 
 // Common
 @import "../common/common";
 
 // Core CSS
-@import "_global";
-@import "_grid";
+@import "global";
+@import "grid";
 
 // Utility classes
 @import "../helpers/utilities";
 
 //Forms (Input, Textarea, Select Etc..)
-@import "_forms";
+@import "forms";
 
 // Widgets
-@import "_widgets";
+@import "widgets";
 
 // Slick
-@import "_slick";
+@import "slick";
+
+// Swiper
+@import "swiper";
+
+// Lightbox
+@import "lightbox";
 
 // Animate
 @import "animate";
 
-//shapes
+// Shapes
 @import "shapes";
 
+// Admin Bar
+@import "admin-bar";
+
+// Compatibility
+@import "compatibility";
+
 // Visibility (for preview mode or front-end)
-body:not(.qazana-editor-active) {
-	@import "_visibility";
+.qazana:not(.qazana-edit-area-active) {
+	@include visibility() {
+		display: none;
+	};
 }

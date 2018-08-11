@@ -115,12 +115,12 @@ class Source_Theme extends Source_Base {
             return false;
         }
 
-        if ( empty( $data['data'] ) ) {
+        if ( empty( $data['content'] ) ) {
             return false;
         }
 
-        $data['data'] = $this->replace_elements_ids( $data['data'] );
-        $data['data'] = $this->process_export_import_content( $data['data'], 'on_import' );
+        $data['content'] = $this->replace_elements_ids( $data['content'] );
+        $data['content'] = $this->process_export_import_content( $data['content'], 'on_import' );
 
         if ( ! empty( $args['page_settings'] ) && ! empty( $data['page_settings'] ) ) {
 			$page = new Page( [

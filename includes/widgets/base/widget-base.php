@@ -47,36 +47,10 @@ abstract class Widget_Base extends Element_Base {
 		return 'widget';
 	}
 
-    	/**
-	 * Retrieve default edit tools.
+	/**
+	 * Get widget icon.
 	 *
-	 * Get the default edit tools of the widget. This method is used to set
-	 * initial tools - it adds Duplicate and Remove on top of of Edit and Save
-	 * tools.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 * @static
-	 *
-	 * @return array Default edit tools.
-	 */
-	public static function get_default_edit_tools() {
-		$widget_label = __( 'Widget', 'qazana' );
-
-		return [
-			'duplicate' => [
-				'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $widget_label ),
-				'icon' => 'clone',
-			],
-			'remove' => [
-				'title' => sprintf( __( 'Remove %s', 'qazana' ), $widget_label ),
-				'icon' => 'close',
-			],
-		];
-	}
-
-    	/**
-	 * Retrieve widget icon.
+	 * Retrieve the widget icon.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -87,8 +61,10 @@ abstract class Widget_Base extends Element_Base {
 		return 'eicon-apps';
 	}
 
-    	/**
-	 * Retrieve widget keywords.
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the widget keywords.
 	 *
 	 * @since 1.0.10
 	 * @access public
@@ -99,8 +75,10 @@ abstract class Widget_Base extends Element_Base {
 		return [];
 	}
 
-    	/**
-	 * Retrieve widget categories.
+	/**
+	 * Get widget categories.
+	 *
+	 * Retrieve the widget categories.
 	 *
 	 * @since 1.0.10
 	 * @access public
@@ -108,7 +86,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'basic' ];
+		return [ 'general' ];
 	}
 
     	/**
@@ -119,6 +97,9 @@ abstract class Widget_Base extends Element_Base {
 	 * @since 1.0.0
 	 * @access public
 	 *
+	 * @throws \Exception If arguments are missing when initializing a full widget
+	 *                   instance.
+	 *
 	 * @param array      $data Widget data. Default is an empty array.
 	 * @param array|null $args Optional. Widget default arguments. Default is null.
 	 */
@@ -128,11 +109,13 @@ abstract class Widget_Base extends Element_Base {
 		$is_type_instance = $this->is_type_instance();
 
 		if ( ! $is_type_instance && null === $args ) {
-			throw new \Exception( '`$args` argument is required when initializing a full widget instance' );
+			throw new \Exception( '`$args` argument is required when initializing a full widget instance.' );
 		}
 
 		if ( $is_type_instance ) {
 			$this->_register_skins();
+
+			$widget_name = $this->get_name();
 
 			/**
 			 * Widget skin init.
@@ -145,7 +128,7 @@ abstract class Widget_Base extends Element_Base {
 			 *
 			 * @param Widget_Base $this The current widget.
 			 */
-			do_action( 'qazana/widget/' . $this->get_name() . '/skins_init', $this );
+			do_action( "qazana/widget/{$widget_name}/skins_init", $this );
 		}
 
 		$this->add_actions();
@@ -270,7 +253,7 @@ abstract class Widget_Base extends Element_Base {
 			$default_value = array_keys( $skin_options );
 			$default_value = array_shift( $default_value );
 
-			if ( 1 >= sizeof( $skin_options ) ) {
+			if ( 1 >= count( $skin_options ) ) {
 				$this->add_control(
 					'_skin',
 					[
@@ -283,18 +266,57 @@ abstract class Widget_Base extends Element_Base {
 				$this->add_control(
 					'_skin',
 					[
-						'label'       => __( 'Skin', 'qazana' ),
-						'type'        => Controls_Manager::SELECT,
-						'default'     => $default_value,
-						'options'     => $skin_options,
-						'render_type' => 'template',
+						'label' => __( 'Skin', 'qazana' ),
+						'type' => Controls_Manager::SELECT,
+						'default' => $default_value,
+						'options' => $skin_options,
 					]
 				);
 			}
 		}
 	}
 
-    /**
+	/**
+	 * Get default edit tools.
+	 *
+	 * Retrieve the element default edit tools. Used to set initial tools.
+	 * By default the element has no edit tools.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @static
+	 *
+	 * @return array Default edit tools.
+	 */
+	protected static function get_default_edit_tools() {
+		$widget_label = __( 'Widget', 'qazana' );
+
+		$edit_tools = [
+			'edit' => [
+				'title' => __( 'Edit', 'qazana' ),
+				'icon' => 'edit',
+			],
+		];
+
+		if ( self::is_edit_buttons_enabled() ) {
+			$edit_tools += [
+				'duplicate' => [
+					/* translators: %s: Widget label */
+					'title' => sprintf( __( 'Duplicate %s', 'qazana' ), $widget_label ),
+					'icon' => 'clone',
+				],
+				'remove' => [
+					/* translators: %s: Widget label */
+					'title' => sprintf( __( 'Remove %s', 'qazana' ), $widget_label ),
+					'icon' => 'close',
+				],
+			];
+		}
+
+		return $edit_tools;
+	}
+
+	/**
 	 * Register widget skins.
 	 *
 	 * This method is activated while initializing the widget base class. It is
@@ -316,7 +338,7 @@ abstract class Widget_Base extends Element_Base {
 	 *
 	 * Retrieve the current widget initial configuration.
 	 *
-	 * Adds more configuration on top of the controls list, the tabs assignet to
+	 * Adds more configuration on top of the controls list, the tabs assigned to
 	 * the control, element name, type, icon and more. This method also adds
 	 * widget type, keywords and categories.
 	 *
@@ -330,6 +352,8 @@ abstract class Widget_Base extends Element_Base {
 			'widget_type' => $this->get_name(),
 			'keywords' => $this->get_keywords(),
 			'categories' => $this->get_categories(),
+			'html_wrapper_class' => $this->get_html_wrapper_class(),
+			'show_in_panel' => $this->show_in_panel(),
 		];
 
 		return array_merge( parent::_get_initial_config(), $config );
@@ -341,60 +365,23 @@ abstract class Widget_Base extends Element_Base {
 	 * Used to generate the widget template on the editor, using a Backbone
 	 * JavaScript template.
 	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	final public function print_template() {
-		ob_start();
-
-		$this->_content_template();
-
-		$content_template = ob_get_clean();
-
-		$content_template = apply_filters( 'qazana/widget/print_template', $content_template,  $this );
-
-		if ( empty( $content_template ) ) {
-			return;
-		}
-		?>
-		<script type="text/html" id="tmpl-qazana-<?php echo static::get_type(); ?>-<?php echo esc_attr( $this->get_name() ); ?>-content">
-			<?php $this->render_edit_tools(); ?>
-			<div class="qazana-widget-container">
-				<?php echo $content_template; ?>
-			</div>
-		</script>
-		<?php
-	}
-
-    /**
-	 * Render widget edit tools.
-	 *
-	 * Used to generate the edit tools HTML.
-	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 * @access protected
+	 *
+	 * @param string $template_content Template content.
 	 */
-	protected function render_edit_tools() {
+	protected function print_template_content( $template_content ) {
+		$this->render_edit_tools();
 		?>
-		<div class="qazana-element-overlay">
-			<ul class="qazana-editor-element-settings qazana-editor-widget-settings">
-				<li class="qazana-editor-element-setting qazana-editor-element-trigger" title="<?php printf( __( 'Edit %s', 'qazana' ), __( 'Widget', 'qazana' ) ); ?>">
-					<i class="eicon-edit"></i>
-					<span class="qazana-screen-only"><?php printf( __( 'Edit %s', 'qazana' ), __( 'Widget', 'qazana' ) ); ?></span>
-				</li>
-				<?php foreach ( self::get_edit_tools() as $edit_tool_name => $edit_tool ) : ?>
-					<li class="qazana-editor-element-setting qazana-editor-element-<?php echo $edit_tool_name; ?>" title="<?php echo $edit_tool['title']; ?>">
-						<i class="eicon-<?php echo $edit_tool['icon']; ?>" aria-hidden="true"></i>
-						<span class="qazana-screen-only"><?php echo $edit_tool['title']; ?></span>
-						
-					</li>
-				<?php endforeach; ?>
-			</ul>
+		<div class="qazana-widget-container">
+			<?php
+			echo $template_content; // XSS ok.
+			?>
 		</div>
 		<?php
 	}
 
-    /**
+	/**
 	 * Parse text editor.
 	 *
 	 * Parses the content from rich text editor with shortcodes, oEmbed and
@@ -407,11 +394,13 @@ abstract class Widget_Base extends Element_Base {
 	 *
 	 * @return string Parsed content.
 	 */
-	public function parse_text_editor( $content ) {
+	protected function parse_text_editor( $content ) {
+		/** This filter is documented in wp-includes/widgets/class-wp-widget-text.php */
 		$content = apply_filters( 'widget_text', $content, $this->get_settings() );
 
 		$content = shortcode_unautop( $content );
 		$content = do_shortcode( $content );
+		$content = wptexturize( $content );
 
 		if ( $GLOBALS['wp_embed'] instanceof \WP_Embed ) {
 			$content = $GLOBALS['wp_embed']->autoembed( $content );
@@ -420,7 +409,20 @@ abstract class Widget_Base extends Element_Base {
 		return $content;
 	}
 
-    /**
+	/**
+	 * Get HTML wrapper class.
+	 *
+	 * Retrieve the widget container class. Can be used to override the
+	 * container class for specific widgets.
+	 *
+	 * @since 2.0.9
+	 * @access protected
+	 */
+	protected function get_html_wrapper_class() {
+		return 'qazana-widget-' . $this->get_name();
+	}
+
+	/**
 	 * Render widget output on the frontend.
 	 *
 	 * Used to generate the final HTML displayed on the frontend.
@@ -432,9 +434,21 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function render_content() {
+		/**
+		 * Before widget render content.
+		 *
+		 * Fires before Qazana widget is being rendered.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Widget_Base $this The current widget.
+		 */
+		do_action( 'qazana/widget/before_render_content', $this );
+
 		if ( qazana()->editor->is_edit_mode() ) {
 			$this->render_edit_tools();
 		}
+
 		?>
 		<div class="qazana-widget-container">
 			<?php
@@ -450,13 +464,27 @@ abstract class Widget_Base extends Element_Base {
 				$this->render();
 			}
 
-			echo apply_filters( 'qazana/widget/render_content', ob_get_clean(), $this );
+			$widget_content = ob_get_clean();
+
+			/**
+			 * Render widget content.
+			 *
+			 * Filters the widget content before it's rendered.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string      $widget_content The content of the widget.
+			 * @param Widget_Base $this           The widget.
+			 */
+			$widget_content = apply_filters( 'qazana/widget/render_content', $widget_content, $this );
+
+			echo $widget_content; // XSS ok.
 			?>
 		</div>
 		<?php
 	}
 
-    /**
+	/**
 	 * Render widget plain content.
 	 *
 	 * Qazana saves the page content in a unique way, but it's not the way
@@ -527,7 +555,7 @@ abstract class Widget_Base extends Element_Base {
 			$skin->add_render_attributes();
 		}
 
-	}
+    }
 
     /**
 	 * Before widget rendering.
@@ -540,11 +568,11 @@ abstract class Widget_Base extends Element_Base {
 	public function before_render() {
 	    $this->_add_render_attributes();
 		?>
-		<div <?php $this->render_attribute_string( '_wrapper' ); ?>>
+		<div <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 		<?php
 	}
 
-    /**
+	/**
 	 * After widget rendering.
 	 *
 	 * Used to add stuff after the widget `_wrapper` element.
@@ -558,10 +586,10 @@ abstract class Widget_Base extends Element_Base {
 		<?php
 	}
 
-    /**
-	 * Retrieve the element raw data.
+	/**
+	 * Get the element raw data.
 	 *
-	 * Get the raw element data, including the id, type, settings, child
+	 * Retrieve the raw element data, including the id, type, settings, child
 	 * elements and whether it is an inner element.
 	 *
 	 * The data with the HTML used always to display the data, but the Qazana
@@ -595,7 +623,7 @@ abstract class Widget_Base extends Element_Base {
 		return $data;
 	}
 
-    /**
+	/**
 	 * Print widget content.
 	 *
 	 * Output the widget final HTML on the frontend.
@@ -607,17 +635,17 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-    /**
-	 * Retrieve default data.
+	/**
+	 * Get default data.
 	 *
-	 * Get the default widget data. Used to reset the data on initialization.
+	 * Retrieve the default widget data. Used to reset the data on initialization.
 	 *
 	 * @since 1.0.0
 	 * @access protected
 	 *
 	 * @return array Default data.
 	 */
-	public function get_default_data() {
+	protected function get_default_data() {
 		$data = parent::get_default_data();
 
 		$data['widgetType'] = '';
@@ -625,10 +653,10 @@ abstract class Widget_Base extends Element_Base {
 		return $data;
 	}
 
-    /**
-	 * Retrieve child type.
+	/**
+	 * Get default child type.
 	 *
-	 * Get the widget child type based on element data.
+	 * Retrieve the widget child type based on element data.
 	 *
 	 * @since 1.0.0
 	 * @access protected
@@ -639,9 +667,9 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected function _get_default_child_type( array $element_data ) {
 		return qazana()->elements_manager->get_element_types( 'section' );
-    }
+	}
 
-    /**
+	/**
 	 * Get repeater setting key.
 	 *
 	 * Retrieve the unique setting key for the current repeater item. Used to connect the current element in the
@@ -708,7 +736,7 @@ abstract class Widget_Base extends Element_Base {
 		}
 	}
 
-    /**
+	/**
 	 * Add new skin.
 	 *
 	 * Register new widget skin to allow the user to set custom designs. Must be
@@ -723,12 +751,12 @@ abstract class Widget_Base extends Element_Base {
 		qazana()->skins_manager->add_skin( $this, $skin );
 	}
 
-    /**
-	 * Retrieve single skin.
+	/**
+	 * Get single skin.
 	 *
-	 * Get a single skin based on skin ID, from all the skin assigned to the
-	 * widget. If the skin does not exist or not assigned to the widget, return
-	 * false.
+	 * Retrieve a single skin based on skin ID, from all the skin assigned to
+	 * the widget. If the skin does not exist or not assigned to the widget,
+	 * return false.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -739,16 +767,17 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function get_skin( $skin_id ) {
 		$skins = $this->get_skins();
-		if ( isset( $skins[ $skin_id ] ) )
+		if ( isset( $skins[ $skin_id ] ) ) {
 			return $skins[ $skin_id ];
+		}
 
 		return false;
 	}
 
-    /**
-	 * Retrieve current skin ID.
+	/**
+	 * Get current skin ID.
 	 *
-	 * Get the ID of the current skin.
+	 * Retrieve the ID of the current skin.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -760,9 +789,9 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
-	 * Retrieve current skin.
+	 * Get current skin.
 	 *
-	 * Get the current skin, or if non exist return false.
+	 * Retrieve the current skin, or if non exist return false.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -790,9 +819,9 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
-	 * Retrieve widget skins.
+	 * Get widget skins.
 	 *
-	 * Get all the skin assigned to the widget.
+	 * Retrieve all the skin assigned to the widget.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -801,5 +830,6 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function get_skins() {
 		return qazana()->skins_manager->get_skins( $this );
-	}
+    }
+    
 }

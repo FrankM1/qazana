@@ -26,9 +26,7 @@ class Iconset_FontAwesome extends Base {
 
     private function _register_icons() {
 
-        $config = $this->get_config();
-
-        $file = qazana()->extensions_loader->locate_widget( $config['name'] . '/icons/font-awesome.json');
+        $file = $this->extension_dir( 'icons/font-awesome.json');
 
         $iconset = qazana()->icons_manager->get_icons_for_controls( $file, 'font-awesome', 'fa fa-' );
 

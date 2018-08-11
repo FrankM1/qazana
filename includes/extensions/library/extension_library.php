@@ -1,6 +1,8 @@
 <?php
 namespace Qazana\Extensions;
 
+use Qazana\Extensions\Library\Documents\Page;
+use Qazana\Extensions\Library\Documents\Section;
 use Qazana\Extensions\Library\Classes\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {	exit; } // Exit if accessed directly
@@ -8,10 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {	exit; } // Exit if accessed directly
 class Library extends Base {
 
 	public function __construct() {
-
-    	require( 'classes/shortcode.php' );
+        require( 'classes/documents/library-document.php' );
+        require( 'classes/documents/page.php' );
+        require( 'classes/documents/section.php' );
+        require( 'classes/shortcode.php' );
 		require( 'wp-widgets/qazana-library.php' );
 
+        qazana()->documents
+			->register_document_type( 'page', Page::get_class_full_name() )
+			->register_document_type( 'section', Section::get_class_full_name() )
+			->register_group( 'blocks', [
+				'label' => __( 'Blocks', 'qazana' ),
+			] )->register_group( 'pages', [
+				'label' => __( 'Pages', 'qazana' ),
+			] );
+
+    
 		$this->add_filters();
 		$this->add_actions();
 

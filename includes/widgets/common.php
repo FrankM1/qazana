@@ -6,11 +6,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Common Widget
+ * Qazana common widget.
+ *
+ * Qazana base widget that gives you all the advanced options of the basic
+ * widget.
+ *
+ * @since 1.0.0
  */
 class Widget_Common extends Widget_Base {
 
 	/**
+	 * Get widget name.
+	 *
 	 * Retrieve common widget name.
 	 *
 	 * @since 1.0.0
@@ -23,6 +30,8 @@ class Widget_Common extends Widget_Base {
 	}
 
 	/**
+	 * Show in panel.
+	 *
 	 * Whether to show the common widget in the panel or not.
 	 *
 	 * @since 1.0.0
@@ -46,7 +55,7 @@ class Widget_Common extends Widget_Base {
 		$this->start_controls_section(
 			'_section_style',
 			[
-				'label' => __( 'Element Style', 'qazana' ),
+				'label' => __( 'Advanced', 'qazana' ),
 				'tab' => Controls_Manager::TAB_ADVANCED,
 			]
 		);
@@ -58,7 +67,7 @@ class Widget_Common extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-widget-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-widget-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -70,7 +79,7 @@ class Widget_Common extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-widget-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-widget-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -88,8 +97,8 @@ class Widget_Common extends Widget_Base {
 				'label' => __( 'CSS ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -100,8 +109,8 @@ class Widget_Common extends Widget_Base {
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'prefix_class' => '',
-				'label_block' => true,
 				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -164,6 +173,7 @@ class Widget_Common extends Widget_Base {
 					],
 				],
 				'render_type' => 'ui',
+				'separator' => 'before',
 			]
 		);
 
@@ -205,7 +215,7 @@ class Widget_Common extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-widget-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
+					'{{WRAPPER}} > .qazana-widget-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -214,7 +224,7 @@ class Widget_Common extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => '_box_shadow',
-				'selector' => '{{WRAPPER}} .qazana-widget-container',
+				'selector' => '{{WRAPPER}} > .qazana-widget-container',
 			]
 		);
 
@@ -260,6 +270,7 @@ class Widget_Common extends Widget_Base {
 			[
 				'label' => __( 'Transition Duration', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
+				'separator' => 'before',
 				'default' => [
 					'size' => 0.3,
 				],
@@ -290,7 +301,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'_responsive_description',
+			'responsive_description',
 			[
 				'raw' => __( 'Attention: The display settings (show/hide for mobile, tablet or desktop) will only take effect once you are on the preview or live page, and not while you\'re in editing mode in Qazana.', 'qazana' ),
 				'type' => Controls_Manager::RAW_HTML,
@@ -299,7 +310,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'_hide_desktop',
+			'hide_desktop',
 			[
 				'label' => __( 'Hide On Desktop', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
@@ -312,7 +323,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'_hide_tablet',
+			'hide_tablet',
 			[
 				'label' => __( 'Hide On Tablet', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
@@ -325,7 +336,7 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
-			'_hide_mobile',
+			'hide_mobile',
 			[
 				'label' => __( 'Hide On Mobile', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,

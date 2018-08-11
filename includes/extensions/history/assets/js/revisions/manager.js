@@ -10,15 +10,17 @@ RevisionsManager = function() {
 	};
 
 	var onEditorSaved = function( data ) {
-		if ( data.last_revision ) {
-			self.addRevision( data.last_revision );
+		if ( data.latest_revisions ) {
+			self.addRevisions( data.latest_revisions );
 		}
 
-		var revisionsToKeep = revisions.filter( function( revision ) {
-			return -1 !== data.revisions_ids.indexOf( revision.get( 'id' ) );
-		} );
+		if ( data.revisions_ids ) {
+			var revisionsToKeep = revisions.filter( function( revision ) {
+				return -1 !== data.revisions_ids.indexOf( revision.get( 'id' ) );
+			} );
 
-		revisions.reset( revisionsToKeep );
+			revisions.reset( revisionsToKeep );
+		}
 	};
 
 	var attachEvents = function() {
@@ -51,8 +53,37 @@ RevisionsManager = function() {
 		qazana.hotKeys.addHotKeyHandler( DOWN_ARROW_KEY, 'revisionNavigation', navigationHandler );
 	};
 
-	this.addRevision = function( revisionData ) {
-		revisions.add( revisionData, { at: 0 } );
+	this.setEditorData = function( data ) {
+		var collection = qazana.getRegion( 'sections' ).currentView.collection;
+
+		// Don't track in history.
+		qazana.history.history.setActive( false );
+		collection.reset( data );
+		qazana.history.history.setActive( true );
+	};
+
+	this.getRevisionDataAsync = function( id, options ) {
+		_.extend( options, {
+			data: {
+				id: id
+			}
+		} );
+
+		return qazana.ajax.send( 'get_revision_data', options );
+	};
+
+	this.addRevisions = function( items ) {
+		items.forEach( function( item ) {
+			var existedModel = revisions.findWhere( {
+				id: item.id
+			} );
+
+			if ( existedModel ) {
+				revisions.remove( existedModel );
+			}
+
+			revisions.add( item );
+		} );
 	};
 
 	this.deleteRevision = function( revisionModel, options ) {

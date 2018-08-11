@@ -19,12 +19,14 @@
 	}
 
 	&[data-negative="false"] {
+
 		&.qazana-shape-bottom {
 			transform: rotate(180deg);
 		}
 	}
 
 	&[data-negative="true"] {
+
 		&.qazana-shape-top {
 			transform: rotate(180deg);
 		}

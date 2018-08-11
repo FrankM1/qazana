@@ -194,7 +194,19 @@ class Panel extends Base {
 									],
 									'desc' => __( 'For troubleshooting server configuration conflicts.', 'qazana' ),
 								],
-							],
+                            ],
+                            'edit_buttons' => [
+                                'label' => __('Editing Handles', 'qazana'),
+                                'field_args' => [
+                                    'type' => 'select',
+                                    'std' => '',
+                                    'options' => [
+                                        '' => __('Hide', 'qazana'),
+                                        'on' => __('Show', 'qazana'),
+                                    ],
+                                    'desc' => __('Show editing handles when hovering over the element edit button', 'qazana'),
+                                ],
+                            ],
 						],
 					],
 				],
@@ -265,9 +277,7 @@ class Panel extends Base {
 						}
 
 						echo '<table class="form-table">';
-
 						do_settings_fields( qazana()->slug, $full_section_id );
-
 						echo '</table>';
 					}
 
@@ -292,7 +302,7 @@ class Panel extends Base {
     public function ajax_qazana_clear_css_cache() {
         check_ajax_referer( 'qazana_clear_css_cache', '_nonce' );
 
-        qazana()->posts_css_manager->clear_cache();
+        qazana()->files_manager->clear_cache();
 
         wp_send_json_success();
     }
@@ -302,7 +312,7 @@ class Panel extends Base {
 	 * @access public
 	*/
 	public function update_css_print_method() {
-		qazana()->posts_css_manager->clear_cache();
+		qazana()->files_manager->clear_cache();
 	}
 
     public function ajax_qazana_replace_url() {
@@ -332,7 +342,7 @@ class Panel extends Base {
         if ( false === $rows_affected ) {
             wp_send_json_error( __( 'An error occurred', 'qazana' ) );
         } else {
-            qazana()->posts_css_manager->clear_cache();
+            qazana()->files_manager->clear_cache();
             wp_send_json_success( sprintf( __( '%d Rows Affected', 'qazana' ), $rows_affected ) );
         }
     }

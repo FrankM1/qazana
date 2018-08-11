@@ -147,6 +147,8 @@ module.exports = ElementsHandler;
 			elements.$body = $( 'body' );
 
 			elements.$qazana = elements.$document.find( '.qazana' );
+
+			elements.$wpAdminBar = elements.$document.find( '#wpadminbar' );
 		};
 
 		var bindEvents = function() {
@@ -163,7 +165,8 @@ module.exports = ElementsHandler;
 			};
 
 			self.modules = {
-				StretchElement: require( 'qazana-frontend/modules/stretch-element' )
+				StretchElement: require( 'qazana-frontend/modules/stretch-element' ),
+				Masonry: require( 'qazana-utils/masonry' )
 			};
 
 			self.elementsHandler = new ElementsHandler( $ );
@@ -287,12 +290,28 @@ module.exports = ElementsHandler;
 				return;
 			}
 
+			this.removeListeners( listenerID, event, to );
+
 			if ( to instanceof jQuery ) {
 				var eventNS = event + '.' + listenerID;
 
-				to.off( eventNS ).on( eventNS, callback );
+				to.on( eventNS, callback );
 			} else {
-				to.off( event, null, listenerID ).on( event, callback, listenerID );
+				to.on( event, callback, listenerID );
+			}
+		};
+
+		this.removeListeners = function( listenerID, event, callback, from ) {
+			if ( ! from ) {
+				from = self.getElements( '$window' );
+			}
+
+			if ( from instanceof jQuery ) {
+				var eventNS = event + '.' + listenerID;
+
+				from.off( eventNS, callback );
+			} else {
+				from.off( event, callback, listenerID );
 			}
 		};
 
@@ -301,10 +320,23 @@ module.exports = ElementsHandler;
 		};
 
 		this.waypoint = function( $element, callback, options ) {
-			var correctCallback = function() {
-				var element = this.element || this;
+			var defaultOptions = {
+				offset: '100%',
+				triggerOnce: true
+			};
 
-				return callback.apply( element, arguments );
+			options = $.extend( defaultOptions, options );
+
+			var correctCallback = function() {
+				var element = this.element || this,
+					result = callback.apply( element, arguments );
+
+				// If is Waypoint new API and is frontend
+				if ( options.triggerOnce && this.destroy ) {
+					this.destroy();
+				}
+
+				return result;
 			};
 
 			return $element.qazanaWaypoint( correctCallback, options );
@@ -318,12 +350,14 @@ if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
 
-},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":20,"qazana-frontend/utils/anchors":21,"qazana-frontend/utils/carousel":22,"qazana-frontend/utils/lightbox":23,"qazana-frontend/utils/vimeo":24,"qazana-frontend/utils/youtube":25,"qazana-utils/hooks":26,"qazana-utils/hot-keys":27}],3:[function(require,module,exports){
+},{"qazana-frontend/elements-handler":1,"qazana-frontend/handler-module":3,"qazana-frontend/modules/stretch-element":20,"qazana-frontend/utils/anchors":21,"qazana-frontend/utils/carousel":22,"qazana-frontend/utils/lightbox":23,"qazana-frontend/utils/vimeo":24,"qazana-frontend/utils/youtube":25,"qazana-utils/hooks":26,"qazana-utils/hot-keys":27,"qazana-utils/masonry":28}],3:[function(require,module,exports){
 var ViewModule = require( '../utils/view-module' ),
 	HandlerModule;
 
 HandlerModule = ViewModule.extend( {
 	$element: null,
+
+	editorListeners: null,
 
 	onElementChange: null,
 
@@ -341,8 +375,16 @@ HandlerModule = ViewModule.extend( {
 		this.isEdit = this.$element.hasClass( 'qazana-element-edit-mode' );
 
 		if ( this.isEdit ) {
-			this.addEditorListener();
+			this.addEditorListeners();
 		}
+	},
+
+	findElement: function( selector ) {
+		var $mainElement = this.$element;
+
+		return $mainElement.find( selector ).filter( function() {
+			return jQuery( this ).closest( '.qazana-element' ).is( $mainElement );
+		} );
 	},
 
 	getUniqueHandlerID: function( cid, $element ) {
@@ -357,9 +399,22 @@ HandlerModule = ViewModule.extend( {
 		return cid + $element.attr( 'data-element_type' ) + this.getConstructorID();
 	},
 
-	addEditorListener: function() {
-		var self = this,
-			uniqueHandlerID = self.getUniqueHandlerID();
+	initEditorListeners: function() {
+		var self = this;
+
+		self.editorListeners = [
+			{
+				event: 'element:destroy',
+				to: qazana.channels.data,
+				callback: function( removedModel ) {
+					if ( removedModel.cid !== self.getModelCID() ) {
+						return;
+					}
+
+					self.onDestroy();
+				}
+			}
+		];
 
 		if ( self.onElementChange ) {
 			var elementName = self.getElementName(),
@@ -369,35 +424,71 @@ HandlerModule = ViewModule.extend( {
 				eventName += ':' + elementName;
 			}
 
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, eventName, function( controlView, elementView ) {
-				var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
+			self.editorListeners.push( {
+				event: eventName,
+				to: qazana.channels.editor,
+				callback: function( controlView, elementView ) {
+					var elementViewHandlerID = self.getUniqueHandlerID( elementView.model.cid, elementView.$el );
 
-				if ( elementViewHandlerID !== uniqueHandlerID ) {
-					return;
+					if ( elementViewHandlerID !== self.getUniqueHandlerID() ) {
+						return;
+					}
+
+					self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
 				}
-
-				self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
-			}, qazana.channels.editor );
+			} );
 		}
 
 		if ( self.onEditSettingsChange ) {
-			qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change:editSettings', function( changedModel, view ) {
-				if ( view.model.cid !== self.getModelCID() ) {
-					return;
-				}
+			self.editorListeners.push( {
+				event: 'change:editSettings',
+				to: qazana.channels.editor,
+				callback: function( changedModel, view ) {
+					if ( view.model.cid !== self.getModelCID() ) {
+						return;
+					}
 
-				self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
-			}, qazana.channels.editor );
+					self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
+				}
+			} );
 		}
 
 		[ 'page', 'general' ].forEach( function( settingsType ) {
-			var listenerMethodName = 'on' + settingsType.charAt( 0 ).toUpperCase() + settingsType.slice( 1 ) + 'SettingsChange';
+			var listenerMethodName = 'on' + qazana.helpers.firstLetterUppercase( settingsType ) + 'SettingsChange';
 
 			if ( self[ listenerMethodName ] ) {
-				qazanaFrontend.addListenerOnce( uniqueHandlerID, 'change', function( model ) {
-					self[ listenerMethodName ]( model.changed );
-				}, qazana.settings[ settingsType ].model );
+				self.editorListeners.push( {
+					event: 'change',
+					to: qazana.settings[ settingsType ].model,
+					callback: function( model ) {
+						self[ listenerMethodName ]( model.changed );
+					}
+				} );
 			}
+		} );
+	},
+
+	getEditorListeners: function() {
+		if ( ! this.editorListeners ) {
+			this.initEditorListeners();
+		}
+
+		return this.editorListeners;
+	},
+
+	addEditorListeners: function() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach( function( listener ) {
+			qazanaFrontend.addListenerOnce( uniqueHandlerID, listener.event, listener.callback, listener.to );
+		} );
+	},
+
+	removeEditorListeners: function() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach( function( listener ) {
+			qazanaFrontend.removeListeners( uniqueHandlerID, listener.event, null, listener.to );
 		} );
 	},
 
@@ -474,12 +565,20 @@ HandlerModule = ViewModule.extend( {
 		}
 
 		return this.getItems( attributes, setting );
+	},
+
+	onDestroy: function() {
+		this.removeEditorListeners();
+
+		if ( this.unbindEvents ) {
+			this.unbindEvents();
+		}
 	}
 } );
 
 module.exports = HandlerModule;
 
-},{"../utils/view-module":29}],4:[function(require,module,exports){
+},{"../utils/view-module":30}],4:[function(require,module,exports){
 var TabsModule = require( 'qazana-frontend/handlers/base-tabs' );
 
 module.exports = function( $scope ) {
@@ -629,8 +728,8 @@ module.exports = HandlerModule.extend( {
 		var selectors = this.getSettings( 'selectors' );
 
 		return {
-			$tabTitles: this.$element.find( selectors.tabTitle ),
-			$tabContents: this.$element.find( selectors.tabContent )
+			$tabTitles: this.findElement( selectors.tabTitle ),
+			$tabContents: this.findElement( selectors.tabContent )
 		};
 	},
 
@@ -859,84 +958,72 @@ var HandlerModule = require( 'qazana-frontend/handler-module' );
 
 var StretchedSection = HandlerModule.extend( {
 
+	stretchElement: null,
+
 	bindEvents: function() {
-		qazanaFrontend.addListenerOnce( this.$element.data( 'model-cid' ), 'resize', this.stretchSection );
+		var handlerID = this.getUniqueHandlerID();
+
+		qazanaFrontend.addListenerOnce( handlerID, 'resize', this.stretch );
+
+		qazanaFrontend.addListenerOnce( handlerID, 'sticky:stick', this.stretch, this.$element );
+
+		qazanaFrontend.addListenerOnce( handlerID, 'sticky:unstick', this.stretch, this.$element );
 	},
 
-	stretchSection: function() {
-		// Clear any previously existing css associated with this script
-		var direction = qazanaFrontend.config.is_rtl ? 'right' : 'left',
-			resetCss = {},
-			isStretched = this.$element.hasClass( 'qazana-section-stretched' );
+	unbindEvents: function() {
+		qazanaFrontend.removeListeners( this.getUniqueHandlerID(), 'resize', this.stretch );
+	},
 
-		if ( qazanaFrontend.isEditMode() || isStretched ) {
-			resetCss.width = 'auto';
+	initStretch: function() {
+		this.stretchElement = new qazanaFrontend.modules.StretchElement( {
+			element: this.$element,
+			selectors: {
+				container: this.getStretchContainer()
+			}
+		} );
+	},
 
-			resetCss[ direction ] = 0;
+	getStretchContainer: function() {
+		return qazanaFrontend.getGeneralSettings( 'qazana_stretched_section_container' ) || window;
+	},
 
-			this.$element.css( resetCss );
-		}
-
-		if ( ! isStretched ) {
+	stretch: function() {
+		if ( ! this.getElementSettings( 'stretch_section' ) ) {
 			return;
 		}
 
-		var $sectionContainer,
-			hasSpecialContainer = false;
-
-		try {
-			$sectionContainer = jQuery( qazanaFrontend.getGeneralSettings( 'qazana_stretched_section_container' ) );
-
-			if ( $sectionContainer.length ) {
-				hasSpecialContainer = true;
-			}
-		} catch ( e ) {}
-
-		if ( ! hasSpecialContainer ) {
-			$sectionContainer = qazanaFrontend.getElements( '$window' );
-		}
-
-		var containerWidth = $sectionContainer.outerWidth(),
-			sectionWidth = this.$element.outerWidth(),
-			sectionOffset = this.$element.offset().left,
-			correctOffset = sectionOffset;
-
-		if ( hasSpecialContainer ) {
-			var containerOffset = $sectionContainer.offset().left;
-
-			if ( sectionOffset > containerOffset ) {
-				correctOffset = sectionOffset - containerOffset;
-			} else {
-				correctOffset = 0;
-			}
-		}
-
-		if ( qazanaFrontend.config.is_rtl ) {
-			correctOffset = containerWidth - ( sectionWidth + correctOffset );
-		}
-
-		resetCss.width = containerWidth + 'px';
-
-		resetCss[ direction ] = -correctOffset + 'px';
-
-		this.$element.css( resetCss );
+		this.stretchElement.stretch();
 	},
 
 	onInit: function() {
 		HandlerModule.prototype.onInit.apply( this, arguments );
 
-		this.stretchSection();
+		this.initStretch();
+
+		this.stretch();
+	},
+
+	onElementChange: function( propertyName ) {
+		if ( 'stretch_section' === propertyName ) {
+			if ( this.getElementSettings( 'stretch_section' ) ) {
+				this.stretch();
+			} else {
+				this.stretchElement.reset();
+			}
+		}
 	},
 
 	onGeneralSettingsChange: function( changed ) {
 		if ( 'qazana_stretched_section_container' in changed ) {
-			this.stretchSection();
+			this.stretchElement.setSettings( 'selectors.container', this.getStretchContainer() );
+
+			this.stretch();
 		}
 	}
 } );
 
-var SVGShapes = HandlerModule.extend( {
-	
+var Shapes = HandlerModule.extend( {
+
 	getDefaultSettings: function() {
 		return {
 			selectors: {
@@ -1019,18 +1106,55 @@ var SVGShapes = HandlerModule.extend( {
 	}
 } );
 
+var HandlesPosition = HandlerModule.extend( {
+
+    isFirst: function() {
+        return this.$element.is( '.qazana-edit-mode .qazana-top-section:first' );
+    },
+
+    getOffset: function() {
+        return this.$element.offset().top;
+    },
+
+    setHandlesPosition: function() {
+        var self = this;
+
+        if ( self.isFirst() ) {
+            var offset = self.getOffset(),
+                $handlesElement = self.$element.find( '> .qazana-element-overlay > .qazana-editor-section-settings' ),
+                insideHandleClass = 'qazana-section--handles-inside';
+
+            if ( offset < 25 ) {
+                self.$element.addClass( insideHandleClass );
+
+                if ( offset < -5 ) {
+                    $handlesElement.css( 'top', -offset );
+                } else {
+                    $handlesElement.css( 'top', '' );
+                }
+            } else {
+                self.$element.removeClass( insideHandleClass );
+            }
+        }
+    },
+
+    onInit: function() {
+        this.setHandlesPosition();
+        this.$element.on( 'mouseenter', this.setHandlesPosition );
+    }
+} );
+
 module.exports = function( $scope ) {
+	if ( qazanaFrontend.isEditMode() || $scope.hasClass( 'qazana-section-stretched' ) ) {
+		new StretchedSection( { $element: $scope } );
+	}
 
 	if ( qazanaFrontend.isEditMode() ) {
-		new SVGShapes( { $element: $scope } );
-
-		if ( $scope.hasClass( 'qazana-section-stretched' ) ) {
-			new StretchedSection( { $element: $scope } );
-		}
+		new Shapes( { $element: $scope } );
+		new HandlesPosition( { $element: $scope } );
 	}
 
 	new BackgroundVideo( { $element: $scope } );
-
 };
 
 },{"qazana-frontend/handler-module":3,"qazana-frontend/handlers/background-video":6}],13:[function(require,module,exports){
@@ -1215,8 +1339,8 @@ VideoModule = HandlerModule.extend( {
 		return {
 			selectors: {
 				imageOverlay: '.qazana-custom-embed-image-overlay',
-				videoWrapper: '.qazana-wrapper',
-				videoFrame: 'iframe'
+				video: '.qazana-video',
+				videoIframe: '.qazana-video-iframe'
 			}
 		};
 	},
@@ -1224,14 +1348,11 @@ VideoModule = HandlerModule.extend( {
 	getDefaultElements: function() {
 		var selectors = this.getSettings( 'selectors' );
 
-		var elements = {
+		return {
 			$imageOverlay: this.$element.find( selectors.imageOverlay ),
-			$videoWrapper: this.$element.find( selectors.videoWrapper )
+			$video: this.$element.find( selectors.video ),
+			$videoIframe: this.$element.find( selectors.videoIframe )
 		};
-
-		elements.$videoFrame = elements.$videoWrapper.find( selectors.videoFrame );
-
-		return elements;
 	},
 
 	getLightBox: function() {
@@ -1247,10 +1368,16 @@ VideoModule = HandlerModule.extend( {
 	},
 
 	playVideo: function() {
-		var $videoFrame = this.elements.$videoFrame,
-			newSourceUrl = $videoFrame[0].src.replace( '&autoplay=0', '' );
+		if ( this.elements.$video.length ) {
+			this.elements.$video[0].play();
 
-		$videoFrame[0].src = newSourceUrl + '&autoplay=1';
+			return;
+		}
+
+		var $videoIframe = this.elements.$videoIframe,
+			newSourceUrl = $videoIframe[0].src.replace( '&autoplay=0', '' );
+
+		$videoIframe[0].src = newSourceUrl + '&autoplay=1';
 	},
 
 	animateVideo: function() {
@@ -1327,36 +1454,49 @@ module.exports = ViewModule.extend( {
 
 	stretch: function() {
 		var containerSelector = this.getSettings( 'selectors.container' ),
-			$element = this.elements.$element,
-			$container = jQuery( containerSelector ),
-			isSpecialContainer = window !== $container[0];
+			$container;
+
+		try {
+			$container = jQuery( containerSelector );
+		} catch ( e ) {}
+
+		if ( ! $container || ! $container.length ) {
+			$container = jQuery( this.getDefaultSettings().selectors.container );
+		}
 
 		this.reset();
 
-		var containerWidth = $container.outerWidth(),
-			elementWidth = $element.outerWidth(),
+		var $element = this.elements.$element,
+			containerWidth = $container.outerWidth(),
 			elementOffset = $element.offset().left,
-			correctOffset = elementOffset;
+			isFixed = 'fixed' === $element.css( 'position' ),
+			correctOffset = isFixed ? 0 : elementOffset;
 
-		if ( isSpecialContainer ) {
+		if ( window !== $container[0] ) {
 			var containerOffset = $container.offset().left;
 
-			if ( elementOffset > containerOffset ) {
-				correctOffset = elementOffset - containerOffset;
+			if ( isFixed ) {
+				correctOffset = containerOffset;
 			} else {
-				correctOffset = 0;
+				if ( elementOffset > containerOffset ) {
+					correctOffset = elementOffset - containerOffset;
+				}
 			}
 		}
 
-		if ( qazanaFrontend.config.is_rtl ) {
-			correctOffset = containerWidth - ( elementWidth + correctOffset );
+		if ( ! isFixed ) {
+			if ( qazanaFrontend.config.is_rtl ) {
+				correctOffset = containerWidth - ( $element.outerWidth() + correctOffset );
+			}
+
+			correctOffset = -correctOffset;
 		}
 
 		var css = {};
 
 		css.width = containerWidth + 'px';
 
-		css[ this.getSettings( 'direction' ) ] = -correctOffset + 'px';
+		css[ this.getSettings( 'direction' ) ] = correctOffset + 'px';
 
 		$element.css( css );
 	},
@@ -1364,27 +1504,25 @@ module.exports = ViewModule.extend( {
 	reset: function() {
 		var css = {};
 
-		css.width = 'auto';
+		css.width = '';
 
-		css[ this.getSettings( 'direction' ) ] = 0;
+		css[ this.getSettings( 'direction' ) ] = '';
 
 		this.elements.$element.css( css );
 	}
 } );
 
-},{"../../utils/view-module":29}],21:[function(require,module,exports){
+},{"../../utils/view-module":30}],21:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
 	getDefaultSettings: function() {
-
 		return {
 			scrollDuration: 500,
 			selectors: {
 				links: 'a[href*="#"]',
 				targets: '.qazana-element, .qazana-menu-anchor',
-				scrollable: 'html, body',
-				wpAdminBar: '#wpadminbar'
+				scrollable: 'html, body'
 			}
 		};
 	},
@@ -1394,8 +1532,7 @@ module.exports = ViewModule.extend( {
 			selectors = this.getSettings( 'selectors' );
 
 		return {
-			$scrollable: $( selectors.scrollable ),
-			$wpAdminBar: $( selectors.wpAdminBar )
+			$scrollable: $( selectors.scrollable )
 		};
 	},
 
@@ -1418,11 +1555,22 @@ module.exports = ViewModule.extend( {
 			return;
 		}
 
-		var hasAdminBar = ( 1 <= this.elements.$wpAdminBar.length ),
-			scrollTop = $anchor.offset().top;
+		var scrollTop = $anchor.offset().top,
+			$wpAdminBar = qazanaFrontend.getElements( '$wpAdminBar' ),
+			$activeStickies = jQuery( '.qazana-sticky--active' ),
+			maxStickyHeight = 0;
 
-		if ( hasAdminBar ) {
-			scrollTop -= this.elements.$wpAdminBar.height();
+		if ( $wpAdminBar.length > 0 ) {
+			scrollTop -= $wpAdminBar.height();
+		}
+
+		// Offset height of tallest sticky
+		if ( $activeStickies.length > 0 ) {
+			 maxStickyHeight = Math.max.apply( null, $activeStickies.map( function() {
+				return jQuery( this ).outerHeight();
+			} ).get() );
+
+			scrollTop -= maxStickyHeight;
 		}
 
 		event.preventDefault();
@@ -1441,7 +1589,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":29}],22:[function(require,module,exports){
+},{"../../utils/view-module":30}],22:[function(require,module,exports){
 var addNav = function($scope, $slick, settings) {
     
     $scope = $scope.closest('.qazana-widget-container');
@@ -1700,7 +1848,7 @@ LightboxModule = ViewModule.extend( {
 
 				break;
 			case 'video':
-				self.setVideoContent( options.url );
+				self.setVideoContent( options );
 
 				break;
 			case 'slideshow':
@@ -1729,18 +1877,30 @@ LightboxModule = ViewModule.extend( {
 		self.getModal().setMessage( $item );
 	},
 
-	setVideoContent: function( videoEmbedURL ) {
-		videoEmbedURL = videoEmbedURL.replace( '&autoplay=0', '' ) + '&autoplay=1';
-
+	setVideoContent: function( options ) {
 		var classes = this.getSettings( 'classes' ),
 			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer } ),
 			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
-			$videoFrame = jQuery( '<iframe>', { src: videoEmbedURL, allowfullscreen: 1 } ),
+			$videoElement,
 			modal = this.getModal();
+
+		if ( 'hosted' === options.videoType ) {
+			var videoParams = { src: options.url, autoplay: '' };
+
+			options.videoParams.forEach( function( param ) {
+				videoParams[ param ] = '';
+			} );
+
+			$videoElement = jQuery( '<video>', videoParams );
+		} else {
+			var videoURL = options.url.replace( '&autoplay=0', '' ) + '&autoplay=1';
+
+			$videoElement = jQuery( '<iframe>', { src: videoURL, allowfullscreen: 1 } );
+		}
 
 		$videoContainer.append( $videoWrapper );
 
-		$videoWrapper.append( $videoFrame );
+		$videoWrapper.append( $videoElement );
 
 		modal.setMessage( $videoContainer );
 
@@ -1808,14 +1968,20 @@ LightboxModule = ViewModule.extend( {
 			onShowMethod();
 
 			var swiperOptions = {
-				prevButton: $prevButton,
-				nextButton: $nextButton,
-				paginationClickable: true,
+				navigation: {
+					prevEl: $prevButton,
+					nextEl: $nextButton
+				},
+				pagination: {
+					clickable: true
+				},
+				on: {
+					slideChangeTransitionEnd: self.onSlideChange
+				},
 				grabCursor: true,
-				onSlideChangeEnd: self.onSlideChange,
 				runCallbacksOnInit: false,
 				loop: true,
-				keyboardControl: true
+				keyboard: true
 			};
 
 			if ( options.swiper ) {
@@ -1849,7 +2015,7 @@ LightboxModule = ViewModule.extend( {
 	},
 
 	getSlide: function( slideState ) {
-		return this.swiper.slides.filter( this.getSettings( 'selectors.slideshow.' + slideState + 'Slide' ) );
+		return jQuery( this.swiper.slides ).filter( this.getSettings( 'selectors.slideshow.' + slideState + 'Slide' ) );
 	},
 
 	playSlideVideo: function() {
@@ -1860,9 +2026,8 @@ LightboxModule = ViewModule.extend( {
 			return;
 		}
 
-		var classes = this.getSettings( 'classes' );
-
-		var $videoContainer = jQuery( '<div>', { 'class': classes.videoContainer + ' ' + classes.invisible } ),
+		var classes = this.getSettings( 'classes' ),
+			$videoContainer = jQuery( '<div>', { 'class': classes.videoContainer + ' ' + classes.invisible } ),
 			$videoWrapper = jQuery( '<div>', { 'class': classes.videoWrapper } ),
 			$videoFrame = jQuery( '<iframe>', { src: videoURL } ),
 			$playIcon = $activeSlide.children( '.' + classes.playButton );
@@ -2043,7 +2208,7 @@ LightboxModule = ViewModule.extend( {
 
 module.exports = LightboxModule;
 
-},{"../../utils/view-module":29}],24:[function(require,module,exports){
+},{"../../utils/view-module":30}],24:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -2092,7 +2257,7 @@ module.exports = ViewModule.extend( {
     
 } );
 
-},{"../../utils/view-module":29}],25:[function(require,module,exports){
+},{"../../utils/view-module":30}],25:[function(require,module,exports){
 var ViewModule = require( '../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
@@ -2142,7 +2307,7 @@ module.exports = ViewModule.extend( {
 	}
 } );
 
-},{"../../utils/view-module":29}],26:[function(require,module,exports){
+},{"../../utils/view-module":30}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2403,11 +2568,7 @@ module.exports = EventManager;
 
 },{}],27:[function(require,module,exports){
 var HotKeys = function() {
-	var hotKeysHandlers = this.hotKeysHandlers = {};
-
-	var isMac = function() {
-		return -1 !== navigator.userAgent.indexOf( 'Mac OS X' );
-	};
+	var hotKeysHandlers = {};
 
 	var applyHotKey = function( event ) {
 		var handlers = hotKeysHandlers[ event.which ];
@@ -2435,7 +2596,7 @@ var HotKeys = function() {
 	};
 
 	this.isControlEvent = function( event ) {
-		return event[ isMac() ? 'metaKey' : 'ctrlKey' ];
+		return event[ qazana.envData.mac ? 'metaKey' : 'ctrlKey' ];
 	};
 
 	this.addHotKeyHandler = function( keyCode, handlerName, handler ) {
@@ -2454,6 +2615,59 @@ var HotKeys = function() {
 module.exports = new HotKeys();
 
 },{}],28:[function(require,module,exports){
+var ViewModule = require( './view-module' );
+
+module.exports = ViewModule.extend( {
+
+	getDefaultSettings: function() {
+		return {
+			container: null,
+			items: null,
+			columnsCount: 3,
+			verticalSpaceBetween: 30
+		};
+	},
+
+	getDefaultElements: function() {
+		return {
+			$container: jQuery( this.getSettings( 'container' ) ),
+			$items: jQuery( this.getSettings( 'items' ) )
+		};
+	},
+
+	run: function() {
+		var heights = [],
+			distanceFromTop = this.elements.$container.position().top,
+			settings = this.getSettings(),
+			columnsCount = settings.columnsCount;
+
+		distanceFromTop += parseInt( this.elements.$container.css( 'margin-top' ), 10 );
+
+		this.elements.$items.each( function( index ) {
+			var row = Math.floor( index / columnsCount ),
+				$item = jQuery( this ),
+				itemHeight = $item[0].getBoundingClientRect().height + settings.verticalSpaceBetween;
+
+			if ( row ) {
+				var itemPosition = $item.position(),
+                    indexAtRow = index % columnsCount,
+                    pullHeight = itemPosition.top - distanceFromTop - heights[ indexAtRow ];
+
+				pullHeight -= parseInt( $item.css( 'margin-top' ), 10 );
+
+				pullHeight *= -1;
+
+				$item.css( 'margin-top', pullHeight + 'px' );
+
+                heights[ indexAtRow ] += itemHeight;
+			} else {
+				heights.push( itemHeight );
+			}
+		} );
+	}
+} );
+
+},{"./view-module":30}],29:[function(require,module,exports){
 var Module = function() {
 	var $ = jQuery,
 		instanceParams = arguments,
@@ -2552,11 +2766,23 @@ var Module = function() {
 	};
 
 	this.on = function( eventName, callback ) {
-		if ( ! events[ eventName ] ) {
-			events[ eventName ] = [];
+		if ( 'object' === typeof eventName ) {
+			$.each( eventName, function( singleEventName ) {
+				self.on( singleEventName, this );
+			} );
+
+			return self;
 		}
 
-		events[ eventName ].push( callback );
+		var eventNames = eventName.split( ' ' );
+
+		eventNames.forEach( function( singleEventName ) {
+			if ( ! events[ singleEventName ] ) {
+				events[ singleEventName ] = [];
+			}
+
+			events[ singleEventName ].push( callback );
+		} );
 
 		return self;
 	};
@@ -2592,12 +2818,14 @@ var Module = function() {
 		var callbacks = events[ eventName ];
 
 		if ( ! callbacks ) {
-			return;
+			return self;
 		}
 
 		$.each( callbacks, function( index, callback ) {
 			callback.apply( self, params );
 		} );
+
+		return self;
 	};
 
     this.getDeviceName = function() {
@@ -2654,7 +2882,7 @@ Module.extend = function( properties ) {
 
 module.exports = Module;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var Module = require( 'qazana-utils/module' ),
 	ViewModule;
 
@@ -2680,5 +2908,5 @@ ViewModule = Module.extend( {
 
 module.exports = ViewModule;
 
-},{"qazana-utils/module":28}]},{},[2])
+},{"qazana-utils/module":29}]},{},[2])
 //# sourceMappingURL=frontend.js.map

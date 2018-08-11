@@ -191,7 +191,7 @@ $this->add_control(
      'label' => __( 'Image', 'qazana' ),
      'type' => Controls_Manager::MEDIA,
      'default' => [
-        'url' => 'https://qazana.com/wp-content/uploads/2016/05/element-bg.png',
+        'url' => 'https://qazana.net/wp-content/uploads/2016/05/element-bg.png',
      ],
   ]
 );

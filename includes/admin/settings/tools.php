@@ -31,7 +31,7 @@ class Tools extends Panel {
 	public function ajax_qazana_clear_cache() {
 		check_ajax_referer( 'qazana_clear_cache', '_nonce' );
 
-		qazana()->posts_css_manager->clear_cache();
+		qazana()->files_manager->clear_cache();
 
 		wp_send_json_success();
 	}
@@ -67,7 +67,7 @@ class Tools extends Panel {
 		if ( false === $rows_affected ) {
 			wp_send_json_error( __( 'An error occurred', 'qazana' ) );
 		} else {
-			qazana()->posts_css_manager->clear_cache();
+			qazana()->files_manager->clear_cache();
 			wp_send_json_success( sprintf( __( '%d Rows Affected', 'qazana' ), $rows_affected ) );
 		}
 	}

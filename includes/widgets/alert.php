@@ -6,11 +6,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alert Widget
+ * Qazana alert widget.
+ *
+ * Qazana widget that displays a collapsible display of content in an toggle
+ * style, allowing the user to open multiple items.
+ *
+ * @since 1.0.0
  */
 class Widget_Alert extends Widget_Base {
 
 	/**
+	 * Get widget name.
+	 *
 	 * Retrieve alert widget name.
 	 *
 	 * @since 1.0.0
@@ -23,6 +30,8 @@ class Widget_Alert extends Widget_Base {
 	}
 
 	/**
+	 * Get widget title.
+	 *
 	 * Retrieve alert widget title.
 	 *
 	 * @since 1.0.0
@@ -35,6 +44,8 @@ class Widget_Alert extends Widget_Base {
 	}
 
 	/**
+	 * Get widget icon.
+	 *
 	 * Retrieve alert widget icon.
 	 *
 	 * @since 1.0.0
@@ -44,6 +55,20 @@ class Widget_Alert extends Widget_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-alert';
+	}
+
+	/**
+	 * Get widget keywords.
+	 *
+	 * Retrieve the list of keywords the widget belongs to.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'alert', 'notice', 'message' ];
 	}
 
 	/**
@@ -57,7 +82,7 @@ class Widget_Alert extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
 	/**
@@ -88,6 +113,7 @@ class Widget_Alert extends Widget_Base {
 					'warning' => __( 'Warning', 'qazana' ),
 					'danger' => __( 'Danger', 'qazana' ),
 				],
+				'style_transfer' => true,
 			]
 		);
 
@@ -96,8 +122,8 @@ class Widget_Alert extends Widget_Base {
 			[
 				'label' => __( 'Title & Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => __( 'Your Title', 'qazana' ),
-				'default' => __( 'This is Alert', 'qazana' ),
+				'placeholder' => __( 'Enter your title', 'qazana' ),
+				'default' => __( 'This is an Alert', 'qazana' ),
 				'label_block' => true,
 			]
 		);
@@ -107,8 +133,8 @@ class Widget_Alert extends Widget_Base {
 			[
 				'label' => __( 'Content', 'qazana' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'placeholder' => __( 'Your Description', 'qazana' ),
-				'default' => __( 'I am description. Click edit button to change this text.', 'qazana' ),
+				'placeholder' => __( 'Enter your description', 'qazana' ),
+				'default' => __( 'I am a description. Click the edit button to change this text.', 'qazana' ),
 				'separator' => 'none',
 				'show_label' => false,
 			]
@@ -141,7 +167,7 @@ class Widget_Alert extends Widget_Base {
 		$this->start_controls_section(
 			'section_type',
 			[
-				'label' => __( 'Alert Type', 'qazana' ),
+				'label' => __( 'Alert', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -258,7 +284,7 @@ class Widget_Alert extends Widget_Base {
 	 * @access protected
 	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( empty( $settings['alert_title'] ) ) {
 			return;
@@ -284,7 +310,10 @@ class Widget_Alert extends Widget_Base {
 				<span <?php $this->render_attribute_string( 'alert_description' ); ?>><?php echo $settings['alert_description']; ?></span>
 			<?php }
 			if ( 'show' === $settings['show_dismiss'] ) { ?>
-				<button type="button" class="qazana-alert-dismiss">X</button>
+				<button type="button" class="qazana-alert-dismiss">
+					<span aria-hidden="true">&times;</span>
+					<span class="qazana-screen-only"><?php echo __( 'Dismiss alert', 'qazana' ); ?></span>
+				</button>
 			<?php } ?>
 		</div>
 		<?php
@@ -313,7 +342,10 @@ class Widget_Alert extends Widget_Base {
 				<span {{{ view.getRenderAttributeString( 'alert_title' ) }}}>{{{ settings.alert_title }}}</span>
 				<span {{{ view.getRenderAttributeString( 'alert_description' ) }}}>{{{ settings.alert_description }}}</span>
 				<# if ( 'show' === settings.show_dismiss ) { #>
-					<button type="button" class="qazana-alert-dismiss">X</button>
+					<button type="button" class="qazana-alert-dismiss">
+						<span aria-hidden="true">&times;</span>
+						<span class="qazana-screen-only"><?php echo __( 'Dismiss alert', 'qazana' ); ?></span>
+					</button>
 				<# } #>
 			</div>
 		<# } #>

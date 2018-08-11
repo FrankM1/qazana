@@ -1,58 +1,113 @@
 <?php
-namespace Qazana\Template_Library;
+namespace Qazana\Template_Library\Classes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+/**
+ * Qazana template library import images.
+ *
+ * Qazana template library import images handler class is responsible for
+ * importing remote images used by the template library.
+ *
+ * @since 1.0.0
+ */
 class Import_Images {
 
-    private $_replace_image_ids = [];
+	/**
+	 * Replaced images IDs.
+	 *
+	 * The IDs of all the new imported images. An array containing the old
+	 * attachment ID and the new attachment ID generated after the import.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var array
+	 */
+	private $_replace_image_ids = [];
 
-    private function _get_hash_image( $attachment_url ) {
-        return sha1( $attachment_url );
-    }
+	/**
+	 * Get image hash.
+	 *
+	 * Retrieve the sha1 hash of the image URL.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 *
+	 * @param string $attachment_url The attachment URL.
+	 *
+	 * @return string Image hash.
+	 */
+	private function get_hash_image( $attachment_url ) {
+		return sha1( $attachment_url );
+	}
 
-    private function _return_saved_image( $attachment ) {
-        global $wpdb;
+	/**
+	 * Get saved image.
+	 *
+	 * Retrieve new image ID, if the image has a new ID after the import.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 *
+	 * @param array $attachment The attachment.
+	 *
+	 * @return false|array New image ID  or false.
+	 */
+	private function get_saved_image( $attachment ) {
+		global $wpdb;
 
-        if ( isset( $this->_replace_image_ids[ $attachment['id'] ] ) )
-            return $this->_replace_image_ids[ $attachment['id'] ];
+		if ( isset( $this->_replace_image_ids[ $attachment['id'] ] ) ) {
+			return $this->_replace_image_ids[ $attachment['id'] ];
+		}
 
-        $post_id = $wpdb->get_var(
-            $wpdb->prepare(
-                'SELECT `post_id` FROM %1$s
-                    WHERE `meta_key` = \'_qazana_source_image_hash\'
-                        AND `meta_value` = \'%2$s\'
-                ;',
-                $wpdb->postmeta,
-                $this->_get_hash_image( $attachment['url'] )
-            )
-        );
+		$post_id = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT `post_id` FROM `' . $wpdb->postmeta . '`
+					WHERE `meta_key` = \'_qazana_source_image_hash\'
+						AND `meta_value` = %s
+				;',
+				$this->get_hash_image( $attachment['url'] )
+			)
+		);
 
-        if ( $post_id ) {
-            $new_attachment = [
-                'id' => $post_id,
-                'url' => wp_get_attachment_url( $post_id ),
-            ];
-            $this->_replace_image_ids[ $attachment['id'] ] = $new_attachment;
+		if ( $post_id ) {
+			$new_attachment = [
+				'id' => $post_id,
+				'url' => wp_get_attachment_url( $post_id ),
+			];
+			$this->_replace_image_ids[ $attachment['id'] ] = $new_attachment;
 
-            return $new_attachment;
-        }
+			return $new_attachment;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * If fetching attachments is enabled then attempt to create a new attachment
-     *
-     * @param array $post Attachment post details from WXR
-     * @param string $url URL to fetch attachment from
-     * @return int|WP_Error Post ID on success, WP_Error otherwise
-     */
-    function import( $attachment ) {
+	/**
+	 * Import image.
+	 *
+	 * Import a single image from a remote server, upload the image WordPress
+	 * uploads folder, create a new attachment in the database and updates the
+	 * attachment metadata.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array $attachment The attachment.
+	 *
+	 * @return false|array Imported image data, or false.
+	 */
+    	public function import( $attachment ) {
 
         add_filter( 'http_request_timeout', array( &$this, 'bump_request_timeout' ) );
 
-        $saved_image = $this->_return_saved_image( $attachment );
-        if ( $saved_image )
+        $saved_image = $this->get_saved_image( $attachment );
+        if ( $saved_image ) {
             return $saved_image;
+	}
 
         $url = $attachment['url'];
 
@@ -82,7 +137,7 @@ class Import_Images {
         // as per wp-admin/includes/upload.php
         $post_id = wp_insert_attachment( $post, $upload['file'] );
         wp_update_attachment_metadata( $post_id, wp_generate_attachment_metadata( $post_id, $upload['file'] ) );
-        update_post_meta( $post_id, '_qazana_source_image_hash', $this->_get_hash_image( $attachment['url'] ) );
+        update_post_meta( $post_id, '_qazana_source_image_hash', $this->get_hash_image( $attachment['url'] ) );
 
         $new_attachment = [
             'id' => $post_id,

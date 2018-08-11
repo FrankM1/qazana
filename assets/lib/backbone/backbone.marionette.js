@@ -1,4 +1,4 @@
-/*! qazana - v0.7.1 - 18-08-2016 */
+/*! elementor - v0.7.1 - 18-08-2016 */
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.4.5
@@ -3310,8 +3310,8 @@
   
     var methods = {
       behaviorTriggers: function(behaviorTriggers, behaviors) {
-        var triggerQazana = new BehaviorTriggersQazana(this, behaviors);
-        return triggerQazana.buildBehaviorTriggers();
+        var triggerBuilder = new BehaviorTriggersBuilder(this, behaviors);
+        return triggerBuilder.buildBehaviorTriggers();
       },
   
       behaviorEvents: function(behaviorEvents, behaviors) {
@@ -3408,13 +3408,13 @@
   
     // Class to build handlers for `triggers` on behaviors
     // for views
-    function BehaviorTriggersQazana(view, behaviors) {
+    function BehaviorTriggersBuilder(view, behaviors) {
       this._view      = view;
       this._behaviors = behaviors;
       this._triggers  = {};
     }
   
-    _.extend(BehaviorTriggersQazana.prototype, {
+    _.extend(BehaviorTriggersBuilder.prototype, {
       // Main method to build the triggers hash with event keys and handlers
       buildBehaviorTriggers: function() {
         _.each(this._behaviors, this._buildTriggerHandlersForBehavior, this);

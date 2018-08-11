@@ -5,7 +5,7 @@ PanelSchemeDisabledView = Marionette.ItemView.extend( {
 
 	id: 'qazana-panel-schemes-disabled',
 
-	className: 'qazana-panel-nerd-box',
+	className: 'qazana-nerd-box',
 
 	disabledTitle: '',
 

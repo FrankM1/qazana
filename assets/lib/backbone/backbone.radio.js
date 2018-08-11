@@ -1,4 +1,4 @@
-/*! qazana - v0.7.1 - 18-08-2016 */
+/*! elementor - v0.7.1 - 18-08-2016 */
 // Backbone.Radio v1.0.4
 
 (function (global, factory) {
@@ -348,4 +348,3 @@
   return Radio;
 
 }));
-//# sourceMappingURL=./backbone.radio.js.map

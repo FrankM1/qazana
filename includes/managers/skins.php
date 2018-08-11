@@ -5,14 +5,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Qazana skins manager.
+ *
+ * Qazana skins manager handler class is responsible for registering and
+ * initializing all the supported skins.
+ *
+ * @since 1.0.0
+ */
 class Skins_Manager {
 
+	/**
+	 * Registered Skins.
+	 *
+	 * Holds the list of all the registered skins for all the widgets.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var array Registered skins.
+	 */
 	private $_skins = [];
 
 	/**
+	 * Add new skin.
+	 *
+	 * Register a single new skin for a widget.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 *
+	 * @param Widget_Base $widget Qazana widget.
+	 * @param Skin_Base   $skin   Qazana skin.
+	 *
+	 * @return true True if skin added.
+	 */
 	public function add_skin( Widget_Base $widget, Skin_Base $skin ) {
 		$widget_name = $widget->get_name();
 
@@ -26,9 +53,18 @@ class Skins_Manager {
 	}
 
 	/**
+	 * Remove a skin.
+	 *
+	 * Unregister an existing skin from a widget.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 *
+	 * @param Widget_Base $widget  Qazana widget.
+	 * @param string      $skin_id Qazana skin ID.
+	 *
+	 * @return true|\WP_Error True if skin removed, `WP_Error` otherwise.
+	 */
 	public function remove_skin( Widget_Base $widget, $skin_id ) {
 		$widget_name = $widget->get_name();
 
@@ -42,9 +78,17 @@ class Skins_Manager {
 	}
 
 	/**
+	 * Get skins.
+	 *
+	 * Retrieve all the skins assigned for a specific widget.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 *
+	 * @param Widget_Base $widget Qazana widget.
+	 *
+	 * @return false|array Skins if the widget has skins, False otherwise.
+	 */
 	public function get_skins( Widget_Base $widget ) {
 		$widget_name = $widget->get_name();
 
@@ -56,10 +100,14 @@ class Skins_Manager {
 	}
 
 	/**
+	 * Skins manager constructor.
+	 *
+	 * Initializing Qazana skins manager by requiring the skin base class.
+	 *
 	 * @since 1.0.0
 	 * @access public
-	*/
+	 */
 	public function __construct() {
-		qazana()->widget_loader->locate_widget( 'base/skin-base.php', true );
+		qazana()->widgets_manager->loader->locate_widget( 'base/skin-base.php', true );
 	}
 }

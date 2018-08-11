@@ -1,137 +1,102 @@
 var PanelHeaderItemView;
 
-PanelHeaderItemView = Marionette.ItemView.extend( {
-    template: '#tmpl-qazana-panel-header',
+PanelHeaderItemView = Marionette.ItemView.extend({
+    template: '#tmpl-qazana-panel-header-content',
 
     id: 'qazana-panel-header',
 
     ui: {
         menuButton: '#qazana-panel-header-menu-button',
-        menuDropButton: '#qazana-panel-header-nav-button',
+        menuButtons: '.qazana-panel-header-tool',
+        menuIcon: '#qazana-panel-header-menu-button i',
         title: '#qazana-panel-header-title',
         addButton: '#qazana-panel-header-add-button',
-        buttonSave: '#qazana-panel-header-save',
-        buttonSaveButton: '#qazana-panel-header-save .qazana-button'
+        saveTemplate: '#qazana-panel-header-saver-button-save-template'
     },
 
     events: {
         'click @ui.addButton': 'onClickAdd',
         'click @ui.menuButton': 'onClickMenu',
-        'click @ui.menuDropButton': 'onClickMenuDrop',
-        'click @ui.buttonSave': 'onClickButtonSave',
-        'click @ui.buttonPublish': 'onClickButtonPublish'
+        'click @ui.saveTemplate': 'onClickSaveTemplate',
     },
 
-    initialize: function() {
-        this._initDialog();
-        this.onClickMenuDrop();
-
-        this.listenTo( qazana.channels.editor, 'status:change', this.onEditorChanged )
-			.listenTo( qazana.channels.deviceMode, 'status:change', this.onDeviceModeChange );
-    },
-
-    _initDialog: function() {
-		var dialog;
-
-		this.getDialog = function() {
-			if ( ! dialog ) {
-				var $ = Backbone.$,
-					$dialogMessage = $( '<div>', {
-						'class': 'qazana-dialog-message'
-					} ),
-					$messageIcon = $( '<i>', {
-						'class': 'fa fa-check-circle'
-					} ),
-					$messageText = $( '<div>', {
-						'class': 'qazana-dialog-message-text'
-					} ).text( qazana.translate( 'saved' ) );
-
-				$dialogMessage.append( $messageIcon, $messageText );
-
-				dialog = qazana.dialogsManager.createWidget( 'simple', {
-					id: 'qazana-saved-popup',
-					position: {
-						element: 'message',
-						of: 'widget'
-					},
-					hide: {
-						auto: true,
-						autoDelay: 1500
-					}
-				} );
-
-				dialog.setMessage( $dialogMessage );
-			}
-
-			return dialog;
-		};
-	},
-
-    _publishBuilder: function() {
-        var self = this;
-
-        var options = {
-            status: 'publish',
-            onSuccess: function() {
-                self.getDialog().show();
-                self.ui.buttonSaveButton.removeClass( 'qazana-button-state' );
-                NProgress.done();
+    behaviors: function () {
+        var behaviors = {
+            saver: {
+                behaviorClass: qazana.modules.components.saver.behaviors.HeaderSaver
             }
         };
 
-        self.ui.buttonSaveButton.addClass( 'qazana-button-state' );
-
-        NProgress.start();
-
-        qazana.saveEditor( options );
+        return qazana.hooks.applyFilters('panel/header/behaviors', behaviors, this);
     },
 
-    _saveBuilderDraft: function() {
-        qazana.saveEditor();
+    onPanelClick: function (event) {
+        var $target = jQuery(event.target),
+            isClickInsideOfTool = $target.closest('.qazana-panel-header-sub-menu-wrapper').length;
+
+        if (isClickInsideOfTool) {
+            return;
+        }
+
+        var $tool = $target.closest('.qazana-panel-header-tool'),
+            isClosedTool = $tool.length && !$tool.hasClass('qazana-open');
+
+        this.ui.menuButtons.filter(':not(.qazana-leave-open)').removeClass('qazana-open');
+
+        if (isClosedTool) {
+            $tool.addClass('qazana-open');
+        }
     },
 
-    setTitle: function( title ) {
-        this.ui.title.html( title );
+    onClickSettings: function () {
+        var self = this;
+
+        if ('page_settings' !== qazana.getPanelView().getCurrentPageName()) {
+            qazana.getPanelView().setPage('page_settings');
+
+            qazana.getPanelView().getCurrentPageView().once('destroy', function () {
+                self.ui.settings.removeClass('qazana-open');
+            });
+        }
     },
 
-    onClickAdd: function() {
-        qazana.getPanelView().setPage( 'elements' );
+    setTitle: function (title) {
+        this.ui.title.html(title);
     },
 
-    onClickMenu: function() {
+    onClickAdd: function () {
+        qazana.getPanelView().setPage('elements');
+    },
+
+    onClickSaveTemplate: function () {
+        qazana.templates.startModal({
+            onReady: function () {
+                qazana.templates.getLayout().showSaveTemplateView();
+            }
+        });
+    },
+
+    onClickMenu: function () {
         var panel = qazana.getPanelView(),
             currentPanelPageName = panel.getCurrentPageName(),
             nextPage = 'menu' === currentPanelPageName ? 'elements' : 'menu';
 
-        panel.setPage( nextPage );
+        if ('menu' === nextPage) {
+            var arrowClass = 'eicon-arrow-' + (qazana.config.is_rtl ? 'right' : 'left');
+
+            this.ui.menuIcon.removeClass('eicon-menu-bar').addClass(arrowClass);
+        }
+
+        panel.setPage(nextPage);
     },
 
-    onClickMenuDrop: function() {
+    onRender: function () {
+        var self = this;
 
-        var $ = Backbone.$;
-
-        // Delay showing of main nav with hoverIntent
-        $( 'ul.qazana-panel-header-nav > li' ).hoverIntent(
-            function() { $( this ).addClass( 'qazana-menu-hover' ); },
-            function() { $( this ).removeClass( 'qazana-menu-hover' ); }
-        );
-    },
-
-    onEditorChanged: function() {
-        this.ui.buttonSave.toggleClass( 'qazana-save-active', qazana.isEditorChanged() );
-    },
-
-    onClickButtonSave: function() {
-        //this._saveBuilderDraft();
-        this._publishBuilder();
-    },
-
-    onClickButtonPublish: function( event ) {
-        // Prevent click on save button
-        event.stopPropagation();
-        this._publishBuilder();
+        _.defer(function () {
+            qazana.getPanelView().$el.on('click', self.onPanelClick.bind(self));
+        });
     }
-
-} );
+});
 
 module.exports = PanelHeaderItemView;

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Qazana\Controls_Manager;
 use Qazana\Utils;
-use Qazana\Widget_Base as Widget_Base;
+use Qazana\Widget_Base;
 use Qazana\Group_Control_Border;
 use Qazana\Scheme_Color;
 use Qazana\Group_Control_Typography;

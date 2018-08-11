@@ -26,11 +26,30 @@
 	color: $editor-light;
 	transition: $transition-hover;
 
+	#qazana-panel-saver-button-update {
+		@include border-end(1px solid #2d8739);
+		border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);
+
+		i {
+			@include margin-end(5px);
+		}
+	}
+
+	#qazana-panel-saver-button-save-options {
+		float: $start;
+		border-radius: getValueByDirection(0 3px 3px 0, 3px 0 0 3px);
+
+		i {
+			margin: auto;
+		}
+	}
+
 	&.qazana-open {
 		color: #fff;
 	}
 
 	&:not(.qazana-open) {
+
 		&:hover {
 			color: $editor-lightest;
 		}
@@ -50,7 +69,7 @@
 	padding: 10px;
 	box-shadow: $panel-top-shadow;
 	cursor: default;
-	z-index: 4;
+	z-index: $super-layer;
 }
 
 .qazana-panel-footer-sub-menu {
@@ -70,6 +89,7 @@
 	}
 
 	&[data-device-mode="mobile-landscape"] {
+
 		.fa-mobile {
 			transform: rotate(-90deg);
 		}
@@ -114,41 +134,100 @@
 	color: $editor-lightest;
 }
 
-#qazana-panel-footer-save {
-	width: 130px;
-	padding: 0 10px;
-
-	.qazana-button {
-		font-size: 11px;
-		text-transform: uppercase;
-		width: 100%;
-		height: 26px;
-		background: #0085ba;
-		border-color: #0073aa #006799 #006799;
-		box-shadow: 0 1px 0 #006799;
-		color: #fff;
-		text-decoration: none;
-		text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+#qazana-panel-footer-responsive {
+	& > i {
+		display: block;
+		height: 100%;
+		line-height: 40px;
 	}
+}
 
-	&.qazana-save-active {
-		.qazana-button {
-			@extend .qazana-button-success;
-			text-shadow: none;
+#qazana-panel-saver-publish {
+	width: 80px;
+
+	.qazana-button-state {
+
+		i {
+			@include margin-end(0);
+		}
+
+		#qazana-panel-saver-button-publish-label {
+			display: none;
 		}
 	}
 }
 
-#qazana-panel-footer-publish {
-	.qazana-icon,
-	.qazana-title {
-		color: $editor-success;
+#qazana-panel-saver-save-options {
+	width: 35px;
+	@include border-start(1px solid $editor-darkest);
+
+	.qazana-last-edited-wrapper {
+		font-size: 11px;
+		font-style: italic;
+		color: $editor-light;
+		padding: 5px 0 15px;
+
+		&:not(.qazana-state-active) {
+
+			.qazana-state-icon {
+				display: none;
+			}
+		}
+
+		time {
+			border-bottom: 1px dotted transparent;
+			transition: all ease-in-out .3s;
+			cursor: pointer;
+
+			&:hover {
+				border-bottom-color: inherit;
+			}
+		}
 	}
 }
 
-#qazana-panel-footer-discard {
-	.qazana-icon,
-	.qazana-title {
-		color: $editor-warning;
+.qazana-saver-disabled {
+	cursor: default;
+}
+
+#qazana-panel-saver- {
+	&button-{
+		&preview {
+			a {
+				color: $editor-light;
+			}
+		}
+
+		&publish,
+		&save-options {
+			font-size: 11px;
+			text-transform: uppercase;
+			height: 26px;
+
+			&.qazana-saver-disabled {
+				background-color: $editor-darker;
+				color: $editor-light;
+			}
+		}
+
+		&publish {
+			width: 100%;
+			border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);
+		}
+
+		&save-options {
+			width: 25px;
+		}
+	}
+
+	&menu-save-draft {
+
+		&.qazana-saver-disabled {
+
+			.qazana-icon,
+			.qazana-title {
+				color: $editor-dark;
+			}
+		}
 	}
 }
