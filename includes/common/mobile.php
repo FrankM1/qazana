@@ -8,7 +8,7 @@
  * @category RadiumFramework
  * @package  MetroCorp WP
  * @author   Franklin M Gitonga
- * @link     https://radiumthemes.com/
+ * @link     https://qazana.net/
  */
 
 // Exit if accessed directly

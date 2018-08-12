@@ -376,10 +376,26 @@ abstract class Skin_Base {
 	 */
 	protected function _add_render_attributes () { }
 
+    /**
+     * Add render attribute helper.
+     *
+     * Used to add several attribute to current widget `_wrapper` element.
+     *
+     * @since 1.0.0
+     * @access public
+     */
 	public function add_render_attribute( $element, $key = null, $value = null, $overwrite = false ) {
 		return $this->get_parent()->add_render_attribute( $element, $key, $value, $overwrite );
 	}
 
+    /**
+     * Get all attributes helper.
+     *
+     * Used to get several attributes for current element.
+     *
+     * @since 1.0.0
+     * @access public
+     */
 	public function get_render_attribute_string( $element ) {
 		return $this->get_parent()->get_render_attribute_string( $element );
 	}
@@ -404,23 +420,36 @@ abstract class Skin_Base {
 	 */
 	public function after_render() {}
 
-	public function is_bool( $value ) {
-		return $this->get_parent()->is_bool( $value );
+    /**
+     * Add element dependemcies
+     *
+     * @since 1.0.0
+     * @access public
+     * 
+     * @param return $id  array of script tags.
+     */
+	public function add_element_dependencies() {
+        return [];
+    }
+
+    /**
+     * Add elements scripts
+     *
+     * @since 1.0.0
+     * @access public
+     */
+	public function add_frontend_script( $value ) {
+		$this->get_parent()->add_frontend_script( $value );
 	}
 
     /**
-	 * Add elements scripts
-	 *
-	 * @since 1.0.0
-	 */
-	public function add_element_dependencies() { }
-
-	public function add_frontend_script( $value ) {
-		return $this->get_parent()->add_frontend_script( $value );
-	}
-
+     * Add elements scripts
+     *
+     * @since 1.0.0
+     * @access public
+     */
 	public function add_frontend_style( $value ) {
-		return $this->get_parent()->add_frontend_style( $value );
+		$this->get_parent()->add_frontend_style( $value );
 	}
 
 	/**
@@ -497,27 +526,17 @@ abstract class Skin_Base {
 	 */
 	final public function end_injection() {
 		$this->get_parent()->injection_point = null;
-	}
-
-	public function get_presets() {}
-
-    public function register_presets() {
-
-        $presets = $this->get_presets();
-
-        if ( ! is_array( $presets ) || empty( $presets ) ) return;
-
-        $controls_data = $this->get_parent()->get_controls();
-
-        // Modify controls and add defaults
-        foreach ( $this->get_parent()->get_controls() as $name => $control ) {
-
-            if ( $control['type'] === 'section' || $name === '_skin' || empty( $presets[ $control_id ] ) ) continue;
-
-            $controls_data[ $name ]['default'] = $presets[ $control_id ];
-        }
-
-        qazana()->controls_manager->set_element_stack_controls( $this->get_parent(), $controls_data );
     }
-
+    
+    /**
+     * Helper for checking boolean values.
+     *
+     * @since 1.0.0
+     * @access public
+     * 
+     * @param return $value boolean.
+     */
+	public function is_bool( $value ) {
+		return $this->get_parent()->is_bool( $value );
+	}
 }

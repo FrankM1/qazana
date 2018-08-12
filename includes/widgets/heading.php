@@ -235,7 +235,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'selectors' => [
 					// Stronger selector to avoid section style from overwriting
-					'{{WRAPPER}}.qazana-widget-heading .qazana-heading-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-heading' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -245,7 +245,7 @@ class Widget_Heading extends Widget_Base {
 			[
 				'name' => 'typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .qazana-heading-title',
+				'selector' => '{{WRAPPER}} .qazana-heading',
 			]
 		);
 
@@ -253,7 +253,7 @@ class Widget_Heading extends Widget_Base {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'text_shadow',
-				'selector' => '{{WRAPPER}} .qazana-heading-title',
+				'selector' => '{{WRAPPER}} .qazana-heading',
 			]
 		);
 
@@ -278,7 +278,7 @@ class Widget_Heading extends Widget_Base {
 					'luminosity' => 'Luminosity',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-heading-title' => 'mix-blend-mode: {{VALUE}}',
+					'{{WRAPPER}} .qazana-heading' => 'mix-blend-mode: {{VALUE}}',
 				],
 				'separator' => 'none',
 			]
@@ -303,7 +303,7 @@ class Widget_Heading extends Widget_Base {
 			return;
 		}
 
-		$this->add_render_attribute( 'title', 'class', 'qazana-heading-title' );
+		$this->add_render_attribute( 'title', 'class', 'qazana-heading qazana-heading-title' );
         $this->add_render_attribute( 'title-wrapper', 'class', 'qazana-heading-wrapper' );
 
 		if ( ! empty( $settings['size'] ) ) {
@@ -353,11 +353,11 @@ class Widget_Heading extends Widget_Base {
 
 		<#
 		if ( '' !== settings.title ) {
-			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
 		}
 
 		if ( '' !== settings.link.url ) {
-			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
 		}
 
 		print( title_html );

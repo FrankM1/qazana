@@ -84,7 +84,7 @@ class Library extends Base {
 		return '<div id="qazana-widget-template-empty-templates">
 				<div class="qazana-widget-template-empty-templates-icon"><i class="eicon-nerd"></i></div>
 				<div class="qazana-widget-template-empty-templates-title">' . __( 'You Haven\'t Saved Templates Yet.', 'qazana' ) . '</div>
-				<div class="qazana-widget-template-empty-templates-footer">' . __( 'What is Library?', 'qazana' ) . ' <a class="qazana-widget-template-empty-templates-footer-url" href="https://radiumthemes.com/qazana/docs/library/" target="_blank">' . __( 'Read our tutorial on using Library templates.', 'qazana' ) . '</a>
+				<div class="qazana-widget-template-empty-templates-footer">' . __( 'What is Library?', 'qazana' ) . ' <a class="qazana-widget-template-empty-templates-footer-url" href="https://qazana.net/qazana/docs/library/" target="_blank">' . __( 'Read our tutorial on using Library templates.', 'qazana' ) . '</a>
 				</div>
 				</div>';
 	}

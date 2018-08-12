@@ -227,7 +227,7 @@ class Widget_Alert extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-alert-title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-heading' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -236,7 +236,7 @@ class Widget_Alert extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'alert_title',
-				'selector' => '{{WRAPPER}} .qazana-alert-title',
+				'selector' => '{{WRAPPER}} .qazana-heading',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
@@ -296,7 +296,7 @@ class Widget_Alert extends Widget_Base {
 
 		$this->add_render_attribute( 'wrapper', 'role', 'alert' );
 
-		$this->add_render_attribute( 'alert_title', 'class', 'qazana-alert-title' );
+		$this->add_render_attribute( 'alert_title', 'class', 'qazana-heading qazana-alert-title' );
 
 		$this->add_inline_editing_attributes( 'alert_title', 'none' );
 		?>
@@ -331,7 +331,7 @@ class Widget_Alert extends Widget_Base {
 		?>
 		<# if ( settings.alert_title ) {
 			view.addRenderAttribute( {
-				alert_title: { class: 'qazana-alert-title' },
+				alert_title: { class: 'qazana-heading qazana-alert-title' },
 				alert_description: { class: 'qazana-alert-description' }
 			} );
 

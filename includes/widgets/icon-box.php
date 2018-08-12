@@ -628,7 +628,7 @@ class Widget_Icon_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-box-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-heading' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -640,7 +640,7 @@ class Widget_Icon_Box extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-icon-box-title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .qazana-heading' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type'  => Scheme_Color::get_type(),
@@ -653,7 +653,7 @@ class Widget_Icon_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'title_typography',
-				'selector' => '{{WRAPPER}} .qazana-icon-box-title',
+				'selector' => '{{WRAPPER}} .qazana-heading',
 				'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
 			]
         );
@@ -767,7 +767,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 		$output = null;
 
-		$output .= '<'. $settings['title_size'] .' class="qazana-icon-box-title">';
+		$output .= '<'. $settings['title_size'] .' class="qazana-heading qazana-icon-box-title">';
             $output .= '<span>'. $settings['title_text'] .'</span>';
 		$output .= '</'. $settings['title_size'].' >';
 		$output .= '<p class="qazana-icon-box-description">'. $settings['description_text'] .' </p>';
@@ -804,7 +804,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 				<?php echo $this->get_render_icon(); ?>
 
-		        <<?php echo $settings['title_size']; ?> class="qazana-icon-box-title">
+		        <<?php echo $settings['title_size']; ?> class="qazana-heading qazana-icon-box-title">
 		            <span><?php echo $settings['title_text']; ?></span>
 		        </<?php echo $settings['title_size']; ?>>
 

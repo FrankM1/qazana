@@ -217,6 +217,9 @@
   .qazana-align-left .qazana-inner-wrapper {
     margin-right: auto; }
 
+.qazana-heading {
+  margin-bottom: 20px; }
+
 .qazana-custom-embed-play {
   position: absolute;
   top: 50%;

@@ -355,20 +355,9 @@ class Elements_Manager {
 				'title' => __( 'Basic', 'qazana' ),
 				'icon' => 'eicon-font',
 			],
-			'pro-elements' => [
-				'title' => __( 'Pro', 'qazana' ),
-			],
 			'general' => [
 				'title' => __( 'General', 'qazana' ),
 				'icon' => 'eicon-font',
-			],
-			'theme-elements' => [
-				'title' => __( 'Site', 'qazana' ),
-				'active' => false,
-			],
-			'woocommerce-elements' => [
-				'title' => __( 'WooCommerce', 'qazana' ),
-				'active' => false,
 			],
 		];
 
