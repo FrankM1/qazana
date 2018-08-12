@@ -6,6 +6,9 @@ use Qazana\Core\Base\Document;
 use Qazana\Core\Base\Module as BaseModule;
 use Qazana\Core\DocumentTypes\Post as PostDocument;
 use Qazana\DB;
+
+use Qazana\Template_Library\Source_Local;
+
 use Qazana\Extensions\Library\Documents\Page as PageDocument;
 use Qazana\Utils;
 
@@ -85,7 +88,11 @@ class Page_Templates extends Base {
 					qazana()->debugger->add_log( 'Page Template', qazana()->debugger->parse_template_path( $template ), $document->get_edit_url() );
 				}
 			}
-		}
+        }
+
+        if ( is_singular( Source_Local::CPT ) ) {
+            $template = __DIR__ . '/templates/canvas.php';
+        }
 
 		return $template;
 	}

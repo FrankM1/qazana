@@ -140,7 +140,7 @@ class Widget_Text_Editor extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors'  => [
-					'{{WRAPPER}} .qazana-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
         	);
@@ -177,10 +177,8 @@ class Widget_Text_Editor extends Widget_Base {
 						'title' => __( 'Justified', 'qazana' ),
 						'icon' => 'fa fa-align-justify',
 					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-text-editor' => 'text-align: {{VALUE}};',
-				],
+                ],
+                'prefix_class' => 'qazana%s-align-',
 			]
 		);
 
@@ -366,6 +364,19 @@ class Widget_Text_Editor extends Widget_Base {
 	}
 
 	/**
+	 * Render text editor widget as plain content.
+	 *
+	 * Override the default behavior by printing the content without rendering it.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function render_plain_content() {
+		// In plain mode, render without shortcode
+		echo $this->get_settings_for_display( 'editor' );
+    }
+    
+	/**
 	 * Render text editor widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
@@ -382,27 +393,10 @@ class Widget_Text_Editor extends Widget_Base {
 
 		$this->add_inline_editing_attributes( 'editor', 'advanced' );
 
-		if ( ! empty( $this->get_responsive_settings( 'align' ) ) ) {
-			$this->add_render_attribute( 'editor', 'class', 'qazana-align-' . $this->get_responsive_settings( 'align' ) );
-		}
-
 		?><div <?php $this->render_attribute_string( 'editor' ); ?>>
-			<div class="qazana-wrapper"><?php echo $editor_content; ?></div>
+			<div class="qazana-inner-wrapper"><?php echo $editor_content; ?></div>
 		</div><?php
 
-	}
-
-	/**
-	 * Render text editor widget as plain content.
-	 *
-	 * Override the default behavior by printing the content without rendering it.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function render_plain_content() {
-		// In plain mode, render without shortcode
-		echo $this->get_settings( 'editor' );
 	}
 
 	/**
@@ -421,7 +415,7 @@ class Widget_Text_Editor extends Widget_Base {
 		view.addInlineEditingAttributes( 'editor', 'advanced' );
 		#>
 		<div {{{ view.getRenderAttributeString( 'editor' ) }}}>
-			<div class="qazana-wrapper">{{{ settings.editor }}}</div>
+			<div class="qazana-inner-wrapper">{{{ settings.editor }}}</div>
 		</div><?php
 	}
 }

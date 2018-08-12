@@ -1,264 +1,225 @@
 //
 // Global selectors for Qazana Front-End
 //
-
 .qazana {
-
-	* {
-		&, &:before, &:after {
-			box-sizing: border-box;
-		}
-	}
-
-	// Reset Style for some themes and browsers
-	hyphens: manual;
-
-	a {
-		box-shadow: none;
-		text-decoration: none;
-	}
-
-	hr {
-		margin: 0;
-		background-color: transparent;
-	}
-
-	img {
-		height: auto;
-		max-width: 100%;
-		border: none;
-		border-radius: 0;
-		box-shadow: none;
-	}
-
-	.qazana-widget:not(.qazana-widget-text-editor) figure {
-			margin: 0;
-	}
-
-	// Responsive Embed
-	embed,
-	iframe,
-	object,
-	video {
-		max-width: 100%;
-		width: 100%;
-		margin: 0;
-		line-height: 1;
-		border: none;
-	}
-
-	.qazana-custom-embed {
-		line-height: 0; //for google maps margin bottom
-	}
-
-	// Background Video
-	.qazana-background-video-container {
-		height: 100%;
-		width: 100%;
-		top: 0;
-		left: 0;
-		position: absolute;
-		overflow: hidden;
-		z-index: $ground-layer;
-		transition: opacity 1s;
-
-		&.qazana-loading {
-			opacity: 0;
-		}
-	}
-
-	.qazana-background-video-embed {
-		max-width: none; //Stretch the background video on all section
-		position: absolute;
-		top: 50%;
-		left: 0; //reset when the parent has set text-align: center;
-		transform: translateY(-50%);
-	}
-
-	.qazana-background-video {
-		position: absolute;
-		max-width: none;
-		top: 50%;
-		left: 50%;
-		transform: translateY(-50%) translateX(-50%);
-	}
-
-	.qazana-html5-video {
-		object-fit: cover; // For HTML5 portrait video
-	}
-	// End Background Video
-
-  .qazana-background-overlay {
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: $ground-layer-overlay;
-  }
+    * {
+        &,
+        &:before,
+        &:after {
+            box-sizing: border-box;
+        }
+    } // Reset Style for some themes and browsers
+    hyphens: manual;
+    a {
+        box-shadow: none;
+        text-decoration: none;
+    }
+    hr {
+        margin: 0;
+        background-color: transparent;
+    }
+    img {
+        height: auto;
+        max-width: 100%;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .qazana-widget:not(.qazana-widget-text-editor) figure {
+        margin: 0;
+    } // Responsive Embed
+    embed,
+    iframe,
+    object,
+    video {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        line-height: 1;
+        border: none;
+    }
+    .qazana-custom-embed {
+        line-height: 0; //for google maps margin bottom
+    } // Background Video
+    .qazana-background-video-container {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        overflow: hidden;
+        z-index: $ground-layer;
+        transition: opacity 1s;
+        &.qazana-loading {
+            opacity: 0;
+        }
+    }
+    .qazana-background-video-embed {
+        max-width: none; //Stretch the background video on all section
+        position: absolute;
+        top: 50%;
+        left: 0; //reset when the parent has set text-align: center;
+        transform: translateY(-50%);
+    }
+    .qazana-background-video {
+        position: absolute;
+        max-width: none;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+    .qazana-html5-video {
+        object-fit: cover; // For HTML5 portrait video
+    } // End Background Video
+    .qazana-background-overlay {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        z-index: $ground-layer-overlay;
+    }
 }
 
 .qazana-invisible {
-	visibility: hidden;
+    visibility: hidden;
 }
 
 // Alignment Classes
 .qazana-align- {
-  &center {
-    margin: 0 auto;
-    text-align: center;
-
-    .qazana-wrapper {
-      margin: 0 auto;
+    &center {
+        text-align: center;
+        .qazana-inner-wrapper {
+            margin: 0 auto;
+        }
     }
-
-
-	}
-
-	&right {
-		text-align: right;
-
-		.qazana-wrapper {
-      margin-left: auto;
+    &right {
+        text-align: right;
+        .qazana-inner-wrapper {
+            margin-left: auto;
+        }
     }
-	}
-
-  &left {
-    text-align: left;
-
-    .qazana-wrapper {
-      margin-right: auto;
+    &left {
+        text-align: left;
+        .qazana-inner-wrapper {
+            margin-right: auto;
+        }
     }
-	}
 }
 
 .qazana-custom-embed-play {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translateX(-50%) translateY(-50%);
-
-	i {
-		font-size: 100px;
-		color: #fff;
-		opacity: 0.8;
-		text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
-		transition: all .5s;
-	}
-
-	&.qazana-playing {
-
-		i {
-			font-family: 'FontAwesome';
-			animation: fa-spin 2s infinite linear;
-
-			&:before {
-				content: "\f1ce";
-			}
-		}
-	}
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    i {
+        font-size: 100px;
+        color: #fff;
+        opacity: 0.8;
+        text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
+        transition: all .5s;
+    }
+    &.qazana-playing {
+        i {
+            font-family: 'FontAwesome';
+            animation: fa-spin 2s infinite linear;
+            &:before {
+                content: "\f1ce";
+            }
+        }
+    }
 }
 
 .qazana-swiper-button {
-	position: absolute;
-	display: inline-flex; // Position exactly in center
-	z-index: 1;
-	cursor: pointer;
-	font-size: 25px;
-	color: $slides_gui;
-	top: 50%;
-	transform: translateY(-50%);
-
-	&.swiper-button-disabled {
-		opacity: 0.3;
-	}
+    position: absolute;
+    display: inline-flex; // Position exactly in center
+    z-index: 1;
+    cursor: pointer;
+    font-size: 25px;
+    color: $slides_gui;
+    top: 50%;
+    transform: translateY(-50%);
+    &.swiper-button-disabled {
+        opacity: 0.3;
+    }
 }
 
 .qazana-tag {
-	display: inline-flex;
+    display: inline-flex;
 }
 
 // Alignment for Tablet
-
 @media (max-width: $screen-md-max) {
-  .qazana-tablet-align- {
-    &center {
-      text-align: center;
+    .qazana-tablet-align- {
+        &center {
+            text-align: center;
+        }
+        &right {
+            text-align: right;
+        }
+        &left {
+            text-align: left;
+        }
     }
-
-    &right {
-      text-align: right;
-    }
-
-    &left {
-      text-align: left;
-    }
-  }
 }
 
 // Alignment for Mobile
-
 @media (max-width: $screen-sm-max) {
-  .qazana-mobile-align- {
-    &center {
-      text-align: center;
+    .qazana-mobile-align- {
+        &center {
+            text-align: center;
+        }
+        &right {
+            text-align: right;
+        }
+        &left {
+            text-align: left;
+        }
     }
-
-    &right {
-      text-align: right;
-    }
-
-    &left {
-      text-align: left;
-    }
-  }
 }
 
 .qazana-element-inline {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 .qazana-editor-active {
-  .qazana-element-inline {
-    display: inline-flex !important;
-  }
-
-  .qazana-widget-container {
-    z-index: 1;
-  }
+    .qazana-element-inline {
+        display: inline-flex !important;
+    }
+    .qazana-widget-container {
+        z-index: 1;
+    }
 }
 
 a.qazana-edit-template {
-  font-size: 80%;
+    font-size: 80%;
 }
 
 // Admin Bar - Icon (Front-End)
 #wpadminbar #wp-admin-bar-qazana_edit_page {
-  background-color: $brand-primary;
-  transition: background-color 0.3s;
-
-  > .ab-item {
-    text-transform: uppercase;
-    background-color: transparent;
-    font-size: 9px;
-    color: #bbc5ff;
-    letter-spacing: 2px;
-    padding: 0 18px 0 22px !important;
-    transition: all 0.3s ease-in;
-    display: flex;
-    align-items: center;
-
-    &::before {
-        background-image: url(../images/logo-small-light.png) !important;
-        background-repeat: no-repeat;
-        content: " ";
-        background-size: 9px;
-        background-position: 7px 9px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 32px;
-        width: 19px;
+    background-color: $brand-primary;
+    transition: background-color 0.3s;
+    >.ab-item {
+        text-transform: uppercase;
+        background-color: transparent;
+        font-size: 9px;
+        color: #bbc5ff;
+        letter-spacing: 2px;
+        padding: 0 18px 0 22px !important;
+        transition: all 0.3s ease-in;
+        display: flex;
+        align-items: center;
+        &::before {
+            background-image: url(../images/logo-small-light.png) !important;
+            background-repeat: no-repeat;
+            content: " ";
+            background-size: 9px;
+            background-position: 7px 9px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 32px;
+            width: 19px;
+        }
     }
-  }
 }

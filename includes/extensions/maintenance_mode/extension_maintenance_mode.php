@@ -178,21 +178,21 @@ class Maintenance_Mode extends Base {
         return $template;
     }
 
-	/**
-	 * Register settings fields.
-	 *
-	 * Adds new "Maintenance Mode" settings fields to Elementor admin page.
-	 *
-	 * The method need to receive the an instance of the Tools settings page
-	 * to add the new maintenance mode functionality.
-	 *
-	 * Fired by `qazana/admin/after_create_settings/{$page_id}` action.
-	 *
-	 * @since 1.4.0
-	 * @access public
-	 *
-	 * @param Tools $tools An instance of the Tools settings page.
-	 */
+    /**
+     * Register settings fields.
+     *
+     * Adds new "Maintenance Mode" settings fields to Qazana admin page.
+     *
+     * The method need to receive the an instance of the Tools settings page
+     * to add the new maintenance mode functionality.
+     *
+     * Fired by `qazana/admin/after_create_settings/{$page_id}` action.
+     *
+     * @since 1.4.0
+     * @access public
+     *
+     * @param Tools $tools An instance of the Tools settings page.
+     */
     public function register_settings_fields( Panel $tools ) {
         $templates = qazana()->templates_manager->get_source( 'local' )->get_items( ['type' => 'page'] );
 

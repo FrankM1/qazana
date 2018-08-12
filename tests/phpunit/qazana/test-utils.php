@@ -1,6 +1,7 @@
 <?php
+namespace Qazana\Testing;
 
-class Qazana_Test_Utils extends WP_UnitTestCase {
+class Qazana_Test_Utils extends Qazana_Test_Base {
 
 	public function test_getYoutubeId() {
 		$youtube_id = '9uOETcuFjbE';
@@ -9,7 +10,7 @@ class Qazana_Test_Utils extends WP_UnitTestCase {
 			'https://www.youtube.com/watch?v=' . $youtube_id . '&feature=player_embedded',
 			'https://youtu.be/' . $youtube_id,
 		];
-		
+
 		foreach ( $youtube_urls as $youtube_url ) {
 			$video_properties = \Qazana\Embed::get_video_properties( $youtube_url );
 

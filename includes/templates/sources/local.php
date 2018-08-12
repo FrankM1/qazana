@@ -1326,7 +1326,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$template_id = $this->save_item( [
-			'data' => $content,
+            'content' => $content,
 			'title' => $data['title'],
 			'type' => $data['type'],
 			'page_settings' => $page_settings,

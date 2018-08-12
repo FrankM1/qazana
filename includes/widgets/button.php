@@ -263,7 +263,7 @@ class Widget_Button extends Widget_Base {
 			]
 		);
 
-        	$this->add_control(
+        $this->add_control(
 			'icon_size',
 			[
 				'label' => __( 'Icon Size', 'qazana' ),
@@ -445,7 +445,7 @@ class Widget_Button extends Widget_Base {
 	public function render() {
 		$settings = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'wrapper', 'class', 'qazana-button-wrapper' );
+		$this->add_render_attribute( 'wrapper', 'class', 'qazana-button-wrapper qazana-inner-wrapper' );
 
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_render_attribute( 'button', 'href', $settings['link']['url'] );
@@ -512,7 +512,7 @@ class Widget_Button extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-button-wrapper">
+        <div class="qazana-button-wrapper qazana-inner-wrapper">
             <a id="{{ settings.button_css_id }}" class="qazana-button qazana-button-{{ settings.button_type }} qazana-weight-{{ settings.button_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
                 <span class="qazana-button-content-wrapper">
                     <# if ( settings.icon ) { #>

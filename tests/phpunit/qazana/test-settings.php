@@ -1,0 +1,10 @@
+<?php
+namespace Qazana\Testing;
+
+class Qazana_Test_Settings extends Qazana_Test_Base {
+
+	public function test_validationsCheckboxList() {
+		$this->assertEquals( [], \Qazana\Settings_Validations::checkbox_list( null ) );
+		$this->assertEquals( [ 'a', 'b' ], \Qazana\Settings_Validations::checkbox_list( [ 'a', 'b' ] ) );
+	}
+}

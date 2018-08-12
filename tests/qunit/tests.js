@@ -29,8 +29,9 @@ QUnit.test( 'Frontend CSS loaded', function( assert ) {
 function testPreview() {
 
 	QUnit.module( 'Widgets' );
-	var firstSectionModel = qazana.sections.currentView.collection.first(),
-		firstSectionView = qazana.sections.currentView.children.findByModel( firstSectionModel ),
+	var previewView = qazana.getPreviewView(),
+		firstSectionModel = previewView.collection.first(),
+		firstSectionView = previewView.children.findByModel( firstSectionModel ),
 		firstColumnModel = firstSectionModel.get( 'elements' ).first(),
 		firstColumnView = firstSectionView.children.findByModel( firstColumnModel ),
 		elements = [
@@ -44,24 +45,24 @@ function testPreview() {
 			['basic', 'spacer'],
 			['basic', 'google_maps'],
 			['basic', 'icon'],
-			['general-elements', 'image-box'],
-			['general-elements', 'icon-box'],
-			['general-elements', 'image-gallery'],
-			['general-elements', 'image-carousel'],
-			['general-elements', 'icon-list'],
-			['general-elements', 'counter'],
-			['general-elements', 'progress'],
-			['general-elements', 'testimonial'],
-			// ['general-elements', 'tabs'],
-			// ['general-elements', 'accordion'],
-			// ['general-elements', 'toggle'],
-			['general-elements', 'social-icons'],
-			['general-elements', 'alert'],
-			['general-elements', 'audio'],
-			['general-elements', 'shortcode'],
-			['general-elements', 'html'],
-			['general-elements', 'menu-anchor'],
-			['general-elements', 'sidebar']
+			['general', 'image-box'],
+			['general', 'icon-box'],
+			['general', 'image-gallery'],
+			['general', 'image-carousel'],
+			['general', 'icon-list'],
+			['general', 'counter'],
+			['general', 'progress'],
+			['general', 'testimonial'],
+			// ['general', 'tabs'],
+			// ['general', 'accordion'],
+			// ['general', 'toggle'],
+			['general', 'social-icons'],
+			['general', 'alert'],
+			['general', 'audio'],
+			['general', 'shortcode'],
+			['general', 'html'],
+			['general', 'menu-anchor'],
+			['general', 'sidebar']
 			//,
 			// ['wordpress', 'wp-widget-pages'],
 			// ['wordpress', 'wp-widget-calendar'],
@@ -100,7 +101,7 @@ function testPreview() {
 		// Click on `Add section`
 		pQuery( '.qazana-add-section-button' ).click();
 
-		var sectionsCollection = qazana.sections.currentView.collection,
+		var sectionsCollection = qazana.getPreviewView().collection,
 			historyItems = qazana.history.history.getItems(),
 			presetsStructureButton = pQuery( '.qazana-add-section-inner [data-structure="10"]' );
 
@@ -116,10 +117,10 @@ function testPreview() {
 			assert.equal( historyItems.first().get( 'type' ), 'add', 'History type is `add`' );
 		} );
 
-		var sectionView = qazana.sections.currentView.children.first(),
+		var sectionView = qazana.getPreviewView().children.first(),
 			columnView = sectionView.children.first(),
 			columnButtons = {
-				trigger: columnView.$el.find( '.qazana-editor-element-trigger' ),
+				trigger: columnView.$el.find( '.qazana-editor-element-edit' ),
 				add: columnView.$el.find( '.qazana-editor-element-add' ),
 				duplicate: columnView.$el.find( '.qazana-editor-element-duplicate' ),
 				remove: columnView.$el.find( '.qazana-editor-element-remove' )

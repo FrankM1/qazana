@@ -120,10 +120,13 @@ class Manager extends Panel {
 	 * @param array  $role_data An array with role data.
 	 */
 	private function display_role_controls( $role_slug, $role_data ) {
-		static $excluded_options = false;
-		if ( false === $excluded_options ) {
-			$excluded_options = $this->get_role_manager_options();
-		}
+		static $options = false;
+		if ( false === $options ) {
+			$options = $this->get_role_manager_options();
+        }
+        
+        $role_options = isset($options[$role_slug]) ? $options[$role_slug] : [];
+        $name = 'qazana_' . self::ROLE_MANAGER_OPTION_NAME  . '[' . $role_slug . '][]';
 
 		?>
 		<div class="qazana-role-row <?php echo esc_attr( $role_slug ); ?>">
@@ -134,30 +137,20 @@ class Manager extends Panel {
 			</div>
 			<div class="qazana-role-controls hidden">
 				<div class="qazana-role-control">
+                    <?php $id = 'role-manage_' . $role_slug . '_access'; ?>
 					<label>
-						<input type="checkbox" name="qazana_exclude_user_roles[]" value="<?php echo esc_attr( $role_slug ); ?>"<?php checked( in_array( $role_slug, $excluded_options, true ), true ); ?>>
+						<input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="exclude" <?php checked( in_array( 'exclude', $role_options, true ), true ); ?>>
 						<?php echo __( 'No access to editor', 'qazana' ); ?>
 					</label>
 				</div>
 				<div>
-                    <?php static $options = false;
-                        if ( ! $options ) {
-                            $options = [
-                                'excluded_options' => $excluded_options,
-                                'advanced_options' => $this->get_role_manager_options(),
-                            ];
-                        }
-                        $id = 'role-manage_' . $role_slug . '_design';
-                        $name = 'qazana_role-manage[' . $role_slug . '][]';
-                        $checked = isset( $options['advanced_options'][ $role_slug ] ) ? $options['advanced_options'][ $role_slug ] : [];
-
-                        ?>
-                        <label for="<?php echo esc_attr( $id ); ?>">
-                            <input type="checkbox" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" value="design" <?php checked( in_array( 'design', $checked ), true ); ?>>
-                            <?php esc_html_e( 'Access to edit content only', 'qazana' ); ?>
-                        </label>
-                    </div>
-        			<div>
+                    <?php $id = 'role-manage_' . $role_slug . '_design'; ?>
+                    <label for="<?php echo esc_attr( $id ); ?>">
+                        <input type="checkbox" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" value="design" <?php checked( in_array( 'design', $role_options ), true ); ?>>
+                        <?php esc_html_e( 'Access to edit content only', 'qazana' ); ?>
+                    </label>
+                </div>
+        		<div>
 					<?php
 					/**
 					 * Role restrictions controls.
@@ -252,5 +245,13 @@ class Manager extends Panel {
 		parent::__construct();
 
 		add_action( 'admin_menu', [ $this, 'register_admin_menu' ], 100 );
-	}
+        add_action( 'admin_init', [$this, 'register_setting']);
+    }
+
+    /**
+     * Registers a text field setting for Wordpress 4.7 and higher.
+     */
+    function register_setting() {
+        register_setting('qazana-role-manager', 'qazana_' . self::ROLE_MANAGER_OPTION_NAME ); 
+    } 
 }

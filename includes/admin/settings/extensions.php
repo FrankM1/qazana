@@ -11,9 +11,16 @@ class Extensions extends Panel {
 
 	public function __construct() {
         parent::__construct();
-        add_action('admin_menu', [$this, 'register_admin_menu'], 100);
-		//add_action( 'qazana/admin/after_create_settings/' . qazana()->slug, [ $this, 'register_admin_fields' ] );
+        add_action( 'admin_menu', [$this, 'register_admin_menu'], 100 );
+        add_action( 'admin_init', [$this, 'register_setting']);
     }
+
+    /**
+    * Registers a text field setting for Wordpress 4.7 and higher.
+    **/
+    function register_setting() {
+        register_setting('qazana-extensions-manager', 'qazana_' . self::EXTENSIONS_MANAGER_OPTION_NAME ); 
+    } 
 
     /**
      * @since 2.0.0
@@ -65,7 +72,7 @@ class Extensions extends Panel {
 
                         $extensions = qazana()->extensions_manager->get_extensions();
 
-                        usort($extensions, array($this, "sort"));
+                        usort($extensions, array($this, 'sort'));
 
                         foreach ( $extensions as $extension ) {
                             if ($extension->required) {
@@ -76,7 +83,9 @@ class Extensions extends Panel {
 
                             $this->display_controls($extension_slug, $extension->get_config() );
                         }
+
                         submit_button();
+
                         ?>
                 </form>
             </div>
@@ -95,22 +104,22 @@ class Extensions extends Panel {
 
         $title = isset( $extension_data['title'] ) ? $extension_data['title'] : ucfirst( str_replace( '_', ' ', str_replace('-', ' ', $extension_slug ) ) );
         static $options = false;
-        if (!$options) {
+        if ( ! $options ) {
             $options = $this->get_extension_manager_options();
         }
 
         $id = 'extension-manage_' . $extension_slug;
-        $name = 'qazana_extension-manage[' . $extension_slug . '][]';
-        $checked = isset($options[$extension_slug]) ? $options[$extension_slug] : [];
+        $name = 'qazana_' . self::EXTENSIONS_MANAGER_OPTION_NAME . '[' . $extension_slug . '][]';
+        $extension_options = isset($options[$extension_slug]) ? $options[$extension_slug] : [ 'active', 'widgets' ];
 
         ?><div class="qazana-extension-row qazana-extension-<?php echo esc_attr($extension_slug); ?>">
 
                 <div class="qazana-extension-label">
                     <span class="qazana-extension-name"><?php echo esc_html( $title ); ?></span>
-                    <span data-label="<?php esc_attr_e('Disabled', 'qazana'); ?>" class="qazana-extension-indicator"></span>
+                    <span data-label="<?php esc_attr_e( 'Disabled', 'qazana' ); ?>" class="qazana-extension-indicator"></span>
                     <span class="qazana-extension-toggle"><span class="dashicons dashicons-arrow-down"></span></span>
                     <label for="<?php echo esc_attr($id); ?>">
-                        <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="status" <?php checked(in_array('status', $checked), true); ?>>
+                        <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="active" <?php checked(in_array('active', $extension_options), true); ?>>
                     </label>
                 </div>
 
@@ -118,11 +127,9 @@ class Extensions extends Panel {
                     <div>
                         <?php 
                         $id = 'extension-manage_' . $extension_slug . '_widgets';
-                        $name = 'qazana_extension-manage-widgets[' . $extension_slug . '][]';
-                        $checked = isset($options[$extension_slug]) ? $options[$extension_slug] : [];
                         ?>
                         <label for="<?php echo esc_attr($id); ?>">
-                            <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="widgets" <?php checked(in_array('widgets', $checked), true); ?>>
+                            <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="widgets" <?php checked(in_array('widgets', $extension_options), true); ?>>
                             <?php esc_html_e('Enable Widgets', 'qazana'); ?>
                         </label>
                     </div>
@@ -149,41 +156,9 @@ class Extensions extends Panel {
             </div>
         </div>
         <?php
-
     }
 
     function sort( $a, $b ) {
         return strcmp( $a->get_name(), $b->get_name() );
-    }
-
-    public function register_admin_fields( Panel $settings ) {
-
-        $extensions = qazana()->extensions_manager->get_extensions();
-
-        usort( $extensions, array( $this, "sort") );
-
-        foreach ( $extensions as $extension ) {
-
-            if ( $extension->required ) { 
-                continue; // Hide required extensions
-            }
-
-            $extension_data = $extension->get_config();
-
-            $settings->add_section( Panel::TAB_INTEGRATIONS, "qazana_extension_{$extension_data['name']}_editor_section", [
-                'fields' => [
-                    "extension_{$extension_data['name']}" => [
-                        'callback' => function () use ($extension) {},
-                        'label' => isset( $extension_data['title'] ) ? $extension_data['title'] : $extension_data['name'],
-                        'field_args' => [
-                            'type' => 'checkbox',
-                            'sub_desc' => __( 'Enable Extension', 'qazana' ),
-                            'std' => $extension->default_activation,
-                            'value' => true,
-                        ],
-                    ],
-                ],
-            ] );
-		}
     }
 }

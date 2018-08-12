@@ -1,6 +1,7 @@
 <?php
+namespace Qazana\Testing;
 
-class Qazana_Test_Fonts extends WP_UnitTestCase {
+class Qazana_Test_Fonts extends Qazana_Test_Base {
 
 	public function test_getAllFonts() {
 		$this->assertNotEmpty( \Qazana\Fonts::get_fonts() );

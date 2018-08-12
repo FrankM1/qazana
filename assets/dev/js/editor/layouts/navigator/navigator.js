@@ -47,7 +47,8 @@ module.exports = Marionette.Region.extend( {
 			iframeFix: true,
 			handle: '#qazana-navigator__header',
 			snap: 'body',
-			snapMode: 'inner',
+            snapMode: 'inner',
+            snapTolerance: 15,
 			drag: this.onDrag.bind( this ),
 			stop: this.onDragStop.bind( this )
 		};
@@ -242,7 +243,11 @@ module.exports = Marionette.Region.extend( {
 			}
 
 			return;
-		}
+        }
+        
+        if (0 > ui.position.top) {
+            ui.position.top = 0;
+        }
 
 		if ( this.isSnapping() ) {
 			var elementRight = ui.position.left + this.$el.outerWidth();

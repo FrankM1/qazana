@@ -181,7 +181,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-widget-container .qazana-heading-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -209,10 +209,8 @@ class Widget_Heading extends Widget_Base {
 						'icon' => 'fa fa-align-justify',
 					],
 				],
-				'default' => '',
-				'selectors' => [
-					'{{WRAPPER}}' => 'text-align: {{VALUE}};',
-				],
+                'default' => '',
+                'prefix_class' => 'qazana%s-align-',
 			]
 		);
 
@@ -355,11 +353,11 @@ class Widget_Heading extends Widget_Base {
 
 		<#
 		if ( '' !== settings.title ) {
-			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '">' + settings.title + '</' + settings.header_size + '>';
 		}
 
 		if ( '' !== settings.link.url ) {
-			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
+			var title_html = '<' + settings.header_size  + ' class="qazana-heading-title qazana-align-' + settings.align + ' qazana-size-' + settings.size + '"><a href="' + settings.link.url + '">' + title_html + '</a></' + settings.header_size + '>';
 		}
 
 		print( title_html );

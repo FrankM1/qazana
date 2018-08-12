@@ -205,17 +205,16 @@
   visibility: hidden; }
 
 .qazana-align-center {
-  margin: 0 auto;
   text-align: center; }
-  .qazana-align-center .qazana-wrapper {
+  .qazana-align-center .qazana-inner-wrapper {
     margin: 0 auto; }
 .qazana-align-right {
   text-align: right; }
-  .qazana-align-right .qazana-wrapper {
+  .qazana-align-right .qazana-inner-wrapper {
     margin-left: auto; }
 .qazana-align-left {
   text-align: left; }
-  .qazana-align-left .qazana-wrapper {
+  .qazana-align-left .qazana-inner-wrapper {
     margin-right: auto; }
 
 .qazana-custom-embed-play {

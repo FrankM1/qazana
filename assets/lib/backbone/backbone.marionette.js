@@ -1,4 +1,4 @@
-/*! elementor - v0.7.1 - 18-08-2016 */
+/*! qazana - v0.7.1 - 18-08-2016 */
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.4.5

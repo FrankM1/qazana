@@ -95,15 +95,15 @@ class Editor {
     }
 
     /**
-	 * Admin action new post.
-	 *
-	 * When a new post action is fired the title is set to 'Elementor' and the post ID.
-	 *
-	 * Fired by `admin_action_qazana_new_post` action.
-	 *
-	 * @since 1.9.0
-	 * @access public
-	 */
+     * Admin action new post.
+     *
+     * When a new post action is fired the title is set to 'Qazana' and the post ID.
+     *
+     * Fired by `admin_action_qazana_new_post` action.
+     *
+     * @since 1.9.0
+     * @access public
+     */
 	public function admin_action_new_post() {
 		check_admin_referer( 'qazana_action_new_post' );
 

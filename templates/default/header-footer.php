@@ -18,7 +18,7 @@ get_header();
 /**
  * Before Header-Footer page template content.
  *
- * Fires before the content of Elementor Header-Footer page template.
+ * Fires before the content of Qazana Header-Footer page template.
  *
  * @since 2.0.0
  */
@@ -31,7 +31,7 @@ endwhile;
 /**
  * After Header-Footer page template content.
  *
- * Fires after the content of Elementor Header-Footer page template.
+ * Fires after the content of Qazana Header-Footer page template.
  *
  * @since 2.0.0
  */

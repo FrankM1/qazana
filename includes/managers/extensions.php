@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use Qazana\Admin\Settings\Panel;
 use Qazana\Loader;
 
+use Qazana\Admin\Settings\Extensions as Options;
+
 final class Manager {
 
     /**
@@ -40,6 +42,7 @@ final class Manager {
 	public function __construct() {
         $this->loader = new Loader();
         $this->reflection = new \ReflectionClass( $this );
+        $this->options = get_option('qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, []);
 
         do_action( 'qazana/extensions/before/loaded', $this );
 
@@ -382,6 +385,10 @@ final class Manager {
             return true;
         }
 
-        return false; //(bool) get_option('qazana_extension_' . $extension_data['name']);
+        if ( ! empty( $this->options[$extension_id] ) && in_array( 'active', $this->options[$extension_id] ) ) {
+            return true;
+        }
+
+        return false;
     }
 }
