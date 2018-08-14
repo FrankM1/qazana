@@ -16,9 +16,9 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         return;
     }
 
-                    $slides_to_show = range( 1, 10 );
-                    $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
-    $slides_to_show['']             = __( 'Default', 'qazana' );
+    $slides_to_show = range( 1, 10 );
+    $slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+    $slides_to_show[''] = __( 'Default', 'qazana' );
     array_unshift( $slides_to_show, '' );
 
     $element->add_responsive_control(
