@@ -15,7 +15,16 @@ abstract class Base {
 	 *
 	 * @return array
 	 */
-	public $default_activation = true;
+    public $default_activation = true;
+    
+    /**
+	 * Unique extension name
+	 *
+	 * @return array config
+	 */
+	public function add_config() { 
+        return [];
+    }
 
 	/**
 	 * Unique extension name
@@ -119,15 +128,18 @@ abstract class Base {
 	 * @return array
 	 */
 	public function get_config() {
-		return [
-			'title' => $this->get_title(),
-			'name' => $this->get_name(),
-			'required' => $this->required,
+
+        $data = [
+            'title' => $this->get_title(),
+            'name' => $this->get_name(),
+            'required' => $this->required,
             'default_activation' => $this->default_activation,
-			'widgets' => $this->get_widgets(),
+            'widgets' => $this->get_widgets(),
             'skins' => $this->get_skins(),
             'dependencies' => $this->get_dependencies(),
-		];
+        ];
+
+        return array_merge( $data, $this->add_config() );
 	}
 
     /**

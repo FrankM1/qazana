@@ -7,7 +7,7 @@
         YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
         VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
-		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
+		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
 		CarouselModule = require( 'qazana-frontend/utils/carousel' );
 		
 	var QazanaFrontend = function() {

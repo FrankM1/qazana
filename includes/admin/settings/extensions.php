@@ -75,7 +75,7 @@ class Extensions extends Panel {
                         usort($extensions, array($this, 'sort'));
 
                         foreach ( $extensions as $extension ) {
-                            if ($extension->required) {
+                            if ( $extension->required ) {
                                 continue; // Hide required extensions
                             }
 

@@ -463,7 +463,8 @@ abstract class Controls_Stack {
 		}
 
 		return true;
-	}
+    }
+    
 	/**
 	 * Get stack.
 	 *
@@ -1926,7 +1927,6 @@ abstract class Controls_Stack {
 	 */
 	protected function _content_template() {}
 
-	/**
 
 	/**
 	 * Initialize controls.

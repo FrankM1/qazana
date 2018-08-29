@@ -32,7 +32,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected $_has_template_content = true;
 
-    	/**
+    /**
 	 * Retrieve element type.
 	 *
 	 * Get the element type, in this case `widget`.
