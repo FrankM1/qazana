@@ -36,7 +36,7 @@ class Model extends BaseModel {
 	}
 
 	public function get_css_wrapper_selector() {
-		return 'body.qazana-page-' . $this->get_id();
+        return apply_filters( 'qazana/core/settings/'. $this->get_name() . '/selector', 'body.qazana-page-' . $this->get_id(), $this );
 	}
 
 	public function get_panel_page_settings() {
