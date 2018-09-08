@@ -132,11 +132,22 @@ final class Manager {
          */
         $class_file = "$path$folder/extension_{$folder}.php";
 
-        if ( $file = $this->loader->locate_widget("$folder/extension_{$folder}.php", true)  && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+        if ( $file = $this->loader->locate_widget("$folder/extension_{$folder}.php", false ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+            
+            if ( class_exists( $extension_class ) ) {
+                return;
+            }
+
+            require_once $class_file;
+
             if ( ! class_exists( $extension_class ) ) {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
             }
-            $this->extensions[ $folder ] = new $extension_class( $this );
+          
+            if ( class_exists( $extension_class ) ) {
+                $this->extensions[ $folder ] = new $extension_class( $this );
+            }
+
         }
 
         /**
@@ -214,7 +225,7 @@ final class Manager {
     			)
     		);
 
-            if ( $file = $this->loader->locate_widget( "{$extension}/widgets/{$filename}.php" ) ) {
+            if ( $file = $this->loader->locate_widget( "{$extension}/widgets/{$filename}.php", false ) ) {
                 require_once $file;
             }
         }
@@ -263,7 +274,7 @@ final class Manager {
                 continue;
             }
 
-            if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php" ) ) {
+            if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php", false ) ) {
                 require_once $file;
             }
         }
@@ -377,9 +388,9 @@ final class Manager {
         return apply_filters( 'qazana/extensions', $this->extensions );
     }
 
-    public function is_extension_active($extension_id) {
+    public function is_extension_active( $extension_id ) {
 
-        $extension_data = $this->get_extension_data($extension_id);
+        $extension_data = $this->get_extension_data( $extension_id );
 
         if ( $extension_data['required'] === true ) {
             return true;

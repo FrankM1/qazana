@@ -72,14 +72,14 @@ class Extensions extends Panel {
 
                         $extensions = qazana()->extensions_manager->get_extensions();
 
-                        usort($extensions, array($this, 'sort'));
+                        usort( $extensions, array( $this, 'sort' ) );
 
                         foreach ( $extensions as $extension ) {
                             if ( $extension->required ) {
                                 continue; // Hide required extensions
                             }
 
-                            $extension_slug = sanitize_title_with_dashes($extension->get_config()['name'], '', 'save' );
+                            $extension_slug = sanitize_title_with_dashes( $extension->get_config()['name'], '', 'save' );
 
                             $this->display_controls($extension_slug, $extension->get_config() );
                         }

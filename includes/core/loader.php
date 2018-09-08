@@ -157,7 +157,11 @@ Class Loader {
 
     	// Maybe load the widget if one was located
     	if ( ( true === $load ) && ! empty( $located ) ) {
-    		load_template( $located, $require_once );
+            if ( $require_once ) {
+                require_once( $located );
+            } else {
+                require( $located );
+            }
     	}
 
     	return $located;
