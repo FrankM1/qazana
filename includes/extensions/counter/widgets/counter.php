@@ -25,7 +25,7 @@ class Counter extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
 	public function add_element_dependencies() {

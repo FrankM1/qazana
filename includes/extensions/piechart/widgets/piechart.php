@@ -25,7 +25,7 @@ class Piechart extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
     /**

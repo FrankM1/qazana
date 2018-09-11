@@ -22,7 +22,7 @@ class Template extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'general-elements' ];
+		return [ 'general' ];
 	}
 
 	public function is_reload_preview_required() {
