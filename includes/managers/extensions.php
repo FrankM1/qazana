@@ -51,7 +51,7 @@ final class Manager {
 
         add_action( 'qazana/widgets/widgets_registered', [ $this, 'load_widgets' ] );
     
-        do_action( 'qazana/extensions/before/loaded', $this );
+        do_action( 'qazana/extensions/after/loaded', $this );
     }
 
     public function register_all_extensions() {
