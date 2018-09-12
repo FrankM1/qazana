@@ -132,7 +132,7 @@ class Widget_Video extends Widget_Base {
 					],
 				],
 				'placeholder' => __( 'Enter your YouTube URL', 'qazana' ),
-				'default' => 'https://www.youtube.com/watch?v=9uOETcuFjbE',
+				'default' => 'https://www.youtube.com/watch?v=0GK1xf6rv5w',
 				'label_block' => true,
 				'condition' => [
 					'video_type' => 'youtube',
