@@ -1,51 +1,64 @@
-
 #qazana-extensions-manager {
-	max-width: 500px;
-	margin-top: 50px;
-	
-	h3 {
-		color: $editor-dark;
-		font-weight: normal;
-		font-size: 22px;
-	}
+    max-width: 500px;
+    margin-top: 50px;
 
-	.qazana-settings-form-page {
-		padding: 0;
-	}
-	
-	.qazana-extension-row {
-		background: #ffffff;
-		color: $editor-dark;
-		margin-bottom: 2px;
+    h3 {
+        color: $editor-dark;
+        font-weight: normal;
+        font-size: 22px;
+    }
 
-		.qazana-extension-label {
-			display: flex;
-			padding: 15px 20px;
-			font-weight: 500;
-			cursor: pointer;
+    .qazana-settings-form-page {
+        padding: 0;
+    }
 
-			span.qazana-extension-name {
-				@include padding-end(20px);
-			}
+    .qazana-extension-row {
+        background: #ffffff;
+        color: $editor-dark;
+        margin-bottom: 2px;
 
-			span.qazana-extension-toggle {
-				text-align: $end;
-				flex-grow: 1;
-			}
+        .qazana-extension-label {
+            display: flex;
+            padding: 15px 20px;
+            font-weight: 500;
+            cursor: pointer;
 
-			span.qazana-extension-active-indicator {
-				color: $editor-light;
-			}
-		}
+            span.qazana-extension-name {
+                @include padding-end(20px);
+            }
 
-		.qazana-extension-controls {
-			background-color: $gray-lightest;
-			padding: 20px 20px 5px;
+            span.qazana-extension-toggle {
+                text-align: $end;
+                flex-grow: 1;
+            }
 
-			> div {
-				margin-bottom: 15px;
-			}
-		}
-	}
+            span.qazana-extension-active-indicator {
+                color: $editor-light;
+            }
+
+            >label {
+                margin-left: auto;
+            }
+        }
+
+        .qazana-extension-widgets {
+            margin-top: 8px;
+            margin-left: 24px;
+            font-size: 12px;
+            color: #909090;
+        }
+
+        .qazana-extension-widget-label {
+            display: block;
+        }
+
+        .qazana-extension-controls {
+            background-color: $gray-lightest;
+            padding: 20px 20px 5px;
+
+            >div {
+                margin-bottom: 15px;
+            }
+        }
+    }
 }
-

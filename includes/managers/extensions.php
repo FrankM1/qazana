@@ -210,7 +210,7 @@ final class Manager {
          * @param object $this Qazana
          */
         do_action( "qazana/extensions/widgets/before", $this );
-
+        
         if ( empty( $widgets ) ) {
             return;
         }
@@ -295,13 +295,8 @@ final class Manager {
         if ( empty( $extensions ) ) {
             return;
         }
-    
+
         foreach ( $extensions as $extension_id => $extension_object ) {
-
-            if ( ! $this->is_extension_active( $extension_id ) ) {
-                continue;
-            }
-
             $this->load_extension_widgets( $extension_id );
         }
     }
@@ -351,7 +346,7 @@ final class Manager {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        if ( ! empty( $extension_data['widgets'] ) ) {
+        if ( ! empty( $extension_data['widgets'] ) && $this->is_extension_widgets_active( $extension_id ) ) {
 			return $extension_data['widgets'];
 		}
 
@@ -401,5 +396,19 @@ final class Manager {
         }
 
         return false;
+    }
+
+    /**
+     * Check if extension widgets are enabled
+     */
+    public function is_extension_widgets_active( $extension_id ) {
+
+        $extension_data = $this->get_extension_data( $extension_id );
+
+        if ( ! empty( $this->options[$extension_id] ) && ! in_array( 'widgets', $this->options[$extension_id] ) ) {
+            return false;
+        }
+
+        return true;
     }
 }

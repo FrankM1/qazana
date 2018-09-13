@@ -100,7 +100,7 @@ class Extensions extends Panel {
      * @param string $extension_slug The extension slug.
      * @param array  $extension_data An array with extension data.
      */
-    private function display_controls( $extension_slug, $extension_data) {
+    private function display_controls( $extension_slug, $extension_data ) {
 
         $title = isset( $extension_data['title'] ) ? $extension_data['title'] : ucfirst( str_replace( '_', ' ', str_replace('-', ' ', $extension_slug ) ) );
         static $options = false;
@@ -108,33 +108,40 @@ class Extensions extends Panel {
             $options = $this->get_extension_manager_options();
         }
 
+        $has_widgets = ( ! empty( $extension_data['widgets'] ) ) ? true : false;
+
         $id = 'extension-manage_' . $extension_slug;
         $name = 'qazana_' . self::EXTENSIONS_MANAGER_OPTION_NAME . '[' . $extension_slug . '][]';
-        $extension_options = isset($options[$extension_slug]) ? $options[$extension_slug] : [ 'active', 'widgets' ];
+        $extension_options = isset($options[$extension_slug]) ? $options[$extension_slug] : [ 'active' ];
 
         ?><div class="qazana-extension-row qazana-extension-<?php echo esc_attr($extension_slug); ?>">
 
                 <div class="qazana-extension-label">
                     <span class="qazana-extension-name"><?php echo esc_html( $title ); ?></span>
                     <span data-label="<?php esc_attr_e( 'Disabled', 'qazana' ); ?>" class="qazana-extension-indicator"></span>
-                    <span class="qazana-extension-toggle"><span class="dashicons dashicons-arrow-down"></span></span>
+                    <?php if ( $has_widgets ) { ?><span class="qazana-extension-toggle"><span class="dashicons dashicons-arrow-down"></span></span><?php } ?>
                     <label for="<?php echo esc_attr($id); ?>">
                         <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="active" <?php checked(in_array('active', $extension_options), true); ?>>
                     </label>
                 </div>
-
                 <div class="qazana-extension-controls hidden">
-                    <div>
-                        <?php 
-                        $id = 'extension-manage_' . $extension_slug . '_widgets';
-                        ?>
-                        <label for="<?php echo esc_attr($id); ?>">
-                            <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="widgets" <?php checked(in_array('widgets', $extension_options), true); ?>>
-                            <?php esc_html_e('Enable Widgets', 'qazana'); ?>
-                        </label>
-                    </div>
-                <div>
-                <?php
+                    <?php if ( $has_widgets ) { ?>
+                        <div>
+                            <?php $id = 'extension-manage_' . $extension_slug . '_widgets'; ?>
+                            <label for="<?php echo esc_attr($id); ?>">
+                                <input type="checkbox" name="<?php echo esc_attr($name); ?>" id="<?php echo esc_attr($id); ?>" value="widgets" <?php checked(in_array('widgets', $extension_options), true); ?>>
+                                <?php esc_html_e('Disable Widgets', 'qazana'); ?>
+                                <div class="qazana-extension-widgets">
+                                    <?php foreach ( $extension_data['widgets'] as $widget ) {
+                                        ?><span class="qazana-extension-widget-label"><?php echo esc_html($widget); ?></span><?php
+                                    } ?>
+                                </div>
+                            </label>
+                        </div>
+                    <?php
+                    }
+                    
+                    ?><div><?php
                     /**
                      * Extensions manager controls.
                      *

@@ -1085,6 +1085,15 @@ body .gutenberg #qazana-switch-mode {
                 flex-grow: 1; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label span.qazana-extension-active-indicator {
         color: #a0a5aa; }
+      #qazana-extensions-manager .qazana-extension-row .qazana-extension-label > label {
+        margin-left: auto; }
+    #qazana-extensions-manager .qazana-extension-row .qazana-extension-widgets {
+      margin-top: 8px;
+      margin-left: 24px;
+      font-size: 12px;
+      color: #909090; }
+    #qazana-extensions-manager .qazana-extension-row .qazana-extension-widget-label {
+      display: block; }
     #qazana-extensions-manager .qazana-extension-row .qazana-extension-controls {
       background-color: #f7f7f7;
       padding: 20px 20px 5px; }
