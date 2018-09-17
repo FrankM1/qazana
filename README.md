@@ -17,7 +17,7 @@ Qazana is the ultimate page layout builder for WordPress.
 
 Qazana allows you to create unique and high quality page layouts in WordPress.
 
-The plugin uses best practices to deliver great looking pages to your users. Our main focus with this plugin is the ability to create very high quality designs and to provide the best integration with themes and plugins.
+The plugin uses best practices to deliver great looking pages to your users. Our main focus with this plugin is the ability to create very high quality designs and to provide the best integration with themes and plugins. In addition to that we aim to provide a highly stable design tool for large and complex projects.
 
 ### Features ###
 * Frontend live editing.
