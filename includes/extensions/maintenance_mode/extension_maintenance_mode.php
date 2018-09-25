@@ -173,7 +173,7 @@ class Maintenance_Mode extends Base {
             header( 'Retry-After: 600' );
         }
 
-        $template = qazana()->plugin_dir . 'templates/default/qazana.php';
+        $template = qazana_get_dir() . 'templates/default/qazana.php';
 
         return $template;
     }

@@ -119,8 +119,7 @@ class Plugin {
      * @see qazana::instance()
      * @see qazana();
      */
-    private function __construct() {
-    }
+    private function __construct() {}
 
     /**
      * A dummy magic method to prevent Qazana from being cloned.
@@ -210,9 +209,9 @@ class Plugin {
         $this->file = QAZANA__FILE__;
         $this->slug = 'qazana';
 
-        $this->basename = apply_filters( 'qazana_plugin_basename', plugin_basename( QAZANA__FILE__ ) );
-        $this->plugin_dir = apply_filters( 'qazana_plugin_dir_path',  plugin_dir_path( QAZANA__FILE__ ) );
-        $this->plugin_url = apply_filters( 'qazana_plugin_dir_url', plugins_url( '/', QAZANA__FILE__ ) );
+        $this->basename     = apply_filters( 'qazana_plugin_basename',    plugin_basename( $this->file ) );
+        $this->plugin_dir   = apply_filters( 'qazana_plugin_dir_path',    plugin_dir_path( $this->file ) );
+        $this->plugin_url   = apply_filters( 'qazana_plugin_dir_url',     plugins_url( '/', $this->file ) );
 
         // core assets
         $this->core_assets_dir = apply_filters( 'qazana_core_assets_dir', trailingslashit( $this->plugin_dir . 'assets' ) );
@@ -283,9 +282,10 @@ class Plugin {
 
         // Array of Qazana core actions
         $actions = [
-            'init',     // check for supported cpts
-            'init_classes',     // load plugin classes
-            'load_textdomain', // Load textdomain (qazana)
+            'init',
+            'init_classes',
+            'load_textdomain',
+            'register_extensions'
         ];
 
         // Add the actions
@@ -315,6 +315,13 @@ class Plugin {
         foreach ( $cpt_support as $cpt_slug ) {
             add_post_type_support( $cpt_slug, 'qazana', 'revisions' );
         }
+    }
+
+    /**
+     * Register init function
+     */
+    public function register_extensions() {
+        $this->extensions_manager = new Extensions\Manager();
     }
 
     private function includes() {
@@ -460,7 +467,6 @@ class Plugin {
         $this->cron               = new Cron();
         $this->editor             = new Editor();
         $this->skins_manager      = new Skins_Manager();
-        $this->extensions_manager = new Extensions\Manager();
         $this->mobile_detect      = new MobileDetect();
         $this->mobile_detect->setDetectionType( 'extended' );
         $this->preview            = new Preview();
@@ -589,7 +595,7 @@ class Plugin {
 	 * @return array
 	 */
 	public function init_plugin_version() {
-		$file = plugin_dir_path( QAZANA__FILE__ ) . 'qazana.php';
+		$file = $this->plugin_dir . '/qazana.php';
 		if ( ! $this->version && file_exists( $file ) && function_exists( 'get_plugin_data' ) ) {
 			$plugin	 = get_plugin_data( $file );
 			$this->version = $plugin['Version'];

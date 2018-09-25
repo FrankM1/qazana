@@ -52,7 +52,7 @@ class Widgets_Manager {
 
         do_action( 'qazana/widgets/loader', $this->loader ); // plugins can intercept the stack here. Themes will always take precedence
 
-        $this->loader->add_stack( array( 'path' => qazana()->plugin_dir, 'uri' => qazana()->plugin_url ), qazana()->plugin_widget_locations );
+        $this->loader->add_stack( array( 'path' => qazana_get_dir(), 'uri' => qazana_get_dir() ), qazana()->plugin_widget_locations );
 
         do_action( 'qazana/widgets/loader/after', $this->loader );
     }
@@ -164,7 +164,7 @@ class Widgets_Manager {
 			'WP_Widget_Text', //unnecessary since Qazana has a text widget
 		];
 
-        	/**
+        /**
 		 * Qazana widgets black list.
 		 *
 		 * Filters the widgets black list that won't be displayed in the panel.
@@ -237,8 +237,7 @@ class Widgets_Manager {
 		}
 
 		$this->_widget_types[ $widget->get_name() ] = $widget;
-
-        	$this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
+        $this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
 
 		return true;
 	}

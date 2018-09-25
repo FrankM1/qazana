@@ -68,6 +68,36 @@ function qazana_loaded() {
 }
 
 /**
+ * Setup constants
+ *
+ * @since 1.0.0
+ * @uses do_action() Calls 'qazana_constants'
+ */
+function qazana_constants() {
+	do_action( __FUNCTION__ );
+}
+
+/**
+ * Include files
+ *
+ * @since 1.0.0
+ * @uses do_action() Calls 'qazana_includes'
+ */
+function qazana_includes() {
+	do_action( __FUNCTION__ );
+}
+
+/**
+ * Setup globals AFTER includes
+ *
+ * @since 1.0.0
+ * @uses do_action() Calls 'qazana_setup_globals'
+ */
+function qazana_setup_globals() {
+	do_action( __FUNCTION__ );
+}
+
+/**
  * Register any objects before anything is initialized.
  *
  * @since 1.0.0
@@ -114,6 +144,17 @@ function qazana_load_textdomain() {
 }
 
 /**
+ * Setup the extensions.
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'qazana_register_extensions'
+ */
+function qazana_register_extensions() {
+    do_action( __FUNCTION__ );
+}
+
+/**
  * Setup the post types.
  *
  * @since 1.0.0
@@ -121,39 +162,6 @@ function qazana_load_textdomain() {
  * @uses do_action() Calls 'qazana_register_post_type'
  */
 function qazana_register_post_types() {
-    do_action( __FUNCTION__ );
-}
-
-/**
- * Register the built in Qazana taxonomies.
- *
- * @since 1.0.0
- *
- * @uses do_action() Calls 'qazana_register_taxonomies'
- */
-function qazana_register_taxonomies() {
-    do_action( __FUNCTION__ );
-}
-
-/**
- * Register the default Qazana views.
- *
- * @since 1.0.0
- *
- * @uses do_action() Calls 'qazana_register_views'
- */
-function qazana_register_views() {
-    do_action( __FUNCTION__ );
-}
-
-/**
- * Register the default Qazana shortcodes.
- *
- * @since 1.0.0
- *
- * @uses do_action() Calls 'qazana_register_shortcodes'
- */
-function qazana_register_shortcodes() {
     do_action( __FUNCTION__ );
 }
 
@@ -188,71 +196,4 @@ function qazana_setup_theme() {
  */
 function qazana_after_setup_theme() {
     do_action( __FUNCTION__ );
-}
-
-/**
- * The main action used for handling theme-side GET requests.
- *
- * @since 1.0.0
- *
- * @uses do_action()
- */
-function qazana_get_request() {
-
-    // Bail if not a GET action
-    if ( ! qazana_is_get_request() ) {
-        return;
-    }
-
-    // Bail if no action
-    if ( empty( $_GET['action'] ) ) {
-        return;
-    }
-
-    // This dynamic action is probably the one you want to use. It narrows down
-    // the scope of the 'action'without needing to check it in your function.
-    do_action( 'qazana_get_request_' . $_GET['action'] );
-
-    // Use this static action if you don't mind checking the 'action'yourself.
-    do_action( __FUNCTION__, $_GET['action'] );
-}
-
-/** Filters *******************************************************************/
-
-/**
- * Filter the plugin locale and domain.
- *
- * @since 1.0.0
- *
- * @param string $locale
- * @param string $domain
- */
-function qazana_plugin_locale( $locale = '', $domain = '') {
-    return apply_filters( __FUNCTION__, $locale, $domain );
-}
-
-/**
- * Maps video caps to built in WordPress caps.
- *
- * @since 1.0.0
- *
- * @param array  $caps    Capabilities for meta capability
- * @param string $cap     Capability name
- * @param int    $user_id User id
- * @param mixed  $args    Arguments
- */
-function qazana_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
-    return apply_filters( __FUNCTION__, $caps, $cap, $user_id, $args );
-}
-
-/** Theme Helpers *************************************************************/
-
-/**
- * The main action used for executing code before the theme has been setup
- *
- * @since bbPress (r3829)
- * @uses do_action()
- */
-function qazana_register_widget_packages() {
-	do_action( __FUNCTION__ );
 }

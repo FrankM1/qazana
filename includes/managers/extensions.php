@@ -34,28 +34,76 @@ final class Manager {
      *
      * @var array
      */
-	private $extensions = array();
+    private $extensions = array();
+    
+    /**
+     * Extension instances are stored here
+     *
+     * @var array
+     */
+	public $extension_blacklist = array();
 
     /**
      * __construct
+     *
+     * @since       1.0.0
+     * @access      public
+     * @return      void
      */
 	public function __construct() {
         $this->loader = new Loader();
         $this->reflection = new \ReflectionClass( $this );
-        $this->options = get_option('qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, []);
+        $this->add_actions();
+    }
 
+    /**
+     * Add actions
+     *
+     * @since       1.0.0
+     * @access      public
+     * @return      void
+     */
+    public function add_actions() {
         do_action( 'qazana/extensions/before/loaded', $this );
 
-        add_action( 'qazana_init_classes', [ $this, 'register_all_extensions' ] );
-        add_action( 'qazana_init_classes', [ $this, 'load_extension_dependencies' ] );
+        add_action( 'after_setup_theme', [ $this, 'register_all_extensions' ], 11 );
+        add_action( 'after_setup_theme', [ $this, 'load_extension_dependencies' ], 11 );
 
         add_action( 'qazana/widgets/widgets_registered', [ $this, 'load_widgets' ] );
     
         do_action( 'qazana/extensions/after/loaded', $this );
     }
 
-    public function register_all_extensions() {
+    /**
+     * Add extension to backlist
+     *
+     * @since       1.0.0
+     * @access      public
+     * @return      void
+     */
+    public function blacklist_extension( $extension ) {
+        $this->extension_blacklist[] = $extension;
+    }
 
+    /**
+     * Allow excluding extensions from loading
+     *
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
+    public function get_extensions_blacklist() {
+        return $this->extension_blacklist;
+    }
+
+    /**
+     * Register extensions
+     *
+     * @since       1.0.0
+     * @access      public
+     * @return      void
+     */
+    public function register_all_extensions() {
         do_action( 'qazana/extensions/loader/before', $this->loader );
 
         $this->loader->add_stack( qazana()->theme_paths_child, qazana()->theme_extensions_locations );
@@ -63,7 +111,7 @@ final class Manager {
 
         do_action( 'qazana/extensions/loader', $this->loader );  // plugins can intercept the stack here. Themes will always take precedence
 
-        $this->loader->add_stack( array( 'path' => qazana()->plugin_dir, 'uri' => qazana()->plugin_url ), qazana()->plugin_extensions_locations );
+        $this->loader->add_stack( array( 'path' => qazana_get_dir(), 'uri' => qazana_get_dir() ), qazana()->plugin_extensions_locations );
 
         do_action( 'qazana/extensions/loader/after', $this->loader );
 
@@ -93,8 +141,14 @@ final class Manager {
          * @param object $this Qazana
          */
         do_action( 'qazana/extensions/register/before', $this );
+        
+        qazana_write_log( $this->get_extensions_blacklist() );
 
         foreach ( $folders as $folder ) {
+             if ( in_array( $folder, $this->get_extensions_blacklist() ) ) {
+                continue;
+            }
+
             $this->initialize_extension( $folder, $path );
         }
 
@@ -156,7 +210,6 @@ final class Manager {
          * @param object $this Qazana
          */
         do_action( "qazana/extensions/registered/{$folder}", $folder, $this );
-
     }
 
     /**
@@ -288,6 +341,13 @@ final class Manager {
 
     }
 
+    /**
+     * Load widgets
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      void
+     */
 	public function load_widgets() {
 
         $extensions = $this->get_extensions();
@@ -331,6 +391,13 @@ final class Manager {
         }
     }
 
+    /**
+     * Get extension name
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      string
+     */
     public function get_name( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
@@ -342,6 +409,13 @@ final class Manager {
 		return false;
 	}
 
+    /**
+     * Get extension widgets
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
 	public function get_widgets( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
@@ -353,6 +427,13 @@ final class Manager {
 		return false;
 	}
 
+    /**
+     * Get extension skins
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
     public function get_skins( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
@@ -364,16 +445,37 @@ final class Manager {
 		return false;
 	}
 
+    /**
+     * Get extension
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
     public function get_extension( $extension_id ) {
         $extensions = $this->get_extensions();
         return isset($extensions[ $extension_id ] ) ? $extensions[ $extension_id ] : false;
 	}
 
+    /**
+     * Get extension data
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
 	public function get_extension_data( $extension_id ) {
         $extensions = $this->get_extensions();
 		return isset($extensions[ $extension_id ] ) ? $extensions[ $extension_id ]->get_config() : false;
     }
     
+    /**
+     * Get extensions
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
     public function get_extensions( $extension_id = null ) {
         if ( $extension_id ) {
             //TODO _deprecated_function( __METHOD__, '2.0.0', '$this->get_extension()' );
@@ -383,6 +485,13 @@ final class Manager {
         return apply_filters( 'qazana/extensions', $this->extensions );
     }
 
+    /**
+     * Check if extension is active
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
+     */
     public function is_extension_active( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
@@ -391,7 +500,9 @@ final class Manager {
             return true;
         }
 
-        if ( ! empty( $this->options[$extension_id] ) && in_array( 'active', $this->options[$extension_id] ) ) {
+        $options = get_option( 'qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, [] );
+
+        if ( ! empty( $options = [$extension_id] ) && in_array( 'active', $options[$extension_id] ) ) {
             return true;
         }
 
@@ -400,12 +511,18 @@ final class Manager {
 
     /**
      * Check if extension widgets are enabled
+     * 
+     * @since       1.0.0
+     * @access      public
+     * @return      array
      */
     public function is_extension_widgets_active( $extension_id ) {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        if ( ! empty( $this->options[$extension_id] ) && ! in_array( 'widgets', $this->options[$extension_id] ) ) {
+        $options = get_option( 'qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, [] );
+
+        if ( ! empty( $options[$extension_id] ) && ! in_array( 'widgets', $options[$extension_id] ) ) {
             return false;
         }
 

@@ -54,7 +54,7 @@ class Manager extends BaseManager {
 			$page_template = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
 			if ( self::TEMPLATE_CANVAS === $page_template ) {
-				$template = qazana()->plugin_dir . 'templates/default/qazana.php';
+				$template = qazana_get_dir() . 'templates/default/qazana.php';
 			}
 		}
 
