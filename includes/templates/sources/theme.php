@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class Source_Theme extends Source_Base {
+class Source_Theme extends Source_Remote {
 
 	/**
 	 * @since 1.0.0
@@ -29,12 +29,6 @@ class Source_Theme extends Source_Base {
 	 * @since 1.0.0
 	 * @access public
 	*/
-    public function register_data() {}
-
-    /**
-	 * @since 1.0.0
-	 * @access public
-	*/
     public function get_items( $args = [] ) {
 
         $templates = [];
@@ -49,60 +43,6 @@ class Source_Theme extends Source_Base {
 
         return $templates;
     }
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	 * @param array $template_data
-	 *
-	 * @return array
-	 */
-	public function get_item( $template_data ) {
-		return [
-			'template_id' => $template_data['id'],
-			'source' => $this->get_id(),
-			'title' => $template_data['title'],
-			'thumbnail' => $template_data['thumbnail'],
-			'date' => date( get_option( 'date_format' ), $template_data['tmpl_created'] ),
-			'author' => $template_data['author'],
-			'categories' => [],
-			'keywords' => [],
-			'hasPageSettings' => ( ! empty( $template_data['has_page_settings'] ) && '1' === $template_data['has_page_settings'] ),
-			'url' => $template_data['url'],
-		];
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function save_item( $template_data ) {
-		return false;
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function update_item( $new_data ) {
-		return false;
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function delete_template( $template_id ) {
-		return false;
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function export_template( $template_id ) {
-		return false;
-	}
 
 	/**
 	 * @since 1.0.0

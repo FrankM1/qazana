@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/template" id="tmpl-qazana-templates-modal__header__logo">
 	<span class="qazana-templates-modal__header__logo__icon-wrapper">
-		<i class="eicon-qazana"></i>
+		<i class="eicon-chevron-left"></i>
 	</span>
 	<span class="qazana-templates-modal__header__logo__title">{{{ title }}}</span>
 </script>

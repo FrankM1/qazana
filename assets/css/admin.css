@@ -289,9 +289,7 @@
                 align-items: center; }
     .qazana-templates-modal__header__logo__icon-wrapper {
       padding: 4px 7px 6px;
-      background-image: -webkit-linear-gradient(225deg, #EF295A, #434363);
-      background-image: -o-linear-gradient(225deg, #EF295A, #434363);
-      background-image: linear-gradient(-135deg, #EF295A, #434363);
+      background-color: #434363;
       border-radius: 2px;
       margin-right: 10px; }
     .qazana-templates-modal__header__logo i {

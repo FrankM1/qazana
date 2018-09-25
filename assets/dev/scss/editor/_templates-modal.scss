@@ -29,7 +29,7 @@ $remote-templates-items-space: 30px;
     cursor: pointer;
     &.qazana-active {
         background-image: linear-gradient(to bottom, #f3f3f3, #fff);
-        border-bottom: 3px solid #9b0a46;
+        border-bottom: 3px solid $brand-primary;
     }
 }
 
