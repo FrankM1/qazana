@@ -141,8 +141,6 @@ final class Manager {
          * @param object $this Qazana
          */
         do_action( 'qazana/extensions/register/before', $this );
-        
-        qazana_write_log( $this->get_extensions_blacklist() );
 
         foreach ( $folders as $folder ) {
              if ( in_array( $folder, $this->get_extensions_blacklist() ) ) {
