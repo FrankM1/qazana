@@ -140,7 +140,7 @@ final class Manager {
 
         do_action( 'qazana/extensions/loader', $this->loader );  // plugins can intercept the stack here. Themes will always take precedence
 
-        $this->loader->add_stack( array( 'path' => qazana_get_dir(), 'uri' => qazana_get_dir() ), qazana()->plugin_extensions_locations );
+        $this->loader->add_stack( array( 'path' => qazana_get_dir(), 'uri' => qazana_get_url() ), qazana()->plugin_extensions_locations );
 
         do_action( 'qazana/extensions/loader/after', $this->loader );
 
