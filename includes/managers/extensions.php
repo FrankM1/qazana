@@ -37,12 +37,19 @@ final class Manager {
     private $extensions = array();
     
     /**
-     * Extension instances are stored here
+     * Black listed extension instances are stored here
      *
      * @var array
      */
-	public $extension_blacklist = array();
+	private $extensions_blacklist = array();
 
+     /**
+     * Black listed widgets instances are stored here
+     *
+     * @var array
+     */
+    private $widgets_blacklist = array();
+ 
     /**
      * __construct
      *
@@ -77,23 +84,45 @@ final class Manager {
     /**
      * Add extension to backlist
      *
-     * @since       1.0.0
+     * @since       2.0.0
      * @access      public
      * @return      void
      */
     public function blacklist_extension( $extension ) {
-        $this->extension_blacklist[] = $extension;
+        $this->extensions_blacklist[] = $extension;
     }
 
     /**
      * Allow excluding extensions from loading
      *
-     * @since       1.0.0
+     * @since       2.0.0
      * @access      public
      * @return      array
      */
-    public function get_extensions_blacklist() {
-        return $this->extension_blacklist;
+    private function get_extensions_blacklist() {
+        return $this->extensions_blacklist;
+    }
+
+    /**
+     * Add extension to widgets
+     *
+     * @since       2.0.0
+     * @access      public
+     * @return      void
+     */
+    public function blacklist_widget( $widget ) {
+        $this->widgets_blacklist[] = $widget;
+    }
+
+    /**
+     * Allow excluding widgets from loading
+     *
+     * @since       2.0.0
+     * @access      public
+     * @return      array
+     */
+    private function get_widgets_blacklist() {
+        return $this->widgets_blacklist;
     }
 
     /**
@@ -143,7 +172,7 @@ final class Manager {
         do_action( 'qazana/extensions/register/before', $this );
 
         foreach ( $folders as $folder ) {
-             if ( in_array( $folder, $this->get_extensions_blacklist() ) ) {
+            if ( in_array( $folder, $this->get_extensions_blacklist() ) ) {
                 continue;
             }
 
@@ -274,7 +303,7 @@ final class Manager {
     				[ '', '$1-$2', '-', DIRECTORY_SEPARATOR ],
     				$widget
     			)
-    		);
+            );
 
             if ( $file = $this->loader->locate_widget( "{$extension}/widgets/{$filename}.php", false ) ) {
                 require_once $file;
@@ -317,7 +346,7 @@ final class Manager {
     				[ '', '$1-$2', '-', DIRECTORY_SEPARATOR ],
     				$skin
     			)
-    		);
+            );
 
             $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . ucfirst( $skin );
 
@@ -382,6 +411,10 @@ final class Manager {
 
                 if ( ! class_exists( $class_name ) ) {
                     return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
+                }
+
+                if ( in_array( $widget, $this->get_widgets_blacklist() ) ) {
+                    continue;
                 }
 
                 $widget_manager->register_widget_type( new $class_name() );
