@@ -5,7 +5,7 @@ add_action( 'qazana/element/after_section_end', 'Qazana\add_position_options_to_
 /**
  * Position controls
  */
-function add_position_options_to_widget($element, $section_id, $args) {
+function add_position_options_to_widget( $element, $section_id, $args) {
 
     if ( $section_id == 'section_advanced' || '_section_style' === $section_id ) {
 

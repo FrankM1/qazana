@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Responsive {
+class Breakpoints {
 
 	/**
 	 * The Qazana breakpoint prefix.

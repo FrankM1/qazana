@@ -1,7 +1,7 @@
 <?php
 namespace Qazana;
 
-use Qazana\Core\Responsive\Responsive;
+use Qazana\Core\Responsive\Breakpoints;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -163,7 +163,7 @@ $document = qazana()->documents->get( $this->get_post_id() );
 				<div class="qazana-panel-footer-sub-menu-item" data-device-mode="tablet">
 					<i class="qazana-icon eicon-device-tablet" aria-hidden="true"></i>
 					<span class="qazana-title"><?php _e( 'Tablet', 'qazana' ); ?></span>
-					<?php $breakpoints = Responsive::get_breakpoints(); ?>
+					<?php $breakpoints = Breakpoints::get_breakpoints(); ?>
 					<span class="qazana-description"><?php echo sprintf( __( 'Preview for %s', 'qazana' ), $breakpoints['md'] . 'px' ); ?></span>
 				</div>
 				<div class="qazana-panel-footer-sub-menu-item" data-device-mode="mobile">

@@ -11,6 +11,13 @@ use Qazana\Admin\Settings\Extensions as Options;
 final class Manager {
 
     /**
+     * Extension options
+     *
+     * @var array
+     */
+	private $options;
+
+    /**
      * Extension loader
      *
      * @var array
@@ -58,6 +65,7 @@ final class Manager {
      * @return      void
      */
 	public function __construct() {
+        $this->options = get_option( 'qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, [] );
         $this->loader = new Loader();
         $this->reflection = new \ReflectionClass( $this );
         $this->add_actions();
@@ -73,9 +81,8 @@ final class Manager {
     public function add_actions() {
         do_action( 'qazana/extensions/before/loaded', $this );
 
+        add_action( 'after_setup_theme', [ $this, 'is_extension_active' ] );
         add_action( 'after_setup_theme', [ $this, 'register_all_extensions' ], 11 );
-        add_action( 'after_setup_theme', [ $this, 'load_extension_dependencies' ], 11 );
-
         add_action( 'qazana/widgets/widgets_registered', [ $this, 'load_widgets' ] );
     
         do_action( 'qazana/extensions/after/loaded', $this );
@@ -214,8 +221,8 @@ final class Manager {
         $class_file = "$path$folder/extension_{$folder}.php";
 
         if ( $file = $this->loader->locate_widget("$folder/extension_{$folder}.php", false ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
-            
-            if ( class_exists( $extension_class ) ) {
+
+            if ( class_exists( $extension_class ) || ! $this->is_extension_active( $folder ) ) {
                 return;
             }
 
@@ -531,13 +538,15 @@ final class Manager {
             return true;
         }
 
-        $options = get_option( 'qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, [] );
+        $disabled = array_filter( $this->options, function( $extension ) {
+            return in_array( 'active', $extension );
+        } );
 
-        if ( ! empty( $options = [$extension_id] ) && in_array( 'active', $options[$extension_id] ) ) {
-            return true;
+        if ( in_array( $extension_id, $disabled ) ) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -551,9 +560,11 @@ final class Manager {
 
         $extension_data = $this->get_extension_data( $extension_id );
 
-        $options = get_option( 'qazana_' . Options::EXTENSIONS_MANAGER_OPTION_NAME, [] );
+        $disabled = array_filter( $this->options, function( $extension ) {
+            return in_array( 'widgets', $extension );
+        } );
 
-        if ( ! empty( $options[$extension_id] ) && ! in_array( 'widgets', $options[$extension_id] ) ) {
+        if ( in_array( $extension_id, $disabled ) ) {
             return false;
         }
 

@@ -6,7 +6,7 @@ use Qazana\Core\Responsive\Files\Frontend as FrontendFile;
 use Qazana\Core\Files\CSS\Global_CSS;
 use Qazana\Core\Files\CSS\Post as Post_CSS;
 use Qazana\Core\Files\CSS\Post_Preview;
-use Qazana\Core\Responsive\Responsive;
+use Qazana\Core\Responsive\Breakpoints;
 use Qazana\Core\Settings\Manager as SettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -471,10 +471,10 @@ class Frontend {
 
 		$frontend_file_name = 'frontend' . $direction_suffix . $suffix . '.css';
 
-		$has_custom_file = Responsive::has_custom_breakpoints();
+		$has_custom_file = Breakpoints::has_custom_breakpoints();
 
 		if ( $has_custom_file ) {
-			$frontend_file = new FrontendFile( 'custom-' . $frontend_file_name, Responsive::get_stylesheet_templates_path() . $frontend_file_name );
+			$frontend_file = new FrontendFile( 'custom-' . $frontend_file_name, Breakpoints::get_stylesheet_templates_path() . $frontend_file_name );
 
 			$time = $frontend_file->get_meta( 'time' );
 
@@ -547,7 +547,7 @@ class Frontend {
 			'nonce'          => wp_create_nonce( 'qazana-frontend' ),
 			'isEditMode'     => $is_preview_mode,
             'settings'       => SettingsManager::get_settings_frontend_config(),
-            'breakpoints' => Responsive::get_breakpoints(),
+            'breakpoints' => Breakpoints::get_breakpoints(),
 			'is_rtl'         => is_rtl(),
 			'post'           => [
 				'id'      => $post_ID,

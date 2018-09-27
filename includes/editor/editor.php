@@ -1,7 +1,7 @@
 <?php
 namespace Qazana;
 
-use Qazana\Core\Responsive\Responsive;
+use Qazana\Core\Responsive\Breakpoints;
 use Qazana\Core\Settings\Manager as SettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -822,8 +822,8 @@ class Editor {
 
 		wp_enqueue_style( 'qazana-editor' );
 
-		if ( Responsive::has_custom_breakpoints() ) {
-			$breakpoints = Responsive::get_breakpoints();
+		if ( Breakpoints::has_custom_breakpoints() ) {
+			$breakpoints = Breakpoints::get_breakpoints();
 
 			wp_add_inline_style( 'qazana-editor', '.qazana-device-tablet #qazana-preview-responsive-wrapper { width: ' . $breakpoints['md'] . 'px; }' );
 		}

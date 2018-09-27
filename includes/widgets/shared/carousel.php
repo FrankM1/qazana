@@ -1,7 +1,6 @@
 <?php
-namespace Qazana;
 
-add_action( 'qazana/element/after_section_start', '\Qazana\register_controls_section_carousel_settings', 10, 3 );
+add_action( 'qazana/element/after_section_start', 'qazana_register_controls_section_carousel_settings', 10, 3 );
 /**
  * Undocumented function
  *
@@ -10,7 +9,7 @@ add_action( 'qazana/element/after_section_start', '\Qazana\register_controls_sec
  * @param [type] $args
  * @return void
  */
-function register_controls_section_carousel_settings( Controls_Stack $element, string $section_id, array $args ) {
+function qazana_register_controls_section_carousel_settings( $element, $section_id, $args ) {
 
     if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
         return;
@@ -25,7 +24,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'slidesToShow',
         [
             'label'              => __( 'Slides to Show', 'qazana' ),
-            'type'               => Controls_Manager::SELECT,
+            'type'               => \Qazana\Controls_Manager::SELECT,
             'default'            => 2,
             'tablet_default'     => 2,
             'mobile_default'     => 1,
@@ -38,7 +37,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'slidesToScroll',
         [
             'label'     => __( 'Slides to Scroll', 'qazana' ),
-            'type'      => Controls_Manager::SELECT,
+            'type'      => \Qazana\Controls_Manager::SELECT,
             'default'   => 1,
             'options'   => $slides_to_show,
             'condition' => [
@@ -52,7 +51,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'autoplay',
         [
             'label'              => __( 'Autoplay', 'qazana' ),
-            'type'               => Controls_Manager::SWITCHER,
+            'type'               => \Qazana\Controls_Manager::SWITCHER,
             'label_on'           => __( 'Yes', 'qazana' ),
             'label_off'          => __( 'No', 'qazana' ),
             'return_value'       => 'yes',
@@ -65,7 +64,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'autoplaySpeed',
         [
             'label'              => __( 'Autoplay Speed (ms)', 'qazana' ),
-            'type'               => Controls_Manager::NUMBER,
+            'type'               => \Qazana\Controls_Manager::NUMBER,
             'default'            => 5000,
             'frontend_available' => true,
             'condition'          => [
@@ -78,7 +77,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'pauseOnHover',
         [
             'label'              => __( 'Pause on Hover', 'qazana' ),
-            'type'               => Controls_Manager::SWITCHER,
+            'type'               => \Qazana\Controls_Manager::SWITCHER,
             'label_on'           => __( 'Yes', 'qazana' ),
             'label_off'          => __( 'No', 'qazana' ),
             'return_value'       => 'yes',
@@ -94,7 +93,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'infinite',
         [
             'label'              => __( 'Infinite Loop', 'qazana' ),
-            'type'               => Controls_Manager::SWITCHER,
+            'type'               => \Qazana\Controls_Manager::SWITCHER,
             'label_on'           => __( 'Yes', 'qazana' ),
             'label_off'          => __( 'No', 'qazana' ),
             'return_value'       => 'yes',
@@ -107,7 +106,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'centerMode',
         [
             'label'              => __( 'centerMode', 'qazana' ),
-            'type'               => Controls_Manager::SWITCHER,
+            'type'               => \Qazana\Controls_Manager::SWITCHER,
             'label_on'           => __( 'Yes', 'qazana' ),
             'label_off'          => __( 'No', 'qazana' ),
             'return_value'       => 'yes',
@@ -119,7 +118,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'centerPadding',
         [
             'label'   => __( 'Center padding', 'qazana' ),
-            'type'    => Controls_Manager::SLIDER,
+            'type'    => \Qazana\Controls_Manager::SLIDER,
             'default' => [
                 'size' => 200,
             ],
@@ -141,7 +140,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'overflow_visible',
         [
             'label'     => __( 'Overflow visible', 'qazana' ),
-            'type'      => Controls_Manager::SWITCHER,
+            'type'      => \Qazana\Controls_Manager::SWITCHER,
             'label_on'  => __( 'Yes', 'qazana' ),
             'label_off' => __( 'No', 'qazana' ),
             'selectors' => [
@@ -154,7 +153,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'effect',
         [
             'label'              => __( 'Transition', 'qazana' ),
-            'type'               => Controls_Manager::SELECT,
+            'type'               => \Qazana\Controls_Manager::SELECT,
             'default'            => 'slide',
             'frontend_available' => true,
             'options'            => [
@@ -168,7 +167,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'direction',
         [
             'label'              => __( 'Direction', 'qazana' ),
-            'type'               => Controls_Manager::SELECT,
+            'type'               => \Qazana\Controls_Manager::SELECT,
             'default'            => 'ltr',
             'frontend_available' => true,
             'options'            => [
@@ -182,7 +181,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'speed',
         [
             'label'              => __( 'Transition Speed (ms)', 'qazana' ),
-            'type'               => Controls_Manager::NUMBER,
+            'type'               => \Qazana\Controls_Manager::NUMBER,
             'default'            => 500,
             'frontend_available' => true,
         ]
@@ -192,7 +191,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'navigation',
         [
             'label'   => __( 'Navigation', 'qazana' ),
-            'type'    => Controls_Manager::SELECT,
+            'type'    => \Qazana\Controls_Manager::SELECT,
             'default' => 'both',
             'options' => [
                 ''       => __( 'Default', 'qazana' ),
@@ -209,7 +208,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'content_animation',
         [
             'label'   => __( 'Content Animation', 'qazana' ),
-            'type'    => Controls_Manager::SELECT,
+            'type'    => \Qazana\Controls_Manager::SELECT,
             'default' => 'fadeInUp',
             'options' => [
                 ''            => __( 'None', 'qazana' ),
@@ -226,7 +225,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'content_animation_delay',
         [
             'label'   => __( 'Content Animation Delay', 'qazana' ),
-            'type'    => Controls_Manager::TEXT,
+            'type'    => \Qazana\Controls_Manager::TEXT,
             'default' => '200',
         ]
     );
@@ -235,7 +234,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'carousel_class',
         [
             'label'       => esc_html__( 'Carousel Class', 'qazana' ),
-            'type'        => Controls_Manager::TEXT,
+            'type'        => \Qazana\Controls_Manager::TEXT,
             'default'     => '',
             'description' => esc_html__( 'Class added to the carousel item (e.g., ".my-nav-carousel")', 'qazana' ),
         ]
@@ -245,7 +244,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
         'asNavFor',
         [
             'label'       => esc_html__( 'Sync With', 'qazana' ),
-            'type'        => Controls_Manager::TEXT,
+            'type'        => \Qazana\Controls_Manager::TEXT,
             'default'     => '',
             'description' => esc_html__( 'Selector of another carousel to sync with (e.g., ".my-other-nav-carousel")', 'qazana' ),
         ]
@@ -253,7 +252,7 @@ function register_controls_section_carousel_settings( Controls_Stack $element, s
 
 }
 
-add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_arrows_navigation', 10, 3 );
+add_action( 'qazana/element/after_section_end', 'qazana_register_controls_section_style_arrows_navigation', 10, 3 );
 /**
  * Undocumented function
  *
@@ -262,7 +261,7 @@ add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_secti
  * @param [type] $args
  * @return void
  */
-function register_controls_section_style_arrows_navigation( Controls_Stack $element, $section_id, $args ) {
+function qazana_register_controls_section_style_arrows_navigation( $element, $section_id, $args ) {
 
     if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
         return;
@@ -272,7 +271,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'section_style_navigation_arrows',
         [
             'label'     => __( 'Navigation Arrows', 'qazana' ),
-            'tab'       => Controls_Manager::TAB_STYLE,
+            'tab'       => \Qazana\Controls_Manager::TAB_STYLE,
             'condition' => [
                 'navigation!' => 'none',
             ],
@@ -292,7 +291,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_size',
         [
             'label' => __( 'Size', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
                     'min' => 20,
@@ -312,7 +311,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_color',
         [
             'label'     => __( 'Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}};',
             ],
@@ -323,7 +322,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     );
 
     $element->add_group_control(
-        Group_Control_Border:: get_type(),
+        \Qazana\Group_Control_Border:: get_type(),
         [
             'name'     => 'arrows_border',
             'selector' => '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next',
@@ -334,7 +333,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_border_radius',
         [
             'label'      => __( 'Border Radius', 'qazana' ),
-            'type'       => Controls_Manager::DIMENSIONS,
+            'type'       => \Qazana\Controls_Manager::DIMENSIONS,
             'size_units' => [ 'px', '%' ],
             'selectors'  => [
                 '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -346,7 +345,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_position',
         [
             'label'              => __( 'Position', 'qazana' ),
-            'type'               => Controls_Manager::DIMENSIONS,
+            'type'               => \Qazana\Controls_Manager::DIMENSIONS,
             'size_units'         => [ 'px' ],
             'allowed_dimensions' => 'horizontal',
             'placeholder'        => [
@@ -378,7 +377,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_v_position',
         [
             'label' => __( 'Vertical Position', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 '%' => [
                     'min' => -150,
@@ -412,7 +411,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_hover_color',
         [
             'label'     => __( 'Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'color: {{VALUE}};',
             ],
@@ -426,7 +425,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_hover_background_color',
         [
             'label'     => __( 'Background Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'background-color: {{VALUE}};',
             ],
@@ -440,7 +439,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
         'arrows_hover_border_color',
         [
             'label'     => __( 'Border Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover' => 'border-color: {{VALUE}};',
             ],
@@ -457,7 +456,7 @@ function register_controls_section_style_arrows_navigation( Controls_Stack $elem
     $element->end_controls_section();
 }
 
-add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_section_style_bullets_navigation', 10, 3 );
+add_action( 'qazana/element/after_section_end', 'qazana_register_controls_section_style_bullets_navigation', 10, 3 );
 /**
  * Undocumented function
  *
@@ -466,7 +465,7 @@ add_action( 'qazana/element/after_section_end', '\Qazana\register_controls_secti
  * @param [type] $args
  * @return void
  */
-function register_controls_section_style_bullets_navigation( Controls_Stack $element, $section_id, $args ) {
+function qazana_register_controls_section_style_bullets_navigation( $element, $section_id, $args ) {
 
     if ( empty( $element->carousel ) || ! $element->carousel || $section_id !== 'section_carousel_settings' ) {
         return;
@@ -476,7 +475,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'section_style_bullet_navigation',
         [
             'label'     => __( 'Bullet Navigation Style', 'qazana' ),
-            'tab'       => Controls_Manager::TAB_STYLE,
+            'tab'       => \Qazana\Controls_Manager::TAB_STYLE,
             'condition' => [
                 'navigation!' => 'none',
             ],
@@ -496,7 +495,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_size',
         [
             'label' => __( 'Size', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
                     'step' => 2,
@@ -517,7 +516,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_spacing',
         [
             'label' => __( 'Spacing', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
                     'step' => 1,
@@ -538,7 +537,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_h_position',
         [
             'label' => __( 'Horizontal Position', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 '%' => [
                     'min' => -150,
@@ -559,7 +558,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_position_bottom',
         [
             'label' => __( 'Vertical Position', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
                     'min' => -100,
@@ -583,7 +582,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_color',
         [
             'label'     => __( 'Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .slick-dots li button'        => 'border-color: {{VALUE}};',
                 '{{WRAPPER}} .slick-dots li button:before' => 'background-color: {{VALUE}};',
@@ -598,7 +597,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'dots_align',
         [
             'label'       => __( 'Align', 'qazana' ),
-            'type'        => Controls_Manager::CHOOSE,
+            'type'        => \Qazana\Controls_Manager::CHOOSE,
             'label_block' => false,
             'default'     => 'center',
             'options'     => [
@@ -634,7 +633,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'active_dots_color',
         [
             'label'     => __( 'Color', 'qazana' ),
-            'type'      => Controls_Manager::COLOR,
+            'type'      => \Qazana\Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .slick-dots li.slick-active button'        => 'border-color: {{VALUE}};',
                 '{{WRAPPER}} .slick-dots li.slick-active button:before' => 'background-color: {{VALUE}};',
@@ -649,7 +648,7 @@ function register_controls_section_style_bullets_navigation( Controls_Stack $ele
         'active_dots_size',
         [
             'label' => __( 'Size', 'qazana' ),
-            'type'  => Controls_Manager::SLIDER,
+            'type'  => \Qazana\Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
                     'step' => 2,

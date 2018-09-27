@@ -3,7 +3,7 @@
 namespace Qazana\Core\Responsive\Files;
 
 use Qazana\Core\Files\Base;
-use Qazana\Core\Responsive\Responsive;
+use Qazana\Core\Responsive\Breakpoints;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -22,7 +22,7 @@ class Frontend extends Base {
 	}
 
 	public function parse_content() {
-		$breakpoints = Responsive::get_breakpoints();
+		$breakpoints = Breakpoints::get_breakpoints();
 
 		$breakpoints_keys = array_keys( $breakpoints );
 

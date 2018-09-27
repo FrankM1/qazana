@@ -8,7 +8,7 @@ use Qazana\Core\Files\Base as Base_File;
 use Qazana\Core\DynamicTags\Manager;
 use Qazana\Core\DynamicTags\Tag;
 use Qazana\Element_Base;
-use Qazana\Core\Responsive\Responsive;
+use Qazana\Core\Responsive\Breakpoints;
 use Qazana\Stylesheet;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -626,7 +626,7 @@ abstract class Base extends Base_File {
 	private function init_stylesheet() {
 		$this->stylesheet_obj = new Stylesheet();
 
-		$breakpoints = Responsive::get_breakpoints();
+		$breakpoints = Breakpoints::get_breakpoints();
 
 		$this->stylesheet_obj
 			->add_device( 'mobile', 0 )
