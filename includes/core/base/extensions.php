@@ -18,12 +18,22 @@ abstract class Base {
     public $default_activation = true;
     
     /**
-	 * Unique extension name
+	 * Add extension details
 	 *
 	 * @return array config
 	 */
 	public function add_config() { 
+        _deprecated_function( __METHOD__, '2.0.0', '$this->register' );
         return [];
+    }
+
+    /**
+	 * Register extension details
+	 *
+	 * @return array config
+	 */
+	public function register() { 
+        return $this->add_config();
     }
 
 	/**
@@ -69,6 +79,25 @@ abstract class Base {
 	 */
 	public function get_skins() {
 		return [];
+    }
+    
+    /**
+	 * Check if extensions is required.
+     * Required extensions can not be disabled
+	 *
+	 * @return array
+	 */
+	public function get_required() {
+		return $this->required;
+	}
+
+	/**
+	 * Check if extensions is enabled by default
+	 *
+	 * @return array
+	 */
+	public function get_default_activation() {
+		return $this->default_activation;
 	}
 
 	/**
@@ -130,16 +159,16 @@ abstract class Base {
 	public function get_config() {
 
         $data = [
-            'title' => $this->get_title(),
-            'name' => $this->get_name(),
-            'required' => $this->required,
-            'default_activation' => $this->default_activation,
-            'widgets' => $this->get_widgets(),
-            'skins' => $this->get_skins(),
-            'dependencies' => $this->get_dependencies(),
+            'title'                 => $this->get_title(),
+            'name'                  => $this->get_name(),
+            'required'              => $this->get_required(),
+            'default_activation'    => $this->get_default_activation(),
+            'widgets'               => $this->get_widgets(),
+            'skins'                 => $this->get_skins(),
+            'dependencies'          => $this->get_dependencies(),
         ];
 
-        return array_merge( $data, $this->add_config() );
+        return array_merge( $data, $this->register() );
 	}
 
     /**

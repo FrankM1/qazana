@@ -38,9 +38,9 @@ class Iconset_FontAwesome extends Base {
         $suffix = Utils::is_script_debug() ? '' : '.min';
 
 		wp_register_style(
-			'font-awesome', $this->extension_url( 'assets/font-awesome/css/font-awesome'. $suffix .'.css'),
+			'font-awesome', $this->extension_url( 'assets/fontawesome-free/css/all'. $suffix .'.css'),
 			[],
-			'4.7.0'
+			'5.3.1'
 		);
 
         wp_enqueue_style( 'font-awesome' );

@@ -116,17 +116,17 @@ class Manager {
 		 *
 		 * Fires after Qazana clears files
 		 *
-		 * @since 2.0.8
-		 * @deprecated 2.1.0 Use `qazana/core/files/clear_cache` instead
+		 * @since 2.0.0
+		 * @deprecated 2.0.0 Use `qazana/core/files/clear_cache` instead
 		 */
-		do_action_deprecated( 'qazana/css-file/clear_cache', [], '2.1.0', 'qazana/core/files/clear_cache' );
+		do_action_deprecated( 'qazana/css-file/clear_cache', [], '2.0.0', 'qazana/core/files/clear_cache' );
 
 		/**
 		 * Qazana clear files.
 		 *
 		 * Fires after Qazana clears files
 		 *
-		 * @since 2.1.0
+		 * @since 2.0.0
 		 */
 		do_action( 'qazana/core/files/clear_cache' );
 	}

@@ -610,7 +610,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * Used to generate the edit tools HTML.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.8.0 Use `Element_Base::render_edit_tools()` instead.
+	 * @deprecated 2.0.0 Use `Element_Base::render_edit_tools()` instead.
 	 * @access protected
 	 */
 	protected function _render_settings() {

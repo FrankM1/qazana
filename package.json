@@ -57,6 +57,7 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "browser-sync": "^2.18.13",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
