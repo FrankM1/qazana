@@ -23,7 +23,7 @@ abstract class Base {
 	 * @return array config
 	 */
 	public function add_config() { 
-        _deprecated_function( __METHOD__, '2.0.0', '$this->register' );
+        // _deprecated_function( __METHOD__, '2.0.0', '$this->register' );
         return [];
     }
 
