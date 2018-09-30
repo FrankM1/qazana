@@ -1,20 +1,21 @@
 /* global QazanaConfig */
-var App;
+import Heartbeat from './utils/heartbeat';
+import Navigator from './regions/navigator/navigator';
 
 Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
 	options = {
 		evaluate: /<#([\s\S]+?)#>/g,
 		interpolate: /{{{([\s\S]+?)}}}/g,
-		escape: /{{([^}]+?)}}(?!})/g
+		escape: /{{([^}]+?)}}(?!})/g,
 	};
 
 	return _.template( rawTemplate, options );
 };
 
-App = Marionette.Application.extend( {
+const App = Marionette.Application.extend( {
 	previewLoadedOnce: false,
+
 	helpers: require( 'qazana-editor-utils/helpers' ),
-	heartbeat: require( 'qazana-editor-utils/heartbeat' ),
 	imagesManager: require( 'qazana-editor-utils/images-manager' ),
 	debug: require( 'qazana-editor-utils/debug' ),
 	schemes: require( 'qazana-editor-utils/schemes' ),
@@ -31,7 +32,7 @@ App = Marionette.Application.extend( {
 		panelElements: Backbone.Radio.channel( 'QAZANA:panelElements' ),
 		dataEditMode: Backbone.Radio.channel( 'QAZANA:editmode' ),
 		deviceMode: Backbone.Radio.channel( 'QAZANA:deviceMode' ),
-		templates: Backbone.Radio.channel( 'QAZANA:templates' )
+		templates: Backbone.Radio.channel( 'QAZANA:templates' ),
 	},
 
 	// Exporting modules that can be used externally
@@ -42,18 +43,18 @@ App = Marionette.Application.extend( {
 				views: {
 					parts: {
 						headerParts: {
-							logo: require( 'qazana-templates/views/parts/header-parts/logo' )
-						}
+							logo: require( 'qazana-templates/views/parts/header-parts/logo' ),
+						},
 					},
-					BaseModalLayout: require( 'qazana-templates/views/base-modal-layout' )
-				}
+					BaseModalLayout: require( 'qazana-templates/views/base-modal-layout' ),
+				},
 			},
 			saver: {
 				behaviors: {
-                    HeaderSaver: require('./components/saver/behaviors/header-saver'),
-					FooterSaver: require( './components/saver/behaviors/footer-saver' )
-				}
-			}
+                    HeaderSaver: require( './components/saver/behaviors/header-saver' ),
+					FooterSaver: require( './components/saver/behaviors/footer-saver' ),
+				},
+			},
 		},
 		controls: {
 			Animation: require( 'qazana-controls/select2' ),
@@ -88,16 +89,16 @@ App = Marionette.Application.extend( {
 			Text_shadow: require( 'qazana-controls/box-shadow' ),
 			Url: require( 'qazana-controls/url' ),
 			Wp_widget: require( 'qazana-controls/wp_widget' ),
-			Wysiwyg: require( 'qazana-controls/wysiwyg' )
+			Wysiwyg: require( 'qazana-controls/wysiwyg' ),
 		},
 		elements: {
 			models: {
 				BaseSettings: require( 'qazana-elements/models/base-settings' ),
-				Element: require( 'qazana-elements/models/element' )
+				Element: require( 'qazana-elements/models/element' ),
 			},
 			views: {
-				Widget: require( 'qazana-elements/views/widget' )
-			}
+				Widget: require( 'qazana-elements/views/widget' ),
+			},
 		},
 		layouts: {
 			panel: {
@@ -105,29 +106,29 @@ App = Marionette.Application.extend( {
 					elements: {
 						views: {
 							Global: require( 'qazana-panel/pages/elements/views/global' ),
-							Elements: require( 'qazana-panel/pages/elements/views/elements' )
-						}
+							Elements: require( 'qazana-panel/pages/elements/views/elements' ),
+						},
 					},
 					menu: {
-						Menu: require( 'qazana-panel/pages/menu/menu' )
-					}
-				}
-			}
+						Menu: require( 'qazana-panel/pages/menu/menu' ),
+					},
+				},
+			},
 		},
 		views: {
-			ControlsStack: require( 'qazana-views/controls-stack' )
-		}
+			ControlsStack: require( 'qazana-views/controls-stack' ),
+		},
 	},
 
 	backgroundClickListeners: {
 		popover: {
 			element: '.qazana-controls-popover',
-			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label, .select2-container'
+			ignore: '.qazana-control-popover-toggle-toggle, .qazana-control-popover-toggle-toggle-label, .select2-container',
 		},
 		tagsList: {
 			element: '.qazana-tags-list',
-			ignore: '.qazana-control-dynamic-switcher'
-		}
+			ignore: '.qazana-control-dynamic-switcher',
+		},
 	},
 
 	// TODO: Temp modules bc method since 2.0.0
@@ -135,21 +136,21 @@ App = Marionette.Application.extend( {
 		var bcModules = {
 			ControlsStack: this.modules.views.ControlsStack,
 			element: {
-				Model: this.modules.elements.models.Element
+				Model: this.modules.elements.models.Element,
 			},
 			RepeaterRowView: this.modules.controls.RepeaterRow,
 			WidgetView: this.modules.elements.views.Widget,
 			panel: {
-				Menu: this.modules.layouts.panel.pages.menu.Menu
+				Menu: this.modules.layouts.panel.pages.menu.Menu,
 			},
 			saver: {
 				headerBehavior: this.modules.components.saver.behaviors.HeaderSaver,
-				footerBehavior: this.modules.components.saver.behaviors.FooterSaver
+				footerBehavior: this.modules.components.saver.behaviors.FooterSaver,
 			},
 			SettingsModel: this.modules.elements.models.BaseSettings,
 			templateLibrary: {
-				ElementsCollectionView: this.modules.layouts.panel.pages.elements.views.Elements
-			}
+				ElementsCollectionView: this.modules.layouts.panel.pages.elements.views.Elements,
+			},
 		};
 
 		jQuery.extend( this.modules, bcModules );
@@ -169,11 +170,11 @@ App = Marionette.Application.extend( {
 		return this.envData.gecko || this.envData.webkit;
 	},
 
-	getElementData: function( modelElement ) {
-		var elType = modelElement.get( 'elType' );
+	getElementData: function( model ) {
+		var elType = model.get( 'elType' );
 
 		if ( 'widget' === elType ) {
-			var widgetType = modelElement.get( 'widgetType' );
+			var widgetType = model.get( 'widgetType' );
 
 			if ( ! this.config.widgets[ widgetType ] ) {
 				return false;
@@ -186,7 +187,13 @@ App = Marionette.Application.extend( {
 			return false;
 		}
 
-		return this.config.elements[ elType ];
+		var elementConfig = this.helpers.cloneObject( this.config.elements[ elType ] );
+
+		if ( 'section' === elType && model.get( 'isInner' ) ) {
+			elementConfig.title = qazana.translate( 'inner_section' );
+		}
+
+		return elementConfig;
 	},
 
 	getElementControls: function( modelElement ) {
@@ -201,7 +208,7 @@ App = Marionette.Application.extend( {
 			controls = {};
 
 		_.each( elementData.controls, function( controlData, controlKey ) {
-			if ( isInner && controlData.hide_in_inner || ! isInner && controlData.hide_in_top ) {
+			if ( ( isInner && controlData.hide_in_inner ) || ( ! isInner && controlData.hide_in_top ) ) {
 				return;
 			}
 
@@ -212,10 +219,8 @@ App = Marionette.Application.extend( {
 	},
 
 	mergeControlsSettings: function( controls ) {
-		var  self = this;
-
-		_.each( controls, function( controlData, controlKey ) {
-			controls[ controlKey ] = jQuery.extend( true, {}, self.config.controls[ controlData.type ], controlData  );
+		_.each( controls, ( controlData, controlKey ) => {
+			controls[ controlKey ] = jQuery.extend( true, {}, this.config.controls[ controlData.type ], controlData );
 		} );
 
 		return controls;
@@ -291,7 +296,7 @@ App = Marionette.Application.extend( {
 		this.elements = new ElementCollection( config );
 
 		this.elementsModel = new Backbone.Model( {
-			elements: this.elements
+			elements: this.elements,
 		} );
 	},
 
@@ -309,7 +314,7 @@ App = Marionette.Application.extend( {
 			this.$preview = $( '<iframe>', {
 				id: previewIframeId,
 				src: this.config.document.urls.preview,
-				allowfullscreen: 1
+				allowfullscreen: 1,
 			} );
 
 			this.$previewResponsiveWrapper.append( this.$preview );
@@ -319,7 +324,7 @@ App = Marionette.Application.extend( {
 	},
 
 	initFrontend: function() {
-		var frontendWindow = this.$preview[0].contentWindow;
+		var frontendWindow = this.$preview[ 0 ].contentWindow;
 
 		window.qazanaFrontend = frontendWindow.qazanaFrontend;
 
@@ -347,15 +352,15 @@ App = Marionette.Application.extend( {
 				message: qazana.translate( 'dialog_confirm_clear_page' ),
 				position: {
 					my: 'center center',
-					at: 'center center'
+					at: 'center center',
 				},
 				strings: {
 					confirm: qazana.translate( 'delete' ),
-					cancel: qazana.translate( 'cancel' )
+					cancel: qazana.translate( 'cancel' ),
 				},
 				onConfirm: function() {
 					self.elements.reset();
-				}
+				},
 			} );
 
 			return dialog;
@@ -366,111 +371,18 @@ App = Marionette.Application.extend( {
 		var keysDictionary = {
 			c: 67,
 			d: 68,
-			del: 46,
+			i: 73,
 			l: 76,
 			m: 77,
 			p: 80,
 			s: 83,
-			v: 86
+			v: 86,
+			del: 46,
 		};
 
 		var $ = jQuery,
 			hotKeysHandlers = {},
 			hotKeysManager = this.hotKeys;
-
-		hotKeysHandlers[ keysDictionary.del ] = {
-			deleteElement: {
-				isWorthHandling: function( event ) {
-					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName();
-
-					if ( ! isEditorOpen ) {
-						return false;
-					}
-
-					var $target = $( event.target );
-
-					if ( $target.is( ':input, .qazana-input' ) ) {
-						return false;
-					}
-
-					return ! $target.closest( '[contenteditable="true"]' ).length;
-				},
-				handle: function() {
-					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).removeElement();
-				}
-			}
-		};
-
-		hotKeysHandlers[ keysDictionary.d ] = {
-			duplicateElement: {
-				isWorthHandling: function( event ) {
-					return hotKeysManager.isControlEvent( event );
-				},
-				handle: function() {
-					var panel = qazana.getPanelView();
-
-					if ( 'editor' !== panel.getCurrentPageName() ) {
-						return;
-					}
-
-					panel.getCurrentPageView().getOption( 'editedElementView' ).duplicate();
-				}
-			}
-		};
-
-		hotKeysHandlers[ keysDictionary.l ] = {
-			showTemplateLibrary: {
-				isWorthHandling: function( event ) {
-					return hotKeysManager.isControlEvent( event ) && event.shiftKey;
-				},
-				handle: function() {
-					qazana.templates.startModal();
-				}
-			}
-		};
-
-		hotKeysHandlers[ keysDictionary.m ] = {
-			changeDeviceMode: {
-				devices: [ 'desktop', 'tablet', 'mobile' ],
-				isWorthHandling: function( event ) {
-					return hotKeysManager.isControlEvent( event ) && event.shiftKey;
-				},
-				handle: function() {
-					var currentDeviceMode = qazana.channels.deviceMode.request( 'currentMode' ),
-						modeIndex = this.devices.indexOf( currentDeviceMode );
-
-					modeIndex++;
-
-					if ( modeIndex >= this.devices.length ) {
-						modeIndex = 0;
-					}
-
-					qazana.changeDeviceMode( this.devices[ modeIndex ] );
-				}
-			}
-		};
-
-		hotKeysHandlers[ keysDictionary.p ] = {
-			changeEditMode: {
-				isWorthHandling: function( event ) {
-					return hotKeysManager.isControlEvent( event );
-				},
-				handle: function() {
-					qazana.getPanelView().modeSwitcher.currentView.toggleMode();
-				}
-			}
-		};
-
-		hotKeysHandlers[ keysDictionary.s ] = {
-			saveEditor: {
-				isWorthHandling: function( event ) {
-					return hotKeysManager.isControlEvent( event );
-				},
-				handle: function() {
-					qazana.saver.saveDraft();
-				}
-			}
-		};
 
 		hotKeysHandlers[ keysDictionary.c ] = {
 			copyElement: {
@@ -517,8 +429,94 @@ App = Marionette.Application.extend( {
 				},
 				handle: function() {
 					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).copy();
-				}
-			}
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.d ] = {
+			duplicateElement: {
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event );
+				},
+				handle: function() {
+					var panel = qazana.getPanelView();
+
+					if ( 'editor' !== panel.getCurrentPageName() ) {
+						return;
+					}
+
+					panel.getCurrentPageView().getOption( 'editedElementView' ).duplicate();
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.i ] = {
+			navigator: {
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event ) && 'edit' === qazana.channels.dataEditMode.request( 'activeMode' );
+				},
+				handle: function() {
+					if ( qazana.navigator.storage.visible ) {
+						qazana.navigator.close();
+					} else {
+						qazana.navigator.open();
+					}
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.l ] = {
+			showTemplateLibrary: {
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event ) && event.shiftKey;
+				},
+				handle: function() {
+					qazana.templates.startModal();
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.m ] = {
+			changeDeviceMode: {
+				devices: [ 'desktop', 'tablet', 'mobile' ],
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event ) && event.shiftKey;
+				},
+				handle: function() {
+					var currentDeviceMode = qazana.channels.deviceMode.request( 'currentMode' ),
+						modeIndex = this.devices.indexOf( currentDeviceMode );
+
+					modeIndex++;
+
+					if ( modeIndex >= this.devices.length ) {
+						modeIndex = 0;
+					}
+
+					qazana.changeDeviceMode( this.devices[ modeIndex ] );
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.p ] = {
+			changeEditMode: {
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event );
+				},
+				handle: function() {
+					qazana.getPanelView().modeSwitcher.currentView.toggleMode();
+                },
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.s ] = {
+			saveEditor: {
+				isWorthHandling: function( event ) {
+					return hotKeysManager.isControlEvent( event );
+				},
+				handle: function() {
+					qazana.saver.saveDraft();
+				},
+			},
 		};
 
 		hotKeysHandlers[ keysDictionary.v ] = {
@@ -530,7 +528,7 @@ App = Marionette.Application.extend( {
 
 					return -1 !== [ 'BODY', 'IFRAME' ].indexOf( document.activeElement.tagName ) && 'BODY' === qazanaFrontend.getElements( 'window' ).document.activeElement.tagName;
 				},
-				handle: function() {
+				handle: function( event ) {
 					var targetElement = qazana.channels.editor.request( 'contextMenu:targetView' );
 
 					if ( ! targetElement ) {
@@ -541,6 +539,14 @@ App = Marionette.Application.extend( {
 						}
 					}
 
+					if ( event.shiftKey ) {
+						if ( targetElement && targetElement.pasteStyle && qazana.getStorage( 'transfer' ) ) {
+							targetElement.pasteStyle();
+						}
+
+						return;
+					}
+
 					if ( ! targetElement ) {
 						targetElement = qazana.getPreviewView();
 					}
@@ -548,8 +554,31 @@ App = Marionette.Application.extend( {
 					if ( targetElement.isPasteEnabled() ) {
 						targetElement.paste();
 					}
-				}
-			}
+				},
+			},
+		};
+
+		hotKeysHandlers[ keysDictionary.del ] = {
+			deleteElement: {
+				isWorthHandling: function( event ) {
+					var isEditorOpen = 'editor' === qazana.getPanelView().getCurrentPageName();
+
+					if ( ! isEditorOpen ) {
+						return false;
+					}
+
+					var $target = $( event.target );
+
+					if ( $target.is( ':input, .qazana-input' ) ) {
+						return false;
+					}
+
+					return ! $target.closest( '[contenteditable="true"]' ).length;
+				},
+				handle: function() {
+					qazana.getPanelView().getCurrentPageView().getOption( 'editedElementView' ).removeElement();
+				},
+			},
 		};
 
 		_.each( hotKeysHandlers, function( handlers, keyCode ) {
@@ -562,11 +591,16 @@ App = Marionette.Application.extend( {
 	},
 
 	initPanel: function() {
-		this.addRegions( { panel: require( 'qazana-layouts/panel/panel' ) } );
+		this.addRegions( { panel: require( 'qazana-regions/panel/panel' ) } );
 	},
 
 	initNavigator: function() {
-		this.addRegions( { navigator: require( 'qazana-layouts/navigator/navigator' ) } );
+		this.addRegions( {
+			navigator: {
+				el: '#qazana-navigator',
+				regionClass: Navigator,
+			},
+		} );
 	},
 
 	preventClicksInsideEditor: function() {
@@ -578,9 +612,9 @@ App = Marionette.Application.extend( {
 			var $target = jQuery( event.target ),
 				editMode = qazana.channels.dataEditMode.request( 'activeMode' ),
 				isClickInsideQazana = !! $target.closest( '#qazana, .pen-menu' ).length,
-				isTargetInsideDocument = this.contains( $target[0] );
+				isTargetInsideDocument = this.contains( $target[ 0 ] );
 
-			if ( isClickInsideQazana && 'edit' === editMode || ! isTargetInsideDocument ) {
+			if ( ( isClickInsideQazana && 'edit' === editMode ) || ! isTargetInsideDocument ) {
 				return;
 			}
 
@@ -617,11 +651,11 @@ App = Marionette.Application.extend( {
 			message: '',
 			position: {
 				my: 'center center',
-				at: 'center center'
+				at: 'center center',
 			},
 			strings: {
 				confirm: qazana.translate( 'learn_more' ),
-				cancel: qazana.translate( 'go_back' )
+				cancel: qazana.translate( 'go_back' ),
 			},
 			onConfirm: null,
 			onCancel: function() {
@@ -629,8 +663,8 @@ App = Marionette.Application.extend( {
 			},
 			hide: {
 				onBackgroundClick: false,
-				onButtonClick: false
-			}
+				onButtonClick: false,
+			},
 		};
 
 		options = jQuery.extend( true, defaultOptions, options );
@@ -651,9 +685,9 @@ App = Marionette.Application.extend( {
 
 							panel.setPage( 'historyPage' );
 							panel.getCurrentPageView().activateTab( 'revisions' );
-						}
-					}
-				]
+						},
+					},
+				],
 			} );
 		}
 	},
@@ -737,7 +771,7 @@ App = Marionette.Application.extend( {
 	reloadPreview: function() {
 		jQuery( '#qazana-preview-loading' ).show();
 
-		this.$preview[0].contentWindow.location.reload( true );
+		this.$preview[ 0 ].contentWindow.location.reload( true );
 	},
 
 	clearPage: function() {
@@ -835,13 +869,12 @@ App = Marionette.Application.extend( {
 		this.$window.trigger( 'qazana:init' );
 
 		this.initPreview();
-
 	},
 
 	onPreviewLoaded: function() {
 		NProgress.done();
 
-		var previewWindow = this.$preview[0].contentWindow;
+		var previewWindow = this.$preview[ 0 ].contentWindow;
 
 		if ( ! previewWindow.qazanaFrontend ) {
 			this.onPreviewLoadingError();
@@ -864,7 +897,7 @@ App = Marionette.Application.extend( {
 
 		var iframeRegion = new Marionette.Region( {
 			// Make sure you get the DOM object out of the jQuery object
-			el: this.$previewQazanaEl[0]
+			el: this.$previewQazanaEl[ 0 ],
 		} );
 
 		this.schemes.init();
@@ -872,7 +905,7 @@ App = Marionette.Application.extend( {
 
 		this.preventClicksInsideEditor();
 
-		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[0] );
+		this.addBackgroundClickArea( qazanaFrontend.getElements( '$document' )[ 0 ] );
 
 		if ( this.previewLoadedOnce ) {
 			this.getPanelView().setPage( 'elements', null, { autoFocusSearch: false } );
@@ -883,7 +916,7 @@ App = Marionette.Application.extend( {
 		this.initNavigator();
 
 		this.addRegions( {
-			sections: iframeRegion
+			sections: iframeRegion,
 		} );
 
 		var Preview = require( 'qazana-views/preview' );
@@ -918,7 +951,7 @@ App = Marionette.Application.extend( {
 	onFirstPreviewLoaded: function() {
 		this.initPanel();
 
-		this.heartbeat.init();
+		this.heartbeat = new Heartbeat();
 
 		this.checkPageStatus();
 
@@ -942,14 +975,14 @@ App = Marionette.Application.extend( {
 			headerMessage: this.translate( 'device_incompatible_header' ),
 			message: this.translate( 'device_incompatible_message' ),
 			strings: {
-				confirm: qazana.translate( 'proceed_anyway' )
+				confirm: qazana.translate( 'proceed_anyway' ),
 			},
 			hide: {
-				onButtonClick: true
+				onButtonClick: true,
 			},
 			onConfirm: function() {
 				this.hide();
-			}
+			},
 		} );
 	},
 
@@ -959,18 +992,18 @@ App = Marionette.Application.extend( {
 			message: this.translate( 'preview_not_loading_message' ),
 			onConfirm: function() {
 				open( qazana.config.help_preview_error_url, '_blank' );
-			}
+			},
 		} );
 	},
 
 	onPreviewElNotFound: function() {
-		var args = this.$preview[0].contentWindow.qazanaPreviewErrorArgs;
+		var args = this.$preview[ 0 ].contentWindow.qazanaPreviewErrorArgs;
 
 		if ( ! args ) {
 			args = {
 				headerMessage: this.translate( 'preview_el_not_found_header' ),
 				message: this.translate( 'preview_el_not_found_message' ),
-				confirmURL: qazana.config.help_the_content_url
+				confirmURL: qazana.config.help_the_content_url,
 			};
 		}
 
@@ -986,8 +1019,8 @@ App = Marionette.Application.extend( {
 			var $clickedTarget = jQuery( event.target );
 
 			// If it's a label that associated with an input
-			if ( $clickedTarget[0].control ) {
-				$clickedTarget = $clickedTarget.add( $clickedTarget[0].control );
+			if ( $clickedTarget[ 0 ].control ) {
+				$clickedTarget = $clickedTarget.add( $clickedTarget[ 0 ].control );
 			}
 
 			if ( this.ignore && $clickedTarget.closest( this.ignore ).length ) {
@@ -1004,7 +1037,7 @@ App = Marionette.Application.extend( {
 
 			jQuery( this.element ).not( $clickedTargetClosestElement ).hide();
 		} );
-	}
+	},
 } );
 
 module.exports = ( window.qazana = new App() ).start();

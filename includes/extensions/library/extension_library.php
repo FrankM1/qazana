@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {	exit; } // Exit if accessed directly
 class Library extends Base {
 
 	public function __construct() {
-        require( 'classes/documents/library-document.php' );
-        require( 'classes/documents/page.php' );
-        require( 'classes/documents/section.php' );
-        require( 'classes/shortcode.php' );
+        require( 'documents/library.php' );
+        require( 'documents/library-page.php' );
+        require( 'documents/library-section.php' );
+        require( 'shortcodes/shortcode.php' );
 		require( 'wp-widgets/qazana-library.php' );
 
         qazana()->documents

@@ -4,13 +4,11 @@
 
 	var QazanaAdminDialogApp = {
 
-		dialogsManager: new DialogsManager.Instance(),
-
 		cacheElements: function() {
 			this.cache = {
 				$deactivateLink: $( '#the-list' ).find( '[data-slug="qazana"] span.deactivate a' ),
 				$dialogHeader: $( '#qazana-deactivate-feedback-dialog-header' ),
-				$dialogForm: $( '#qazana-deactivate-feedback-dialog-form' )
+				$dialogForm: $( '#qazana-deactivate-feedback-dialog-form' ),
 			};
 		},
 
@@ -34,16 +32,16 @@
 
 			self.getModal = function() {
 				if ( ! modal ) {
-					modal = self.dialogsManager.createWidget( 'lightbox', {
+					modal = qazanaAdmin.getDialogsManager().createWidget( 'lightbox', {
 						id: 'qazana-deactivate-feedback-modal',
 						headerMessage: self.cache.$dialogHeader,
 						message: self.cache.$dialogForm,
 						hide: {
-							onButtonClick: false
+							onButtonClick: false,
 						},
 						position: {
 							my: 'center',
-							at: 'center'
+							at: 'center',
 						},
 						onReady: function() {
 							DialogsManager.getWidgetType( 'lightbox' ).prototype.onReady.apply( this, arguments );
@@ -51,7 +49,7 @@
 							this.addButton( {
 								name: 'submit',
 								text: QazanaAdminFeedbackArgs.i18n.submit_n_deactivate,
-								callback: self.sendFeedback.bind( self )
+								callback: self.sendFeedback.bind( self ),
 							} );
 
 							if ( ! QazanaAdminFeedbackArgs.is_tracker_opted_in ) {
@@ -60,7 +58,7 @@
 									text: QazanaAdminFeedbackArgs.i18n.skip_n_deactivate,
 									callback: function() {
 										self.deactivate();
-									}
+									},
 								} );
 							}
 						},
@@ -74,7 +72,7 @@
 							} );
 
 							$dialogModal.find( radioSelector + ':checked' ).trigger( 'change' );
-						}
+						},
 					} );
 				}
 
@@ -95,11 +93,10 @@
 			this.initModal();
 			this.cacheElements();
 			this.bindEvents();
-		}
+		},
 	};
 
 	$( function() {
 		QazanaAdminDialogApp.init();
 	} );
-
 }( jQuery ) );

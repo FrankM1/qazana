@@ -7,11 +7,11 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 
 	ui: {
 		uploadForm: '#qazana-template-library-import-form',
-		fileInput: '#qazana-template-library-import-form-input'
+		fileInput: '#qazana-template-library-import-form-input',
 	},
 
 	events: {
-		'change @ui.fileInput': 'onFileInputChange'
+		'change @ui.fileInput': 'onFileInputChange',
 	},
 
 	droppedFiles: null,
@@ -21,32 +21,32 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 			data = new FormData();
 
 		if ( this.droppedFiles ) {
-			data.append( 'file', this.droppedFiles[0] );
+			data.append( 'file', this.droppedFiles[ 0 ] );
 
 			this.droppedFiles = null;
 		} else {
-			data.append( 'file', this.ui.fileInput[0].files[0] );
+			data.append( 'file', this.ui.fileInput[ 0 ].files[ 0 ] );
 
-			this.ui.uploadForm[0].reset();
+			this.ui.uploadForm[ 0 ].reset();
 		}
 
 		var options = {
 			data: data,
 			processData: false,
 			contentType: false,
-			success: function( data ) {
-				qazana.templates.getTemplatesCollection().add( data );
+			success: ( successData ) => {
+				qazana.templates.getTemplatesCollection().add( successData );
 
 				qazana.templates.setTemplatesPage( 'local' );
 			},
-			error: function( data ) {
-				qazana.templates.showErrorDialog( data );
+			error: ( errorData ) => {
+				qazana.templates.showErrorDialog( errorData );
 
 				layout.showImportView();
 			},
-			complete: function() {
+			complete: () => {
 				layout.hideLoadingView();
-			}
+			},
 		};
 
 		qazana.ajax.send( 'import_template', options );
@@ -59,7 +59,7 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 			'drag dragstart dragend dragover dragenter dragleave drop': this.onFormActions.bind( this ),
 			dragenter: this.onFormDragEnter.bind( this ),
 			'dragleave drop': this.onFormDragLeave.bind( this ),
-			drop: this.onFormDrop.bind( this )
+			drop: this.onFormDrop.bind( this ),
 		} );
 	},
 
@@ -88,7 +88,7 @@ TemplateLibraryImportView = Marionette.ItemView.extend( {
 
 	onFileInputChange: function() {
 		this.submitForm();
-	}
+	},
 } );
 
 module.exports = TemplateLibraryImportView;

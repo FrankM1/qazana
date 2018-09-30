@@ -24,8 +24,8 @@ var StretchedSection = HandlerModule.extend( {
 		this.stretchElement = new qazanaFrontend.modules.StretchElement( {
 			element: this.$element,
 			selectors: {
-				container: this.getStretchContainer()
-			}
+				container: this.getStretchContainer(),
+			},
 		} );
 	},
 
@@ -65,7 +65,7 @@ var StretchedSection = HandlerModule.extend( {
 
 			this.stretch();
 		}
-	}
+	},
 } );
 
 var Shapes = HandlerModule.extend( {
@@ -73,9 +73,9 @@ var Shapes = HandlerModule.extend( {
 	getDefaultSettings: function() {
 		return {
 			selectors: {
-				container: '> .qazana-shape-%s'
+				container: '> .qazana-shape-%s',
 			},
-			svgURL: qazanaFrontend.config.urls.assets + 'shapes/'
+			svgURL: qazanaFrontend.config.urls.assets + 'shapes/',
 		};
 	},
 
@@ -111,7 +111,7 @@ var Shapes = HandlerModule.extend( {
 		var svgURL = self.getSettings( 'svgURL' ) + fileName + '.svg';
 
 		jQuery.get( svgURL, function( data ) {
-			$svgContainer.append( data.childNodes[0] );
+			$svgContainer.append( data.childNodes[ 0 ] );
 		} );
 
 		this.setNegative( side );
@@ -137,7 +137,7 @@ var Shapes = HandlerModule.extend( {
 		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
 
 		if ( shapeChange ) {
-			this.buildSVG( shapeChange[1] );
+			this.buildSVG( shapeChange[ 1 ] );
 
 			return;
 		}
@@ -145,11 +145,11 @@ var Shapes = HandlerModule.extend( {
 		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
 
 		if ( negativeChange ) {
-			this.buildSVG( negativeChange[1] );
+			this.buildSVG( negativeChange[ 1 ] );
 
-			this.setNegative( negativeChange[1] );
+			this.setNegative( negativeChange[ 1 ] );
 		}
-	}
+	},
 } );
 
 var HandlesPosition = HandlerModule.extend( {
@@ -187,7 +187,7 @@ var HandlesPosition = HandlerModule.extend( {
     onInit: function() {
         this.setHandlesPosition();
         this.$element.on( 'mouseenter', this.setHandlesPosition );
-    }
+    },
 } );
 
 module.exports = function( $scope ) {

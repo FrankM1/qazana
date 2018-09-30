@@ -200,7 +200,7 @@ class Manager {
 		return [
 			'templates' => $this->get_templates(),
 			'config' => [
-				'categories' => $library_data['categories'],
+				'categories' => ! empty( $library_data['categories'] ) ? $library_data['categories'] : [],
 			],
 		];
 	}

@@ -3,6 +3,7 @@ namespace Qazana;
 
 use Qazana\Core\Responsive\Breakpoints;
 use Qazana\Core\Settings\Manager as SettingsManager;
+use Qazana\Template_Library\Source_Local;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -126,6 +127,9 @@ class Editor {
 
 		// Handle `wp_enqueue_scripts`
 		remove_all_actions( 'wp_enqueue_scripts' );
+
+		// Also remove all scripts hooked into after_wp_tiny_mce.
+		remove_all_actions( 'after_wp_tiny_mce' );
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 999999 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
@@ -559,7 +563,6 @@ class Editor {
 			'qazana_site'            => 'https://qazana.net/plugins/qazana',
 			'help_the_content_url'   => 'https://qazana.net/plugins/qazana/the-content-missing/',
 			'assets_url'             => qazana()->core_assets_url,
-			'data'                   => $editor_data,
 			'locked_user'            => $locked_user,
             'user' => [
 				'restrictions' => qazana()->role_manager->get_user_restrictions_array(),
@@ -589,7 +592,7 @@ class Editor {
 				'settings' => __( 'Settings', 'qazana' ),
 
 				// Elements.
-				'inner_section' => __( 'Columns', 'qazana' ),
+				'inner_section' => __( 'Inner Section', 'qazana' ),
 
 				// Control Order.
 				'asc' => __( 'Ascending order', 'qazana' ),
@@ -694,7 +697,7 @@ class Editor {
 				'new_column' => __( 'Add New Column', 'qazana' ),
 				'copy_all_content' => __( 'Copy All Content', 'qazana' ),
 				'delete_all_content' => __( 'Delete All Content', 'qazana' ),
-                'navigator' => __( 'Navigator', 'qazana' ),  
+				'navigator' => __( 'Navigator', 'qazana' ),
 
 				// Right Click Introduction
 				'meet_right_click_header' => __( 'Meet Right Click', 'qazana' ),
@@ -996,7 +999,19 @@ class Editor {
 	public function __construct() {
 		add_action( 'admin_action_qazana', [ $this, 'init' ] );
 		add_action( 'template_redirect', [ $this, 'redirect_to_new_url' ] );
+
+		// Handle autocomplete feature for URL control.
+		add_filter( 'wp_link_query_args', [ $this, 'filter_wp_link_query_args' ] );
 		add_filter( 'wp_link_query', [ $this, 'filter_wp_link_query' ] );
+	}
+
+	public function filter_wp_link_query_args( $query ) {
+		$library_cpt_key = array_search( Source_Local::CPT, $query['post_type'], true );
+		if ( false !== $library_cpt_key ) {
+			unset( $query['post_type'][ $library_cpt_key ] );
+		}
+
+		return $query;
 	}
 
 	public function filter_wp_link_query( $results ) {
@@ -1104,8 +1119,9 @@ class Editor {
 			'panel',
 			'panel-elements',
 			'repeater',
-            'templates',
-            'navigator',
+			'library-layout',
+			'templates',
+			'navigator',
 		];
 
 		foreach ( $template_names as $template_name ) {

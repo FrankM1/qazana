@@ -6,13 +6,13 @@ TemplateLibraryTemplateRemoteView = TemplateLibraryTemplateView.extend( {
 
 	ui: function() {
 		return jQuery.extend( TemplateLibraryTemplateView.prototype.ui.apply( this, arguments ), {
-			favoriteCheckbox: '.qazana-template-library-template-favorite-input'
+			favoriteCheckbox: '.qazana-template-library-template-favorite-input',
 		} );
 	},
 
 	events: function() {
 		return jQuery.extend( TemplateLibraryTemplateView.prototype.events.apply( this, arguments ), {
-			'change @ui.favoriteCheckbox': 'onFavoriteCheckboxChange'
+			'change @ui.favoriteCheckbox': 'onFavoriteCheckboxChange',
 		} );
 	},
 
@@ -21,7 +21,7 @@ TemplateLibraryTemplateRemoteView = TemplateLibraryTemplateView.extend( {
 	},
 
 	onFavoriteCheckboxChange: function() {
-		var isFavorite = this.ui.favoriteCheckbox[0].checked;
+		var isFavorite = this.ui.favoriteCheckbox[ 0 ].checked;
 
 		this.model.set( 'favorite', isFavorite );
 
@@ -30,7 +30,7 @@ TemplateLibraryTemplateRemoteView = TemplateLibraryTemplateView.extend( {
 		if ( ! isFavorite && qazana.templates.getFilter( 'favorite' ) ) {
 			qazana.channels.templates.trigger( 'filter:change' );
 		}
-	}
+	},
 } );
 
 module.exports = TemplateLibraryTemplateRemoteView;

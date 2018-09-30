@@ -10,28 +10,28 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 		duplicateButton: '.qazana-repeater-tool-duplicate',
 		editButton: '.qazana-repeater-tool-edit',
 		removeButton: '.qazana-repeater-tool-remove',
-		itemTitle: '.qazana-repeater-row-item-title'
+		itemTitle: '.qazana-repeater-row-item-title',
 	},
 
 	behaviors: {
 		HandleInnerTabs: {
-			behaviorClass: require( 'qazana-behaviors/inner-tabs' )
-		}
+			behaviorClass: require( 'qazana-behaviors/inner-tabs' ),
+		},
 	},
 
 	triggers: {
 		'click @ui.removeButton': 'click:remove',
 		'click @ui.duplicateButton': 'click:duplicate',
-		'click @ui.itemTitle': 'click:edit'
+		'click @ui.itemTitle': 'click:edit',
 	},
 
 	modelEvents: {
-		change: 'onModelChange'
+		change: 'onModelChange',
 	},
 
 	templateHelpers: function() {
 		return {
-			itemIndex: this.getOption( 'itemIndex' )
+			itemIndex: this.getOption( 'itemIndex' ),
 		};
 	},
 
@@ -45,7 +45,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 
 	childViewOptions: function() {
 		return {
-			elementSettingsModel: this.model
+			elementSettingsModel: this.model,
 		};
 	},
 
@@ -99,7 +99,7 @@ RepeaterRowView = Marionette.CompositeView.extend( {
 		if ( 'desktop' === device ) {
 			qazana.getPanelView().getCurrentPageView().$el.toggleClass( 'qazana-responsive-switchers-open' );
 		}
-	}
+	},
 } );
 
 module.exports = RepeaterRowView;

@@ -48,5 +48,5 @@ module.exports = BaseSettings.extend( {
 		qazana.once( 'preview:loaded', function() {
 			qazana.getPanelView().setPage( 'general_settings' );
 		} );
-	}
+	},
 } );

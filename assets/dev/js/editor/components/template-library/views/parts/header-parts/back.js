@@ -4,10 +4,10 @@ module.exports = Marionette.ItemView.extend( {
 	id: 'qazana-template-library-header-preview-back',
 
 	events: {
-		'click': 'onClick'
+		click: 'onClick',
 	},
 
 	onClick: function() {
 		qazana.templates.showTemplates();
-	}
+	},
 } );

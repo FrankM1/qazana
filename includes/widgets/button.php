@@ -158,8 +158,11 @@ class Widget_Button extends Widget_Base {
 			[
 				'label' => __( 'Text', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( 'Click me', 'qazana' ),
-				'placeholder' => __( 'Click me', 'qazana' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => __( 'Click here', 'qazana' ),
+				'placeholder' => __( 'Click here', 'qazana' ),
 			]
 		);
 

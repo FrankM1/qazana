@@ -157,6 +157,7 @@ HandlerModule = ViewModule.extend( {
 
     getElementSettings: function( setting ) {
         var elementSettings = {},
+            skinName,
             settings,
 			modelCID = this.getModelCID(),
 			self = this,
@@ -166,7 +167,7 @@ HandlerModule = ViewModule.extend( {
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
 			settings = qazanaFrontend.config.elements.data[ modelCID ];
 
-            var skinName = 'global' !== elementName ? settings.attributes._skin : 'default';
+            skinName = 'global' !== elementName ? settings.attributes._skin : 'default';
 
 			jQuery.each( settings.getActiveControls(), function( controlKey ) {
                 var newControlKey = controlKey;
@@ -178,8 +179,8 @@ HandlerModule = ViewModule.extend( {
 
 		} else {
 
-            var skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
-			    settings = this.$element.data( 'settings' ) || {};
+            skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
+                settings = this.$element.data( 'settings' ) || {};
 
             elementSettings = settings;
 

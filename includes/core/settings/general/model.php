@@ -2,7 +2,7 @@
 namespace Qazana\Core\Settings\General;
 
 use Qazana\Controls_Manager;
-use Qazana\Core\Settings\Base\Model as BaseModel;
+use Qazana\Core\Settings\Base\Model as Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.6.0
  */
-class Model extends BaseModel {
+class Model extends Base {
 
 	/**
 	 * Get model name.

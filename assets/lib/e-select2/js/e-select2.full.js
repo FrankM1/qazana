@@ -2,7 +2,7 @@
  * Select2 4.0.6-rc.1
  * https://select2.github.io
  *
- * With a fix by Elementor team at line 4329
+ * With a fix by Qazana team at line 4329
  *
  * Released under the MIT license
  * https://github.com/select2/select2/blob/master/LICENSE.md

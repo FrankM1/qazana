@@ -12,6 +12,6 @@ module.exports = Backbone.Model.extend( {
 		export_link: '',
 		categories: [],
 		tags: [],
-		keywords: []
-	}
+		keywords: [],
+	},
 } );

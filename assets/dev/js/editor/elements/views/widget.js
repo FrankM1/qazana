@@ -11,9 +11,8 @@ WidgetView = BaseElementView.extend( {
 
 		if ( 'remote' !== this.getTemplateType() ) {
 			return Marionette.TemplateCache.get( '#tmpl-qazana-' + editModel.get( 'widgetType' ) + '-content' );
-		} else {
-			return _.template( '' );
 		}
+		return _.template( '' );
 	},
 
 	className: function() {
@@ -36,8 +35,8 @@ WidgetView = BaseElementView.extend( {
 		_.extend( behaviors, {
 			InlineEditing: {
 				behaviorClass: require( 'qazana-behaviors/inline-editing' ),
-				inlineEditingClass: 'qazana-inline-editing'
-			}
+				inlineEditingClass: 'qazana-inline-editing',
+			},
 		} );
 
 		return qazana.hooks.applyFilters( 'elements/widget/behaviors', behaviors, this );
@@ -50,7 +49,7 @@ WidgetView = BaseElementView.extend( {
 
 		editModel.on( {
 			'before:remote:render': this.onModelBeforeRemoteRender.bind( this ),
-			'remote:render': this.onModelRemoteRender.bind( this )
+			'remote:render': this.onModelRemoteRender.bind( this ),
 		} );
 
 		if ( 'remote' === this.getTemplateType() && ! this.getEditModel().getHtmlCache() ) {
@@ -76,9 +75,9 @@ WidgetView = BaseElementView.extend( {
 				{
 					name: 'save',
 					title: qazana.translate( 'save_as_global' ),
-					shortcut: jQuery( '<i>', { 'class': 'eicon-pro-icon' } )
-				}
-			]
+					shortcut: jQuery( '<i>', { class: 'eicon-pro-icon' } ),
+				},
+			],
 		} );
 
 		return groups;
@@ -86,11 +85,22 @@ WidgetView = BaseElementView.extend( {
 
 	render: function() {
 		if ( this.model.isRemoteRequestActive() ) {
+			this.handleEmptyWidget();
+
 			this.$el.addClass( 'qazana-element' );
+
 			return;
 		}
 
 		Marionette.CompositeView.prototype.render.apply( this, arguments );
+	},
+
+	handleEmptyWidget: function() {
+		// TODO: REMOVE THIS !!
+		// TEMP CODING !!
+		this.$el
+			.addClass( 'qazana-widget-empty' )
+			.append( '<i class="qazana-widget-empty-icon ' + this.getEditModel().getIcon() + '"></i>' );
 	},
 
 	getTemplateType: function() {
@@ -125,13 +135,13 @@ WidgetView = BaseElementView.extend( {
 
 	addInlineEditingAttributes: function( key, toolbar ) {
 		this.addRenderAttribute( key, {
-			'class': 'qazana-inline-editing',
-			'data-qazana-setting-key': key
+			class: 'qazana-inline-editing',
+			'data-qazana-setting-key': key,
 		} );
 
 		if ( toolbar ) {
 			this.addRenderAttribute( key, {
-				'data-qazana-inline-editing-toolbar': toolbar
+				'data-qazana-inline-editing-toolbar': toolbar,
 			} );
 		}
 	},
@@ -157,47 +167,62 @@ WidgetView = BaseElementView.extend( {
 		this.$el.removeClass( 'qazana-loading' );
 		this.render();
     },
-    
-    alterClass : function ( self, removals, additions ) {
-        
-        if ( removals.indexOf( '*' ) === -1 ) {
+
+    alterClass: function( self, removals, additions ) {
+        if ( -1 === removals.indexOf( '*' ) ) {
             // Use native jQuery methods if there is no wildcard matching
             self.removeClass( removals );
-            return !additions ? self : self.addClass( additions );
+            return ! additions ? self : self.addClass( additions );
         }
-    
-        var patt = new RegExp( '\\s' + 
+
+        var patt = new RegExp( '\\s' +
                 removals.
                     replace( /\*/g, '[A-Za-z0-9-_]+' ).
                     split( ' ' ).
-                    join( '\\s|\\s' ) + 
+                    join( '\\s|\\s' ) +
                 '\\s', 'g' );
-    
-        self.each( function ( i, it ) {
+
+        self.each( function( i, it ) {
             var cn = ' ' + it.className + ' ';
             while ( patt.test( cn ) ) {
                 cn = cn.replace( patt, ' ' );
             }
             it.className = $.trim( cn );
-        });
-    
-        return !additions ? self : self.addClass( additions );
+        } );
+
+        return ! additions ? self : self.addClass( additions );
     },
 
 	onRender: function() {
-        var self = this;
+		var self = this;
 
 		BaseElementView.prototype.onRender.apply( self, arguments );
 
-	    var editModel = self.getEditModel(),
-            skinType = editModel.getSetting( '_skin' ) || 'default';
-            
-        self.alterClass( self.$el, editModel.get( 'widgetType' ) + '-*', editModel.get( 'widgetType' ) + '-skin-' + skinType  );
+		var editModel = self.getEditModel(),
+			skinType = editModel.getSetting( '_skin' ) || 'default';
+
+		self.$el
+			.attr( 'data-element_type', editModel.get( 'widgetType' ) + '.' + skinType )
+			.removeClass( 'qazana-widget-empty' )
+			.children( '.qazana-widget-empty-icon' )
+			.remove();
+
+		// TODO: Find better way to detect if all images are loaded
+		self.$el.imagesLoaded().always( function() {
+			setTimeout( function() {
+				if ( 1 > self.$el.height() ) {
+					self.handleEmptyWidget();
+				}
+			}, 200 );
+			// Is element empty?
+		} );
+
+        self.alterClass( self.$el, editModel.get( 'widgetType' ) + '-*', editModel.get( 'widgetType' ) + '-skin-' + skinType );
 	},
 
 	onClickEdit: function() {
 		this.model.trigger( 'request:edit' );
-	}
+	},
 } );
 
 module.exports = WidgetView;

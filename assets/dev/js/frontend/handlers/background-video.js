@@ -1,6 +1,6 @@
 var HandlerModule = require( 'qazana-frontend/handler-module' );
 
-var Video = function( $backgroundVideoContainer, $ ) {
+var Video = function( $backgroundVideoContainer ) {
 	var player,
 		elements = {},
 		isYTVideo = false;
@@ -17,7 +17,7 @@ var Video = function( $backgroundVideoContainer, $ ) {
 
 		return {
 			width: isWidthFixed ? containerWidth : ratioHeight,
-			height: isWidthFixed ? ratioWidth : containerHeight
+			height: isWidthFixed ? ratioWidth : containerHeight,
 		};
 	};
 
@@ -37,25 +37,20 @@ var Video = function( $backgroundVideoContainer, $ ) {
 					player.playVideo();
 
 					changeVideoSize();
-
 				},
 				onStateChange: function( event ) {
 					if ( event.data === YT.PlayerState.ENDED ) {
 						player.seekTo( 0 );
 					}
-				}
+				},
 			},
 			playerVars: {
 				controls: 0,
                 showinfo: 0,
-                rel: 0
-			}
+                rel: 0,
+			},
 		} );
 
-		qazanaFrontend.getElements( '$window' ).on( 'resize', changeVideoSize );
-	};
-
-	var prepareVimeoVideo = function( YT, videoID ) {
 		qazanaFrontend.getElements( '$window' ).on( 'resize', changeVideoSize );
 	};
 
@@ -67,16 +62,15 @@ var Video = function( $backgroundVideoContainer, $ ) {
 		var videoID = elements.$backgroundVideo.data( 'video-id' ),
 			videoHost = elements.$backgroundVideo.data( 'video-host' );
 
-		if ( videoID && videoHost === 'youtube' ) {
+		if ( videoID && 'youtube' === videoHost ) {
 			isYTVideo = true;
 
 			qazanaFrontend.utils.youtube.onYoutubeApiReady( function( YT ) {
 				setTimeout( function() {
 					prepareYTVideo( YT, videoID );
 				}, 1 );
-			});
-
-		} else if ( videoID && videoHost === 'vimeo' ) {
+			} );
+		} else if ( videoID && 'vimeo' === videoHost ) {
 		} else {
 			elements.$backgroundVideo.one( 'canplay', changeVideoSize );
 		}
@@ -91,13 +85,13 @@ var Video = function( $backgroundVideoContainer, $ ) {
 };
 
 var BackgroundVideo = HandlerModule.extend( {
-	
+
 	onInit: function() {
 		var $backgroundVideoContainer = this.$element.find( '.qazana-background-video-container' );
 		if ( $backgroundVideoContainer ) {
 			new Video( $backgroundVideoContainer, $ );
 		}
-	}
-});
+	},
+} );
 
 module.exports = BackgroundVideo;

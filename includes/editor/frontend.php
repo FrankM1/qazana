@@ -527,17 +527,7 @@ class Frontend {
 
 		wp_enqueue_script( 'qazana-frontend' );
 
-        $is_preview_mode = qazana()->preview->is_preview_mode( qazana()->preview->get_post_id() );
-        
-        if ( $post = get_post() ) {
-            $post_ID      = $post->ID;
-            $post_title   = $post->post_title;
-            $post_excerpt = $post->post_excerpt;
-        } else {
-            $post_ID      = 0;
-            $post_title   = null;
-            $post_excerpt = null;
-        }
+		$is_preview_mode = qazana()->preview->is_preview_mode( qazana()->preview->get_post_id() );
 
 		$qazana_frontend_config = [
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
@@ -549,15 +539,10 @@ class Frontend {
             'settings'       => SettingsManager::get_settings_frontend_config(),
             'breakpoints' => Breakpoints::get_breakpoints(),
 			'is_rtl'         => is_rtl(),
-			'post'           => [
-				'id'      => $post_ID,
-				'title'   => $post_title,
-				'excerpt' => $post_excerpt,
-			],
 			'urls' => [
 				'assets' => qazana()->core_assets_url,
 			],
-		];
+        ];
 
 		if ( is_singular() ) {
 			$post = get_post();
@@ -793,14 +778,15 @@ class Frontend {
 				$fonts_url .= '&subset=' . $subsets[ $locale ];
 			}
 
-			wp_enqueue_style( 'google-fonts-' . $google_fonts_index, $fonts_url );
+			wp_enqueue_style( 'google-fonts-' . $google_fonts_index, $fonts_url ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		}
 
 		if ( ! empty( $google_fonts['early'] ) ) {
 			foreach ( $google_fonts['early'] as $current_font ) {
 				$google_fonts_index++;
 				$font_url = sprintf( 'https://fonts.googleapis.com/earlyaccess/%s.css', strtolower( str_replace( ' ', '', $current_font ) ) );
-				wp_enqueue_style( 'google-earlyaccess-' . $google_fonts_index, $font_url );
+
+				wp_enqueue_style( 'google-earlyaccess-' . $google_fonts_index, $font_url ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 			}
 		}
 

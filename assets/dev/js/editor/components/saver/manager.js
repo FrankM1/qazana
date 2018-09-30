@@ -55,7 +55,7 @@ module.exports = Module.extend( {
 		}
 
 		options = _.extend( {
-			status: 'autosave'
+			status: 'autosave',
 		}, options );
 
 		this.saveEditor( options );
@@ -63,7 +63,7 @@ module.exports = Module.extend( {
 
 	savePending: function( options ) {
 		options = _.extend( {
-			status: 'pending'
+			status: 'pending',
 		}, options );
 
 		this.saveEditor( options );
@@ -75,13 +75,13 @@ module.exports = Module.extend( {
 			success: function() {
 				self.setFlagEditorChange( false );
 				location.href = qazana.config.document.urls.exit_to_dashboard;
-			}
+			},
 		} );
 	},
 
 	update: function( options ) {
 		options = _.extend( {
-			status: qazana.settings.page.model.get( 'post_status' )
+			status: qazana.settings.page.model.get( 'post_status' ),
 		}, options );
 
 		this.saveEditor( options );
@@ -89,7 +89,7 @@ module.exports = Module.extend( {
 
 	publish: function( options ) {
 		options = _.extend( {
-			status: 'publish'
+			status: 'publish',
 		}, options );
 
 		this.saveEditor( options );
@@ -127,7 +127,7 @@ module.exports = Module.extend( {
 
 		options = _.extend( {
 			status: 'draft',
-			onSuccess: null
+			onSuccess: null,
 		}, options );
 
 		var self = this,
@@ -149,7 +149,7 @@ module.exports = Module.extend( {
 			data: {
 				status: options.status,
 				elements: elements,
-				settings: settings
+				settings: settings,
 			},
 
 			success: function( data ) {
@@ -201,18 +201,18 @@ module.exports = Module.extend( {
 					if ( 0 === data.readyState ) {
 						message += ' ' + qazana.translate( 'saving_disabled' );
 					}
-				} else if ( data[0] && data[0].code ) {
-					message = qazana.translate( 'server_error' ) + ' ' + data[0].code;
+				} else if ( data[ 0 ] && data[ 0 ].code ) {
+					message = qazana.translate( 'server_error' ) + ' ' + data[ 0 ].code;
 				}
 
 				qazana.notifications.showToast( {
-					message: message
+					message: message,
 				} );
-			}
+			},
 		} );
 	},
 
 	afterAjax: function() {
 		this.isSaving = false;
-	}
+	},
 } );

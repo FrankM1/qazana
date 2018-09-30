@@ -362,6 +362,55 @@ class Run {
             add_action( 'admin_footer', [ $this, 'print_deactivate_feedback_dialog' ] );
             $this->enqueue_feedback_dialog_scripts();
         }
+
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		wp_register_script(
+			'backbone-marionette',
+			qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',
+			[
+				'backbone',
+			],
+			'2.4.5',
+			true
+		);
+
+		wp_register_script(
+			'qazana-dialog',
+			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
+			[
+				'jquery-ui-position',
+			],
+			'4.5.0',
+			true
+		);
+
+		wp_register_script(
+			'qazana-admin-app',
+			qazana()->core_assets_url . 'js/admin' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			qazana_get_version(),
+			true
+		);
+
+        wp_localize_script(
+			'qazana-admin-app',
+			'QazanaAdminConfig',
+			[
+				'home_url' => home_url(),
+				'i18n' => [
+					'rollback_confirm' => __( 'Are you sure you want to reinstall previous version?', 'qazana' ),
+					'rollback_to_previous_version' => __( 'Rollback to Previous Version', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'cancel' => __( 'Cancel', 'qazana' ),
+					'new_template' => __( 'New Template', 'qazana' ),
+				],
+			]
+        );
+        
+        wp_enqueue_script( 'qazana-admin-app' );
     }
 
     /**

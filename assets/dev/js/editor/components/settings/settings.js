@@ -4,11 +4,11 @@ module.exports = Module.extend( {
 	modules: {
 		base: require( 'qazana-editor/components/settings/base/manager' ),
 		general: require( 'qazana-editor/components/settings/general/manager' ),
-		page: require( 'qazana-editor/components/settings/page/manager' )
+		page: require( 'qazana-editor/components/settings/page/manager' ),
 	},
 
 	panelPages: {
-		base: require( 'qazana-editor/components/settings/base/panel' )
+		base: require( 'qazana-editor/components/settings/base/panel' ),
 	},
 
 	onInit: function() {
@@ -23,5 +23,5 @@ module.exports = Module.extend( {
 
 			self[ name ] = new Manager( config );
 		} );
-	}
+	},
 } );

@@ -20,7 +20,7 @@ ControlCodeEditorItemView = ControlBaseDataView.extend( {
 
 		var langTools = ace.require( 'ace/ext/language_tools' );
 
-		self.editor = ace.edit( this.ui.editor[0] );
+		self.editor = ace.edit( this.ui.editor[ 0 ] );
 
 		jQuery( self.editor.container ).addClass( 'qazana-input-style qazana-code-editor' );
 
@@ -31,7 +31,7 @@ ControlCodeEditorItemView = ControlBaseDataView.extend( {
 			showGutter: true,
 			useWorker: true,
 			enableBasicAutocompletion: true,
-			enableLiveAutocompletion: true
+			enableLiveAutocompletion: true,
 		} );
 
 		self.editor.getSession().setUseWrapMode( true );
@@ -49,12 +49,12 @@ ControlCodeEditorItemView = ControlBaseDataView.extend( {
 							name: 'selector',
 							value: 'selector',
 							score: 1,
-							meta: 'Qazana'
+							meta: 'Qazana',
 						} ];
 					}
 
 					callback( null, list );
-				}
+				},
 			};
 
 			langTools.addCompleter( selectorCompleter );
@@ -94,7 +94,7 @@ ControlCodeEditorItemView = ControlBaseDataView.extend( {
 
 	onDestroy: function() {
 		qazana.panel.$el.off( 'resize.aceEditor' );
-	}
+	},
 } );
 
 module.exports = ControlCodeEditorItemView;

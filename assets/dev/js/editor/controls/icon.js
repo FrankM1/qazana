@@ -1,4 +1,4 @@
-var ControlBaseDataView = require('qazana-controls/base-data'),
+var ControlBaseDataView = require( 'qazana-controls/base-data' ),
 	ControlIconView;
 
 ControlIconView = ControlBaseDataView.extend( {
@@ -43,9 +43,9 @@ ControlIconView = ControlBaseDataView.extend( {
 	},
 
 	onReady: function() {
-		this.ui.select.fontIconPicker({
-	       theme: 'fip-grey'
-        }); // Load with default options
+        this.ui.select.fontIconPicker( {
+            theme: 'fip-grey',
+        } ); // Load with default options
 	},
 
 	templateHelpers: function() {
@@ -56,7 +56,7 @@ ControlIconView = ControlBaseDataView.extend( {
 				filterIcons = {};
 
 			_.each( icons, function( iconType, iconName ) {
-				if ( _.isArray( groups ) && _.contains( groups, iconType ) || iconType === groups ) {
+				if ( ( _.isArray( groups ) && _.contains( groups, iconType ) ) || iconType === groups ) {
 					filterIcons[ iconName ] = iconType;
 				}
 			} );
@@ -65,7 +65,7 @@ ControlIconView = ControlBaseDataView.extend( {
 		}, this );
 
 		return helpers;
-	}
+	},
 
 } );
 

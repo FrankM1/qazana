@@ -1,0 +1,49 @@
+.qazana-group-control-css-filter {
+	.qazana-slider {
+		height: 6px;
+		box-shadow: 0 0 1px 1px inset rgba(0, 0, 0, 0.2);
+	}
+
+	.qazana-slider .ui-slider-handle {
+		box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+	}
+
+	.qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
+		margin-top: 0;
+		margin-bottom: 5px;
+	}
+}
+
+.qazana-group-control-blur {
+	.qazana-slider {
+		background: url("../images/blur.png");
+		background-size: cover;
+		background-position: center;
+	}
+}
+
+.qazana-group-control-contrast {
+	.qazana-slider {
+		background: url("../images/contrast.png");
+		background-size: 100% 100%;
+	}
+}
+
+.qazana-group-control-hue {
+	.qazana-slider {
+		background-image: linear-gradient(to right, red, orange, yellow, greenyellow, limegreen, deepskyblue, blue, darkviolet 95%);
+
+	}
+}
+
+.qazana-group-control-saturate {
+	.qazana-slider {
+		background-image: linear-gradient(to right, gray , red);
+	}
+}
+
+.qazana-group-control-brightness {
+	.qazana-slider {
+		background-image: linear-gradient(to right, black , white);
+	}
+}

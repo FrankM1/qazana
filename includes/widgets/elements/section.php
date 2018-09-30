@@ -290,6 +290,15 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_control(
+			'_title',
+			[
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::HIDDEN,
+				'render_type' => 'none',
+			]
+		);
+
+		$this->add_control(
 			'stretch_section',
 			[
 				'label' => __( 'Stretch Section', 'qazana' ),
@@ -394,6 +403,7 @@ class Element_Section extends Element_Base {
 				'size_units' => [ 'px', 'vh' ],
 				'selectors' => [
 					'{{WRAPPER}} > .qazana-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} > .qazana-container:after' => 'content: ""; min-height: inherit;', // Hack for IE11
 				],
 				'condition' => [
 					'height' => [ 'min-height' ],
@@ -477,14 +487,14 @@ class Element_Section extends Element_Base {
 		);
 
 		$possible_tags = [
-			'section',
-			'header',
-			'main',
-			'footer',
-			'aside',
-			'article',
-			'nav',
 			'div',
+			'header',
+			'footer',
+			'main',
+			'article',
+			'section',
+			'aside',
+			'nav',
 		];
 
 		$options = [
@@ -548,42 +558,6 @@ class Element_Section extends Element_Base {
 					],
 					'video_link' => [
 						'frontend_available' => true,
-					],
-				],
-			]
-		);
-
-
-		$this->add_control(
-			'parallax',
-			[
-				'label' => __( 'Parallax', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => '',
-				'prefix_class' => 'qazana-',
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
-				'return_value' => 'parallax',
-				'description' => __( 'Enable parallax scroll on this section.', 'qazana' ),
-				'condition' => [
-					'background_background' => [ 'classic' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'parallax_speed',
-			[
-				'label' => __( 'Parallax speed', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'default' => [
-					'size' => 0.2,
-				],
-				'range' => [
-					'px' => [
-						'min' => 0.0,
-						'max' => 1.0,
-						'step' => 0.1,
 					],
 				],
 			]
@@ -894,7 +868,8 @@ class Element_Section extends Element_Base {
 							'name' => 'background_background',
 							'operator' => '!==',
 							'value' => '',
-						], [
+						],
+						[
 							'name' => 'border_border',
 							'operator' => '!==',
 							'value' => '',
@@ -1219,6 +1194,7 @@ class Element_Section extends Element_Base {
 				'default' => '',
 				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
 				'label_block' => false,
+				'style_transfer' => false,
 			]
 		);
 
@@ -1246,14 +1222,24 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_control(
+			'reverse_order_tablet',
+			[
+				'label' => __( 'Reverse Columns', 'qazana' ) . ' (' . __( 'Tablet', 'qazana' ) . ')',
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'prefix_class' => 'qazana-',
+				'return_value' => 'reverse-tablet',
+			]
+		);
+
+		$this->add_control(
 			'reverse_order_mobile',
 			[
-				'label' => __( 'Reverse Columns', 'qazana' ),
+				'label' => __( 'Reverse Columns', 'qazana' ) . ' (' . __( 'Mobile', 'qazana' ) . ')',
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'prefix_class' => 'qazana-',
 				'return_value' => 'reverse-mobile',
-				'description' => __( 'Reverse column order - When on mobile, the column order is reversed, so the last column appears on top and vice versa.', 'qazana' ),
 			]
 		);
 

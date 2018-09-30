@@ -30,10 +30,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-revisions-no-revisions">
-	<i class="qazana-panel-nerd-box-icon eicon-nerd" aria-hidden="true"></i>
-	<div class="qazana-panel-nerd-box-title"><?php _e( 'No Revisions Saved Yet', 'qazana' ); ?></div>
-	<div class="qazana-panel-nerd-box-message">{{{ qazana.translate( qazana.config.revisions_enabled ? 'no_revisions_1' : 'revisions_disabled_1' ) }}}</div>
-	<div class="qazana-panel-nerd-box-message">{{{ qazana.translate( qazana.config.revisions_enabled ? 'no_revisions_2' : 'revisions_disabled_2' ) }}}</div>
+	<i class="qazana-nerd-box-icon eicon-nerd" aria-hidden="true"></i>
+	<div class="qazana-nerd-box-title"><?php _e( 'No Revisions Saved Yet', 'qazana' ); ?></div>
+	<div class="qazana-nerd-box-message">{{{ qazana.translate( qazana.config.revisions_enabled ? 'no_revisions_1' : 'revisions_disabled_1' ) }}}</div>
+	<div class="qazana-nerd-box-message">{{{ qazana.translate( qazana.config.revisions_enabled ? 'no_revisions_2' : 'revisions_disabled_2' ) }}}</div>
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-revisions-revision-item">

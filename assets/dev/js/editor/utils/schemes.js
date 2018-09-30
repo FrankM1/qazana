@@ -7,7 +7,7 @@ Schemes = function() {
 		stylesheet = new Stylesheet(),
 		schemes = {},
 		settings = {
-			selectorWrapperPrefix: '.qazana-widget-'
+			selectorWrapperPrefix: '.qazana-widget-',
 		},
 		elements = {};
 
@@ -17,8 +17,8 @@ Schemes = function() {
 
 	var initElements = function() {
 		elements.$style = jQuery( '<style>', {
-			id: 'qazana-style-scheme'
-		});
+			id: 'qazana-style-scheme',
+		} );
 
 		elements.$previewHead = qazana.$previewContents.find( 'head' );
 	};
@@ -28,9 +28,14 @@ Schemes = function() {
 	};
 
 	var fetchControlStyles = function( control, controlsStack, widgetType ) {
-		ControlsCSSParser.addControlStyleRules( stylesheet, control, controlsStack, function( control ) {
-			return self.getSchemeValue( control.scheme.type, control.scheme.value, control.scheme.key ).value;
-		}, [ '{{WRAPPER}}' ], [ settings.selectorWrapperPrefix + widgetType ] );
+		ControlsCSSParser.addControlStyleRules(
+			stylesheet,
+			control,
+			controlsStack,
+			( controlStyles ) => self.getSchemeValue( controlStyles.scheme.type, controlStyles.scheme.value, controlStyles.scheme.key ).value,
+			[ '{{WRAPPER}}' ],
+			[ settings.selectorWrapperPrefix + widgetType ]
+		);
 	};
 
 	var fetchWidgetControlsStyles = function( widget ) {
@@ -43,7 +48,7 @@ Schemes = function() {
 
 	var fetchAllWidgetsSchemesStyle = function() {
 		_.each( qazana.config.widgets, function( widget ) {
-			fetchWidgetControlsStyles(  widget  );
+			fetchWidgetControlsStyles( widget );
 		} );
 	};
 
@@ -118,11 +123,11 @@ Schemes = function() {
 		qazana.ajax.send( 'apply_scheme', {
 			data: {
 				scheme_name: schemeName,
-				data: JSON.stringify( itemsToSave )
+				data: JSON.stringify( itemsToSave ),
 			},
 			success: function() {
 				NProgress.done();
-			}
+			},
 		} );
 	};
 

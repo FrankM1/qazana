@@ -4,15 +4,15 @@ module.exports = Marionette.ItemView.extend( {
 	id: 'qazana-template-library-header-actions',
 
 	ui: {
-		'import': '#qazana-template-library-header-import i',
+		import: '#qazana-template-library-header-import i',
 		sync: '#qazana-template-library-header-sync i',
-		save: '#qazana-template-library-header-save i'
+		save: '#qazana-template-library-header-save i',
 	},
 
 	events: {
 		'click @ui.import': 'onImportClick',
 		'click @ui.sync': 'onSyncClick',
-		'click @ui.save': 'onSaveClick'
+		'click @ui.save': 'onSaveClick',
 	},
 
 	onImportClick: function() {
@@ -31,11 +31,11 @@ module.exports = Marionette.ItemView.extend( {
 				qazana.templates.setTemplatesPage( qazana.templates.getFilter( 'source' ), qazana.templates.getFilter( 'type' ) );
 			},
 			forceUpdate: true,
-			forceSync: true
+			forceSync: true,
 		} );
 	},
 
 	onSaveClick: function() {
 		qazana.templates.getLayout().showSaveTemplateView();
-	}
+	},
 } );

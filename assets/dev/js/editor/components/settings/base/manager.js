@@ -30,8 +30,8 @@ module.exports = ViewModule.extend( {
 			options: {
 				model: this.model,
 				controls: this.model.controls,
-				name: name
-			}
+				name: name,
+			},
 		} );
 	},
 
@@ -49,7 +49,7 @@ module.exports = ViewModule.extend( {
 
 	initModel: function() {
 		this.model = new SettingsModel( this.getSettings( 'settings' ), {
-			controls: this.getSettings( 'controls' )
+			controls: this.getSettings( 'controls' ),
 		} );
 	},
 
@@ -60,7 +60,7 @@ module.exports = ViewModule.extend( {
 			if ( ! controlsCSS ) {
 				controlsCSS = new ControlsCSSParser( {
 					id: this.getSettings( 'name' ),
-					settingsModel: this.model
+					settingsModel: this.model,
 				} );
 
 				/*
@@ -86,7 +86,7 @@ module.exports = ViewModule.extend( {
 
 		var settings = this.model.toJSON( { removeDefault: true } ),
 			data = this.getDataToSave( {
-				data: settings
+				data: settings,
 			} );
 
 		NProgress.start();
@@ -111,7 +111,7 @@ module.exports = ViewModule.extend( {
 			},
 			error: function() {
 				alert( 'An error occurred' );
-			}
+			},
 		} );
 	},
 
@@ -126,7 +126,7 @@ module.exports = ViewModule.extend( {
 				icon: menuSettings.icon,
 				title: this.getSettings( 'panelPage.title' ),
 				type: 'page',
-				pageName: this.getSettings( 'name' ) + '_settings'
+				pageName: this.getSettings( 'name' ) + '_settings',
 			};
 
 		qazana.modules.layouts.panel.pages.menu.Menu.addItem( menuItemOptions, 'settings', menuSettings.beforeItem );
@@ -175,5 +175,5 @@ module.exports = ViewModule.extend( {
 		if ( ! qazana.userCan( 'design' ) ) {
 			qazana.panel.currentView.setPage( 'page_settings' );
 		}
-	}
+	},
 } );

@@ -1,20 +1,33 @@
 //
 // Panel
 //
-
 .qazana-panel {
+	position: fixed;
+	height: 100%;
+	top: 0;
+	bottom: 0;
+	overflow: visible;
+	background-color: $editor-background;
+	z-index: $first-layer;
+	font-size: 13px;
 
-    // Controls
-    @import "reset";
-    // Base
+	.qazana-editor-active & {
+		@include start(0);
+	}
 
-	&#qazana-panel{
-		position: fixed;
-		height: 100%;
-		top: 0;
-		bottom: 0;
-		overflow: visible;
-		background-color: $editor-background;
+	.qazana-editor-preview & {
+
+		@media (max-width: $editor-screen-lg-max) {
+			@include start(-$panel-width);
+		}
+
+		@media (min-width: $editor-screen-xl-min) {
+			@include start(-$panel-xl-width);
+		}
+
+		> .ui-resizable-e, > .ui-resizable-w {
+			display: none;
+		}
 	}
 
 	@media (max-width: $editor-screen-lg-max) {
@@ -29,35 +42,7 @@
 		z-index: 2; // Avoid panel elements (like divider control) from appearing above the scrollbar
 	}
 
-	> .ui-resizable-e, > .ui-resizable-w {
-		position: absolute;
-		top: 0;
-		height: 100%;
-		width: 7px;
-		@include end(-5px);
-		cursor: ew-resize;
-	}
-
-	#qazana-panel-inner {
-        position: relative;
-		height: 100%;
-        box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
-	}
-
-    .qazana-panel-container {
-      clear: both;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
-	// Main Panel
-	#qazana-panel-content-wrapper {
-		position: absolute;
-		bottom: 40px;
-		top: 94px;
-		left: 0;
-		width: 100%;
-	}
+	@import "reset";
 
 	// Global
 	@import "global";
@@ -85,6 +70,27 @@
 
     //Footer
     @import "footer";
+}
+
+#qazana-panel-inner {
+	position: relative;
+	height: 100%;
+	box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+}
+
+// Main Panel
+#qazana-panel-content-wrapper {
+	position: absolute;
+	bottom: 40px;
+	top: 95px;
+	left: 0;
+	width: 100%;
+}
+
+.qazana-panel-container {
+	clear: both;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 // WP Media Modal Compatibility

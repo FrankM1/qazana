@@ -1,12 +1,14 @@
 ( function( $ ) {
-	'use strict';
+	var ViewModule = require( 'qazana-utils/view-module' );
 
-	var QazanaAdminApp = {
+	var QazanaAdmin = ViewModule.extend( {
 
 		maintenanceMode: null,
 
-		cacheElements: function() {
-			this.cache = {
+		config: QazanaAdminConfig,
+
+		getDefaultElements: function() {
+			var elements = {
 				$window: $( window ),
 				$body: $( 'body' ),
 				$switchMode: $( '#qazana-switch-mode' ),
@@ -19,39 +21,37 @@
 				$importArea: $( '#qazana-import-template-area' ),
 				$settingsForm: $( '#qazana-settings-form' ),
 				$settingsTabsWrapper: $( '#qazana-settings-tabs-wrapper' ),
-				$addNew: $( '.post-type-qazana_library #wpbody-content .page-title-action:first, #qazana-template-library-add-new' ),
-				$addNewDialogHeader:  $( '.qazana-templates-modal__header' ),
-				$addNewDialogClose:  $( '.qazana-templates-modal__header__close-modal' ),
-				$addNewDialogContent:  $( '#qazana-new-template-dialog-content' )
 			};
 
-			this.cache.$settingsFormPages = this.cache.$settingsForm.find( '.qazana-settings-form-page' );
+			elements.$settingsFormPages = elements.$settingsForm.find( '.qazana-settings-form-page' );
 
-			this.cache.$activeSettingsPage = this.cache.$settingsFormPages.filter( '.qazana-active' );
+			elements.$activeSettingsPage = elements.$settingsFormPages.filter( '.qazana-active' );
 
-			this.cache.$settingsTabs = this.cache.$settingsTabsWrapper.children();
+			elements.$settingsTabs = elements.$settingsTabsWrapper.children();
 
-			this.cache.$activeSettingsTab = this.cache.$settingsTabs.filter( '.nav-tab-active' );
+			elements.$activeSettingsTab = elements.$settingsTabs.filter( '.nav-tab-active' );
+
+			return elements;
 		},
 
 		toggleStatus: function() {
 			var isQazanaMode = this.isQazanaMode();
 
-			this.cache.$body
-			    .toggleClass( 'qazana-editor-active', isQazanaMode )
-			    .toggleClass( 'qazana-editor-inactive', ! isQazanaMode );
+			this.elements.$body
+				.toggleClass( 'qazana-editor-active', isQazanaMode )
+				.toggleClass( 'qazana-editor-inactive', ! isQazanaMode );
 		},
 
 		bindEvents: function() {
 			var self = this;
 
-			self.cache.$switchModeButton.on( 'click', function( event ) {
+			self.elements.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();
 
 				if ( self.isQazanaMode() ) {
-					self.cache.$switchModeInput.val( '' );
+					self.elements.$switchModeInput.val( '' );
 				} else {
-					self.cache.$switchModeInput.val( true );
+					self.elements.$switchModeInput.val( true );
 
 					var $wpTitle = $( '#title' );
 
@@ -66,30 +66,32 @@
 					self.animateLoader();
 
 					$( document ).on( 'heartbeat-tick.autosave', function() {
-						self.cache.$window.off( 'beforeunload.edit-post' );
+						self.elements.$window.off( 'beforeunload.edit-post' );
 
-						location.href = self.cache.$goToEditLink.attr( 'href' );
+						location.href = self.elements.$goToEditLink.attr( 'href' );
 					} );
 				}
 
 				self.toggleStatus();
 			} );
 
-			self.cache.$addNew.on( 'click', function( event ) {
-				event.preventDefault();
-				self.getNewTemplateModal().show();
-			} );
-
-			self.cache.$goToEditLink.on( 'click', function() {
+			self.elements.$goToEditLink.on( 'click', function() {
 				self.animateLoader();
 			} );
 
-			$( 'div.notice.qazana-message-dismissed' ).on( 'click', 'button.notice-dismiss', function( event ) {
+			$( 'div.notice.qazana-message-dismissed' ).on( 'click', 'button.notice-dismiss, .qazana-button-notice-dismiss', function( event ) {
 				event.preventDefault();
 
 				$.post( ajaxurl, {
 					action: 'qazana_set_admin_notice_viewed',
-					notice_id: $( this ).closest( '.qazana-message-dismissed' ).data( 'notice_id' )
+					notice_id: $( this ).closest( '.qazana-message-dismissed' ).data( 'notice_id' ),
+				} );
+
+				var $wrapperElm = $( this ).closest( '.qazana-message-dismissed' );
+				$wrapperElm.fadeTo( 100, 0, function() {
+					$wrapperElm.slideUp( 100, function() {
+						$wrapperElm.remove();
+					} );
 				} );
 			} );
 
@@ -101,7 +103,7 @@
 
 				$.post( ajaxurl, {
 					action: 'qazana_clear_cache',
-					_nonce: $thisButton.data( 'nonce' )
+					_nonce: $thisButton.data( 'nonce' ),
 				} )
 					.done( function() {
 						$thisButton.removeClass( 'loading' ).addClass( 'success' );
@@ -116,7 +118,7 @@
 
 				$.post( ajaxurl, {
 					action: 'qazana_reset_library',
-					_nonce: $thisButton.data( 'nonce' )
+					_nonce: $thisButton.data( 'nonce' ),
 				} )
 					.done( function() {
 						$thisButton.removeClass( 'loading' ).addClass( 'success' );
@@ -136,7 +138,7 @@
 					action: 'qazana_replace_url',
 					from: $from.val(),
 					to: $to.val(),
-					_nonce: $this.data( 'nonce' )
+					_nonce: $this.data( 'nonce' ),
 				} )
 					.done( function( response ) {
 						$this.removeClass( 'loading' );
@@ -145,14 +147,13 @@
 							$this.addClass( 'success' );
 						}
 
-						var dialogsManager = new DialogsManager.Instance();
-							dialogsManager.createWidget( 'alert', {
-								message: response.data
+						self.getDialogsManager().createWidget( 'alert', {
+								message: response.data,
 							} ).show();
 					} );
 			} );
 
-			self.cache.$settingsTabs.on( {
+			self.elements.$settingsTabs.on( {
 				click: function( event ) {
 					event.preventDefault();
 
@@ -164,27 +165,26 @@
 					history.pushState( {}, '', hrefWithoutHash + this.hash );
 
 					self.goToSettingsTabFromHash();
-				}
+				},
 			} );
 
 			$( '.qazana-rollback-button' ).on( 'click', function( event ) {
 				event.preventDefault();
 
-				var $this = $( this ),
-					dialogsManager = new DialogsManager.Instance();
+				var $this = $( this );
 
-				dialogsManager.createWidget( 'confirm', {
-					headerMessage: QazanaAdminConfig.i18n.rollback_to_previous_version,
-					message: QazanaAdminConfig.i18n.rollback_confirm,
+				self.getDialogsManager().createWidget( 'confirm', {
+					headerMessage: self.config.i18n.rollback_to_previous_version,
+					message: self.config.i18n.rollback_confirm,
 					strings: {
-						confirm: QazanaAdminConfig.i18n.yes,
-						cancel: QazanaAdminConfig.i18n.cancel
+						confirm: self.config.i18n.yes,
+						cancel: self.config.i18n.cancel,
 					},
 					onConfirm: function() {
 						$this.addClass( 'loading' );
 
 						location.href = $this.attr( 'href' );
-					}
+					},
 				} ).show();
 			} );
 
@@ -196,14 +196,28 @@
 			} ).trigger( 'change' );
 		},
 
-		init: function() {
-			this.cacheElements();
+		setMarionetteTemplateCompiler: function() {
+			if ( 'undefined' !== typeof Marionette ) {
+				Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
+					options = {
+						evaluate: /<#([\s\S]+?)#>/g,
+						interpolate: /{{{([\s\S]+?)}}}/g,
+						escape: /{{([^}]+?)}}(?!})/g,
+					};
 
-			this.bindEvents();
+					return _.template( rawTemplate, options );
+				};
+			}
+		},
+
+		onInit: function() {
+			ViewModule.prototype.onInit.apply( this, arguments );
+
+			this.setMarionetteTemplateCompiler();
+
+			this.initDialogsManager();
 
 			this.initTemplatesImport();
-
-			this.initNewTemplateDialog();
 
 			this.initMaintenanceMode();
 
@@ -214,55 +228,32 @@
             this.extensionManager.init();
 		},
 
-		initNewTemplateDialog: function() {
-			var self = this,
-				modal;
+		initDialogsManager: function() {
+			var dialogsManager;
 
-			self.getNewTemplateModal = function() {
-				if ( ! modal ) {
-					var dialogsManager = new DialogsManager.Instance();
-
-					modal = dialogsManager.createWidget( 'lightbox', {
-						id: 'qazana-new-template-modal',
-						className: 'qazana-templates-modal',
-						headerMessage: self.cache.$addNewDialogHeader,
-						message: self.cache.$addNewDialogContent.children(),
-						hide: {
-							onButtonClick: false
-						},
-						position: {
-							my: 'center',
-							at: 'center'
-						},
-						onReady: function() {
-							DialogsManager.getWidgetType( 'lightbox' ).prototype.onReady.apply( this, arguments );
-
-							self.cache.$addNewDialogClose.on( 'click', function() {
-								modal.hide();
-							} );
-						}
-					} );
+			this.getDialogsManager = function() {
+				if ( ! dialogsManager ) {
+					dialogsManager = new DialogsManager.Instance();
 				}
 
-				return modal;
+				return dialogsManager;
 			};
-
 		},
 
 		initTemplatesImport: function() {
-			if ( ! this.cache.$body.hasClass( 'post-type-qazana_library' ) ) {
+			if ( ! this.elements.$body.hasClass( 'post-type-qazana_library' ) ) {
 				return;
 			}
 
 			var self = this,
-				$importButton = self.cache.$importButton,
-				$importArea = self.cache.$importArea;
+				$importButton = self.elements.$importButton,
+				$importArea = self.elements.$importArea;
 
-			self.cache.$formAnchor = $( 'h1' );
+			self.elements.$formAnchor = $( 'h1' );
 
 			$( '#wpbody-content' ).find( '.page-title-action:last' ).after( $importButton );
 
-			self.cache.$formAnchor.after( $importArea );
+			self.elements.$formAnchor.after( $importArea );
 
 			$importButton.on( 'click', function() {
 				$( '#qazana-import-template-area' ).toggle();
@@ -276,11 +267,11 @@
 		},
 
 		isQazanaMode: function() {
-			return !! this.cache.$switchModeInput.val();
+			return !! this.elements.$switchModeInput.val();
 		},
 
 		animateLoader: function() {
-			this.cache.$goToEditLink.addClass( 'qazana-animate' );
+			this.elements.$goToEditLink.addClass( 'qazana-animate' );
 		},
 
 		goToSettingsTabFromHash: function() {
@@ -292,27 +283,27 @@
 		},
 
 		goToSettingsTab: function( tabName ) {
-			var $activePage = this.cache.$settingsFormPages.filter( '#' + tabName );
+			var $activePage = this.elements.$settingsFormPages.filter( '#' + tabName );
 
 			if ( ! $activePage.length ) {
 				return;
 			}
 
-			this.cache.$activeSettingsPage.removeClass( 'qazana-active' );
+			this.elements.$activeSettingsPage.removeClass( 'qazana-active' );
 
-			this.cache.$activeSettingsTab.removeClass( 'nav-tab-active' );
+			this.elements.$activeSettingsTab.removeClass( 'nav-tab-active' );
 
-			var $activeTab = this.cache.$settingsTabs.filter( '#qazana-settings-' + tabName );
+			var $activeTab = this.elements.$settingsTabs.filter( '#qazana-settings-' + tabName );
 
 			$activePage.addClass( 'qazana-active' );
 
 			$activeTab.addClass( 'nav-tab-active' );
 
-			this.cache.$settingsForm.attr( 'action', 'options.php#' + tabName  );
+			this.elements.$settingsForm.attr( 'action', 'options.php#' + tabName );
 
-			this.cache.$activeSettingsPage = $activePage;
+			this.elements.$activeSettingsPage = $activePage;
 
-			this.cache.$activeSettingsTab = $activeTab;
+			this.elements.$activeSettingsTab = $activeTab;
 		},
 
 		roleManager: {
@@ -325,7 +316,7 @@
 				controlsContainer: '.qazana-role-controls',
 				toggleHandle: '.qazana-role-toggle',
 				arrowUp: 'dashicons-arrow-up',
-				arrowDown: 'dashicons-arrow-down'
+				arrowDown: 'dashicons-arrow-down',
 			},
 			toggle: function( $trigger ) {
 				var self = this,
@@ -358,7 +349,7 @@
 
 				$controls.each( function( index, input ) {
 					$( input ).prop( 'disabled', state );
-				});
+				} );
 			},
 			bind: function() {
 				var self = this;
@@ -368,8 +359,7 @@
 					self.toggle( $( this ) );
 				} ).on( 'change', self.selectors.excludedField, function() {
 					self.updateLabel( $( this ).closest( self.selectors.row ) );
-				});
-
+				} );
 			},
 			init: function() {
 				var self = this;
@@ -379,10 +369,10 @@
 				self.bind();
 				$( self.selectors.row ).each( function( index, row ) {
 					self.updateLabel( $( row ) );
-				});
-			}
+				} );
+			},
         },
-        
+
         extensionManager: {
             selectors: {
                 body: 'qazana-extensions-manager',
@@ -393,67 +383,68 @@
                 controlsContainer: '.qazana-extension-controls',
                 toggleHandle: '.qazana-extension-toggle',
                 arrowUp: 'dashicons-arrow-up',
-                arrowDown: 'dashicons-arrow-down'
+                arrowDown: 'dashicons-arrow-down',
             },
-            toggle: function ($trigger) {
+            toggle: function( $trigger ) {
                 var self = this,
-                    $row = $trigger.closest(self.selectors.row),
-                    $toggleHandleIcon = $row.find(self.selectors.toggleHandle).find('.dashicons'),
-                    $controls = $row.find(self.selectors.controlsContainer);
+                    $row = $trigger.closest( self.selectors.row ),
+                    $toggleHandleIcon = $row.find( self.selectors.toggleHandle ).find( '.dashicons' ),
+                    $controls = $row.find( self.selectors.controlsContainer );
 
-                $controls.toggleClass('hidden');
-                if ($controls.hasClass('hidden')) {
-                    $toggleHandleIcon.removeClass(self.selectors.arrowUp).addClass(self.selectors.arrowDown);
+                $controls.toggleClass( 'hidden' );
+                if ( $controls.hasClass( 'hidden' ) ) {
+                    $toggleHandleIcon.removeClass( self.selectors.arrowUp ).addClass( self.selectors.arrowDown );
                 } else {
-                    $toggleHandleIcon.removeClass(self.selectors.arrowDown).addClass(self.selectors.arrowUp);
+                    $toggleHandleIcon.removeClass( self.selectors.arrowDown ).addClass( self.selectors.arrowUp );
                 }
-                self.updateLabel($row);
+                self.updateLabel( $row );
             },
-            updateLabel: function ($row) {
+            updateLabel: function( $row ) {
                 var self = this,
-                    $indicator = $row.find(self.selectors.activedIndicator),
-                    active = $row.find(self.selectors.activeWidgets).is(':checked');
-                if (active) {
-                    $indicator.html($indicator.data('label'));
+                    $indicator = $row.find( self.selectors.activedIndicator ),
+                    active = $row.find( self.selectors.activeWidgets ).is( ':checked' );
+                if ( active ) {
+                    $indicator.html( $indicator.data( 'label' ) );
                 } else {
-                    $indicator.html('');
+                    $indicator.html( '' );
                 }
-                self.setAdvancedState($row, active);
+                self.setAdvancedState( $row, active );
             },
-            setAdvancedState: function ($row, state) {
+            setAdvancedState: function( $row, state ) {
                 var self = this,
-                    $controls = $row.find('input[type="checkbox"]').not(self.selectors.activeWidgets);
+                    $controls = $row.find( 'input[type="checkbox"]' ).not( self.selectors.activeWidgets );
 
-                $controls.each(function (index, input) {
-                    $(input).prop('disabled', state);
-                });
+                $controls.each( function( index, input ) {
+                    $( input ).prop( 'disabled', state );
+                } );
             },
-            bind: function () {
+            bind: function() {
                 var self = this;
-                $(document).on('click', self.selectors.label + ',' + self.selectors.toggleHandle, function (event) {
+                $( document ).on( 'click', self.selectors.label + ',' + self.selectors.toggleHandle, function( event ) {
                     event.stopPropagation();
                     event.preventDefault();
-                    self.toggle($(this));
-                }).on('change', self.selectors.activeWidgets, function () {
-                    self.updateLabel($(this).closest(self.selectors.row));
-                });
+                    self.toggle( $( this ) );
+                } ).on( 'change', self.selectors.activeWidgets, function() {
+                    self.updateLabel( $( this ).closest( self.selectors.row ) );
+                } );
             },
-            init: function () {
+            init: function() {
                 var self = this;
-                if (!$('body[class*="' + self.selectors.body + '"]').length) {
+                if ( ! $( 'body[class*="' + self.selectors.body + '"]' ).length ) {
                     return;
                 }
                 self.bind();
-                $(self.selectors.row).each(function (index, row) {
-                    self.updateLabel($(row));
-                });
-            }
-        }
-	};
+                $( self.selectors.row ).each( function( index, row ) {
+                    self.updateLabel( $( row ) );
+                } );
+            },
+        },
 
-	$( function() {
-		QazanaAdminApp.init();
 	} );
 
-	window.qazanaAdmin = QazanaAdminApp;
+	$( function() {
+		window.qazanaAdmin = new QazanaAdmin();
+
+		qazanaAdmin.elements.$window.trigger( 'qazana/admin/init' );
+	} );
 }( jQuery ) );

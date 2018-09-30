@@ -2,7 +2,7 @@ module.exports = Marionette.CompositeView.extend( {
 
 	templateHelpers: function() {
 		return {
-			view: this
+			view: this,
 		};
 	},
 
@@ -27,7 +27,7 @@ module.exports = Marionette.CompositeView.extend( {
 			trigger: false,
 			edit: true,
 			onBeforeAdd: null,
-			onAfterAdd: null
+			onAfterAdd: null,
 		}, options );
 
 		var childTypes = this.getChildType(),
@@ -41,9 +41,9 @@ module.exports = Marionette.CompositeView.extend( {
 		} else {
 			newItem = {
 				id: qazana.helpers.getUniqueID(),
-				elType: childTypes[0],
+				elType: childTypes[ 0 ],
 				settings: {},
-				elements: []
+				elements: [],
 			};
 
 			if ( data ) {
@@ -96,6 +96,8 @@ module.exports = Marionette.CompositeView.extend( {
 
 		item.id = qazana.helpers.getUniqueID();
 
+		item.settings._element_id = '';
+
 		item.elements.forEach( function( childItem, index ) {
 			item.elements[ index ] = self.cloneItem( childItem );
 		} );
@@ -112,8 +114,8 @@ module.exports = Marionette.CompositeView.extend( {
 			at: childView.$el.index() + 1,
 			trigger: {
 				beforeAdd: 'element:before:add',
-				afterAdd: 'element:after:add'
-			}
+				afterAdd: 'element:after:add',
+			},
 		} );
 	},
 
@@ -127,7 +129,7 @@ module.exports = Marionette.CompositeView.extend( {
 		var elements = qazana.getStorage( 'transfer' ).elements,
 			index = self.collection.indexOf( childView.model );
 
-		qazana.channels.data.trigger( 'element:before:add', elements[0] );
+		qazana.channels.data.trigger( 'element:before:add', elements[ 0 ] );
 
 		elements.forEach( function( item ) {
 			index++;
@@ -135,6 +137,6 @@ module.exports = Marionette.CompositeView.extend( {
 			self.addChildElement( item, { at: index, clone: true } );
 		} );
 
-		qazana.channels.data.trigger( 'element:after:add', elements[0] );
-	}
+		qazana.channels.data.trigger( 'element:after:add', elements[ 0 ] );
+	},
 } );

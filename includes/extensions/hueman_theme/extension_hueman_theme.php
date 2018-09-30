@@ -4,20 +4,23 @@ namespace Qazana\Extensions;
 class Hueman_Theme extends Base {
 
 	public function get_config() {
-
-        $active_theme = wp_get_theme();
-
         return [
         	'title'              => __( 'Hueman Theme Compatibility', 'qazana' ),
         	'name'               => 'hueman_theme',
         	'required'           => false,
-        	'default_activation' => ( $active_theme->get( 'Name' ) === 'hueman' ),
+        	'default_activation' => ( $this->active_theme === 'hueman' ),
         ];
 
 	}
 
     public function __construct() {
-        add_action( 'qazana/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
+        $theme = wp_get_theme();
+
+        $this->active_theme = $theme->get( 'Name' );
+
+        if ( $this->active_theme === 'hueman' ) {
+            add_action( 'qazana/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
+        }
     }
 
     function enqueue_styles() {

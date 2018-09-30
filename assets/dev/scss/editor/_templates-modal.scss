@@ -1,73 +1,76 @@
 $remote-templates-items-space: 30px;
 #qazana-template-library-modal {
-    a.qazana-template-library-blank-footer-link {
-        font-style: normal;
-        text-decoration: underline;
-        color: $editor-success;
-        &:hover {
-            font-weight: 500;
-        }
-    }
-    .dialog-lightbox-content {
-        height: 100%;
-    }
-    .dialog-lightbox-loading {
-        display: none;
-    }
+
+	a.qazana-template-library-blank-footer-link {
+		font-style: normal;
+		text-decoration: underline;
+		color: $editor-success;
+
+		&:hover {
+			color: darken($editor-success, 10%);
+		}
+	}
 }
 
 #qazana-template-library-header-menu {
-    text-align: center;
-    color: $editor-dark;
-    font-size: 13px;
+	text-align: center;
+	color: $editor-dark;
+	font-size: 13px;
 }
 
 .qazana-template-library-menu-item {
-    display: inline-block;
-    padding: 17px 0;
-    width: 115px;
-    cursor: pointer;
-    &.qazana-active {
-        background-image: linear-gradient(to bottom, #f3f3f3, #fff);
-        border-bottom: 3px solid $brand-primary;
-    }
+	display: inline-block;
+	padding: 17px 0;
+	width: 115px;
+	cursor: pointer;
+
+	&.qazana-active {
+		background-image: linear-gradient(to bottom, #f3f3f3, #fff);
+		border-bottom: 3px solid #9b0a46;
+	}
 }
 
 #qazana-template-library-header-actions {
-    display: flex;
-    >div {
-        @include padding_end(16px);
-    }
+	display: flex;
+
+	> div {
+		@include padding_end(16px);
+	}
 }
 
 #qazana-template-library-header-preview-insert-wrapper {
-    cursor: default;
-    padding: 0 10px;
-    .qazana-button {
-        padding: 8px 14px;
-        font-size: 11px;
-    }
-    .qazana-template-library-template-insert {
-        color: #fff;
-        background-color: $editor-success;
-    }
+	cursor: default;
+	padding: 0 10px;
+
+	.qazana-button {
+		padding: 8px 14px;
+		font-size: 11px;
+	}
+
+	.qazana-template-library-template-insert {
+		color: #fff;
+		background-color: $editor-success;
+	}
 }
 
 #qazana-template-library-header-preview-back {
-    @include padding(16.5px, 16.5px, 15px, 0);
-    @include border-end(1px solid $editor-background);
-    cursor: pointer;
-    transition: color .5s;
-    &:not(:hover) {
-        color: $editor-light;
-    }
-    i {
-        @include padding-end(10px);
-        font-size: 18px;
-        &:before {
-            content: getValueByDirection( '\e908', '\e907');
-        }
-    }
+	@include padding(16.5px, 16.5px, 15px, 0);
+	@include border-end(1px solid $editor-background);
+	cursor: pointer;
+	transition: color .5s;
+
+	&:not(:hover) {
+		color: $editor-light;
+	}
+
+	i {
+		@include padding-end(10px);
+		font-size: 18px;
+
+		&:before {
+			content: getValueByDirection( '\e908', '\e907' );
+		}
+	}
 }
 
 #qazana-template-library-loading {
@@ -80,681 +83,816 @@ $remote-templates-items-space: 30px;
 }
 
 #qazana-template-library-templates {
-    padding: 0 15px;
-    &[data-template-source="local"] {
-        #qazana-template-library-templates-container {
-            box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, .03);
-            margin-top: 10px;
-            margin-bottom: 45px;
-        }
-        .qazana-template-library-order-input {
-            &:checked {
-                +.qazana-template-library-order-label {
-                    color: $editor-dark;
-                }
-            }
-        }
-    }
-    &[data-template-source="remote"] {
-        #qazana-template-library-templates-container {
-            margin: 10px -15px 0;
-        }
-        .qazana-template-library-order-input {
-            &:checked {
-                +.qazana-template-library-order-label {
-                    color: $editor-darkest;
-                }
-            }
-        }
-    }
-    &[data-template-source="empty"] {
-        #qazana-template-library-order-toolbar-local,
-        #qazana-template-library-footer-banner {
-            display: none;
-        }
-    }
-    &.qazana-templates-filter-active {
-        #qazana-template-library-footer-banner {
-            display: none;
-        }
-    }
-    .qazana-template-library-order-input {
-        display: none;
-        &:checked {
-            +.qazana-template-library-order-label {
-                @include padding-end(8px);
-                &:after {
-                    font-family: eicons;
-                    content: '\e956';
-                    @include margin-start(3px);
-                }
-            }
-            &.qazana-template-library-order-reverse {
-                +.qazana-template-library-order-label {
-                    &:after {
-                        content: '\e955';
-                    }
-                }
-            }
-        }
-    }
+	padding: 0 15px;
+
+	&[data-template-source="local"] {
+
+		#qazana-template-library-templates-container {
+			box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, .03);
+			margin-top: 10px;
+			margin-bottom: 45px;
+		}
+
+		.qazana-template-library-order-input {
+
+			&:checked {
+
+				+ .qazana-template-library-order-label {
+					color: $editor-dark;
+				}
+			}
+		}
+	}
+
+	&[data-template-source="remote"] {
+
+		#qazana-template-library-templates-container {
+			margin: 10px -15px 0;
+		}
+
+		.qazana-template-library-order-input {
+
+			&:checked {
+
+				+ .qazana-template-library-order-label {
+					color: $editor-darkest;
+				}
+			}
+		}
+	}
+
+	&[data-template-source="empty"] {
+
+		#qazana-template-library-order-toolbar-local, #qazana-template-library-footer-banner {
+			display: none;
+		}
+	}
+
+	&.qazana-templates-filter-active {
+
+		#qazana-template-library-footer-banner {
+			display: none;
+		}
+	}
+
+	.qazana-template-library-order-input {
+		display: none;
+
+		&:checked {
+
+			+ .qazana-template-library-order-label {
+				@include padding-end(8px);
+
+				&:after {
+					font-family: eicons;
+					content: '\e956';
+					@include margin-start(3px);
+				}
+			}
+
+			&.qazana-template-library-order-reverse {
+
+				+ .qazana-template-library-order-label {
+
+					&:after {
+						content: '\e955';
+					}
+				}
+			}
+		}
+	}
 }
 
 #qazana-template-library-templates-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start; // For blocks layout
-    // These rules are here because of selectors priority
-    .qazana-template-library-template-local {
-        .qazana-template-library-template-insert {
-            text-transform: none;
-            font-size: 12px;
-        }
-    }
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start; // For blocks layout
+
+	// These rules are here because of selectors priority
+	.qazana-template-library-template-local {
+
+		.qazana-template-library-template-insert {
+			text-transform: none;
+			font-size: 12px;
+		}
+	}
 }
 
 #qazana-template-library-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .qazana-template-library-filter-toolbar {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 #qazana-template-library-filter-toolbar-remote {
-    font-size: 11px;
+	font-size: 11px;
 }
 
 #qazana-template-library-order {
-    display: flex;
-    @include border-end(1px solid $editor-lightest);
+	display: flex;
+	@include border-end(1px solid $editor-lightest);
 }
 
 .qazana-template-library-order-label {
-    text-transform: uppercase;
-    cursor: pointer;
-    @include padding-end(22px);
-    user-select: none;
-    &:hover {
-        color: $editor-darker;
-    }
+	text-transform: uppercase;
+	@include padding-end(22px);
+	user-select: none;
+}
+
+label.qazana-template-library-order-label {
+	cursor: pointer;
+
+	&:hover {
+		color: $editor-darker;
+	}
 }
 
 #qazana-template-library-filter {
-    @include border-end(1px solid $editor-lightest);
-    .select2 {
-        text-align: $start;
-        @include margin-end(25px);
-    }
-    .select2-selection__rendered {
-        text-transform: capitalize;
-    }
+	@include border-end(1px solid $editor-lightest);
+
+	.select2 {
+		text-align: $start;
+		@include margin-end(25px);
+	}
+
+	.select2-selection__rendered {
+		text-transform: capitalize;
+	}
 }
 
 #select2-qazana-template-library-filter-subtype-results {
-    .select2-results__option {
-        text-transform: capitalize;
-    }
+
+	.select2-results__option {
+		text-transform: capitalize;
+	}
 }
 
 #qazana-template-library-my-favorites {
-    flex-grow: 1;
-    text-align: $start;
-    @include padding-start(20px);
+	flex-grow: 1;
+	text-align: $start;
+	@include padding-start(20px);
 }
 
 #qazana-template-library-filter-my-favorites {
-    display: none;
-    &:checked {
-        +#qazana-template-library-filter-my-favorites-label {
-            color: $editor-darkest;
-            i {
-                &:after {
-                    color: $editor-accent;
-                    content: '\f004';
-                }
-            }
-        }
-    }
+	display: none;
+
+	&:checked {
+
+		+ #qazana-template-library-filter-my-favorites-label {
+			color: $editor-darkest;
+
+			i {
+
+				&:after {
+					color: $editor-accent;
+					content: '\f004';
+				}
+			}
+		}
+	}
 }
 
 #qazana-template-library-filter-my-favorites-label {
-    cursor: pointer;
-    text-transform: uppercase;
-    &:hover {
-        color: $editor-darker;
-        i {
-            &:after {
-                color: $editor-accent;
-            }
-        }
-    }
-    i {
-        @include padding-end(5px);
-        &:after {
-            color: $editor-light;
-            content: '\f08a';
-        }
-    }
+	cursor: pointer;
+	text-transform: uppercase;
+
+	&:hover {
+		color: $editor-darker;
+
+		i {
+
+			&:after {
+				color: $editor-accent;
+			}
+		}
+	}
+
+	i {
+		@include padding-end(5px);
+
+		&:after {
+			color: $editor-light;
+			content: '\f08a';
+		}
+	}
 }
 
 #qazana-template-library-filter-text-wrapper {
-    width: 200px;
-    position: relative;
-    &:after {
-        content: '\e863';
-        position: absolute;
-        top: 50%;
-        @include end(0);
-        transform: translateY(-50%);
-        font-family: eicons;
-    }
+	width: 200px;
+	position: relative;
+
+	&:after {
+		content: '\e863';
+		position: absolute;
+		top: 50%;
+		@include end(0);
+		transform: translateY(-50%);
+		font-family: eicons;
+	}
 }
 
 #qazana-template-library-filter-text {
-    border: none;
-    border-bottom: 1px solid $editor-lightest;
-    border-radius: 0;
-    font-size: 11px;
-    text-transform: uppercase;
-    padding: 8px 15px 8px 0;
-    transition: border 0.5s;
-    &:focus {
-        border-color: $editor-lighter;
-    }
-    &::placeholder {
-        font-weight: 300;
-        color: $editor-lighter;
-    }
-    &:focus {
-        border-color: $editor-lighter;
-        &::placeholder {
-            color: $editor-light;
-        }
-    }
+	border: none;
+	border-bottom: 1px solid $editor-lightest;
+	border-radius: 0;
+	font-size: 11px;
+	text-transform: uppercase;
+	padding: 8px 15px 8px 0;
+	transition: border 0.5s;
+
+	&:focus {
+		border-color: $editor-lighter;
+	}
+
+	&::placeholder {
+		font-weight: 300;
+		color: $editor-lighter;
+	}
+
+	&:focus {
+		border-color: $editor-lighter;
+
+		&::placeholder {
+			color: $editor-light;
+		}
+	}
 }
 
 .qazana-template-library-template-remote {
-    margin: $remote-templates-items-space / 2;
-    padding: 8px;
-    background-color: #fff;
-    box-shadow: 0 1px 20px 0 rgba(0, 0, 0, .07);
-    border-radius: 3px;
-    &:hover {
-        .qazana-template-library-template-name {
-            display: none;
-        }
-    }
-    &:not(:hover) {
-        .qazana-template-library-template-preview {
-            opacity: 0;
-        }
-        .qazana-template-library-favorite,
-        .qazana-template-library-template-action {
-            display: none;
-        }
-    }
-    &.qazana-template-library-pro-template {
-        .qazana-template-library-template-body {
-            &:before {
-                position: absolute;
-                content: 'pro';
-                text-transform: uppercase;
-                top: 5px;
-                @include end(5px);
-                background-color: $editor-accent;
-                color: $editor-lightest;
-                padding: 2px 4px 0;
-                font-size: 9px;
-                border-radius: 2px;
-            }
-        }
-    }
-    .qazana-template-library-template-body {
-        position: relative;
-    }
-    @media (max-width: $editor-screen-lg-min) {
-        .qazana-template-library-template-body {
-            height: 300px;
-        }
-    }
-    .qazana-template-library-template-screenshot {
-        height: 100%;
-        background-size: cover;
-        background-position-x: 50%;
-        box-shadow: inset 0px -2px 15px -6px rgba(0, 0, 0, 0.07);
-    }
-    .qazana-template-library-template-preview {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, .5);
-        transition: opacity .5s;
-        cursor: pointer;
-        i {
-            font-size: 20px;
-            color: $editor-lightest;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-        }
-    }
-    .qazana-template-library-template-action {
-        background-color: transparent;
-        text-transform: none;
-        i {
-            @include margin-end(0);
-        }
-    }
-    .qazana-template-library-template-insert {
-        color: $editor-success;
-    }
-    .qazana-button-go-pro {
-        color: $editor-orange;
-    }
-    .qazana-template-library-template-footer {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        font-size: 11px;
-        line-height: 1;
-    }
-    .qazana-template-library-template-name {
-        text-align: $start;
-        color: $editor-dark;
-        flex-grow: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        @include padding-end(5px);
-    }
-    .qazana-template-library-template-favorite-input {
-        display: none;
-        &:checked {
-            +.qazana-template-library-template-favorite-label {
-                i {
-                    &:before {
-                        content: '\f004';
-                        color: $editor-accent;
-                    }
-                }
-            }
-        }
-    }
-    .qazana-template-library-template-favorite-label {
-        cursor: pointer;
-        &:hover {
-            i {
-                color: $editor-accent;
-            }
-        }
-    }
+	margin: $remote-templates-items-space / 2;
+	padding: 8px;
+	background-color: #fff;
+	box-shadow: 0 1px 20px 0 rgba(0, 0, 0, .07);
+	border-radius: 3px;
+
+	&:hover {
+
+		.qazana-template-library-template-name {
+			display: none;
+		}
+	}
+
+	&:not(:hover) {
+
+		.qazana-template-library-template-preview {
+			opacity: 0;
+		}
+
+		.qazana-template-library-favorite,
+		.qazana-template-library-template-action {
+			display: none;
+		}
+	}
+
+	&.qazana-template-library-pro-template {
+
+		.qazana-template-library-template-body {
+
+			&:before {
+				position: absolute;
+				content: 'pro';
+				text-transform: uppercase;
+				top: 5px;
+				@include end(5px);
+				background-color: $editor-accent;
+				color: $editor-lightest;
+				padding: 2px 4px 0;
+				font-size: 9px;
+				border-radius: 2px;
+			}
+		}
+	}
+
+	.qazana-template-library-template-body {
+		position: relative;
+	}
+
+	@media (max-width: $editor-screen-lg-min) {
+
+		.qazana-template-library-template-body {
+			height: 300px;
+		}
+	}
+
+	.qazana-template-library-template-screenshot {
+		height: 100%;
+		background-size: cover;
+		background-position-x: 50%;
+		box-shadow: inset 0px -2px 15px -6px rgba(0, 0, 0, 0.07);
+	}
+
+	.qazana-template-library-template-preview {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,.5);
+		transition: opacity .5s;
+		cursor: pointer;
+
+		i {
+			font-size: 20px;
+			color: $editor-lightest;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-50%) translateY(-50%);
+		}
+	}
+
+	.qazana-template-library-template-action {
+		background-color: transparent;
+		text-transform: none;
+
+		i {
+			@include margin-end(0);
+		}
+	}
+
+	.qazana-template-library-template-insert {
+		color: $editor-success;
+	}
+
+	.qazana-button-go-pro {
+		color: $editor-orange;
+	}
+
+	.qazana-template-library-template-footer {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10px;
+		font-size: 11px;
+		line-height: 1;
+	}
+
+	.qazana-template-library-template-name {
+		text-align: $start;
+		color: $editor-dark;
+		flex-grow: 1;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		@include padding-end(5px);
+	}
+
+	.qazana-template-library-template-favorite-input {
+		display: none;
+
+		&:checked {
+
+			+ .qazana-template-library-template-favorite-label {
+
+				i {
+
+					&:before {
+						content: '\f004';
+						color: $editor-accent;
+					}
+				}
+			}
+		}
+	}
+
+	.qazana-template-library-template-favorite-label {
+		cursor: pointer;
+
+		&:hover {
+
+			i {
+				color: $editor-accent;
+			}
+		}
+	}
 }
 
 .qazana-template-library-template-page {
-    @media (max-width: $library_screen_breakpoint) {
-        width: calc(25% - #{$remote-templates-items-space});
-    }
-    @media (min-width: $library_screen_breakpoint + 1) {
-        width: calc(20% - #{$remote-templates-items-space});
-    }
-    @media (max-width: $editor-screen-lg-min) {
-        width: calc(33.333% - #{$remote-templates-items-space});
-    }
-    .qazana-template-library-template-body {
-        height: 200px;
-    }
+	@media (max-width: $library_screen_breakpoint) {
+		width: calc(25% - #{$remote-templates-items-space});
+	}
+
+	@media (min-width: $library_screen_breakpoint + 1) {
+		width: calc(20% - #{$remote-templates-items-space});
+	}
+
+	@media (max-width: $editor-screen-lg-min) {
+		width: calc(33.333% - #{$remote-templates-items-space});
+	}
+
+	.qazana-template-library-template-body {
+		height: 200px;
+	}
 }
 
 .qazana-template-library-template-block {
-    position: relative;
-    width: calc(33.333% - #{$remote-templates-items-space});
-    overflow: hidden;
-    img {
-        display: block;
-        width: 100%;
-    }
-    .qazana-template-library-template-footer {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        @include start(0);
-        padding: 10px;
-        background-color: #fff;
-        transition: transform .5s;
-    }
-    .qazana-template-library-template-name {
-        display: none;
-    }
-    &:not(:hover) {
-        .qazana-template-library-template-footer {
-            transform: translateY(100%)
-        }
-    }
+	position: relative;
+	width: calc(33.333% - #{$remote-templates-items-space});
+	overflow: hidden;
+
+	img {
+		display: block;
+		width: 100%;
+	}
+
+	.qazana-template-library-template-footer {
+		position: absolute;
+		width: 100%;
+		bottom: 0;
+		@include start(0);
+		padding: 10px;
+		background-color: #fff;
+		transition: transform .5s;
+	}
+
+	.qazana-template-library-template-name {
+		display: none;
+	}
+
+	&:not(:hover) {
+
+		.qazana-template-library-template-footer {
+			transform: translateY(100%)
+		}
+	}
 }
 
 #qazana-template-library-order-toolbar-local,
 .qazana-template-library-template-local {
-    display: flex;
-    align-items: center;
-    padding: 0 25px;
-    text-align: $start;
+	display: flex;
+	align-items: center;
+	padding: 0 25px;
+	text-align: $start;
 }
 
 #qazana-template-library-order-toolbar-local {
-    margin-top: 30px;
-    .qazana-template-library-order-label {
-        line-height: 1;
-        font-size: 10px;
-        font-weight: 500;
-        &:not(:hover) {
-            color: $editor-light;
-        }
-    }
+	margin-top: 30px;
+
+	.qazana-template-library-order-label {
+		line-height: 1;
+		font-size: 10px;
+		font-weight: 500;
+
+		&:not(:hover) {
+			color: $editor-light;
+		}
+	}
 }
 
 .qazana-template-library-template-local {
-    height: 50px;
-    width: 100%;
-    margin-top: 1px;
-    background-color: #fff;
-    transition: background-color .3s linear;
-    &:hover {
-        background-color: lighten($editor-background-light, 3%);
-    }
-    &:not(:hover) {
-        .qazana-template-library-template-insert {
-            background: none;
-            color: $editor-light;
-        }
-    }
-    &:first-child {
-        border-radius: 3px 3px 0 0;
-    }
-    &:last-child {
-        border-radius: 0 0 3px 3px;
-    }
-    .qazana-template-library-template-name {
-        font-weight: 500;
-    }
-    .qazana-template-library-template-name,
-    .qazana-template-library-template-meta {
-        @include padding-end(20px);
-    }
-    .qazana-template-library-template-meta {
-        color: $editor-light;
-    }
-    .qazana-template-library-template-name,
-    .qazana-template-library-template-meta,
-    .qazana-template-library-template-preview,
-    .qazana-template-library-template-action {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .qazana-template-library-template-controls {
-        position: relative;
-        display: flex;
-        align-items: center;
-        >div {
-            cursor: pointer;
-            transition: color .5s;
-            &:not(:hover) {
-                color: $editor-light;
-            }
-        }
-    }
-    .qazana-template-library-template-insert {
-        i {
-            @include margin-end(3px);
-        }
-    }
-    .qazana-template-library-template-control-title {
-        @include margin-start(6px);
-    }
-    .qazana-template-library-template-delete {
-        &:hover {
-            color: $editor-danger;
-        }
-    }
-    .qazana-template-library-template-export {
-        &:hover {
-            i {
-                color: $editor-darker;
-            }
-        }
-    }
-    .qazana-template-library-template-action {
-        padding: 8px 18px;
-        margin: 0 5%;
-    }
-    .qazana-template-library-template-more {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        padding: 3px 20px;
-        border-radius: 3px;
-        box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.3);
-        top: 100%;
-        @include end(0);
-        transform: translateX(getValueByDirection(65%, -65%)) translateY(-7px);
-        z-index: 1;
-        &:before {
-            content: '';
-            position: absolute;
-            border: solid transparent;
-            border-width: 8px 4px;
-            border-bottom-color: #fff;
-            transform: translateY(-100%);
-        }
-        >div {
-            margin: 10px 0;
-            font-size: 11px;
-        }
-    }
-    .qazana-template-library-template-more-toggle {
-        flex-grow: 1;
-        text-align: $end;
-        i {
-            font-size: 16px;
-        }
-    }
+	height: 50px;
+	width: 100%;
+	margin-top: 1px;
+	background-color: #fff;
+	transition: background-color .3s linear;
+
+	&:hover {
+		background-color: lighten($editor-background-light, 3%);
+	}
+
+	&:not(:hover) {
+
+		.qazana-template-library-template-insert {
+			background: none;
+			color: $editor-light;
+		}
+	}
+
+	&:first-child {
+		border-radius: 3px 3px 0 0;
+	}
+
+	&:last-child {
+		border-radius: 0 0 3px 3px;
+	}
+
+	.qazana-template-library-template-name {
+		font-weight: 500;
+	}
+
+	.qazana-template-library-template-name,
+	.qazana-template-library-template-meta {
+		@include padding-end(20px);
+	}
+
+	.qazana-template-library-template-meta {
+		color: $editor-light;
+	}
+
+	.qazana-template-library-template-name,
+	.qazana-template-library-template-meta,
+	.qazana-template-library-template-preview,
+	.qazana-template-library-template-action {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.qazana-template-library-template-controls {
+		position: relative;
+		display: flex;
+		align-items: center;
+
+		> div {
+			cursor: pointer;
+			transition: color .5s;
+
+			&:not(:hover) {
+				color: $editor-light;
+			}
+		}
+	}
+
+	.qazana-template-library-template-insert {
+
+		i {
+			@include margin-end(3px);
+		}
+	}
+
+	.qazana-template-library-template-control-title {
+		@include margin-start(6px);
+	}
+
+	.qazana-template-library-template-delete {
+
+		&:hover {
+			color: $editor-danger;
+		}
+	}
+
+	.qazana-template-library-template-export {
+
+		&:hover {
+
+			i {
+				color: $editor-darker;
+			}
+		}
+	}
+
+	.qazana-template-library-template-action {
+		padding: 8px 18px;
+		margin: 0 5%;
+	}
+
+	.qazana-template-library-template-more {
+		display: none;
+		position: absolute;
+		background-color: #fff;
+		padding: 3px 20px;
+		border-radius: 3px;
+		box-shadow: 1px 3px 11px rgba(0,0,0,0.3);
+		top: 100%;
+		@include end(0);
+		transform: translateX(getValueByDirection(65%, -65%)) translateY(-7px);
+		z-index: 1;
+
+		&:before {
+			content: '';
+			position: absolute;
+			border: solid transparent;
+			border-width: 8px 4px;
+			border-bottom-color: #fff;
+			transform: translateY(-100%);
+		}
+
+		> div {
+			margin: 10px 0;
+			font-size: 11px;
+		}
+	}
+
+	.qazana-template-library-template-more-toggle {
+		flex-grow: 1;
+		text-align: $end;
+
+		i {
+			font-size: 16px;
+		}
+	}
 }
 
 #qazana-template-library-preview {
-    height: 100%;
-    overflow: hidden;
-    iframe {
-        height: 150%;
-        transform: scale(0.666) translateX(getValueByDirection(-25%, 25%)) translateY(-25%);
-        @media (max-width: $library_screen_breakpoint) {
-            width: 1440px;
-        }
-        @media (min-width: $library_screen_breakpoint + 1) {
-            width: 1710px;
-        }
-    }
+	height: 100%;
+	overflow: hidden;
+
+	iframe {
+		height: 150%;
+		transform: scale(0.666) translateX(getValueByDirection(-25%, 25%)) translateY(-25%);
+
+		@media (max-width: $library_screen_breakpoint) {
+			width: 1440px;
+		}
+
+		@media (min-width: $library_screen_breakpoint + 1) {
+			width: 1710px;
+		}
+	}
 }
 
 .qazana-template-library-blank-icon {
-    font-size: 65px;
-    margin-top: 45px;
-    color: $editor-lighter;
-    line-height: 1;
+	font-size: 65px;
+	margin-top: 45px;
+	color: $editor-lighter;
+	line-height: 1;
 }
 
 .qazana-template-library-blank-title {
-    font-size: 30px;
-    margin-top: 40px;
+	font-size: 30px;
+	margin-top: 40px;
 }
 
 .qazana-template-library-blank-message {
-    font-size: 18px;
-    color: $editor-light;
-    margin-top: 25px;
-    font-weight: 300;
+	font-size: 18px;
+	color: $editor-light;
+	margin-top: 25px;
+	font-weight: 300;
 }
 
 #qazana-template-library-save-template-form {
-    margin-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    >* {
-        height: 55px;
-        font-size: 16px;
-    }
+	margin-top: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	> * {
+		height: 55px;
+		font-size: 16px;
+	}
 }
 
 #qazana-template-library-save-template-name {
-    width: 500px;
-    background-color: #fff;
-    font-weight: 300;
-    color: $editor-light;
-    @include padding-start(25px);
-    border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);
-    border: none;
-    &::placeholder {
-        color: $editor-light;
-    }
+	width: 500px;
+	background-color: #fff;
+	font-weight: 300;
+	color: $editor-light;
+	@include padding-start(25px);
+	border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);
+	border: none;
+
+	&::placeholder {
+		color: $editor-light;
+	}
 }
 
 #qazana-template-library-save-template-submit {
-    width: 150px;
-    border-radius: getValueByDirection(0 3px 3px 0, 3px 0 0 3px);
-    font-weight: 500;
-    &:hover {
-        box-shadow: none;
-    }
+	width: 150px;
+	border-radius: getValueByDirection(0 3px 3px 0, 3px 0 0 3px);
+
+	&:hover {
+		box-shadow: none;
+	}
 }
 
 #qazana-template-library-import {
-    &-form {
-        width: 95%;
-        background-color: rgba(255, 255, 255, 0.5);
-        padding: 60px;
-        border: 2px dashed $editor-lightest;
-        margin: 35px auto;
-        transition: background-color 0.5s;
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        &-or {
-            margin-top: 15px;
-            font-size: 18px;
-        }
-        &-label {
-            margin-top: 20px;
-            padding: 15px 35px;
-            font-size: 16px;
-            display: inline-block;
-        }
-        &-input {
-            display: none;
-        }
-        &.qazana-drag-over {
-            border: 3px dashed $editor-info;
-        }
-    }
-    .qazana-template-library-blank {
-        &-icon {
-            margin-top: 0;
-        }
-        &-message {
-            margin-top: 20px;
-        }
-    }
+
+	&-form {
+		width: 95%;
+		background-color: rgba(255, 255, 255, 0.5);
+		padding: 60px;
+		border: 2px dashed $editor-lightest;
+		margin: 35px auto;
+		transition: background-color 0.5s;
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.9);
+		}
+
+		&-or {
+			margin-top: 15px;
+			font-size: 18px;
+		}
+
+		&-label {
+			margin-top: 20px;
+			padding: 15px 35px;
+			display: inline-block;
+		}
+
+		&-input {
+			display: none;
+		}
+
+		&.qazana-drag-over {
+			border: 3px dashed $editor-info;
+		}
+	}
+
+	.qazana-template-library-blank {
+
+		&-icon {
+			margin-top: 0;
+		}
+
+		&-message {
+			margin-top: 20px;
+		}
+	}
 }
 
 .qazana-template-library-blank-footer {
-    position: absolute;
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: $editor-light;
-    font-size: 16px;
-    font-style: italic;
-    @media (max-height: 700px) {
-        display: none;
-    }
+	position: absolute;
+	bottom: 70px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: $editor-light;
+	font-style: italic;
+
+	@media (max-height: 700px) {
+		display: none;
+	}
 }
 
 #qazana-template-library-footer-banner {
-    i {
-        color: $editor-lighter;
-        font-size: 56px;
-        margin-top: 40px;
-    }
-    .qazana-excerpt {
-        color: $editor-light;
-        font-size: 15px;
-        font-weight: 500;
-        margin: 20px 0;
-    }
+
+	i {
+		color: $editor-lighter;
+		font-size: 56px;
+		margin-top: 40px;
+	}
+
+	.qazana-excerpt {
+		color: $editor-light;
+		font-size: 15px;
+		font-weight: 500;
+		margin: 20px 0;
+	}
 }
 
 #qazana-template-library-templates-empty {
-    width: 100%;
-    margin-top: 40px;
+	width: 100%;
+	margin-top: 40px;
 }
 
 #qazana-template-library-error-dialog {
-    .dialog-message {
-        text-align: start;
-    }
+
+	.dialog-message {
+		text-align: start;
+	}
 }
 
 #qazana-template-library-error-info {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 
 @media (max-width: $library_screen_breakpoint) {
-    .qazana-template-library-local-column-1 {
-        width: 33%;
-    }
-    .qazana-template-library-local-column-2 {
-        width: 10%;
-    }
-    .qazana-template-library-local-column-3 {
-        width: 15%;
-    }
-    .qazana-template-library-local-column-4 {
-        width: 15%;
-    }
-    .qazana-template-library-local-column-5 {
-        width: 27%;
-    }
+
+	.qazana-template-library-local-column-1 {
+		width: 33%;
+	}
+
+	.qazana-template-library-local-column-2 {
+		width: 10%;
+	}
+
+	.qazana-template-library-local-column-3 {
+		width: 15%;
+	}
+
+	.qazana-template-library-local-column-4 {
+		width: 15%;
+	}
+
+	.qazana-template-library-local-column-5 {
+		width: 27%;
+	}
 }
 
 @media (min-width: $library_screen_breakpoint + 1) {
-    .qazana-template-library-local-column-1 {
-        width: 25%;
-    }
-    .qazana-template-library-local-column-2 {
-        width: 17%;
-    }
-    .qazana-template-library-local-column-3 {
-        width: 17%;
-    }
-    .qazana-template-library-local-column-4 {
-        width: 17%;
-    }
-    .qazana-template-library-local-column-5 {
-        width: 24%;
-    }
+
+	.qazana-template-library-local-column-1 {
+		width: 25%;
+	}
+
+	.qazana-template-library-local-column-2 {
+		width: 17%;
+	}
+
+	.qazana-template-library-local-column-3 {
+		width: 17%;
+	}
+
+	.qazana-template-library-local-column-4 {
+		width: 17%;
+	}
+
+	.qazana-template-library-local-column-5 {
+		width: 24%;
+	}
 }
 
 @media (max-width: $editor-screen-md-max) {
-    .qazana-template-library-local-column-3 {
-        display: none;
-    }
-    .qazana-template-library-local-column-5 {
-        width: 41%;
-    }
+
+	.qazana-template-library-local-column-3 {
+		display: none;
+	}
+
+	.qazana-template-library-local-column-5 {
+		width: 41%;
+	}
 }

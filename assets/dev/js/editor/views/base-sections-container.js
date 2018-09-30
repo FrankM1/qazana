@@ -9,8 +9,8 @@ BaseSectionsContainerView = BaseContainer.extend( {
 		var behaviors = {
 			Sortable: {
 				behaviorClass: require( 'qazana-behaviors/sortable' ),
-				elChildType: 'section'
-			}
+				elChildType: 'section',
+			},
 		};
 
 		return qazana.hooks.applyFilters( 'elements/base-section-container/behaviors', behaviors, this );
@@ -19,7 +19,7 @@ BaseSectionsContainerView = BaseContainer.extend( {
 	getSortableOptions: function() {
 		return {
 			handle: '> .qazana-element-overlay .qazana-editor-element-edit',
-			items: '> .qazana-section'
+			items: '> .qazana-section',
 		};
 	},
 
@@ -46,7 +46,7 @@ BaseSectionsContainerView = BaseContainer.extend( {
 
 	onPanelElementDragEnd: function() {
 		qazana.helpers.enableElementEvents( this.$el.find( 'iframe' ) );
-	}
+	},
 } );
 
 module.exports = BaseSectionsContainerView;

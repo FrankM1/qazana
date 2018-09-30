@@ -7,7 +7,7 @@ Manager = function() {
 	var addPanelPage = function() {
 		qazana.getPanelView().addPage( 'historyPage', {
 			view: HistoryPageView,
-			title: qazana.translate( 'history' )
+			title: qazana.translate( 'history' ),
 		} );
 	};
 

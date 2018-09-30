@@ -16,6 +16,16 @@ class Widget_Testimonial extends Widget_Base {
 
 	public $carousel = true;
 
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve testimonial widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string Widget name.
+	 */
 	public function get_name() {
 		return 'testimonial';
 	}

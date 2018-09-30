@@ -148,7 +148,15 @@ $document = qazana()->documents->get( $this->get_post_id() );
 		<i class="fa fa-cog" aria-hidden="true"></i>
 		<span class="qazana-screen-only"><?php printf( esc_html__( '%s Settings', 'qazana' ), $document::get_title() ); ?></span>
 	</div>
-	<div id="qazana-panel-footer-responsive" class="qazana-panel-footer-tool">
+	<div id="qazana-panel-footer-navigator" class="qazana-panel-footer-tool tooltip-target" data-tooltip="<?php esc_attr_e( 'Navigator', 'qazana' ); ?>">
+		<i class="eicon-navigator" aria-hidden="true"></i>
+		<span class="qazana-screen-only"><?php echo __( 'Navigator', 'qazana' ); ?></span>
+	</div>
+	<div id="qazana-panel-footer-history" class="qazana-panel-footer-tool qazana-leave-open tooltip-target qazana-toggle-state" data-tooltip="<?php esc_attr_e( 'History', 'qazana' ); ?>">
+		<i class="fa fa-history" aria-hidden="true"></i>
+		<span class="qazana-screen-only"><?php echo __( 'History', 'qazana' ); ?></span>
+	</div>
+	<div id="qazana-panel-footer-responsive" class="qazana-panel-footer-tool qazana-toggle-state">
 		<i class="eicon-device-desktop tooltip-target" aria-hidden="true" data-tooltip="<?php esc_attr_e( 'Responsive Mode', 'qazana' ); ?>"></i>
 		<span class="qazana-screen-only">
 			<?php _e( 'Responsive Mode', 'qazana' ); ?>
@@ -173,10 +181,6 @@ $document = qazana()->documents->get( $this->get_post_id() );
 				</div>
 			</div>
 		</div>
-	</div>
-	<div id="qazana-panel-footer-history" class="qazana-panel-footer-tool qazana-leave-open tooltip-target" data-tooltip="<?php esc_attr_e( 'History', 'qazana' ); ?>">
-		<i class="fa fa-history" aria-hidden="true"></i>
-		<span class="qazana-screen-only"><?php _e( 'History', 'qazana' ); ?></span>
 	</div>
 	<div id="qazana-panel-saver-button-preview" class="qazana-panel-footer-tool tooltip-target" data-tooltip="<?php esc_attr_e( 'Preview Changes', 'qazana' ); ?>">
 		<span id="qazana-panel-saver-button-preview-label">
@@ -254,9 +258,9 @@ $document = qazana()->documents->get( $this->get_post_id() );
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-schemes-disabled">
-	<i class="qazana-panel-nerd-box-icon eicon-nerd" aria-hidden="true"></i>
-	<div class="qazana-panel-nerd-box-title">{{{ '<?php _e( '%s are disabled', 'qazana' ); ?>'.replace( '%s', disabledTitle ) }}}</div>
-	<div class="qazana-panel-nerd-box-message"><?php printf( __( 'You can enable it from the <a href="%s" target="_blank">Qazana settings page</a>.', 'qazana' ), admin_url( 'admin.php?page=' . qazana()->slug ) ); ?></div>
+	<i class="qazana-nerd-box-icon eicon-nerd" aria-hidden="true"></i>
+	<div class="qazana-nerd-box-title">{{{ '<?php _e( '%s are disabled', 'qazana' ); ?>'.replace( '%s', disabledTitle ) }}}</div>
+	<div class="qazana-nerd-box-message"><?php printf( __( 'You can enable it from the <a href="%s" target="_blank">Qazana settings page</a>.', 'qazana' ), admin_url( 'admin.php?page=' . qazana()->slug ) ); ?></div>
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-scheme-color-item">

@@ -137,6 +137,16 @@ abstract class Controls_Stack {
 	 */
 	private $injection_point;
 
+
+	/**
+	 * Data sanitized.
+	 *
+	 * @access private
+	 *
+	 * @var bool
+	 */
+	private $settings_sanitized = false;
+
 	/**
 	 * Get element name.
 	 *
@@ -166,6 +176,8 @@ abstract class Controls_Stack {
 
 	/**
 	 * Get element ID.
+	 *
+	 * Retrieve the element generic ID.
 	 *
 	 * @access public
 	 *
@@ -406,6 +418,10 @@ abstract class Controls_Stack {
 			];
 
 			$this->current_popover['initialized'] = true;
+        }
+        
+        if ( strpos( $id, '-') !== false && ( ! empty( $args['conditions'] ) || ! empty( $args['condition'] ) ) ) {
+			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'A Dash in not allowed in a control id when conditions are defined, use an underscore instead. Control id - `' . esc_html( $id ) .'`.', '2.0.0' );
 		}
 
 		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
@@ -1025,12 +1041,16 @@ abstract class Controls_Stack {
 	 * @return mixed The settings.
 	 */
 	public function get_settings( $setting = null ) {
+		if ( ! $this->settings ) {
+			$this->settings = $this->_get_parsed_settings();
+		}
+
 		return self::_get_items( $this->settings, $setting );
 	}
 
 	public function get_parsed_dynamic_settings( $setting = null ) {
 		if ( null === $this->parsed_dynamic_settings ) {
-			$this->parsed_dynamic_settings = $this->parse_dynamic_settings( $this->settings );
+			$this->parsed_dynamic_settings = $this->parse_dynamic_settings( $this->get_settings() );
 		}
 
 		return self::_get_items( $this->parsed_dynamic_settings, $setting );
@@ -1722,6 +1742,10 @@ abstract class Controls_Stack {
 	 *                            `$key` is an array. Default is null.
 	 */
 	final public function set_settings( $key, $value = null ) {
+		if ( ! $this->settings ) {
+			$this->get_settings();
+		}
+
 		// strict check if override all settings.
 		if ( is_array( $key ) ) {
 			$this->settings = $key;
@@ -1775,7 +1799,7 @@ abstract class Controls_Stack {
 	 * @return array Parsed settings.
 	 */
 	protected function _get_parsed_settings() {
-		$settings = $this->data['settings'];
+		$settings = $this->get_data( 'settings' );
 
 		foreach ( $this->get_controls() as $control ) {
 			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
@@ -1790,64 +1814,6 @@ abstract class Controls_Stack {
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Sanitize initial data.
-	 *
-	 * Performs data cleaning and sanitization.
-	 *
-	 * @since 2.0.0
-	 * @access protected
-	 *
-	 * @param array $data     Data to sanitize.
-	 * @param array $controls Optional. An array of controls. Default is an
-	 *                        empty array.
-	 *
-	 * @return array Sanitized data.
-	 */
-	protected function sanitize_initial_data( $data, array $controls = [] ) {
-		if ( ! $controls ) {
-			$controls = $this->get_controls();
-		}
-
-		$settings = $data['settings'];
-
-		foreach ( $controls as $control ) {
-			if ( 'repeater' === $control['type'] ) {
-				if ( empty( $settings[ $control['name'] ] ) ) {
-					continue;
-				}
-
-				foreach ( $settings[ $control['name'] ] as $index => $repeater_row_data ) {
-					$sanitized_row_data = $this->sanitize_initial_data( [
-						'settings' => $repeater_row_data,
-					], $control['fields'] );
-
-					$settings[ $control['name'] ][ $index ] = $sanitized_row_data['settings'];
-				}
-
-				continue;
-			}
-
-			$is_dynamic = isset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
-
-			if ( ! $is_dynamic ) {
-				continue;
-			}
-
-			$value_to_check = $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ];
-
-			$tag_text_data = qazana()->dynamic_tags->tag_text_to_tag_data( $value_to_check );
-
-			if ( ! qazana()->dynamic_tags->get_tag_info( $tag_text_data['name'] ) ) {
-				unset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
-			}
-		}
-
-		$data['settings'] = $settings;
-
-		return $data;
 	}
 
 	/**
@@ -1927,7 +1893,6 @@ abstract class Controls_Stack {
 	 */
 	protected function _content_template() {}
 
-
 	/**
 	 * Initialize controls.
 	 *
@@ -1955,10 +1920,58 @@ abstract class Controls_Stack {
 		$this->data = array_merge( $this->get_default_data(), $data );
 
 		$this->id = $data['id'];
+	}
 
-		$this->data = $this->sanitize_initial_data( $this->data );
+	/**
+	 * Sanitize initial data.
+	 *
+	 * Performs settings cleaning and sanitization.
+	 *
+	 * @since 2.1.5
+	 * @access private
+	 *
+	 * @param array $settings Settings to sanitize.
+	 * @param array $controls Optional. An array of controls. Default is an
+	 *                        empty array.
+	 *
+	 * @return array Sanitized settings.
+	 */
+	private function sanitize_settings( array $settings, array $controls = [] ) {
+		if ( ! $controls ) {
+			$controls = $this->get_controls();
+		}
 
-		$this->settings = $this->_get_parsed_settings();
+		foreach ( $controls as $control ) {
+			if ( 'repeater' === $control['type'] ) {
+				if ( empty( $settings[ $control['name'] ] ) ) {
+					continue;
+				}
+
+				foreach ( $settings[ $control['name'] ] as $index => $repeater_row_data ) {
+					$sanitized_row_data = $this->sanitize_settings( $repeater_row_data, $control['fields'] );
+
+					$settings[ $control['name'] ][ $index ] = $sanitized_row_data;
+				}
+
+				continue;
+			}
+
+			$is_dynamic = isset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
+
+			if ( ! $is_dynamic ) {
+				continue;
+			}
+
+			$value_to_check = $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ];
+
+			$tag_text_data = qazana()->dynamic_tags->tag_text_to_tag_data( $value_to_check );
+
+			if ( ! qazana()->dynamic_tags->get_tag_info( $tag_text_data['name'] ) ) {
+				unset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
+			}
+		}
+
+		return $settings;
 	}
 
 	/**

@@ -28,13 +28,13 @@ BaseElementView = BaseContainer.extend( {
 	attributes: function() {
 		var type = this.model.get( 'elType' );
 
-		if ( 'widget'  === type ) {
+		if ( 'widget' === type ) {
 			type = this.model.get( 'widgetType' );
 		}
 
 		return {
 			'data-id': this.getID(),
-			'data-element_type': type
+			'data-element_type': type,
 		};
 	},
 
@@ -44,7 +44,7 @@ BaseElementView = BaseContainer.extend( {
 			editButton: '> .qazana-element-overlay .qazana-editor-element-edit',
 			duplicateButton: '> .qazana-element-overlay .qazana-editor-element-duplicate',
 			addButton: '> .qazana-element-overlay .qazana-editor-element-add',
-			removeButton: '> .qazana-element-overlay .qazana-editor-element-remove'
+			removeButton: '> .qazana-element-overlay .qazana-editor-element-remove',
 		};
 	},
 
@@ -54,8 +54,8 @@ BaseElementView = BaseContainer.extend( {
 		var behaviors = {
 			contextMenu: {
 				behaviorClass: require( 'qazana-behaviors/context-menu' ),
-				groups: groups
-			}
+				groups: groups,
+			},
 		};
 
 		return qazana.hooks.applyFilters( 'elements/base/behaviors', behaviors, this );
@@ -67,11 +67,11 @@ BaseElementView = BaseContainer.extend( {
 
 	events: function() {
 		return {
-			'mousedown': 'onMouseDown',
+			mousedown: 'onMouseDown',
 			'click @ui.editButton': 'onEditButtonClick',
 			'click @ui.duplicateButton': 'onDuplicateButtonClick',
 			'click @ui.addButton': 'onAddButtonClick',
-			'click @ui.removeButton': 'onRemoveButtonClick'
+			'click @ui.removeButton': 'onRemoveButtonClick',
 		};
 	},
 
@@ -107,7 +107,7 @@ BaseElementView = BaseContainer.extend( {
 		var templateHelpers = BaseContainer.prototype.templateHelpers.apply( this, arguments );
 
 		return jQuery.extend( templateHelpers, {
-			editModel: this.getEditModel() // @deprecated. Use view.getEditModel() instead.
+			editModel: this.getEditModel(), // @deprecated. Use view.getEditModel() instead.
 		} );
 	},
 
@@ -131,15 +131,15 @@ BaseElementView = BaseContainer.extend( {
 						name: 'edit',
 						icon: 'eicon-edit',
 						title: qazana.translate( 'edit_element', [ qazana.helpers.firstLetterUppercase( elementType ) ] ),
-						callback: this.options.model.trigger.bind( this.options.model, 'request:edit' )
+						callback: this.options.model.trigger.bind( this.options.model, 'request:edit' ),
 					}, {
 						name: 'duplicate',
 						icon: 'eicon-clone',
 						title: qazana.translate( 'duplicate' ),
 						shortcut: controlSign + '+D',
-						callback: this.duplicate.bind( this )
-					}
-				]
+						callback: this.duplicate.bind( this ),
+					},
+				],
 			}, {
 				name: 'transfer',
 				actions: [
@@ -147,26 +147,27 @@ BaseElementView = BaseContainer.extend( {
 						name: 'copy',
 						title: qazana.translate( 'copy' ),
 						shortcut: controlSign + '+C',
-						callback: this.copy.bind( this )
+						callback: this.copy.bind( this ),
 					}, {
 						name: 'paste',
 						title: qazana.translate( 'paste' ),
 						shortcut: controlSign + '+V',
 						callback: this.paste.bind( this ),
-						isEnabled: this.isPasteEnabled.bind( this )
+						isEnabled: this.isPasteEnabled.bind( this ),
 					}, {
 						name: 'pasteStyle',
 						title: qazana.translate( 'paste_style' ),
+						shortcut: controlSign + '+⇧+V',
 						callback: this.pasteStyle.bind( this ),
 						isEnabled: function() {
 							return !! qazana.getStorage( 'transfer' );
-						}
+						},
 					}, {
 						name: 'resetStyle',
 						title: qazana.translate( 'reset_style' ),
-						callback: this.resetStyle.bind( this )
-					}
-				]
+						callback: this.resetStyle.bind( this ),
+					},
+				],
 			}, {
 				name: 'delete',
 				actions: [
@@ -175,10 +176,10 @@ BaseElementView = BaseContainer.extend( {
 						icon: 'eicon-trash',
 						title: qazana.translate( 'delete' ),
 						shortcut: '⌦',
-						callback: this.removeElement.bind( this )
-					}
-				]
-			}
+						callback: this.removeElement.bind( this ),
+					},
+				],
+			},
 		];
 	},
 
@@ -187,7 +188,6 @@ BaseElementView = BaseContainer.extend( {
 
 		if ( this.collection ) {
 			this.listenTo( this.collection, 'add remove reset', this.onCollectionChanged, this );
-			this.listenTo( this.collection, 'switch', this.handleElementHover, this );
 		}
 
 		var editModel = this.getEditModel();
@@ -200,35 +200,11 @@ BaseElementView = BaseContainer.extend( {
 		this.initControlsCSSParser();
 	},
 
-    handleElementHover: function( ) {
-
-        var self = this;
-
-        var config = {
-            class : 'qazana-element-settings-active'
-        };
-
-        var hoverConfig = {
-            sensitivity: 1, // number = sensitivity threshold (must be 1 or higher)
-            interval: 10, // number = milliseconds for onMouseOver polling interval
-            timeout: 500, // number = milliseconds delay before onMouseOut
-            over: function() {
-                self.$el.addClass( config.class );
-            },
-            out: function() {
-                self.$el.removeClass(config.class );
-            }
-        };
-
-        self.$el.hoverIntent(hoverConfig);
-
-    },
-
 	startTransport: function( type ) {
 		qazana.setStorage( 'transfer', {
 			type: type,
 			elementsType: this.getElementType(),
-			elements: [ this.model.toJSON( { copyHtmlCache: true } ) ]
+			elements: [ this.model.toJSON( { copyHtmlCache: true } ) ],
 		} );
 	},
 
@@ -275,7 +251,7 @@ BaseElementView = BaseContainer.extend( {
 	pasteStyle: function() {
 		var self = this,
 			transferData = qazana.getStorage( 'transfer' ),
-			sourceElement = transferData.elements[0],
+			sourceElement = transferData.elements[ 0 ],
 			sourceSettings = sourceElement.settings,
 			editModel = self.getEditModel(),
 			settings = editModel.get( 'settings' ),
@@ -311,10 +287,9 @@ BaseElementView = BaseContainer.extend( {
 				if ( isEqual ) {
 					return;
 				}
-			} else {
-				if ( sourceValue === targetValue ) {
-					return;
-				}
+			}
+			if ( sourceValue === targetValue ) {
+				return;
 			}
 
 			var ControlView = qazana.getControlView( control.type );
@@ -354,7 +329,7 @@ BaseElementView = BaseContainer.extend( {
 				return;
 			}
 
-			defaultValues[ controlName ] = control[ 'default' ];
+			defaultValues[ controlName ] = control.default;
 		} );
 
 		editModel.setSetting( defaultValues );
@@ -382,7 +357,7 @@ BaseElementView = BaseContainer.extend( {
 		var elementView = qazana.channels.panelElements.request( 'element:selected' );
 
 		var itemData = {
-			elType: elementView.model.get( 'elType' )
+			elType: elementView.model.get( 'elType' ),
 		};
 
 		if ( 'widget' === itemData.elType ) {
@@ -401,7 +376,7 @@ BaseElementView = BaseContainer.extend( {
 
 		options.trigger = {
 			beforeAdd: 'element:before:add',
-			afterAdd: 'element:after:add'
+			afterAdd: 'element:after:add',
 		};
 
 		options.onAfterAdd = function( newModel, newView ) {
@@ -487,7 +462,7 @@ BaseElementView = BaseContainer.extend( {
 		this.controlsCSSParser = new ControlsCSSParser( {
 			id: this.model.cid,
 			settingsModel: this.getEditModel().get( 'settings' ),
-			dynamicParsing: this.getDynamicParsingSettings()
+			dynamicParsing: this.getDynamicParsingSettings(),
 		} );
 	},
 
@@ -592,7 +567,8 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	renderUI: function() {
-		this.renderStyles();
+		var editModel = this.getModelForRender();
+		this.renderStyles( editModel.get( 'settings' ) );
 		this.renderCustomClasses();
 		this.renderCustomElementID();
 		this.enqueueFonts();
@@ -656,7 +632,7 @@ BaseElementView = BaseContainer.extend( {
 					return;
 				}
 
-				if ( 'template' === control.render_type || ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) && '_element_id' !== settingKey ) {
+				if ( 'template' === control.render_type || ( ! settings.isStyleControl( settingKey ) && ! settings.isClassControl( settingKey ) && '_element_id' !== settingKey ) ) {
 					isContentChanged = true;
 				}
 			} );
@@ -695,7 +671,7 @@ BaseElementView = BaseContainer.extend( {
 				self.render();
 
 				self.$el.removeClass( 'qazana-loading' );
-			}
+			},
 		};
 	},
 
@@ -713,7 +689,7 @@ BaseElementView = BaseContainer.extend( {
 		qazana.templates.startModal( {
 			onReady: function() {
 				qazana.templates.getLayout().showSaveTemplateView( model );
-			}
+			},
 		} );
 	},
 
@@ -770,16 +746,23 @@ BaseElementView = BaseContainer.extend( {
 		this.model.trigger( 'request:edit' );
 	},
 
-	onEditRequest: function() {
-		qazana.helpers.scrollToView( this.$el, 200 );
-
-		var activeMode = qazana.channels.dataEditMode.request( 'activeMode' );
-
-		if ( 'edit' !== activeMode ) {
+	onEditRequest: function( options = {} ) {
+		if ( 'edit' !== qazana.channels.dataEditMode.request( 'activeMode' ) ) {
 			return;
 		}
 
-		qazana.getPanelView().openEditor( this.getEditModel(), this );
+		const model = this.getEditModel(),
+			panel = qazana.getPanelView();
+
+		if ( 'editor' === panel.getCurrentPageName() && panel.getCurrentPageView().model === model ) {
+			return;
+		}
+
+		if ( options.scrollIntoView ) {
+			qazana.helpers.scrollToView( this.$el, 200 );
+		}
+
+		panel.openEditor( model, this );
 	},
 
 	onDuplicateButtonClick: function( event ) {
@@ -802,14 +785,14 @@ BaseElementView = BaseContainer.extend( {
 			return;
 		}
 
-		qazanaFrontend.getElements( '$document' )[0].activeElement.blur();
+		qazanaFrontend.getElements( '$document' )[ 0 ].activeElement.blur();
 	},
 
 	onDestroy: function() {
 		this.controlsCSSParser.removeStyleFromDocument();
 
 		qazana.channels.data.trigger( 'element:destroy', this.model );
-	}
+	},
 } );
 
 module.exports = BaseElementView;

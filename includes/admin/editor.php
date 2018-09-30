@@ -20,12 +20,15 @@ class Editor {
 
         add_filter( 'page_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
         add_filter( 'post_row_actions', [ $this, 'add_edit_in_dashboard' ], 10, 2 );
-		add_filter( 'display_post_states', [ $this, 'add_post_state' ], 10, 2 );
+		add_filter( 'display_post_states', [ $this, 'add_qazana_post_state' ], 10, 2 );
 
         add_filter( 'admin_body_class', [ $this, 'body_status_classes' ] );
 
         // Admin Actions
-		add_action( 'admin_action_qazana_new_post', [ $this, 'admin_action_new_post' ] );
+        add_action( 'admin_action_qazana_new_post', [ $this, 'admin_action_new_post' ] );
+        
+        add_action( 'current_screen', [ $this, 'init_new_template' ] );
+
     }
 
     /**
@@ -37,6 +40,16 @@ class Editor {
     public function enqueue_scripts() {
 
         $suffix = Utils::is_script_debug() ? '' : '.min';
+
+        wp_register_script(
+			'backbone-marionette',
+			qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',
+			[
+				'backbone',
+			],
+			'2.4.5',
+			true
+		);
 
         wp_register_script(
             'qazana-dialog',
@@ -55,6 +68,21 @@ class Editor {
             qazana_get_version(),
             true
         );
+
+        wp_localize_script(
+			'qazana-admin-app',
+			'QazanaAdminConfig',
+			[
+				'home_url' => home_url(),
+				'i18n' => [
+					'rollback_confirm' => __( 'Are you sure you want to reinstall previous version?', 'qazana' ),
+					'rollback_to_previous_version' => __( 'Rollback to Previous Version', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'cancel' => __( 'Cancel', 'qazana' ),
+					'new_template' => __( 'New Template', 'qazana' ),
+				],
+			]
+		);
 
         wp_enqueue_script( 'qazana-admin-app' );
 
@@ -93,58 +121,6 @@ class Editor {
         // TODO: enqueue this just if needed
         add_thickbox();
     }
-
-    /**
-     * Admin action new post.
-     *
-     * When a new post action is fired the title is set to 'Qazana' and the post ID.
-     *
-     * Fired by `admin_action_qazana_new_post` action.
-     *
-     * @since 1.9.0
-     * @access public
-     */
-	public function admin_action_new_post() {
-		check_admin_referer( 'qazana_action_new_post' );
-
-		if ( empty( $_GET['post_type'] ) ) {
-			$post_type = 'post';
-		} else {
-			$post_type = $_GET['post_type'];
-		}
-
-		if ( ! User::is_current_user_can_edit_post_type( $post_type ) ) {
-			return;
-		}
-
-		if ( empty( $_GET['template_type'] ) ) {
-			$type = 'post';
-		} else {
-			$type = $_GET['template_type']; // XSS ok.
-		}
-
-		$post_data = isset( $_GET['post_data'] ) ? $_GET['post_data'] : [];
-
-		$meta = [];
-
-		/**
-		 * Create new post meta data.
-		 *
-		 * Filters the meta data of any new post created.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param array $meta Post meta data.
-		 */
-		$meta = apply_filters( 'qazana/admin/create_new_post/meta', $meta );
-
-		$post_data['post_type'] = $post_type;
-
-		$document = qazana()->documents->create( $type, $post_data, $meta );
-
-		wp_redirect( $document->get_edit_url() );
-		die;
-	}
 
     /**
      * Print switch button in edit post (which has cpt support).
@@ -238,7 +214,7 @@ class Editor {
     public function body_status_classes( $classes ) {
         global $pagenow;
 
-		if ( in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) && Utils::is_post_type_support() ) {
+		if ( in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) && Utils::is_post_support() ) {
             $post = get_post();
 
 			$mode_class = qazana()->db->is_built_with_qazana( $post->ID ) ? 'qazana-editor-active' : 'qazana-editor-inactive';
@@ -259,10 +235,97 @@ class Editor {
 	 *
 	 * @return array                A filtered array of post display states.
 	 */
-	public function add_post_state( $post_states, $post ) {
+	public function add_qazana_post_state( $post_states, $post ) {
 		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->db->is_built_with_qazana( $post->ID ) ) {
 			$post_states[] = '<span class="status-qazana">' . __( 'Qazana', 'qazana' ) . '</span>';
 		}
 		return $post_states;
+    }
+
+    /**
+	 * Admin action new post.
+	 *
+	 * When a new post action is fired the title is set to 'Qazana' and the post ID.
+	 *
+	 * Fired by `admin_action_qazana_new_post` action.
+	 *
+	 * @since 1.9.0
+	 * @access public
+	 */
+	public function admin_action_new_post() {
+		check_admin_referer( 'qazana_action_new_post' );
+
+		if ( empty( $_GET['post_type'] ) ) {
+			$post_type = 'post';
+		} else {
+			$post_type = $_GET['post_type'];
+		}
+
+		if ( ! User::is_current_user_can_edit_post_type( $post_type ) ) {
+			return;
+		}
+
+		if ( empty( $_GET['template_type'] ) ) {
+			$type = 'post';
+		} else {
+			$type = $_GET['template_type']; // XSS ok.
+		}
+
+		$post_data = isset( $_GET['post_data'] ) ? $_GET['post_data'] : [];
+
+		$meta = [];
+
+		/**
+		 * Create new post meta data.
+		 *
+		 * Filters the meta data of any new post created.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $meta Post meta data.
+		 */
+		$meta = apply_filters( 'qazana/admin/create_new_post/meta', $meta );
+
+		$post_data['post_type'] = $post_type;
+
+		$document = qazana()->documents->create( $type, $post_data, $meta );
+
+		wp_redirect( $document->get_edit_url() );
+		die;
+    }
+    
+    public function print_new_template_template() {
+		$this->print_library_layout_template();
+
+		include qazana()->includes_dir . 'admin/admin-templates/new-template.php';
+	}
+
+	public function enqueue_new_template_scripts() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		wp_enqueue_script(
+			'qazana-new-template',
+			qazana()->core_assets_url . 'js/new-template' . $suffix . '.js',
+			[
+				'backbone-marionette',
+				'qazana-dialog',
+			],
+			qazana_get_version(),
+			true
+		);
+	}
+
+	public function init_new_template() {
+		if ( 'edit-qazana_library' !== get_current_screen()->id ) {
+			return;
+		}
+
+		add_action( 'admin_footer', [ $this, 'print_new_template_template' ] );
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_new_template_scripts' ] );
+    }
+    
+	private function print_library_layout_template() {
+		include qazana()->includes_dir . 'editor/editor-templates/library-layout.php';
 	}
 }

@@ -17,11 +17,11 @@ ColumnView = BaseElementView.extend( {
 		_.extend( behaviors, {
 			Sortable: {
 				behaviorClass: require( 'qazana-behaviors/sortable' ),
-				elChildType: 'widget'
+				elChildType: 'widget',
 			},
 			Resizable: {
-				behaviorClass: require( 'qazana-behaviors/resizable' )
-			}
+				behaviorClass: require( 'qazana-behaviors/resizable' ),
+			},
 		} );
 
 		return qazana.hooks.applyFilters( 'elements/column/behaviors', behaviors, this );
@@ -63,10 +63,11 @@ ColumnView = BaseElementView.extend( {
 			actions: [
 				{
 					name: 'addNew',
+                    icon: 'eicon-plus',
 					title: qazana.translate( 'new_column' ),
-					callback: this.addNewColumn.bind( this )
-				}
-			]
+					callback: this.addNewColumn.bind( this ),
+				},
+			],
 		} );
 
 		return groups;
@@ -118,7 +119,7 @@ ColumnView = BaseElementView.extend( {
 	getSortableOptions: function() {
 		return {
 			connectWith: '.qazana-widget-wrap',
-			items: '> .qazana-element'
+			items: '> .qazana-element',
 		};
 	},
 
@@ -171,7 +172,7 @@ ColumnView = BaseElementView.extend( {
 				}
 
 				self.addElementFromPanel( { at: newIndex } );
-			}
+			},
 		} );
 	},
 
@@ -215,7 +216,7 @@ ColumnView = BaseElementView.extend( {
 		event.stopPropagation();
 
 		this.addNewColumn();
-	}
+	},
 } );
 
 module.exports = ColumnView;

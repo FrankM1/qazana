@@ -215,7 +215,8 @@ class Controls_Manager {
 	/**
 	 * Text shadow control.
 	 */
-	const TEXT_SHADOW = 'text_shadow';
+    const TEXT_SHADOW = 'text_shadow';
+    const ANIMATION = 'animation_in';
 	const ANIMATION_IN = 'animation_in';
     const ANIMATION_OUT = 'animation_out';
     const CHECKBOX = 'checkbox';

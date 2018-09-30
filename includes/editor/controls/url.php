@@ -97,7 +97,7 @@ class Control_URL extends Control_Base_Multiple {
 			<div class="qazana-control-input-wrapper">
 				<i class="qazana-control-url-autocomplete-spinner fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
 				<input id="<?php echo $control_uid; ?>" class="qazana-control-tag-area qazana-input" data-setting="url" placeholder="{{ data.placeholder }}" />
-				<input id="_ajax_linking_nonce" type="hidden" value="<?php echo wp_create_nonce( 'internal-linking' ) ?>" />
+				<input id="_ajax_linking_nonce" type="hidden" value="<?php echo wp_create_nonce( 'internal-linking' ); ?>" />
 
 				<label for="<?php echo $more_input_control_uid; ?>" class="qazana-control-url-more tooltip-target" data-tooltip="<?php _e( 'Link Options', 'qazana' ); ?>">
 					<i class="fa fa-cog" aria-hidden="true"></i>

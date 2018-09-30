@@ -296,8 +296,6 @@ class Plugin {
         // All Qazana actions are setup (includes qazana-core-hooks.php)
         do_action_ref_array( 'qazana_after_setup_actions', [&$this] );
 
-        // Add Page Templates
-        add_action( 'after_setup_theme', ['Qazana\Page_Template_Manager', 'get_instance'] ); // load late for filters to work
     }
 
     /**
@@ -367,7 +365,6 @@ class Plugin {
         require_once $this->includes_dir . 'core/settings/general/model.php';
         require_once $this->includes_dir . 'core/settings/page/manager.php';
         require_once $this->includes_dir . 'core/settings/page/model.php';
-        require_once $this->includes_dir . 'core/settings/page/template.php';
 
         require_once $this->includes_dir . 'common/functions.php';
         require_once $this->includes_dir . 'common/utils.php';
@@ -448,13 +445,13 @@ class Plugin {
 
         Core\Settings\Manager::run();
 
-        $this->debugger = new Core\Debug\Inspector();
-		$this->ajax = new Core\Managers\Ajax();
-        $this->documents = new Core\Managers\Documents();
+        $this->debugger           = new Core\Debug\Inspector();
+		$this->ajax               = new Core\Managers\Ajax();
+        $this->documents          = new Core\Managers\Documents();
         // TODO Remove deprecated handle - $this->posts_css_manager
-		$this->files_manager = $this->posts_css_manager = new Core\Files\Manager();
-		$this->dynamic_tags = new Core\DynamicTags\Manager();
-		$this->role_manager = new Core\Roles\Manager();
+		$this->files_manager      = $this->posts_css_manager = new Core\Files\Manager();
+		$this->dynamic_tags       = new Core\DynamicTags\Manager();
+		$this->role_manager       = new Core\Roles\Manager();
         $this->icons_manager      = new Icons_Manager();
         $this->db                 = new DB();
         $this->controls_manager   = new Controls_Manager();

@@ -3,11 +3,11 @@ var ControlBaseView = require( 'qazana-controls/base' ),
 
 ControlTabItemView = ControlBaseView.extend( {
 	triggers: {
-		'click': {
+		click: {
 			event: 'control:tab:clicked',
-			stopPropagation: false
-		}
-	}
+			stopPropagation: false,
+		},
+	},
 } );
 
 module.exports = ControlTabItemView;

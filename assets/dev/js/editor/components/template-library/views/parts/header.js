@@ -9,20 +9,26 @@ TemplateLibraryHeaderView = Marionette.LayoutView.extend( {
 	regions: {
 		logoArea: '.qazana-templates-modal__header__logo-area',
 		tools: '#qazana-template-library-header-tools',
-		menuArea: '.qazana-templates-modal__header__menu-area'
+		menuArea: '.qazana-templates-modal__header__menu-area',
 	},
 
 	ui: {
-		closeModal: '.qazana-templates-modal__header__close-modal'
+		closeModal: '.qazana-templates-modal__header__close',
 	},
 
 	events: {
-		'click @ui.closeModal': 'onCloseModalClick'
+		'click @ui.closeModal': 'onCloseModalClick',
+	},
+
+	templateHelpers: function() {
+		return {
+			closeType: this.getOption( 'closeType' ),
+		};
 	},
 
 	onCloseModalClick: function() {
 		this._parent._parent._parent.hideModal();
-	}
+	},
 } );
 
 module.exports = TemplateLibraryHeaderView;

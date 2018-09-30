@@ -9,12 +9,12 @@ module.exports = Marionette.CompositeView.extend( {
 
 	ui: {
 		discard: '.qazana-panel-scheme-discard .qazana-button',
-		apply: '.qazana-panel-scheme-save .qazana-button'
+		apply: '.qazana-panel-scheme-save .qazana-button',
 	},
 
 	events: {
 		'click @ui.discard': 'onDiscardClick',
-		'click @ui.apply': 'onApplyClick'
+		'click @ui.apply': 'onApplyClick',
 	},
 
 	isRevisionApplied: false,
@@ -58,7 +58,7 @@ module.exports = Marionette.CompositeView.extend( {
 				self.currentPreviewId = null;
 
 				alert( 'An error occurred' );
-			}
+			},
 		} );
 	},
 
@@ -83,7 +83,7 @@ module.exports = Marionette.CompositeView.extend( {
 				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				alert( 'An error occurred' );
-			}
+			},
 		} );
 	},
 
@@ -159,7 +159,7 @@ module.exports = Marionette.CompositeView.extend( {
 			return;
 		}
 
-		var currentPreviewModel = this.collection.findWhere({ id: this.currentPreviewId });
+		var currentPreviewModel = this.collection.findWhere( { id: this.currentPreviewId } );
 
 		// Ensure the model is exist and not deleted during a save.
 		if ( currentPreviewModel ) {
@@ -191,7 +191,7 @@ module.exports = Marionette.CompositeView.extend( {
 				status: 'autosave',
 				onSuccess: function() {
 					self.getRevisionViewData( childView );
-				}
+				},
 			} );
 		} else {
 			self.getRevisionViewData( childView );
@@ -211,14 +211,14 @@ module.exports = Marionette.CompositeView.extend( {
 			headerMessage: qazana.translate( 'delete_element', [ type ] ),
 			strings: {
 				confirm: qazana.translate( 'delete' ),
-				cancel: qazana.translate( 'cancel' )
+				cancel: qazana.translate( 'cancel' ),
 			},
 			defaultOption: 'confirm',
 			onConfirm: function() {
 				self.deleteRevision( childView );
-			}
+			},
 		} );
 
 		removeDialog.show();
-	}
+	},
 } );

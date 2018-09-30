@@ -22,7 +22,7 @@ qazana()->frontend->add_body_class( 'qazana-template-canvas' );
 	/**
 	 * Before canvas page template content.
 	 *
-	 * Fires before the content of Elementor canvas page template.
+	 * Fires before the content of Qazana canvas page template.
 	 *
 	 * @since 1.0.0
 	 */
@@ -33,7 +33,7 @@ qazana()->frontend->add_body_class( 'qazana-template-canvas' );
 	/**
 	 * After canvas page template content.
 	 *
-	 * Fires after the content of Elementor canvas page template.
+	 * Fires after the content of Qazana canvas page template.
 	 *
 	 * @since 1.0.0
 	 */

@@ -1,6 +1,7 @@
 var BaseSectionsContainerView = require( 'qazana-views/base-sections-container' ),
-	AddSectionView = require( 'qazana-views/add-section/independent' ),
 	Preview;
+
+import AddSectionView from './add-section/independent';
 
 Preview = BaseSectionsContainerView.extend( {
 	template: Marionette.TemplateCache.get( '#tmpl-qazana-preview' ),
@@ -14,8 +15,8 @@ Preview = BaseSectionsContainerView.extend( {
 			behaviors = {
 				contextMenu: {
 					behaviorClass: require( 'qazana-behaviors/context-menu' ),
-					groups: this.getContextMenuGroups()
-				}
+					groups: this.getContextMenuGroups(),
+				},
 			};
 
 		return jQuery.extend( parentBehaviors, behaviors );
@@ -34,9 +35,9 @@ Preview = BaseSectionsContainerView.extend( {
 						name: 'paste',
 						title: qazana.translate( 'paste' ),
 						callback: this.paste.bind( this ),
-						isEnabled: this.isPasteEnabled.bind( this )
-					}
-				]
+						isEnabled: this.isPasteEnabled.bind( this ),
+					},
+				],
 			}, {
 				name: 'content',
 				actions: [
@@ -44,15 +45,15 @@ Preview = BaseSectionsContainerView.extend( {
 						name: 'copy_all_content',
 						title: qazana.translate( 'copy_all_content' ),
 						callback: this.copy.bind( this ),
-						isEnabled: hasContent
+						isEnabled: hasContent,
 					}, {
 						name: 'delete_all_content',
 						title: qazana.translate( 'delete_all_content' ),
 						callback: qazana.clearPage.bind( qazana ),
-						isEnabled: hasContent
-					}
-				]
-			}
+						isEnabled: hasContent,
+					},
+				],
+			},
 		];
 	},
 
@@ -60,7 +61,7 @@ Preview = BaseSectionsContainerView.extend( {
 		qazana.setStorage( 'transfer', {
 			type: 'copy',
 			elementsType: 'section',
-			elements: qazana.elements.toJSON( { copyHtmlCache: true } )
+			elements: qazana.elements.toJSON( { copyHtmlCache: true } ),
 		} );
 	},
 
@@ -70,14 +71,14 @@ Preview = BaseSectionsContainerView.extend( {
 			section,
 			index = undefined !== atIndex ? atIndex : this.collection.length;
 
-		qazana.channels.data.trigger( 'element:before:add', transferData.elements[0] );
+		qazana.channels.data.trigger( 'element:before:add', transferData.elements[ 0 ] );
 
 		if ( 'section' === transferData.elementsType ) {
 			transferData.elements.forEach( function( element ) {
 				self.addChildElement( element, {
 					at: index,
 					edit: false,
-					clone: true
+					clone: true,
 				} );
 
 				index++;
@@ -92,7 +93,7 @@ Preview = BaseSectionsContainerView.extend( {
 			transferData.elements.forEach( function( element ) {
 				section.addChildElement( element, {
 					at: index,
-					clone: true
+					clone: true,
 				} );
 
 				index++;
@@ -107,14 +108,14 @@ Preview = BaseSectionsContainerView.extend( {
 			transferData.elements.forEach( function( element ) {
 				section.addChildElement( element, {
 					at: index,
-					clone: true
+					clone: true,
 				} );
 
 				index++;
 			} );
 		}
 
-		qazana.channels.data.trigger( 'element:after:add', transferData.elements[0] );
+		qazana.channels.data.trigger( 'element:after:add', transferData.elements[ 0 ] );
 	},
 
 	isPasteEnabled: function() {
@@ -130,7 +131,7 @@ Preview = BaseSectionsContainerView.extend( {
 		addNewSectionView.render();
 
 		this.$el.append( addNewSectionView.$el );
-	}
+	},
 } );
 
 module.exports = Preview;

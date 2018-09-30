@@ -19,7 +19,7 @@ module.exports = BaseSettings.extend( {
 					qazana.once( 'preview:loaded', function() {
 						qazana.getPanelView().setPage( 'page_settings' );
 					} );
-				}
+				},
 			} );
 
 		},
@@ -64,11 +64,13 @@ module.exports = BaseSettings.extend( {
 
 	onModelChange: function() {
 		qazana.saver.setFlagEditorChange( true );
+
 		BaseSettings.prototype.onModelChange.apply( this, arguments );
 	},
 
 	getDataToSave: function( data ) {
 		data.id = qazana.config.document.id;
+
 		return data;
 	},
 
@@ -78,5 +80,5 @@ module.exports = BaseSettings.extend( {
 		qazana.once( 'preview:loaded', function() {
 			qazana.getPanelView().setPage( 'page_settings' );
 		} );
-	}
+	},
 } );

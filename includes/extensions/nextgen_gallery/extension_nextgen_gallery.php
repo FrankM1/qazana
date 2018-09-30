@@ -17,7 +17,9 @@ class NextGen_Gallery extends Base {
 	}
 
     public function __construct() {
-        add_action( 'init', [ __CLASS__, 'init' ] );
+        if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
+            add_action( 'init', [ __CLASS__, 'init' ] );
+        }
     }
 
     public static function init() {

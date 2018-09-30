@@ -4,6 +4,7 @@ module.exports = BaseMultiple.extend( {
 
 	onReady: function() {
 		var self = this,
+			positionBase = qazana.config.is_rtl ? 'right' : 'left',
 			last, cache;
 
 		// Based on /wp-includes/js/tinymce/plugins/wplink/plugin.js.
@@ -26,7 +27,7 @@ module.exports = BaseMultiple.extend( {
 					action: 'wp-link-ajax',
 					page: 1,
 					search: request.term,
-					_ajax_linking_nonce: jQuery( '#_ajax_linking_nonce' ).val()
+					_ajax_linking_nonce: jQuery( '#_ajax_linking_nonce' ).val(),
 				}, function( data ) {
 					cache = data;
 					response( data );
@@ -38,7 +39,7 @@ module.exports = BaseMultiple.extend( {
 
 				last = request.term;
 			},
-			focus: function( event, ui ) {
+			focus: function( event ) {
 				/*
 				 * Don't empty the URL input field, when using the arrow keys to
 				 * highlight items. See api.jqueryui.com/autocomplete/#event-focus
@@ -50,13 +51,14 @@ module.exports = BaseMultiple.extend( {
 				self.setValue( 'url', ui.item.permalink );
 				return false;
 			},
-			open: function( event  ) {
+			open: function( event ) {
 				jQuery( event.target ).data( 'uiAutocomplete' ).menu.activeMenu.addClass( 'qazana-autocomplete-menu' );
 			},
 			minLength: 2,
 			position: {
-				my: 'left top+2'
-			}
+				my: positionBase + ' top+2',
+				at: positionBase + ' bottom',
+			},
 		} )
 		// The `_renderItem` cannot be override via the arguments.
 			.autocomplete( 'instance' )._renderItem = function( ul, item ) {
@@ -75,5 +77,5 @@ module.exports = BaseMultiple.extend( {
 		}
 
 		this.$el.remove();
-	}
+	},
 } );

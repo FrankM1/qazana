@@ -41,5 +41,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-global">
-	<div class="qazana-panel-nerd-box">Coming Soon</div>
+	<div class="qazana-nerd-box">Coming Soon</div>
 </script>

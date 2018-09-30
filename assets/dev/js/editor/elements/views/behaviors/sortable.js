@@ -2,15 +2,15 @@ var SortableBehavior;
 
 SortableBehavior = Marionette.Behavior.extend( {
 	defaults: {
-		elChildType: 'widget'
+		elChildType: 'widget',
 	},
 
 	events: {
-		'sortstart': 'onSortStart',
-		'sortreceive': 'onSortReceive',
-		'sortupdate': 'onSortUpdate',
-		'sortover': 'onSortOver',
-		'sortout': 'onSortOut'
+		sortstart: 'onSortStart',
+		sortreceive: 'onSortReceive',
+		sortupdate: 'onSortUpdate',
+		sortover: 'onSortOver',
+		sortout: 'onSortOut',
 	},
 
 	initialize: function() {
@@ -65,10 +65,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 				placeholder: 'qazana-sortable-placeholder qazana-' + this.getOption( 'elChildType' ) + '-placeholder',
 				cursorAt: {
 					top: 20,
-					left: 25
+					left: 25,
 				},
 				helper: this._getSortableHelper.bind( this ),
-				cancel: 'input, textarea, button, select, option, .qazana-inline-editing, .qazana-tab-title'
+				cancel: 'input, textarea, button, select, option, .qazana-inline-editing, .qazana-tab-title',
 
 			},
 			sortableOptions = _.extend( defaultSortableOptions, this.view.getSortableOptions() );
@@ -78,7 +78,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 	_getSortableHelper: function( event, $item ) {
 		var model = this.view.collection.get( {
-			cid: $item.data( 'model-cid' )
+			cid: $item.data( 'model-cid' ),
 		} );
 
 		return '<div style="height: 84px; width: 125px;" class="qazana-sortable-helper qazana-sortable-helper-' + model.get( 'elType' ) + '"><div class="icon"><i class="' + model.getIcon() + '"></i></div><div class="qazana-element-title-wrapper"><div class="title">' + model.getTitle() + '</div></div></div>';
@@ -100,7 +100,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 		event.stopPropagation();
 
 		var model = this.view.collection.get( {
-			cid: ui.item.data( 'model-cid' )
+			cid: ui.item.data( 'model-cid' ),
 		} );
 
 		qazana.channels.data
@@ -117,17 +117,17 @@ SortableBehavior = Marionette.Behavior.extend( {
 			newIndex = $childElement.parent().children().index( $childElement ),
 			child = this.view.children.findByModelCid( model.cid );
 
-		this.view.addChildElement( model, {
+		this.view.addChildElement( model.clone(), {
 			at: newIndex,
 			trigger: {
 				beforeAdd: 'drag:before:update',
-				afterAdd: 'drag:after:update'
+				afterAdd: 'drag:after:update',
 			},
 			onBeforeAdd: function() {
 				child._isRendering = true;
 
 				collection.remove( model );
-			}
+			},
 		} );
 
 		qazana.saver.setFlagEditorChange( true );
@@ -160,7 +160,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 			at: newIndex,
 			trigger: {
 				beforeAdd: 'drag:before:update',
-				afterAdd: 'drag:after:update'
+				afterAdd: 'drag:after:update',
 			},
 			onAfterAdd: function() {
 				var senderSection = qazana.channels.data.request( 'dragging:parent:view' );
@@ -170,7 +170,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 				model.destroy();
 
 				senderSection.isManualRemoving = false;
-			}
+			},
 		} );
 	},
 
@@ -181,7 +181,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 				itemHeight = 0;
 
 			uiItems.forEach( function( item ) {
-				if ( item.item[0] === ui.item[0] ) {
+				if ( item.item[ 0 ] === ui.item[ 0 ] ) {
 					itemHeight = item.height;
 					return false;
 				}
@@ -202,7 +202,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 			.addClass( 'qazana-draggable-over' )
 			.attr( {
 				'data-dragged-element': model.get( 'elType' ),
-				'data-dragged-is-inner': model.get( 'isInner' )
+				'data-dragged-is-inner': model.get( 'isInner' ),
 			} );
 
 		this.$el.addClass( 'qazana-dragging-on-child' );
@@ -225,7 +225,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 	onSortUpdate: function( event, ui ) {
 		event.stopPropagation();
 
-		if ( ! this.el.contains( ui.item[0] ) ) {
+		if ( this.getChildViewContainer()[ 0 ] !== ui.item.parent()[ 0 ] ) {
 			return;
 		}
 
@@ -234,7 +234,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 
 	onAddChild: function( view ) {
 		view.$el.attr( 'data-model-cid', view.model.cid );
-	}
+	},
 } );
 
 module.exports = SortableBehavior;

@@ -1,7 +1,7 @@
 /**
  * Licensed under MIT, https://github.com/sofish/pen
  *
- * Customized and fixed by Elementor team
+ * Customized and fixed by Qazana team
  */
 
 (function(root, doc) {

@@ -7,22 +7,22 @@ TemplateLibraryTemplatesEmptyView = Marionette.ItemView.extend( {
 
 	ui: {
 		title: '.qazana-template-library-blank-title',
-		message: '.qazana-template-library-blank-message'
+		message: '.qazana-template-library-blank-message',
 	},
 
 	modesStrings: {
 		empty: {
 			title: qazana.translate( 'templates_empty_title' ),
-			message: qazana.translate( 'templates_empty_message' )
+			message: qazana.translate( 'templates_empty_message' ),
 		},
 		noResults: {
 			title: qazana.translate( 'templates_no_results_title' ),
-			message: qazana.translate( 'templates_no_results_message' )
+			message: qazana.translate( 'templates_no_results_message' ),
 		},
 		noFavorites: {
 			title: qazana.translate( 'templates_no_favorites_title' ),
-			message: qazana.translate( 'templates_no_favorites_message' )
-		}
+			message: qazana.translate( 'templates_no_favorites_message' ),
+		},
 	},
 
 	getCurrentMode: function() {
@@ -43,7 +43,7 @@ TemplateLibraryTemplatesEmptyView = Marionette.ItemView.extend( {
 		this.ui.title.html( modeStrings.title );
 
 		this.ui.message.html( modeStrings.message );
-	}
+	},
 } );
 
 module.exports = TemplateLibraryTemplatesEmptyView;

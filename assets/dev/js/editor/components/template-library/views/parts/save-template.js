@@ -7,11 +7,11 @@ TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
 
 	ui: {
 		form: '#qazana-template-library-save-template-form',
-		submitButton: '#qazana-template-library-save-template-submit'
+		submitButton: '#qazana-template-library-save-template-submit',
 	},
 
 	events: {
-		'submit @ui.form': 'onFormSubmit'
+		'submit @ui.form': 'onFormSubmit',
 	},
 
 	getSaveType: function() {
@@ -37,7 +37,7 @@ TemplateLibrarySaveTemplateView = Marionette.ItemView.extend( {
 		this.ui.submitButton.addClass( 'qazana-button-state' );
 
 		qazana.templates.saveTemplate( saveType, formData );
-	}
+	},
 } );
 
 module.exports = TemplateLibrarySaveTemplateView;

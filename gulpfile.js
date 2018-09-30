@@ -28,9 +28,7 @@
  */
 
 // Project related.
-var project                 = 'qazana'; // Project Name.
 var projectURL              = 'qazana.test'; // Project URL. Could be something like localhost:8888.
-var productURL              = './'; // Theme/Plugin URL. Leave it like it is, since our gulpfile.js lives in the root folder.
 
 // Translation related.
 var text_domain             = 'qazana'; // Your textdomain here.
@@ -42,46 +40,11 @@ var team                    = 'RadiumThemes <frank@radiumthemes.com>'; // Team's
 var translatePath           = './languages' // Where to save the translation files.
 
 // Style related.
-var CssRC               = './assets/dev/scss/**/*.scss'; // Path to main .scss file.
-var StyleDestination    = './assets/css'; // Path to place the compiled CSS file.
 var ExtenstioncssRC     = "./includes/extensions/**/*.scss"; // Path to extensions .scss file.
 
 // Defualt set to root folder.
 
-// Images related.
-var imagesSRC               = './assets/images/raw/**/*.{png,jpg,gif,svg}'; // Source folder of images which should be optimized.
-var imagesDestination       = './assets/images/'; // Destination folder of optimized images. Must be different from the imagesSRC folder.
-
-// Watch files paths.
-var JSWatchFiles    = './assets/dev/js/**/*.js'; // Path to all vendor JS files.
-
 var projectPHPWatchFiles    = './**/*.php'; // Path to all PHP files.
-
-var build 			= './build/'; // Files that you want to package into a zip go here
-var buildInclude 	= [
-                    // include common file types
-                    '**/*.php',
-                    '**/*.html',
-                    '**/*.css',
-                    '**/*.js',
-                    '**/*.svg',
-                    '**/*.ttf',
-                    '**/*.otf',
-                    '**/*.eot',
-                    '**/*.woff',
-                    '**/*.woff2',
-
-                    // include specific files and folders
-                    'screenshot.png',
-
-                    // exclude files and folders
-                    '!node_modules/**/*',
-                    '!bower_components/**/*',
-                    '!style.css.map',
-                    '!assets/dev/js/*',
-                    '!assets/dev/scss/*'
-                ];
-
 
 // Browsers you care about for autoprefixing.
 // Browserlist https        ://github.com/ai/browserslist
@@ -113,14 +76,6 @@ var sass = require("gulp-sass"); // Gulp pluign for Sass compilation.
 var autoprefixer = require("gulp-autoprefixer"); // Autoprefixing magic.
 var cleanCSS = require("gulp-clean-css"); // Minify CSS and merge combine matching media queries into one media query definition.
 
-// JS related plugins.
-var jshint = require("gulp-jshint");
-var concat = require("gulp-concat"); // Concatenates JS files
-var uglify = require("gulp-uglify"); // Minifies JS files
-
-// Image realted plugins.
-var imagemin = require("gulp-imagemin"); // Minify PNG, JPEG, GIF and SVG images with imagemin.
-
 // Utility related plugins.
 var rename = require("gulp-rename"); // Renames files E.g. style.css -> style.min.css
 var lineec = require("gulp-line-ending-corrector"); // Consistent Line Endings for non UNIX systems. Gulp Plugin for Line Ending Corrector (A utility that makes sure your files have consistent line endings)
@@ -132,11 +87,6 @@ var reload = browserSync.reload; // For manual browser reload.
 var wpPot = require("gulp-wp-pot"); // For generating the .pot file.
 var sort = require("gulp-sort"); // Recommended to prevent unnecessary changes in pot-file.
 
-var zip = require("gulp-zip"); // Using to zip up our packaged theme into a tasty zip file that can be installed in WordPress!
-var ignore = require("gulp-ignore"); // Helps with ignoring files and directories in our run tasks
-var rimraf = require("gulp-rimraf"); // Helps with removing files and directories in our run tasks
-var cache = require("gulp-cache");
-var browserify = require("gulp-browserify");
 var gutil = require("gulp-util");
 
 function handleError(err) {

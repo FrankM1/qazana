@@ -6,10 +6,10 @@
 	#toplevel_page_edit-post_type-qazana_library {
 
 		div.wp-menu-image:before {
-			content: "\e800";
+			content: "\e801";
 			font-family: eicons;
-			font-size: 14px;
-			margin-top: 3px;
+			font-size: 18px;
+			margin-top: 1px;
 		}
 
 		// Menu Go Pro
@@ -34,12 +34,14 @@
 	margin: 15px 0;
 }
 
+#qazana-switch-mode-button,
 #qazana-editor-button {
 	outline: none;
 	cursor: pointer;
 
-	.eicon-qazana {
-		@include margin-end(5px);
+	i {
+		@include margin-end(3px);
+		font-size: 19px;
 	}
 }
 

@@ -100,11 +100,10 @@
 				self.cacheElements();
 				self.bindEvents();
 			}, 1 );
-		}
+		},
 	};
 
 	$( function() {
 		QazanaGutenbergApp.init();
 	} );
-
 }( jQuery ) );

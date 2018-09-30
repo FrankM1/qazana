@@ -90,50 +90,6 @@ class Utils {
 
 		return $edit_link;
 	}
-    /**
-     * Get video id
-     * Supports youtube and vimeo
-     *
-     * @param  [type] $url [description]
-     * @return [type]      [description]
-     */
-	public static function get_video_id_from_url( $url ) {
-
-        $video_id = false;
-        $video_data = array();
-        $video_data['host'] = '';
-
-        // get video id
-        if ( strpos( $url, 'youtu' ) ) {
-            $video_data['host'] = 'youtube';
-        } elseif ( strpos( $url, 'vimeo' ) ) {
-            $video_data['host'] = 'vimeo';
-        }
-
-        $parts = parse_url( $url );
-
-        if ( isset( $parts['query'] ) ) {
-
-            parse_str( $parts['query'], $args );
-
-            if ( isset( $args['v'] ) ) {
-                $video_data['id'] = $args['v'];
-                return $video_data;
-            } else if ( isset( $args['vi'] ) ) {
-                $video_data['id'] = $args['vi'];
-                return $video_data;
-            }
-        }
-
-        if ( isset( $parts['path'] ) ) {
-            $path = explode( '/', trim( $parts['path'], '/' ) );
-            $video_data['id'] = $path[ count( $path ) -1 ];
-            return $video_data;
-        }
-
-        return $video_id;
-
-	}
 
 	/**
 	 * Get preview URL.
@@ -278,9 +234,9 @@ class Utils {
 	}
 
 	/**
-	 * Is post type supports Qazana.
+	 * Is post supports Qazana.
 	 *
-	 * Whether the post type supports editing with Qazana.
+	 * Whether the post supports editing with Qazana.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -288,11 +244,12 @@ class Utils {
 	 *
 	 * @param int $post_id Optional. Post ID. Default is `0`.
 	 *
-	 * @return string True if post type supports editing with Qazana, false otherwise.
+	 * @return string True if post supports editing with Qazana, false otherwise.
 	 */
-	public static function is_post_type_support( $post_id = 0 ) {
+	public static function is_post_support( $post_id = 0 ) {
 		$post_type = get_post_type( $post_id );
-		$is_supported = post_type_supports( $post_type, 'qazana' );
+
+		$is_supported = self::is_post_type_support( $post_type );
 
 		/**
 		 * Is post type support.
@@ -300,14 +257,54 @@ class Utils {
 		 * Filters whether the post type supports editing with Qazana.
 		 *
 		 * @since 1.0.0
+		 * @deprecated 2.2.0 Use `qazana/utils/is_post_support` Instead
 		 *
-		 * @param bool   $is_supported Whether the post type supports editing with Qazana.
-		 * @param int    $post_id      Post ID.
-		 * @param string $post_type    Post type.
+		 * @param bool $is_supported Whether the post type supports editing with Qazana.
+		 * @param int $post_id Post ID.
+		 * @param string $post_type Post type.
 		 */
 		$is_supported = apply_filters( 'qazana/utils/is_post_type_support', $is_supported, $post_id, $post_type );
 
+		/**
+		 * Is post support.
+		 *
+		 * Filters whether the post supports editing with Qazana.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $is_supported Whether the post type supports editing with Qazana.
+		 * @param int $post_id Post ID.
+		 * @param string $post_type Post type.
+		 */
+		$is_supported = apply_filters( 'qazana/utils/is_post_support', $is_supported, $post_id, $post_type );
+
 		return $is_supported;
+	}
+
+
+	/**
+	 * Is post type supports Qazana.
+	 *
+	 * Whether the post type supports editing with Qazana.
+	 *
+	 * @since 2.2.0
+	 * @access public
+	 * @static
+	 *
+	 * @param string $post_type Post Type.
+	 *
+	 * @return string True if post type supports editing with Qazana, false otherwise.
+	 */
+	public static function is_post_type_support( $post_type ) {
+		if ( ! post_type_exists( $post_type ) ) {
+			return false;
+		}
+
+		if ( ! post_type_supports( $post_type, 'qazana' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -401,9 +398,7 @@ class Utils {
 
 		// Create a UTC+- zone if no timezone string exists.
 		if ( empty( $timezone_string ) ) {
-			if ( 0 === $current_offset ) {
-				$timezone_string = 'UTC+0';
-			} elseif ( $current_offset < 0 ) {
+			if ( $current_offset < 0 ) {
 				$timezone_string = 'UTC' . $current_offset;
 			} else {
 				$timezone_string = 'UTC+' . $current_offset;
@@ -633,5 +628,51 @@ class Utils {
 
 		return $taxonomies;
 	}
+
+    /**
+     * Get video id
+     * Supports youtube and vimeo
+     *
+     * @param  [type] $url [description]
+     * @return [type]      [description]
+     */
+	public static function get_video_id_from_url( $url ) {
+
+        $video_id = false;
+        $video_data = array();
+        $video_data['host'] = '';
+
+        // get video id
+        if ( strpos( $url, 'youtu' ) ) {
+            $video_data['host'] = 'youtube';
+        } elseif ( strpos( $url, 'vimeo' ) ) {
+            $video_data['host'] = 'vimeo';
+        }
+
+        $parts = parse_url( $url );
+
+        if ( isset( $parts['query'] ) ) {
+
+            parse_str( $parts['query'], $args );
+
+            if ( isset( $args['v'] ) ) {
+                $video_data['id'] = $args['v'];
+                return $video_data;
+            } else if ( isset( $args['vi'] ) ) {
+                $video_data['id'] = $args['vi'];
+                return $video_data;
+            }
+        }
+
+        if ( isset( $parts['path'] ) ) {
+            $path = explode( '/', trim( $parts['path'], '/' ) );
+            $video_data['id'] = $path[ count( $path ) -1 ];
+            return $video_data;
+        }
+
+        return $video_id;
+
+	}
+
 
 }

@@ -80,7 +80,7 @@ class Control_Image_Dimensions extends Control_Base_Multiple {
 			<div class="qazana-panel-alert qazana-panel-alert-danger">
 				<?php _e( 'The server does not have ImageMagick or GD installed and/or enabled! Any of these libraries are required for WordPress to be able to resize images. Please contact your server administrator to enable this before continuing.', 'qazana' ); ?>
 			</div>
-		<?php
+			<?php
 			return;
 		endif;
 		?>

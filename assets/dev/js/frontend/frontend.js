@@ -7,9 +7,9 @@
         YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
         VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
-		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
-		CarouselModule = require( 'qazana-frontend/utils/carousel' );
-		
+		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
+		//CarouselModule = require( 'qazana-frontend/utils/carousel' );
+
 	var QazanaFrontend = function() {
 		var self = this,
 			dialogsManager;
@@ -46,7 +46,7 @@
                 vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
 				lightbox: new LightboxModule()
-				//carousel: new CarouselModule()
+				// carousel: new CarouselModule()
 			};
 
 			self.modules = {
@@ -73,10 +73,27 @@
 			return settingsObject;
 		};
 
+		var addIeCompatibility = function() {
+			var isIE = 'Microsoft Internet Explorer' === navigator.appName || !! navigator.userAgent.match( /Trident/g ) || !! navigator.userAgent.match( /MSIE/g ) || !! navigator.userAgent.match( /rv:11/ ),
+				el = document.createElement( 'div' ),
+				supportsGrid = 'string' === typeof el.style.grid;
+
+			if ( ! isIE && supportsGrid ) {
+				return;
+			}
+			elements.$body.addClass( 'qazana-msie' );
+
+			var msieCss = '<link rel="stylesheet" id="qazana-frontend-css-msie" href="' + qazanaFrontend.config.urls.assets + 'css/frontend-msie.min.css?' + qazanaFrontend.config.version + '" type="text/css" />';
+
+			elements.$body.append( msieCss );
+		};
+
 		this.init = function() {
 			self.hooks = new EventManager();
 
 			initElements();
+
+			addIeCompatibility();
 
 			bindEvents();
 
@@ -207,7 +224,7 @@
 		this.waypoint = function( $element, callback, options ) {
 			var defaultOptions = {
 				offset: '100%',
-				triggerOnce: true
+				triggerOnce: true,
 			};
 
 			options = $.extend( defaultOptions, options );

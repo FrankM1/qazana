@@ -1,6 +1,6 @@
 module.exports = Marionette.ItemView.extend( {
 	options: {
-		activeClass: 'qazana-active'
+		activeClass: 'qazana-active',
 	},
 
 	template: '#tmpl-qazana-template-library-header-menu',
@@ -8,11 +8,11 @@ module.exports = Marionette.ItemView.extend( {
 	id: 'qazana-template-library-header-menu',
 
 	ui: {
-		menuItems: '.qazana-template-library-menu-item'
+		menuItems: '.qazana-template-library-menu-item',
 	},
 
 	events: {
-		'click @ui.menuItems': 'onMenuItemClick'
+		'click @ui.menuItems': 'onMenuItemClick',
 	},
 
 	$activeItem: null,
@@ -51,5 +51,5 @@ module.exports = Marionette.ItemView.extend( {
 		this.activateMenuItem( jQuery( item ) );
 
 		qazana.templates.setTemplatesPage( item.dataset.templateSource, itemData.templateType );
-	}
+	},
 } );

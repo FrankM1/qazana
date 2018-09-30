@@ -8,7 +8,7 @@ module.exports = Marionette.Behavior.extend( {
 			buttonSaveOptions: '#qazana-panel-saver-button-save-options',
 			buttonPublishLabel: '#qazana-panel-saver-button-publish-label',
 			menuSaveDraft: '#qazana-panel-saver-menu-save-draft',
-			lastEditedWrapper: '.qazana-last-edited-wrapper'
+			lastEditedWrapper: '.qazana-last-edited-wrapper',
 		};
 	},
 
@@ -16,7 +16,7 @@ module.exports = Marionette.Behavior.extend( {
 		return {
 			'click @ui.buttonPreview': 'onClickButtonPreview',
 			'click @ui.buttonPublish': 'onClickButtonPublish',
-			'click @ui.menuSaveDraft': 'onClickMenuSaveDraft'
+			'click @ui.menuSaveDraft': 'onClickMenuSaveDraft',
 		};
 	},
 
@@ -69,9 +69,9 @@ module.exports = Marionette.Behavior.extend( {
 						text: qazana.translate( 'have_a_look' ),
 						callback: function() {
 							open( qazana.config.document.urls.permalink );
-						}
-					}
-				]
+						},
+					},
+				],
 			} );
 		}
 	},
@@ -191,7 +191,7 @@ module.exports = Marionette.Behavior.extend( {
 			gravity: 's',
 			title: function() {
 				return this.getAttribute( 'data-tooltip' );
-			}
+			},
 		} );
 	},
 
@@ -205,5 +205,5 @@ module.exports = Marionette.Behavior.extend( {
 				// Do nothing.
 			}
 		}
-	}
+	},
 } );

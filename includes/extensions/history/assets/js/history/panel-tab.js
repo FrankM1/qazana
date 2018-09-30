@@ -6,11 +6,11 @@ module.exports = Marionette.CompositeView.extend( {
 	childView: Marionette.ItemView.extend( {
 		template: '#tmpl-qazana-panel-history-item',
 		ui: {
-			item: '.qazana-history-item'
+			item: '.qazana-history-item',
 		},
 		triggers: {
-			'click @ui.item': 'item:click'
-		}
+			'click @ui.item': 'item:click',
+		},
 	} ),
 
 	childViewContainer: '#qazana-history-list',
@@ -24,7 +24,7 @@ module.exports = Marionette.CompositeView.extend( {
 			// Set current item - the first not applied item
 			if ( self.children.length ) {
 				var currentItem = self.collection.find( function( model ) {
-						return 'not_applied' ===  model.get( 'status' );
+						return 'not_applied' === model.get( 'status' );
 					} ),
 					currentView = self.children.findByModel( currentItem );
 
@@ -60,5 +60,5 @@ module.exports = Marionette.CompositeView.extend( {
 		if ( ! this.isDestroyed ) {
 			this.render();
 		}
-	}
+	},
 } );

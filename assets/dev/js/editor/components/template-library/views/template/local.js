@@ -9,14 +9,14 @@ TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
 			deleteButton: '.qazana-template-library-template-delete',
 			morePopup: '.qazana-template-library-template-more',
 			toggleMore: '.qazana-template-library-template-more-toggle',
-			toggleMoreIcon: '.qazana-template-library-template-more-toggle i'
+			toggleMoreIcon: '.qazana-template-library-template-more-toggle i',
 		} );
 	},
 
 	events: function() {
 		return _.extend( TemplateLibraryTemplateView.prototype.events.apply( this, arguments ), {
 			'click @ui.deleteButton': 'onDeleteButtonClick',
-			'click @ui.toggleMore': 'onToggleMoreClick'
+			'click @ui.toggleMore': 'onToggleMoreClick',
 		} );
 	},
 
@@ -29,7 +29,7 @@ TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
 			},
 			onSuccess: function() {
 				qazana.templates.showTemplates();
-			}
+			},
 		} );
 	},
 
@@ -39,7 +39,7 @@ TemplateLibraryTemplateLocalView = TemplateLibraryTemplateView.extend( {
 
 	onPreviewButtonClick: function() {
 		open( this.model.get( 'url' ), '_blank' );
-	}
+	},
 } );
 
 module.exports = TemplateLibraryTemplateLocalView;

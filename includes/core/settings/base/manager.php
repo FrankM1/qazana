@@ -195,9 +195,9 @@ abstract class Manager {
 			}
 		}
 
-		$settings = apply_filters( 'qazana/core/settings/to_save', $settings_to_save, $id );
+		$settings_to_save = apply_filters( 'qazana/core/settings/to_save', $settings_to_save, $id );
 
-		$this->save_settings_to_db( $settings, $id );
+		$this->save_settings_to_db( $settings_to_save, $id );
 
 		// Clear cache after save.
 		if ( isset( $this->models_cache[ $id ] ) ) {
@@ -397,7 +397,7 @@ abstract class Manager {
 	 *
 	 * Retrieve the final HTML for the editor.
 	 *
-	 * @since 1.6.0
+	 * @since 1.3.0
 	 * @access private
 	 *
 	 * @return string Settings editor template.

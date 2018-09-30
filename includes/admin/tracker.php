@@ -244,6 +244,22 @@ class Tracker {
 			return;
 		}
 
+		$qazana_pages = new \WP_Query( [
+			'post_type' => 'any',
+			'post_status' => 'publish',
+			'fields' => 'ids',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'meta_key' => '_qazana_edit_mode',
+			'meta_value' => 'builder',
+		] );
+
+		if ( 2 > $qazana_pages->post_count ) {
+			return;
+		}
+
+		self::$notice_shown = true;
+
 		// TODO: Skip for development env.
 		$optin_url = wp_nonce_url( add_query_arg( 'qazana_tracker', 'opt_into' ), 'opt_into' );
 		$optout_url = wp_nonce_url( add_query_arg( 'qazana_tracker', 'opt_out' ), 'opt_out' );
@@ -261,11 +277,24 @@ class Tracker {
 		 */
 		$tracker_description_text = apply_filters( 'qazana/tracker/admin_description_text', $tracker_description_text );
 		?>
-		<div class="updated">
-			<p><?php echo esc_html( $tracker_description_text ); ?> <a href="https://qazana.net/plugins/qazana/qazana-usage-data/" target="_blank"><?php _e( 'Learn more.', 'qazana' ); ?></a></p>
-			<p><a href="<?php echo $optin_url; ?>" class="button-primary"><?php _e( 'Sure! I\'d love to help', 'qazana' ); ?></a>&nbsp;<a href="<?php echo $optout_url; ?>" class="button-secondary"><?php _e( 'No thanks', 'qazana' ); ?></a></p>
+		<div class="notice updated qazana-message">
+			<div class="qazana-message-inner">
+				<div class="qazana-message-icon">
+					<div class="e-logo-wrapper">
+						<i class="eicon-qazana" aria-hidden="true"></i>
+					</div>
+				</div>
+				<div class="qazana-message-content">
+					<p><?php echo esc_html( $tracker_description_text ); ?> <a href="https://qazana.net/plugins/qazana/qazana-usage-data/" target="_blank"><?php _e( 'Learn more.', 'qazana' ); ?></a></p>
+					<p class="qazana-message-actions"><a href="<?php echo $optin_url; ?>" class="button button-primary"><?php _e( 'Sure! I\'d love to help', 'qazana' ); ?></a>&nbsp;<a href="<?php echo $optout_url; ?>" class="button-secondary"><?php _e( 'No thanks', 'qazana' ); ?></a></p>
+				</div>
+			</div>
 		</div>
-		<?php
+	<?php
+	}
+
+	public static function is_notice_shown() {
+		return self::$notice_shown;
 	}
 
 	/**

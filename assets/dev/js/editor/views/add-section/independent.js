@@ -1,9 +1,13 @@
-var BaseAddSectionView = require( 'qazana-views/add-section/base' );
+import BaseAddSectionView from './base';
 
-module.exports = BaseAddSectionView.extend( {
-	id: 'qazana-add-new-section',
+class AddSectionView extends BaseAddSectionView {
+	get id() {
+		return 'qazana-add-new-section';
+	}
 
-	onCloseButtonClick: function() {
+	onCloseButtonClick() {
 		this.closeSelectPresets();
 	}
-} );
+}
+
+export default AddSectionView;

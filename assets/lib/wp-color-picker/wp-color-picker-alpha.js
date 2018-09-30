@@ -8,7 +8,7 @@
  * https://github.com/kallookoo/wp-color-picker-alpha
  * Licensed under the GPLv2 license.
  *
- * Customized and fixed by Elementor team
+ * Customized and fixed by Qazana team
  */
 ( function( $ ) {
 	// Variable for some backgrounds ( grid )

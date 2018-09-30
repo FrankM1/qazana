@@ -64,14 +64,16 @@ class Post extends Document {
 	 * @since 2.0.0
 	 * @access protected
 	 */
-	protected function _register_controls() {
-		parent::_register_controls();
+     protected function _register_controls() {
+        parent::_register_controls();
 
 		self::register_hide_title_control( $this );
 
 		self::register_post_fields_control( $this );
 
-		self::register_style_controls( $this );
+        self::register_style_controls( $this );
+        
+        self::register_post_css( $this );
 	}
 
 	/**
@@ -158,8 +160,8 @@ class Post extends Document {
 		);
 
 		$document->end_controls_section();
-	}
-
+    }
+    
 	/**
 	 * @since 2.0.0
 	 * @access public
@@ -201,7 +203,46 @@ class Post extends Document {
 		}
 
 		$document->end_injection();
-	}
+    }
+    
+    /**
+	 * @since 2.0.0
+	 * @access public
+	 * @static
+	 * @param Document $document
+	 */
+	public static function register_post_css( $document ) {
+
+        $document->start_controls_section(
+			'_section_custom_css',
+			[
+				'label' => __( 'Custom CSS', 'qazana' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$document->add_control(
+			'custom_css',
+			[
+				'type'        => Controls_Manager::CODE,
+				'label'       => __( 'Add your own custom CSS here', 'qazana' ),
+				'language'    => 'css',
+				'render_type' => 'ui',
+			]
+		);
+
+		$document->add_control(
+			'_custom_css_description',
+			[
+				'raw'             => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
+				'type'            => Controls_Manager::RAW_HTML,
+				'content_classes' => 'qazana-descriptor',
+			]
+		);
+
+		$document->end_controls_section();
+
+    }
 
 	/**
 	 * @since 2.0.0

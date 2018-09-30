@@ -12,11 +12,11 @@ MaintenanceModeModule = ViewModule.extend( {
 				excludeRolesArea: '.qazana_maintenance_mode_exclude_roles',
 				templateSelect: '.qazana_maintenance_mode_template_id select',
 				editTemplateButton: '.qazana-edit-template',
-				maintenanceModeError: '.qazana-maintenance-mode-error'
+				maintenanceModeError: '.qazana-maintenance-mode-error',
 			},
 			classes: {
-				isEnabled: 'qazana-maintenance-mode-is-enabled'
-			}
+				isEnabled: 'qazana-maintenance-mode-is-enabled',
+			},
 		};
 	},
 
@@ -59,14 +59,14 @@ MaintenanceModeModule = ViewModule.extend( {
 				return;
 			}
 
-			var editUrl = QazanaAdminConfig.home_url + '?p=' + templateID + '&qazana';
+			var editUrl = qazanaAdmin.config.home_url + '?p=' + templateID + '&qazana';
 
 			elements.$editTemplateButton
 				.prop( 'href', editUrl )
 				.show();
 			elements.$maintenanceModeError.hide();
 		} ).trigger( 'change' );
-	}
+	},
 } );
 
 module.exports = MaintenanceModeModule;

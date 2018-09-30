@@ -18,22 +18,22 @@ TemplateLibraryTemplateView = Marionette.ItemView.extend( {
 	ui: function() {
 		return {
 			insertButton: '.qazana-template-library-template-insert',
-			previewButton: '.qazana-template-library-template-preview'
+			previewButton: '.qazana-template-library-template-preview',
 		};
 	},
 
 	events: function() {
 		return {
 			'click @ui.insertButton': 'onInsertButtonClick',
-			'click @ui.previewButton': 'onPreviewButtonClick'
+			'click @ui.previewButton': 'onPreviewButtonClick',
 		};
 	},
 
 	behaviors: {
 		insertTemplate: {
-			behaviorClass: TemplateLibraryInsertTemplateBehavior
-		}
-	}
+			behaviorClass: TemplateLibraryInsertTemplateBehavior,
+		},
+	},
 } );
 
 module.exports = TemplateLibraryTemplateView;

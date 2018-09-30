@@ -41,7 +41,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 * @static
 	 *
-	 * @return string Control type.
+	 * @return string The type.
 	 */
 	public static function get_type() {
 		return 'widget';
@@ -89,7 +89,7 @@ abstract class Widget_Base extends Element_Base {
 		return [ 'general' ];
 	}
 
-    	/**
+	/**
 	 * Widget base constructor.
 	 *
 	 * Initializing the widget base class.
@@ -360,10 +360,10 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
-	 * Print widget template.
+	 * Print widget content template.
 	 *
-	 * Used to generate the widget template on the editor, using a Backbone
-	 * JavaScript template.
+	 * Used to generate the widget content template on the editor, using a
+	 * Backbone JavaScript template.
 	 *
 	 * @since 2.0.0
 	 * @access protected
@@ -830,6 +830,5 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function get_skins() {
 		return qazana()->skins_manager->get_skins( $this );
-    }
-    
+	}
 }

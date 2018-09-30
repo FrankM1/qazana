@@ -522,6 +522,7 @@ class Widget_Icon extends Widget_Base {
 
 		if ( ! empty( $settings['icon'] ) ) {
 			$this->add_render_attribute( 'i', 'class', $settings['icon'] );
+			$this->add_render_attribute( 'icon', 'aria-hidden', 'true' );
 		}
 
 		?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
@@ -531,6 +532,14 @@ class Widget_Icon extends Widget_Base {
 		</div><?php
 	}
 
+	/**
+	 * Render icon widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected function _content_template() {}
 
 }

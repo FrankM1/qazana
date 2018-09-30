@@ -22,10 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-history-no-items">
-	<i class="qazana-panel-nerd-box-icon eicon-nerd"></i>
-	<div class="qazana-panel-nerd-box-title"><?php esc_html_e( 'No History Yet', 'qazana' ); ?></div>
-	<div class="qazana-panel-nerd-box-message"><?php esc_html_e( 'Once you start working, you\'ll be able to redo / undo any action you make in the editor.', 'qazana' ) ?></div>
-	<div class="qazana-panel-nerd-box-message"><?php esc_html_e( 'Switch to Revisions tab for older versions', 'qazana' ) ?></div>
+	<i class="qazana-nerd-box-icon eicon-nerd"></i>
+	<div class="qazana-nerd-box-title"><?php esc_html_e( 'No History Yet', 'qazana' ); ?></div>
+	<div class="qazana-nerd-box-message"><?php esc_html_e( 'Once you start working, you\'ll be able to redo / undo any action you make in the editor.', 'qazana' ) ?></div>
+	<div class="qazana-nerd-box-message"><?php esc_html_e( 'Switch to Revisions tab for older versions', 'qazana' ) ?></div>
 </script>
 
 <script type="text/template" id="tmpl-qazana-panel-history-item">

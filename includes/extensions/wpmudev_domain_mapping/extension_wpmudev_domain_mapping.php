@@ -17,7 +17,9 @@ class Wpmudev_Domain_Mapping extends Base {
 	}
 
     public function __construct() {
-        add_action( 'init', [ __CLASS__, 'init' ] );
+        if ( class_exists( 'domain_map' ) ) {
+            add_action( 'init', [ __CLASS__, 'init' ] );
+        }
     }
 
     public static function init() {

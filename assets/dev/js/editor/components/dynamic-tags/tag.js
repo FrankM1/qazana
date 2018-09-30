@@ -65,5 +65,5 @@ module.exports = Marionette.ItemView.extend( {
 
 	onRender: function() {
 		this.el.id = 'qazana-tag-' + this.getOption( 'id' );
-	}
+	},
 } );

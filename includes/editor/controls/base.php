@@ -25,14 +25,11 @@ abstract class Base_Control {
 	 * @var array
 	 */
 	private $_base_settings = [
-		'label'        => '',
-		'title'        => '',
-		'placeholder'  => '',
-		'description'  => '',
-		'separator'    => 'default',
-		'show_label'   => true,
-		'label_block'  => false,
-		'custom_class' => '',
+		'label' => '',
+		'description' => '',
+		'show_label' => true,
+		'label_block' => false,
+		'separator' => 'default',
 	];
 
 	/**

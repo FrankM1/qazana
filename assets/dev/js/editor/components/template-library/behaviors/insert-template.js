@@ -2,11 +2,11 @@ var InsertTemplateHandler;
 
 InsertTemplateHandler = Marionette.Behavior.extend( {
 	ui: {
-		insertButton: '.qazana-template-library-template-insert'
+		insertButton: '.qazana-template-library-template-insert',
 	},
 
 	events: {
-		'click @ui.insertButton': 'onInsertButtonClick'
+		'click @ui.insertButton': 'onInsertButtonClick',
 	},
 
 	onInsertButtonClick: function() {
@@ -16,7 +16,7 @@ InsertTemplateHandler = Marionette.Behavior.extend( {
 		}
 
 		qazana.templates.importTemplate( this.view.model );
-	}
+	},
 }, {
 	dialog: null,
 
@@ -41,8 +41,8 @@ InsertTemplateHandler = Marionette.Behavior.extend( {
 			message: qazana.translate( 'import_template_dialog_message' ) + '<br>' + qazana.translate( 'import_template_dialog_message_attention' ),
 			strings: {
 				confirm: qazana.translate( 'yes' ),
-				cancel: qazana.translate( 'no' )
-			}
+				cancel: qazana.translate( 'no' ),
+			},
 		} );
 	},
 
@@ -52,7 +52,7 @@ InsertTemplateHandler = Marionette.Behavior.extend( {
 		}
 
 		return InsertTemplateHandler.dialog;
-	}
+	},
 } );
 
 module.exports = InsertTemplateHandler;
