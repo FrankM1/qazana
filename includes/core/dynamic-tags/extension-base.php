@@ -164,7 +164,7 @@ class DynamicTags extends Base {
 	public function register_tags( $dynamic_tags ) {
 		foreach ( $this->get_tag_classes_names() as $tag_class ) {
 			/** @var Tag $class_name */
-			$class_name = $this->get_reflection()->getNamespaceName() . '\Tags\\' . $tag_class;
+            $class_name = $this->get_reflection()->getNamespaceName() . '\Tags\\' . $tag_class;
 
 			$dynamic_tags->register_tag( $class_name );
 		}

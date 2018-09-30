@@ -253,7 +253,7 @@ class Manager {
 		$this->tags_info[ $tag->get_name() ] = [
 			'class' => $class,
 			'instance' => $tag,
-		];
+        ];
 	}
 
 	/**
