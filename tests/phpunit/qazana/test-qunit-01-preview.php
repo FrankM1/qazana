@@ -42,7 +42,7 @@ class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 
 		$html = ob_get_clean();
 
-		$plugin_path = str_replace( '\\', '/', QAZANA_PATH );
+		$plugin_path = str_replace( '\\', '/', $this->qazana()->plugin_dir );
 		$quint = '' .
 		         '<script src="file://' . $plugin_path . 'tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.js"></script>' .
 		         '<script src="file://' . $plugin_path . 'tests/qunit/vendor/j-ulrich/jquery-simulate-ext/jquery.simulate.ext.js"></script>' .

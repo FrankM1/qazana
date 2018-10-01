@@ -24,20 +24,20 @@ class Qazana_Test_Bootstrap extends Qazana_Test_Base {
 	}
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Plugin', \Qazana\Plugin::$instance );
+		$this->assertInstanceOf( '\Qazana\Plugin', \Qazana\Plugin::instance() );
 	}
 
 	/**
 	 * @expectedIncorrectUsage __clone
 	 */
 	public function test_Clone() {
-		$obj_cloned = clone \Qazana\Plugin::$instance;
+		$obj_cloned = clone \Qazana\Plugin::instance();
 	}
 
 	/**
 	 * @expectedIncorrectUsage __wakeup
 	 */
 	public function test_Wakeup() {
-		unserialize( serialize( \Qazana\Plugin::$instance ) );
+		unserialize( serialize( \Qazana\Plugin::instance() ) );
 	}
 }

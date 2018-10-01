@@ -82,6 +82,8 @@ class Plugin {
 
     public $widgets;
 
+    public $controls_manager;
+
     public $templates_manager;
 
     public $widgets_manager;

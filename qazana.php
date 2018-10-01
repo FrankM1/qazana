@@ -123,14 +123,18 @@ function qazana() {
     return Qazana\Plugin::instance();
 }
 
-/*
- * Hook Qazana early onto the 'plugins_loaded' action.
- *
- * This gives all other plugins the chance to load before Qazana, to get their
- * actions, filters, and overrides setup without Qazana being in the way.
- */
-if ( defined( 'QAZANA_LATE_LOAD' ) ) {
-    add_action( 'plugins_loaded', 'qazana', (int) QAZANA_LATE_LOAD );
-} else {
-    qazana();
+if ( ! defined( 'QAZANA_TESTS' ) ) {
+
+    /*
+    * Hook Qazana early onto the 'plugins_loaded' action.
+    *
+    * This gives all other plugins the chance to load before Qazana, to get their
+    * actions, filters, and overrides setup without Qazana being in the way.
+    */
+    if ( defined( 'QAZANA_LATE_LOAD' ) ) {
+        add_action( 'plugins_loaded', 'qazana', (int) QAZANA_LATE_LOAD );
+    } else {
+        qazana();
+    }
+
 }

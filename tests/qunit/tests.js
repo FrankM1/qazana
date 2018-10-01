@@ -15,19 +15,18 @@ QUnit.module( 'Loading' );
 
 QUnit.test( 'Qazana exist', function( assert ) {
 	assert.ok( qazana );
-});
+} );
 
 QUnit.test( 'Preview loaded', function( assert ) {
 	assert.ok( qazana.$previewContents, 'Preview Exist' );
 	assert.equal( 1, qazana.$previewContents.find( '.qazana-editor-active' ).length, 'Qazana area Exist' );
-});
+} );
 
 QUnit.test( 'Frontend CSS loaded', function( assert ) {
 	assert.equal( qazana.$previewContents.find( '#qazana-frontend-css' ).length, 1 );
-});
+} );
 
 function testPreview() {
-
 	QUnit.module( 'Widgets' );
 	var previewView = qazana.getPreviewView(),
 		firstSectionModel = previewView.collection.first(),
@@ -36,33 +35,33 @@ function testPreview() {
 		firstColumnView = firstSectionView.children.findByModel( firstColumnModel ),
 		elements = [
 			// ['basic', ''], // widget columns
-			['basic', 'heading'],
-			['basic', 'image'],
+			[ 'basic', 'heading' ],
+			[ 'basic', 'image' ],
 			// ['basic', 'text-editor'],
-			['basic', 'video'],
-			['basic', 'button'],
-			['basic', 'divider'],
-			['basic', 'spacer'],
-			['basic', 'google_maps'],
-			['basic', 'icon'],
-			['general', 'image-box'],
-			['general', 'icon-box'],
-			['general', 'image-gallery'],
-			['general', 'image-carousel'],
-			['general', 'icon-list'],
-			['general', 'counter'],
-			['general', 'progress'],
-			['general', 'testimonial'],
+			[ 'basic', 'video' ],
+			[ 'basic', 'button' ],
+			[ 'basic', 'divider' ],
+			[ 'basic', 'spacer' ],
+			[ 'basic', 'google_maps' ],
+			[ 'basic', 'icon' ],
+			[ 'general', 'image-box' ],
+			[ 'general', 'icon-box' ],
+			[ 'general', 'image-gallery' ],
+			[ 'general', 'image-carousel' ],
+			[ 'general', 'icon-list' ],
+			[ 'general', 'counter' ],
+			[ 'general', 'progress' ],
+			[ 'general', 'testimonial' ],
 			// ['general', 'tabs'],
 			// ['general', 'accordion'],
 			// ['general', 'toggle'],
-			['general', 'social-icons'],
-			['general', 'alert'],
-			['general', 'audio'],
-			['general', 'shortcode'],
-			['general', 'html'],
-			['general', 'menu-anchor'],
-			['general', 'sidebar']
+			[ 'general', 'social-icons' ],
+			[ 'general', 'alert' ],
+			[ 'general', 'audio' ],
+			[ 'general', 'shortcode' ],
+			[ 'general', 'html' ],
+			[ 'general', 'menu-anchor' ],
+			[ 'general', 'sidebar' ],
 			//,
 			// ['wordpress', 'wp-widget-pages'],
 			// ['wordpress', 'wp-widget-calendar'],
@@ -82,14 +81,14 @@ function testPreview() {
 			// ['wordpress', 'wp-widget-qazana-library']
 		];
 
-	_( elements ).each(function( element ) {
-		QUnit.test( 'addElementFromPanel:' + element[0] + ':' + element[1], function( assert ) {
-			qazanaTests.setPanelSelectedElement( element[0], element[1] );
+	_( elements ).each( function( element ) {
+		QUnit.test( 'addElementFromPanel:' + element[ 0 ] + ':' + element[ 1 ], function( assert ) {
+			qazanaTests.setPanelSelectedElement( element[ 0 ], element[ 1 ] );
 			firstColumnView.addElementFromPanel( { at: 0 } );
 
-			assert.equal( element[1], firstColumnView.model.get( 'elements' ).first().get( 'widgetType' ) );
-		});
-	});
+			assert.equal( element[ 1 ], firstColumnView.model.get( 'elements' ).first().get( 'widgetType' ) );
+		} );
+	} );
 
 	QUnit.test( 'Add New Section', function( assert ) {
 		// Clear Page
@@ -107,7 +106,7 @@ function testPreview() {
 
 		assert.equal( 1, presetsStructureButton.length, 'Presets is shown' );
 
-		QUnit.module( 'Add a Section', function( hooks ) {
+		QUnit.module( 'Add a Section', function() {
 			presetsStructureButton.click();
 
 			assert.ok( sectionsCollection.first(), 'Section Added' );
@@ -123,17 +122,17 @@ function testPreview() {
 				trigger: columnView.$el.find( '.qazana-editor-element-edit' ),
 				add: columnView.$el.find( '.qazana-editor-element-add' ),
 				duplicate: columnView.$el.find( '.qazana-editor-element-duplicate' ),
-				remove: columnView.$el.find( '.qazana-editor-element-remove' )
+				remove: columnView.$el.find( '.qazana-editor-element-remove' ),
 		};
 
-		QUnit.module( 'Check columns buttons', function( hooks ) {
+		QUnit.module( 'Check columns buttons', function() {
 			assert.equal( columnButtons.trigger.length, 1, 'Trigger Button exist' );
 			assert.equal( columnButtons.add.length, 1, 'Add Button exist' );
 			assert.equal( columnButtons.duplicate.length, 1, 'Duplicate Button exist' );
 			assert.equal( columnButtons.remove.length, 1, 'Remove Button exist' );
 		} );
 
-		QUnit.module( 'Add a Column', function( hooks ) {
+		QUnit.module( 'Add a Column', function() {
 			columnButtons.add.click();
 
 			assert.equal( sectionView.children.length, 2, 'Column was Added' );
@@ -142,7 +141,7 @@ function testPreview() {
 			assert.equal( historyItems.first().get( 'type' ), 'add', 'History type is `add`' );
 		} );
 
-		QUnit.module( 'Duplicate a Column', function( hooks ) {
+		QUnit.module( 'Duplicate a Column', function() {
 			columnButtons.duplicate.click();
 
 			assert.equal( sectionView.children.length, 3, 'Column was Duplicated' );
@@ -151,7 +150,7 @@ function testPreview() {
 			assert.equal( historyItems.first().get( 'type' ), 'duplicate', 'History type is `duplicate`' );
 		} );
 
-		QUnit.module( 'Add Heading widget', function( hooks ) {
+		QUnit.module( 'Add Heading widget', function() {
 			qazanaTests.setPanelSelectedElement( 'basic', 'heading' );
 			columnView.addElementFromPanel( { at: 0 } );
 
@@ -164,6 +163,6 @@ function testPreview() {
 }
 
 qazana.on( 'preview:loaded', function() {
-	window.pQuery = qazana.$preview[0].contentWindow.jQuery;
-	pQuery( qazana.$preview[0].contentDocument ).ready( testPreview );
-});
+	window.pQuery = qazana.$preview[ 0 ].contentWindow.jQuery;
+	pQuery( qazana.$preview[ 0 ].contentDocument ).ready( testPreview );
+} );
