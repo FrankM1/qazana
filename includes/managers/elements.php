@@ -145,7 +145,7 @@ class Elements_Manager {
 	 * @param  string 	$element_id  unique element id
 	 * @return object 	element object class Element_Base
 	 */
-	public function get_element_instance( string $element_id = null ) {
+	public function get_element_instance( $element_id = null ) {
 		if ( null !== $element_id ) {
 			return $this->_element_instance[ $element_id ];
 		}
