@@ -16,6 +16,20 @@ abstract class Base {
 	 * @return array
 	 */
     public $default_activation = true;
+
+    private $components = [];
+    
+	public function add_component( $id, $instance ) {
+		$this->components[ $id ] = $instance;
+	}
+
+	public function get_component( $id ) {
+		if ( isset( $this->components[ $id ] ) ) {
+			return $this->components[ $id ];
+		}
+
+		return false;
+    }
     
     /**
 	 * Add extension details

@@ -12,7 +12,7 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 	}
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Editor', $this->qazana()->editor );
+		$this->assertInstanceOf( '\Qazana\Editor::class', $this->qazana()->editor );
 	}
 
 	/*

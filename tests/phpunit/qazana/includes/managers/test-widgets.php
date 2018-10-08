@@ -4,7 +4,7 @@ namespace Qazana\Testing;
 class Qazana_Test_Widgets extends Qazana_Test_Base {
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Widgets_Manager', $this->qazana()->widgets_manager );
+		$this->assertInstanceOf( '\Qazana\Widgets_Manager::class', $this->qazana()->widgets_manager );
 	}
 
 	public function test_getWidgets() {

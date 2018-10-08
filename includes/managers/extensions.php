@@ -140,6 +140,7 @@ final class Manager {
      * @return      void
      */
     public function register_all_extensions() {
+        
         do_action( 'qazana/extensions/loader/before', $this->loader );
 
         $this->loader->add_stack( qazana()->theme_paths_child, qazana()->theme_extensions_locations );
@@ -154,6 +155,7 @@ final class Manager {
         foreach ( $this->loader->merge_files_stack_locations() as $folder ) {
             $this->register_extensions( $folder );
         }
+    
     }
 
     /**
@@ -233,7 +235,7 @@ final class Manager {
             }
           
             if ( class_exists( $extension_class ) ) {
-                $this->extensions[ $folder ] = new $extension_class( $this );
+                $this->extensions[ $folder ] = $extension_class::instance();
             }
 
         }
@@ -244,6 +246,7 @@ final class Manager {
          * @param object $this Qazana
          */
         do_action( "qazana/extensions/registered/{$folder}", $folder, $this );
+    
     }
 
     /**
@@ -255,6 +258,7 @@ final class Manager {
     public function load_extension_dependencies() {
 
         $extensions = $this->get_extensions();
+
         if ( empty( $extensions ) ) {
             return;
         }
@@ -267,6 +271,7 @@ final class Manager {
                 }
             }
         }
+    
     }
 
     /**
@@ -276,11 +281,13 @@ final class Manager {
      * @return      void
      */
     public function load_extension( $extension_id ) {
+        
         if ( ! is_object( $this->get_extension( $extension_id ) ) ) {
             foreach ( $this->loader->merge_files_stack_locations() as $folder ) {
                 $this->initialize_extension( $extension_id, $folder );
             }
         }
+
     }
 
     /**
@@ -393,6 +400,7 @@ final class Manager {
         foreach ( $extensions as $extension_id => $extension_object ) {
             $this->load_extension_widgets( $extension_id );
         }
+    
     }
 
     /**
@@ -427,6 +435,7 @@ final class Manager {
                 $widget_manager->register_widget_type( new $class_name() );
             }
         }
+    
     }
 
     /**
@@ -445,7 +454,8 @@ final class Manager {
 		}
 
 		return false;
-	}
+    
+    }
 
     /**
      * Get extension widgets
@@ -463,7 +473,8 @@ final class Manager {
 		}
 
 		return false;
-	}
+    
+    }
 
     /**
      * Get extension skins
@@ -481,7 +492,8 @@ final class Manager {
 		}
 
 		return false;
-	}
+    
+    }
 
     /**
      * Get extension
@@ -491,9 +503,16 @@ final class Manager {
      * @return      array
      */
     public function get_extension( $extension_id ) {
+
         $extensions = $this->get_extensions();
+
+        if ( isset( $extensions[ $extension_id ] ) && ! is_object( $extensions[ $extension_id ] ) ) { 
+            wp_die( get_called_class() . '::' . __FUNCTION__ . ': Extension is not loaded or does not exist. Extension id - `' . $extension_id .'`.' );
+        }
+
         return isset($extensions[ $extension_id ] ) ? $extensions[ $extension_id ] : false;
-	}
+    
+    }
 
     /**
      * Get extension data
@@ -503,8 +522,15 @@ final class Manager {
      * @return      array
      */
 	public function get_extension_data( $extension_id ) {
+
         $extensions = $this->get_extensions();
-		return isset($extensions[ $extension_id ] ) ? $extensions[ $extension_id ]->get_config() : false;
+        
+        if ( isset( $extensions[ $extension_id ] ) && ! is_object( $extensions[ $extension_id ] ) ) { 
+            wp_die( get_called_class() . '::' . __FUNCTION__ . ': Extension is not loaded or does not exist. Extension id - `' . $extension_id .'`.' );
+        }
+
+		return isset( $extensions[ $extension_id ] ) && is_object( $extensions[ $extension_id ] ) ? $extensions[ $extension_id ]->get_config() : false;
+    
     }
     
     /**
@@ -515,12 +541,14 @@ final class Manager {
      * @return      array
      */
     public function get_extensions( $extension_id = null ) {
+
         if ( $extension_id ) {
             //TODO _deprecated_function( __METHOD__, '2.0.0', '$this->get_extension()' );
             return $this->get_extension( $extension_id );
         }
 
         return apply_filters( 'qazana/extensions', $this->extensions );
+    
     }
 
     /**
@@ -547,6 +575,7 @@ final class Manager {
         }
 
         return true;
+    
     }
 
     /**
@@ -569,5 +598,6 @@ final class Manager {
         }
 
         return true;
+    
     }
 }

@@ -4,7 +4,7 @@ namespace Qazana\Testing;
 class Qazana_Test_Elements extends Qazana_Test_Base {
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Elements_Manager', $this->qazana()->elements_manager );
+		$this->assertInstanceOf( '\Qazana\Elements_Manager::class', $this->qazana()->elements_manager );
 	}
 
 	public function test_getElements() {
