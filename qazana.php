@@ -5,7 +5,7 @@
  * Description: Front-end page builder for WordPress with live drag and drop editing. Build high quality responsive websites and landing pages visually. Any theme, anywhere.
  * Plugin URI: https://qazana.net/
  * Author: Qazana
- * Version: 2.0.0 beta1
+ * Version: 2.0.0
  * Author URI: https://qazana.net/
  *
  * Text Domain: qazana
@@ -124,17 +124,5 @@ function qazana() {
 }
 
 if ( ! defined( 'QAZANA_TESTS' ) ) {
-
-    /*
-    * Hook Qazana early onto the 'plugins_loaded' action.
-    *
-    * This gives all other plugins the chance to load before Qazana, to get their
-    * actions, filters, and overrides setup without Qazana being in the way.
-    */
-    if ( defined( 'QAZANA_LATE_LOAD' ) ) {
-        add_action( 'plugins_loaded', 'qazana', (int) QAZANA_LATE_LOAD );
-    } else {
-        qazana();
-    }
-
+    qazana();
 }

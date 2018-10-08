@@ -12,52 +12,53 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 	}
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Editor::class', $this->qazana()->editor );
+		$this->assertInstanceOf( '\Qazana\Editor', $this->qazana()->editor );
 	}
 
-	/*
-	public function test_enqueueScripts() {
-		ini_set( 'memory_limit', '85M' );
+	// public function test_enqueueScripts() {
+	// 	ini_set( 'memory_limit', '85M' );
 
-		ob_start();
-		Qazana\ $this->plugin()->editor->enqueue_scripts();
-		ob_end_clean();
+	// 	ob_start();
+	// 	$this->qazana()->editor->enqueue_scripts();
+	// 	ob_end_clean();
 
-		$scripts = [
-			'wp-auth-check',
-			'jquery-ui-sortable',
-			'jquery-ui-resizable',
-			'backbone-marionette',
-			'backbone-radio',
-			'perfect-scrollbar',
-			'nprogress',
-			'tipsy',
-			'imagesloaded',
-			'heartbeat',
-			'jquery-select2',
-			'flatpickr',
-			'qazana-dialog',
-			'ace',
-			'ace-language-tools',
-			'qazana-editor',
-		];
+	// 	$scripts = [
+	// 		'wp-auth-check',
+    //         'jquery-ui-sortable',
+    //         'jquery-ui-resizable',
+    //         'backbone-marionette',
+    //         'backbone-radio',
+    //         'perfect-scrollbar',
+    //         'nprogress',
+    //         'tipsy',
+    //         'imagesloaded',
+    //         'heartbeat',
+    //         'jquery-qazana-select2',
+    //         'flatpickr',
+    //         'qazana-dialog',
+    //         'ace',
+    //         'ace-language-tools',
+    //         'jquery-easing',
+    //         'hoverIntent',
+    //         'jquery-fonticonpicker',
+	// 	];
 
-		foreach ( $scripts as $script ) {
-			$this->assertTrue( wp_script_is( $script ) );
-		}
-	}*/
+	// 	foreach ( $scripts as $script ) {
+	// 		$this->assertTrue( wp_script_is( $script ) );
+	// 	}
+	// }
 
 	public function test_enqueueStyles() {
 		$this->qazana()->editor->enqueue_styles();
 
 		$styles = [
-			'font-awesome',
 			'qazana-select2',
-			'qazana-icons',
-			'wp-auth-check',
-			'google-font-roboto',
-
-			'qazana-editor',
+            'qazana-icons',
+            'wp-auth-check',
+            'jquery-fonticonpicker',
+            'jquery-fonticonpicker-grey',
+            'font-awesome',
+            'flatpickr',
 		];
 
 		foreach ( $styles as $style ) {
@@ -65,11 +66,11 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 		}
 	}
 
-	/*public function test_renderFooter() {
-		ob_start();
-		Qazana\ $this->plugin()->editor->wp_footer();
-		$buffer = ob_get_clean();
+	// public function test_renderFooter() {
+	// 	ob_start();
+	// 	$this->qazana()->editor->wp_footer();
+	// 	$buffer = ob_get_clean();
 
-		$this->assertNotEmpty( $buffer );
-	}*/
+	// 	$this->assertNotEmpty( $buffer );
+	// }
 }

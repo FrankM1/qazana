@@ -51,9 +51,11 @@ function fix_qunit_html_urls( $html ) {
 }
 
 require $_tests_dir . '/includes/bootstrap.php';
-require __DIR__ . '/phpunit/local-factory.php';
-require __DIR__ . '/phpunit/trait-test-base.php';
-require __DIR__ . '/phpunit/base-class.php';
-require __DIR__ . '/phpunit/ajax-class.php';
-require __DIR__ . '/phpunit/manager.php';
+
+require dirname( __FILE__ ) . '/phpunit/local-factory.php';
+require dirname( __FILE__ ) . '/phpunit/trait-test-base.php';
+require dirname( __FILE__ ) . '/phpunit/base-class.php';
+require dirname( __FILE__ ) . '/phpunit/ajax-class.php';
+require dirname( __FILE__ ) . '/phpunit/manager.php';
+
 \Qazana\Testing\Manager::instance();

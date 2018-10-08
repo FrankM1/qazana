@@ -12,7 +12,7 @@ class Qazana_Test_Manager_General extends Qazana_Test_Base {
 	private $fake_post_id = '123';
 
 	public static function setUpBeforeClass() {
-		self::$manager = self::qazana()->templates_manager;
+		self::$manager = $this->qazana()->templates_manager;
 	}
 
 	public function test_should_return_import_images_instance() {
@@ -36,26 +36,27 @@ class Qazana_Test_Manager_General extends Qazana_Test_Base {
 		$this->assertFalse( self::$manager->get_source( 'invalid source' ) );
 	}
 
-	public function test_should_return_templates() {
-		$templates = self::$manager->get_templates();
-		$this->assertGreaterThan( 0, count( $templates ) );
-		$template_structure = [
-			'template_id',
-			'source',
-			'type',
-			'title',
-			'thumbnail',
-			'hasPageSettings',
-			'tags',
-			'url',
-		];
+    public function test_should_return_templates() {
+        $templates = self::$manager->get_templates();
+        
+        $this->assertGreaterThan( 0, count( $templates ) );
+        
+        $template_structure = [
+            'template_id',
+            'source',
+            'type',
+            'title',
+            'thumbnail',
+            'hasPageSettings',
+            'tags',
+            'url',
+        ];
 
-		$this->assertArrayHaveKeys( $template_structure, $templates[0] );
-	}
+        $this->assertArrayHaveKeys( $template_structure, $templates[0] );
+    }
 
 	public function test_should_return_library_data() {
 		$ret = self::$manager->get_library_data( [] );
-
 		$this->assertNotEmpty( $ret['templates'] );
 	}
 
@@ -78,7 +79,6 @@ class Qazana_Test_Manager_General extends Qazana_Test_Base {
 			'template_error'
 		);
 	}
-
 
 	public function test_should_return_wp_error_arguments_not_specified_from_update_template() {
 		$this->assertWPError(

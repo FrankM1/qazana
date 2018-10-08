@@ -2,6 +2,7 @@
 namespace Qazana\Extensions;
 
 use Qazana\Utils;
+use Qazana\Template_Library\Api;
 
 class Elementor_Templates extends Base {
 
@@ -47,7 +48,7 @@ class Elementor_Templates extends Base {
 	 * @return string
 	 */
     public function get_name() {
-        return 'elementor_templates';
+        return 'elementor-templates';
     }
         
     /**
@@ -60,12 +61,12 @@ class Elementor_Templates extends Base {
     }
 
 	public function __construct() {
-        add_filter( 'qazana/api/get_templates/url', [ $this, 'modify_elementor_template_source' ], 10, 2 );
-        add_filter( 'option_qazana_remote_info_library', [ $this, 'filter_template' ], 10, 2 );
+        add_filter( 'qazana/api/get_templates/url', [ $this, 'add_elementor_template_source' ], 10, 2 );
+        add_filter( 'option_' . Api::LIBRARY_OPTION_KEY, [ $this, 'filter_template' ], 10, 2 );
     }
 
-    public function modify_elementor_template_source( $url, $template_id ) {
-        $response = $this->filter_template([], 'qazana_remote_info_library' );
+    public function add_elementor_template_source( $url, $template_id ) {
+        $response = $this->filter_template( [], Api::LIBRARY_OPTION_KEY );
 
         $index = array_search( $template_id, array_column($response['templates'], 'id') );
         $template = $response['templates'][$index];

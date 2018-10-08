@@ -15,12 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Icons_Manager {
 
     /**
-     * [$templates_folder description]
-     * @var [type]
-     */
-    public static $icons_folder;
-
-    /**
      * [$_iconsets description]
      * @var [type]
      */
@@ -34,13 +28,6 @@ class Icons_Manager {
             'prefix' => 'el el-',
         ),
 	];
-
-    /**
-     * [__construct description]
-     */
-    public function __construct() {
-        self::$icons_folder =  qazana()->includes_dir . 'extensions/icons/';
-    }
 
     /**
      * [add_iconset description]

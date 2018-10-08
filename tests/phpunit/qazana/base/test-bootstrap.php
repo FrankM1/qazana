@@ -16,16 +16,31 @@ class Qazana_Test_Bootstrap extends Qazana_Test_Base {
 
 		// Run fake actions
 		do_action( 'init' );
-		do_action( 'plugins_loaded' );
+        do_action( 'plugins_loaded' );
+        do_action( 'plugins_loaded' );
+
+        do_action( 'qazana_loaded' );
+        do_action( 'qazana/loaded' );
+
+        do_action( 'qazana_init' );
+        do_action( 'qazana/init' );
+
+        do_action( 'qazana_init_classes' );
+        do_action( 'qazana_load_textdomain' );
+        do_action( 'qazana_register_extensions' );
 	}
 
 	public function test_plugin_activated() {
 		$this->assertTrue( is_plugin_active( PLUGIN_PATH ) );
-	}
+    }
 
 	public function test_getInstance() {
 		$this->assertInstanceOf( '\Qazana\Plugin', \Qazana\Plugin::instance() );
-	}
+    }
+
+    public function test_pluginVersion_NotNull() {
+		$this->assertInternalType( 'string', \Qazana\Plugin::instance()->get_version() );
+    }
 
 	/**
 	 * @expectedIncorrectUsage __clone

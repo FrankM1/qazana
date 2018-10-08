@@ -197,7 +197,7 @@ class Source_Remote extends Source_Base {
 		$document = qazana()->documents->get( $post_id );
 		if ( $document ) {
 			$data['content'] = $document->get_elements_raw_data( $data['content'], true );
-		}
+        }
 
 		return $data;
 	}

@@ -384,8 +384,8 @@ class Plugin {
         require_once $this->includes_dir . 'editor/stylesheet.php';
         require_once $this->includes_dir . 'editor/user.php';
         require_once $this->includes_dir . 'editor/conditions.php';
-        require_once $this->includes_dir . 'editor/icons.php';
-
+        
+        require_once $this->includes_dir . 'managers/icons.php';
         require_once $this->includes_dir . 'managers/ajax.php';
         require_once $this->includes_dir . 'managers/controls.php';
         require_once $this->includes_dir . 'managers/documents.php';
@@ -551,7 +551,7 @@ class Plugin {
      * @since 1.0.0
      */
     public static function get_url() {
-        return plugins_url( '', __FILE__ );
+        return plugins_url( '', QAZANA__FILE__ );
     }
 
     /**
@@ -560,7 +560,7 @@ class Plugin {
      * @since 1.0.0
      */
     public static function get_dir() {
-        return plugin_dir_path( __FILE__ );
+        return plugin_dir_path( QAZANA__FILE__ );
     }
 
     /**
@@ -594,10 +594,11 @@ class Plugin {
 	 * @return array
 	 */
 	public function init_plugin_version() {
-		$file = $this->plugin_dir . '/qazana.php';
+        $file = plugin_dir_path( QAZANA__FILE__ ) . 'qazana.php';
+        
 		if ( ! $this->version && file_exists( $file ) && function_exists( 'get_plugin_data' ) ) {
-			$plugin	 = get_plugin_data( $file );
+			$plugin = get_plugin_data( $file );
 			$this->version = $plugin['Version'];
-		}
+        }
 	}
 }

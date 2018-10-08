@@ -5,9 +5,11 @@ use Qazana\Controls_Manager;
 
 class Qazana_Test_Controls extends Qazana_Test_Base {
 
+    public function setUp() {
+    }
+
 	public function test_getInstance() {
-        fwrite(STDERR, print_r( $this->qazana()->controls_manager, TRUE));
-		$this->assertInstanceOf( '\Qazana\Controls_Manager::class', $this->qazana()->controls_manager );
+		$this->assertInstanceOf( '\Qazana\Controls_Manager', $this->qazana()->controls_manager );
 	}
 
 	public function test_getControls() {

@@ -1,8 +1,7 @@
 <?php
-namespace Qazana\Testing\Modules\History;
+namespace Qazana\Testing\Extensions\History;
 
 use Qazana\Editor;
-use Qazana\Modules\History\Revisions_Manager;
 use Qazana\Testing\Qazana_Test_AJAX;
 
 class Qazana_Test_Revisions_Manager_Ajax extends Qazana_Test_AJAX {
@@ -13,8 +12,28 @@ class Qazana_Test_Revisions_Manager_Ajax extends Qazana_Test_AJAX {
 	public function setUp() {
 		parent::setUp();
 		if ( ! $this->revisions_manager ) {
-			$this->define_doing_ajax();
-			$this->revisions_manager = new Revisions_Manager();
+            
+            $manager = $this->qazana()->extensions_manager;
+
+            $manager->loader->add_stack( array( 'path' => $this->qazana()->plugin_dir, 'uri' => $this->qazana()->plugin_url ), $this->qazana()->plugin_extensions_locations );
+
+            foreach ( $manager->loader->merge_files_stack_locations() as $path ) {
+                if ( ! is_dir( $path ) ) {
+                    return false;
+                }
+                
+                $folders = scandir( $path, 1 );
+
+                $manager->initialize_extension( 'history', $path );
+            }
+
+            wp_set_current_user( $this->factory()->create_and_get_administrator_user()->ID );
+
+            $extension = $manager->get_extension( 'history' );
+
+            $this->define_doing_ajax();
+
+			$this->revisions_manager = $this->qazana()->revisions_manager;
 		}
 	}
 
@@ -130,7 +149,8 @@ class Qazana_Test_Revisions_Manager_Ajax extends Qazana_Test_AJAX {
 			'config',
 			'latest_revisions',
 			'revisions_ids',
-		], $ret );
+        ], $ret );
+
 		$this->assertEquals( $child_id, $ret['config']['current_revision_id'] );
 		$this->assertEquals( 2, count( $ret['latest_revisions'] ) );
 		$this->assertEquals( [ $parent_id, $child_id ], $ret['revisions_ids'] );

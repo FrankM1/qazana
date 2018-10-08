@@ -725,7 +725,7 @@ class Editor {
 		 * @param array $localized_settings Localized settings.
 		 * @param int   $post_id            The ID of the current post being edited.
 		 */
-	    	$localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+	    $localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
 
 	    $this->add_localize_settings( $localize_settings );
 

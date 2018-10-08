@@ -40,7 +40,7 @@ trait Qazana_Test {
 		}
 
 		return self::$qazana;
-	}
+    }
 
 	/**
 	 * Asserts that an array have the specified keys.

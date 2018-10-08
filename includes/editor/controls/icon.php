@@ -48,7 +48,7 @@ class Control_Icon extends Base_Data_Control {
 	protected function get_default_settings() {
 		return [
 			'options' => $this->get_icons(),
-'include' => '',
+            'include' => '',
 			'exclude' => '',
 		];
 	}

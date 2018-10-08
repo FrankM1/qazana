@@ -28,7 +28,7 @@ class Qazana_Test_Heartbeat extends Qazana_Test_Base {
 		];
 
 		/** This filter is documented in wp-admin/includes/ajax-actions.php */
-		$response = apply_filters( 'heartbeat_received', [], $data, '' );
+        $response = apply_filters( 'heartbeat_received', [], $data, '' );
 
 		// Switch to other user
 		wp_set_current_user( $this->user_editor );

@@ -1,7 +1,7 @@
 <?php
-namespace Qazana\Testing\Modules\History;
+namespace Qazana\Testing\Extensions\History;
 
-use Qazana\Modules\History\Revisions_Manager;
+use Qazana\Extensions\History\Revisions_Manager;
 use Qazana\Testing\Qazana_Test_Base;
 
 class Qazana_Test_Revisions_Manager extends Qazana_Test_Base {

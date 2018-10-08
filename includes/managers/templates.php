@@ -177,7 +177,7 @@ class Manager {
 
 		foreach ( $this->get_registered_sources() as $source ) {
 			$templates = array_merge( $templates, $source->get_items() );
-		}
+        }
 
 		return $templates;
 	}
