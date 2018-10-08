@@ -14,20 +14,23 @@ class Qazana_Test_Bootstrap extends Qazana_Test_Base {
 		// Make sure the main class is running
 		\Qazana\Plugin::instance();
 
-		// Run fake actions
-		do_action( 'init' );
-        do_action( 'plugins_loaded' );
+        // Run fake actions
         do_action( 'plugins_loaded' );
 
         do_action( 'qazana_loaded' );
         do_action( 'qazana/loaded' );
 
+        do_action( 'qazana_after_setup_theme' );
+
+		do_action( 'init' );
         do_action( 'qazana_init' );
         do_action( 'qazana/init' );
 
         do_action( 'qazana_init_classes' );
         do_action( 'qazana_load_textdomain' );
         do_action( 'qazana_register_extensions' );
+
+        // do_action( 'template_redirect' );
 	}
 
 	public function test_plugin_activated() {

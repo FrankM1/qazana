@@ -20,8 +20,6 @@ class Qazana_Test_Templates_Api extends Qazana_Test_Base {
 
         $body = wp_remote_retrieve_body( $response );
 
-        fwrite( STDERR, print_r( $body, TRUE ) );
-
         $this->assertNotEmpty( $body );
     }
 

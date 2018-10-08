@@ -144,7 +144,8 @@ class Local_Factory extends \WP_UnitTestCase {
 				'post_type' => \Qazana\Template_Library\Source_Local::CPT,
 				'post_content' => '<ul><li title="Edit">Edit</li></ul><h3>This is the heading</h3>Click edit button to change this text. Lorem ipsum dolor sit amet consectetur adipiscing elit dolor<h3>This is the heading</h3>Click edit button to change this text. Lorem ipsum dolor sit amet consectetur adipiscing elit dolor<a href="#">Click Here</a>',
 			]
-		);
+        );
+
 		update_post_meta( $template_id, '_qazana_data', '["type":"bla"]' );
 
 		return $template_id;

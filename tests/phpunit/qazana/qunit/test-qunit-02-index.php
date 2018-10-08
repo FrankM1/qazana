@@ -1,22 +1,28 @@
 <?php
 namespace Qazana\Testing;
 
+use Qazana\Widgets_Manager;
+use Qazana\Core;
+
 class Qazana_Test_Qunit extends Qazana_Test_Base {
 
 	public function setUp() {
 		parent::setUp();
 
-		wp_set_current_user( $this->factory()->create_and_get_administrator_user()->ID );
+        wp_set_current_user( $this->factory()->create_and_get_administrator_user()->ID );
+        
+        $this->qazana()->document = new Core\Managers\Documents();
 
-		$GLOBALS['post'] = $this->factory()->create_and_get_default_post();
+        $GLOBALS['post'] = $this->factory()->create_and_get_default_post();
+            
+        add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'qazana' );
 
-		add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'builder' );
-
-		$_REQUEST['post'] = $GLOBALS['post']->ID;
-		$_REQUEST['action'] = 'qazana';
+        $_REQUEST['post'] = $GLOBALS['post']->ID;
+        $_REQUEST['action'] = 'qazana';
 
 		/* Because it's not wp-admin, */
 		add_action( 'qazana/editor/before_enqueue_scripts', function() {
+
 			// WP >= 4.8.0
 			if ( function_exists( 'wp_enqueue_editor' ) ) {
 				wp_enqueue_editor();
@@ -39,11 +45,13 @@ class Qazana_Test_Qunit extends Qazana_Test_Base {
 			);
 
 			wp_enqueue_script( 'wp-color-picker' );
-		} );
+        } );
+        
+        $this->qazana()->widgets_manager = new Widgets_Manager();
 
 		ob_start();
 
-		$this->qazana()->editor->init( false );
+        $this->qazana()->editor->init( false );
 
 		$html = ob_get_clean();
 
@@ -59,11 +67,11 @@ class Qazana_Test_Qunit extends Qazana_Test_Base {
 
 		$html = str_replace( '</body>', $quint . '</body>', $html );
 
-		file_put_contents( __DIR__ . '/../../qunit/index.html', $html );
+		file_put_contents( __DIR__ . '/../../../qunit/index.html', $html );
 
 	}
 
 	public function test_staticIndexExist() {
-		$this->assertNotFalse( file_exists( __DIR__ . '/../../qunit/index.html' ) );
+		$this->assertNotFalse( file_exists( __DIR__ . '/../../../qunit/index.html' ) );
 	}
 }

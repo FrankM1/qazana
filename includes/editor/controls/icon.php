@@ -31,7 +31,9 @@ class Control_Icon extends Base_Data_Control {
 	}
 
     public function get_icons() {
-		return qazana()->icons_manager->get_all_iconsets();
+        $icons = qazana()->icons_manager->get_all_iconsets();
+        
+		return (array) $icons;
     }
 
 	/**

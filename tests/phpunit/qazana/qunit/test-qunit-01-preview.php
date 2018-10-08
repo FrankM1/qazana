@@ -1,6 +1,8 @@
 <?php
 namespace Qazana\Testing;
 
+use Qazana\Core;
+
 class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 
 	public function setUp() {
@@ -12,9 +14,11 @@ class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 
 		wp_set_current_user( $this->factory()->create_and_get_administrator_user()->ID );
 
+        $this->qazana()->document = new Core\Managers\Documents();
+
 		$GLOBALS['post'] = $this->factory()->create_and_get_default_post();
 
-		add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'builder' );
+		add_post_meta( $GLOBALS['post']->ID, '_qazana_edit_mode', 'qazana' );
 
 		query_posts(
 			[
@@ -52,10 +56,10 @@ class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 
 		$html = fix_qunit_html_urls( $html );
 
-		file_put_contents( __DIR__ . '/../../qunit/preview.html', $html );
+		file_put_contents( __DIR__ . '/../../../qunit/preview.html', $html );
 	}
 
 	public function test_staticPreviewExist() {
-		$this->assertNotFalse( file_exists( __DIR__ . '/../../qunit/preview.html' ) );
+		$this->assertNotFalse( file_exists( __DIR__ . '/../../../qunit/preview.html' ) );
 	}
 }

@@ -14,3 +14,5 @@ Thumbs.db
 *.map
 
 *.zip
+tests/qunit/preview.html
+tests/qunit/index.html

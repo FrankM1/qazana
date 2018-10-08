@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Tips: https://codesymphony.co/writing-wordpress-plugin-unit-tests
+ */
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
@@ -43,10 +47,13 @@ function fix_qunit_html_urls( $html ) {
 	// fix qazana assets url
 	$html = str_replace( home_url() . 'file:', 'file:', $html );
 
-	// For local tests in browser
-	// $html = str_replace( 'file:///srv/www/wordpress-develop/public_html/src', 'http://src.wordpress-develop.dev', $html );
-	// $html = str_replace( 'file:///srv/www/qazana/public_html', 'http://wordpress.dev', $html );
-
+    // For local tests in browser
+	$html = str_replace( 'file:///srv/www/wordpress-develop/public_html/src/', 'http://global-wp-content.test/', $html );
+    $html = str_replace( 'http://global-wp-content.test/wp-includes', 'http://qazana.test/wp-includes', $html );
+    $html = str_replace( 'http://global-wp-content.test/wp-admin', 'http://qazana.test/wp-admin', $html );
+    $html = str_replace( 'file:///wp-admin/admin-ajax.php', 'http://qazana.test/wp-admin/admin-ajax.php', $html );
+	$html = str_replace( 'http://global-wp-content.test/wp-content/plugins/srv/www/global-wp-content/public_html/', 'http://global-wp-content.test/', $html );
+    
 	return $html;
 }
 
