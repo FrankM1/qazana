@@ -135,4 +135,5 @@ class Qazana_Test_Utils extends Qazana_Test_Base {
 
 		$this->assertNull( \Qazana\Embed::get_video_properties( 'https://www.youtube.com/' ) );
 	}
+
 }
