@@ -308,10 +308,12 @@ class Widget_Heading extends Widget_Base {
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'title', 'class', 'qazana-size-' . $settings['size'] );
-		}
+        }
+        
+       $align = $this->get_responsive_settings( 'align' );
 
-        	if ( ! empty( $this->get_responsive_settings( 'align' ) ) ) {
-			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $this->get_responsive_settings( 'align' ) );
+        if ( ! empty( $align ) ) {
+			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $align );
 		}
 
 		$this->add_inline_editing_attributes( 'title' );

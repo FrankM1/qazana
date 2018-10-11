@@ -413,8 +413,10 @@ final class Manager {
 
         $widget_manager = qazana()->widgets_manager;
 
-        if ( ! empty( $this->get_skins( $extension_id ) ) ) {
-            $this->load_skins( $extension_id, $this->get_skins( $extension_id ) );
+        $skins = $this->get_skins( $extension_id );
+
+        if ( ! empty( $skins ) ) {
+            $this->load_skins( $extension_id, $skins );
         }
 
         if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
