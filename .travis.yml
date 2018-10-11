@@ -62,8 +62,8 @@ before_script:
 
 script:
   - phpcs -p -s -n . --standard=./ruleset.xml --extensions=php
-  - jscs -c .jscsrc .
-  - jshint .
+ # - jscs -c .jscsrc .
+ # - jshint .
   - phpunit --coverage-clover=build/logs/clover.xml
   - parallel-lint --blame --exclude node_modules --exclude vendor .
 #  - grunt test --verbose
