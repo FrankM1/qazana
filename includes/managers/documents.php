@@ -92,8 +92,9 @@ class Documents {
 	 * @access public
 	 */
 	public function __construct() {
+        $this->register_default_types();
 		// Note: The priority 11 is for allowing plugins to add their register callback on qazana init.
-		add_action( 'qazana/init', [ $this, 'register_default_types' ], 11 );
+		// add_action( 'qazana/init', [ $this, 'register_default_types' ], 11 );
 		add_action( 'qazana/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
 	}
 
