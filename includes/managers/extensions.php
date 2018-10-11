@@ -419,10 +419,12 @@ final class Manager {
             $this->load_skins( $extension_id, $skins );
         }
 
-        if ( ! empty( $this->get_widgets( $extension_id ) ) ) {
-            $this->register_widgets( $extension_id, $this->get_widgets( $extension_id ) );
+        $widgets = $this->get_widgets( $extension_id );
 
-            foreach ( $this->get_widgets( $extension_id ) as $widget ) {
+        if ( ! empty( $widgets ) ) {
+            $this->register_widgets( $extension_id, $widgets );
+
+            foreach ( $widgets as $widget ) {
 
                 $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
 
