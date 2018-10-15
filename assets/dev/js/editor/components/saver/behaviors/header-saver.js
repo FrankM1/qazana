@@ -1,6 +1,6 @@
-var FooterSaver = require('./footer-saver');
+var FooterSaver = require( './footer-saver' );
 
-module.exports = FooterSaver.extend({
+module.exports = FooterSaver.extend( {
 
 	ui: function() {
 		return {
@@ -9,34 +9,41 @@ module.exports = FooterSaver.extend({
 			buttonSaveOptions: '#qazana-panel-header-saver-button-save-options',
 			buttonPublishLabel: '#qazana-panel-header-saver-button-publish-label',
 			menuSaveDraft: '#qazana-panel-header-saver-button-save-draft',
-			lastEditedWrapper: '.qazana-last-edited-wrapper'
+			lastEditedWrapper: '.qazana-last-edited-wrapper',
 		};
     },
 
-    addTooltip: function () {
+    events: function() {
+        return {
+            'click @ui.buttonPreview': 'onClickButtonPreview',
+            'click @ui.buttonPublish': 'onClickButtonPublish',
+            'click @ui.menuSaveDraft': 'onClickMenuSaveDraft',
+        };
+    },
+
+    activateSaveButtons: function( hasChanges ) {
+        hasChanges = hasChanges || 'draft' === qazana.settings.page.model.get( 'post_status' );
+
+        this.ui.buttonPublish.add( this.ui.menuSaveDraft ).toggleClass( 'qazana-saver-disabled', ! hasChanges );
+        this.ui.buttonSaveOptions.toggleClass( 'qazana-saver-disabled', ! hasChanges );
+    },
+
+    addTooltip: function() {
         // Create tooltip on controls
-        this.$el.find('.tooltip-target').tipsy({
-            gravity: function () {
+        this.$el.find( '.tooltip-target' ).tipsy( {
+            gravity: function() {
                 // `n` for down, `s` for up
-                var gravity = jQuery(this).data('tooltip-pos');
+                var gravity = jQuery( this ).data( 'tooltip-pos' );
 
-                if (undefined !== gravity) {
+                if ( undefined !== gravity ) {
                     return gravity;
-                } else {
-                    return 'n';
                 }
+                return 'n';
             },
-            title: function () {
-                return this.getAttribute('data-tooltip');
-            }
-        });
+            title: function() {
+                return this.getAttribute( 'data-tooltip' );
+            },
+        } );
     },
 
-    activateSaveButtons: function (hasChanges) {
-        hasChanges = hasChanges || 'draft' === qazana.settings.page.model.get('post_status');
-
-        this.ui.buttonPublish.add(this.ui.menuSaveDraft).toggleClass('qazana-saver-disabled', !hasChanges);
-        this.ui.buttonSaveOptions.toggleClass('qazana-saver-disabled', !hasChanges);
-    },
-    
 } );

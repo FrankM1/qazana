@@ -1022,6 +1022,21 @@ module.exports = FooterSaver.extend({
         };
     },
 
+    events: function events() {
+        return {
+            'click @ui.buttonPreview': 'onClickButtonPreview',
+            'click @ui.buttonPublish': 'onClickButtonPublish',
+            'click @ui.menuSaveDraft': 'onClickMenuSaveDraft'
+        };
+    },
+
+    activateSaveButtons: function activateSaveButtons(hasChanges) {
+        hasChanges = hasChanges || 'draft' === qazana.settings.page.model.get('post_status');
+
+        this.ui.buttonPublish.add(this.ui.menuSaveDraft).toggleClass('qazana-saver-disabled', !hasChanges);
+        this.ui.buttonSaveOptions.toggleClass('qazana-saver-disabled', !hasChanges);
+    },
+
     addTooltip: function addTooltip() {
         // Create tooltip on controls
         this.$el.find('.tooltip-target').tipsy({
@@ -1031,21 +1046,13 @@ module.exports = FooterSaver.extend({
 
                 if (undefined !== gravity) {
                     return gravity;
-                } else {
-                    return 'n';
                 }
+                return 'n';
             },
             title: function title() {
                 return this.getAttribute('data-tooltip');
             }
         });
-    },
-
-    activateSaveButtons: function activateSaveButtons(hasChanges) {
-        hasChanges = hasChanges || 'draft' === qazana.settings.page.model.get('post_status');
-
-        this.ui.buttonPublish.add(this.ui.menuSaveDraft).toggleClass('qazana-saver-disabled', !hasChanges);
-        this.ui.buttonSaveOptions.toggleClass('qazana-saver-disabled', !hasChanges);
     }
 
 });

@@ -235,7 +235,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'selectors' => [
 					// Stronger selector to avoid section style from overwriting
-					'{{WRAPPER}} .qazana-heading' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-heading, {{WRAPPER}} .qazana-heading a' => 'color: {{VALUE}};',
 				],
 			]
 		);

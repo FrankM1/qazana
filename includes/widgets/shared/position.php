@@ -39,7 +39,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
         $element->add_control(
 			'_z_index',
 			[
-				'label' => __( 'Z-Index', 'qazana' ),
+				'label' => __( 'Z Index', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'min' => 0,
 				'placeholder' => 0,
@@ -102,6 +102,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                     'px' => [
                         'min'  => -1000,
                         'step' => 1,
+                        'max' => 10000,
                     ],
                     '%' => [
                         'min' => -100,

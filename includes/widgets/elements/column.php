@@ -472,7 +472,7 @@ class Element_Column extends Element_Base {
 		$this->start_controls_section(
 			'section_border',
 			[
-				'label' => __( 'Border', 'qazana' ),
+				'label' => __( 'Border & Shadow', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);

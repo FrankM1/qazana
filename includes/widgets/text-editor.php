@@ -143,19 +143,9 @@ class Widget_Text_Editor extends Widget_Base {
                     '{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
-        	);
+        );
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_style',
-			[
-				'label' => __( 'Text Editor', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_responsive_control(
+        $this->add_responsive_control(
 			'align',
 			[
 				'label' => __( 'Alignment', 'qazana' ),
@@ -179,6 +169,16 @@ class Widget_Text_Editor extends Widget_Base {
 					],
                 ],
                 'prefix_class' => 'qazana%s-align-',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style',
+			[
+				'label' => __( 'Text Editor', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
 
