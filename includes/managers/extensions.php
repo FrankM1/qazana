@@ -197,6 +197,13 @@ final class Manager {
 
     }
 
+    function dashesToCamelCase( $str ) {
+        $str = ucfirst( $str );
+        $str = str_replace( '-', '_', $str );
+        $str = ucwords( $str, '_' );
+        return $str;
+    }
+
      /**
       * Register Extension for use
       *
@@ -212,8 +219,8 @@ final class Manager {
             return;
         }
 
-        $extension_class = 'Qazana\Extensions\\' . ucfirst(str_replace('-', '_', $folder));
-
+        $extension_class = 'Qazana\Extensions\\' . $this->dashesToCamelCase( $folder );
+        
         /**
          * Filter 'qazana/extension/{folder}'
          *
@@ -228,7 +235,7 @@ final class Manager {
                 return;
             }
 
-            require_once $class_file;
+            require $class_file;
 
             if ( ! class_exists( $extension_class ) ) {
                 return new \WP_Error( __CLASS__ . '::' . $extension_class, 'Extension class not found in `' . $class_file );
@@ -362,7 +369,7 @@ final class Manager {
     			)
             );
 
-            $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . ucfirst( $skin );
+            $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . $this->dashesToCamelCase( $skin );
 
             if ( class_exists( $class_name ) ) {
                 continue;
@@ -426,11 +433,13 @@ final class Manager {
 
             foreach ( $widgets as $widget ) {
 
-                $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $widget;
+                $class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $this->dashesToCamelCase( $widget );
 
                 if ( ! class_exists( $class_name ) ) {
                     return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
                 }
+
+                qazana_write_log( $class_name );
 
                 if ( in_array( $widget, $this->get_widgets_blacklist() ) ) {
                     continue;

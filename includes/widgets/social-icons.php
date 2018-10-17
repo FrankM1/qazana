@@ -465,17 +465,19 @@ class Widget_Social_Icons extends Widget_Base {
 				$social = preg_replace('/^[^-]*-\s*/', '', $item['social']);
 				$social = str_replace( ' ', '-', $social );
 
-				$link_key = 'link_' . $index;
+                $link_key = 'link_' . $index;
+                
+                if ( ! empty( $item['link']['url'] ) ) {
+                    $this->add_render_attribute( $link_key, 'href', $item['link']['url'] );
 
-				$this->add_render_attribute( $link_key, 'href', $item['link']['url'] );
+                    if ( $item['link']['is_external'] ) {
+                        $this->add_render_attribute( $link_key, 'target', '_blank' );
+                    }
 
-				if ( $item['link']['is_external'] ) {
-					$this->add_render_attribute( $link_key, 'target', '_blank' );
-				}
-
-				if ( $item['link']['nofollow'] ) {
-					$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
-				}
+                    if ( $item['link']['nofollow'] ) {
+                        $this->add_render_attribute( $link_key, 'rel', 'nofollow' );
+                    }
+                }
 				?>
 				<a class="qazana-icon qazana-social-icon qazana-social-icon-<?php echo $social . $class_animation; ?>" <?php $this->render_attribute_string( $link_key ); ?>>
 					<span class="qazana-screen-only"><?php echo ucwords( $social ); ?></span>

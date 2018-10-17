@@ -90,7 +90,7 @@ class Editor {
 
 		$this->_post_id = absint( $_REQUEST['post'] );
 
-		if ( ! $this->is_edit_mode( $this->_post_id ) ) {
+		if ( ! $this->is_edit_mode( $this->get_post_id() ) ) {
 			return;
 		}
 
@@ -99,11 +99,11 @@ class Editor {
 
 		// Use requested id and not the global in order to avoid conflicts with plugins that changes the global post.
 		query_posts( [
-			'p' => $this->_post_id,
-			'post_type' => get_post_type( $this->_post_id ),
+			'p' => $this->get_post_id(),
+			'post_type' => get_post_type( $this->get_post_id() ),
 		] );
 
-		qazana()->db->switch_to_post( $this->_post_id );
+		qazana()->db->switch_to_post( $this->get_post_id() );
 
 		add_filter( 'show_admin_bar', '__return_false' );
 
@@ -135,11 +135,11 @@ class Editor {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
 		// Change mode to Builder
-		qazana()->db->set_is_qazana_page( $this->_post_id );
+		qazana()->db->set_is_qazana_page( $this->get_post_id() );
 
 		// Post Lock
-		if ( ! $this->get_locked_user( $this->_post_id ) ) {
-			$this->lock_post( $this->_post_id );
+		if ( ! $this->get_locked_user( $this->get_post_id() ) ) {
+			$this->lock_post( $this->get_post_id() );
 		}
 
 		// Setup default heartbeat options
@@ -218,7 +218,7 @@ class Editor {
 		}
 
 		if ( empty( $post_id ) ) {
-			$post_id = $this->_post_id;
+			$post_id = $this->get_post_id();
 		}
 
 		if ( ! User::is_current_user_can_edit( $post_id ) ) {
@@ -327,7 +327,7 @@ class Editor {
 		remove_action( 'wp_enqueue_scripts', [ $this, __FUNCTION__ ], 999999 );
 
 		// Set the global data like $post, $authordata and etc
-		setup_postdata( $this->_post_id );
+		setup_postdata( $this->get_post_id() );
 
 		global $wp_styles, $wp_scripts;
 
@@ -510,7 +510,7 @@ class Editor {
 		 */
 		do_action( 'qazana/editor/before_enqueue_scripts' );
 
-		$document = qazana()->documents->get_doc_or_auto_save( $this->_post_id );
+		$document = qazana()->documents->get_doc_or_auto_save( $this->get_post_id() );
 
 		// Get document data *after* the scripts hook - so plugins can run compatibility before get data, but *before* enqueue the editor script - so elements can enqueue their own scripts that depended in editor script.
 		$editor_data = $document->get_elements_raw_data( null, true );
@@ -520,7 +520,7 @@ class Editor {
 		// Tweak for WP Admin menu icons
 		wp_print_styles( 'editor-buttons' );
 
-		$locked_user = $this->get_locked_user( $this->_post_id );
+		$locked_user = $this->get_locked_user( $this->get_post_id() );
 
 		if ( $locked_user ) {
 			$locked_user = $locked_user->display_name;
@@ -535,7 +535,6 @@ class Editor {
 		$post_type_object = get_post_type_object( $document->get_main_post()->post_type );
 		$current_user_can_publish = current_user_can( $post_type_object->cap->publish_posts );
 
-
         $localize_settings = [
 			'version' => qazana_get_version(),
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -543,38 +542,38 @@ class Editor {
 			'nonce' => $this->create_nonce( get_post_type() ),
 			'data' => $editor_data,
 			// @TODO: `post_id` is bc since 2.0.0
-			'post_id' => $this->_post_id,
-			'document' => $document->get_config(),
+			'post_id' => $this->get_post_id(),
 			'autosave_interval' => AUTOSAVE_INTERVAL,
-			'current_user_can_publish' => $current_user_can_publish,
-			'controls'            => qazana()->controls_manager->get_controls_data(),
-			'preview_link'        => Utils::get_preview_url( $this->_post_id ),
-			'elements'            => qazana()->elements_manager->get_element_types_config(),
-			'widgets'             => qazana()->widgets_manager->get_widget_types_config(),
-			'default_schemes'     => qazana()->schemes_manager->get_schemes_defaults(),
-			'system_schemes'      => qazana()->schemes_manager->get_system_schemes(),
-			'schemes'             => [
-                'items'           => qazana()->schemes_manager->get_registered_schemes_data(),
-                'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
-            ],
-			'wp_editor'              => $this->get_wp_editor_config(),
-			'settings'               => SettingsManager::get_settings_managers_config(),
+            'current_user_can_publish' => $current_user_can_publish,
+            'preview_link'        => Utils::get_preview_url( $this->get_post_id() ),
 			'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
 			'qazana_site'            => 'https://qazana.net/plugins/qazana',
 			'help_the_content_url'   => 'https://qazana.net/plugins/qazana/the-content-missing/',
-			'assets_url'             => qazana()->core_assets_url,
+            'assets_url'             => qazana()->core_assets_url,
+			'document'               => $document->get_config(),
+			'controls'               => qazana()->controls_manager->get_controls_data(),
+			'elements'               => qazana()->elements_manager->get_element_types_config(),
+			'widgets'                => qazana()->widgets_manager->get_widget_types_config(),
+			'default_schemes'        => qazana()->schemes_manager->get_schemes_defaults(),
+            'system_schemes'         => qazana()->schemes_manager->get_system_schemes(),
+			'wp_editor'              => $this->get_wp_editor_config(),
+            'settings'               => SettingsManager::get_settings_managers_config(),
+			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
+            'dynamicTags'            => qazana()->dynamic_tags->get_config(),
+			'schemes'                => [
+                'items'              => qazana()->schemes_manager->get_registered_schemes_data(),
+                'enabled_schemes'    => Schemes_Manager::get_enabled_schemes(),
+            ],
 			'locked_user'            => $locked_user,
             'user' => [
-				'restrictions' => qazana()->role_manager->get_user_restrictions_array(),
-				'is_administrator' => current_user_can( 'manage_options' ),
+				'restrictions'       => qazana()->role_manager->get_user_restrictions_array(),
+				'is_administrator'   => current_user_can( 'manage_options' ),
 			],
 			'is_rtl'                 => is_rtl(),
 			'locale'                 => get_locale(),
 			'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
 			'page_title_selector'    => $page_title_selector,
 			'tinymceHasCustomConfig' => class_exists( 'Tinymce_Advanced' ),
-			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
-			'dynamicTags' => qazana()->dynamic_tags->get_config(),
 			'i18n'                   => [
 				'qazana' => __( 'Qazana', 'qazana' ),
 				'delete' => __( 'Delete', 'qazana' ),
@@ -725,7 +724,7 @@ class Editor {
 		 * @param array $localized_settings Localized settings.
 		 * @param int   $post_id            The ID of the current post being edited.
 		 */
-	    $localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->_post_id );
+	    $localize_settings = apply_filters( 'qazana/editor/localize_settings', $localize_settings, $this->get_post_id() );
 
 	    $this->add_localize_settings( $localize_settings );
 
@@ -945,15 +944,11 @@ class Editor {
 	 * @access public
 	 */
 	public function wp_footer() {
-		$plugin = qazana();
-
-		$plugin->controls_manager->render_controls();
-		$plugin->widgets_manager->render_widgets_content();
-		$plugin->elements_manager->render_elements_content();
-
-		$plugin->schemes_manager->print_schemes_templates();
-
-		$plugin->dynamic_tags->print_templates();
+		qazana()->controls_manager->render_controls();
+		qazana()->widgets_manager->render_widgets_content();
+		qazana()->elements_manager->render_elements_content();
+		qazana()->schemes_manager->print_schemes_templates();
+		qazana()->dynamic_tags->print_templates();
 
 		$this->init_editor_templates();
 
@@ -1129,7 +1124,6 @@ class Editor {
 		}
 	}
 
-
     public function get_localize_settings() {
         return $this->_localize_settings;
     }
@@ -1146,7 +1140,5 @@ class Editor {
         }
 
 		$this->_localize_settings[ $setting_key ] = array_replace_recursive( $this->_localize_settings[ $setting_key ], $setting_value );
-
     }
-
 }

@@ -328,7 +328,8 @@ abstract class Document extends Controls_Stack {
 	 */
 	protected function _get_initial_config() {
 		return [
-			'id' => $this->get_main_id(),
+            'id' => $this->get_main_id(),
+			'title' => get_the_title( $this->get_main_id() ),
 			'type' => $this->get_name(),
 			'remote_type' => $this->get_remote_library_type(),
 			'last_edited' => $this->get_last_edited(),

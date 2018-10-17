@@ -11846,14 +11846,14 @@ PanelLayoutView = Marionette.LayoutView.extend({
 		var pages = {
 			elements: {
 				view: __webpack_require__(/*! qazana-panel/pages/elements/elements */ "../assets/dev/js/editor/regions/panel/pages/elements/elements.js"),
-				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">'
+				title: qazana.config.document.title
 			},
 			editor: {
 				view: __webpack_require__(/*! qazana-panel/pages/editor */ "../assets/dev/js/editor/regions/panel/pages/editor.js")
 			},
 			menu: {
 				view: qazana.modules.layouts.panel.pages.menu.Menu,
-				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">'
+				title: qazana.config.document.title
 			},
 			colorScheme: {
 				view: __webpack_require__(/*! qazana-panel/pages/schemes/colors */ "../assets/dev/js/editor/regions/panel/pages/schemes/colors.js")

@@ -38,14 +38,14 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 		var pages = {
 			elements: {
 				view: require( 'qazana-panel/pages/elements/elements' ),
-				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">',
+				title: qazana.config.document.title,
 			},
 			editor: {
 				view: require( 'qazana-panel/pages/editor' ),
 			},
 			menu: {
 				view: qazana.modules.layouts.panel.pages.menu.Menu,
-				title: '<img src="' + qazana.config.assets_url + 'images/logo-panel.svg">',
+				title: qazana.config.document.title,
 			},
 			colorScheme: {
 				view: require( 'qazana-panel/pages/schemes/colors' ),
