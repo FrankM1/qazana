@@ -278,6 +278,25 @@ class Widget_Link extends Widget_Base {
 				'label' => __( 'Link', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
+        );
+
+        $this->start_controls_tabs( 'tabs_link_style' );
+
+		$this->start_controls_tab(
+			'tab_link_normal',
+			[
+				'label' => __( 'Normal', 'energia' ),
+			]
+		);
+        
+        $this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'typography',
+				'label' => __( 'Typography', 'qazana' ),
+				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
+				'selector' => '{{WRAPPER}} .qazana-link',
+			]
 		);
 
 		$this->add_control(
@@ -287,84 +306,19 @@ class Widget_Link extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-link .qazana-link-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-link' => 'color: {{VALUE}};',
 				],
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name' => 'typography',
-				'label' => __( 'Typography', 'qazana' ),
-				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
-				'selector' => '{{WRAPPER}} .qazana-link .qazana-link-content-wrapper',
-			]
-		);
+		$this->end_controls_tab();
 
-		$this->add_control(
-			'background_color',
-			[
-				'label' => __( 'Background Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_4,
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-link .qazana-link-content-wrapper' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
-			[
-				'name' => 'border',
-				'label' => __( 'Border', 'qazana' ),
-				'placeholder' => '1px',
-				'default' => '1px',
-				'selector' => '{{WRAPPER}} .qazana-link .qazana-link-content-wrapper',
-			]
-		);
-
-		$this->add_control(
-			'border_radius',
-			[
-				'label' => __( 'Border Radius', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-link .qazana-link-content-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition' => [
-					'border_border!' => ''
-				]
-			]
-		);
-
-		$this->add_control(
-			'text_padding',
-			[
-				'label' => __( 'Text Padding', 'qazana' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-link .qazana-link-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_hover',
-			[
-				'label' => __( 'Link Hover', 'qazana' ),
-				'type' => Controls_Manager::SECTION,
-				'tab' => Controls_Manager::TAB_STYLE,
-			]
-		);
+        $this->start_controls_tab(
+            'tab_link_hover',
+            [
+                'label' => __( 'Hover', 'energia' ),
+            ]
+        );
 
 		$this->add_control(
 			'hover_color',
@@ -372,35 +326,14 @@ class Widget_Link extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-link:hover .qazana-link-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-link:hover' => 'color: {{VALUE}};',
 				],
 			]
-		);
+        );
+        
+        $this->end_controls_tab();
 
-		$this->add_control(
-			'link_background_hover_color',
-			[
-				'label' => __( 'Background Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-link:hover .qazana-link-content-wrapper' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'link_hover_border_color',
-			[
-				'label' => __( 'Border Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'condition' => [
-					'border_border!' => '',
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-link:hover .qazana-link-content-wrapper' => 'border-color: {{VALUE}};',
-				],
-			]
-		);
+        $this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}

@@ -439,8 +439,6 @@ final class Manager {
                     return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
                 }
 
-                qazana_write_log( $class_name );
-
                 if ( in_array( $widget, $this->get_widgets_blacklist() ) ) {
                     continue;
                 }
