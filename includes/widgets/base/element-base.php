@@ -89,7 +89,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * @var null|array
 	 */
 	public $_element_stylesheets = array();
-	
+
 	/**
 	 * Get element edit tools.
 	 *
@@ -476,11 +476,21 @@ abstract class Element_Base extends Controls_Stack {
 		}
 
 		return implode( ' ', $attributes );
-    }
+	}
 
+	/**
+	 * Print render attribute string.
+	 *
+	 * Used to output the rendered attribute.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @param array|string $element The element.
+	 */
 	public function render_attribute_string( $element ) {
-        echo $this->get_render_attribute_string( $element );
-    }
+		echo $this->get_render_attribute_string( $element ); // XSS ok.
+	}
 
 	/**
 	 * Print render attribute string.
@@ -493,6 +503,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * @param array|string $element The element.
 	 */
 	public function print_render_attribute_string( $element ) {
+		_deprecated_function( sprintf( '%s::%s', get_called_class(), __FUNCTION__ ), '2.0.0', '$this->render_attribute_string()' );
 		echo $this->get_render_attribute_string( $element ); // XSS ok.
 	}
 
@@ -728,7 +739,8 @@ abstract class Element_Base extends Controls_Stack {
 		$data = parent::get_default_data();
 
 		return array_merge(
-			$data, [
+			$data,
+			[
 				'elements' => [],
 				'isInner' => false,
 			]

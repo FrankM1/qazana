@@ -33,7 +33,7 @@ class Elements_Manager {
 	 *
 	 * @access private
 	 *
-	 * @var
+	 * @var categories
 	 */
 	private $categories;
 
@@ -142,8 +142,8 @@ class Elements_Manager {
 	 *
 	 * @method get_element_instance
 	 *
-	 * @param  string 	$element_id  unique element id
-	 * @return object 	element object class Element_Base
+	 * @param string $element_id  unique element id
+	 * @return object element object class Element_Base
 	 */
 	public function get_element_instance( $element_id = null ) {
 		if ( null !== $element_id ) {
@@ -152,7 +152,7 @@ class Elements_Manager {
 
 		return $this->_element_instance;
 	}
-	
+
 	/**
 	 * Register element type.
 	 *
@@ -374,7 +374,7 @@ class Elements_Manager {
 		 */
 		do_action( 'qazana/elements/categories_registered', $this );
 
-        $this->categories = apply_filters( 'qazana/elements/categories', $categories );
+		$this->categories = apply_filters( 'qazana/elements/categories', $categories );
 
 		$this->categories['wordpress'] = [
 			'title' => __( 'WordPress', 'qazana' ),
@@ -392,22 +392,21 @@ class Elements_Manager {
 	 * @since 1.0.0
 	 * @access private
 	 */
+	public function require_files() {
 
-    public function require_files() {
+		$default_files = array(
+			'base/element-base.php',
+			'elements/column.php',
+			'elements/section.php',
+			'elements/repeater.php',
+		);
 
-        $default_files = array(
-            'base/element-base.php',
-            'elements/column.php',
-            'elements/section.php',
-	     	'elements/repeater.php',
-        );
+		$files = apply_filters( 'qazana\elements\require_files', $default_files );
 
-        $files = apply_filters( 'qazana\elements\require_files', $default_files );
-
-        if ( is_array( $files ) ) {
-            foreach ( $files as $file ) {
-                qazana()->widgets_manager->loader->locate_widget( $file, true );
-            }
-        }
-    }
+		if ( is_array( $files ) ) {
+			foreach ( $files as $file ) {
+				qazana()->widgets_manager->loader->locate_widget( $file, true );
+			}
+		}
+	}
 }

@@ -192,51 +192,56 @@ class Frontend {
 		$data = qazana()->db->get_plain_editor( $post_id );
 		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
 
-		qazana()->db->iterate_data( $data, function( $element ) {
+		qazana()->db->iterate_data(
+			$data,
+			function( $element ) {
 
-			$element_instance = qazana()->elements_manager->create_element_instance( $element );
+				$element_instance = qazana()->elements_manager->create_element_instance( $element );
 
-			// Exit if the element doesn't exist
-			if ( ! $element_instance ) {
-				return $element;
-			}
+				// Exit if the element doesn't exist
+				if ( ! $element_instance ) {
+					return $element;
+				}
 
-			$element_instance->add_element_dependencies();
+				$element_instance->add_element_dependencies();
 
-			// Add skin dependencies.
-			if ( 'widget' === $element['elType'] && $skin = $element_instance->get_current_skin() ) {
+				// Add skin dependencies.
+				if ( 'widget' === $element['elType'] && $element_instance->get_current_skin() ) {
 
-				$skin->set_parent( $element_instance ); // Match skins scope
-				$skin->add_element_dependencies();
+					$skin = $element_instance->get_current_skin();
 
-				if ( ! empty( $skin->get_parent()->_element_stylesheets ) && is_array( $skin->get_parent()->_element_stylesheets ) ) {
-					foreach ( $skin->get_parent()->_element_stylesheets as $key ) {
+					$skin->set_parent( $element_instance ); // Match skins scope
+					$skin->add_element_dependencies();
+
+					if ( ! empty( $skin->get_parent()->_element_stylesheets ) && is_array( $skin->get_parent()->_element_stylesheets ) ) {
+						foreach ( $skin->get_parent()->_element_stylesheets as $key ) {
+							$this->element_stylesheets[] = $key;
+						}
+					}
+
+					if ( ! empty( $skin->get_parent()->_element_scripts ) && is_array( $skin->get_parent()->_element_scripts ) ) {
+						foreach ( $skin->get_parent()->_element_scripts as $key ) {
+							$this->element_scripts[] = $key;
+						}
+					}
+				}
+
+				// Add normal widget dependencies.
+				if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
+					foreach ( $element_instance->_element_stylesheets as $key ) {
 						$this->element_stylesheets[] = $key;
 					}
 				}
 
-				if ( ! empty( $skin->get_parent()->_element_scripts ) && is_array( $skin->get_parent()->_element_scripts ) ) {
-					foreach ( $skin->get_parent()->_element_scripts as $key ) {
+				if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
+					foreach ( $element_instance->_element_scripts as $key ) {
 						$this->element_scripts[] = $key;
 					}
 				}
-			}
 
-			// Add normal widget dependencies.
-			if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
-				foreach ( $element_instance->_element_stylesheets as $key ) {
-					$this->element_stylesheets[] = $key;
-				}
+				return $element;
 			}
-
-			if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
-				foreach ( $element_instance->_element_scripts as $key ) {
-					$this->element_scripts[] = $key;
-				}
-			}
-
-			return $element;
-		});
+		);
 
 	}
 
@@ -252,19 +257,22 @@ class Frontend {
 		$data = qazana()->db->get_plain_editor( $post_id );
 		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
 
-		qazana()->db->iterate_data( $data, function( $element ) {
+		qazana()->db->iterate_data(
+			$data,
+			function( $element ) {
 
-	        $element_instance = qazana()->elements_manager->create_element_instance( $element );
+				$element_instance = qazana()->elements_manager->create_element_instance( $element );
 
-	        // Exit if the element doesn't exist
-	        if ( ! $element_instance ) {
-	            return $element;
-	        }
+				// Exit if the element doesn't exist
+				if ( ! $element_instance ) {
+					return $element;
+				}
 
-	        qazana()->elements_manager->add_element_instance( $element_instance );
+				qazana()->elements_manager->add_element_instance( $element_instance );
 
-	        return $element;
-	    });
+				return $element;
+			}
+		);
 
 	}
 
@@ -371,48 +379,48 @@ class Frontend {
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_register_script(
+		wp_register_script(
 			'jquery-swiper',
 			qazana()->core_assets_url . 'lib/swiper/swiper.jquery' . $suffix . '.js',
 			[
-                'jquery',
-                'qazana-dialog',
+				'jquery',
+				'qazana-dialog',
 			],
 			'3.4.2',
 			true
 		);
 
-        wp_register_script(
-            'waypoints',
-            qazana()->core_assets_url . 'lib/waypoints/waypoints' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '2.0.2',
-            true
-        );
+		wp_register_script(
+			'waypoints',
+			qazana()->core_assets_url . 'lib/waypoints/waypoints' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'2.0.2',
+			true
+		);
 
-        wp_register_script(
+		wp_register_script(
 			'qazana-dialog',
 			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
 			[
-                'jquery',
+				'jquery',
 				'jquery-ui-position',
 			],
 			'3.2.5',
 			true
 		);
 
-        wp_register_script(
-            'qazana-frontend',
-            qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
-            [
-                'waypoints',
+		wp_register_script(
+			'qazana-frontend',
+			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
+			[
+				'waypoints',
 				//'jquery-swiper',
-            ],
-            qazana_get_version(),
-            true
-        );
+			],
+			qazana_get_version(),
+			true
+		);
 
 		/**
 		 * After frontend register scripts.
@@ -449,13 +457,13 @@ class Frontend {
 		$direction_suffix = is_rtl() ? '-rtl' : '';
 
 		wp_register_style(
-            'qazana-icons',
-            qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
-            [],
-            qazana_get_version()
-        );
+			'qazana-icons',
+			qazana()->core_assets_url . 'lib/eicons/css/icons' . $suffix . '.css',
+			[],
+			qazana_get_version()
+		);
 
-        wp_register_style(
+		wp_register_style(
 			'font-awesome',
 			qazana()->core_assets_url . 'lib/font-awesome/css/font-awesome' . $suffix . '.css',
 			[],
@@ -491,8 +499,8 @@ class Frontend {
 			'qazana-frontend',
 			$frontend_file_url,
 			[
-			    'qazana-icons',
-                'font-awesome',
+				'qazana-icons',
+				'font-awesome',
 			],
 			$has_custom_file ? null : qazana_get_version()
 		);
@@ -536,13 +544,13 @@ class Frontend {
 			'assets_url'     => qazana()->core_assets_url,
 			'nonce'          => wp_create_nonce( 'qazana-frontend' ),
 			'isEditMode'     => $is_preview_mode,
-            'settings'       => SettingsManager::get_settings_frontend_config(),
-            'breakpoints' => Breakpoints::get_breakpoints(),
+			'settings'       => SettingsManager::get_settings_frontend_config(),
+			'breakpoints' => Breakpoints::get_breakpoints(),
 			'is_rtl'         => is_rtl(),
 			'urls' => [
 				'assets' => qazana()->core_assets_url,
 			],
-        ];
+		];
 
 		if ( is_singular() ) {
 			$post = get_post();
@@ -596,20 +604,20 @@ class Frontend {
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_register_script(
-            'jquery-slick',
-            qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '1.6.0',
-            true
-        );
+		wp_register_script(
+			'jquery-slick',
+			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.6.0',
+			true
+		);
 
 		do_action( 'qazana/frontend/after_register_widget_scripts' );
 
 	}
-	
+
 	/**
 	 * Enqueue styles.
 	 *
@@ -991,12 +999,14 @@ class Frontend {
 		$wp_admin_bar->add_node( $menu_args );
 
 		foreach ( $this->admin_bar_edit_documents as $document ) {
-			$wp_admin_bar->add_menu( [
-				'id' => 'qazana_edit_doc_' . $document->get_main_id(),
-				'parent' => 'qazana_edit_page',
-				'title' => sprintf( '<span class="qazana-edit-link-title">%s</span><span class="qazana-edit-link-type">%s</span>', $document->get_post()->post_title, $document::get_title() ),
-				'href' => $document->get_edit_url(),
-			] );
+			$wp_admin_bar->add_menu(
+				[
+					'id' => 'qazana_edit_doc_' . $document->get_main_id(),
+					'parent' => 'qazana_edit_page',
+					'title' => sprintf( '<span class="qazana-edit-link-title">%s</span><span class="qazana-edit-link-type">%s</span>', $document->get_post()->post_title, $document::get_title() ),
+					'href' => $document->get_edit_url(),
+				]
+			);
 		}
 	}
 
@@ -1033,9 +1043,9 @@ class Frontend {
 		}
 
 		// Add element script and css dependencies.
-        $this->get_dependencies( $post_id );
-        $this->enqueue_widget_scripts();
-        $this->enqueue_widget_styles();
+		$this->get_dependencies( $post_id );
+		$this->enqueue_widget_scripts();
+		$this->enqueue_widget_styles();
 
 		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the CSS inline
 		$is_edit_mode = $editor->is_edit_mode();

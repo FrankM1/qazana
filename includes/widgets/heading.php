@@ -175,7 +175,7 @@ class Widget_Heading extends Widget_Base {
 				'size_units' => [ '%', 'px', 'em', 'rem' ],
 				'range' => [
 					'px' => [
-                        'min' => 10,
+						'min' => 10,
 						'max' => 2000,
 					],
 				],
@@ -209,8 +209,8 @@ class Widget_Heading extends Widget_Base {
 						'icon' => 'fa fa-align-justify',
 					],
 				],
-                'default' => '',
-                'prefix_class' => 'qazana%s-align-',
+				'default' => '',
+				'prefix_class' => 'qazana%s-align-',
 			]
 		);
 
@@ -304,15 +304,15 @@ class Widget_Heading extends Widget_Base {
 		}
 
 		$this->add_render_attribute( 'title', 'class', 'qazana-heading qazana-heading-title' );
-        $this->add_render_attribute( 'title-wrapper', 'class', 'qazana-heading-wrapper' );
+		$this->add_render_attribute( 'title-wrapper', 'class', 'qazana-heading-wrapper' );
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'title', 'class', 'qazana-size-' . $settings['size'] );
-        }
-        
-       $align = $this->get_responsive_settings( 'align' );
+		}
 
-        if ( ! empty( $align ) ) {
+		$align = $this->get_responsive_settings( 'align' );
+
+		if ( ! empty( $align ) ) {
 			$this->add_render_attribute( 'heading-wrapper', 'class', 'qazana-align-' . $align );
 		}
 
@@ -337,8 +337,8 @@ class Widget_Heading extends Widget_Base {
 		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['header_size'], $this->get_render_attribute_string( 'title' ), $title );
 
 		?><div <?php $this->render_attribute_string( 'title-wrapper' ); ?>>
-            <?php echo $title_html; ?>
-        </div><?php
+			<?php echo $title_html; ?>
+		</div><?php
 
 	}
 
@@ -363,7 +363,7 @@ class Widget_Heading extends Widget_Base {
 		}
 
 		print( title_html );
-        #>
+		#>
 		<?php
 	}
 }

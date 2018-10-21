@@ -325,7 +325,7 @@ abstract class Source_Base {
 
 	public function get_supported_themes() {
 
-		$supported = apply_filters( 'qazana_templates_add_template_support', array('all') );
+		$supported = apply_filters( 'qazana_templates_add_template_support', array( 'all' ) );
 
 		return array_unique( $supported );
 	}

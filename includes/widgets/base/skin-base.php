@@ -141,10 +141,10 @@ abstract class Skin_Base {
 	public function get_instance_value( $control_base_id ) {
 		$control_id = $this->get_control_id( $control_base_id );
 		return $this->get_parent()->get_settings( $control_id );
-    	}
+    }
 
-    	/**
-	 * Retrieve resposive skin settings.
+    /**
+	 * Retrieve responsive skin settings.
 	 *
 	 * Get all the skin settings or, when requested, a specific setting.
 	 *
@@ -156,7 +156,7 @@ abstract class Skin_Base {
 	 *
 	 * @return Widget_Base Widget instance.
 	 */
-    	public function get_responsive_instance_value( $control_base_id ) {
+    public function get_responsive_instance_value( $control_base_id ) {
 		$control_id = $this->get_control_id( $control_base_id );
 		return $this->get_parent()->get_responsive_settings( $control_id );
 	}
@@ -425,7 +425,7 @@ abstract class Skin_Base {
 	public function after_render() {}
 
     /**
-     * Add element dependemcies
+     * Add element dependencies
      *
      * @since 1.0.0
      * @access public

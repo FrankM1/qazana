@@ -657,9 +657,9 @@ class DB {
 		$plain_text = trim( $plain_text );
 
 		return $plain_text;
-    }
-    
-    /**
+	}
+
+	/**
 	 * Switch to post.
 	 *
 	 * Change the global WordPress post to the requested post.

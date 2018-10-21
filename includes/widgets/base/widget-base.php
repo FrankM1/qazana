@@ -32,7 +32,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	protected $_has_template_content = true;
 
-    /**
+	/**
 	 * Retrieve element type.
 	 *
 	 * Get the element type, in this case `widget`.
@@ -186,7 +186,7 @@ abstract class Widget_Base extends Element_Base {
 
 	public function add_actions() {}
 
-    	/**
+	/**
 	 * Show in panel.
 	 *
 	 * Whether to show the widget in the panel or not. By default returns true.
@@ -510,7 +510,7 @@ abstract class Widget_Base extends Element_Base {
 		$this->render_content();
 	}
 
-    /**
+	/**
 	 * Add render attributes.
 	 *
 	 * Used to add several attributes to current widget `_wrapper` element.
@@ -521,28 +521,34 @@ abstract class Widget_Base extends Element_Base {
 	protected function _add_render_attributes() {
 		parent::_add_render_attributes();
 
-		$this->add_render_attribute( '_wrapper', 'class', [
-			'qazana-widget',
-			'qazana-element',
-			'qazana-element-' . $this->get_id(),
-			'qazana-widget-' . $this->get_name(),
-		] );
+		$this->add_render_attribute(
+			'_wrapper',
+			'class',
+			[
+				'qazana-widget',
+				'qazana-element',
+				'qazana-element-' . $this->get_id(),
+				'qazana-widget-' . $this->get_name(),
+			]
+		);
 
 		$settings = $this->get_settings();
 
 		foreach ( self::get_class_controls() as $control ) {
-			if ( empty( $settings[ $control['name'] ] ) )
+			if ( empty( $settings[ $control['name'] ] ) ) {
 				continue;
+			}
 
-			if ( ! $this->is_control_visible( $control ) )
+			if ( ! $this->is_control_visible( $control ) ) {
 				continue;
+			}
 
 			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
 		}
 
 		if ( ! empty( $settings['_hover_animation'] ) ) {
-            $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['_hover_animation'] );
-        }
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['_hover_animation'] );
+		}
 
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
 
@@ -555,9 +561,9 @@ abstract class Widget_Base extends Element_Base {
 			$skin->add_render_attributes();
 		}
 
-    }
+	}
 
-    /**
+	/**
 	 * Before widget rendering.
 	 *
 	 * Used to add stuff before the widget `_wrapper` element.
@@ -566,9 +572,9 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
-	    $this->_add_render_attributes();
+		$this->_add_render_attributes();
 		?>
-		<div <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
+		<div <?php $this->render_attribute_string( '_wrapper' ); ?>>
 		<?php
 	}
 
@@ -724,15 +730,21 @@ abstract class Widget_Base extends Element_Base {
 			return;
 		}
 
-		$this->add_render_attribute( $key, [
-			'class' => 'qazana-inline-editing',
-			'data-qazana-setting-key' => $key,
-		] );
+		$this->add_render_attribute(
+			$key,
+			[
+				'class' => 'qazana-inline-editing',
+				'data-qazana-setting-key' => $key,
+			]
+		);
 
 		if ( 'basic' !== $toolbar ) {
-			$this->add_render_attribute( $key, [
-				'data-qazana-inline-editing-toolbar' => $toolbar,
-			] );
+			$this->add_render_attribute(
+				$key,
+				[
+					'data-qazana-inline-editing-toolbar' => $toolbar,
+				]
+			);
 		}
 	}
 

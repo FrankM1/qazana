@@ -211,9 +211,11 @@ class Documents {
 			}
 
 			$doc_type_class = $this->get_document_type( $doc_type );
-			$this->documents[ $post_id ] = new $doc_type_class( [
-				'post_id' => $post_id,
-			] );
+			$this->documents[ $post_id ] = new $doc_type_class(
+				[
+					'post_id' => $post_id,
+				]
+			);
 		}
 
 		return $this->documents[ $post_id ];
@@ -342,9 +344,11 @@ class Documents {
 
 		$class_name = $this->types[ $type ];
 
-		$document = new $class_name( [
-			'post_id' => $post_id,
-		] );
+		$document = new $class_name(
+			[
+				'post_id' => $post_id,
+			]
+		);
 
 		$document->save_type();
 
@@ -379,7 +383,7 @@ class Documents {
 
 		$status = DB::STATUS_DRAFT;
 
-		if ( isset( $request['status'] ) && in_array( $request['status'], [ DB::STATUS_PUBLISH, DB::STATUS_PRIVATE, DB::STATUS_PENDING, DB::STATUS_AUTOSAVE ] , true ) ) {
+		if ( isset( $request['status'] ) && in_array( $request['status'], [ DB::STATUS_PUBLISH, DB::STATUS_PRIVATE, DB::STATUS_PENDING, DB::STATUS_AUTOSAVE ], true ) ) {
 			$status = $request['status'];
 		}
 

@@ -137,7 +137,6 @@ abstract class Controls_Stack {
 	 */
 	private $injection_point;
 
-
 	/**
 	 * Data sanitized.
 	 *
@@ -281,7 +280,7 @@ abstract class Controls_Stack {
 	 * Get controls.
 	 *
 	 * Get all the controls or, when requested, a specific control.
- 	 *
+	 *
 	 * @access public
 	 *
 	 * @param string $control_id The ID of the requested control. Optional field,
@@ -321,7 +320,8 @@ abstract class Controls_Stack {
 		}
 
 		$active_controls = array_reduce(
-			array_keys( $controls ), function( $active_controls, $control_key ) use ( $controls, $settings ) {
+			array_keys( $controls ),
+			function( $active_controls, $control_key ) use ( $controls, $settings ) {
 				$control = $controls[ $control_key ];
 
 				if ( $this->is_control_visible( $control, $settings ) ) {
@@ -329,7 +329,8 @@ abstract class Controls_Stack {
 				}
 
 				return $active_controls;
-			}, []
+			},
+			[]
 		);
 
 		return $active_controls;
@@ -394,7 +395,7 @@ abstract class Controls_Stack {
 
 			if ( null !== $target_section_args ) {
 				if ( ! empty( $args['section'] ) || ! empty( $args['tab'] ) ) {
-					_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) .'`.', '1.0.0' );
+					_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'Cannot redeclare control with `tab` or `section` args inside section. Control id - `' . esc_html( $id ) . '`.', '1.0.0' );
 				}
 
 				$args = array_replace_recursive( $target_section_args, $args );
@@ -403,7 +404,7 @@ abstract class Controls_Stack {
 					$args = array_merge( $args, $target_tab );
 				}
 			} elseif ( empty( $args['section'] ) && ( ! $options['overwrite'] || is_wp_error( qazana()->controls_manager->get_control_from_stack( $this->get_unique_name(), $id ) ) ) ) {
-				wp_die( get_called_class() . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id .'`.' );
+				wp_die( get_called_class() . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id . '`.' );
 			}
 		}
 		if ( $options['position'] ) {
@@ -418,10 +419,10 @@ abstract class Controls_Stack {
 			];
 
 			$this->current_popover['initialized'] = true;
-        }
-        
-        if ( strpos( $id, '-') !== false && ( ! empty( $args['conditions'] ) || ! empty( $args['condition'] ) ) ) {
-			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'A Dash in not allowed in a control id when conditions are defined, use an underscore instead. Control id - `' . esc_html( $id ) .'`.', '2.0.0' );
+		}
+
+		if ( strpos( $id, '-' ) !== false && ( ! empty( $args['conditions'] ) || ! empty( $args['condition'] ) ) ) {
+			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'A Dash in not allowed in a control id when conditions are defined, use an underscore instead. Control id - `' . esc_html( $id ) . '`.', '2.0.0' );
 		}
 
 		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
@@ -479,8 +480,8 @@ abstract class Controls_Stack {
 		}
 
 		return true;
-    }
-    
+	}
+
 	/**
 	 * Get stack.
 	 *
@@ -732,7 +733,8 @@ abstract class Controls_Stack {
 		$enabled_schemes = Schemes_Manager::get_enabled_schemes();
 
 		return array_filter(
-			$this->get_controls(), function( $control ) use ( $enabled_schemes ) {
+			$this->get_controls(),
+			function( $control ) use ( $enabled_schemes ) {
 				return ( ! empty( $control['scheme'] ) && in_array( $control['scheme']['type'], $enabled_schemes ) );
 			}
 		);
@@ -795,7 +797,8 @@ abstract class Controls_Stack {
 	 */
 	final public function get_class_controls() {
 		return array_filter(
-			$this->get_active_controls(), function( $control ) {
+			$this->get_active_controls(),
+			function( $control ) {
 				return ( isset( $control['prefix_class'] ) );
 			}
 		);
@@ -888,9 +891,13 @@ abstract class Controls_Stack {
 			$id_suffix = self::RESPONSIVE_DESKTOP === $device_name ? '' : '_' . $device_name;
 
 			if ( ! empty( $options['overwrite'] ) ) {
-				$this->update_control( $id . $id_suffix, $control_args, [
-					'recursive' => ! empty( $options['recursive'] ),
-				] );
+				$this->update_control(
+					$id . $id_suffix,
+					$control_args,
+					[
+						'recursive' => ! empty( $options['recursive'] ),
+					]
+				);
 			} else {
 				$this->add_control( $id . $id_suffix, $control_args, $options );
 			}
@@ -911,10 +918,14 @@ abstract class Controls_Stack {
 	 * @param array  $options Optional. Additional options.
 	 */
 	final public function update_responsive_control( $id, array $args, array $options = [] ) {
-		$this->add_responsive_control( $id, $args, [
-			'overwrite' => true,
-			'recursive' => ! empty( $options['recursive'] ),
-		] );
+		$this->add_responsive_control(
+			$id,
+			$args,
+			[
+				'overwrite' => true,
+				'recursive' => ! empty( $options['recursive'] ),
+			]
+		);
 	}
 
 	/**
@@ -1247,7 +1258,15 @@ abstract class Controls_Stack {
 		}
 
 		return array_reduce(
-			array_keys( $settings ), function( $filtered_settings, $setting_key ) use ( $controls, $settings, $callback ) {
+			array_keys( $settings ),
+			function(
+				$filtered_settings,
+				$setting_key
+			) use (
+				$controls,
+				$settings,
+				$callback
+			) {
 				if ( isset( $controls[ $setting_key ] ) ) {
 					$result = $callback( $settings[ $setting_key ], $controls[ $setting_key ] );
 
@@ -1257,7 +1276,8 @@ abstract class Controls_Stack {
 				}
 
 				return $filtered_settings;
-			}, []
+			},
+			[]
 		);
 	}
 
@@ -1377,7 +1397,7 @@ abstract class Controls_Stack {
 		$this->add_control( $section_id, $args );
 
 		if ( null !== $this->current_section ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_section['section'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start a section before the end of the previous section: `%s`. Element name - `' . $this->get_name() . '`.', $this->current_section['section'] ) ); // XSS ok.
 		}
 
 		$this->current_section = $this->get_section_args( $section_id );
@@ -1507,7 +1527,7 @@ abstract class Controls_Stack {
 	 */
 	public function start_controls_tabs( $tabs_id ) {
 		if ( null !== $this->current_tab ) {
-			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_tab['tabs_wrapper'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start tabs before the end of the previous tabs: `%s`. Element name - `' . $this->get_name() . '`.', $this->current_tab['tabs_wrapper'] ) ); // XSS ok.
 		}
 
 		$this->add_control(
@@ -1557,7 +1577,7 @@ abstract class Controls_Stack {
 	 */
 	public function start_controls_tab( $tab_id, $args ) {
 		if ( ! empty( $this->current_tab['inner_tab'] ) ) {
-			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`. Element name - `' . $this->get_name() .'`.', $this->current_tab['inner_tab'] ) ); // XSS ok.
+			wp_die( sprintf( 'Qazana: You can\'t start a tab before the end of the previous tab: `%s`. Element name - `' . $this->get_name() . '`.', $this->current_tab['inner_tab'] ) ); // XSS ok.
 		}
 
 		$args['type'] = Controls_Manager::TAB;
@@ -1700,7 +1720,7 @@ abstract class Controls_Stack {
 	 */
 	final public function start_injection( array $position ) {
 		if ( $this->injection_point ) {
-			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_name() .'`.' );
+			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_name() . '`.' );
 		}
 
 		$this->injection_point = $this->get_position_info( $position );
@@ -2000,7 +2020,7 @@ abstract class Controls_Stack {
 	 */
 	public function is_bool( $var ) {
 		$falsey = array( 'false', '0', 'no', 'n' );
-        return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
+		return ( ! $var || in_array( strtolower( $var ), $falsey ) ) ? false : true;
 	}
 
 	/**
@@ -2009,9 +2029,9 @@ abstract class Controls_Stack {
 	 * @return boolean
 	 */
 	public function is_edit_mode() {
-        return qazana()->editor->is_edit_mode();
-    }
-        
+		return qazana()->editor->is_edit_mode();
+	}
+
     public function get_responsive_settings( $setting_key = null ) {
 		if ( $setting_key ) {
 			if ( qazana_is_mobile() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
