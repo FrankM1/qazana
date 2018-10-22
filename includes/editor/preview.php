@@ -56,10 +56,13 @@ class Preview {
 		// Disable the WP admin bar in preview mode.
 		add_filter( 'show_admin_bar', '__return_false' );
 
-		add_action( 'wp_enqueue_scripts', function() {
-			$this->enqueue_styles();
-			$this->enqueue_scripts();
-		} );
+		add_action(
+			'wp_enqueue_scripts',
+			function() {
+				$this->enqueue_styles();
+				$this->enqueue_scripts();
+			}
+		);
 
 		add_filter( 'the_content', [ $this, 'builder_wrapper' ], 999999 );
 
@@ -174,7 +177,7 @@ class Preview {
 
 		wp_register_style(
 			'qazana-select2',
-			qazana()->core_assets_url  . 'lib/e-select2/css/e-select2' . $suffix . '.css',
+			qazana()->core_assets_url . 'lib/e-select2/css/e-select2' . $suffix . '.css',
 			[],
 			'4.0.6-rc.1'
 		);
@@ -182,7 +185,7 @@ class Preview {
 		wp_register_style(
 			'editor-preview',
 			qazana()->core_assets_url . 'css/editor-preview' . $direction_suffix . $suffix . '.css',
-			['qazana-select2'],
+			[ 'qazana-select2' ],
 			qazana_get_version()
 		);
 
@@ -211,15 +214,15 @@ class Preview {
 	private function enqueue_scripts() {
 		qazana()->frontend->register_scripts();
 
-        $suffix = Utils::is_script_debug() ? '' : '.min';
+		$suffix = Utils::is_script_debug() ? '' : '.min';
 
-        wp_enqueue_script(
-            'qazana-inline-editor',
-            qazana()->core_assets_url . 'lib/inline-editor/js/inline-editor' . $suffix . '.js',
-            [],
-            '',
-            true
-        );
+		wp_enqueue_script(
+			'qazana-inline-editor',
+			qazana()->core_assets_url . 'lib/inline-editor/js/inline-editor' . $suffix . '.js',
+			[],
+			qazana_get_version(),
+			true
+		);
 
 		/**
 		 * Preview enqueue scripts.

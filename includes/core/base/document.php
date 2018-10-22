@@ -130,7 +130,6 @@ abstract class Document extends Controls_Stack {
 		return $this->get_name() . '-' . $this->post->ID;
 	}
 
-
 	public function get_remote_library_type() {
 		return $this->get_name();
 	}
@@ -293,15 +292,17 @@ abstract class Document extends Controls_Stack {
 		if ( $autosave_id ) {
 			$document = qazana()->documents->get( $autosave_id );
 		} elseif ( $create ) {
-			$autosave_id = wp_create_post_autosave( [
-				'post_ID' => $this->post->ID,
-				'post_type' => $this->post->post_type,
-				'post_title' => $this->post->post_title,
-				'post_excerpt' => $this->post->post_excerpt,
-				// Hack to cause $autosave_is_different=true in `wp_create_post_autosave`.
-				'post_content' => '<!-- Created With Qazana -->',
-				'post_modified' => current_time( 'mysql' ),
-			] );
+			$autosave_id = wp_create_post_autosave(
+				[
+					'post_ID' => $this->post->ID,
+					'post_type' => $this->post->post_type,
+					'post_title' => $this->post->post_title,
+					'post_excerpt' => $this->post->post_excerpt,
+					// Hack to cause $autosave_is_different=true in `wp_create_post_autosave`.
+					'post_content' => '<!-- Created With Qazana -->',
+					'post_modified' => current_time( 'mysql' ),
+				]
+			);
 
 			qazana()->db->copy_qazana_meta( $this->post->ID, $autosave_id );
 
@@ -495,10 +496,15 @@ abstract class Document extends Controls_Stack {
 
 			add_filter( 'pre_option_permalink_structure', '__return_empty_string' );
 
-			$url = set_url_scheme( add_query_arg( [
-				'qazana-preview' => $this->get_main_id(),
-				'ver' => time(),
-			], $this->get_permalink() ) );
+			$url = set_url_scheme(
+				add_query_arg(
+					[
+						'qazana-preview' => $this->get_main_id(),
+						'ver' => time(),
+					],
+					$this->get_permalink()
+				)
+			);
 
 			remove_filter( 'pre_option_permalink_structure', '__return_empty_string' );
 
