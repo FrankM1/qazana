@@ -229,7 +229,7 @@ final class Manager {
          */
         $class_file = "$path$folder/extension_{$folder}.php";
 
-        if ( $file = $this->loader->locate_widget("$folder/extension_{$folder}.php", false ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
+        if ( $file = $this->loader->locate_widget("{$folder}/extension_{$folder}.php", false ) && file_exists( $class_file ) && empty( $this->extensions[ $folder ] ) ) {
 
             if ( class_exists( $extension_class ) || ! $this->is_extension_active( $folder ) ) {
                 return;
@@ -310,7 +310,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions/widgets/before", $this );
+        do_action( 'qazana/extensions/widgets/before', $this );
         
         if ( empty( $widgets ) ) {
             return;
@@ -336,7 +336,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions/widgets", $this );
+        do_action( 'qazana/extensions/widgets', $this );
 
     }
 
@@ -353,7 +353,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions/skins/before", $this );
+        do_action( 'qazana/extensions/skins/before', $this );
 
         if ( empty( $skins ) ) {
             return;
@@ -385,7 +385,7 @@ final class Manager {
          *
          * @param object $this Qazana
          */
-        do_action( "qazana/extensions/skins", $this );
+        do_action( 'qazana/extensions/skins', $this );
 
     }
 

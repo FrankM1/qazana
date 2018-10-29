@@ -974,6 +974,9 @@ abstract class Controls_Stack {
 	 * @return array|null The config.
 	 */
 	final public function add_config( $id, $config ) {
+		if ( null === $this->config ) {
+			$this->config = $this->_get_initial_config();
+		}
 		$this->config[ $id ] = $config;
 	}
 

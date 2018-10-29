@@ -140,10 +140,10 @@ abstract class Element_Base extends Controls_Stack {
 			$after_index = array_search( $after, array_keys( static::$_edit_tools ), true ) + 1;
 
 			static::$_edit_tools = array_slice( static::$_edit_tools, 0, $after_index, true ) +
-								   [
-									   $tool_name => $tool_data,
-								   ] +
-								   array_slice( static::$_edit_tools, $after_index, null, true );
+				[
+					$tool_name => $tool_data,
+				] +
+				array_slice( static::$_edit_tools, $after_index, null, true );
 		} else {
 			static::$_edit_tools[ $tool_name ] = $tool_data;
 		}
