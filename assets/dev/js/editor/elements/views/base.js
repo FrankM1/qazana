@@ -778,7 +778,7 @@ BaseElementView = BaseContainer.extend( {
 	},
 
 	/* jQuery ui sortable preventing any `mousedown` event above any element, and as a result is preventing the `blur`
-	 * event on the currently active element. Therefor, we need to blur the active element manually.
+	 * event on the currently active element. Therefore, we need to blur the active element manually.
 	 */
 	onMouseDown: function( event ) {
 		if ( jQuery( event.target ).closest( '.qazana-inline-editing' ).length ) {

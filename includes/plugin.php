@@ -448,22 +448,23 @@ class Plugin {
 		$this->debugger           = new Core\Debug\Inspector();
 		$this->ajax               = new Core\Managers\Ajax();
 		$this->documents          = new Core\Managers\Documents();
+		$this->dynamic_tags       = new Core\DynamicTags\Manager();
+		$this->db                 = new DB();
 		// TODO Remove deprecated handle - $this->posts_css_manager
 		$this->files_manager      = $this->posts_css_manager = new Core\Files\Manager();
-		$this->dynamic_tags       = new Core\DynamicTags\Manager();
-		$this->role_manager       = new Core\Roles\Manager();
+		$this->widgets_manager    = new Widgets_Manager();
 		$this->icons_manager      = new Icons_Manager();
-		$this->db                 = new DB();
+		$this->role_manager       = new Core\Roles\Manager();
 		$this->controls_manager   = new Controls_Manager();
 		$this->schemes_manager    = new Schemes_Manager();
-		$this->widgets_manager    = new Widgets_Manager();
+		$this->skins_manager      = new Skins_Manager();
 		$this->elements_manager   = new Elements_Manager();
 		$this->templates_manager  = new Template_Library\Manager();
+
 		$this->custom_css         = new Custom_Css();
 		$this->heartbeat          = new Heartbeat();
 		$this->cron               = new Cron();
 		$this->editor             = new Editor();
-		$this->skins_manager      = new Skins_Manager();
 		$this->mobile_detect      = new MobileDetect();
 		$this->mobile_detect->setDetectionType( 'extended' );
 		$this->preview            = new Preview();

@@ -159,9 +159,9 @@ var Module = function() {
 	};
 
     this.getDeviceName = function() {
-        if ( jQuery('body').hasClass( 'mobile' ) ) {
+        if ( jQuery( 'body' ).hasClass( 'mobile' ) ) {
             return 'mobile';
-        } else if ( jQuery('body').hasClass( 'tablet' ) ) {
+        } else if ( jQuery( 'body' ).hasClass( 'tablet' ) ) {
             return 'tablet';
         }
         return '';

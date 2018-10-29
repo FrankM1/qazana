@@ -70,7 +70,7 @@ class Editor {
 	 */
 	private $_localize_settings = [];
 
-    	/**
+    /**
 	 * Init.
 	 *
 	 * Initialize Qazana editor. Registers all needed actions to run Qazana,
@@ -143,10 +143,13 @@ class Editor {
 		}
 
 		// Setup default heartbeat options
-		add_filter( 'heartbeat_settings', function( $settings ) {
-			$settings['interval'] = 15;
-			return $settings;
-		} );
+		add_filter(
+			'heartbeat_settings',
+			function( $settings ) {
+				$settings['interval'] = 15;
+				return $settings;
+			}
+		);
 
 		// Tell to WP Cache plugins do not cache this request.
 		Utils::do_not_cache();
@@ -335,7 +338,7 @@ class Editor {
 		$wp_styles = new \WP_Styles(); // WPCS: override ok.
 		$wp_scripts = new \WP_Scripts(); // WPCS: override ok.
 
-        $suffix = Utils::is_script_debug() ? '' : '.min';
+		$suffix = Utils::is_script_debug() ? '' : '.min';
 
 		// Hack for waypoint with editor mode.
 		wp_register_script(
@@ -348,85 +351,85 @@ class Editor {
 			true
 		);
 
-        wp_register_script(
-            'backbone-marionette',
-            qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',
-            [
-                'backbone',
-            ],
-            '2.4.5',
-            true
-        );
+		wp_register_script(
+			'backbone-marionette',
+			qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',
+			[
+				'backbone',
+			],
+			'2.4.5',
+			true
+		);
 
-        wp_register_script(
-            'backbone-radio',
-            qazana()->core_assets_url . 'lib/backbone/backbone.radio' . $suffix . '.js',
-            [
-                'backbone',
-            ],
-            '1.0.4',
-            true
-        );
+		wp_register_script(
+			'backbone-radio',
+			qazana()->core_assets_url . 'lib/backbone/backbone.radio' . $suffix . '.js',
+			[
+				'backbone',
+			],
+			'1.0.4',
+			true
+		);
 
-        wp_register_script(
-            'perfect-scrollbar',
-            qazana()->core_assets_url . 'lib/perfect-scrollbar/perfect-scrollbar.jquery' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '0.6.12',
-            true
-        );
+		wp_register_script(
+			'perfect-scrollbar',
+			qazana()->core_assets_url . 'lib/perfect-scrollbar/perfect-scrollbar.jquery' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'0.6.12',
+			true
+		);
 
-        wp_register_script(
-            'jquery-easing',
-            qazana()->core_assets_url . 'lib/jquery-easing/jquery-easing' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '1.3.2',
-            true
-        );
+		wp_register_script(
+			'jquery-easing',
+			qazana()->core_assets_url . 'lib/jquery-easing/jquery-easing' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.3.2',
+			true
+		);
 
-        wp_register_script(
-            'nprogress',
-            qazana()->core_assets_url . 'lib/nprogress/nprogress' . $suffix . '.js',
-            [],
-            '0.2.0',
-            true
-        );
+		wp_register_script(
+			'nprogress',
+			qazana()->core_assets_url . 'lib/nprogress/nprogress' . $suffix . '.js',
+			[],
+			'0.2.0',
+			true
+		);
 
-        wp_register_script(
-            'tipsy',
-            qazana()->core_assets_url . 'lib/tipsy/tipsy' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '1.0.0',
-            true
-        );
+		wp_register_script(
+			'tipsy',
+			qazana()->core_assets_url . 'lib/tipsy/tipsy' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.0.0',
+			true
+		);
 
-        wp_register_script(
-            'imagesloaded',
-            qazana()->core_assets_url . 'lib/imagesloaded/imagesloaded' . $suffix . '.js',
-            [
-                'jquery',
-            ],
-            '4.1.0',
-            true
-        );
+		wp_register_script(
+			'imagesloaded',
+			qazana()->core_assets_url . 'lib/imagesloaded/imagesloaded' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'4.1.0',
+			true
+		);
 
-        wp_register_script(
-            'qazana-dialog',
-            qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
-            [
-                'jquery-ui-position',
-            ],
-            '3.0.0',
-            true
-        );
+		wp_register_script(
+			'qazana-dialog',
+			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
+			[
+				'jquery-ui-position',
+			],
+			'3.0.0',
+			true
+		);
 
-         wp_register_script(
+		wp_register_script(
 			'jquery-qazana-select2',
 			qazana()->core_assets_url . 'lib/e-select2/js/e-select2.full' . $suffix . '.js',
 			[
@@ -434,9 +437,9 @@ class Editor {
 			],
 			'4.0.6-rc.1',
 			true
-        );
-        
-        wp_register_script(
+		);
+
+		wp_register_script(
 			'flatpickr',
 			qazana()->core_assets_url . 'lib/flatpickr/flatpickr' . $suffix . '.js',
 			[
@@ -452,9 +455,9 @@ class Editor {
 			[],
 			'1.2.5',
 			true
-        );
+		);
 
-        wp_register_script(
+		wp_register_script(
 			'ace-language-tools',
 			'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ext-language_tools.js',
 			[
@@ -470,36 +473,36 @@ class Editor {
 			[
 				'jquery',
 			],
-            '2.0.0',
+			'2.0.0',
 			true
-    	);
+		);
 
-        wp_register_script(
-            'qazana-editor',
-            qazana()->core_assets_url . 'js/editor' . $suffix . '.js',
-            [
-                'wp-auth-check',
-                'jquery-ui-sortable',
-                'jquery-ui-resizable',
-                'backbone-marionette',
-                'backbone-radio',
-                'perfect-scrollbar',
-                'nprogress',
-                'tipsy',
-                'imagesloaded',
-                'heartbeat',
-                'jquery-qazana-select2',
-                'flatpickr',
-		        'qazana-dialog',
-                'ace',
-                'ace-language-tools',
-                'jquery-easing',
-                'hoverIntent',
-		        'jquery-fonticonpicker',
-            ],
-            qazana_get_version(),
-            true
-        );
+		wp_register_script(
+			'qazana-editor',
+			qazana()->core_assets_url . 'js/editor' . $suffix . '.js',
+			[
+				'wp-auth-check',
+				'jquery-ui-sortable',
+				'jquery-ui-resizable',
+				'backbone-marionette',
+				'backbone-radio',
+				'perfect-scrollbar',
+				'nprogress',
+				'tipsy',
+				'imagesloaded',
+				'heartbeat',
+				'jquery-qazana-select2',
+				'flatpickr',
+				'qazana-dialog',
+				'ace',
+				'ace-language-tools',
+				'jquery-easing',
+				'hoverIntent',
+				'jquery-fonticonpicker',
+			],
+			qazana_get_version(),
+			true
+		);
 
 		/**
 		 * Before editor enqueue scripts.
@@ -535,7 +538,7 @@ class Editor {
 		$post_type_object = get_post_type_object( $document->get_main_post()->post_type );
 		$current_user_can_publish = current_user_can( $post_type_object->cap->publish_posts );
 
-        $localize_settings = [
+		$localize_settings = [
 			'version' => qazana_get_version(),
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'home_url' => home_url(),
@@ -544,28 +547,28 @@ class Editor {
 			// @TODO: `post_id` is bc since 2.0.0
 			'post_id' => $this->get_post_id(),
 			'autosave_interval' => AUTOSAVE_INTERVAL,
-            'current_user_can_publish' => $current_user_can_publish,
-            'preview_link'        => Utils::get_preview_url( $this->get_post_id() ),
+			'current_user_can_publish' => $current_user_can_publish,
+			'preview_link'        => Utils::get_preview_url( $this->get_post_id() ),
 			'settings_page_link'     => admin_url( 'admin.php?page=' . qazana()->slug ),
 			'qazana_site'            => 'https://qazana.net/plugins/qazana',
 			'help_the_content_url'   => 'https://qazana.net/plugins/qazana/the-content-missing/',
-            'assets_url'             => qazana()->core_assets_url,
+			'assets_url'             => qazana()->core_assets_url,
 			'document'               => $document->get_config(),
 			'controls'               => qazana()->controls_manager->get_controls_data(),
 			'elements'               => qazana()->elements_manager->get_element_types_config(),
 			'widgets'                => qazana()->widgets_manager->get_widget_types_config(),
 			'default_schemes'        => qazana()->schemes_manager->get_schemes_defaults(),
-            'system_schemes'         => qazana()->schemes_manager->get_system_schemes(),
+			'system_schemes'         => qazana()->schemes_manager->get_system_schemes(),
 			'wp_editor'              => $this->get_wp_editor_config(),
-            'settings'               => SettingsManager::get_settings_managers_config(),
+			'settings'               => SettingsManager::get_settings_managers_config(),
 			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
-            'dynamicTags'            => qazana()->dynamic_tags->get_config(),
+			'dynamicTags'            => qazana()->dynamic_tags->get_config(),
 			'schemes'                => [
-                'items'              => qazana()->schemes_manager->get_registered_schemes_data(),
-                'enabled_schemes'    => Schemes_Manager::get_enabled_schemes(),
-            ],
+				'items'              => qazana()->schemes_manager->get_registered_schemes_data(),
+				'enabled_schemes'    => Schemes_Manager::get_enabled_schemes(),
+			],
 			'locked_user'            => $locked_user,
-            'user' => [
+			'user' => [
 				'restrictions'       => qazana()->role_manager->get_user_restrictions_array(),
 				'is_administrator'   => current_user_can( 'manage_options' ),
 			],
@@ -1125,7 +1128,7 @@ class Editor {
 	}
 
     public function get_localize_settings() {
-        return $this->_localize_settings;
+		return $this->_localize_settings;
     }
 
     public function add_localize_settings( $setting_key, $setting_value = null ) {

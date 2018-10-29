@@ -17,7 +17,7 @@ HandlerModule = ViewModule.extend( {
 	isEdit: null,
 
 	__construct: function( settings ) {
-		this.$element  = settings.$element;
+		this.$element = settings.$element;
 
 		this.isEdit = this.$element.hasClass( 'qazana-element-edit-mode' );
 
@@ -59,8 +59,8 @@ HandlerModule = ViewModule.extend( {
 					}
 
 					self.onDestroy();
-				}
-			}
+				},
+			},
 		];
 
 		if ( self.onElementChange ) {
@@ -81,8 +81,8 @@ HandlerModule = ViewModule.extend( {
 						return;
 					}
 
-					self.onElementChange( controlView.model.get( 'name' ),  controlView, elementView );
-				}
+					self.onElementChange( controlView.model.get( 'name' ), controlView, elementView );
+				},
 			} );
 		}
 
@@ -95,8 +95,8 @@ HandlerModule = ViewModule.extend( {
 						return;
 					}
 
-					self.onEditSettingsChange( Object.keys( changedModel.changed )[0] );
-				}
+					self.onEditSettingsChange( Object.keys( changedModel.changed )[ 0 ] );
+				},
 			} );
 		}
 
@@ -109,7 +109,7 @@ HandlerModule = ViewModule.extend( {
 					to: qazana.settings[ settingsType ].model,
 					callback: function( model ) {
 						self[ listenerMethodName ]( model.changed );
-					}
+					},
 				} );
 			}
 		} );
@@ -140,11 +140,11 @@ HandlerModule = ViewModule.extend( {
 	},
 
 	getElementName: function() {
-		return this.$element.data( 'element_type' ).split( '.' )[0];
+		return this.$element.data( 'element_type' ).split( '.' )[ 0 ];
 	},
 
 	getSkinName: function() {
-		return this.$element.data( 'element_type' ).split( '.' )[1];
+		return this.$element.data( 'element_type' ).split( '.' )[ 1 ];
 	},
 
 	getID: function() {
@@ -161,7 +161,7 @@ HandlerModule = ViewModule.extend( {
             settings,
 			modelCID = this.getModelCID(),
 			self = this,
-			elementName = self.getElementName().replace(/-/g, '_'),
+			elementName = self.getElementName().replace( /-/g, '_' ),
             handHeldDevice = this.getDeviceName();
 
 		if ( qazanaFrontend.isEditMode() && modelCID ) {
@@ -173,13 +173,11 @@ HandlerModule = ViewModule.extend( {
                 var newControlKey = controlKey;
                 if ( skinName !== 'default' ) {
                     newControlKey = controlKey.replace( skinName + '_', '' );
-                } 
+                }
                 elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
 			} );
-
 		} else {
-
-            skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
+            skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace( /-/g, '_' ) : 'default';
                 settings = this.$element.data( 'settings' ) || {};
 
             elementSettings = settings;
@@ -191,16 +189,15 @@ HandlerModule = ViewModule.extend( {
 					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
 				} );
 			}
-
         }
 
         if ( handHeldDevice ) {
             jQuery.each( elementSettings, function( controlKey ) {
                 if ( typeof elementSettings[ controlKey + '_' + handHeldDevice ] !== 'undefined' ) {
-                   elementSettings[ controlKey ] = elementSettings[ controlKey + '_' + handHeldDevice ];  // rewrite main value with mobile version 
+                   elementSettings[ controlKey ] = elementSettings[ controlKey + '_' + handHeldDevice ]; // rewrite main value with mobile version
                 }
             } );
-        } 
+        }
 
 		return this.getItems( elementSettings, setting );
     },
@@ -221,7 +218,7 @@ HandlerModule = ViewModule.extend( {
 		if ( this.unbindEvents ) {
 			this.unbindEvents();
 		}
-	}
+	},
 } );
 
 module.exports = HandlerModule;

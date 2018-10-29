@@ -141,9 +141,9 @@ abstract class Skin_Base {
 	public function get_instance_value( $control_base_id ) {
 		$control_id = $this->get_control_id( $control_base_id );
 		return $this->get_parent()->get_settings( $control_id );
-    }
+	}
 
-    /**
+	/**
 	 * Retrieve responsive skin settings.
 	 *
 	 * Get all the skin settings or, when requested, a specific setting.
@@ -156,7 +156,7 @@ abstract class Skin_Base {
 	 *
 	 * @return Widget_Base Widget instance.
 	 */
-    public function get_responsive_instance_value( $control_base_id ) {
+	public function get_responsive_instance_value( $control_base_id ) {
 		$control_id = $this->get_control_id( $control_base_id );
 		return $this->get_parent()->get_responsive_settings( $control_id );
 	}
@@ -238,7 +238,7 @@ abstract class Skin_Base {
 	 */
 	public function remove_control( $id ) {
 		$this->get_parent()->remove_control( $this->get_control_id( $id ) );
-	} 
+	}
 
 	/**
 	 * Add new responsive skin control.
@@ -358,7 +358,7 @@ abstract class Skin_Base {
 		$this->get_parent()->add_group_control( $group_name, $args );
 	}
 
-    /**
+	/**
 	 * Add render attributes.
 	 *
 	 * Used to add several attributes to current widget `_wrapper` element.
@@ -366,11 +366,11 @@ abstract class Skin_Base {
 	 * @since 1.0.0
 	 * @access protected
 	 */
-	public function add_render_attributes () {
+	public function add_render_attributes() {
 		$this->_add_render_attributes();
 	}
 
-    /**
+	/**
 	 * Add render attributes helper.
 	 *
 	 * Used to add several attributes to current widget `_wrapper` element.
@@ -378,33 +378,33 @@ abstract class Skin_Base {
 	 * @since 1.0.0
 	 * @access protected
 	 */
-	protected function _add_render_attributes () { }
+	protected function _add_render_attributes() { }
 
-    /**
-     * Add render attribute helper.
-     *
-     * Used to add several attribute to current widget `_wrapper` element.
-     *
-     * @since 1.0.0
-     * @access public
-     */
+	/**
+	 * Add render attribute helper.
+	 *
+	 * Used to add several attribute to current widget `_wrapper` element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_render_attribute( $element, $key = null, $value = null, $overwrite = false ) {
 		return $this->get_parent()->add_render_attribute( $element, $key, $value, $overwrite );
 	}
 
-    /**
-     * Get all attributes helper.
-     *
-     * Used to get several attributes for current element.
-     *
-     * @since 1.0.0
-     * @access public
-     */
+	/**
+	 * Get all attributes helper.
+	 *
+	 * Used to get several attributes for current element.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function get_render_attribute_string( $element ) {
 		return $this->get_parent()->get_render_attribute_string( $element );
 	}
 
-    /**
+	/**
 	 * Before widget rendering.
 	 *
 	 * Used to add stuff before the widget `_wrapper` element.
@@ -414,7 +414,7 @@ abstract class Skin_Base {
 	 */
 	public function before_render() {}
 
-    /**
+	/**
 	 * After widget rendering.
 	 *
 	 * Used to add stuff after the widget `_wrapper` element.
@@ -424,34 +424,34 @@ abstract class Skin_Base {
 	 */
 	public function after_render() {}
 
-    /**
-     * Add element dependencies
-     *
-     * @since 1.0.0
-     * @access public
-     * 
-     * @param return $id  array of script tags.
-     */
+	/**
+	 * Add element dependencies
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param return $id  array of script tags.
+	 */
 	public function add_element_dependencies() {
-        return [];
-    }
+		return [];
+	}
 
-    /**
-     * Add elements scripts
-     *
-     * @since 1.0.0
-     * @access public
-     */
+	/**
+	 * Add elements scripts
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_script( $value ) {
 		$this->get_parent()->add_frontend_script( $value );
 	}
 
-    /**
-     * Add elements scripts
-     *
-     * @since 1.0.0
-     * @access public
-     */
+	/**
+	 * Add elements scripts
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_style( $value ) {
 		$this->get_parent()->add_frontend_style( $value );
 	}
@@ -470,7 +470,7 @@ abstract class Skin_Base {
 		$this->_parent = $parent;
 	}
 
-    /**
+	/**
 	 * Get parent widget.
 	 *
 	 * Used to retrieve the parent widget of the skin.
@@ -482,9 +482,9 @@ abstract class Skin_Base {
 	 */
 	public function get_parent() {
 		return $this->_parent;
-    }
+	}
 
-    /**
+	/**
 	 * Start injection.
 	 *
 	 * Used to inject controls and sections to a specific position in the stack.
@@ -510,10 +510,10 @@ abstract class Skin_Base {
 	 */
 	final public function start_injection( array $position ) {
 		if ( $this->get_parent()->injection_point ) {
-			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_parent()->get_name() .' Skin name - `' . $this->get_id() .'`.' );
-        }
+			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_parent()->get_name() . ' Skin name - `' . $this->get_id() . '`.' );
+		}
 
-        $position['of'] = $this->get_id();
+		$position['of'] = $this->get_id();
 
 		$this->get_parent()->injection_point = $this->get_parent()->get_position_info( $position );
 	}
@@ -530,16 +530,16 @@ abstract class Skin_Base {
 	 */
 	final public function end_injection() {
 		$this->get_parent()->injection_point = null;
-    }
-    
-    /**
-     * Helper for checking boolean values.
-     *
-     * @since 1.0.0
-     * @access public
-     * 
-     * @param return $value boolean.
-     */
+	}
+
+	/**
+	 * Helper for checking boolean values.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param return $value boolean.
+	 */
 	public function is_bool( $value ) {
 		return $this->get_parent()->is_bool( $value );
 	}

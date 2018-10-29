@@ -965,6 +965,19 @@ abstract class Controls_Stack {
 	}
 
 	/**
+	 * Add to the config.
+	 *
+	 * Get the config or, if non set, use the initial config.
+	 *
+	 * @access public
+	 *
+	 * @return array|null The config.
+	 */
+	final public function add_config( $id, $config ) {
+		$this->config[ $id ] = $config;
+	}
+
+	/**
 	 * Retrieve the config.
 	 *
 	 * Get the config or, if non set, use the initial config.
@@ -2014,7 +2027,7 @@ abstract class Controls_Stack {
 	 * Helper method to check for non falsey values
 	 *
 	 * @access public
-	 * 
+	 *
 	 * @param string $var The vaule to check.
 	 * @return boolean
 	 */
@@ -2032,28 +2045,28 @@ abstract class Controls_Stack {
 		return qazana()->editor->is_edit_mode();
 	}
 
-    public function get_responsive_settings( $setting_key = null ) {
+	public function get_responsive_settings( $setting_key = null ) {
 		if ( $setting_key ) {
 			if ( qazana_is_mobile() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
 				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
-		    } elseif ( qazana_is_tablet() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
-		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
-		    }
+			} elseif ( qazana_is_tablet() && ! empty( $this->active_settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
+			}
 		}
 
 		return $this->active_settings ? self::_get_items( $this->active_settings, $setting_key ) : null;
-    }
+	}
 
-    public function get_item_responsive_settings( $setting_key, $settings ) {
+	public function get_item_responsive_settings( $setting_key, $settings ) {
 
 		if ( $setting_key ) {
-			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_MOBILE ] ) ) {
+			if ( qazana_is_mobile() && ! empty( $settings[ $setting_key . '_' . self::RESPONSIVE_MOBILE ] ) ) {
 				$setting_key = $setting_key . '_' . self::RESPONSIVE_MOBILE;
-		    } elseif ( qazana_is_tablet() && ! empty( $settings[ $setting_key . '_'. self::RESPONSIVE_TABLET ] ) ) {
-		        $setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
-		    }
+			} elseif ( qazana_is_tablet() && ! empty( $settings[ $setting_key . '_' . self::RESPONSIVE_TABLET ] ) ) {
+				$setting_key = $setting_key . '_' . self::RESPONSIVE_TABLET;
+			}
 		}
 
-        return $settings ? self::_get_items( $settings, $setting_key ) : null;
+		return $settings ? self::_get_items( $settings, $setting_key ) : null;
 	}
 }

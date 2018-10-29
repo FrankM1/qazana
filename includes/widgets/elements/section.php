@@ -1384,21 +1384,27 @@ class Element_Section extends Element_Base {
 	public function before_render() {
 		$section_type = $this->get_data( 'isInner' ) ? 'inner' : 'top';
 
-		$this->add_render_attribute( 'wrapper', 'class', [
-			'qazana-section',
-			'qazana-element',
-			'qazana-element-' . $this->get_id(),
-			'qazana-' . $section_type . '-section',
-		] );
+		$this->add_render_attribute(
+			'wrapper',
+			'class',
+			[
+				'qazana-section',
+				'qazana-element',
+				'qazana-element-' . $this->get_id(),
+				'qazana-' . $section_type . '-section',
+			]
+		);
 
 		$settings = $this->get_settings_for_display();
 
 		foreach ( $this->get_class_controls() as $control ) {
-			if ( empty( $settings[ $control['name'] ] ) )
+			if ( empty( $settings[ $control['name'] ] ) ) {
 				continue;
+			}
 
-			if ( ! $this->is_control_visible( $control ) )
+			if ( ! $this->is_control_visible( $control ) ) {
 				continue;
+			}
 
 			$this->add_render_attribute( 'wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
 		}
@@ -1407,26 +1413,26 @@ class Element_Section extends Element_Base {
 			$this->add_render_attribute( 'wrapper', 'data-animation', $settings['animation'] );
 		}
 
-        $this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
+		$this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
 		$this->add_render_attribute( 'row', 'class', 'qazana-row' );
 
-        ?>
-        <<?php echo $this->get_html_tag() . ' '. $this->get_render_attribute_string( 'wrapper' ); ?>>
-            <?php
+		?>
+		<<?php echo $this->get_html_tag() . ' '. $this->get_render_attribute_string( 'wrapper' ); ?>>
+			<?php
 
-            if ( 'video' === $settings['background_background'] ) :
-                if ( $settings['background_video_link'] ) :
-                    $video_data = Utils::get_video_id_from_url( $settings['background_video_link'] );
-                    ?>
-                    <div class="qazana-background-video-container qazana-hidden-phone">
+			if ( 'video' === $settings['background_background'] ) :
+				if ( $settings['background_video_link'] ) :
+					$video_data = Utils::get_video_id_from_url( $settings['background_video_link'] );
+					?>
+					<div class="qazana-background-video-container qazana-hidden-phone">
                         <?php if ( ! empty( $video_data ) ) : ?>
-                            <div class="qazana-background-video" data-video-host="<?php echo $video_data['host']; ?>" data-video-id="<?php echo $video_data['id']; ?>"></div>
+							<div class="qazana-background-video" data-video-host="<?php echo $video_data['host']; ?>" data-video-id="<?php echo $video_data['id']; ?>"></div>
                         <?php else : ?>
-                            <video class="qazana-background-video qazana-html5-video" src="<?php echo $settings['background_video_link'] ?>" autoplay loop muted></video>
+							<video class="qazana-background-video qazana-html5-video" src="<?php echo $settings['background_video_link']; ?>" autoplay loop muted></video>
                         <?php endif; ?>
-                    </div>
-                <?php endif;
-            endif;
+					</div>
+				<?php endif;
+			endif;
 
             if ( in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ) : ?>
                 <div class="qazana-background-overlay"></div>
@@ -1439,11 +1445,10 @@ class Element_Section extends Element_Base {
 				$this->print_shape_divider( 'bottom' );
 			}
 			?>
-
-            <div class="qazana-container qazana-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
-                <div <?php $this->render_attribute_string( 'row' ); ?>>
-        <?php
-    }
+			<div class="qazana-container qazana-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
+				<div <?php $this->render_attribute_string( 'row' ); ?>>
+		<?php
+	}
 
 	/**
 	 * After section rendering.

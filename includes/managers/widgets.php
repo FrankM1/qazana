@@ -39,95 +39,102 @@ class Widgets_Manager {
 	 * @since 1.0.0
 	 * @access private
 	*/
-    public function __construct() {
-        add_action( 'qazana/widgets/loader/after', [ $this, 'require_files' ] ); // Load these immediately for use by extensions
-	    add_action( 'qazana/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
+	public function __construct() {
 
-        $this->loader = new Loader();
-      
-        do_action( 'qazana/widgets/loader/before', $this->loader );
+		add_action( 'qazana/widgets/loader/after', [ $this, 'require_files' ] ); // Load these immediately for use by extensions.
+		add_action( 'qazana/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
 
-        $this->loader->add_stack( qazana()->theme_paths_child, qazana()->theme_widget_locations );
-        $this->loader->add_stack( qazana()->theme_paths, qazana()->theme_widget_locations );
+		$this->loader = new Loader();
 
-        do_action( 'qazana/widgets/loader', $this->loader ); // plugins can intercept the stack here. Themes will always take precedence
+		do_action( 'qazana/widgets/loader/before', $this->loader );
 
-        $this->loader->add_stack( array( 'path' => qazana_get_dir(), 'uri' => qazana_get_dir() ), qazana()->plugin_widget_locations );
+		$this->loader->add_stack( qazana()->theme_paths_child, qazana()->theme_widget_locations );
+		$this->loader->add_stack( qazana()->theme_paths, qazana()->theme_widget_locations );
 
-        do_action( 'qazana/widgets/loader/after', $this->loader );
-    }
+		do_action( 'qazana/widgets/loader', $this->loader ); // plugins can intercept the stack here. Themes will always take precedence.
+
+		$this->loader->add_stack(
+			[
+				'path' => qazana_get_dir(),
+				'uri'  => qazana_get_dir(),
+			],
+			qazana()->plugin_widget_locations
+		);
+
+		do_action( 'qazana/widgets/loader/after', $this->loader );
+	}
 
 	/**
 	 * @since 1.0.0
 	 * @access private
 	*/
-    private function init_widgets() {
+	private function init_widgets() {
 
-        $this->_widget_types = [];
+		$this->_widget_types = [];
 
-        $build_widgets_filename = [
-            'common',
+		$build_widgets_filename = [
+			'common',
 
-            'alert',
-            'audio',
-            'button',
-            'divider',
-            'heading',
-            'html',
+			'alert',
+			'audio',
+			'button',
+			'divider',
+			'heading',
+			'html',
 			'link',
-            'icon-box',
-            'icon-list',
-            'icon',
-            'image-box',
-            'image-carousel',
-            'image-gallery',
-            'image',
-            'menu-anchor',
-            'progress',
-            'shortcode',
-            'sidebar',
-            'social-icons',
-            'spacer',
-            'testimonial',
-            'text-editor',
-            'tooltip',
-            'video',
-        ];
+			'icon-box',
+			'icon-list',
+			'icon',
+			'image-box',
+			'image-carousel',
+			'image-gallery',
+			'image',
+			'menu-anchor',
+			'progress',
+			'shortcode',
+			'sidebar',
+			'social-icons',
+			'spacer',
+			'testimonial',
+			'text-editor',
+			'tooltip',
+			'video',
+		];
 
-        if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
-            return;
-        }
+		if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
+			return;
+		}
 
-        /**
-         * Allow override of registered widget defaults
-         *
-         * @since 1.0.0
-        *
-        * @param array $build_widgets_filename.
-        */
-        $build_widgets_filename = apply_filters( 'qazana/widgets/widget_filenames', $build_widgets_filename );
+		/**
+		 * Allow override of registered widget defaults
+		 *
+		 * @since 1.0.0
+		*
+		* @param array $build_widgets_filename.
+		*/
+		$build_widgets_filename = apply_filters( 'qazana/widgets/widget_filenames', $build_widgets_filename );
 
-        // remove duplicates
-        $build_widgets_filename = array_unique( $build_widgets_filename );
+		// remove duplicates
+		$build_widgets_filename = array_unique( $build_widgets_filename );
 
-        foreach ( $build_widgets_filename as $widget_filename ) {
+		foreach ( $build_widgets_filename as $widget_filename ) {
 
-            if ( ! $this->loader->locate_widget( $widget_filename .'.php', false ) ) {
-                continue;
-            }
+			if ( ! $this->loader->locate_widget( $widget_filename . '.php', false ) ) {
+				continue;
+			}
 
 			$class_name = str_replace( '-', '_', $widget_filename );
 
 			$class_name = __NAMESPACE__ . '\Widget_' . $class_name;
 
-            $class_name = apply_filters( "qazana/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
+			$class_name = apply_filters( "qazana/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
 
-            if ( ! class_exists( $class_name ) ) {
-                $this->loader->locate_widget( $widget_filename .'.php', true );
-            }
+			if ( ! class_exists( $class_name ) ) {
+				$this->loader->locate_widget( $widget_filename . '.php', true );
+			}
 
-            $this->register_widget_type( new $class_name() );
-        }
+			$this->register_widget_type( new $class_name() );
+		}
 
 		$this->register_wp_widgets();
 
@@ -154,17 +161,17 @@ class Widgets_Manager {
 	 * @since 1.0.0
 	 * @access private
 	 */
-    private function register_wp_widgets() {
+	private function register_wp_widgets() {
 
-        global $wp_widget_factory;
+		global $wp_widget_factory;
 
-        $this->loader->locate_widget( 'wordpress.php', true );
+		$this->loader->locate_widget( 'wordpress.php', true );
 
 		$blacklist = [
 			'WP_Widget_Text', //unnecessary since Qazana has a text widget
 		];
 
-        /**
+		/**
 		 * Qazana widgets black list.
 		 *
 		 * Filters the widgets black list that won't be displayed in the panel.
@@ -175,18 +182,18 @@ class Widgets_Manager {
 		 */
 		$black_list = apply_filters( 'qazana/widgets/black_list', $blacklist );
 
-        $widgets = apply_filters( 'qazana/widgets_manager/widgets', $wp_widget_factory->widgets );
+		$widgets = apply_filters( 'qazana/widgets_manager/widgets', $wp_widget_factory->widgets );
 
-        foreach ( $widgets as $widget_class => $widget_obj ) {
+		foreach ( $widgets as $widget_class => $widget_obj ) {
 
-    		if ( in_array( $widget_class, $black_list ) ) {
-    			continue;
-    		}
+			if ( in_array( $widget_class, $black_list ) ) {
+				continue;
+			}
 
-            $qazana_widget_class = __NAMESPACE__ . '\Widget_WordPress';
-            $this->register_widget_type( new $qazana_widget_class( array(), [ 'widget_name' => $widget_class ] ) );
-        }
-    }
+			$qazana_widget_class = __NAMESPACE__ . '\Widget_WordPress';
+			$this->register_widget_type( new $qazana_widget_class( array(), [ 'widget_name' => $widget_class ] ) );
+		}
+	}
 
 	/**
 	 * Require files.
@@ -196,28 +203,28 @@ class Widgets_Manager {
 	 * @since 2.0.0
 	 * @access private
 	*/
-    public function require_files() {
+	public function require_files() {
 
-        $default_files = [];
+		$default_files = [];
 
 		if ( ! class_exists( 'Qazana\Controls_Stack' ) ) {
-            $default_files[] = 'base/controls-stack.php';
-        }
+			$default_files[] = 'base/controls-stack.php';
+		}
 
-        if ( ! class_exists( 'Qazana\Element_Base' ) ) {
-            $default_files[] = 'base/element-base.php';
-        }
+		if ( ! class_exists( 'Qazana\Element_Base' ) ) {
+			$default_files[] = 'base/element-base.php';
+		}
 
-        if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
-            $default_files[] = 'base/widget-base.php';
-        }
+		if ( ! class_exists( 'Qazana\Widget_Base' ) ) {
+			$default_files[] = 'base/widget-base.php';
+		}
 
-        $files = apply_filters( 'qazana/widgets/require_files', $default_files );
+		$files = apply_filters( 'qazana/widgets/require_files', $default_files );
 
-        foreach ( (array) $files as $file ) {
-            $this->loader->locate_widget( $file, true );
-        }
-    }
+		foreach ( (array) $files as $file ) {
+			$this->loader->locate_widget( $file, true );
+		}
+	}
 
 	/**
 	 * Register widget type.
@@ -237,7 +244,7 @@ class Widgets_Manager {
 		}
 
 		$this->_widget_types[ $widget->get_name() ] = $widget;
-        $this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
+		$this->_widget_types = apply_filters( 'qazana/widgets/register_widget_type', $this->_widget_types, $this );
 
 		return true;
 	}
@@ -441,9 +448,9 @@ class Widgets_Manager {
 		}
 
 		return $keys;
-    }
+	}
 
-    /**
+	/**
 	 * Retrieve inline editing configuration.
 	 *
 	 * Returns general inline editing configurations like toolbar types etc.
@@ -471,25 +478,28 @@ class Widgets_Manager {
 			'italic',
 		];
 
-		$advanced_tools = array_merge( $basic_tools, [
-			'createlink',
-			'unlink',
-			'h1' => [
-				'h1',
-				'h2',
-				'h3',
-				'h4',
-				'h5',
-				'h6',
-				'p',
-				'blockquote',
-				'pre',
-			],
-			'list' => [
-				'insertOrderedList',
-				'insertUnorderedList',
-			],
-		] );
+		$advanced_tools = array_merge(
+			$basic_tools,
+			[
+				'createlink',
+				'unlink',
+				'h1' => [
+					'h1',
+					'h2',
+					'h3',
+					'h4',
+					'h5',
+					'h6',
+					'p',
+					'blockquote',
+					'pre',
+				],
+				'list' => [
+					'insertOrderedList',
+					'insertUnorderedList',
+				],
+			]
+		);
 
 		return [
 			'toolbar' => [

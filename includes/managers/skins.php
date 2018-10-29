@@ -69,7 +69,7 @@ class Skins_Manager {
 		$widget_name = $widget->get_name();
 
 		if ( ! isset( $this->_skins[ $widget_name ][ $skin_id ] ) ) {
-			return new \WP_Error( 'Cannot remove not-exists skin.' );
+			return new \WP_Error( 'Cannot remove a not-existent skin.' );
 		}
 
 		unset( $this->_skins[ $widget_name ][ $skin_id ] );
