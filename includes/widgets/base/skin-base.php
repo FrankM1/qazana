@@ -95,7 +95,7 @@ abstract class Skin_Base {
 	 * Register skin controls actions.
 	 *
 	 * Run on init and used to register new skins to be injected to the widget.
-	 * This method is used to register new actions that specify the locaion of
+	 * This method is used to register new actions that specify the location of
 	 * the skin in the widget.
 	 *
 	 * Example usage:
