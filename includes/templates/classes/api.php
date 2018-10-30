@@ -28,7 +28,7 @@ class Api {
 	 *
 	 * @var string API info URL.
 	 */
-	public static $api_info_url = 'https://api.qazana.net/api/v1/qazana/templates';
+	public static $api_info_url = 'https://api.qazana.net/api/v2/qazana/templates';
 
 	/**
 	 * API get template content URL.
