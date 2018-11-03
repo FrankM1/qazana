@@ -331,6 +331,8 @@ class Plugin {
 		require_once $this->includes_dir . 'core/functions.php';
 		require_once $this->includes_dir . 'core/update.php';
 		require_once $this->includes_dir . 'core/loader.php';
+
+		require_once $this->includes_dir . 'core/base/base-object.php';
 		require_once $this->includes_dir . 'core/controls-stack.php';
 
 		require_once $this->includes_dir . 'core/base/document.php';
