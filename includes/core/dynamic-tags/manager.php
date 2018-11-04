@@ -336,17 +336,17 @@ class Manager {
 	public function ajax_render_tags() {
 		qazana()->editor->verify_ajax_nonce();
 
-		$posted = $_POST; // WPCS: CSRF OK.
+		$data = $_POST; // WPCS: CSRF OK.
 
-		if ( empty( $posted['post_id'] ) ) {
+		if ( empty( $data['post_id'] ) ) {
 			throw new \Exception( 'Missing post id.' );
 		}
 
-		if ( ! User::is_current_user_can_edit( $posted['post_id'] ) ) {
+		if ( ! User::is_current_user_can_edit( $data['post_id'] ) ) {
 			throw new \Exception( 'Access denied.' );
 		}
 
-		qazana()->db->switch_to_post( $posted['post_id'] );
+		qazana()->db->switch_to_post( $data['post_id'] );
 
 		/**
 		 * Before dynamic tags rendered.
@@ -359,7 +359,7 @@ class Manager {
 
 		$tags_data = [];
 
-		foreach ( $posted['tags'] as $tag_key ) {
+		foreach ( $data['tags'] as $tag_key ) {
 			$tag_key_parts = explode( '-', $tag_key );
 
 			$tag_name = base64_decode( $tag_key_parts[0] );
@@ -380,7 +380,7 @@ class Manager {
 		 */
 		do_action( 'qazana/dynamic_tags/after_render' );
 
-		wp_send_json_success( $tags_data );
+		return $tags_data;
 	}
 
 	/**

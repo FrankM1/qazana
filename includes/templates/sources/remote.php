@@ -214,7 +214,7 @@ class Source_Remote extends Source_Base {
 			'thumbnail' => $template_data['thumbnail'],
 			'date' => $template_data['tmpl_created'],
 			'author' => $template_data['author'],
-			'tags' => $template_data['tags'],
+			'tags' => json_decode( $template_data['tags'] ),
 			'categories' => [],
 			'keywords' => [],
 			'popularityIndex' => (int) $template_data['popularity_index'],

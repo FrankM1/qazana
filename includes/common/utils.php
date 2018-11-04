@@ -671,8 +671,24 @@ class Utils {
         }
 
         return $video_id;
-
 	}
 
+	public static function get_the_archive_url() {
+		$url = '';
+		if ( is_category() || is_tag() || is_tax() ) {
+			$url = get_term_link( get_queried_object() );
+		} elseif ( is_author() ) {
+			$url = get_author_posts_url( get_queried_object_id() );
+		} elseif ( is_year() ) {
+			$url = get_year_link( get_query_var( 'year' ) );
+		} elseif ( is_month() ) {
+			$url = get_month_link( get_query_var( 'year' ), get_query_var( 'monthnum' ) );
+		} elseif ( is_day() ) {
+			$url = get_day_link( get_query_var( 'year' ), get_query_var( 'monthnum' ), get_query_var( 'day' ) );
+		} elseif ( is_post_type_archive() ) {
+			$url = get_post_type_archive_link( get_post_type() );
+		}
 
+		return $url;
+	}
 }

@@ -68,6 +68,7 @@ abstract class Document extends Controls_Stack {
 
 	public static function get_editor_panel_config() {
 		return [
+			'widgets_settings' => [],
 			'elements_categories' => static::get_editor_panel_categories(),
 			'messages' => [
 				/* translators: %s: the document title. */
@@ -128,6 +129,12 @@ abstract class Document extends Controls_Stack {
 	 */
 	public function get_unique_name() {
 		return $this->get_name() . '-' . $this->post->ID;
+	}
+
+	public function get_post_type_title() {
+		$post_type_object = get_post_type_object( $this->post->post_type );
+
+		return $post_type_object->labels->singular_name;
 	}
 
 	public function get_remote_library_type() {

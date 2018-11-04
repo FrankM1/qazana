@@ -4348,7 +4348,7 @@ label.qazana-template-library-order-label {
   background-color: #EBEBEB;
   -webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
           box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
-  z-index: 1; }
+  z-index: 80; }
   .qazana-tag-settings-popup:before {
     content: '';
     position: absolute;

@@ -63,6 +63,7 @@ class DynamicTags_Site extends DynamicTags {
 			'Site_Tagline',
 			'Site_Title',
 			'Site_URL',
+			'Internal_URL',
 			'Current_Date_Time',
 		];
 	}
@@ -113,7 +114,8 @@ class DynamicTags_Site extends DynamicTags {
         require 'tags/site-logo.php';
         require 'tags/site-tagline.php';
         require 'tags/site-title.php';
-        require 'tags/site-url.php';
+		require 'tags/site-url.php';
+        require 'tags/internal-url.php';
     }
     
     public function __construct() {
