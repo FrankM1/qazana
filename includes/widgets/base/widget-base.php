@@ -328,7 +328,7 @@ abstract class Widget_Base extends Element_Base {
 	 *        $this->add_skin( new Skin_Classic( $this ) );
 	 *    }
 	 *
-	 * @since 1.7.12
+	 * @since 1.0.0
 	 * @access protected
 	 */
 	protected function _register_skins() {}
@@ -415,7 +415,7 @@ abstract class Widget_Base extends Element_Base {
 	 * Retrieve the widget container class. Can be used to override the
 	 * container class for specific widgets.
 	 *
-	 * @since 2.0.9
+	 * @since 2.0.0
 	 * @access protected
 	 */
 	protected function get_html_wrapper_class() {
@@ -573,9 +573,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function before_render() {
 		$this->_add_render_attributes();
-		?>
-		<div <?php $this->render_attribute_string( '_wrapper' ); ?>>
-		<?php
+		?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
 	}
 
 	/**
@@ -587,9 +585,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function after_render() {
-		?>
-		</div>
-		<?php
+		?></div><?php
 	}
 
 	/**
