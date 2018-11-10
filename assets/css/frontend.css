@@ -2251,41 +2251,41 @@ body.qazana-page .qazana-widget-menu-anchor {
   -webkit-border-radius: 50%;
           border-radius: 50%; }
 
-.qazana-testimonial-wrapper {
+.qazana-testimonial__wrapper {
   overflow: hidden;
   margin: 1em;
   text-align: center; }
-  .qazana-testimonial-wrapper.qazana-element-style-2 .qazana-testimonial-content {
+  .qazana-testimonial__wrapper.qazana-element-style-2 .qazana-testimonial__content {
     padding: 1.5em;
     background-color: #f7f7f7; }
-  .qazana-testimonial-wrapper.qazana-element-style-3 .qazana-testimonial-content {
+  .qazana-testimonial__wrapper.qazana-element-style-3 .qazana-testimonial__content {
     padding: 1.5em;
     background-color: #f7f7f7; }
-    .qazana-testimonial-wrapper.qazana-element-style-3 .qazana-testimonial-content:after {
+    .qazana-testimonial__wrapper.qazana-element-style-3 .qazana-testimonial__content:after {
       border-top: 8px solid #f7f7f7; }
-  .qazana-testimonial-wrapper.qazana-testimonial-text-align-left {
+  .qazana-testimonial__wrapper.qazana-testimonial__text-align-left {
     text-align: left; }
-    .qazana-testimonial-wrapper.qazana-testimonial-text-align-left .qazana-testimonial-content:after {
+    .qazana-testimonial__wrapper.qazana-testimonial__text-align-left .qazana-testimonial__content:after {
       left: 42px;
       margin-left: 0; }
-  .qazana-testimonial-wrapper.qazana-testimonial-text-align-right {
+  .qazana-testimonial__wrapper.qazana-testimonial__text-align-right {
     text-align: right; }
-    .qazana-testimonial-wrapper.qazana-testimonial-text-align-right .qazana-testimonial-content:after {
+    .qazana-testimonial__wrapper.qazana-testimonial__text-align-right .qazana-testimonial__content:after {
       right: 42px;
       left: auto;
       margin-left: 0; }
-  .qazana-testimonial-wrapper .qazana-testimonial-image-position-aside .qazana-testimonial-details,
-  .qazana-testimonial-wrapper .qazana-testimonial-image-position-aside .qazana-testimonial-image {
+  .qazana-testimonial__wrapper .qazana-testimonial__image-position-aside .qazana-testimonial__details,
+  .qazana-testimonial__wrapper .qazana-testimonial__image-position-aside .qazana-testimonial__image {
     display: table-cell;
     vertical-align: middle; }
-  .qazana-testimonial-wrapper .qazana-testimonial-image-position-top.qazana-testimonial-meta .qazana-testimonial-details,
-  .qazana-testimonial-wrapper .qazana-testimonial-image-position-top.qazana-testimonial-meta .qazana-testimonial-image {
+  .qazana-testimonial__wrapper .qazana-testimonial__image-position-top.qazana-testimonial__meta .qazana-testimonial__details,
+  .qazana-testimonial__wrapper .qazana-testimonial__image-position-top.qazana-testimonial__meta .qazana-testimonial__image {
     display: block; }
-  .qazana-testimonial-wrapper .qazana-testimonial-content {
+  .qazana-testimonial__wrapper .qazana-testimonial__content {
     position: relative;
     margin-bottom: 1em;
     font-size: 1em; }
-    .qazana-testimonial-wrapper .qazana-testimonial-content:after {
+    .qazana-testimonial__wrapper .qazana-testimonial__content:after {
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -2297,17 +2297,17 @@ body.qazana-page .qazana-widget-menu-anchor {
       border-bottom-width: 0;
       border-left: 8px solid transparent;
       content: ''; }
-  .qazana-testimonial-wrapper .qazana-testimonial-name {
+  .qazana-testimonial__wrapper .qazana-testimonial__name {
     line-height: 1.5; }
-  .qazana-testimonial-wrapper .qazana-testimonial-job {
+  .qazana-testimonial__wrapper .qazana-testimonial__job {
     margin-top: 0.3em;
     font-size: 0.85em; }
-  .qazana-testimonial-wrapper .qazana-testimonial-meta {
+  .qazana-testimonial__wrapper .qazana-testimonial__meta {
     width: 100%;
     line-height: 1; }
-    .qazana-testimonial-wrapper .qazana-testimonial-meta-inner {
+    .qazana-testimonial__wrapper .qazana-testimonial__meta-inner {
       display: inline-block; }
-    .qazana-testimonial-wrapper .qazana-testimonial-meta .qazana-testimonial-image img {
+    .qazana-testimonial__wrapper .qazana-testimonial__meta .qazana-testimonial__image img {
       width: 60px;
       height: 60px;
       -webkit-border-radius: 50%;

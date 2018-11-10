@@ -1,5 +1,5 @@
 // testimonial
-.qazana-testimonial-wrapper {
+.qazana-testimonial__wrapper {
   overflow   : hidden;
   margin     : 1em;
   text-align : center;
@@ -8,14 +8,14 @@
     &1 {}
 
     &2 {
-      .qazana-testimonial-content {
+      .qazana-testimonial__content {
         padding          : 1.5em;
         background-color : #f7f7f7;
       }
     }
 
     &3 {
-      .qazana-testimonial-content {
+      .qazana-testimonial__content {
         padding          : 1.5em;
         background-color : #f7f7f7;
 
@@ -26,11 +26,11 @@
     }
   }
 
-  &.qazana-testimonial-text-align- {
+  &.qazana-testimonial__text-align- {
     &left {
       text-align : left;
 
-      .qazana-testimonial-content {
+      .qazana-testimonial__content {
         &:after {
           left        : 42px;
           margin-left : 0;
@@ -41,7 +41,7 @@
     &right {
       text-align : right;
 
-      .qazana-testimonial-content {
+      .qazana-testimonial__content {
         &:after {
           right       : 42px;
           left        : auto;
@@ -51,22 +51,22 @@
     }
   }
 
-  .qazana-testimonial-image-position-aside {
-    .qazana-testimonial-details,
-    .qazana-testimonial-image {
+  .qazana-testimonial__image-position-aside {
+    .qazana-testimonial__details,
+    .qazana-testimonial__image {
       display        : table-cell;
       vertical-align : middle;
     }
   }
 
-  .qazana-testimonial-image-position-top.qazana-testimonial-meta {
-    .qazana-testimonial-details,
-    .qazana-testimonial-image {
+  .qazana-testimonial__image-position-top.qazana-testimonial__meta {
+    .qazana-testimonial__details,
+    .qazana-testimonial__image {
       display : block;
     }
   }
 
-  .qazana-testimonial-content {
+  .qazana-testimonial__content {
     position      : relative;
     margin-bottom : 1em;
     font-size     : 1em;
@@ -86,16 +86,16 @@
     }
   }
 
-  .qazana-testimonial-name {
+  .qazana-testimonial__name {
     line-height : 1.5;
   }
 
-  .qazana-testimonial-job {
+  .qazana-testimonial__job {
     margin-top : 0.3em;
     font-size  : 0.85em;
   }
 
-  .qazana-testimonial-meta {
+  .qazana-testimonial__meta {
     width       : 100%;
     line-height : 1;
 
@@ -103,7 +103,7 @@
       display : inline-block;
     }
 
-    .qazana-testimonial-image {
+    .qazana-testimonial__image {
       img {
         width         : 60px;
         height        : 60px;

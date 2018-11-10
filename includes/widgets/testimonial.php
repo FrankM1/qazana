@@ -283,7 +283,7 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'content_wrapper_background',
-				'selector' => '{{WRAPPER}} .qazana-testimonial-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__content-wrapper',
 			]
 		);
 
@@ -305,8 +305,8 @@ class Widget_Testimonial extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-content' => 'background-color: {{VALUE}}',
-					'{{WRAPPER}} .qazana-testimonial-content:after' => 'border-top-color: {{VALUE}}'
+					'{{WRAPPER}} .qazana-testimonial__content' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .qazana-testimonial__content:after' => 'border-top-color: {{VALUE}}'
 				],
 			]
 		);
@@ -318,7 +318,7 @@ class Widget_Testimonial extends Widget_Base {
 				'label' => __( 'Border', 'qazana' ),
 				'placeholder' => '1px',
 				'default' => '1px',
-				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__content',
 				'defaults' => [
 					'border' => 'solid',
 					'width' => array(
@@ -349,7 +349,7 @@ class Widget_Testimonial extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial__content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'default' => [
 					'unit' => 'px',
@@ -366,7 +366,7 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'content_box_shadow',
-				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__content',
 			]
 		);
 
@@ -385,7 +385,7 @@ class Widget_Testimonial extends Widget_Base {
 					'isLinked' => true,
 				),
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial__content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -401,7 +401,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '#848484',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-content' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial__content' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -412,7 +412,7 @@ class Widget_Testimonial extends Widget_Base {
 				'name' => 'content_typography',
 				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .qazana-testimonial-content',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__content',
 				'defaults' => [
 					'typography' => 'custom',
 				    'font_size' => array (
@@ -445,7 +445,7 @@ class Widget_Testimonial extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					 '{{WRAPPER}} .qazana-testimonial-content' => 'text-align: {{VALUE}};',
+					 '{{WRAPPER}} .qazana-testimonial__content' => 'text-align: {{VALUE}};',
 				 ]
 			]
 		);
@@ -471,7 +471,7 @@ class Widget_Testimonial extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					 '{{WRAPPER}} .qazana-testimonial-details' => 'text-align: {{VALUE}};',
+					 '{{WRAPPER}} .qazana-testimonial__details' => 'text-align: {{VALUE}};',
 				 ]
 			]
 		);
@@ -500,7 +500,7 @@ class Widget_Testimonial extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial__wrapper .qazana-testimonial__image img' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -526,7 +526,7 @@ class Widget_Testimonial extends Widget_Base {
 					'isLinked' => false,
 			   ),
 			   'selectors' => [
-				   '{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				   '{{WRAPPER}} .qazana-testimonial__wrapper .qazana-testimonial__image img' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 			   ],
 		   ]
 	   );
@@ -535,7 +535,7 @@ class Widget_Testimonial extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__wrapper .qazana-testimonial__image img',
 				'separator' => 'before',
 			]
 		);
@@ -547,7 +547,7 @@ class Widget_Testimonial extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-wrapper .qazana-testimonial-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-testimonial__wrapper .qazana-testimonial__image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -574,7 +574,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-name' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial__name' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -584,7 +584,7 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'name' => 'name_typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .qazana-testimonial-name',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__name',
 			]
 		);
 
@@ -610,7 +610,7 @@ class Widget_Testimonial extends Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-testimonial-job' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-testimonial__job' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -620,7 +620,7 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'name' => 'job_typography',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-testimonial-job',
+				'selector' => '{{WRAPPER}} .qazana-testimonial__job',
 			]
 		);
 
@@ -658,7 +658,7 @@ class Widget_Testimonial extends Widget_Base {
 
 		$counter = 1;
 
-		?><div class="qazana-testimonials-wrapper">
+		?><div class="qazana-testimonials__wrapper">
 			<div class="qazana-slides-wrapper qazana-slick-slider qazana-dots-align-<?php echo $settings['dots_align']; ?>" dir="<?php echo $direction; ?>">
 				<div <?php $this->render_attribute_string( 'slides' ); ?>>
 					<div class="slick-slideshow-large-container-biggie">
@@ -672,32 +672,32 @@ class Widget_Testimonial extends Widget_Base {
 										$has_image = ' qazana-has-image';
 									}
 
-									?><div class="qazana-testimonial-wrapper qazana-testimonial-text-align-<?php echo $this->get_item_responsive_settings( 'testimonial_alignment', $item ); ?>">
-										<div class="qazana-testimonial-content-wrapper">
+									?><div class="qazana-testimonial__wrapper qazana-testimonial__text-align-<?php echo $this->get_item_responsive_settings( 'testimonial_alignment', $item ); ?>">
+										<div class="qazana-testimonial__content-wrapper">
 
 											<?php if ( ! empty( $item['testimonial_content'] ) ) : ?>
-												<div class="qazana-testimonial-content">
+												<p class="qazana-testimonial__content">
 													<?php echo $item['testimonial_content']; ?>
-												</div>
+												</p>
 											<?php endif; ?>
 
-											<div class="qazana-testimonial-meta<?php if ( $has_image ) echo $has_image; ?><?php echo $this->get_item_responsive_settings( 'testimonial_image_position', $item ); ?>">
-												<div class="qazana-testimonial-meta-inner">
+											<div class="qazana-testimonial__meta<?php if ( $has_image ) echo $has_image; ?><?php echo $this->get_item_responsive_settings( 'testimonial_image_position', $item ); ?>">
+												<div class="qazana-testimonial__meta-inner">
 													<?php if ( isset( $image_url ) ) : ?>
-														<div class="qazana-testimonial-image">
+														<div class="qazana-testimonial__image">
 															<img src="<?php echo esc_attr( $image_url ); ?>" alt="<?php echo esc_attr( Control_Media::get_image_alt( $item['testimonial_image'] ) ); ?>" />
 														</div>
 													<?php endif; ?>
 
-													<div class="qazana-testimonial-details">
+													<div class="qazana-testimonial__details">
 														<?php if ( ! empty( $item['testimonial_name'] ) ) : ?>
-															<div class="qazana-testimonial-name">
+															<div class="qazana-testimonial__name">
 																<?php echo $item['testimonial_name']; ?>
 															</div>
 														<?php endif; ?>
 
 														<?php if ( ! empty( $item['testimonial_job'] ) ) : ?>
-															<div class="qazana-testimonial-job">
+															<div class="qazana-testimonial__job">
 																<?php echo $item['testimonial_job']; ?>
 															</div>
 														<?php endif; ?>

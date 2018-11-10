@@ -18,6 +18,12 @@ module.exports = {
 				'assets/css/*.css',
 				'!assets/css/*.min.css'
 			]
+		},
+		{
+			src: [
+				'includes/extensions/**/*.css',
+				'!includes/extensions/**/*.min.css'
+			]
 		} ]
 	},
 	minify: {
@@ -36,6 +42,14 @@ module.exports = {
 			src: [
 				'assets/css/*.css',
 				'!assets/css/*.min.css'
+			],
+			ext: '.min.css'
+		},
+		{
+			expand: true,
+			src: [
+				'includes/extensions/**/*.css',
+				'!includes/extensions/**/*.min.css'
 			],
 			ext: '.min.css'
 		} ]
