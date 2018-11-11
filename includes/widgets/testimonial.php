@@ -378,10 +378,10 @@ class Widget_Testimonial extends Widget_Base {
 				'size_units' => [ 'px', 'em', '%' ],
 				'default' => array (
 					'unit' => 'px',
-					'top' => '31',
-					'right' => '31',
-					'bottom' => '31',
-					'left' => '31',
+					'top' => '30',
+					'right' => '30',
+					'bottom' => '30',
+					'left' => '30',
 					'isLinked' => true,
 				),
 				'selectors' => [
@@ -399,7 +399,6 @@ class Widget_Testimonial extends Widget_Base {
 					'type' => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_3,
 				],
-				'default' => '#848484',
 				'selectors' => [
 					'{{WRAPPER}} .qazana-testimonial__content' => 'color: {{VALUE}};',
 				],

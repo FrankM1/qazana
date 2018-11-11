@@ -285,7 +285,7 @@ class Widget_Link extends Widget_Base {
 		$this->start_controls_tab(
 			'tab_link_normal',
 			[
-				'label' => __( 'Normal', 'energia' ),
+				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
         
@@ -316,7 +316,7 @@ class Widget_Link extends Widget_Base {
         $this->start_controls_tab(
             'tab_link_hover',
             [
-                'label' => __( 'Hover', 'energia' ),
+                'label' => __( 'Hover', 'qazana' ),
             ]
         );
 

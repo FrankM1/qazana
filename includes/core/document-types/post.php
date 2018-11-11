@@ -64,16 +64,18 @@ class Post extends Document {
 	 * @since 2.0.0
 	 * @access protected
 	 */
-     protected function _register_controls() {
-        parent::_register_controls();
+	protected function _register_controls() {
+
+		parent::_register_controls();
 
 		self::register_hide_title_control( $this );
 
 		self::register_post_fields_control( $this );
 
-        self::register_style_controls( $this );
-        
-        self::register_post_css( $this );
+		self::register_style_controls( $this );
+
+		self::register_post_css( $this );
+
 	}
 
 	/**
@@ -91,12 +93,14 @@ class Post extends Document {
 
 		$page_title_selector .= ', .qazana-page-title';
 
-		$document->start_injection( [
-			'of' => 'post_status',
-			'fallback' => [
-				'of' => 'post_title',
-			],
-		] );
+		$document->start_injection(
+			[
+				'of' => 'post_status',
+				'fallback' => [
+					'of' => 'post_title',
+				],
+			]
+		);
 
 		$document->add_control(
 			'hide_title',
@@ -160,8 +164,8 @@ class Post extends Document {
 		);
 
 		$document->end_controls_section();
-    }
-    
+	}
+
 	/**
 	 * @since 2.0.0
 	 * @access public
@@ -169,12 +173,15 @@ class Post extends Document {
 	 * @param Document $document
 	 */
 	public static function register_post_fields_control( $document ) {
-		$document->start_injection( [
-			'of' => 'post_status',
-			'fallback' => [
-				'of' => 'post_title',
-			],
-		] );
+
+		$document->start_injection(
+			[
+				'of' => 'post_status',
+				'fallback' => [
+					'of' => 'post_title',
+				],
+			]
+		);
 
 		if ( post_type_supports( $document->post->post_type, 'excerpt' ) ) {
 			$document->add_control(
@@ -203,9 +210,9 @@ class Post extends Document {
 		}
 
 		$document->end_injection();
-    }
-    
-    /**
+	}
+
+	/**
 	 * @since 2.0.0
 	 * @access public
 	 * @static
@@ -213,7 +220,7 @@ class Post extends Document {
 	 */
 	public static function register_post_css( $document ) {
 
-        $document->start_controls_section(
+		$document->start_controls_section(
 			'_section_custom_css',
 			[
 				'label' => __( 'Custom CSS', 'qazana' ),
@@ -241,8 +248,7 @@ class Post extends Document {
 		);
 
 		$document->end_controls_section();
-
-    }
+	}
 
 	/**
 	 * @since 2.0.0

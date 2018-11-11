@@ -124,7 +124,9 @@ class Global_CSS extends Base {
 
 			foreach ( $scheme_controls as $control ) {
 				$this->add_control_rules(
-					$control, $widget->get_controls(), function( $control ) use ( $qazana ) {
+					$control,
+					$widget->get_controls(),
+					function( $control ) use ( $qazana ) {
 						$scheme_value = $qazana->schemes_manager->get_scheme_value( $control['scheme']['type'], $control['scheme']['value'] );
 
 						if ( empty( $scheme_value ) ) {
@@ -140,7 +142,13 @@ class Global_CSS extends Base {
 						}
 
 						return $scheme_value;
-					}, [ '{{WRAPPER}}' ], [ '.qazana-widget-' . $widget->get_name() ]
+					},
+					[
+						'{{WRAPPER}}',
+					],
+					[
+						'.qazana-widget-' . $widget->get_name(),
+					]
 				);
 			}
 		}
