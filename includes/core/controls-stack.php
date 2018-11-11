@@ -2031,7 +2031,7 @@ abstract class Controls_Stack extends Base_Object {
 			}
 		}
 
-		return $this->active_settings ? self::get_items( $this->active_settings, $setting_key ) : null;
+        return $this->get_settings( $setting_key );
 	}
 
 	public function get_item_responsive_settings( $setting_key, $settings ) {

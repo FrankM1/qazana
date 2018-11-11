@@ -62,9 +62,9 @@ ElementsHandler = function( $ ) {
 
 		runElementsHandlers();
     };
-    
+
     this.reInit = function( $scope ) {
-        
+
         var $elements = $scope.find( '.qazana-element' );
 
         $elements.each( function() {
