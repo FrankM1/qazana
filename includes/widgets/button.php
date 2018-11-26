@@ -274,7 +274,7 @@ class Widget_Button extends Widget_Base {
 				'default' => [
 					'size' => 20
 				],
-                		'range' => [
+                'range' => [
 					'px' => [
 						'max' => 50,
 					],
