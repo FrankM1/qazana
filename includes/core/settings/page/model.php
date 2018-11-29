@@ -144,8 +144,8 @@ class Model extends Base {
 			/**
 			 * @var \Qazana\Modules\PageTemplates\Module $page_templates_module
 			 */
-			$page_templates_module = qazana()->modules_manager->get_modules( 'page-templates' );
-			$is_qazana_template = ! ! $page_templates_module->get_template_path( $element_data['settings']['template'] );
+			$page_templates_extension = qazana()->extensions_manager->get_extension( 'page_templates' );
+			$is_qazana_template = ! !$page_templates_extension->get_template_path( $element_data['settings']['template'] );
 
 			if ( ! $is_qazana_template ) {
 				unset( $element_data['settings']['template'] );
