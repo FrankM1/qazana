@@ -1,16 +1,7 @@
 .qazana-counter .qazana-counter-number-wrapper {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   color: #222;
   text-align: center;
   font-weight: 600;
@@ -18,17 +9,11 @@
   line-height: 1; }
 
 .qazana-counter .qazana-counter-number-prefix {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   text-align: right; }
 
 .qazana-counter .qazana-counter-number-suffix {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   text-align: left; }
 
 .qazana-counter .qazana-counter-title {
@@ -44,4 +29,5 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5; }
+
 /*# sourceMappingURL=style-rtl.css.map */

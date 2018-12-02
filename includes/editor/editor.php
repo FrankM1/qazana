@@ -1120,6 +1120,7 @@ class Editor {
 			'library-layout',
 			'templates',
 			'navigator',
+			'document-conditions',
 		];
 
 		foreach ( $template_names as $template_name ) {

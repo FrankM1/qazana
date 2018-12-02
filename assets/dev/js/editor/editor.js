@@ -24,7 +24,7 @@ const App = Marionette.Application.extend( {
 	ajax: require( 'qazana-editor-utils/ajax' ),
 	conditions: require( 'qazana-editor-utils/conditions' ),
 	hotKeys: require( 'qazana-utils/hot-keys' ),
-	history: require('qazana-extensions/history/assets/js/module'),
+	history: require( 'qazana-extensions/history/assets/js/module' ),
 
 	channels: {
 		editor: Backbone.Radio.channel( 'QAZANA:editor' ),
@@ -257,7 +257,8 @@ const App = Marionette.Application.extend( {
 			DynamicTags = require( 'qazana-dynamic-tags/manager' ),
 			Settings = require( 'qazana-editor/components/settings/settings' ),
 			Saver = require( 'qazana-editor/components/saver/manager' ),
-			Notifications = require( 'qazana-editor-utils/notifications' );
+			Notifications = require( 'qazana-editor-utils/notifications' ),
+			DocumentConditions = require( './components/document-conditions/manager' );
 
 		this.hooks = new EventManager();
 
@@ -270,6 +271,8 @@ const App = Marionette.Application.extend( {
 		this.templates.init();
 
 		this.initDialogsManager();
+
+		this.documentConditions = new DocumentConditions();
 
 		this.notifications = new Notifications();
 

@@ -341,6 +341,12 @@ class Plugin {
 
 		require_once $this->includes_dir . 'core/debug/inspector.php';
 
+		require_once $this->includes_dir . 'core/document-conditions/conditions/conditions.php';
+		require_once $this->includes_dir . 'core/document-conditions/conditions/controls.php';
+		require_once $this->includes_dir . 'core/document-conditions/conditions/db.php';
+		require_once $this->includes_dir . 'core/document-conditions/conditions/instance.php';
+		require_once $this->includes_dir . 'core/document-conditions/manager.php';
+
 		require_once $this->includes_dir . 'core/document-types/post.php';
 
 		require_once $this->includes_dir . 'core/files/manager.php';
@@ -447,10 +453,12 @@ class Plugin {
 
 		Core\Settings\Manager::run();
 
-		$this->debugger           = new Core\Debug\Inspector();
-		$this->ajax               = new Core\Managers\Ajax();
-		$this->documents          = new Core\Managers\Documents();
-		$this->dynamic_tags       = new Core\DynamicTags\Manager();
+		$this->debugger            = new Core\Debug\Inspector();
+		$this->ajax                = new Core\Managers\Ajax();
+		$this->documents           = new Core\Managers\Documents();
+		$this->dynamic_tags        = new Core\DynamicTags\Manager();
+		$this->document_conditions = new Core\DocumentConditions\Manager();
+
 		$this->db                 = new DB();
 		// TODO Remove deprecated handle - $this->posts_css_manager
 		$this->files_manager      = $this->posts_css_manager = new Core\Files\Manager();
