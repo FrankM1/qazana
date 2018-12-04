@@ -3902,7 +3902,7 @@ label.qazana-template-library-order-label {
   width: 260px;
   background-color: #EBEBEB;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
-  z-index: 80; }
+  z-index: 9999; }
   .qazana-tag-settings-popup:before {
     content: '';
     position: absolute;
