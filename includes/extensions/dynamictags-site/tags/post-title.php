@@ -26,6 +26,6 @@ class Post_Title extends Tag {
 	}
 
 	public function render() {
-		echo wp_kses_post( get_the_title() );
+		the_title();
 	}
 }

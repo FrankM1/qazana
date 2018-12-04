@@ -1306,7 +1306,7 @@
     position: fixed;
     overflow: hidden;
     border-radius: 3px;
-    z-index: 9998; }
+    z-index: 10001; }
     .pen-menu:after {
       top: 100%;
       content: '';
@@ -1400,7 +1400,7 @@
   background-color: #fff;
   border: 1px solid #a0a5aa;
   border-radius: 3px;
-  z-index: 80; }
+  z-index: 9999; }
   .qazana-tags-list__group-title {
     color: #161616;
     font-weight: bold;

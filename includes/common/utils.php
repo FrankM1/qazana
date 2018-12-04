@@ -691,4 +691,122 @@ class Utils {
 
 		return $url;
 	}
+
+	public static function get_page_title( $include_context = true ) {
+		$title = '';
+
+		if ( is_singular() ) {
+			/* translators: %s: Search term. */
+			$title = get_the_title();
+
+			if ( $include_context ) {
+				$post_type_obj = get_post_type_object( get_post_type() );
+				$title = sprintf( '%s: %s', $post_type_obj->labels->singular_name, $title );
+			}
+		} elseif ( is_search() ) {
+			/* translators: %s: Search term. */
+			$title = sprintf( __( 'Search Results for: %s', 'qazana' ), get_search_query() );
+
+			if ( get_query_var( 'paged' ) ) {
+				/* translators: %s is the page number. */
+				$title .= sprintf( __( '&nbsp;&ndash; Page %s', 'qazana' ), get_query_var( 'paged' ) );
+			}
+		} elseif ( is_category() ) {
+			$title = single_cat_title( '', false );
+
+			if ( $include_context ) {
+				/* translators: Category archive title. 1: Category name */
+				$title = sprintf( __( 'Category: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_tag() ) {
+			$title = single_tag_title( '', false );
+			if ( $include_context ) {
+				/* translators: Tag archive title. 1: Tag name */
+				$title = sprintf( __( 'Tag: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_author() ) {
+			$title = '<span class="vcard">' . get_the_author() . '</span>';
+
+			if ( $include_context ) {
+				/* translators: Author archive title. 1: Author name */
+				$title = sprintf( __( 'Author: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_year() ) {
+			$title = get_the_date( _x( 'Y', 'yearly archives date format', 'qazana' ) );
+
+			if ( $include_context ) {
+				/* translators: Yearly archive title. 1: Year */
+				$title = sprintf( __( 'Year: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_month() ) {
+			$title = get_the_date( _x( 'F Y', 'monthly archives date format', 'qazana' ) );
+
+			if ( $include_context ) {
+				/* translators: Monthly archive title. 1: Month name and year */
+				$title = sprintf( __( 'Month: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_day() ) {
+			$title = get_the_date( _x( 'F j, Y', 'daily archives date format', 'qazana' ) );
+
+			if ( $include_context ) {
+				/* translators: Daily archive title. 1: Date */
+				$title = sprintf( __( 'Day: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_tax( 'post_format' ) ) {
+			if ( is_tax( 'post_format', 'post-format-aside' ) ) {
+				$title = _x( 'Asides', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
+				$title = _x( 'Galleries', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
+				$title = _x( 'Images', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
+				$title = _x( 'Videos', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
+				$title = _x( 'Quotes', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
+				$title = _x( 'Links', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
+				$title = _x( 'Statuses', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
+				$title = _x( 'Audio', 'post format archive title', 'qazana' );
+			} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
+				$title = _x( 'Chats', 'post format archive title', 'qazana' );
+			}
+		} elseif ( is_post_type_archive() ) {
+			$title = post_type_archive_title( '', false );
+
+			if ( $include_context ) {
+				/* translators: Post type archive title. 1: Post type name */
+				$title = sprintf( __( 'Archives: %s', 'qazana' ), $title );
+			}
+		} elseif ( is_tax() ) {
+			$title = single_term_title( '', false );
+
+			if ( $include_context ) {
+				$tax = get_taxonomy( get_queried_object()->taxonomy );
+				/* translators: Taxonomy term archive title. 1: Taxonomy singular name, 2: Current taxonomy term */
+				$title = sprintf( __( '%1$s: %2$s', 'qazana' ), $tax->labels->singular_name, $title );
+			}
+		} // End if().
+
+		/**
+		 * The archive title.
+		 *
+		 * Filters the archive title.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $title Archive title to be displayed.
+		 */
+		$title = apply_filters( 'qazana/utils/get_the_archive_title', $title );
+
+		return $title;
+	}
+
+	/**
+	 * @deprecated 2.0
+	 */
+	public static function get_the_archive_title( $include_context = true ) {
+		return self::get_page_title();
+	}
 }
