@@ -5,7 +5,11 @@ module.exports = Module.extend( {
     onInit: function() {
         var self = this;
 
-        this.config = qazana.config.documentConditions;
+		this.config = qazana.config.documentConditions;
+
+		if ( ! this.config ) {
+			return;
+		}
 
 		qazana.addControlView( 'Conditions_repeater', require( './conditions/repeater-control' ) );
 
@@ -114,6 +118,11 @@ module.exports = Module.extend( {
 	},
 
 	onQazanaPreviewLoaded: function() {
+
+		if ( ! this.config ) {
+			return;
+		}
+
 		qazana.getPanelView().on( 'set:page:page_settings', this.updatePreviewIdOptions );
 
 		qazana.settings.page.model.on( 'change', this.onPageSettingsChange.bind( this ) );
