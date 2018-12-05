@@ -9,7 +9,8 @@
 	width: 100%;
 	line-height: 0;
 	direction: ltr; // Fix for RTL pages
-
+	z-index: 0;
+	
 	&-top {
 		top: -1px;
 	}

@@ -29,18 +29,6 @@ class Frontend {
 	const THE_CONTENT_FILTER_PRIORITY = 9;
 
 	/**
-	 * [$scripts description]
-	 * @var array
-	 */
-	private $element_stylesheets = array();
-
-	/**
-	 * [$scripts description]
-	 * @var array
-	 */
-	private $element_scripts = array();
-
-	/**
 	 * Post ID.
 	 *
 	 * Holds the ID of the current post.
@@ -149,13 +137,9 @@ class Frontend {
 
 		$this->post_id = get_the_ID();
 
-		// Add element script and css dependencies
-		$this->get_dependencies( get_the_ID() );
-
 		if ( is_singular() && qazana()->db->is_built_with_qazana( $this->post_id ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_widget_scripts' ], 999 );
-			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_widget_styles' ], 999 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_dependencies' ] );
 		}
 
 		// Priority 7 to allow google fonts in header template to load in <head> tag
@@ -178,131 +162,14 @@ class Frontend {
 	}
 
 	/**
-	 * @param array $data a set of elements
-	 * @param string $method (on_export|on_import)
+	 * Generate dependencies for elements
 	 *
-	 * @return mixed
+	 * @since 2.1.0
 	 */
-	public function get_dependencies( $post_id ) {
-
-		if ( $this->_is_excerpt ) {
-			return;
-		}
-
-		$data = qazana()->db->get_plain_editor( $post_id );
-		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
-
-		qazana()->db->iterate_data(
-			$data,
-			function( $element ) {
-
-				$element_instance = qazana()->elements_manager->create_element_instance( $element );
-
-				// Exit if the element doesn't exist
-				if ( ! $element_instance ) {
-					return $element;
-				}
-
-				$element_instance->add_element_dependencies();
-
-				// Add skin dependencies.
-				if ( 'widget' === $element['elType'] && $element_instance->get_current_skin() ) {
-
-					$skin = $element_instance->get_current_skin();
-
-					$skin->set_parent( $element_instance ); // Match skins scope
-					$skin->add_element_dependencies();
-
-					if ( ! empty( $skin->get_parent()->_element_stylesheets ) && is_array( $skin->get_parent()->_element_stylesheets ) ) {
-						foreach ( $skin->get_parent()->_element_stylesheets as $key ) {
-							$this->element_stylesheets[] = $key;
-						}
-					}
-
-					if ( ! empty( $skin->get_parent()->_element_scripts ) && is_array( $skin->get_parent()->_element_scripts ) ) {
-						foreach ( $skin->get_parent()->_element_scripts as $key ) {
-							$this->element_scripts[] = $key;
-						}
-					}
-				}
-
-				// Add normal widget dependencies.
-				if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
-					foreach ( $element_instance->_element_stylesheets as $key ) {
-						$this->element_stylesheets[] = $key;
-					}
-				}
-
-				if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
-					foreach ( $element_instance->_element_scripts as $key ) {
-						$this->element_scripts[] = $key;
-					}
-				}
-
-				return $element;
-			}
-		);
-
-	}
-
-	/**
-	 * @param array $data a set of elements
-	 *
-	 * @return mixed
-	 */
-	public function generate_element_instances( $post_id = null ) {
-
-		$post_id = $post_id ? $post_id : get_the_id();
-
-		$data = qazana()->db->get_plain_editor( $post_id );
-		$data = apply_filters( 'qazana/frontend/builder_content_data', $data, $post_id );
-
-		qazana()->db->iterate_data(
-			$data,
-			function( $element ) {
-
-				$element_instance = qazana()->elements_manager->create_element_instance( $element );
-
-				// Exit if the element doesn't exist
-				if ( ! $element_instance ) {
-					return $element;
-				}
-
-				qazana()->elements_manager->add_element_instance( $element_instance );
-
-				return $element;
-			}
-		);
-
-	}
-
-	public function enqueue_widget_scripts() {
-
-		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
-			foreach ( $this->element_scripts as $key ) {
-				wp_enqueue_script( $key );
-			}
-		}
-	}
-
-	public function enqueue_widget_styles() {
-		if ( ! empty( $this->element_stylesheets ) && is_array( $this->element_stylesheets ) ) {
-			foreach ( $this->element_stylesheets as $key ) {
-				wp_enqueue_style( $key );
-			}
-		}
-	}
-
-	protected function _print_elements( $elements_data ) {
-		foreach ( $elements_data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
-
-			if ( ! $element ) {
-				continue;
-			}
-
-			$element->print_element();
-		}
+	public function enqueue_dependencies() {
+		$document = qazana()->documents->get_doc_for_frontend( $this->post_id );
+		$document->get_dependencies();
+		$document->enqueue_dependencies();
 	}
 
 	/**
@@ -1041,11 +908,6 @@ class Frontend {
 
 			return $content;
 		}
-
-		// Add element script and css dependencies.
-		$this->get_dependencies( $post_id );
-		$this->enqueue_widget_scripts();
-		$this->enqueue_widget_styles();
 
 		// Set edit mode as false, so don't render settings and etc. use the $is_edit_mode to indicate if we need the CSS inline
 		$is_edit_mode = $editor->is_edit_mode();

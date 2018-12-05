@@ -703,6 +703,11 @@ class Utils {
 				$post_type_obj = get_post_type_object( get_post_type() );
 				$title = sprintf( '%s: %s', $post_type_obj->labels->singular_name, $title );
 			}
+
+		} elseif ( is_home() ) {
+
+			$title = get_the_title( get_option( 'page_for_posts' ) );
+
 		} elseif ( is_search() ) {
 			/* translators: %s: Search term. */
 			$title = sprintf( __( 'Search Results for: %s', 'qazana' ), get_search_query() );

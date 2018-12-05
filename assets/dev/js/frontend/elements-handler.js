@@ -100,10 +100,10 @@ ElementsHandler = function( $ ) {
 
 		if ( isWidgetType ) {
 			qazanaFrontend.hooks.doAction( 'frontend/element_ready/widget', $scope, $ );
+			qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 		}
 
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementName, $scope, $ );
-		qazanaFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $scope, $ );
 	};
 
 	init();

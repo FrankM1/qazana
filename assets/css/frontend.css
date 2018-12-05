@@ -3142,7 +3142,8 @@ button.swiper-pagination-bullet {
   left: 0;
   width: 100%;
   line-height: 0;
-  direction: ltr; }
+  direction: ltr;
+  z-index: 0; }
   .qazana-shape-top {
     top: -1px; }
   .qazana-shape-bottom {

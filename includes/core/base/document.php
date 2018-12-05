@@ -34,6 +34,20 @@ abstract class Document extends Controls_Stack {
 	private static $properties = [];
 
 	/**
+	 * Store element stylesheets
+	 *
+	 * @var array
+	 */
+	private $element_stylesheets = array();
+
+	/**
+	 * Store element scripts
+	 *
+	 * @var array
+	 */
+	private $element_scripts = array();
+
+	/**
 	 * Document post data.
 	 *
 	 * Holds the document post data.
@@ -639,7 +653,7 @@ abstract class Document extends Controls_Stack {
 		</div>
 		<?php
 	}
-
+	
 	/**
 	 * @since 2.0.0
 	 * @access public
@@ -931,6 +945,86 @@ abstract class Document extends Controls_Stack {
 			}
 
 			$element->print_element();
+		}
+	}
+
+	/**
+	 * @param array $data a set of elements
+	 * @param string $method (on_export|on_import)
+	 *
+	 * @return mixed
+	 */
+	public function get_dependencies( $elements_data = null ) {
+
+		if ( ! $elements_data ) {
+			$elements_data = $this->get_elements_data();
+		}
+
+		qazana()->db->iterate_data(
+			$elements_data,
+			function( $element ) {
+
+				$element_instance = qazana()->elements_manager->create_element_instance( $element );
+
+				// Exit if the element doesn't exist
+				if ( ! $element_instance ) {
+					return $element;
+				}
+
+				$element_instance->add_element_dependencies();
+
+				// Add skin dependencies.
+				if ( 'widget' === $element['elType'] && $element_instance->get_current_skin() ) {
+
+					$skin = $element_instance->get_current_skin();
+
+					$skin->set_parent( $element_instance ); // Match skins scope
+					$skin->add_element_dependencies();
+
+					if ( ! empty( $skin->get_parent()->_element_stylesheets ) && is_array( $skin->get_parent()->_element_stylesheets ) ) {
+						foreach ( $skin->get_parent()->_element_stylesheets as $key ) {
+							$this->element_stylesheets[] = $key;
+						}
+					}
+
+					if ( ! empty( $skin->get_parent()->_element_scripts ) && is_array( $skin->get_parent()->_element_scripts ) ) {
+						foreach ( $skin->get_parent()->_element_scripts as $key ) {
+							$this->element_scripts[] = $key;
+						}
+					}
+				}
+
+				// Add normal widget dependencies.
+				if ( ! empty( $element_instance->_element_stylesheets ) && is_array( $element_instance->_element_stylesheets ) ) {
+					foreach ( $element_instance->_element_stylesheets as $key ) {
+						$this->element_stylesheets[] = $key;
+					}
+				}
+
+				if ( ! empty( $element_instance->_element_scripts ) && is_array( $element_instance->_element_scripts ) ) {
+					foreach ( $element_instance->_element_scripts as $key ) {
+						$this->element_scripts[] = $key;
+					}
+				}
+
+				return $element;
+			}
+		);
+
+	}
+
+	public function enqueue_dependencies() {
+
+		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
+			foreach ( $this->element_scripts as $key ) {
+				wp_enqueue_script( $key );
+			}
+		}
+
+		if ( ! empty( $this->element_stylesheets ) && is_array( $this->element_stylesheets ) ) {
+			foreach ( $this->element_stylesheets as $key ) {
+				wp_enqueue_style( $key );
+			}
 		}
 	}
 }
