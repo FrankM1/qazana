@@ -644,7 +644,7 @@ abstract class Document extends Controls_Stack {
 			$elements_data = $this->get_elements_data();
 		}
 		?>
-		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>">
+		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>" data-document-id="<?php echo esc_attr( $this->post->ID ); ?>">
 			<div class="qazana-inner">
 				<div class="qazana-section-wrap">
 					<?php $this->print_elements( $elements_data ); ?>
