@@ -16,7 +16,7 @@
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 9999;
+  z-index: 10001;
   user-select: none; }
   .dialog-type-lightbox .dialog-widget-content {
     margin: auto;
@@ -3142,7 +3142,8 @@ button.swiper-pagination-bullet {
   left: 0;
   width: 100%;
   line-height: 0;
-  direction: ltr; }
+  direction: ltr;
+  z-index: 0; }
   .qazana-shape-top {
     top: -1px; }
   .qazana-shape-bottom {

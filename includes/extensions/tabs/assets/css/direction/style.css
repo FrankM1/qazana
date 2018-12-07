@@ -1,6 +1,8 @@
 .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs-wrapper {
   width: 25%;
-  flex-shrink: 0; }
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
 
 .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.qazana-active {
   border-right-style: none; }
@@ -11,7 +13,9 @@
     border-right-style: solid; }
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.qazana-active:before {
     top: 0;
-    transform: translateY(-100%); }
+    -webkit-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+            transform: translateY(-100%); }
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.qazana-active:after {
     top: 100%; }
 
@@ -87,9 +91,15 @@
 
 @media (min-width: 768px) {
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex; }
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs-content-wrapper {
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
     border-style: solid;
     border-left-style: none; }
   .qazana-widget-tabs.qazana-tabs-view-horizontal .qazana-tab-content {
@@ -97,5 +107,4 @@
     border-top-style: none; }
   .qazana-tabs .qazana-tab-mobile-title {
     display: none; } }
-
 /*# sourceMappingURL=style.css.map */
