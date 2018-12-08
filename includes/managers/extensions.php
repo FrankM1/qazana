@@ -320,13 +320,8 @@ final class Manager {
 
 				$this->extensions[ $extension_id ] = $extension_class::instance();
 
-				if ( $skins = $this->get_skins( $extension_id ) ) {
-					$this->load_skins( $extension_id, $skins );
-				}
-
-				if ( $widgets = $this->get_widgets( $extension_id ) ) {
-					$this->register_widgets( $extension_id, $widgets );
-				}
+				$this->load_skins( $extension_id );
+				$this->register_widgets( $extension_id );
 
 				/**
 				 * Action 'qazana/extensions/dependency/loaded/{$extension_id}'
@@ -361,7 +356,15 @@ final class Manager {
 	 * @since       1.0.0
 	 * @return      void
 	 */
-	private function register_widgets( $extension, $widgets ) {
+	private function register_widgets( $extension_id, $widgets = [] ) {
+
+		if ( empty( $widgets ) ) {
+			$widgets = $this->get_widgets( $extension_id );
+		}
+
+		if ( empty( $widgets ) ) {
+			return;
+		}
 
 		/**
 		 * action 'qazana/extensions/before'
@@ -369,10 +372,6 @@ final class Manager {
 		 * @param object $this Qazana
 		 */
 		do_action( 'qazana/extensions/widgets/before', $this );
-
-		if ( empty( $widgets ) ) {
-			return;
-		}
 
 		foreach ( $widgets as $widget ) {
 
@@ -384,7 +383,7 @@ final class Manager {
 				)
 			);
 
-			if ( $file = $this->loader->locate_widget( "{$extension}/widgets/{$filename}.php", false ) ) {
+			if ( $file = $this->loader->locate_widget( "{$extension_id}/widgets/{$filename}.php", false ) ) {
 				require_once $file;
 			}
 		}
@@ -404,7 +403,13 @@ final class Manager {
 	 * @since       1.0.0
 	 * @return      void
 	 */
-	private function load_skins( $extension, $skins ) {
+	private function load_skins( $extension ) {
+
+		$skins = $this->get_skins( $extension );
+
+		if ( empty( $skins ) ) {
+			return;
+		}
 
 		/**
 		 * action 'qazana/extensions/before'
@@ -412,10 +417,6 @@ final class Manager {
 		 * @param object $this Qazana
 		 */
 		do_action( 'qazana/extensions/skins/before', $this );
-
-		if ( empty( $skins ) ) {
-			return;
-		}
 
 		foreach ( $skins as $skin ) {
 
@@ -476,11 +477,7 @@ final class Manager {
 	 */
 	public function load_extension_widgets( $extension_id ) {
 
-		$skins = $this->get_skins( $extension_id );
-
-		if ( ! empty( $skins ) ) {
-			$this->load_skins( $extension_id, $skins );
-		}
+		$this->load_skins( $extension_id );
 
 		$widgets = $this->get_widgets( $extension_id );
 
