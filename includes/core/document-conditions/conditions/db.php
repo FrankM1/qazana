@@ -138,6 +138,10 @@ class DB {
 
 		$location = $document->get_location();
 
+		if ( empty( $this->condition_instances ) ) {
+			$this->condition_instances = [];
+		}
+
 		if ( $location ) {
 			if ( ! isset( $this->condition_instances[ $location ] ) ) {
 				$this->condition_instances[ $location ] = [];
@@ -206,9 +210,9 @@ class DB {
 		$this->save();
 
 		return $this;
-    }
+	}
 
-    /**
+	/**
 	 * @access public
 	 *
 	 * @param Ajax_Manager $ajax_manager
