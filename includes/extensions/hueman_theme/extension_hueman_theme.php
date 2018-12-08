@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Hueman_Theme extends Base {
 
-	public function get_config() {
+	public function register() {
         return [
         	'title'              => __( 'Hueman Theme Compatibility', 'qazana' ),
         	'name'               => 'hueman_theme',

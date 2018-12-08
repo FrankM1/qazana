@@ -32,7 +32,7 @@ class Library extends Base {
 		new Shortcode();
 	}
 
-    public function get_config() {
+    public function register() {
         return [
         	'title' => __( 'Library', 'qazana' ),
             'name' => 'library',

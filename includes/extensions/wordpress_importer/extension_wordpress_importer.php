@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Wordpress_Importer extends Base {
 
-	public function get_config() {
+	public function register() {
 
         return [
         	'title'              => __( 'Wordpress importer', 'qazana' ),

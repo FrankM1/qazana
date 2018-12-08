@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Ninja_Forms extends Base {
 
-	public function get_config() {
+	public function register() {
 
         $ninja_exists = class_exists( '\Ninja_Forms' );
 

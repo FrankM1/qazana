@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Autoptimize extends Base {
 
-	public function get_config() {
+	public function register() {
 
         $autoptimize_minify_exist = function_exists( '\autoptimize_filter_noptimize' );
 

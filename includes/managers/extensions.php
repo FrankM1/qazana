@@ -281,19 +281,11 @@ final class Manager {
 	 * @return      void
 	 */
 	public function load_extension_dependencies() {
-
 		$extensions = $this->get_extensions();
-
-		if ( empty( $extensions ) ) {
-			return;
-		}
-
 		foreach ( $extensions as $extension_id => $extension_instance ) {
-			if ( ! empty( $extension_instance->get_config()['dependencies'] ) ) {
-				$dependencies = $extension_instance->get_config()['dependencies'];
-				foreach ( $dependencies as $extension_id ) {
-					$this->locate_dependency( $extension_id );
-				}
+			$dependencies = $this->get_extension_data( $extension_id )['dependencies'];
+			foreach ( $dependencies as $extension_id ) {
+				$this->locate_dependency( $extension_id );
 			}
 		}
 	}
@@ -304,13 +296,13 @@ final class Manager {
 	 * @since       1.3.0
 	 * @return      void
 	 */
-	public function locate_dependency( $folder ) {
-		if ( ! is_object( $this->get_extension( $folder ) ) ) {
+	public function locate_dependency( $extension_id ) {
+		if ( ! is_object( $this->get_extension( $extension_id ) ) ) {
 			foreach ( $this->loader->merge_files_stack_locations() as $path ) {
 
 				$path = trailingslashit( $path );
 
-				$extension_class = 'Qazana\Extensions\\' . $this->dashes_to_camelcase( $folder );
+				$extension_class = 'Qazana\Extensions\\' . $this->dashes_to_camelcase( $extension_id );
 
 				/**
 				 * Filter 'qazana/extension/{folder}'
@@ -318,7 +310,7 @@ final class Manager {
 				 * @param string                    extension class file path
 				 * @param string $extension_class   extension class name
 				 */
-				$class_file = "$path$folder/extension_{$folder}.php";
+				$class_file = "$path$extension_id/extension_{$extension_id}.php";
 
 				if ( ! file_exists( $class_file ) || class_exists( $extension_class ) ) {
 					continue;
@@ -326,18 +318,22 @@ final class Manager {
 
 				require_once $class_file;
 
-				if ( class_exists( $extension_class ) ) {
+				$this->extensions[ $extension_id ] = $extension_class::instance();
 
-					$this->extensions[ $folder ] = $extension_class::instance();
-					$this->load_extension_widgets( $folder );
-
-					/**
-					 * Action 'qazana/extensions/before'
-					 *
-					 * @param object $this Qazana
-					 */
-					do_action( "qazana/extensions/registered/{$folder}", $folder, $this );
+				if ( $skins = $this->get_skins( $extension_id ) ) {
+					$this->load_skins( $extension_id, $skins );
 				}
+
+				if ( $widgets = $this->get_widgets( $extension_id ) ) {
+					$this->register_widgets( $extension_id, $widgets );
+				}
+
+				/**
+				 * Action 'qazana/extensions/dependency/loaded/{$extension_id}'
+				 *
+				 * @param object $this Qazana
+				 */
+				do_action( "qazana/extensions/dependency/loaded/{$extension_id}", $extension_id, $this );
 			}
 		}
 	}
@@ -480,8 +476,6 @@ final class Manager {
 	 */
 	public function load_extension_widgets( $extension_id ) {
 
-		$widget_manager = qazana()->widgets_manager;
-
 		$skins = $this->get_skins( $extension_id );
 
 		if ( ! empty( $skins ) ) {
@@ -505,7 +499,7 @@ final class Manager {
 					continue;
 				}
 
-				$widget_manager->register_widget_type( new $class_name() );
+				qazana()->widgets_manager->register_widget_type( new $class_name() );
 			}
 		}
 
@@ -602,7 +596,11 @@ final class Manager {
 			wp_die( get_called_class() . '::' . __FUNCTION__ . ': Extension is not loaded or does not exist. Extension id - `' . $extension_id .'`.' );
 		}
 
-		return isset( $extensions[ $extension_id ] ) && is_object( $extensions[ $extension_id ] ) ? $extensions[ $extension_id ]->get_config() : false;
+		if ( isset( $extensions[ $extension_id ] ) && is_object( $extensions[ $extension_id ] ) ) {
+			return $extensions[ $extension_id ]->get_config();
+		}
+
+		return false;
 
 	}
 

@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Bwp_Minify extends Base {
 
-	public function get_config() {
+	public function register() {
 
         $bwp_minify_exist = function_exists( '\bwp_minify_is_loadable' );
 

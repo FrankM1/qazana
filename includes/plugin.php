@@ -210,9 +210,9 @@ class Plugin {
 		$this->file = QAZANA__FILE__;
 		$this->slug = 'qazana';
 
-		$this->basename     = apply_filters( 'qazana_plugin_basename',    plugin_basename( $this->file ) );
-		$this->plugin_dir   = apply_filters( 'qazana_plugin_dir_path',    plugin_dir_path( $this->file ) );
-		$this->plugin_url   = apply_filters( 'qazana_plugin_dir_url',     plugins_url( '/', $this->file ) );
+		$this->basename     = apply_filters( 'qazana_plugin_basename', plugin_basename( $this->file ) );
+		$this->plugin_dir   = apply_filters( 'qazana_plugin_dir_path', plugin_dir_path( $this->file ) );
+		$this->plugin_url   = apply_filters( 'qazana_plugin_dir_url', plugins_url( '/', $this->file ) );
 
 		// core assets
 		$this->core_assets_dir = apply_filters( 'qazana_core_assets_dir', trailingslashit( $this->plugin_dir . 'assets' ) );
@@ -223,7 +223,7 @@ class Plugin {
 		$this->includes_url = apply_filters( 'qazana_includes_url', trailingslashit( $this->plugin_url . 'includes' ) );
 
 		// Languages
-		$this->lang_dir = apply_filters( 'qazana_lang_dir',     trailingslashit( $this->plugin_dir . 'languages' ) );
+		$this->lang_dir = apply_filters( 'qazana_lang_dir', trailingslashit( $this->plugin_dir . 'languages' ) );
 
 		// check qazana first
 		$this->plugin_widget_locations = [
@@ -235,15 +235,15 @@ class Plugin {
 		);
 
 		// Then check parent themes second
-		$this->theme_paths = array( 
-			'path' => get_stylesheet_directory(), 
-			'uri' => get_stylesheet_directory_uri()
+		$this->theme_paths = array(
+			'path' => get_stylesheet_directory(),
+			'uri' => get_stylesheet_directory_uri(),
 		);
 
 		// Then check child theme
-		$this->theme_paths_child = array( 
-			'path' => get_template_directory(), 
-			'uri' => get_template_directory_uri()
+		$this->theme_paths_child = array(
+			'path' => get_template_directory(),
+			'uri' => get_template_directory_uri(),
 		);
 
 		$this->theme_widget_locations = [
@@ -286,7 +286,7 @@ class Plugin {
 			'init',
 			'init_classes',
 			'load_textdomain',
-			'register_extensions'
+			'register_extensions',
 		];
 
 		// Add the actions
@@ -305,7 +305,7 @@ class Plugin {
 	public function init() {
 		do_action( 'qazana/init' );
 
-		$cpt_support = get_option( 'qazana_cpt_support', ['page', 'post' ] );
+		$cpt_support = get_option( 'qazana_cpt_support', [ 'page', 'post' ] );
 
 		if ( empty( $cpt_support ) ) {
 			$cpt_support = [ 'page', 'post' ];
@@ -461,7 +461,8 @@ class Plugin {
 
 		$this->db                 = new DB();
 		// TODO Remove deprecated handle - $this->posts_css_manager
-		$this->files_manager      = $this->posts_css_manager = new Core\Files\Manager();
+		$this->files_manager      = new Core\Files\Manager();
+		$this->posts_css_manager  = $this->files_manager;
 		$this->widgets_manager    = new Widgets_Manager();
 		$this->icons_manager      = new Icons_Manager();
 		$this->role_manager       = new Core\Roles\Manager();
@@ -498,7 +499,7 @@ class Plugin {
 
 		if ( version_compare( $wp_version, '3.0.0', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( printf( __( 'Sorry, but your version of WordPress, <strong>%s</strong>, does not meet the Qazana\'s required version of <strong>3.3.1</strong> to run properly. The plugin has been deactivated. <a href="%s">Click here to return to the Dashboard</a>', 'qazana' ), $wp_version, admin_url() ) );
+			wp_die( printf( __( 'Sorry, but your version of WordPress, <strong>%$1s</strong>, does not meet the Qazana\'s required version of <strong>3.3.1</strong> to run properly. The plugin has been deactivated. <a href="%$2s">Click here to return to the Dashboard</a>', 'qazana' ), $wp_version, admin_url() ) );
 		}
 	}
 

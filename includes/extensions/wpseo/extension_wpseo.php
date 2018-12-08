@@ -5,7 +5,7 @@ use Qazana\Template_Library;
 
 class WPSEO extends Base {
 
-	public function get_config() {
+	public function register() {
 
         $wpseo_exists = class_exists( '\wpseo_sitemaps_supported_post_types' );
 

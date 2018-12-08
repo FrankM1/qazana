@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class NextGen_Gallery extends Base {
 
-	public function get_config() {
+	public function register() {
         
         $NextGen_exist = defined( 'NGG_PLUGIN_VERSION' );
 

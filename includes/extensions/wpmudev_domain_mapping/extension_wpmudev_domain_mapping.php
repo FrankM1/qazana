@@ -3,7 +3,7 @@ namespace Qazana\Extensions;
 
 class Wpmudev_Domain_Mapping extends Base {
 
-	public function get_config() {
+	public function register() {
 
         $domain_mapping_exist = class_exists( 'domain_map' );
 

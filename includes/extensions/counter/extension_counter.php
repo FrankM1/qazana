@@ -5,7 +5,7 @@ use Qazana\Utils;
 
 class Counter extends Base {
 
-	public function get_config() {
+	public function register() {
 
         return [
         	'title' => __( 'Counter', 'qazana' ),

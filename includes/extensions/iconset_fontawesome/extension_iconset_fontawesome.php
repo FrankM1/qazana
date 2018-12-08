@@ -5,7 +5,7 @@ use Qazana\Utils;
 
 class Iconset_FontAwesome extends Base {
 
-	public function get_config() {
+	public function register() {
         return [
         	'title' => __( 'Fontawesome iconset', 'qazana' ),
             'name' => 'iconset_fontawesome',
