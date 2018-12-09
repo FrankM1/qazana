@@ -127,7 +127,7 @@ module.exports = Module.extend( {
 
 		qazana.settings.page.model.on( 'change', this.onPageSettingsChange.bind( this ) );
 
-		qazana.channels.editor.on( 'qazanaSiteHero:ApplyPreview', this.onApplyPreview.bind( this ) );
+		qazana.channels.editor.on( 'qazanaDocumentConditions:ApplyPreview', this.onApplyPreview.bind( this ) );
 
 		// Scroll to Editor. Timeout according to preview resize css animation duration.
 		setTimeout( function() {

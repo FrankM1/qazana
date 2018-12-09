@@ -653,7 +653,7 @@ abstract class Document extends Controls_Stack {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * @since 2.0.0
 	 * @access public

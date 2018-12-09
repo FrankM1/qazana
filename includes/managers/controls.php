@@ -142,10 +142,10 @@ class Controls_Manager {
 	 */
 	const CHOOSE = 'choose';
 
-    /**
-     * Choose image control.
-     */
-    const CHOOSE_IMAGE = 'choose_image';
+	/**
+	 * Choose image control.
+	 */
+	const CHOOSE_IMAGE = 'choose_image';
 
 	/**
 	 * WYSIWYG control.
@@ -215,12 +215,13 @@ class Controls_Manager {
 	/**
 	 * Text shadow control.
 	 */
-    const TEXT_SHADOW = 'text_shadow';
-    const ANIMATION = 'animation_in';
+	const TEXT_SHADOW = 'text_shadow';
+	const ANIMATION = 'animation_in';
 	const ANIMATION_IN = 'animation_in';
-    const ANIMATION_OUT = 'animation_out';
-    const CHECKBOX = 'checkbox';
+	const ANIMATION_OUT = 'animation_out';
+	const CHECKBOX = 'checkbox';
 	const RADIO = 'radio';
+
 	/**
 	 * Order control.
 	 *
