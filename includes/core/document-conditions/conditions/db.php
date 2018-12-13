@@ -132,15 +132,15 @@ class DB {
 	 */
 	public function add( Document $document, array $conditions ) {
 
-		if ( ! method_exists( $document, 'get_location' ) ) {
-			return;
-		}
-
-		$location = $document->get_location();
-
 		if ( empty( $this->condition_instances ) ) {
 			$this->condition_instances = [];
 		}
+
+		if ( ! method_exists( $document, 'get_location' ) ) {
+			return $this;
+		}
+
+		$location = $document->get_location();
 
 		if ( $location ) {
 			if ( ! isset( $this->condition_instances[ $location ] ) ) {
@@ -190,15 +190,20 @@ class DB {
 		return $this;
 	}
 
+	public function clear() {
+		$this->condition_instances = [];
+		return $this;
+	}
+
 	public function regenerate_templates_conditions() {
 
-		$this->refresh();
+		$this->clear();
 
 		$query = new \WP_Query( [
 			'posts_per_page' => -1,
-			'post_type' => Source_Local::CPT,
-			'fields' => 'ids',
-			'meta_key' => self::META_OPTION_NAME,
+			'post_type'      => Source_Local::CPT,
+			'fields'         => 'ids',
+			'meta_key'       => self::META_OPTION_NAME,
 		] );
 
 		foreach ( $query->posts as $post_id ) {
@@ -224,7 +229,7 @@ class DB {
 		}
 	}
 
-    public function save_conditions( $post_id, $conditions ) {
+	public function save_conditions( $post_id, $conditions ) {
 		$conditions_to_save = [];
 
 		foreach ( $conditions as $condition ) {
@@ -242,7 +247,7 @@ class DB {
 		return $this->regenerate_templates_conditions();
 	}
 
-    public function ajax_check_conditions_conflicts( $request ) {
+	public function ajax_check_conditions_conflicts( $request ) {
 		$post_id = $request['editor_post_id'];
 		$condition = $request['condition'];
 
