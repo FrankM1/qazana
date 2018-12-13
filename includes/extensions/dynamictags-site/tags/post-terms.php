@@ -66,6 +66,14 @@ class Post_Terms extends Tag {
 		);
 
 		$this->add_control(
+			'limit',
+			[
+				'label'   => __( 'Limit', 'qazana' ),
+				'type'    => Controls_Manager::NUMBER,
+			]
+		);
+
+		$this->add_control(
 			'separator',
 			[
 				'label'   => __( 'Separator', 'qazana' ),
@@ -75,10 +83,36 @@ class Post_Terms extends Tag {
 		);
 	}
 
+	/**
+	 * Limit terms
+	 */
+	function limit_terms( $terms ) {
+		$settings = $this->get_settings();
+		$length = intval( $settings['limit'] );
+
+		if ( ! $length ) {
+			return $terms;
+		}
+
+		// Slice the terms array
+		if ( is_array( $terms ) && count( $terms ) > $length ) {
+			$terms = array_slice( $terms, $offset = 0, $length );
+		}
+
+		return $terms;
+	}
+
+
 	public function render() {
 		$settings = $this->get_settings();
 
+		// Add filter
+		add_filter( 'get_the_terms', [ $this, 'limit_terms' ] );
+
 		$value = get_the_term_list( get_the_ID(), $settings['taxonomy'], '', $settings['separator'] );
+
+		// Remove filter
+		remove_filter( 'get_the_terms', [ $this, 'limit_terms' ] );
 
 		echo wp_kses_post( $value );
 	}

@@ -667,6 +667,7 @@ html.qazana-html {
 .qazana-add-section {
 	max-width: 1160px;
 	position: relative;
+	z-index: $editor-layer;
 
 	&:not(.qazana-dragging-on-child) {
 

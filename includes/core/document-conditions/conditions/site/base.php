@@ -54,32 +54,11 @@ abstract class Base extends Controls_Stack {
 		return [];
 	}
 
-  	public function get_condition_config() {
+	public function get_condition_config() {
 		$config                   = parent::get_config();
 		$config['label']          = $this->get_title();
 		$config['sub_conditions'] = $this->get_sub_conditions();
 		$config['all_label']      = $this->get_group_title();
 		return $config;
-    }
-
-    public static function get_post_types( $args = [] ) {
-		$post_type_args = [
-			'show_in_nav_menus' => true,
-		];
-
-		if ( ! empty( $args['post_type'] ) ) {
-			$post_type_args['name'] = $args['post_type'];
-		}
-
-		$_post_types = get_post_types( $post_type_args , 'objects' );
-
-		$post_types  = [];
-
-		foreach ( $_post_types as $post_type => $object ) {
-			$post_types[ $post_type ] = $object->label;
-		}
-
-		return $post_types;
 	}
-
 }

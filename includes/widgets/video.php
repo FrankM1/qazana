@@ -729,7 +729,6 @@ class Widget_Video extends Widget_Base {
 	 * @since 1.0.0
 	 * @access protected
 	 */
-	
 	public function render() {
 		$settings = $this->get_settings_for_display();
 
@@ -802,15 +801,21 @@ class Widget_Video extends Widget_Base {
 						$lightbox_options['videoParams'] = $this->get_hosted_params();
 					}
 
-					$this->add_render_attribute( 'image-overlay', [
-						'data-qazana-open-lightbox' => 'yes',
-						'data-qazana-lightbox' => wp_json_encode( $lightbox_options ),
-					] );
+					$this->add_render_attribute(
+						'image-overlay',
+						[
+							'data-qazana-open-lightbox' => 'yes',
+							'data-qazana-lightbox' => wp_json_encode( $lightbox_options ),
+						]
+					);
 
 					if ( qazana()->editor->is_edit_mode() ) {
-						$this->add_render_attribute( 'image-overlay', [
-							'class' => 'qazana-clickable',
-						] );
+						$this->add_render_attribute(
+							'image-overlay',
+							[
+								'class' => 'qazana-clickable',
+							]
+						);
 					}
 				} else {
 					$this->add_render_attribute( 'image-overlay', 'style', 'background-image: url(' . Group_Control_Image_Size::get_attachment_image_src( $settings['image_overlay']['id'], 'image_overlay', $settings ) . ');' );

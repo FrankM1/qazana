@@ -109,8 +109,12 @@ class Group_Control_Typography extends Group_Control_Base {
 				'px' => [
 					'min' => 1,
 					'max' => 200,
-                ],
-                'em' => [
+				],
+				'em' => [
+					'min' => 1,
+					'max' => 200,
+				],
+				'rem' => [
 					'min' => 1,
 					'max' => 200,
 				],
@@ -152,11 +156,11 @@ class Group_Control_Typography extends Group_Control_Base {
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
 			'options' => [
-				'' 				=> __( 'Default', 'qazana' ),
-				'underline' 	=> _x( 'Underline', 'Typography Control', 'qazana' ),
-				'line-through' 	=> _x( 'Line through', 'Typography Control', 'qazana' ),
-				'overline' 		=> _x( 'Overline', 'Typography Control', 'qazana' ),
-				'none' 			=> _x( 'Normal', 'Typography Control', 'qazana' ),
+				'' => __( 'Default', 'qazana' ),
+				'underline' => _x( 'Underline', 'Typography Control', 'qazana' ),
+				'line-through' => _x( 'Line through', 'Typography Control', 'qazana' ),
+				'overline' => _x( 'Overline', 'Typography Control', 'qazana' ),
+				'none' => _x( 'Normal', 'Typography Control', 'qazana' ),
 			],
 		];
 
@@ -176,34 +180,35 @@ class Group_Control_Typography extends Group_Control_Base {
 			'label' => _x( 'Line-Height', 'Typography Control', 'qazana' ),
 			'type' => Controls_Manager::SLIDER,
 			'default' => [
-				'unit' => 'px',
+				'unit' => 'em',
 			],
 			'range' => [
 				'px' => [
 					'min' => 1,
 				],
+				'em' => [
+					'min' => 1,
+				],
+				'rem' => [
+					'min' => 1,
+				],
 			],
 			'responsive' => true,
-			'size_units' => [ 'px', 'em' ],
+			'size_units' => [ 'px', 'em', 'rem' ],
 			'selector_value' => 'line-height: {{SIZE}}{{UNIT}}',
 		];
 
 		$fields['letter_spacing'] = [
 			'label' => _x( 'Letter Spacing', 'Typography Control', 'qazana' ),
-            'type' => Controls_Manager::SLIDER,
-            'default' => [
+			'type' => Controls_Manager::SLIDER,
+			'default' => [
 				'unit' => 'px',
 			],
 			'range' => [
 				'px' => [
-                    'min' => -30,
+					'min' => -10,
 					'max' => 30,
 					'step' => 0.1,
-                ],
-                'em' => [
-                    'min' => -10,
-                    'max' => 10,
-                    'step' => 0.1,
 				],
 			],
 			'responsive' => true,

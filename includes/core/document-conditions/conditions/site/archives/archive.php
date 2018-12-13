@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+use Qazana\Utils;
+
 class Archive extends Base {
 
 	public static function get_type() {
@@ -30,7 +32,7 @@ class Archive extends Base {
 			'search',
 		];
 
-		$post_types = self::get_post_types();
+		$post_types = Utils::get_post_types();
 		unset( $post_types['product'] );
 
 		foreach ( $post_types as $post_type => $label ) {

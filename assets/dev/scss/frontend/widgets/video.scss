@@ -3,17 +3,6 @@
 //
 .qazana-video-wrapper {
     position: relative;
-    &.qazana-aspect-ratio- {
-        &169 {
-            padding-bottom: 56.25%;
-        }
-        &43 {
-            padding-bottom: 75%;
-        }
-        &32 {
-            padding-bottom: 66.6666%;
-        }
-    }
     .qazana-custom-embed-image-overlay {
         position: absolute;
         top: 0;
@@ -23,6 +12,7 @@
         background-size: cover;
         background-position: 50%;
         cursor: pointer;
+
         &:hover {
             .qazana-custom-embed-play {
                 i {
@@ -32,6 +22,7 @@
             }
         }
     }
+
     .qazana-image-background-overlay {
         position: absolute;
         top: 0;
@@ -39,6 +30,7 @@
         width: 100%;
         height: 100%;
     }
+
     .qazana-custom-embed-play {
         position: absolute;
         top: 50%;

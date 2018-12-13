@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+use Qazana\Utils;
+
 class Singular extends Base {
 
 	public static function get_type() {
@@ -28,7 +30,7 @@ class Singular extends Base {
 			'front_page',
 		];
 
-		$post_types = self::get_post_types();
+		$post_types = Utils::get_post_types();
 		$post_types['attachment'] = get_post_type_object( 'attachment' )->label;
         unset( $post_types['product'] );
 

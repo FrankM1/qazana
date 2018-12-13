@@ -16,7 +16,7 @@ class ACF_Image extends Data_Tag {
 	}
 
 	public function get_title() {
-		return sprintf( '%s (%s)', __( 'ACF Field', 'qazana' ), __( 'Beta', 'qazana' ) );
+		return sprintf( '%s (%s)', __( 'ACF', 'qazana' ), __( 'Image Field', 'qazana' ) );
 	}
 
 	public function get_group() {
@@ -43,11 +43,16 @@ class ACF_Image extends Data_Tag {
 
 			list( $field_key, $meta_key ) = explode( ':', $key );
 
-			$field = get_field_object( $field_key );
+			if ( 'options' === $field_key ) {
+				$field = get_field_object( $meta_key, $field_key );
+			} else {
+				$field = get_field_object( $field_key );
+			}
 
 			if ( $field && ! empty( $field['save_format'] ) ) {
 				switch ( $field['save_format'] ) {
 					case 'object':
+					case 'array':
 						$value = $field['value'];
 						break;
 					case 'url':

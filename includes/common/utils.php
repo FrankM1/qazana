@@ -814,4 +814,27 @@ class Utils {
 	public static function get_the_archive_title( $include_context = true ) {
 		return self::get_page_title();
 	}
+
+	/**
+	 * Get post types list
+	 */
+	public static function get_post_types( $args = [] ) {
+		$post_type_args = [
+			'show_in_nav_menus' => true,
+		];
+
+		if ( ! empty( $args['post_type'] ) ) {
+			$post_type_args['name'] = $args['post_type'];
+		}
+
+		$_post_types = get_post_types( $post_type_args, 'objects' );
+
+		$post_types  = [];
+
+		foreach ( $_post_types as $post_type => $object ) {
+			$post_types[ $post_type ] = $object->label;
+		}
+
+		return $post_types;
+	}
 }

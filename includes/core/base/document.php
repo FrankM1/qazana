@@ -31,6 +31,11 @@ abstract class Document extends Controls_Stack {
 	 */
 	const TYPE_META_KEY = '_qazana_template_type';
 
+	/**
+	 * Document sub type meta key.
+	 */
+	const SUB_TYPE_META_KEY = '_qazana_template_sub_type';
+
 	private static $properties = [];
 
 	/**
@@ -1010,7 +1015,6 @@ abstract class Document extends Controls_Stack {
 				return $element;
 			}
 		);
-
 	}
 
 	public function enqueue_dependencies() {
@@ -1026,5 +1030,163 @@ abstract class Document extends Controls_Stack {
 				wp_enqueue_style( $key );
 			}
 		}
+	}
+
+	/**
+	 * Preview as options
+	 */
+	public static function get_archive_preview_as_options() {
+		$post_type_archives = [];
+		$taxonomies = [];
+		$post_types = Utils::get_post_types();
+		unset( $post_types['product'] );
+
+		foreach ( $post_types as $post_type => $label ) {
+			$post_type_object = get_post_type_object( $post_type );
+
+			if ( $post_type_object->has_archive ) {
+				$post_type_archives[ 'post_type_archive/' . $post_type ] = sprintf( __( '%s Archive', 'qazana' ), $post_type_object->label );
+			}
+
+			$post_type_taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+			$post_type_taxonomies = wp_filter_object_list(
+				$post_type_taxonomies,
+				[
+					'public' => true,
+					'show_in_nav_menus' => true,
+				]
+			);
+
+			foreach ( $post_type_taxonomies as $slug => $object ) {
+				$taxonomies[ 'taxonomy/' . $slug ] = sprintf( __( '%s Archive', 'qazana' ), $object->label );
+			}
+		}
+
+		return [
+			'archive' => [
+				'label' => __( 'Archive', 'qazana' ),
+				'options' => [
+					'archive/recent_posts' => __( 'Recent Posts', 'qazana' ),
+					'archive/date' => __( 'Date Archive', 'qazana' ),
+					'archive/author' => __( 'Author Archive', 'qazana' ),
+					'search' => __( 'Search Results', 'qazana' ),
+				] + $taxonomies + $post_type_archives,
+			],
+		];
+	}
+
+	/**
+	 * Preview as options
+	 */
+	public static function get_single_preview_as_options() {
+		$post_types = Utils::get_post_types();
+		$post_types['attachment'] = get_post_type_object( 'attachment' )->label;
+		unset( $post_types['product'] );
+
+		$post_types_options = [];
+
+		foreach ( $post_types as $post_type => $label ) {
+			$post_types_options[ 'single/' . $post_type ] = get_post_type_object( $post_type )->labels->singular_name;
+		}
+
+		return [
+			'single' => [
+				'label' => __( 'Single', 'qazana' ),
+				'options' => $post_types_options,
+			],
+			'page/404' => __( '404', 'qazana' ),
+		];
+	}
+
+	public function register_preview_controls() {
+
+		$this->start_controls_section(
+			'preview_settings',
+			[
+				'label' => __( 'Preview Settings', 'qazana' ),
+				'tab' => Controls_Manager::TAB_SETTINGS,
+			]
+		);
+
+		$this->add_control(
+			'preview_type',
+			[
+				'label' => __( 'Preview Dynamic Content as', 'qazana' ),
+				'label_block' => true,
+				'type' => Controls_Manager::SELECT,
+				'default' => $this::get_preview_as_default(),
+				'groups' => $this::get_preview_as_options(),
+				'export' => false,
+			]
+		);
+
+		$this->add_control(
+			'preview_id',
+			[
+				'type' => 'query',
+				'label_block' => true,
+				'filter_type' => '',
+				'object_type' => '',
+				'separator' => 'none',
+				'export' => false,
+				'condition' => [
+					'preview_type!' => [
+						'',
+						'search',
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'preview_search_term',
+			[
+				'label' => __( 'Search Term', 'qazana' ),
+				'export' => false,
+				'condition' => [
+					'preview_type' => 'search',
+				],
+			]
+		);
+
+		$this->add_control(
+			'apply_preview',
+			[
+				'type' => Controls_Manager::BUTTON,
+				'label' => __( 'Apply & Preview', 'qazana' ),
+				'label_block' => true,
+				'show_label' => false,
+				'text' => __( 'Apply & Preview', 'qazana' ),
+				'separator' => 'none',
+				'event' => 'qazanaDocumentConditions:ApplyPreview',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$post_type = $this->get_main_meta( self::SUB_TYPE_META_KEY );
+
+		$latest_posts = get_posts( [
+			'posts_per_page' => 1,
+			'post_type' => $post_type,
+		] );
+
+		if ( ! empty( $latest_posts ) ) {
+			$this->update_control(
+				'preview_type',
+				[
+					'default' => 'single/' . $post_type,
+				]
+			);
+
+			$this->update_control(
+				'preview_id',
+				[
+					'default' => $latest_posts[0]->ID,
+				]
+			);
+		}
+
 	}
 }
