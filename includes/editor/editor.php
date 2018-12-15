@@ -572,7 +572,7 @@ class Editor {
 				'restrictions'       => qazana()->role_manager->get_user_restrictions_array(),
 				'is_administrator'   => current_user_can( 'manage_options' ),
 			],
-			'is_rtl'                 => is_rtl(),
+			'is_rtl'                 => is_rtl() ? true : false,
 			'locale'                 => get_locale(),
 			'rich_editing_enabled'   => filter_var( get_user_meta( get_current_user_id(), 'rich_editing', true ), FILTER_VALIDATE_BOOLEAN ),
 			'page_title_selector'    => $page_title_selector,

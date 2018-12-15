@@ -156,7 +156,7 @@ module.exports = BaseRegion.extend( {
 	dock: function() {
 		qazana.$body.addClass( 'qazana-panel-docked' ).removeClass( 'qazana-panel-undocked' );
 
-		const side = qazana.config.is_rtl ? 'left' : 'right',
+		const side = Boolean( qazana.config.is_rtl ) ? 'right' : 'left',
 			resizableOptions = this.getResizableOptions();
 
 		this.$el.css( {
@@ -171,7 +171,7 @@ module.exports = BaseRegion.extend( {
 
 		this.$el.resizable( 'destroy' );
 
-		resizableOptions.handles = qazana.config.is_rtl ? 'e' : 'w';
+		resizableOptions.handles = Boolean( qazana.config.is_rtl ) ? 'e' : 'w';
 
 		resizableOptions.resize = ( event, ui ) => {
 			qazana.$previewWrapper.css( side, ui.size.width );
@@ -187,7 +187,9 @@ module.exports = BaseRegion.extend( {
 	undock: function( silent ) {
 		qazana.$body.removeClass( 'qazana-panel-docked' ).addClass( 'qazana-panel-undocked' );
 
-		qazana.$body.find( '#qazana-preview' ).css( qazana.config.is_rtl ? 'left' : 'right', '' );
+		const side = Boolean( qazana.config.is_rtl ) ? 'left' : 'right';
+
+		qazana.$body.find( '#qazana-preview' ).css( side, '' );
 
 		this.setSize();
 
@@ -268,7 +270,7 @@ module.exports = BaseRegion.extend( {
 			this.dock();
 		}
 
-		qazana.$body.removeClass( 'qazana-panel--dock-hint' );
+		// qazana.$body.removeClass( 'qazana-panel--dock-hint' );
 	},
 
 	onEditModeSwitched: function( activeMode ) {

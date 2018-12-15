@@ -2,8 +2,25 @@
 // Panel
 //
 
-.qazana-panel-undocked #qazana-preview {
-	left: 0 !important;
+.qazana-panel-docked:after {
+	right: auto;
+	left: 0;
+}
+
+.qazana-panel-undocked {
+	#qazana-preview {
+		left: 0 !important;
+	}
+
+	#qazana-panel-header-wrapper {
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
+
+	#qazana-panel-footer {
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
 }
 
 .qazana-panel {
@@ -30,7 +47,8 @@
 			@include start(-$panel-xl-width);
 		}
 
-		> .ui-resizable-e, > .ui-resizable-w {
+		>.ui-resizable-e,
+		>.ui-resizable-w {
 			display: none;
 		}
 	}
@@ -62,17 +80,17 @@
 	// Global
 	@import "global";
 
-    // Header
-    @import "header";
+	// Header
+	@import "header";
 
-    // Elements
-    @import "elements";
+	// Elements
+	@import "elements";
 
-    // Categories
-    @import "categories";
+	// Categories
+	@import "categories";
 
-    // Schemes
-    @import "schemes";
+	// Schemes
+	@import "schemes";
 
 	// Menu
 	@import "menu";
@@ -81,16 +99,16 @@
 	@import "document-settings";
 
 	// Element Edit
-    @import "element-settings";
+	@import "element-settings";
 
-    //Footer
-    @import "footer";
+	//Footer
+	@import "footer";
 }
 
 #qazana-panel-inner {
 	position: relative;
 	height: 100%;
-	box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 // Main Panel
