@@ -208,7 +208,7 @@ body {
     left: 0; }
   body.qazana-editor-preview #qazana-mode-switcher-preview .fa:before {
     content: ""; }
-  body.qazana-navigator--dock-hint:after {
+  body.qazana-panel--dock-hint:after, body.qazana-navigator--dock-hint:after {
     width: 30px; }
 
 #qazana-panel:not(.ui-resizable-resizing),
@@ -715,6 +715,9 @@ select {
 #nprogress .spinner {
   z-index: 100000; }
 
+.qazana-panel-undocked #qazana-preview {
+  left: 0 !important; }
+
 .qazana-panel {
   position: fixed;
   height: 100%;
@@ -740,6 +743,12 @@ select {
       right: -300px; } }
   .qazana-editor-preview .qazana-panel > .ui-resizable-e, .qazana-editor-preview .qazana-panel > .ui-resizable-w {
     display: none; }
+  body.qazana-panel-docked .qazana-panel {
+    top: 0;
+    left: 0;
+    height: 100%; }
+  body:not(.qazana-panel-docked) .qazana-panel {
+    border-radius: 5px; }
   @media (max-width: 1439px) {
     .qazana-panel {
       width: 280px; } }

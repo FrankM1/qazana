@@ -1,6 +1,11 @@
 //
 // Panel
 //
+
+.qazana-panel-undocked #qazana-preview {
+	left: 0 !important;
+}
+
 .qazana-panel {
 	position: fixed;
 	height: 100%;
@@ -28,6 +33,16 @@
 		> .ui-resizable-e, > .ui-resizable-w {
 			display: none;
 		}
+	}
+
+	body.qazana-panel-docked & {
+		top: 0;
+		@include end(0);
+		height: 100%;
+	}
+
+	body:not(.qazana-panel-docked) & {
+		border-radius: 5px;
 	}
 
 	@media (max-width: $editor-screen-lg-max) {

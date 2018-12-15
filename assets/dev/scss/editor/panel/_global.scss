@@ -2,6 +2,7 @@
 // Panel Global
 //
 
+
 .qazana-panel-heading {
 	display: table;
 	table-layout: fixed;
@@ -31,7 +32,7 @@
 		}
 	}
 
-	> * {
+	>* {
 		display: table-cell;
 		vertical-align: middle;
 	}
@@ -57,8 +58,8 @@
 }
 
 .qazana-control-title {
-    font-size: 12px;
-    line-height: 1.5;
+	font-size: 12px;
+	line-height: 1.5;
 }
 
 .qazana-button {
@@ -171,7 +172,8 @@
 		border-bottom-color: #fff;
 	}
 
-	div.qazana-control { // Harder selector to override default settings
+	div.qazana-control {
+		// Harder selector to override default settings
 		background-color: transparent; // Makes the popover's border-radius visible
 
 		&:before {
@@ -191,4 +193,3 @@
 .select2-container {
 	width: 100% !important;
 }
-
