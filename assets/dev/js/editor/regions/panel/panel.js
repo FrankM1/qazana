@@ -82,9 +82,9 @@ module.exports = BaseRegion.extend( {
 
 				if ( this.isDocked ) {
 					this.storage.size.width = qazana.helpers.getElementInlineStyle( this.$el, [ 'width' ] ).width;
-
 					qazana.setStorage( 'panel', this.storage );
 				} else {
+					this.storage.size.height = ( qazana.helpers.getElementInlineStyle( this.$el, [ 'height' ] ).height - 200 );
 					this.saveSize();
 				}
 			},
@@ -192,6 +192,10 @@ module.exports = BaseRegion.extend( {
 		qazana.$body.find( '#qazana-preview' ).css( side, '' );
 
 		this.setSize();
+
+		var height = this.storage.size.height;
+
+		this.$el.css( 'height', height );
 
 		this.$el.resizable( 'destroy' );
 
