@@ -7,8 +7,8 @@ PanelLayoutView = Marionette.LayoutView.extend( {
 	id: 'qazana-panel-inner',
 
 	regions: {
-		content: '#qazana-panel-content-wrapper',
-		header: '#qazana-panel-header-wrapper',
+		content: '#qazana-panel-content',
+		header: '#qazana-panel-header',
 		footer: '#qazana-panel-footer',
 		modeSwitcher: '#qazana-mode-switcher',
 	},

@@ -1539,6 +1539,8 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-sectio
   background: linear-gradient(135deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
   background-size: 6px 6px;
   text-align: center; }
+  body.qazana-editor-preview .qazana-spacer {
+    background: transparent; }
 
 span.qazana-space-resize-value {
   height: 100%;
@@ -1551,6 +1553,9 @@ span.qazana-space-resize-value {
   align-items: center;
   justify-content: center;
   align-content: center; }
+
+body.qazana-editor-preview .qazana-space-resize-value {
+  display: none; }
 
 html.qazana-html {
   margin-top: 0 !important; }

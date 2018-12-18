@@ -15,8 +15,8 @@ $document = qazana()->documents->get( $this->get_post_id() );
 ?>
 <script type="text/template" id="tmpl-qazana-panel">
 	<div id="qazana-mode-switcher"></div>
-	<header id="qazana-panel-header-wrapper"></header>
-	<main id="qazana-panel-content-wrapper"></main>
+	<header id="qazana-panel-header"></header>
+	<main id="qazana-panel-content"></main>
 	<footer id="qazana-panel-footer">
 		<div class="qazana-panel-container">
 		</div>

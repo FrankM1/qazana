@@ -247,7 +247,7 @@ module.exports = BaseRegion.extend( {
 			ui.position.top = 0;
 		}
 
-		const isOutOfLeft = 0 > ui.position.left,
+		const isOutOfLeft = 0 === ui.position.left,
 			isOutOfRight = ui.position.left + this.el.offsetWidth > innerWidth;
 
 		if ( qazana.config.is_rtl ) {
@@ -274,7 +274,7 @@ module.exports = BaseRegion.extend( {
 			this.dock();
 		}
 
-		// qazana.$body.removeClass( 'qazana-panel--dock-hint' );
+		qazana.$body.removeClass( 'qazana-panel--dock-hint' );
 	},
 
 	onEditModeSwitched: function( activeMode ) {

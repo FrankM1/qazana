@@ -722,13 +722,15 @@ select {
 .qazana-panel-undocked #qazana-preview {
   left: 0 !important; }
 
-.qazana-panel-undocked #qazana-panel-header-wrapper {
+.qazana-panel-undocked #qazana-panel-header {
   border-top-left-radius: 5px;
-  border-top-right-radius: 5px; }
+  border-top-right-radius: 5px;
+  overflow: hidden; }
 
 .qazana-panel-undocked #qazana-panel-footer {
   border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px; }
+  border-bottom-right-radius: 5px;
+  overflow: hidden; }
 
 .qazana-panel {
   position: fixed;
@@ -749,10 +751,14 @@ select {
     left: 0; }
   @media (max-width: 1439px) {
     .qazana-editor-preview .qazana-panel {
-      left: -280px; } }
+      left: -280px;
+      display: block !important;
+      width: 280px !important; } }
   @media (min-width: 1440px) {
     .qazana-editor-preview .qazana-panel {
-      left: -300px; } }
+      left: -300px;
+      display: block !important;
+      width: 300px !important; } }
   .qazana-editor-preview .qazana-panel > .ui-resizable-e,
   .qazana-editor-preview .qazana-panel > .ui-resizable-w {
     display: none; }
@@ -1588,7 +1594,7 @@ select {
   height: 100%;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2); }
 
-#qazana-panel-content-wrapper {
+#qazana-panel-content {
   position: absolute;
   bottom: 40px;
   top: 95px;

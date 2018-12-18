@@ -12,14 +12,16 @@
 		left: 0 !important;
 	}
 
-	#qazana-panel-header-wrapper {
+	#qazana-panel-header {
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
+		overflow: hidden;
 	}
 
 	#qazana-panel-footer {
 		border-bottom-left-radius: 5px;
 		border-bottom-right-radius: 5px;
+		overflow: hidden;
 	}
 }
 
@@ -41,10 +43,14 @@
 
 		@media (max-width: $editor-screen-lg-max) {
 			@include start(-$panel-width);
+			display: block !important; 
+			width: $panel-width !important;
 		}
 
 		@media (min-width: $editor-screen-xl-min) {
 			@include start(-$panel-xl-width);
+			display: block !important; 
+			width: $panel-xl-width !important;
 		}
 
 		>.ui-resizable-e,
@@ -112,7 +118,7 @@
 }
 
 // Main Panel
-#qazana-panel-content-wrapper {
+#qazana-panel-content {
 	position: absolute;
 	bottom: 40px;
 	top: 95px;

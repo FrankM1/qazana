@@ -12659,8 +12659,8 @@ PanelLayoutView = Marionette.LayoutView.extend({
 	id: 'qazana-panel-inner',
 
 	regions: {
-		content: '#qazana-panel-content-wrapper',
-		header: '#qazana-panel-header-wrapper',
+		content: '#qazana-panel-content',
+		header: '#qazana-panel-header',
 		footer: '#qazana-panel-footer',
 		modeSwitcher: '#qazana-mode-switcher'
 	},
@@ -14437,7 +14437,7 @@ module.exports = BaseRegion.extend({
 			ui.position.top = 0;
 		}
 
-		var isOutOfLeft = 0 > ui.position.left,
+		var isOutOfLeft = 0 === ui.position.left,
 		    isOutOfRight = ui.position.left + this.el.offsetWidth > innerWidth;
 
 		if (qazana.config.is_rtl) {
@@ -14464,7 +14464,7 @@ module.exports = BaseRegion.extend({
 			this.dock();
 		}
 
-		// qazana.$body.removeClass( 'qazana-panel--dock-hint' );
+		qazana.$body.removeClass('qazana-panel--dock-hint');
 	},
 
 	onEditModeSwitched: function onEditModeSwitched(activeMode) {
@@ -16456,7 +16456,7 @@ module.exports = Module.extend({
 			position: {
 				my: 'center bottom',
 				at: 'center bottom-10',
-				of: '#qazana-panel-content-wrapper',
+				of: '#qazana-panel-content',
 				autoRefresh: true
 			},
 			hide: {

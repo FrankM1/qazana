@@ -7,7 +7,7 @@ module.exports = Module.extend( {
 			position: {
 				my: 'center bottom',
 				at: 'center bottom-10',
-				of: '#qazana-panel-content-wrapper',
+				of: '#qazana-panel-content',
 				autoRefresh: true,
 			},
 			hide: {
