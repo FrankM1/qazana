@@ -1330,6 +1330,11 @@ ul.qazana-icon-list-items.qazana-inline-items {
 .gallery-spacing-custom .qazana-image-gallery .gallery-icon {
   padding: 0; }
 
+.swiper-container .swiper-slide figure {
+  line-height: 0; }
+  .swiper-container .swiper-slide figure img {
+    width: 100%; }
+
 .qazana-widget-image {
   text-align: center; }
   .qazana-widget-image .qazana-image > a,
@@ -1340,11 +1345,6 @@ ul.qazana-icon-list-items.qazana-inline-items {
     display: inline-block; }
   .qazana-widget-image .qazana-image.qazana-image-shape-circle {
     border-radius: 50%; }
-
-.swiper-container .swiper-slide figure {
-  line-height: 0; }
-  .swiper-container .swiper-slide figure img {
-    width: 100%; }
 
 .qazana-link {
   transition: all 0.5s; }
