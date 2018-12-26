@@ -14,129 +14,128 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 class Icons_Manager {
 
-    /**
-     * [$_iconsets description]
-     * @var [type]
-     */
-    private static $default_iconsets = [
+	/**
+	 * [$_iconsets description]
+	 * @var [type]
+	 */
+	private static $default_iconsets = [
 		'font-awesome' => array(
-            'name' => 'Font Awesome',
-            'prefix' => 'fa fa-',
-        ),
-		 'elicons' =>  array(
-            'name' => 'Font Awesome',
-            'prefix' => 'el el-',
-        ),
+			'name' => 'Font Awesome',
+			'prefix' => 'fa fa-',
+		),
+		'elicons' => array(
+			'name' => 'Font Awesome',
+			'prefix' => 'el el-',
+		),
 	];
 
-    /**
-     * [add_iconset description]
-     * @param Widget_Base $iconset [description]
-     * @param Skin_Base   $skin   [description]
-     */
-    public function add_iconset( $iconset_id, $icons ) {
+	/**
+	 * [add_iconset description]
+	 * @param Widget_Base $iconset [description]
+	 * @param Skin_Base   $skin   [description]
+	 */
+	public function add_iconset( $iconset_id, $icons ) {
 
-        if ( ! isset( $this->_iconsets[ $iconset_id ] ) ) {
-            $this->_iconsets[ $iconset_id ] = [];
-        }
+		if ( ! isset( $this->_iconsets[ $iconset_id ] ) ) {
+			$this->_iconsets[ $iconset_id ] = [];
+		}
 
-        $this->_iconsets[ $iconset_id ] = $icons;
+		$this->_iconsets[ $iconset_id ] = $icons;
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * [remove_iconset description]
-     * @param Widget_Base $iconset  [description]
-     * @param [type]      $set_id [description]
-     */
-    public function remove_iconset( $set_id ) {
+	/**
+	 * [remove_iconset description]
+	 * @param Widget_Base $iconset  [description]
+	 * @param [type]      $set_id [description]
+	 */
+	public function remove_iconset( $set_id ) {
 
-        if ( ! isset( $this->_iconsets[ $set_id ] ) ) {
-            return new \WP_Error( 'Cannot remove not-existent set.' );
-        }
+		if ( ! isset( $this->_iconsets[ $set_id ] ) ) {
+			return new \WP_Error( 'Cannot remove not-existent set.' );
+		}
 
-        unset( $this->_iconsets[ $set_id ] );
+		unset( $this->_iconsets[ $set_id ] );
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * [get_iconset description]
-     * @param Widget_Base $iconset [description]
-     */
-    public function get_iconset( $set_id ) {
+	/**
+	 * [get_iconset description]
+	 * @param Widget_Base $iconset [description]
+	 */
+	public function get_iconset( $set_id ) {
 
-        if ( ! isset( $this->_iconsets[ $set_id ] ) ) {
-            return false;
-        }
+		if ( ! isset( $this->_iconsets[ $set_id ] ) ) {
+			return false;
+		}
 
-        return $this->_iconsets[ $set_id ];
-    }
+		return $this->_iconsets[ $set_id ];
+	}
 
-    /**
-     * [get_iconset description]
-     * @param Widget_Base $iconset [description]
-     */
-    public function get_all_iconsets() {
+	/**
+	 * [get_iconset description]
+	 * @param Widget_Base $iconset [description]
+	 */
+	public function get_all_iconsets() {
 
-        if ( empty( $this->_iconsets ) ) {
-            return false;
-        }
+		if ( empty( $this->_iconsets ) ) {
+			return false;
+		}
 
-        return $this->_iconsets;
-    }
+		return $this->_iconsets;
+	}
 
-    /**
-     * [get_file_content description]
-     * @param  [type] $template_id [description]
-     * @return [type]              [description]
-     */
-    public function get_file_content( $file_path ) {
+	/**
+	 * [get_file_content description]
+	 * @param  [type] $template_id [description]
+	 * @return [type]              [description]
+	 */
+	public function get_file_content( $file_path ) {
 
-        global $wp_filesystem;
+		global $wp_filesystem;
 
-        if ( empty( $wp_filesystem ) ) {
-            require ABSPATH . 'wp-admin/includes/file.php';
-            \WP_Filesystem();
-        }
+		if ( empty( $wp_filesystem ) ) {
+			require ABSPATH . 'wp-admin/includes/file.php';
+			\WP_Filesystem();
+		}
 
-        $response = $wp_filesystem->get_contents( $file_path );
+		$response = $wp_filesystem->get_contents( $file_path );
 
-        if ( is_wp_error( $response ) ) {
-            return false;
-        }
+		if ( is_wp_error( $response ) ) {
+			return false;
+		}
 
-        $file_content = json_decode( $response, true );
-        if ( empty( $file_content ) || ! is_array( $file_content ) ) {
-            return false;
-        }
+		$file_content = json_decode( $response, true );
+		if ( empty( $file_content ) || ! is_array( $file_content ) ) {
+			return false;
+		}
 
-        return $file_content;
-    }
+		return $file_content;
+	}
 
-    /**
-     * [get_fontawesome_icons description]
-     * @param  [type] $template_id [description]
-     * @return [type]              [description]
-     */
-    public function get_icons_for_controls( $file_path, $template_id, $prefix = '' ) {
+	/**
+	 * [get_fontawesome_icons description]
+	 * @param  [type] $template_id [description]
+	 * @return [type]              [description]
+	 */
+	public function get_icons_for_controls( $file_path, $template_id, $prefix = '' ) {
 
-        $formated_icons = array();
+		$formated_icons = array();
 
-        $file_content = self::get_file_content( $file_path );
+		$file_content = self::get_file_content( $file_path );
 
-        $icons = $file_content['icons'];
+		$icons = $file_content['icons'];
 
-        if ( empty( $icons ) || ! array( $icons ) ) {
-            return false;
-        }
+		if ( empty( $icons ) || ! array( $icons ) ) {
+			return false;
+		}
 
-        foreach ( $icons as $icon => $value ) {
-            $formated_icons[ $prefix . $value['id'] ] = $value['name'];
-        }
+		foreach ( $icons as $icon => $value ) {
+			$formated_icons[ $prefix . $value['id'] ] = $value['name'];
+		}
 
-        return $formated_icons;
-    }
-
+		return $formated_icons;
+	}
 }

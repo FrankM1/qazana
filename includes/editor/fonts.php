@@ -126,7 +126,7 @@ class Fonts {
 			self::$additional_fonts = $additional_fonts;
 		}
 
-		return array_merge( self::get_native_fonts(), self::$additional_fonts );
+		return apply_filters( 'qazana/fonts/all_fonts', array_merge( self::get_native_fonts(), self::$additional_fonts ) );
 	}
 
 	/**
@@ -1077,8 +1077,11 @@ class Fonts {
 	 * @return array Font type, or false if font doesn't exist.
 	 */
 	public static function get_fonts_by_groups( $groups = [] ) {
-		return array_filter( self::get_fonts(), function( $font ) use ( $groups ) {
-			return in_array( $font, $groups );
-		} );
+		return array_filter(
+			self::get_fonts(),
+			function( $font ) use ( $groups ) {
+				return in_array( $font, $groups );
+			}
+		);
 	}
 }
