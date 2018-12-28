@@ -82,8 +82,8 @@ class Widget_Icon_Box extends Widget_Base {
 	 */
 	protected function _register_controls() {
 		$this->_register_section_icon_controls();
-		$this->_register_section_style_content_controls();
 		$this->_register_section_style_icon_controls();
+		$this->_register_section_style_content_controls();
 		$this->_register_section_svg_style_content_controls();
 	}
 
@@ -133,7 +133,7 @@ class Widget_Icon_Box extends Widget_Base {
 			]
 		);
 
-        $this->add_control(
+		$this->add_control(
 			'image',
 			[
 				'label'     => __( 'Choose Image', 'qazana' ),
