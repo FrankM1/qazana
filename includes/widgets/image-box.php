@@ -69,7 +69,7 @@ class Widget_Image_Box extends Widget_Base {
 	public function get_keywords() {
 		return [ 'image', 'photo', 'visual', 'box', 'media' ];
 	}
-	
+
 	/**
 	 * Register image box widget controls.
 	 *
@@ -78,7 +78,6 @@ class Widget_Image_Box extends Widget_Base {
 	 * @since 1.0.0
 	 * @access protected
 	 */
-
 	protected function _register_controls() {
 		$this->start_controls_section(
 			'section_image',

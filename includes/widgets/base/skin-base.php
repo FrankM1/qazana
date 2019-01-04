@@ -543,4 +543,49 @@ abstract class Skin_Base {
 	public function is_bool( $value ) {
 		return $this->get_parent()->is_bool( $value );
 	}
+
+	/**
+	 * Add inline editing attributes.
+	 *
+	 * Define specific area in the element to be editable inline. The element can have several areas, with this method
+	 * you can set the area inside the element that can be edited inline. You can also define the type of toolbar the
+	 * user will see, whether it will be a basic toolbar or an advanced one.
+	 *
+	 * Note: When you use wysiwyg control use the advanced toolbar, with textarea control use the basic toolbar. Text
+	 * control should not have toolbar.
+	 *
+	 * PHP usage (inside `Widget_Base::render()` method):
+	 *
+	 *    $this->add_inline_editing_attributes( 'text', 'advanced' );
+	 *    echo '<div ' . $this->get_render_attribute_string( 'text' ) . '>' . $this->get_settings( 'text' ) . '</div>';
+	 *
+	 * @since 1.3.0
+	 * @access protected
+	 *
+	 * @param string $key     Element key.
+	 * @param string $toolbar Optional. Toolbar type. Accepted values are `advanced`, `basic` or `none`. Default is
+	 *                        `basic`.
+	 */
+	protected function add_inline_editing_attributes( $key, $toolbar = 'basic' ) {
+		if ( ! qazana()->editor->is_edit_mode() ) {
+			return;
+		}
+
+		$this->add_render_attribute(
+			$key,
+			[
+				'class' => 'qazana-inline-editing',
+				'data-qazana-setting-key' => $key,
+			]
+		);
+
+		if ( 'basic' !== $toolbar ) {
+			$this->add_render_attribute(
+				$key,
+				[
+					'data-qazana-inline-editing-toolbar' => $toolbar,
+				]
+			);
+		}
+	}
 }

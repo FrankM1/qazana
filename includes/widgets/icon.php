@@ -162,7 +162,6 @@ class Widget_Icon extends Widget_Base {
 					'icon_type' => 'icon',
 				],
 			]
-
 		);
 
 		$this->add_control(
@@ -464,27 +463,25 @@ class Widget_Icon extends Widget_Base {
 		$settings = $this->get_settings();
 
 		if ( $settings['icon_type'] === 'image' ) {
-
 			$filetype = wp_check_filetype( $settings['image']['url'] );
-
 			if ( $filetype['ext'] === 'svg' ) {
 				$this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
 				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['svg_animation_speed'] );
 				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['svg_animation_delay'] );
 				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
-				$this->add_render_attribute( 'image', 'data-icon',  qazana_maybe_ssl_url( $settings['image']['url'] ) );
+				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
 			}
 		}
 
 		if ( $settings['icon_type'] === 'image' ) {
-			$output = '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" alt="icon"/></span>';
+			$output = '<span ' . $this->get_render_attribute_string( 'image' ) . '><img src="' . qazana_maybe_ssl_url( $settings['image']['url'] ) . '" alt="icon"/></span>';
 		} else {
-			$output = '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
+			$output = '<i ' . $this->get_render_attribute_string( 'i' ) . '></i>';
 		}
 
 		return $output;
 	}
-	
+
 	/**
 	 * Render icon widget output on the frontend.
 	 *
@@ -522,7 +519,7 @@ class Widget_Icon extends Widget_Base {
 
 		if ( ! empty( $settings['icon'] ) ) {
 			$this->add_render_attribute( 'i', 'class', $settings['icon'] );
-			$this->add_render_attribute( 'icon', 'aria-hidden', 'true' );
+			$this->add_render_attribute( 'i', 'aria-hidden', 'true' );
 		}
 
 		?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>

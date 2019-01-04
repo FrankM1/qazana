@@ -168,25 +168,6 @@ class Widget_Heading extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
-			'max_width',
-			[
-				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px', 'em', 'rem' ],
-				'range' => [
-					'px' => [
-						'min' => 10,
-						'max' => 2000,
-					],
-				],
-				'responsive' => true,
-				'selectors' => [
-					'{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
 			'align',
 			[
 				'label' => __( 'Alignment', 'qazana' ),
@@ -211,6 +192,25 @@ class Widget_Heading extends Widget_Base {
 				],
 				'default' => '',
 				'prefix_class' => 'qazana%s-align-',
+			]
+		);
+
+		$this->add_responsive_control(
+			'max_width',
+			[
+				'label' => _x( 'Max width', 'Size Control', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ '%', 'px', 'em', 'rem' ],
+				'range' => [
+					'px' => [
+						'min' => 10,
+						'max' => 2000,
+					],
+				],
+				'responsive' => true,
+				'selectors' => [
+					'{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+				],
 			]
 		);
 

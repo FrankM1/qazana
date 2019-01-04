@@ -261,19 +261,28 @@ ul.qazana-icon-list-items.qazana-inline-items {
 }
 
 // Simple 12 Columns responsive grid
-.qazana-grid {
-	display: grid;
 
-	.qazana-grid-item {
-		word-break: break-word;
-	}
+.qazana-grid-item {
+	word-break: break-word;
+	min-width: 0; // Prevent columns from overflowing the grid area in Firefox browser
+}
+
+.qazana-grid {
 
 	@mixin grid_loop($device) {
 		@for $i from 1 through 12 {
+			&#{$device}-0 {
+				& {
+					display: flex;
+					overflow: hidden;
+					flex-wrap: wrap;
+				}
+			}
 
 			&#{$device}-#{$i} {
-				.qazana-grid {
-					grid-template-columns: repeat(#{$i} , 1fr);
+				& {
+					grid-template-columns: repeat(#{$i}, 1fr);
+					display: grid;
 				}
 			}
 		}
@@ -287,12 +296,5 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 	@media (max-width: $screen-sm-max) {
 		@include grid_loop(-mobile);
-	}
-}
-
-.qazana-grid-0 {
-	.qazana-grid {
-		display: flex;
-		overflow: hidden;
 	}
 }
