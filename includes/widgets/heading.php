@@ -190,7 +190,6 @@ class Widget_Heading extends Widget_Base {
 						'icon' => 'fa fa-align-justify',
 					],
 				],
-				'default' => '',
 				'prefix_class' => 'qazana%s-align-',
 			]
 		);

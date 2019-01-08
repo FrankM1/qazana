@@ -78,7 +78,7 @@ class Widget_Testimonial extends Widget_Base {
 	public function add_element_dependencies() {
 		$this->add_frontend_script( 'jquery-slick' );
 	}
-	
+
 	/**
 	 * Register testimonial widget controls.
 	 *
@@ -173,7 +173,6 @@ class Widget_Testimonial extends Widget_Base {
 			[
 				'label' => __( 'Alignment', 'qazana' ),
 				'type' => Controls_Manager::CHOOSE,
-				'default' => 'center',
 				'options' => [
 					'left'    => [
 						'title' => __( 'Left', 'qazana' ),
