@@ -104,6 +104,20 @@ class Widget_Divider extends Widget_Base {
 		);
 
 		$this->add_control(
+			'orientation',
+			[
+				'label' => __( 'Orientation', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'vertical' => __( 'Vertical', 'qazana' ),
+					'horizontal' => __( 'Horizontal', 'qazana' ),
+				],
+				'default' => 'horizontal',
+				'prefix_class' => 'qazana-divider-',
+			]
+		);
+
+		$this->add_control(
 			'style',
 			[
 				'label' => __( 'Style', 'qazana' ),
@@ -116,7 +130,8 @@ class Widget_Divider extends Widget_Base {
 				],
 				'default' => 'solid',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}}.qazana-divider-horizontal .qazana-divider-separator' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}}.qazana-divider-vertical .qazana-divider-separator' => 'border-left-style: {{VALUE}};',
 				],
 			]
 		);
@@ -136,7 +151,8 @@ class Widget_Divider extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-divider-horizontal .qazana-divider-separator' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-divider-vertical .qazana-divider-separator' => 'border-left-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -152,7 +168,8 @@ class Widget_Divider extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-divider-separator' => 'border-top-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-divider-horizontal .qazana-divider-separator' => 'border-top-color: {{VALUE}};',
+					'{{WRAPPER}}.qazana-divider-vertical .qazana-divider-separator' => 'border-left-color: {{VALUE}};',
 				],
 			]
 		);
@@ -160,7 +177,7 @@ class Widget_Divider extends Widget_Base {
 		$this->add_responsive_control(
 			'width',
 			[
-				'label' => __( 'Width', 'qazana' ),
+				'label' => __( 'Size', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ '%', 'px' ],
 				'range' => [
@@ -179,7 +196,8 @@ class Widget_Divider extends Widget_Base {
 					'unit' => '%',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-divider-separator' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-divider-horizontal .qazana-divider-separator' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-divider-vertical .qazana-divider-separator' => 'height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);

@@ -590,7 +590,7 @@ ul.qazana-icon-list-items.qazana-inline-items {
   ul.qazana-icon-list-items.qazana-inline-items .qazana-inline-item {
     word-break: break-word; }
 
-.qazana-grid .qazana-grid-item {
+.qazana-grid-item {
   word-break: break-word;
   min-width: 0; }
 
