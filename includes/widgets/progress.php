@@ -145,18 +145,15 @@ class Widget_Progress extends Widget_Base {
 			]
 		);
 
-	    $this->add_control(
-	        'display_percentage',
-	        [
-	            'label' => __( 'Display Percentage', 'qazana' ),
-	            'type' => Controls_Manager::SELECT,
-	            'default' => 'show',
-	            'options' => [
-	                'show' => __( 'Show', 'qazana' ),
-	                'hide' => __( 'Hide', 'qazana' ),
-	            ],
-	        ]
-	    );
+		$this->add_control(
+			'display_percentage',
+			[
+				'label' => __( 'Display Percentage', 'qazana' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'true',
+				'return_value' => 'true',
+			]
+		);
 
 		$this->add_control(
 			'inner_text',
@@ -339,7 +336,7 @@ class Widget_Progress extends Widget_Base {
 			<span class="qazana-progress-text"><?php echo $settings['inner_text']; ?></span>
 		<?php } ?>
 
-		<?php if ( 'hide' !== $settings['display_percentage'] ) { ?>
+		<?php if ( 'true' === $settings['display_percentage'] ) { ?>
 			<span class="qazana-progress-percentage"><?php echo $settings['percent']['size']; ?>%</span>
 		<?php } ?>
 
@@ -374,7 +371,7 @@ class Widget_Progress extends Widget_Base {
 		<span class="qazana-title">{{{ settings.title }}}</span><#
 		} #>
 		<span class="qazana-progress-text">{{{ settings.inner_text }}}</span>
-		<# if ( 'hide' !== settings.display_percentage ) { #>
+		<# if ( 'true' === settings.display_percentage ) { #>
 			<span class="qazana-progress-percentage">{{{ settings.percent.size }}}%</span>
 		<# } #>
 		<div class="qazana-progress-wrapper progress-{{ settings.progress_type }}" role="timer">

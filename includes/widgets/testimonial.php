@@ -76,6 +76,7 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
 	public function add_element_dependencies() {
+		$this->add_frontend_stylesheet( 'qazana-slick' );
 		$this->add_frontend_script( 'jquery-slick' );
 	}
 

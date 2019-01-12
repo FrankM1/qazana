@@ -452,8 +452,8 @@ abstract class Skin_Base {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function add_frontend_style( $value ) {
-		$this->get_parent()->add_frontend_style( $value );
+	public function add_frontend_stylesheet( $value ) {
+		$this->get_parent()->add_frontend_stylesheet( $value );
 	}
 
 	/**
@@ -542,6 +542,35 @@ abstract class Skin_Base {
 	 */
 	public function is_bool( $value ) {
 		return $this->get_parent()->is_bool( $value );
+	}
+
+	/**
+	 * Parse text editor.
+	 *
+	 * Parses the content from rich text editor with shortcodes, oEmbed and
+	 * filtered data.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @param string $content Text editor content.
+	 *
+	 * @return string Parsed content.
+	 */
+	protected function parse_text_editor( $content ) {
+
+		/** This filter is documented in wp-includes/widgets/class-wp-widget-text.php */
+		$content = apply_filters( 'widget_text', $content, $this->get_parent()->get_settings() );
+
+		$content = shortcode_unautop( $content );
+		$content = do_shortcode( $content );
+		$content = wptexturize( $content );
+
+		if ( $GLOBALS['wp_embed'] instanceof \WP_Embed ) {
+			$content = $GLOBALS['wp_embed']->autoembed( $content );
+		}
+
+		return $content;
 	}
 
 	/**
