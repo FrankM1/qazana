@@ -16,7 +16,7 @@ class Library extends Base {
         require( 'shortcodes/shortcode.php' );
 		require( 'wp-widgets/qazana-library.php' );
 
-        qazana()->documents
+        qazana()->get_documents()
 			->register_document_type( 'page', Page::get_class_full_name() )
 			->register_document_type( 'section', Section::get_class_full_name() )
 			->register_group( 'blocks', [

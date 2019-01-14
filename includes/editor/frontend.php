@@ -167,7 +167,7 @@ class Frontend {
 	 * @since 2.1.0
 	 */
 	public function enqueue_dependencies() {
-		$document = qazana()->documents->get_doc_for_frontend( $this->post_id );
+		$document = qazana()->get_documents()->get_doc_for_frontend( $this->post_id );
 		$document->get_dependencies();
 		$document->enqueue_dependencies();
 	}
@@ -435,14 +435,14 @@ class Frontend {
 		}
 
 		if ( $is_preview_mode ) {
-			$elements_manager = qazana()->elements_manager;
+			$elements_manager = qazana()->get_elements_manager();
 
 			$elements_frontend_keys = [
 				'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
 				'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
 			];
 
-			$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
+			$elements_frontend_keys += qazana()->get_widgets_manager()->get_widgets_frontend_settings_keys();
 
 			$qazana_frontend_config['elements'] = [
 				'data'         => (object) [],
@@ -761,10 +761,10 @@ class Frontend {
 			return '';
 		}
 
-		$document = qazana()->documents->get_doc_for_frontend( $post_id );
+		$document = qazana()->get_documents()->get_doc_for_frontend( $post_id );
 
 		// Change the current post, so widgets can use `documents->get_current`.
-		qazana()->documents->switch_to_document( $document );
+		qazana()->get_documents()->switch_to_document( $document );
 
 		if ( $document->is_editable_by_current_user() ) {
 			$this->admin_bar_edit_documents[ $document->get_main_id() ] = $document;
@@ -828,7 +828,7 @@ class Frontend {
 			$this->_has_qazana_in_page = true;
 		}
 
-		qazana()->documents->restore_document();
+		qazana()->get_documents()->restore_document();
 
 		return $content;
 	}

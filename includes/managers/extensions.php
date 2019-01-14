@@ -496,7 +496,7 @@ final class Manager {
 					continue;
 				}
 
-				qazana()->widgets_manager->register_widget_type( new $class_name() );
+				qazana()->get_widgets_manager()->register_widget_type( new $class_name() );
 			}
 		}
 

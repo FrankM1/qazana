@@ -77,7 +77,7 @@ class DB {
 	 * Save data from the editor to the database.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->save()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->save()` method instead.
 	 *
 	 * @access public
 	 *
@@ -88,9 +88,9 @@ class DB {
 	 * @return bool
 	 */
 	public function save_editor( $post_id, $data, $status = self::STATUS_PUBLISH ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->save()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->save()' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( self::STATUS_AUTOSAVE === $status ) {
 			$document = $document->get_autosave( 0, true );
@@ -120,9 +120,9 @@ class DB {
 	 */
 	public function get_builder( $post_id, $status = self::STATUS_PUBLISH ) {
 		if ( self::STATUS_DRAFT === $status ) {
-			$document = qazana()->documents->get_doc_or_auto_save( $post_id );
+			$document = qazana()->get_documents()->get_doc_or_auto_save( $post_id );
 		} else {
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 		}
 
 		if ( $document ) {
@@ -168,7 +168,7 @@ class DB {
 	 * was parsed by qazana.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get_elements_data()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get_elements_data()` method instead.
 	 *
 	 * @access public
 	 *
@@ -178,9 +178,9 @@ class DB {
 	 * @return array Post data.
 	 */
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get_elements_data()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get_elements_data()' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( $document ) {
 			return $document->get_elements_data( $status );
@@ -195,7 +195,7 @@ class DB {
 	 * Retrieve the auto-saved post revision that is newer than current post.
 	 *
 	 * @since 1.9.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get_newer_autosave()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get_newer_autosave()` method instead.
 	 *
 	 * @access public
 	 *
@@ -204,9 +204,9 @@ class DB {
 	 * @return \WP_Post|false The auto-saved post, or false.
 	 */
 	public function get_newer_autosave( $post_id ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get_newer_autosave()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get_newer_autosave()' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		return $document->get_newer_autosave();
 	}
@@ -236,7 +236,7 @@ class DB {
 		if ( ! empty( $matches ) ) {
 			foreach ( $matches as $shortcode ) {
 				if ( trim( $post->post_content ) === $shortcode[0] ) {
-					$widget_type = qazana()->widgets_manager->get_widget_types( 'shortcode' );
+					$widget_type = qazana()->get_widgets_manager()->get_widget_types( 'shortcode' );
 					$settings = [
 						'shortcode' => $post->post_content,
 					];
@@ -246,7 +246,7 @@ class DB {
 		}
 
 		if ( empty( $widget_type ) ) {
-			$widget_type = qazana()->widgets_manager->get_widget_types( 'text-editor' );
+			$widget_type = qazana()->get_widgets_manager()->get_widget_types( 'text-editor' );
 			$settings = [
 				'editor' => $post->post_content,
 			];
@@ -310,7 +310,7 @@ class DB {
 	private function render_element_plain_content( $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
-			$widget = qazana()->elements_manager->create_element_instance( $element_data );
+			$widget = qazana()->get_elements_manager()->create_element_instance( $element_data );
 
 			if ( $widget ) {
 				$widget->render_plain_content();
@@ -337,7 +337,7 @@ class DB {
 	 */
 	public function save_plain_text( $post_id ) {
 		// Switch $dynamic_tags to parsing mode = remove.
-		$dynamic_tags = qazana()->dynamic_tags;
+		$dynamic_tags = qazana()->get_dynamic_tags();
 		$parsing_mode = $dynamic_tags->get_parsing_mode();
 		$dynamic_tags->set_parsing_mode( Manager::MODE_REMOVE );
 

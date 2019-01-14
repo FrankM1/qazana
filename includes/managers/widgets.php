@@ -339,7 +339,7 @@ class Widgets_Manager {
 	 * }
 	 */
 	public function ajax_render_widget( $request ) {
-		$document = qazana()->documents->get( $request['editor_post_id'] );
+		$document = qazana()->get_documents()->get( $request['editor_post_id'] );
 
 		if ( ! $document->is_editable_by_current_user() ) {
 			throw new \Exception( 'Access denied.', Exceptions::FORBIDDEN );
@@ -357,7 +357,7 @@ class Widgets_Manager {
 		$is_edit_mode = $editor->is_edit_mode();
 		$editor->set_edit_mode( true );
 
-		qazana()->documents->switch_to_document( $document );
+		qazana()->get_documents()->switch_to_document( $document );
 
 		$render_html = $document->render_element( $request['data'] );
 
@@ -401,7 +401,7 @@ class Widgets_Manager {
 		/**
 		 * @var $widget_obj Widget_WordPress
 		 */
-		$widget_obj = qazana()->elements_manager->create_element_instance( $element_data );
+		$widget_obj = qazana()->get_elements_manager()->create_element_instance( $element_data );
 
 		if ( ! $widget_obj ) {
 			return false;

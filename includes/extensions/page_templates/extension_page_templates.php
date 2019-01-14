@@ -78,7 +78,7 @@ class Page_Templates extends Base {
 	 */
 	public function template_include( $template ) {
 		if ( is_singular() ) {
-			$document = qazana()->documents->get_doc_for_frontend( get_the_ID() );
+			$document = qazana()->get_documents()->get_doc_for_frontend( get_the_ID() );
 
 			if ( $document ) {
 				$template_path = $this->get_template_path( $document->get_meta( '_wp_page_template' ) );
@@ -140,7 +140,7 @@ class Page_Templates extends Base {
 			// FIX ME: Gutenberg not send $post as WP_Post object, just the post ID.
 			$post_id = ! empty( $post->ID ) ? $post->ID : $post;
 
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 			if ( $document && ! $document::get_property( 'support_wp_page_templates' ) ) {
 				return $page_templates;
 			}

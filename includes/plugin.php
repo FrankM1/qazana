@@ -53,42 +53,22 @@ class Plugin {
 	 */
 	private $data;
 
-	/** Not Magic *************************************************************/
-
 	/**
-	 * @var mixed False when not logged in; WP_User object when logged in
-	 */
-	public $current_user = false;
-
-	/**
-	 * @var obj Add-ons append to this (Akismet, BuddyPress, etc...)
+	 * @var obj Add-ons append to this (New Features, Controls, etc...)
 	 */
 	public $extend;
 
-	/**
-	 * @var obj Add-ons append to this (Akismet, BuddyPress, etc...)
-	 */
-	public $file_stack;
+	private $documents;
 
-	/**
-	 * @var array Video views
-	 */
-	public $views = [];
+	private $controls_manager;
 
-	/**
-	 * @var array Overloads get_option()
-	 */
-	public $options = [];
+	private $templates_manager;
 
-	public $widgets;
+	private $elements_manager;
+	
+	private $widgets_manager;
 
-	public $controls_manager;
-
-	public $templates_manager;
-
-	public $widgets_manager;
-
-	public $extensions_manager;
+	private $extensions_manager;
 
 	/**
 	 * Getter method for retrieving the object instance.
@@ -316,13 +296,6 @@ class Plugin {
 		}
 	}
 
-	/**
-	 * Register init function
-	 */
-	public function register_extensions() {
-		$this->extensions_manager = new Extensions\Manager();
-	}
-
 	private function includes() {
 		do_action( 'qazana/before/includes' );
 
@@ -440,6 +413,69 @@ class Plugin {
 		}
 
 		do_action( 'qazana/after/includes' );
+	}
+
+	/**
+	 * Get widgets manager
+	 */
+	public function get_documents() {
+		return $this->documents;
+	}
+
+	/**
+	 * Get widgets manager
+	 */
+	public function get_widgets_manager() {
+		return $this->widgets_manager;
+	}
+
+	/**
+	 * Get elements manager
+	 */
+	public function get_elements_manager() {
+		return $this->elements_manager;
+	}
+
+	/**
+	 * Get controls manager
+	 */
+	public function get_controls_manager() {
+		return $this->controls_manager;
+	}
+
+	/**
+	 * Get controls manager
+	 */
+	public function get_schemes_manager() {
+		return $this->schemes_manager;
+	}
+
+	/**
+	 * Get dynamic tags manager
+	 */
+	public function get_dynamic_tags() {
+		return $this->dynamic_tags;
+	}
+
+	/**
+	 * Get templates manager
+	 */
+	public function get_templates_manager() {
+		return $this->templates_manager;
+	}
+
+	/**
+	 * Get extensions manager
+	 */
+	public function get_extensions_manager() {
+		return $this->extensions_manager;
+	}
+
+	/**
+	 * Register init function
+	 */
+	public function register_extensions() {
+		$this->extensions_manager = new Extensions\Manager();
 	}
 
 	/**

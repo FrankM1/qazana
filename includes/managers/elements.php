@@ -68,7 +68,7 @@ class Elements_Manager {
 	public function create_element_instance( array $element_data, array $element_args = [], Element_Base $element_type = null ) {
 		if ( null === $element_type ) {
 			if ( 'widget' === $element_data['elType'] ) {
-				$element_type = qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
+				$element_type = qazana()->get_widgets_manager()->get_widget_types( $element_data['widgetType'] );
 			} else {
 				$element_type = $this->get_element_types( $element_data['elType'] );
 			}
@@ -262,7 +262,7 @@ class Elements_Manager {
 	 * Fired by `wp_ajax_qazana_discard_changes` action.
 	 *
 	 * @since 1.9.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->ajax_discard_changes()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->ajax_discard_changes()` method instead.
 	 * @access public
 	 *
 	 * @param $request
@@ -270,9 +270,9 @@ class Elements_Manager {
 	 * @return bool
 	 */
 	public function ajax_discard_changes( $request ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->ajax_discard_changes()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->ajax_discard_changes()' );
 
-		return qazana()->documents->ajax_discard_changes( $request );
+		return qazana()->get_documents()->ajax_discard_changes( $request );
 	}
 
 	/**
@@ -284,7 +284,7 @@ class Elements_Manager {
 	 * Fired by `wp_ajax_qazana_save_builder` action.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->ajax_save()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->ajax_save()` method instead.
 	 * @access public
 	 *
 	 * @param array $request
@@ -292,9 +292,9 @@ class Elements_Manager {
 	 * @return mixed
 	 */
 	public function ajax_save_builder( $request ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->ajax_save()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->ajax_save()' );
 
-		$return_data = qazana()->documents->ajax_save( $request );
+		$return_data = qazana()->get_documents()->ajax_save( $request );
 
 		/**
 		 * Returned ajax data.
@@ -405,7 +405,7 @@ class Elements_Manager {
 
 		if ( is_array( $files ) ) {
 			foreach ( $files as $file ) {
-				qazana()->widgets_manager->loader->locate_widget( $file, true );
+				qazana()->get_widgets_manager()->loader->locate_widget( $file, true );
 			}
 		}
 	}

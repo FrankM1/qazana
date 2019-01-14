@@ -10,7 +10,7 @@ class Qazana_Test_Manager extends Qazana_Test_Base {
 
 	public function test_should_get_name() {
 
-        $manager = $this->qazana()->extensions_manager;
+        $manager = $this->qazana()->get_extensions_manager();
 
         $manager->loader->add_stack( array( 'path' => $this->qazana()->plugin_dir, 'uri' => $this->qazana()->plugin_url ), $this->qazana()->plugin_extensions_locations );
 

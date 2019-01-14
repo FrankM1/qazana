@@ -117,17 +117,16 @@ class Global_CSS extends Base {
 	 * @access private
 	 */
 	private function render_schemes_css() {
-		$qazana = qazana();
 
-		foreach ( $qazana->widgets_manager->get_widget_types() as $widget ) {
+		foreach ( qazana()->get_widgets_manager()->get_widget_types() as $widget ) {
 			$scheme_controls = $widget->get_scheme_controls();
 
 			foreach ( $scheme_controls as $control ) {
 				$this->add_control_rules(
 					$control,
 					$widget->get_controls(),
-					function( $control ) use ( $qazana ) {
-						$scheme_value = $qazana->schemes_manager->get_scheme_value( $control['scheme']['type'], $control['scheme']['value'] );
+					function( $control ) {
+						$scheme_value = qazana()->get_schemes_manager()->get_scheme_value( $control['scheme']['type'], $control['scheme']['value'] );
 
 						if ( empty( $scheme_value ) ) {
 							return null;

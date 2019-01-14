@@ -311,7 +311,7 @@ abstract class Source_Base {
 	protected function process_export_import_content( $content, $method ) {
 		return qazana()->db->iterate_data(
 			$content, function( $element_data ) use ( $method ) {
-				$element = qazana()->elements_manager->create_element_instance( $element_data );
+				$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
 
 				// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
 				if ( ! $element ) {
@@ -373,7 +373,7 @@ abstract class Source_Base {
 		}
 
 		foreach ( $element->get_controls() as $control ) {
-			$control_class = qazana()->controls_manager->get_control( $control['type'] );
+			$control_class = qazana()->get_controls_manager()->get_control( $control['type'] );
 
 			// If the control isn't exist, like a plugin that creates the control but deactivated.
 			if ( ! $control_class ) {

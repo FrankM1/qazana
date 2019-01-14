@@ -199,7 +199,7 @@ class Source_Local extends Source_Base {
 	 * @access public
 	 */
 	public function print_new_template_dialog() {
-		$document_types = qazana()->documents->get_document_types();
+		$document_types = qazana()->get_documents()->get_document_types();
 		$types = [];
 		$selected = get_query_var( 'qazana_library_type' );
 
@@ -1419,7 +1419,7 @@ class Source_Local extends Source_Base {
 	 * @return string Template label.
 	 */
 	private function get_template_label_by_type( $template_type ) {
-		$document_types = qazana()->documents->get_document_types();
+		$document_types = qazana()->get_documents()->get_document_types();
 
 		if ( isset( $document_types[ $template_type ] ) ) {
 			$template_label = call_user_func( [ $document_types[ $template_type ], 'get_title' ] );
@@ -1485,7 +1485,7 @@ class Source_Local extends Source_Base {
 	public function admin_columns_content( $column_name, $post_id ) {
 		if ( 'qazana_library_type' === $column_name ) {
 			/** @var Document $document */
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 
 			if ( $document ) {
 				$admin_filter_url = admin_url( '/edit.php?post_type=qazana_library&qazana_library_type=' . $document->get_name() );

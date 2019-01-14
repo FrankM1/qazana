@@ -97,7 +97,7 @@ abstract class Base_Data_Control extends Base_Control {
 			$dynamic_settings = array_merge( $current_dynamic_settings, $dynamic_settings );
 		}
 
-		return qazana()->dynamic_tags->parse_tags_text( $dynamic_value, $dynamic_settings, [ qazana()->dynamic_tags, 'get_tag_data_content' ] );
+		return qazana()->get_dynamic_tags()->parse_tags_text( $dynamic_value, $dynamic_settings, [ qazana()->get_dynamic_tags(), 'get_tag_data_content' ] );
 	}
 
 	/**

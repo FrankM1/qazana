@@ -143,7 +143,7 @@ class Preview {
 		if ( get_the_ID() === $this->post_id ) {
 			$classes = 'qazana-edit-mode';
 
-			$document = qazana()->documents->get( $this->post_id );
+			$document = qazana()->get_documents()->get( $this->post_id );
 
 			if ( $document ) {
 				$classes .= ' ' . $document->get_container_classes();

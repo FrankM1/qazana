@@ -4,15 +4,15 @@ namespace Qazana\Testing;
 class Qazana_Test_Widgets extends Qazana_Test_Base {
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Widgets_Manager', $this->qazana()->widgets_manager );
+		$this->assertInstanceOf( '\Qazana\Widgets_Manager', $this->qazana()->get_widgets_manager() );
 	}
 
 	public function test_getWidgets() {
-		$this->assertNotEmpty( $this->qazana()->widgets_manager->get_widget_types() );
+		$this->assertNotEmpty( $this->qazana()->get_widgets_manager()->get_widget_types() );
 	}
 
 	public function test_elementMethods() {
-		foreach ( $this->qazana()->widgets_manager->get_widget_types() as $widget_type ) {
+		foreach ( $this->qazana()->get_widgets_manager()->get_widget_types() as $widget_type ) {
 			$name = $widget_type->get_name();
 
 			if ( 'common' === $name ) {
@@ -29,19 +29,19 @@ class Qazana_Test_Widgets extends Qazana_Test_Base {
 		$widget_class = '\Qazana\Widget_Text_editor';
 		$widget_id = 'text-editor';
 
-		$this->assertTrue( $this->qazana()->widgets_manager->register_widget_type( new $widget_class() ) );
+		$this->assertTrue( $this->qazana()->get_widgets_manager()->register_widget_type( new $widget_class() ) );
 
-		$widget = $this->qazana()->widgets_manager->get_widget_types( $widget_id );
+		$widget = $this->qazana()->get_widgets_manager()->get_widget_types( $widget_id );
 		$this->assertInstanceOf( $widget_class, $widget );
 
-		$this->assertTrue( $this->qazana()->widgets_manager->unregister_widget_type( $widget_id ) );
-		$this->assertFalse( $this->qazana()->widgets_manager->unregister_widget_type( $widget_id ) );
+		$this->assertTrue( $this->qazana()->get_widgets_manager()->unregister_widget_type( $widget_id ) );
+		$this->assertFalse( $this->qazana()->get_widgets_manager()->unregister_widget_type( $widget_id ) );
 
-		$this->assertNull( $this->qazana()->widgets_manager->get_widget_types( $widget_id ) );
+		$this->assertNull( $this->qazana()->get_widgets_manager()->get_widget_types( $widget_id ) );
 	}
 
 	// public function test_controlsSelectorsData() {
-	// 	foreach ( $this->qazana()->widgets_manager->get_widget_types() as $widget ) {
+	// 	foreach ( $this->qazana()->get_widgets_manager()->get_widget_types() as $widget ) {
 	// 		foreach ( $widget->get_controls() as $control ) {
 	// 			if ( empty( $control['selectors'] ) ) {
 	// 				continue;
@@ -59,7 +59,7 @@ class Qazana_Test_Widgets extends Qazana_Test_Base {
 	// }
 
 	public function test_controlsDefaultData() {
-		foreach ( $this->qazana()->widgets_manager->get_widget_types() as $widget ) {
+		foreach ( $this->qazana()->get_widgets_manager()->get_widget_types() as $widget ) {
 			foreach ( $widget->get_controls() as $control ) {
 				if ( \Qazana\Controls_Manager::SELECT !== $control['type'] ) {
 					continue;

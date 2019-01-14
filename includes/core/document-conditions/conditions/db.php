@@ -36,7 +36,7 @@ class DB {
 	}
 
 	public function on_untrash_post( $post_id ) {
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 		if ( $document ) {
 			$conditions = $document->get_meta( '_qazana_conditions' );
 			if ( $conditions ) {
@@ -83,7 +83,7 @@ class DB {
 			return;
 		}
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( ! $document || get_post_meta( $post_id, Document::TYPE_META_KEY, $document->get_name() ) !== 'site-hero' ) {
 			return;
@@ -207,7 +207,7 @@ class DB {
 		] );
 
 		foreach ( $query->posts as $post_id ) {
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 			$conditions = $document->get_meta( self::META_OPTION_NAME );
 			$this->add( $document, $conditions );
 		}
@@ -237,7 +237,7 @@ class DB {
 			$conditions_to_save[] = rtrim( implode( '/', $condition ), '/' );
 		}
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 		if ( empty( $conditions_to_save ) ) {
 			$document->delete_meta( self::META_OPTION_NAME );
 		} else {
@@ -255,7 +255,7 @@ class DB {
 
 		$conditions_to_check = rtrim( implode( '/', $condition ), '/' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		$conditions_groups = $this->get_by_location( $document->get_location() );
 
@@ -273,7 +273,7 @@ class DB {
 				}
 
 				if ( false !== array_search( $conditions_to_check, $conditions, true ) ) {
-					$edit_url = qazana()->documents->get( $template_id )->get_edit_url();
+					$edit_url = qazana()->get_documents()->get( $template_id )->get_edit_url();
 					$conflicted[] = sprintf( '<a href="%s" target="_blank">%s</a>', $edit_url, get_the_title( $template_id ) );
 				}
 			}

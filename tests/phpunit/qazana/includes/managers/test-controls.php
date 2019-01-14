@@ -9,27 +9,27 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
     }
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Controls_Manager', $this->qazana()->controls_manager );
+		$this->assertInstanceOf( '\Qazana\Controls_Manager', $this->qazana()->get_controls_manager() );
 	}
 
 	public function test_getControls() {
-		$this->assertNotEmpty( $this->qazana()->controls_manager->get_controls() );
+		$this->assertNotEmpty( $this->qazana()->get_controls_manager()->get_controls() );
 	}
 
 	public function test_renderControls() {
 		ob_start();
-		$this->qazana()->controls_manager->render_controls();
+		$this->qazana()->get_controls_manager()->render_controls();
 		$this->assertNotEmpty( ob_get_clean() );
 	}
 
 	public function test_enqueueControlScripts() {
 		ob_start();
-		$this->qazana()->controls_manager->enqueue_control_scripts();
+		$this->qazana()->get_controls_manager()->enqueue_control_scripts();
 		$this->assertEmpty( ob_get_clean() );
 	}
 
 	public function test_getTypes() {
-		foreach ( $this->qazana()->controls_manager->get_controls() as $control ) {
+		foreach ( $this->qazana()->get_controls_manager()->get_controls() as $control ) {
 			$this->assertNotEmpty( $control->get_type() );
 		}
 	}
@@ -41,21 +41,21 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 
 		$control_instance = new $control_class();
 
-		$this->qazana()->controls_manager->register_control( $control_id, new $control_instance() );
+		$this->qazana()->get_controls_manager()->register_control( $control_id, new $control_instance() );
 
-		$control = $this->qazana()->controls_manager->get_control( $control_id );
+		$control = $this->qazana()->get_controls_manager()->get_control( $control_id );
 
 		$this->assertInstanceOf( $control_class, $control );
 
-		$this->assertTrue( $this->qazana()->controls_manager->unregister_control( $control_id ) );
-		$this->assertFalse( $this->qazana()->controls_manager->unregister_control( $control_id ) );
+		$this->assertTrue( $this->qazana()->get_controls_manager()->unregister_control( $control_id ) );
+		$this->assertFalse( $this->qazana()->get_controls_manager()->unregister_control( $control_id ) );
 
 		// Return the control for next tests..
-		$this->qazana()->controls_manager->register_control( $control_id, $control_instance );
+		$this->qazana()->get_controls_manager()->register_control( $control_id, $control_instance );
 	}
 
 	public function test_groupControlsGetTypes() {
-		foreach ( $this->qazana()->controls_manager->get_control_groups() as $control_group ) {
+		foreach ( $this->qazana()->get_controls_manager()->get_control_groups() as $control_group ) {
 			$this->assertNotEmpty( $control_group->get_type() );
 		}
 	}
@@ -114,9 +114,9 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 	}
 
 	public function test_checkCondition() {
-		$this->qazana()->widgets_manager->get_widget_types(); // Ensure the widgets initialized
+		$this->qazana()->get_widgets_manager()->get_widget_types(); // Ensure the widgets initialized
 
-		$element_obj = $this->qazana()->elements_manager->create_element_instance(
+		$element_obj = $this->qazana()->get_elements_manager()->create_element_instance(
 			[
 				'elType' => 'widget',
 				'widgetType' => 'text-editor',
@@ -158,7 +158,7 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 
 	public function test_getDefaultValue() {
 		// Text Control
-		$text_control = $this->qazana()->controls_manager->get_control( Controls_Manager::TEXT );
+		$text_control = $this->qazana()->get_controls_manager()->get_control( Controls_Manager::TEXT );
 
 		$control_option = [
 			'name' => 'key',
@@ -167,7 +167,7 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 		$this->assertEquals( 'value', $text_control->get_value( $control_option, [] ) );
 
 		// URL Control
-		$url_control = $this->qazana()->controls_manager->get_control( Controls_Manager::URL );
+		$url_control = $this->qazana()->get_controls_manager()->get_control( Controls_Manager::URL );
 		$control_option = [
 			'name' => 'key',
 			'default' => [
@@ -183,7 +183,7 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 		);
 
 		// Repeater Control
-		$repeater_control = $this->qazana()->controls_manager->get_control( Controls_Manager::REPEATER );
+		$repeater_control = $this->qazana()->get_controls_manager()->get_control( Controls_Manager::REPEATER );
 		$control_option = [
 			'name' => 'key',
 			'default' => [ [] ],

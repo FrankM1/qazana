@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wp_version;
 
-$document = qazana()->documents->get( $this->_post_id );
+$document = qazana()->get_documents()->get( $this->_post_id );
 
 $body_classes = [
 	'qazana-editor-active',

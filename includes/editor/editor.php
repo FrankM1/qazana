@@ -513,7 +513,7 @@ class Editor {
 		 */
 		do_action( 'qazana/editor/before_enqueue_scripts' );
 
-		$document = qazana()->documents->get_doc_or_auto_save( $this->get_post_id() );
+		$document = qazana()->get_documents()->get_doc_or_auto_save( $this->get_post_id() );
 
 		// Get document data *after* the scripts hook - so plugins can run compatibility before get data, but *before* enqueue the editor script - so elements can enqueue their own scripts that depended in editor script.
 		$editor_data = $document->get_elements_raw_data( null, true );
@@ -554,17 +554,17 @@ class Editor {
 			'help_the_content_url'   => 'https://qazana.net/plugins/qazana/the-content-missing/',
 			'assets_url'             => qazana()->core_assets_url,
 			'document'               => $document->get_config(),
-			'controls'               => qazana()->controls_manager->get_controls_data(),
-			'elements'               => qazana()->elements_manager->get_element_types_config(),
-			'widgets'                => qazana()->widgets_manager->get_widget_types_config(),
-			'default_schemes'        => qazana()->schemes_manager->get_schemes_defaults(),
-			'system_schemes'         => qazana()->schemes_manager->get_system_schemes(),
+			'controls'               => qazana()->get_controls_manager()->get_controls_data(),
+			'elements'               => qazana()->get_elements_manager()->get_element_types_config(),
+			'widgets'                => qazana()->get_widgets_manager()->get_widget_types_config(),
+			'default_schemes'        => qazana()->get_schemes_manager()->get_schemes_defaults(),
+			'system_schemes'         => qazana()->get_schemes_manager()->get_system_schemes(),
 			'wp_editor'              => $this->get_wp_editor_config(),
 			'settings'               => SettingsManager::get_settings_managers_config(),
-			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
-			'dynamicTags'            => qazana()->dynamic_tags->get_config(),
+			'inlineEditing'          => qazana()->get_widgets_manager()->get_inline_editing_config(),
+			'dynamicTags'            => qazana()->get_dynamic_tags()->get_config(),
 			'schemes'                => [
-				'items'              => qazana()->schemes_manager->get_registered_schemes_data(),
+				'items'              => qazana()->get_schemes_manager()->get_registered_schemes_data(),
 				'enabled_schemes'    => Schemes_Manager::get_enabled_schemes(),
 			],
 			'locked_user'            => $locked_user,
@@ -734,7 +734,7 @@ class Editor {
 	    // Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );
 
-        qazana()->controls_manager->enqueue_control_scripts();
+        qazana()->get_controls_manager()->enqueue_control_scripts();
 
 		/**
 		 * After editor enqueue scripts.
@@ -947,11 +947,11 @@ class Editor {
 	 * @access public
 	 */
 	public function wp_footer() {
-		qazana()->controls_manager->render_controls();
-		qazana()->widgets_manager->render_widgets_content();
-		qazana()->elements_manager->render_elements_content();
-		qazana()->schemes_manager->print_schemes_templates();
-		qazana()->dynamic_tags->print_templates();
+		qazana()->get_controls_manager()->render_controls();
+		qazana()->get_widgets_manager()->render_widgets_content();
+		qazana()->get_elements_manager()->render_elements_content();
+		qazana()->get_schemes_manager()->print_schemes_templates();
+		qazana()->get_dynamic_tags()->print_templates();
 
 		$this->init_editor_templates();
 

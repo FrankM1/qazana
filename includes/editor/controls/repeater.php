@@ -87,7 +87,7 @@ class Control_Repeater extends Base_Data_Control {
 		if ( ! empty( $value ) ) {
 			foreach ( $value as &$item ) {
 				foreach ( $control['fields'] as $field ) {
-					$control_obj = qazana()->controls_manager->get_control( $field['type'] );
+					$control_obj = qazana()->get_controls_manager()->get_control( $field['type'] );
 
 					// Prior to 1.5.0 the fields may contains non-data controls.
 					if ( ! $control_obj instanceof Base_Data_Control ) {
@@ -129,7 +129,7 @@ class Control_Repeater extends Base_Data_Control {
 					continue;
 				}
 
-				$control_obj = qazana()->controls_manager->get_control( $field['type'] );
+				$control_obj = qazana()->get_controls_manager()->get_control( $field['type'] );
 
 				if ( ! $control_obj ) {
 					continue;

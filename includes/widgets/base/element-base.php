@@ -354,7 +354,7 @@ abstract class Element_Base extends Controls_Stack {
 			return false;
 		}
 
-		$child = qazana()->elements_manager->create_element_instance( $child_data, $child_args, $child_type );
+		$child = qazana()->get_elements_manager()->create_element_instance( $child_data, $child_args, $child_type );
 
 		if ( $child ) {
 			$this->_children[] = $child;

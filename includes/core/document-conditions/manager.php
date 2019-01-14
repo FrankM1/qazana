@@ -42,7 +42,7 @@ class Manager {
 
 	public function is_registered_document( $post_id ) {
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( in_array( $document->get_name(), $this->documents_support ) ) {
 			return $document instanceof Document;
@@ -52,7 +52,7 @@ class Manager {
 	}
 
 	public function get_document_instance( $post_id ) {
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 		return $this->documents_support[ $document->get_name() ];
 	}
 }

@@ -47,7 +47,7 @@ class Qazana_Test_Qunit extends Qazana_Test_Base {
 			wp_enqueue_script( 'wp-color-picker' );
         } );
         
-        $this->qazana()->widgets_manager = new Widgets_Manager();
+        $this->qazana()->get_widgets_manager() = new Widgets_Manager();
 
 		ob_start();
 

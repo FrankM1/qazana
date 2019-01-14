@@ -151,7 +151,7 @@ abstract class Widget_Base extends Element_Base {
 
 		if ( $with_common_controls && 'common' !== $this->get_unique_name() ) {
 			/** @var Widget_Common $common_widget */
-			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
+			$common_widget = qazana()->get_widgets_manager()->get_widget_types( 'common' );
 
 			$stack['controls'] = array_merge( $stack['controls'], $common_widget->get_controls() );
 
@@ -668,7 +668,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array|false Child type or false if it's not a valid widget.
 	 */
 	protected function _get_default_child_type( array $element_data ) {
-		return qazana()->elements_manager->get_element_types( 'section' );
+		return qazana()->get_elements_manager()->get_element_types( 'section' );
 	}
 
 	/**

@@ -210,7 +210,7 @@ abstract class Base {
 	 * @return string       full url
 	 */
 	public function extension_url( $file ) {
-		return qazana()->extensions_manager->loader->locate_widget_url( $this->get_config()['name'] . '/' . $file );
+		return qazana()->get_extensions_manager()->loader->locate_widget_url( $this->get_config()['name'] . '/' . $file );
 	}
 
 	/**
@@ -220,7 +220,7 @@ abstract class Base {
 	 * @return string       full path
 	 */
 	public function extension_dir( $file ) {
-		return qazana()->extensions_manager->loader->locate_widget( $this->get_config()['name'] . '/' . $file );
+		return qazana()->get_extensions_manager()->loader->locate_widget( $this->get_config()['name'] . '/' . $file );
 	}
 
 	/**

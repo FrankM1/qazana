@@ -13,7 +13,7 @@ class Qazana_Test_Revisions_Manager_Ajax extends Qazana_Test_AJAX {
 		parent::setUp();
 		if ( ! $this->revisions_manager ) {
             
-            $manager = $this->qazana()->extensions_manager;
+            $manager = $this->qazana()->get_extensions_manager();
 
             $manager->loader->add_stack( array( 'path' => $this->qazana()->plugin_dir, 'uri' => $this->qazana()->plugin_url ), $this->qazana()->plugin_extensions_locations );
 
@@ -141,7 +141,7 @@ class Qazana_Test_Revisions_Manager_Ajax extends Qazana_Test_AJAX {
 		$parent_and_child_posts = $this->factory()->create_and_get_parent_and_child_posts();
 		$parent_id = $parent_and_child_posts['parent_id'];
 		$child_id = $parent_and_child_posts['child_id'];
-		$document = $this->qazana()->documents->get( $parent_id );
+		$document = $this->qazana()->get_documents()->get( $parent_id );
 
 		$ret = apply_filters( 'qazana/documents/ajax_save/return_data', [], $document );
 

@@ -288,7 +288,7 @@ class Editor {
 
 		$post_data['post_type'] = $post_type;
 
-		$document = qazana()->documents->create( $type, $post_data, $meta );
+		$document = qazana()->get_documents()->create( $type, $post_data, $meta );
 
 		wp_redirect( $document->get_edit_url() );
 		die;

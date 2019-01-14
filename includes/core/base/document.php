@@ -65,7 +65,7 @@ abstract class Document extends Controls_Stack {
 	protected $post;
 
 	protected static function get_editor_panel_categories() {
-		return qazana()->elements_manager->get_categories();
+		return qazana()->get_elements_manager()->get_categories();
 	}
 
 	/**
@@ -189,7 +189,7 @@ abstract class Document extends Controls_Stack {
 		ob_start();
 
 		/** @var Widget_Base $widget */
-		$widget = qazana()->elements_manager->create_element_instance( $data );
+		$widget = qazana()->get_elements_manager()->create_element_instance( $data );
 
 		if ( ! $widget ) {
 			throw new \Exception( 'Widget not found.' );
@@ -316,7 +316,7 @@ abstract class Document extends Controls_Stack {
 		$autosave_id = $this->get_autosave_id( $user_id );
 
 		if ( $autosave_id ) {
-			$document = qazana()->documents->get( $autosave_id );
+			$document = qazana()->get_documents()->get( $autosave_id );
 		} elseif ( $create ) {
 			$autosave_id = wp_create_post_autosave(
 				[
@@ -332,7 +332,7 @@ abstract class Document extends Controls_Stack {
 
 			qazana()->db->copy_qazana_meta( $this->post->ID, $autosave_id );
 
-			$document = qazana()->documents->get( $autosave_id );
+			$document = qazana()->get_documents()->get( $autosave_id );
 			$document->save_type();
 		} else {
 			$document = false;
@@ -587,12 +587,12 @@ abstract class Document extends Controls_Stack {
 		}
 
 		// Change the current documents, so widgets can use `documents->get_current` and other post data
-		qazana()->documents->switch_to_document( $this );
+		qazana()->get_documents()->switch_to_document( $this );
 
 		$editor_data = [];
 
 		foreach ( $data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -601,7 +601,7 @@ abstract class Document extends Controls_Stack {
 			$editor_data[] = $element->get_raw_data( $with_html_content );
 		} // End foreach().
 
-		qazana()->documents->restore_document();
+		qazana()->get_documents()->restore_document();
 
 		return $editor_data;
 	}
@@ -621,7 +621,7 @@ abstract class Document extends Controls_Stack {
 			$autosave = $this->get_newer_autosave();
 
 			if ( is_object( $autosave ) ) {
-				$autosave_elements = qazana()->documents
+				$autosave_elements = qazana()->get_documents()
 					->get( $autosave->get_post()->ID )
 					->get_json_meta( '_qazana_data' );
 			}
@@ -944,7 +944,7 @@ abstract class Document extends Controls_Stack {
 
 	protected function print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -970,7 +970,7 @@ abstract class Document extends Controls_Stack {
 			$elements_data,
 			function( $element ) {
 
-				$element_instance = qazana()->elements_manager->create_element_instance( $element );
+				$element_instance = qazana()->get_elements_manager()->create_element_instance( $element );
 
 				// Exit if the element doesn't exist
 				if ( ! $element_instance ) {

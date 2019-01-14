@@ -28,7 +28,7 @@ qazana()->frontend->add_body_class( 'qazana-template-canvas' );
 	 */
 	do_action( 'qazana/page_templates/canvas/before_content' );
 
-	qazana()->extensions_manager->get_extension( 'page_templates' )->print_content();
+	qazana()->get_extensions_manager()->get_extension( 'page_templates' )->print_content();
 
 	/**
 	 * After canvas page template content.
