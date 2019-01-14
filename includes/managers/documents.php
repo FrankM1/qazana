@@ -211,11 +211,7 @@ class Documents {
 			}
 
 			$doc_type_class = $this->get_document_type( $doc_type );
-			$this->documents[ $post_id ] = new $doc_type_class(
-				[
-					'post_id' => $post_id,
-				]
-			);
+			$this->documents[ $post_id ] = new $doc_type_class( [ 'post_id' => $post_id ] );
 		}
 
 		return $this->documents[ $post_id ];
@@ -549,20 +545,6 @@ class Documents {
 	 */
 	public function get_groups() {
 		return $this->groups;
-	}
-
-	/**
-	 * Get widgets manager
-	 */
-	public function get_document_widgets_manager() {
-		return $this->get_current()->get_widgets_manager();
-	}
-
-	/**
-	 * Get elements manager
-	 */
-	public function get_document_elements_manager() {
-		return $this->get_current()->get_elements_manager();
 	}
 
 }

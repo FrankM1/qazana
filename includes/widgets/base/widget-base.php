@@ -668,7 +668,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array|false Child type or false if it's not a valid widget.
 	 */
 	protected function _get_default_child_type( array $element_data ) {
-		return qazana()->get_elements_manager()->get_element_types( 'section' );
+		return $this->get_parent_document()->get_elements()->get_element_types( 'section' );
 	}
 
 	/**

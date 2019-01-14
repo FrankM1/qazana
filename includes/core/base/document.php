@@ -10,6 +10,8 @@ use Qazana\User;
 use Qazana\Core\Settings\Manager as SettingsManager;
 use Qazana\Utils;
 use Qazana\Widget_Base;
+use Qazana\Document\Widgets;
+use Qazana\Document\Elements;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -26,22 +28,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class Document extends Controls_Stack {
 
-	private $elements_manager;
-	
-	private $widgets_manager;
-
 	/**
-	 * Get widgets manager
+	 * Get widgets
 	 */
-	public function get_widgets_manager() {
-		return $this->widgets_manager;
+	public function get_widgets() {
+		return new Widgets;
 	}
 
 	/**
-	 * Get elements manager
+	 * Get elements
 	 */
-	public function get_elements_manager() {
-		return $this->elements_manager;
+	public function get_elements() {
+		return new Elements;
 	}
 
 	/**
@@ -207,7 +205,7 @@ abstract class Document extends Controls_Stack {
 		ob_start();
 
 		/** @var Widget_Base $widget */
-		$widget = qazana()->get_elements_manager()->create_element_instance( $data );
+		$widget = qazana()->get_elements_manager()->create_element_instance( $this, $data );
 
 		if ( ! $widget ) {
 			throw new \Exception( 'Widget not found.' );
@@ -610,7 +608,7 @@ abstract class Document extends Controls_Stack {
 		$editor_data = [];
 
 		foreach ( $data as $element_data ) {
-			$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $this, $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -962,7 +960,7 @@ abstract class Document extends Controls_Stack {
 
 	protected function print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
-			$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $this, $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -988,7 +986,7 @@ abstract class Document extends Controls_Stack {
 			$elements_data,
 			function( $element ) {
 
-				$element_instance = qazana()->get_elements_manager()->create_element_instance( $element );
+				$element_instance = qazana()->get_elements_manager()->create_element_instance( $this, $element );
 
 				// Exit if the element doesn't exist
 				if ( ! $element_instance ) {

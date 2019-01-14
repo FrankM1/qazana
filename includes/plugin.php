@@ -328,6 +328,9 @@ class Plugin {
 
 		require_once $this->includes_dir . 'core/debug/inspector.php';
 
+		require_once $this->includes_dir . 'core/document/elements.php';
+		require_once $this->includes_dir . 'core/document/widgets.php';
+
 		require_once $this->includes_dir . 'core/document-conditions/conditions/conditions.php';
 		require_once $this->includes_dir . 'core/document-conditions/conditions/controls.php';
 		require_once $this->includes_dir . 'core/document-conditions/conditions/db.php';

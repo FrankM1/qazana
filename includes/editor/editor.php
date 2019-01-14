@@ -555,8 +555,8 @@ class Editor {
 			'assets_url'             => qazana()->core_assets_url,
 			'document'               => $document->get_config(),
 			'controls'               => qazana()->get_controls_manager()->get_controls_data(),
-			'elements'               => qazana()->get_elements_manager()->get_element_types_config(),
-			'widgets'                => qazana()->get_widgets_manager()->get_widget_types_config(),
+			'elements'               => $document->get_elements()->get_element_types_config(),
+			'widgets'                => $document->get_widgets()->get_widget_types_config(),
 			'default_schemes'        => qazana()->get_schemes_manager()->get_schemes_defaults(),
 			'system_schemes'         => qazana()->get_schemes_manager()->get_system_schemes(),
 			'wp_editor'              => $this->get_wp_editor_config(),
@@ -947,9 +947,11 @@ class Editor {
 	 * @access public
 	 */
 	public function wp_footer() {
+		$document = qazana()->get_documents()->get_doc_or_auto_save( $this->get_post_id() );
+
 		qazana()->get_controls_manager()->render_controls();
-		qazana()->get_widgets_manager()->render_widgets_content();
-		qazana()->get_elements_manager()->render_elements_content();
+		$document->get_widgets()->render_widgets_content();
+		$document->get_elements()->render_elements_content();
 		qazana()->get_schemes_manager()->print_schemes_templates();
 		qazana()->get_dynamic_tags()->print_templates();
 

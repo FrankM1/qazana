@@ -1,22 +1,24 @@
 <?php
-namespace Qazana;
+namespace Qazana\Document;
 
 use Qazana\Core\Ajax_Manager;
 use Qazana\Core\Utils\Exceptions;
+use Qazana\Loader;
+use Qazana\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Qazana widgets manager.
+ * Qazana document widgets.
  *
  * Qazana widgets manager handler class is responsible for registering and
  * initializing all the supported Qazana widgets.
  *
  * @since 1.0.0
  */
-class Widgets_Manager {
+class Widgets {
 
 	/**
 	 * Widget types.
@@ -125,7 +127,7 @@ class Widgets_Manager {
 
 			$class_name = str_replace( '-', '_', $widget_filename );
 
-			$class_name = __NAMESPACE__ . '\Widget_' . $class_name;
+			$class_name =  'Qazana\Widget_' . $class_name;
 
 			$class_name = apply_filters( "qazana/widgets/{$widget_filename}_class_name", $class_name, $widget_filename );
 
@@ -190,7 +192,7 @@ class Widgets_Manager {
 				continue;
 			}
 
-			$qazana_widget_class = __NAMESPACE__ . '\Widget_WordPress';
+			$qazana_widget_class = 'Qazana\Widget_WordPress';
 			$this->register_widget_type( new $qazana_widget_class( array(), [ 'widget_name' => $widget_class ] ) );
 		}
 	}
@@ -391,7 +393,7 @@ class Widgets_Manager {
 			$request['data'] = [];
 		}
 
-		$element_data = [
+		$data = [
 			'id' => $request['id'],
 			'elType' => 'widget',
 			'widgetType' => $request['widget_type'],
@@ -401,7 +403,7 @@ class Widgets_Manager {
 		/**
 		 * @var $widget_obj Widget_WordPress
 		 */
-		$widget_obj = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
+		$widget_obj = qazana()->get_elements_manager()->create_element_instance( $document, $data );
 
 		if ( ! $widget_obj ) {
 			return false;

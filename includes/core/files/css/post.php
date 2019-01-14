@@ -161,7 +161,7 @@ class Post extends Base {
 
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $element_data ) {
-				$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
+				$element = qazana()->get_elements_manager()->create_element_instance( qazana()->get_documents()->get( $this->post_id ), $element_data );
 
 				if ( ! $element ) {
 					continue;

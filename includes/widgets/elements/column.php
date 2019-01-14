@@ -917,10 +917,10 @@ class Element_Column extends Element_Base {
 	 */
 	protected function _get_default_child_type( array $element_data ) {
 		if ( 'section' === $element_data['elType'] ) {
-			return qazana()->get_elements_manager()->get_element_types( 'section' );
+			return $this->get_parent_document()->get_elements()->get_element_types( 'section' );
 		}
 
-		return qazana()->get_widgets_manager()->get_widget_types( $element_data['widgetType'] );
+		return $this->get_parent_document()->get_widgets()->get_widget_types( $element_data['widgetType'] );
 	}
 
 	/**

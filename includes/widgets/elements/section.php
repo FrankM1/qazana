@@ -1502,7 +1502,7 @@ class Element_Section extends Element_Base {
 	 * @return Element_Base Section default child type.
 	 */
 	protected function _get_default_child_type( array $element_data ) {
-		return qazana()->get_elements_manager()->get_element_types( 'column' );
+		return $this->get_parent_document()->get_elements()->get_element_types( 'column' );
 	}
 
 	/**

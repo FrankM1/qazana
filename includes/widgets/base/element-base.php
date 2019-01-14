@@ -314,6 +314,24 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	/**
+	 * Get parent document.
+	 *
+	 * Retrieve the document parent. Used to check which document it belongs to.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @deprecated
+	 *
+	 * @return Element_Base Parent document.
+	 */
+	public function get_parent_document() {
+		$class = qazana()->get_documents()->get_document_type('post');
+
+		return new $class;
+	}
+
+	/**
 	 * Get parent element.
 	 *
 	 * Retrieve the element parent. Used to check which element it belongs to.
@@ -354,7 +372,7 @@ abstract class Element_Base extends Controls_Stack {
 			return false;
 		}
 
-		$child = qazana()->get_elements_manager()->create_element_instance( $child_data, $child_args, $child_type );
+		$child = qazana()->get_elements_manager()->create_element_instance( $this->get_parent_document(), $child_data, $child_args, $child_type );
 
 		if ( $child ) {
 			$this->_children[] = $child;

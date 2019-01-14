@@ -2976,6 +2976,14 @@ HandlerModule = ViewModule.extend({
 		return this.$element.data('model-cid');
 	},
 
+	getDocumentSettings: function getDocumentSettings() {
+		if (qazanaFrontend.isEditMode()) {
+			return qazana.settings.page.getSettings().settings;
+		}
+
+		return jQuery(this.$element).closest('.qazana').data('settings');
+	},
+
 	getElementSettings: function getElementSettings(setting) {
 		var elementSettings = {},
 		    skinName,

@@ -117,6 +117,7 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 		$this->qazana()->get_widgets_manager()->get_widget_types(); // Ensure the widgets initialized
 
 		$element_obj = $this->qazana()->get_elements_manager()->create_element_instance(
+			$document,
 			[
 				'elType' => 'widget',
 				'widgetType' => 'text-editor',

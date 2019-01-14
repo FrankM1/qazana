@@ -435,11 +435,10 @@ class Frontend {
 		}
 
 		if ( $is_preview_mode ) {
-			$elements_manager = qazana()->get_elements_manager();
-
+			$document = qazana()->get_documents()->get( qazana()->get_preview()->get_post_id() );
 			$elements_frontend_keys = [
-				'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
-				'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
+				'section' => $document->get_elements()->get_element_types( 'section' )->get_frontend_settings_keys(),
+				'column' => $document->get_elements()->get_element_types( 'column' )->get_frontend_settings_keys(),
 			];
 
 			$elements_frontend_keys += qazana()->get_widgets_manager()->get_widgets_frontend_settings_keys();
