@@ -648,8 +648,9 @@ abstract class Document extends Controls_Stack {
 		if ( ! $elements_data ) {
 			$elements_data = $this->get_elements_data();
 		}
+
 		?>
-		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>" data-document-id="<?php echo esc_attr( $this->post->ID ); ?>">
+		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>" data-id="<?php echo esc_attr( $this->post->ID ); ?>" data-settings='<?php echo wp_json_encode( $this->get_frontend_settings() ); ?>'>
 			<div class="qazana-inner">
 				<div class="qazana-section-wrap">
 					<?php $this->print_elements( $elements_data ); ?>
