@@ -90,6 +90,20 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
+	 * Get widget supported documents.
+	 *
+	 * Retrieve the widget documents.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @return array Widget documents.
+	 */
+	public function get_documents() {
+		return [ 'post' ];
+	}
+
+	/**
 	 * Widget base constructor.
 	 *
 	 * Initializing the widget base class.
@@ -352,6 +366,7 @@ abstract class Widget_Base extends Element_Base {
 			'widget_type' => $this->get_name(),
 			'keywords' => $this->get_keywords(),
 			'categories' => $this->get_categories(),
+			'documents' => $this->get_documents(),
 			'html_wrapper_class' => $this->get_html_wrapper_class(),
 			'show_in_panel' => $this->show_in_panel(),
 		];
