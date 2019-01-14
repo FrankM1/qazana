@@ -63,12 +63,16 @@ class Plugin {
 	private $controls_manager;
 
 	private $templates_manager;
+	
+	private $skins_manager;
 
 	private $elements_manager;
 	
 	private $widgets_manager;
 
 	private $extensions_manager;
+
+	private $debugger;
 
 	/**
 	 * Getter method for retrieving the object instance.
@@ -437,6 +441,13 @@ class Plugin {
 	}
 
 	/**
+	 * Get skins manager
+	 */
+	public function get_skins_manager() {
+		return $this->skins_manager;
+	}
+	
+	/**
 	 * Get controls manager
 	 */
 	public function get_controls_manager() {
@@ -448,6 +459,13 @@ class Plugin {
 	 */
 	public function get_schemes_manager() {
 		return $this->schemes_manager;
+	}
+
+	/**
+	 * Get role manager
+	 */
+	public function get_role_manager() {
+		return $this->role_manager;
 	}
 
 	/**
@@ -476,6 +494,13 @@ class Plugin {
 	 */
 	public function register_extensions() {
 		$this->extensions_manager = new Extensions\Manager();
+	}
+
+	/**
+	 * Get debugger
+	 */
+	public function get_debugger() {
+		return $this->debugger;
 	}
 
 	/**

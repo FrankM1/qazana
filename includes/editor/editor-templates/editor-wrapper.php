@@ -17,7 +17,7 @@ $body_classes = [
 if ( is_rtl() ) {
 	$body_classes[] = 'rtl';
 }
-if ( ! qazana()->role_manager->user_can( 'design' ) ) {
+if ( ! qazana()->get_role_manager()->user_can( 'design' ) ) {
 	$body_classes[] = 'qazana-editor-content-only';
 }
 ?>

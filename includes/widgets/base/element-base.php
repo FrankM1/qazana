@@ -102,7 +102,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * @return array Element edit tools.
 	 */
 	final public static function get_edit_tools() {
-		if ( ! qazana()->role_manager->user_can( 'design' ) ) {
+		if ( ! qazana()->get_role_manager()->user_can( 'design' ) ) {
 			return [];
 		}
 

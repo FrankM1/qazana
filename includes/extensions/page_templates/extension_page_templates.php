@@ -85,7 +85,7 @@ class Page_Templates extends Base {
 				if ( $template_path ) {
 					$template = $template_path;
 
-					qazana()->debugger->add_log( 'Page Template', qazana()->debugger->parse_template_path( $template ), $document->get_edit_url() );
+					qazana()->get_debugger()->add_log( 'Page Template', qazana()->get_debugger()->parse_template_path( $template ), $document->get_edit_url() );
 				}
 			}
         }

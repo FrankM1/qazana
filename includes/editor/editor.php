@@ -569,7 +569,7 @@ class Editor {
 			],
 			'locked_user'            => $locked_user,
 			'user' => [
-				'restrictions'       => qazana()->role_manager->get_user_restrictions_array(),
+				'restrictions'       => qazana()->get_role_manager()->get_user_restrictions_array(),
 				'is_administrator'   => current_user_can( 'manage_options' ),
 			],
 			'is_rtl'                 => is_rtl() ? true : false,

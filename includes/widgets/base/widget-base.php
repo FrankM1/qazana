@@ -756,7 +756,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @param Skin_Base $skin Skin instance.
 	 */
 	public function add_skin( Skin_Base $skin ) {
-		qazana()->skins_manager->add_skin( $this, $skin );
+		qazana()->get_skins_manager()->add_skin( $this, $skin );
 	}
 
 	/**
@@ -823,7 +823,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return \WP_Error|true Whether the skin was removed successfully from the widget.
 	 */
 	public function remove_skin( $skin_id ) {
-		return qazana()->skins_manager->remove_skin( $this, $skin_id );
+		return qazana()->get_skins_manager()->remove_skin( $this, $skin_id );
 	}
 
 	/**
@@ -837,6 +837,6 @@ abstract class Widget_Base extends Element_Base {
 	 * @return Skin_Base[]
 	 */
 	public function get_skins() {
-		return qazana()->skins_manager->get_skins( $this );
+		return qazana()->get_skins_manager()->get_skins( $this );
 	}
 }
