@@ -138,7 +138,7 @@ class Commands extends WP_CLI_Command {
 			\WP_CLI::error( 'Cannot read file.' );
 		}
 		/** @var Source_Local $source */
-		$source = qazana()->templates_manager->get_source( 'local' );
+		$source = qazana()->get_templates_manager()->get_source( 'local' );
 
 		$imported_items = $source->import_template( basename( $args[0] ), $args[0] );
 

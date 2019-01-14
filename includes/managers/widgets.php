@@ -353,7 +353,7 @@ class Widgets_Manager {
 			]
 		);
 
-		$editor = qazana()->editor;
+		$editor = qazana()->get_editor();
 		$is_edit_mode = $editor->is_edit_mode();
 		$editor->set_edit_mode( true );
 

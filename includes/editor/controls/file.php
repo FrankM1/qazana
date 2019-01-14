@@ -39,7 +39,7 @@ class Control_File extends Base_Control_Multiple {
 			return $settings;
 		}
 
-		$settings = qazana()->templates_manager->get_import_images_instance()->import( $settings );
+		$settings = qazana()->get_templates_manager()->get_import_images_instance()->import( $settings );
 
 		if ( ! $settings ) {
 			$settings = [

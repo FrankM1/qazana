@@ -37,7 +37,7 @@ class Dynamic_CSS extends Post {
 	}
 
 	protected function get_data() {
-		return qazana()->db->get_plain_editor( $this->post_id_for_data );
+		return qazana()->get_db()->get_plain_editor( $this->post_id_for_data );
 	}
 
 	public function get_meta( $property = null ) {

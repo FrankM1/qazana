@@ -103,7 +103,7 @@ class Editor {
 			'post_type' => get_post_type( $this->get_post_id() ),
 		] );
 
-		qazana()->db->switch_to_post( $this->get_post_id() );
+		qazana()->get_db()->switch_to_post( $this->get_post_id() );
 
 		add_filter( 'show_admin_bar', '__return_false' );
 
@@ -135,7 +135,7 @@ class Editor {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
 		// Change mode to Builder
-		qazana()->db->set_is_qazana_page( $this->get_post_id() );
+		qazana()->get_db()->set_is_qazana_page( $this->get_post_id() );
 
 		// Post Lock
 		if ( ! $this->get_locked_user( $this->get_post_id() ) ) {
@@ -194,7 +194,7 @@ class Editor {
 
 		$post_id = get_the_ID();
 
-		if ( ! User::is_current_user_can_edit( $post_id ) || ! qazana()->db->is_built_with_qazana( $post_id ) ) {
+		if ( ! User::is_current_user_can_edit( $post_id ) || ! qazana()->get_db()->is_built_with_qazana( $post_id ) ) {
 			return;
 		}
 

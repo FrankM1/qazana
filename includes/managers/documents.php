@@ -256,7 +256,7 @@ class Documents {
 	 * @return false|Document The document if it exist, False otherwise.
 	 */
 	public function get_doc_for_frontend( $post_id ) {
-		if ( is_preview() || qazana()->preview->is_preview_mode() ) {
+		if ( is_preview() || qazana()->get_preview()->is_preview_mode() ) {
 			$document = $this->get_doc_or_auto_save( $post_id, get_current_user_id() );
 		} else {
 			$document = $this->get( $post_id );
@@ -379,7 +379,7 @@ class Documents {
 		$this->switch_to_document( $document );
 
 		// Set the post as global post.
-		qazana()->db->switch_to_post( $document->get_post()->ID );
+		qazana()->get_db()->switch_to_post( $document->get_post()->ID );
 
 		$status = DB::STATUS_DRAFT;
 
@@ -550,4 +550,19 @@ class Documents {
 	public function get_groups() {
 		return $this->groups;
 	}
+
+	/**
+	 * Get widgets manager
+	 */
+	public function get_document_widgets_manager() {
+		return $this->get_current()->get_widgets_manager();
+	}
+
+	/**
+	 * Get elements manager
+	 */
+	public function get_document_elements_manager() {
+		return $this->get_current()->get_elements_manager();
+	}
+
 }

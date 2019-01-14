@@ -51,7 +51,7 @@ class PieChart extends Base {
             true
         );
 
-		if ( qazana()->preview->is_preview_mode() ) {
+		if ( qazana()->get_preview()->is_preview_mode() ) {
 			wp_enqueue_script( 'jquery-circle-progress' );
 	   }
    }
@@ -71,7 +71,7 @@ class PieChart extends Base {
             qazana_get_version()
         );
 
-        if ( qazana()->preview->is_preview_mode() ) {
+        if ( qazana()->get_preview()->is_preview_mode() ) {
             wp_enqueue_style( 'qazana-extension-' . $this->get_name() );
         }
         

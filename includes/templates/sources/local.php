@@ -490,9 +490,9 @@ class Source_Local extends Source_Base {
 			return $template_id;
 		}
 
-		qazana()->db->set_is_qazana_page( $template_id );
+		qazana()->get_db()->set_is_qazana_page( $template_id );
 
-		qazana()->db->save_editor( $template_id, $template_data['content'] );
+		qazana()->get_db()->save_editor( $template_id, $template_data['content'] );
 
 		$this->save_item_type( $template_id, $template_data['type'] );
 
@@ -544,7 +544,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'save_error', __( 'Access denied.', 'qazana' ) );
 		}
 
-		qazana()->db->save_editor( $new_data['id'], $new_data['content'] );
+		qazana()->get_db()->save_editor( $new_data['id'], $new_data['content'] );
 
 		/**
 		 * After template library update.
@@ -629,7 +629,7 @@ class Source_Local extends Source_Base {
 	 * @return array Local template data.
 	 */
 	public function get_data( array $args ) {
-		$db = qazana()->db;
+		$db = qazana()->get_db();
 
 		$template_id = $args['template_id'];
 
@@ -923,7 +923,7 @@ class Source_Local extends Source_Base {
 				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
 				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="qazana_import_template">
-					<input type="hidden" name="_nonce" value="<?php echo qazana()->editor->create_nonce( self::CPT ); ?>">
+					<input type="hidden" name="_nonce" value="<?php echo qazana()->get_editor()->create_nonce( self::CPT ); ?>">
 					<fieldset id="qazana-import-template-form-inputs">
 						<input type="file" name="file" accept=".json,application/json,.zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" required>
 						<input type="submit" class="button" value="<?php echo esc_attr__( 'Import Now', 'qazana' ); ?>">
@@ -1028,7 +1028,7 @@ class Source_Local extends Source_Base {
 			[
 				'action' => 'qazana_export_template',
 				'source' => $this->get_id(),
-				'_nonce' => qazana()->editor->create_nonce( self::CPT ),
+				'_nonce' => qazana()->get_editor()->create_nonce( self::CPT ),
 				'template_id' => $template_id,
 			],
 			admin_url( 'admin-ajax.php' )

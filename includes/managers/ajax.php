@@ -126,7 +126,7 @@ class Ajax {
 	 * @access public
 	 */
 	public function handle_ajax_request() {
-		if ( ! qazana()->editor->verify_request_nonce() ) {
+		if ( ! qazana()->get_editor()->verify_request_nonce() ) {
 			$this->add_response_data( false, __( 'Token Expired.', 'qazana' ) )
 				->send_error( Exceptions::UNAUTHORIZED );
 		}
@@ -143,7 +143,7 @@ class Ajax {
 				->send_error( Exceptions::NOT_FOUND );
 		}
 
-		qazana()->db->switch_to_post( $editor_post_id );
+		qazana()->get_db()->switch_to_post( $editor_post_id );
 
 		/**
 		 * Register ajax actions.

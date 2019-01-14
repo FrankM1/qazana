@@ -809,7 +809,7 @@ class Widget_Video extends Widget_Base {
 						]
 					);
 
-					if ( qazana()->editor->is_edit_mode() ) {
+					if ( qazana()->get_editor()->is_edit_mode() ) {
 						$this->add_render_attribute(
 							'image-overlay',
 							[

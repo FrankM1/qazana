@@ -53,7 +53,7 @@ class Tabs extends Base {
             qazana_get_version()
         );
 
-        if ( qazana()->preview->is_preview_mode() ) {
+        if ( qazana()->get_preview()->is_preview_mode() ) {
             wp_enqueue_style( 'qazana-extension-tabs' );
         }
 

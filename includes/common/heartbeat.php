@@ -34,15 +34,15 @@ class Heartbeat {
 	public function heartbeat_received( $response, $data ) {
 		if ( isset( $data['qazana_post_lock']['post_ID'] ) ) {
 			$post_id = $data['qazana_post_lock']['post_ID'];
-			$locked_user = qazana()->editor->get_locked_user( $post_id );
+			$locked_user = qazana()->get_editor()->get_locked_user( $post_id );
 
 			if ( ! $locked_user || ! empty( $data['qazana_force_post_lock'] ) ) {
-				qazana()->editor->lock_post( $post_id );
+				qazana()->get_editor()->lock_post( $post_id );
 			} else {
 				$response['locked_user'] = $locked_user->display_name;
 			}
 
-			$response['qazanaNonce'] = qazana()->editor->create_nonce( get_post_type( $post_id ) );
+			$response['qazanaNonce'] = qazana()->get_editor()->create_nonce( get_post_type( $post_id ) );
 		}
 		return $response;
 	}
@@ -69,7 +69,7 @@ class Heartbeat {
 		if ( isset( $data['qazana_post_lock']['post_ID'] ) ) {
 			$post_type = get_post_type( $data['qazana_post_lock']['post_ID'] );
 			$response['qazana-refresh-nonces'] = [
-				'qazanaNonce' => qazana()->editor->create_nonce( $post_type ),
+				'qazanaNonce' => qazana()->get_editor()->create_nonce( $post_type ),
 				'heartbeatNonce' => wp_create_nonce( 'heartbeat-nonce' ),
 			];
 		}

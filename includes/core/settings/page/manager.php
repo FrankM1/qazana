@@ -132,12 +132,12 @@ class Manager extends BaseManager {
 	 * @return BaseModel The model object.
 	 */
 	public function get_model_for_config() {
-		if ( ! is_singular() && ! qazana()->editor->is_edit_mode() ) {
+		if ( ! is_singular() && ! qazana()->get_editor()->is_edit_mode() ) {
 			return null;
 		}
 
-		if ( qazana()->editor->is_edit_mode() ) {
-			$post_id = qazana()->editor->get_post_id();
+		if ( qazana()->get_editor()->is_edit_mode() ) {
+			$post_id = qazana()->get_editor()->get_post_id();
 			$document = qazana()->get_documents()->get_doc_or_auto_save( $post_id );
 		} else {
 			$post_id = get_the_ID();

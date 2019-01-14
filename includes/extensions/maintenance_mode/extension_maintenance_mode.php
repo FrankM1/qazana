@@ -145,7 +145,7 @@ class Maintenance_Mode extends Base {
 	 * @access public
 	 */
     public function template_redirect() {
-        if ( qazana()->preview->is_preview_mode() ) {
+        if ( qazana()->get_preview()->is_preview_mode() ) {
             return;
         }
 
@@ -194,7 +194,7 @@ class Maintenance_Mode extends Base {
      * @param Tools $tools An instance of the Tools settings page.
      */
     public function register_settings_fields( Panel $tools ) {
-        $templates = qazana()->templates_manager->get_source( 'local' )->get_items( ['type' => 'page'] );
+        $templates = qazana()->get_templates_manager()->get_source( 'local' )->get_items( ['type' => 'page'] );
 
         $templates_options = [];
 

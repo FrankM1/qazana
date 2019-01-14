@@ -248,7 +248,7 @@ abstract class Manager {
 	 * @access public
 	 */
 	public function on_qazana_init() {
-		qazana()->editor->add_editor_template( $this->get_editor_template(), 'text' );
+		qazana()->get_editor()->add_editor_template( $this->get_editor_template(), 'text' );
 	}
 
 	/**

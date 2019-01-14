@@ -272,7 +272,7 @@ abstract class Source_Base {
 	 * @return mixed Iterated data.
 	 */
 	protected function replace_elements_ids( $content ) {
-		return qazana()->db->iterate_data( $content, function( $element ) {
+		return qazana()->get_db()->iterate_data( $content, function( $element ) {
 			$element['id'] = Utils::generate_random_string();
 
 			return $element;
@@ -309,7 +309,7 @@ abstract class Source_Base {
 	 * @return mixed Processed content data.
 	 */
 	protected function process_export_import_content( $content, $method ) {
-		return qazana()->db->iterate_data(
+		return qazana()->get_db()->iterate_data(
 			$content, function( $element_data ) use ( $method ) {
 				$element = qazana()->get_elements_manager()->create_element_instance( $element_data );
 

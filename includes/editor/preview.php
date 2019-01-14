@@ -169,7 +169,7 @@ class Preview {
 		// Hold-on all jQuery plugins after all HTML markup render.
 		wp_add_inline_script( 'jquery-migrate', 'jQuery.holdReady( true );' );
 
-		qazana()->frontend->enqueue_styles();
+		qazana()->get_frontend()->enqueue_styles();
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -212,7 +212,7 @@ class Preview {
 	 * @access private
 	 */
 	private function enqueue_scripts() {
-		qazana()->frontend->register_scripts();
+		qazana()->get_frontend()->register_scripts();
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
@@ -245,7 +245,7 @@ class Preview {
 	 * @access public
 	 */
 	public function wp_footer() {
-		$frontend = qazana()->frontend;
+		$frontend = qazana()->get_frontend();
 		if ( $frontend->has_qazana_in_page() ) {
 			// Has header/footer/widget-template - enqueue all style/scripts/fonts.
 			$frontend->wp_footer();

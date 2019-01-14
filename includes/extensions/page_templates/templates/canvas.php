@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-qazana()->frontend->add_body_class( 'qazana-template-canvas' );
+qazana()->get_frontend()->add_body_class( 'qazana-template-canvas' );
 
 ?>
 <!DOCTYPE html>

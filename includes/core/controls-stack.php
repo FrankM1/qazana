@@ -2019,7 +2019,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @return boolean
 	 */
 	public function is_edit_mode() {
-		return qazana()->editor->is_edit_mode();
+		return qazana()->get_editor()->is_edit_mode();
 	}
 
 	public function get_responsive_settings( $setting_key = null ) {

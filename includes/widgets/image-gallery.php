@@ -391,7 +391,7 @@ class Widget_Image_Gallery extends Widget_Base {
 				'data-qazana-lightbox-slideshow' => $this->get_id(),
 			] );
 
-			if ( qazana()->editor->is_edit_mode() ) {
+			if ( qazana()->get_editor()->is_edit_mode() ) {
 				$this->add_render_attribute( 'link', [
 					'class' => 'qazana-clickable',
 				] );

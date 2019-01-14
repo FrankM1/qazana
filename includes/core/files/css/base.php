@@ -208,7 +208,7 @@ abstract class Base extends Base_File {
 		// Handle fonts.
 		if ( ! empty( $meta['fonts'] ) ) {
 			foreach ( $meta['fonts'] as $font ) {
-				qazana()->frontend->enqueue_font( $font );
+				qazana()->get_frontend()->enqueue_font( $font );
 			}
 		}
 
@@ -254,7 +254,7 @@ abstract class Base extends Base_File {
 	 */
 	public function print_css() {
 		echo '<style>' . $this->get_content() . '</style>'; // XSS ok.
-		qazana()->frontend->print_fonts_links();
+		qazana()->get_frontend()->print_fonts_links();
 	}
 
 	/**

@@ -51,7 +51,7 @@ class Qazana_Test_Qunit extends Qazana_Test_Base {
 
 		ob_start();
 
-        $this->qazana()->editor->init( false );
+        $this->qazana()->get_editor()->init( false );
 
 		$html = ob_get_clean();
 

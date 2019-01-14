@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-qazana()->frontend->add_body_class( 'qazana-template-full-width' );
+qazana()->get_frontend()->add_body_class( 'qazana-template-full-width' );
 
 get_header();
 /**

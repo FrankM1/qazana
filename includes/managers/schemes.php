@@ -231,7 +231,7 @@ class Schemes_Manager {
 	 * @access public
 	 */
 	public function ajax_apply_scheme() {
-		qazana()->editor->verify_ajax_nonce();
+		qazana()->get_editor()->verify_ajax_nonce();
 
 		if ( ! isset( $_POST['scheme_name'] ) ) {
 			wp_send_json_error();

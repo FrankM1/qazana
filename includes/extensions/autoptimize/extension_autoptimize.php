@@ -24,7 +24,7 @@ class Autoptimize extends Base {
 
         // Disable optimize files in Editor from Autoptimize plugin
         add_filter( 'autoptimize_filter_noptimize', function( $retval ) {
-            if ( qazana()->editor->is_edit_mode() ) {
+            if ( qazana()->get_editor()->is_edit_mode() ) {
                 $retval = true;
             }
 

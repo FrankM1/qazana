@@ -26,6 +26,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class Document extends Controls_Stack {
 
+	private $elements_manager;
+	
+	private $widgets_manager;
+
+	/**
+	 * Get widgets manager
+	 */
+	public function get_widgets_manager() {
+		return $this->widgets_manager;
+	}
+
+	/**
+	 * Get elements manager
+	 */
+	public function get_elements_manager() {
+		return $this->elements_manager;
+	}
+
 	/**
 	 * Document type meta key.
 	 */
@@ -330,7 +348,7 @@ abstract class Document extends Controls_Stack {
 				]
 			);
 
-			qazana()->db->copy_qazana_meta( $this->post->ID, $autosave_id );
+			qazana()->get_db()->copy_qazana_meta( $this->post->ID, $autosave_id );
 
 			$document = qazana()->get_documents()->get( $autosave_id );
 			$document->save_type();
@@ -399,7 +417,7 @@ abstract class Document extends Controls_Stack {
 		$can_publish = $post_type_object && current_user_can( $post_type_object->cap->publish_posts );
 		$is_published = DB::STATUS_PUBLISH === $this->post->post_status || DB::STATUS_PRIVATE === $this->post->post_status;
 
-		if ( $is_published || $can_publish || ! qazana()->editor->is_edit_mode() ) {
+		if ( $is_published || $can_publish || ! qazana()->get_editor()->is_edit_mode() ) {
 
 			$this->add_control(
 				'post_status',
@@ -627,12 +645,12 @@ abstract class Document extends Controls_Stack {
 			}
 		}
 
-		if ( qazana()->editor->is_edit_mode() ) {
+		if ( qazana()->get_editor()->is_edit_mode() ) {
 			if ( empty( $elements ) && empty( $autosave_elements ) ) {
 				// Convert to Qazana.
-				$elements = qazana()->db->get_new_editor_from_wp_editor( $this->post->ID );
+				$elements = qazana()->get_db()->get_new_editor_from_wp_editor( $this->post->ID );
 				if ( $this->is_autosave() ) {
-					qazana()->db->copy_qazana_meta( $this->post->post_parent, $this->post->ID );
+					qazana()->get_db()->copy_qazana_meta( $this->post->post_parent, $this->post->ID );
 				}
 			}
 		}
@@ -696,7 +714,7 @@ abstract class Document extends Controls_Stack {
 	}
 
 	public function get_content( $with_css = false ) {
-		return qazana()->frontend->get_builder_content( $this->post->ID, $with_css );
+		return qazana()->get_frontend()->get_builder_content( $this->post->ID, $with_css );
 	}
 
 	/**
@@ -744,7 +762,7 @@ abstract class Document extends Controls_Stack {
 		 */
 		do_action( 'qazana/db/before_save', $this->post->post_status, $is_meta_updated );
 
-		qazana()->db->save_plain_text( $this->post->ID );
+		qazana()->get_db()->save_plain_text( $this->post->ID );
 
 		update_metadata( 'post', $this->post->ID, '_qazana_version', DB::DB_VERSION );
 
@@ -966,7 +984,7 @@ abstract class Document extends Controls_Stack {
 			$elements_data = $this->get_elements_data();
 		}
 
-		qazana()->db->iterate_data(
+		qazana()->get_db()->iterate_data(
 			$elements_data,
 			function( $element ) {
 

@@ -86,7 +86,7 @@ class Template extends Widget_Base {
 		?><div class="qazana-template">
             <?php 
 
-            echo qazana()->frontend->get_builder_content_for_display( $template_id );
+            echo qazana()->get_frontend()->get_builder_content_for_display( $template_id );
 
             if ( User::is_current_user_can_edit() ) {
                 echo '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $template_id ) ) .'"><i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'</a>';

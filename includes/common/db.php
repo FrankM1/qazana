@@ -407,7 +407,7 @@ class DB {
 		// It's from  WP-Admin & not from Qazana.
 		if ( ! did_action( 'qazana/db/before_save' ) ) {
 
-			if ( ! qazana()->db->is_built_with_qazana( $from_post_id ) ) {
+			if ( ! qazana()->get_db()->is_built_with_qazana( $from_post_id ) ) {
 				return;
 			}
 

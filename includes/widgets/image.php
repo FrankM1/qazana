@@ -540,7 +540,7 @@ class Widget_Image extends Widget_Base {
 				'data-qazana-open-lightbox' => $settings['open_lightbox'],
 			] );
 
-			if ( qazana()->editor->is_edit_mode() ) {
+			if ( qazana()->get_editor()->is_edit_mode() ) {
 				$this->add_render_attribute( 'link', [
 					'class' => 'qazana-clickable',
 				] );

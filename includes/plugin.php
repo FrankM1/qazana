@@ -74,6 +74,16 @@ class Plugin {
 
 	private $debugger;
 
+	private $db;
+
+	private $ajax;
+
+	private $editor;
+	
+	private $preview;
+	
+	private $frontend;
+
 	/**
 	 * Getter method for retrieving the object instance.
 	 *
@@ -504,6 +514,62 @@ class Plugin {
 	}
 
 	/**
+	 * Get ajax
+	 */
+	public function get_ajax() {
+		return $this->ajax;
+	}
+
+	/**
+	 * Get document conditions
+	 */
+	public function get_document_conditions() {
+		return $this->document_conditions;
+	}
+
+	/**
+	 * Get db
+	 */
+	public function get_db() {
+		return $this->db;
+	}
+	
+	/**
+	 * Get files manager
+	 */
+	public function get_files_manager() {
+		return $this->files_manager;
+	}
+
+	/**
+	 * Get icons manager
+	 */
+	public function get_icons_manager() {
+		return $this->icons_manager;
+	}
+
+	/**
+	 * Get editor
+	 */
+	public function get_editor() {
+		return $this->editor;
+	}
+
+	/**
+	 * Get preview
+	 */
+	public function get_preview() {
+		return $this->preview;
+	}
+
+	/**
+	 * Get frontend
+	 */
+	public function get_frontend() {
+		return $this->frontend;
+	}
+
+	/**
 	 * Loads the plugin classes.
 	 *
 	 * @since 1.0.0
@@ -534,7 +600,6 @@ class Plugin {
 		$this->templates_manager  = new Template_Library\Manager();
 
 		$this->custom_css         = new Custom_Css();
-		$this->heartbeat          = new Heartbeat();
 		$this->cron               = new Cron();
 		$this->editor             = new Editor();
 		$this->mobile_detect      = new MobileDetect();

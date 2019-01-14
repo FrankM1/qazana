@@ -13,7 +13,7 @@ class Qazana_Test_Manager_Remote extends Qazana_Test_Base {
 
 
 	public static function setUpBeforeClass() {
-		self::$manager = self::qazana()->templates_manager;
+		self::$manager = self::qazana()->get_templates_manager();
 	}
 
 	public function test_should_mark_template_as_favorite() {

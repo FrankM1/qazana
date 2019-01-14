@@ -445,7 +445,7 @@ abstract class Widget_Base extends Element_Base {
 		 */
 		do_action( 'qazana/widget/before_render_content', $this );
 
-		if ( qazana()->editor->is_edit_mode() ) {
+		if ( qazana()->get_editor()->is_edit_mode() ) {
 			$this->render_edit_tools();
 		}
 
@@ -722,7 +722,7 @@ abstract class Widget_Base extends Element_Base {
 	 *                        `basic`.
 	 */
 	protected function add_inline_editing_attributes( $key, $toolbar = 'basic' ) {
-		if ( ! qazana()->editor->is_edit_mode() ) {
+		if ( ! qazana()->get_editor()->is_edit_mode() ) {
 			return;
 		}
 

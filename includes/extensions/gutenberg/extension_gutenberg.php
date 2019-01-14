@@ -70,7 +70,7 @@ class Gutenberg extends Base {
 						return false;
 					}
 
-					qazana()->db->set_is_qazana_page( $object->ID, false );
+					qazana()->get_db()->set_is_qazana_page( $object->ID, false );
 
 					return true;
 				},
@@ -92,7 +92,7 @@ class Gutenberg extends Base {
 		wp_enqueue_script( 'qazana-gutenberg', qazana()->core_assets_url . 'js/gutenberg' . $suffix . '.js', [ 'jquery' ], qazana_get_version(), true );
 
 		$qazana_settings = [
-			'isQazanaMode' => qazana()->db->is_built_with_qazana( $post_id ),
+			'isQazanaMode' => qazana()->get_db()->is_built_with_qazana( $post_id ),
 			'editLink' => Utils::get_edit_link( $post_id ),
 		];
 
