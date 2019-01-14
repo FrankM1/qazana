@@ -305,12 +305,13 @@ class DB {
 	 * @since 2.0.0
 	 * @access private
 	 *
+	 * @param array $document Document.
 	 * @param array $element_data Element data.
 	 */
-	private function render_element_plain_content( $element_data ) {
+	private function render_element_plain_content( $document, $element_data ) {
 		if ( 'widget' === $element_data['elType'] ) {
 			/** @var Widget_Base $widget */
-			$widget = qazana()->get_elements_manager()->create_element_instance( $element_data );
+			$widget = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
 
 			if ( $widget ) {
 				$widget->render_plain_content();
@@ -319,7 +320,7 @@ class DB {
 
 		if ( ! empty( $element_data['elements'] ) ) {
 			foreach ( $element_data['elements'] as $element ) {
-				$this->render_element_plain_content( $element );
+				$this->render_element_plain_content( $document, $element );
 			}
 		}
 	}
@@ -618,8 +619,8 @@ class DB {
 	 */
 	public function get_plain_text( $post_id ) {
 		$data = $this->get_plain_editor( $post_id );
-
-		return $this->get_plain_text_from_data( $data );
+		$document = qazana()->get_documents()->get( $post_id );
+		return $this->get_plain_text_from_data( $document, $data );
 	}
 
 	/**
@@ -634,11 +635,11 @@ class DB {
 	 *
 	 * @return string Post plain text.
 	 */
-	public function get_plain_text_from_data( $data ) {
+	public function get_plain_text_from_data( $document, $data ) {
 		ob_start();
 		if ( $data ) {
 			foreach ( $data as $element_data ) {
-				$this->render_element_plain_content( $element_data );
+				$this->render_element_plain_content( $document, $element_data );
 			}
 		}
 

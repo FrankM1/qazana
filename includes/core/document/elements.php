@@ -36,7 +36,7 @@ class Elements {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function __construct() {
+	public function __construct( $document ) {
 		$this->require_files();
 	}
 

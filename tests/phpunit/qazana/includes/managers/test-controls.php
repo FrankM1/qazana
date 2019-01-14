@@ -115,6 +115,9 @@ class Qazana_Test_Controls extends Qazana_Test_Base {
 
 	public function test_checkCondition() {
 		$this->qazana()->get_widgets_manager()->get_widget_types(); // Ensure the widgets initialized
+		
+		$document_class = $this->qazana()->get_documents()->get_document_type( 'post' );
+		$document = new $document_class();
 
 		$element_obj = $this->qazana()->get_elements_manager()->create_element_instance(
 			$document,

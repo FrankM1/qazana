@@ -32,14 +32,14 @@ abstract class Document extends Controls_Stack {
 	 * Get widgets
 	 */
 	public function get_widgets() {
-		return new Widgets;
+		return new Widgets( $this );
 	}
 
 	/**
 	 * Get elements
 	 */
 	public function get_elements() {
-		return new Elements;
+		return new Elements( $this );
 	}
 
 	/**

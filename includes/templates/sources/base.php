@@ -308,9 +308,15 @@ abstract class Source_Base {
 	 *
 	 * @return mixed Processed content data.
 	 */
-	protected function process_export_import_content( $content, $method ) {
+	protected function process_export_import_content( $type, $content, $method ) {
+
+		$document_class = qazana()->get_documents()->get_document_type( $type );
+		$document = new $document_class();
+
+		qazana_write_log( $content );
+
 		return qazana()->get_db()->iterate_data(
-			$content, function( $element_data ) use ( $method ) {
+			$content, function( $element_data ) use ( $method, $document ) {
 				$element = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
 
 				// If the widget/element isn't exist, like a plugin that creates a widget but deactivated

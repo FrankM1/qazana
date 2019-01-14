@@ -645,6 +645,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$data = [
+			'type' => qazana()->get_documents()->get( $template_id ),
 			'content' => $content,
 		];
 
@@ -1308,7 +1309,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'file_error', 'Invalid File' );
 		}
 
-		$content = $this->process_export_import_content( $data['content'], 'on_import' );
+		$content = $this->process_export_import_content( $data['type'], $data['content'], 'on_import' );
 
 		$page_settings = [];
 
@@ -1360,7 +1361,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( '404', 'The template does not exist.' );
 		}
 
-		$template_data['content'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+		$template_data['content'] = $this->process_export_import_content( $template_data['type'], $template_data['content'], 'on_export' );
 
 		if ( get_post_meta( $template_id, '_qazana_page_settings', true ) ) {
 			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $template_id );

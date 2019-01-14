@@ -191,7 +191,7 @@ class Source_Remote extends Source_Base {
 		}
 
 		$data['content'] = $this->replace_elements_ids( $data['content'] );
-		$data['content'] = $this->process_export_import_content( $data['content'], 'on_import' );
+		$data['content'] = $this->process_export_import_content( $data['type'], $data['content'], 'on_import' );
 
 		$post_id = $_POST['editor_post_id'];
 		$document = qazana()->get_documents()->get( $post_id );

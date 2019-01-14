@@ -41,7 +41,7 @@ class Widgets {
 	 * @since 1.0.0
 	 * @access private
 	*/
-	public function __construct() {
+	public function __construct( $document ) {
 
 		add_action( 'qazana/widgets/loader/after', [ $this, 'require_files' ] ); // Load these immediately for use by extensions.
 		add_action( 'qazana/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
