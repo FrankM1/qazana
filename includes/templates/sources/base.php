@@ -313,8 +313,6 @@ abstract class Source_Base {
 		$document_class = qazana()->get_documents()->get_document_type( $type );
 		$document = new $document_class();
 
-		qazana_write_log( $content );
-
 		return qazana()->get_db()->iterate_data(
 			$content, function( $element_data ) use ( $method, $document ) {
 				$element = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
