@@ -441,7 +441,7 @@ class Frontend {
 				'column' => $document->get_elements()->get_element_types( 'column' )->get_frontend_settings_keys(),
 			];
 
-			$elements_frontend_keys += qazana()->get_widgets_manager()->get_widgets_frontend_settings_keys();
+			$elements_frontend_keys += $document->get_widgets()->get_widgets_frontend_settings_keys();
 
 			$qazana_frontend_config['elements'] = [
 				'data'         => (object) [],

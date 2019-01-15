@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+use Qazana\Core\Base\Document as Document_Base;
+
 /**
  * Qazana elements manager.
  *
@@ -126,7 +128,7 @@ class Elements_Manager {
 	 * @return Element_Base|null Element instance if element created, or null
 	 *                           otherwise.
 	 */
-	public function create_element_instance( $document, array $element_data, array $element_args = [], Element_Base $element_type = null ) {
+	public function create_element_instance( Document_Base $document, array $element_data, array $element_args = [], Element_Base $element_type = null ) {
 		if ( null === $element_type ) {
 			if ( 'widget' === $element_data['elType'] ) {
 				$element_type = $document->get_widgets()->get_widget_types( $element_data['widgetType'] );

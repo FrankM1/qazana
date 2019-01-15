@@ -15185,8 +15185,8 @@ ControlWPWidgetItemView = ControlBaseDataView.extend({
 
 		qazana.ajax.addRequest('editor_get_wp_widget_form', {
 			data: {
-				// Fake Widget ID
-				id: self.model.cid,
+				editor_post_id: qazana.config.document.id,
+				id: self.model.cid, // Fake Widget ID
 				widget_type: self.model.get('widget'),
 				data: self.elementSettingsModel.toJSON()
 			},

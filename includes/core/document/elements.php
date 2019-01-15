@@ -37,34 +37,8 @@ class Elements {
 	 * @access public
 	 */
 	public function __construct( $document ) {
+		$this->document = $document;
 		$this->require_files();
-	}
-
-	/**
-	 * Get element instance
-	 * 
-	 * @since 2.0.0
-	 */
-	public function add_element_instance( Element_Base $element ) {
-		$this->_element_instance[ $element->get_id() ] = $element;
-
-		return true;
-	}
-
-	/**
-	 * Get element instance by id
-	 *
-	 * @method get_element_instance
-	 *
-	 * @param string $element_id  unique element id
-	 * @return object element object class Element_Base
-	 */
-	public function get_element_instance( $element_id = null ) {
-		if ( null !== $element_id ) {
-			return $this->_element_instance[ $element_id ];
-		}
-
-		return $this->_element_instance;
 	}
 
 	/**
