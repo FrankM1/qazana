@@ -29,20 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Document extends Controls_Stack {
 
 	/**
-	 * Get widgets
-	 */
-	public function get_widgets() {
-		return new Widgets( $this );
-	}
-
-	/**
-	 * Get elements
-	 */
-	public function get_elements() {
-		return new Elements( $this );
-	}
-
-	/**
 	 * Document type meta key.
 	 */
 	const TYPE_META_KEY = '_qazana_template_type';
@@ -714,7 +700,7 @@ abstract class Document extends Controls_Stack {
 	public function get_content( $with_css = false ) {
 		return qazana()->get_frontend()->get_builder_content( $this->post->ID, $with_css );
 	}
-
+	
 	/**
 	 * @since 2.0.0
 	 * @access public
@@ -908,6 +894,27 @@ abstract class Document extends Controls_Stack {
 		}
 
 		return $last_edited;
+	}
+
+	/**
+	 * Get widgets
+	 */
+	public function get_widgets() {
+		return new Widgets( $this );
+	}
+
+	/**
+	 * Get elements
+	 */
+	public function get_elements() {
+		return new Elements( $this );
+	}
+
+	/**
+	 * Get widget group to use
+	 */
+	public function get_widget_groups() {
+		return [ 'post' ];
 	}
 
 	/**

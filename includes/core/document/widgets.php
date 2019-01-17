@@ -66,13 +66,12 @@ class Widgets {
 	 * @return Widget_Base|Widget_Base[]|null Registered widget types.
 	*/
 	public function get_widget_types( $widget_name = null ) {
-		$widget_types = qazana()->get_widgets_manager()->get_widget_types();
-
 		$document_widgets = [];
+		$widget_types = qazana()->get_widgets_manager()->get_widget_types();
 
 		foreach ( $widget_types as $widget_id => $widget ) {
 
-			if ( ! in_array( $this->document->get_name(), $widget->get_documents() ) ) {
+			if ( array_diff( $this->document->get_widget_groups(), $widget->get_documents() ) ) {
 				continue;
 			}
 

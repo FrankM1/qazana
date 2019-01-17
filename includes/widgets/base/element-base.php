@@ -326,9 +326,8 @@ abstract class Element_Base extends Controls_Stack {
 	 * @return Element_Base Parent document.
 	 */
 	public function get_parent_document() {
-		$class = qazana()->get_documents()->get_document_type('post');
-
-		return new $class;
+		$document = qazana()->get_documents()->get_document_type( $this->get_data( 'documentType' ) );
+		return new $document;
 	}
 
 	/**

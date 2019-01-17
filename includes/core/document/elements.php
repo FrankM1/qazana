@@ -38,7 +38,6 @@ class Elements {
 	 */
 	public function __construct( $document ) {
 		$this->document = $document;
-		$this->require_files();
 	}
 
 	/**
@@ -167,32 +166,5 @@ class Elements {
 		 * @since 1.0.0
 		 */
 		do_action( 'qazana/elements/elements_registered' );
-	}
-
-	/**
-	 * Require files.
-	 *
-	 * Require Qazana element base class and column, section and repeater
-	 * elements.
-	 *
-	 * @since 1.0.0
-	 * @access private
-	 */
-	public function require_files() {
-
-		$default_files = array(
-			'base/element-base.php',
-			'elements/column.php',
-			'elements/section.php',
-			'elements/repeater.php',
-		);
-
-		$files = apply_filters( 'qazana\elements\require_files', $default_files );
-
-		if ( is_array( $files ) ) {
-			foreach ( $files as $file ) {
-				qazana()->get_widgets_manager()->loader->locate_widget( $file, true );
-			}
-		}
 	}
 }

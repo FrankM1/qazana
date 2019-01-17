@@ -29,6 +29,18 @@ class Elements_Manager {
 	private $categories;
 
 	/**
+	 * Elements constructor.
+	 *
+	 * Initializing Qazana elements manager.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function __construct() {
+		$this->require_files();
+	}
+
+	/**
 	 * Get element categories.
 	 *
 	 * Retrieve the list of categories the element belongs to.
@@ -143,6 +155,8 @@ class Elements_Manager {
 
 		$args = array_merge( $element_type->get_default_args(), $element_args );
 
+		$element_data['documentType'] = $document->get_name();
+
 		$element_class = $element_type->get_class_name();
 
 		try {
@@ -232,5 +246,33 @@ class Elements_Manager {
 		$return_data = apply_filters_deprecated( 'qazana/ajax_save_builder/return_data', [ $return_data, $request['editor_post_id'] ], '2.0.0', 'qazana/documents/ajax_save/return_data' );
 
 		return $return_data;
+	}
+
+
+	/**
+	 * Require files.
+	 *
+	 * Require Qazana element base class and column, section and repeater
+	 * elements.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 */
+	public function require_files() {
+
+		$default_files = array(
+			'base/element-base.php',
+			'elements/column.php',
+			'elements/section.php',
+			'elements/repeater.php',
+		);
+
+		$files = apply_filters( 'qazana\elements\require_files', $default_files );
+
+		if ( is_array( $files ) ) {
+			foreach ( $files as $file ) {
+				qazana()->get_widgets_manager()->loader->locate_widget( $file, true );
+			}
+		}
 	}
 }
