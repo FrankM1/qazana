@@ -58,31 +58,31 @@ class Plugin {
 	 */
 	public $extend;
 
-	private $documents;
+	public $documents;
 
-	private $controls_manager;
+	public $controls_manager;
 
-	private $templates_manager;
+	public $templates_manager;
 	
-	private $skins_manager;
+	public $skins_manager;
 
-	private $elements_manager;
+	public $elements_manager;
 	
-	private $widgets_manager;
+	public $widgets_manager;
 
-	private $extensions_manager;
+	public $extensions_manager;
 
-	private $debugger;
+	public $debugger;
 
-	private $db;
+	public $db;
 
-	private $ajax;
+	public $ajax;
 
-	private $editor;
+	public $editor;
 	
-	private $preview;
+	public $preview;
 	
-	private $frontend;
+	public $frontend;
 
 	/**
 	 * Getter method for retrieving the object instance.
