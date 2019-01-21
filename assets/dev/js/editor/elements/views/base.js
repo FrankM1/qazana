@@ -485,11 +485,11 @@ BaseElementView = BaseContainer.extend( {
 		if ( ! settings ) {
 			settings = this.getEditModel().get( 'settings' );
 		}
-		
+
 		var self = this,
 			customCSS = settings.get( 'custom_css' ),
 			extraCSS = qazana.hooks.applyFilters( 'editor/style/styleText', '', this );
-			
+
 		self.controlsCSSParser.stylesheet.empty();
 
 		self.controlsCSSParser.addStyleRules( settings.getStyleControls(), settings.attributes, self.getEditModel().get( 'settings' ).controls, [ /{{ID}}/g, /{{WRAPPER}}/g ], [ self.getID(), '#qazana .' + self.getElementUniqueID() ] );
@@ -499,7 +499,7 @@ BaseElementView = BaseContainer.extend( {
 		if ( customCSS ) {
 			self.controlsCSSParser.elements.$stylesheetElement.append( customCSS.replace( /selector/g, '#qazana .' + self.getElementUniqueID() ) );
 		}
-		
+
 		if ( extraCSS ) {
 			self.controlsCSSParser.elements.$stylesheetElement.append( extraCSS );
 		}

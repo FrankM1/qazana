@@ -6,7 +6,7 @@ ElementsHandler = function( $ ) {
 	// element-type.skin-type
 	var handlers = {
 		// Elements
-		'section': require( 'qazana-frontend/handlers/section' ),
+		section: require( 'qazana-frontend/handlers/section' ),
 
 		// Widgets
 		'accordion.default': require( 'qazana-frontend/handlers/accordion' ),
@@ -20,7 +20,7 @@ ElementsHandler = function( $ ) {
 		'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
 		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
 		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' ),
-		'spacer.default': require( 'qazana-frontend/handlers/spacer' )
+		'spacer.default': require( 'qazana-frontend/handlers/spacer' ),
 	};
 
 	var addGlobalHandlers = function() {
@@ -64,13 +64,11 @@ ElementsHandler = function( $ ) {
     };
 
     this.reInit = function( $scope ) {
-
         var $elements = $scope.find( '.qazana-element' );
 
         $elements.each( function() {
             self.runReadyTrigger( $( this ) );
         } );
-
     };
 
 	this.getHandlers = function( handlerName ) {
@@ -82,7 +80,6 @@ ElementsHandler = function( $ ) {
 	};
 
     this.runReadyTrigger = function( $scope ) {
-
         // Initializing the `$scope` as frontend jQuery instance
 		$scope = jQuery( $scope );
 
@@ -92,7 +89,7 @@ ElementsHandler = function( $ ) {
 			return;
 		}
 
-        var elementName = $scope.attr( 'data-element_type' ).split( '.' )[0];
+        var elementName = $scope.attr( 'data-element_type' ).split( '.' )[ 0 ];
 
 		qazanaFrontend.hooks.doAction( 'frontend/element_ready/global', $scope, $ );
 

@@ -246,10 +246,12 @@ class Group_Control_Background extends Group_Control_Base {
 			'dynamic' => [
 				'active' => true,
 			],
+			'responsive' => true,
 			'title' => _x( 'Background Image', 'Background Control', 'qazana' ),
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-image: url("{{URL}}");',
 			],
+			'render_type' => 'template',
 			'condition' => [
 				'background' => [ 'classic' ],
 			],
@@ -259,6 +261,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'label' => _x( 'Position', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
+			'responsive' => true,
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'qazana' ),
 				'top left' => _x( 'Top Left', 'Background Control', 'qazana' ),
@@ -270,6 +273,7 @@ class Group_Control_Background extends Group_Control_Base {
 				'bottom left' => _x( 'Bottom Left', 'Background Control', 'qazana' ),
 				'bottom center' => _x( 'Bottom Center', 'Background Control', 'qazana' ),
 				'bottom right' => _x( 'Bottom Right', 'Background Control', 'qazana' ),
+				'initial' => _x( 'Custom', 'Background Control', 'qazana' ),
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-position: {{VALUE}};',
@@ -277,35 +281,138 @@ class Group_Control_Background extends Group_Control_Base {
 			'condition' => [
 				'background' => [ 'classic' ],
 				'image[url]!' => '',
-				'custom_position' => '',
 			],
 		];
 
-		$fields['custom_position'] = [
-			'label' => _x( 'Custom Position', 'Background Control', 'qazana' ),
-			'type' => Controls_Manager::SWITCHER,
-			'label_on' => __( 'Yes', 'qazana' ),
-			'label_off' => __( 'No', 'qazana' ),
-			'render_type' => 'ui',
-			'condition' => [
-				'background' => [ 'classic' ],
-				'image[url]!' => '',
+		$fields['xpos'] = [
+			'label' => _x( 'X Position', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
+			'size_units' => [ 'px', 'em', '%', 'vw' ],
+			'default' => [
+				'unit' => 'px',
+				'size' => 0,
 			],
-		];
-
-		$fields['custom_position_values'] = [
-			'label' => _x( 'Custom Dimension', 'Background Control', 'qazana' ),
-			'type' => Controls_Manager::DIMENSIONS,
-			'description' => __( 'Add custom image position for  background image.', 'qazana' ),
-			'size_units' => [ 'px', '%' ],
-			'allowed_dimensions'=> [ 'top', 'right' ],
-			'condition' => [
-				'custom_position!' => '',
-				'background' => [ 'classic' ],
-				'image[url]!' => '',
+			'tablet_default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'mobile_default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'range' => [
+				'px' => [
+					'min' => -800,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => -100,
+					'max' => 100,
+				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-position: {{RIGHT}}{{UNIT}} {{TOP}}{{UNIT}} ;',
+				'{{SELECTOR}}' => 'background-position: {{SIZE}}{{UNIT}} {{ypos.SIZE}}{{ypos.UNIT}}',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'position' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+			'device_args' => [
+				Controls_Stack::RESPONSIVE_TABLET => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-position: {{SIZE}}{{UNIT}} {{ypos_tablet.SIZE}}{{ypos_tablet.UNIT}}',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'position_tablet' => [ 'initial' ],
+					],
+				],
+				Controls_Stack::RESPONSIVE_MOBILE => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-position: {{SIZE}}{{UNIT}} {{ypos_mobile.SIZE}}{{ypos_mobile.UNIT}}',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'position_mobile' => [ 'initial' ],
+					],
+				],
+			],
+		];
+
+		$fields['ypos'] = [
+			'label' => _x( 'Y Position', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
+			'size_units' => [ 'px', 'em', '%', 'vh' ],
+			'default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'tablet_default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'mobile_default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'range' => [
+				'px' => [
+					'min' => -800,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vh' => [
+					'min' => -100,
+					'max' => 100,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => 'background-position: {{xpos.SIZE}}{{xpos.UNIT}} {{SIZE}}{{UNIT}}',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'position' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+			'device_args' => [
+				Controls_Stack::RESPONSIVE_TABLET => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-position: {{xpos_tablet.SIZE}}{{xpos_tablet.UNIT}} {{SIZE}}{{UNIT}}',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'position_tablet' => [ 'initial' ],
+					],
+				],
+				Controls_Stack::RESPONSIVE_MOBILE => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-position: {{xpos_mobile.SIZE}}{{xpos_mobile.UNIT}} {{SIZE}}{{UNIT}}',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'position_mobile' => [ 'initial' ],
+					],
+				],
 			],
 		];
 
@@ -333,8 +440,9 @@ class Group_Control_Background extends Group_Control_Base {
 			'raw' => __( 'Note: Attachment Fixed works only on desktop.', 'qazana' ),
 			'separator' => 'none',
 			'condition' => [
-				'attachment' => 'fixed',
+				'background' => [ 'classic' ],
 				'image[url]!' => '',
+				'attachment' => 'fixed',
 			],
 		];
 
@@ -342,6 +450,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'label' => _x( 'Repeat', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
+			'responsive' => true,
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'qazana' ),
 				'no-repeat' => _x( 'No-repeat', 'Background Control', 'qazana' ),
@@ -358,43 +467,17 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 		];
 
-		$fields['custom_size'] = [
-			'label' => _x( 'Custom size', 'Background Control', 'qazana' ),
-			'type' => Controls_Manager::SWITCHER,
-			'label_on' => __( 'Yes', 'qazana' ),
-			'label_off' => __( 'No', 'qazana' ),
-			'render_type' => 'ui',
-			'condition' => [
-				'background' => [ 'classic' ],
-				'image[url]!' => '',
-			],
-		];
-
-		$fields['custom_size_values'] = [
-			'label' => _x( 'Custom Size Dimension', 'Background Control', 'qazana' ),
-			'type' => Controls_Manager::DIMENSIONS,
-			'description' => __( 'Add custom image size for background image.', 'qazana' ),
-			'size_units' => [ 'px', '%' ],
-			'allowed_dimensions'=> [ 'top', 'right' ],
-			'condition' => [
-				'custom_size!' => '',
-				'background' => [ 'classic' ],
-				'image[url]!' => '',
-			],
-			'selectors' => [
-				'{{SELECTOR}}' => 'background-size: {{RIGHT}}{{UNIT}} {{TOP}}{{UNIT}} ;',
-			],
-		];
-
 		$fields['size'] = [
 			'label' => _x( 'Size', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
+			'responsive' => true,
 			'default' => '',
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'qazana' ),
 				'auto' => _x( 'Auto', 'Background Control', 'qazana' ),
 				'cover' => _x( 'Cover', 'Background Control', 'qazana' ),
 				'contain' => _x( 'Contain', 'Background Control', 'qazana' ),
+				'initial' => _x( 'Custom', 'Background Control', 'qazana' ),
 			],
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-size: {{VALUE}};',
@@ -402,7 +485,61 @@ class Group_Control_Background extends Group_Control_Base {
 			'condition' => [
 				'background' => [ 'classic' ],
 				'image[url]!' => '',
-				'custom_size' => '',
+			],
+		];
+
+		$fields['bg_width'] = [
+			'label' => _x( 'Width', 'Background Control', 'qazana' ),
+			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
+			'size_units' => [ 'px', 'em', '%', 'vw' ],
+			'range' => [
+				'px' => [
+					'min' => 0,
+					'max' => 1000,
+				],
+				'%' => [
+					'min' => 0,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => 0,
+					'max' => 100,
+				],
+			],
+			'default' => [
+				'size' => 100,
+				'unit' => '%',
+			],
+			'required' => true,
+			'selectors' => [
+				'{{SELECTOR}}' => 'background-size: {{SIZE}}{{UNIT}} auto',
+
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'size' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'device_args' => [
+				Controls_Stack::RESPONSIVE_TABLET => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-size: {{SIZE}}{{UNIT}} auto',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'size_tablet' => [ 'initial' ],
+					],
+				],
+				Controls_Stack::RESPONSIVE_MOBILE => [
+					'selectors' => [
+						'{{SELECTOR}}' => 'background-size: {{SIZE}}{{UNIT}} auto',
+					],
+					'condition' => [
+						'background' => [ 'classic' ],
+						'size_mobile' => [ 'initial' ],
+					],
+				],
 			],
 		];
 
