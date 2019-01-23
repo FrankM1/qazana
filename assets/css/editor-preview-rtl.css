@@ -2351,8 +2351,8 @@ html.qazana-html {
 
 .qazana-add-section-close {
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 35px;
+  top: 15px;
   font-size: 20px;
   cursor: pointer;
   line-height: 1;

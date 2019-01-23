@@ -81,16 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/admin-feedback.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 170);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "../assets/dev/js/admin/admin-feedback.js":
-/*!************************************************!*\
-  !*** ../assets/dev/js/admin/admin-feedback.js ***!
-  \************************************************/
-/*! no static exports found */
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
