@@ -445,6 +445,12 @@ a.qazana-edit-template {
       -ms-flex-align: end;
           align-items: flex-end; }
 
+.qazana-section-content-fill > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch; }
+
 .qazana-row {
   width: 100%;
   display: -webkit-box;

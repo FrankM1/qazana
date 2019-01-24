@@ -194,9 +194,11 @@ class Element_Column extends Element_Base {
 					'top' => __( 'Top', 'qazana' ),
 					'center' => __( 'Middle', 'qazana' ),
 					'bottom' => __( 'Bottom', 'qazana' ),
+					'fill' => __( 'Full Height', 'qazana' ),
 				],
 				'selectors_dictionary' => [
 					'top' => 'flex-start',
+					'fill' => 'stretch',
 					'bottom' => 'flex-end',
 				],
 				'selectors' => [

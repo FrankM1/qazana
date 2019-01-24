@@ -481,6 +481,7 @@ class Element_Section extends Element_Base {
 					'top' => __( 'Top', 'qazana' ),
 					'middle' => __( 'Middle', 'qazana' ),
 					'bottom' => __( 'Bottom', 'qazana' ),
+					'fill' => __( 'Full Height', 'qazana' ),
 				],
 				'prefix_class' => 'qazana-section-content-',
 			]

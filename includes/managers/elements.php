@@ -125,6 +125,31 @@ class Elements_Manager {
 	}
 
 	/**
+	 * @param array $data a set of elements
+	 *
+	 * @return mixed
+	 */
+	public function generate_element_instances( $data, $post_id ) {
+
+		qazana()->get_db()->iterate_data(
+			$data,
+			function( $element ) use ( $post_id ) {
+
+				$element_instance = $this->create_element_instance( qazana()->get_documents()->get( $post_id ), $element );
+
+				// Exit if the element doesn't exist
+				if ( ! $element_instance ) {
+					return $element;
+				}
+
+				$this->add_element_instance( $element_instance );
+
+				return $element;
+			}
+		);
+	}
+
+	/**
 	 * Create element instance.
 	 *
 	 * This method creates a new element instance for any given element.

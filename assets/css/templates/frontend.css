@@ -376,6 +376,9 @@ a.qazana-edit-template {
 .qazana-section-content-bottom > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
   align-items: flex-end; }
 
+.qazana-section-content-fill > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
+  align-items: stretch; }
+
 .qazana-row {
   width: 100%;
   display: flex; }

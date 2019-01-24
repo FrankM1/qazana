@@ -114,6 +114,10 @@
 				.qazana-section-content-bottom > & {
 					align-items: flex-end;
 				}
+
+				.qazana-section-content-fill > & {
+					align-items: stretch;
+				}
 			}
 		}
 	}
@@ -134,7 +138,6 @@
     flex-wrap: wrap;
   }
 }
-
 
 // Widget
 .qazana-column-wrap {
