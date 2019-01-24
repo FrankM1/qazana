@@ -284,8 +284,10 @@ final class Manager {
 		$extensions = $this->get_extensions();
 		foreach ( $extensions as $extension_id => $extension_instance ) {
 			$dependencies = $this->get_extension_data( $extension_id )['dependencies'];
-			foreach ( $dependencies as $extension_id ) {
-				$this->locate_dependency( $extension_id );
+			if ( ! empty( $dependencies ) ) {
+				foreach ( $dependencies as $extension_id ) {
+					$this->locate_dependency( $extension_id );
+				} 
 			}
 		}
 	}
