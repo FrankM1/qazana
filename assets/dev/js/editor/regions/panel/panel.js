@@ -136,7 +136,7 @@ module.exports = BaseRegion.extend( {
 	},
 
 	close: function( silent ) {
-		this.$el.hide();
+		// this.$el.hide();
 
 		if ( this.isDocked ) {
 			this.undock( true );
