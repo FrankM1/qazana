@@ -270,6 +270,17 @@ class Widget_Link extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'link_css_class',
+			[
+				'label' => __( 'Link Classes', 'qazana' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'title' => __( 'Add your custom classes', 'qazana' ),
+				'label_block' => false,
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -371,6 +382,10 @@ class Widget_Link extends Widget_Base {
 			$this->add_render_attribute( 'link', 'id', $settings['link_css_id'] );
 		}
 
+		if ( ! empty( $settings['link_css_class'] ) ) {
+			$this->add_render_attribute( 'link', 'class', $settings['link_css_class'] );
+		}
+
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'link', 'class', 'qazana-size-' . $settings['size'] );
 		}
@@ -417,7 +432,7 @@ class Widget_Link extends Widget_Base {
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
         <div class="qazana-link-wrapper qazana-inner-wrapper">
-            <a id="{{ settings.link_css_id }}" class="qazana-link qazana-link-{{ settings.link_type }} qazana-weight-{{ settings.link_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="link">
+            <a id="{{ settings.link_css_id }}" class="qazana-link {{ settings.link_css_class }} qazana-link-{{ settings.link_type }} qazana-weight-{{ settings.link_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="link">
                 <span class="qazana-link-content-wrapper">
                     <# if ( settings.icon ) { #>
                     <span class="qazana-link-icon qazana-align-icon-{{ settings.icon_align }}">
