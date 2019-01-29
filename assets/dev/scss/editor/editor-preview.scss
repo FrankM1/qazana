@@ -23,7 +23,6 @@ html.qazana-html {
 }
 
 .qazana-editor-active {
-
 	.qazana.qazana-edit-area-active {
 
 		.qazana-top-section {
@@ -81,10 +80,10 @@ html.qazana-html {
 
 		&.qazana-element-editable, &.qazana-element-edit-mode:hover {
 			outline: 1px solid $editor-info;
+			position: relative;
 		}
 
 		&:not(:hover) {
-
 			.qazana-editor-element-settings {
 				display: none;
 			}

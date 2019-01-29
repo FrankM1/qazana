@@ -274,7 +274,7 @@ class Frontend {
 				'jquery',
 				'jquery-ui-position',
 			],
-			'3.2.5',
+			'4.7.1',
 			true
 		);
 
@@ -283,7 +283,8 @@ class Frontend {
 			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
 			[
 				'waypoints',
-				//'jquery-swiper',
+				'qazana-dialog',
+				'jquery-swiper',
 			],
 			qazana_get_version(),
 			true

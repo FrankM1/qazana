@@ -898,6 +898,8 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get widgets
+	 * 
+	 * @return object
 	 */
 	public function get_widgets() {
 		return new Widgets( $this );
@@ -905,6 +907,8 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get elements
+	 * 
+	 * @return object
 	 */
 	public function get_elements() {
 		return new Elements( $this );
@@ -912,6 +916,10 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get widget group to use
+	 * 
+	 * Use this to specify widgets by document types.
+	 * 
+	 * @return array
 	 */
 	public function get_widget_groups() {
 		return [ 'post' ];

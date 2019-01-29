@@ -71,7 +71,7 @@ class Widgets {
 
 		foreach ( $widget_types as $widget_id => $widget ) {
 
-			if ( array_diff( $this->document->get_widget_groups(), $widget->get_documents() ) ) {
+			if ( ! count( array_intersect( $this->document->get_widget_groups(), $widget->get_documents() ) )  ) {
 				continue;
 			}
 

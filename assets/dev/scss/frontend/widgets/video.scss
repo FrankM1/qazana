@@ -1,45 +1,50 @@
 //
 // Video
 //
-.qazana-video-wrapper {
-    position: relative;
-    .qazana-custom-embed-image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: 50%;
-        cursor: pointer;
+.qazana-widget-video {
 
-        &:hover {
-            .qazana-custom-embed-play {
-                i {
-                    opacity: 0.9;
-                    text-shadow: 3px 2px 30px rgba(0, 0, 0, 0.6);
-                }
-            }
-        }
-    }
+	.qazana-widget-container {
+		overflow: hidden;
+		transform: translate3d(0, 0, 0); // Allow border-radius in Safari
+	}
 
-    .qazana-image-background-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
+	.qazana-open-inline {
 
-    .qazana-custom-embed-play {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        z-index: 1;
-    }
+		.qazana-custom-embed-image-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-position: 50%;
+		}
+	}
+
+	.qazana-custom-embed-image-overlay {
+		cursor: pointer;
+		text-align: center;
+
+		&:hover {
+
+			.qazana-custom-embed-play {
+
+				i {
+					opacity: 1;
+				}
+			}
+		}
+
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+
+	.qazana-video {
+		object-fit: cover;
+	}
 }
-
 .qazana-video-popup-image {
     text-align: center;
 }

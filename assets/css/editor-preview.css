@@ -1496,7 +1496,7 @@
     overflow: hidden;
     -webkit-border-radius: 3px;
             border-radius: 3px;
-    z-index: 10001; }
+    z-index: 100010; }
     .pen-menu:after {
       top: 100%;
       content: '';
@@ -1876,7 +1876,8 @@ html.qazana-html {
   transition: all .1s; }
 
 .qazana-editor-active .qazana-widget.qazana-element-editable, .qazana-editor-active .qazana-widget.qazana-element-edit-mode:hover {
-  outline: 1px solid #008EFF; }
+  outline: 1px solid #008EFF;
+  position: relative; }
 
 .qazana-editor-active .qazana-widget:not(:hover) .qazana-editor-element-settings {
   display: none; }
