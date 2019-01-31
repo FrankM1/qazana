@@ -1,11 +1,11 @@
 <?php
-namespace Qazana\Widgets;
+namespace Qazana;
 
 use Qazana\Extensions\DynamicTags;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Video extends Widget_Base {
+class Widget_Video extends Widget_Base {
 
 	/**
 	 * Get widget name.
