@@ -105,7 +105,7 @@ class Widget_Video extends Widget_Base {
 					'youtube' => __( 'YouTube', 'qazana' ),
 					'vimeo' => __( 'Vimeo', 'qazana' ),
 					'dailymotion' => __( 'Dailymotion', 'qazana' ),
-					'video_central' => __( 'Video Central', 'energia' ),
+					'video_central' => __( 'Video Central', 'qazana' ),
 					'hosted' => __( 'Self Hosted', 'qazana' ),
 				],
 			]
