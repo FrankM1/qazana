@@ -65,24 +65,6 @@ WidgetView = BaseElementView.extend( {
 		};
 	},
 
-	getContextMenuGroups: function() {
-		var groups = BaseElementView.prototype.getContextMenuGroups.apply( this, arguments ),
-			transferGroupIndex = groups.indexOf( _.findWhere( groups, { name: 'transfer' } ) );
-
-		groups.splice( transferGroupIndex + 1, 0, {
-			name: 'save',
-			actions: [
-				{
-					name: 'save',
-					title: qazana.translate( 'save_as_global' ),
-					shortcut: jQuery( '<i>', { class: 'eicon-pro-icon' } ),
-				},
-			],
-		} );
-
-		return groups;
-	},
-
 	render: function() {
 		if ( this.model.isRemoteRequestActive() ) {
 			this.handleEmptyWidget();
