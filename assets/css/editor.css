@@ -1704,17 +1704,17 @@ select {
     -webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
     transition: all 0.5s; }
-    .qazana-panel .qazana-panel-footer-tool #qazana-panel-saver-button-update {
+    .qazana-panel .qazana-panel-footer-tool #qazana-panel-footer-saver-button-update {
       border-right: 1px solid #2d8739;
       -webkit-border-radius: 3px 0 0 3px;
               border-radius: 3px 0 0 3px; }
-      .qazana-panel .qazana-panel-footer-tool #qazana-panel-saver-button-update i {
+      .qazana-panel .qazana-panel-footer-tool #qazana-panel-footer-saver-button-update i {
         margin-right: 5px; }
-    .qazana-panel .qazana-panel-footer-tool #qazana-panel-saver-button-save-options {
+    .qazana-panel .qazana-panel-footer-tool #qazana-panel-footer-saver-button-save-options {
       float: left;
       -webkit-border-radius: 0 3px 3px 0;
               border-radius: 0 3px 3px 0; }
-      .qazana-panel .qazana-panel-footer-tool #qazana-panel-saver-button-save-options i {
+      .qazana-panel .qazana-panel-footer-tool #qazana-panel-footer-saver-button-save-options i {
         margin: auto; }
     .qazana-panel .qazana-panel-footer-tool.qazana-open {
       color: #fff; }
@@ -1777,49 +1777,49 @@ select {
     display: block;
     height: 100%;
     line-height: 40px; }
-  .qazana-panel #qazana-panel-saver-publish {
+  .qazana-panel #qazana-panel-footer-saver-publish {
     width: 80px; }
-    .qazana-panel #qazana-panel-saver-publish .qazana-button-state i {
+    .qazana-panel #qazana-panel-footer-saver-publish .qazana-button-state i {
       margin-right: 0; }
-    .qazana-panel #qazana-panel-saver-publish .qazana-button-state #qazana-panel-saver-button-publish-label {
+    .qazana-panel #qazana-panel-footer-saver-publish .qazana-button-state #qazana-panel-footer-saver-button-publish-label {
       display: none; }
-  .qazana-panel #qazana-panel-saver-save-options {
+  .qazana-panel #qazana-panel-footer-saver-save-options {
     width: 35px;
     border-left: 1px solid #161616; }
-    .qazana-panel #qazana-panel-saver-save-options .qazana-last-edited-wrapper {
+    .qazana-panel #qazana-panel-footer-saver-save-options .qazana-last-edited-wrapper {
       font-size: 11px;
       font-style: italic;
       color: #a0a5aa;
       padding: 5px 0 15px; }
-      .qazana-panel #qazana-panel-saver-save-options .qazana-last-edited-wrapper:not(.qazana-state-active) .qazana-state-icon {
+      .qazana-panel #qazana-panel-footer-saver-save-options .qazana-last-edited-wrapper:not(.qazana-state-active) .qazana-state-icon {
         display: none; }
-      .qazana-panel #qazana-panel-saver-save-options .qazana-last-edited-wrapper time {
+      .qazana-panel #qazana-panel-footer-saver-save-options .qazana-last-edited-wrapper time {
         border-bottom: 1px dotted transparent;
         -webkit-transition: all ease-in-out .3s;
         -o-transition: all ease-in-out .3s;
         transition: all ease-in-out .3s;
         cursor: pointer; }
-        .qazana-panel #qazana-panel-saver-save-options .qazana-last-edited-wrapper time:hover {
+        .qazana-panel #qazana-panel-footer-saver-save-options .qazana-last-edited-wrapper time:hover {
           border-bottom-color: inherit; }
   .qazana-panel .qazana-saver-disabled {
     cursor: default; }
-  .qazana-panel #qazana-panel-saver-button-preview a {
+  .qazana-panel #qazana-panel-footer-saver-button-preview a {
     color: #a0a5aa; }
-  .qazana-panel #qazana-panel-saver-button-publish, .qazana-panel #qazana-panel-saver-button-save-options {
+  .qazana-panel #qazana-panel-footer-saver-button-publish, .qazana-panel #qazana-panel-footer-saver-button-save-options {
     font-size: 11px;
     text-transform: uppercase;
     height: 26px; }
-    .qazana-panel #qazana-panel-saver-button-publish.qazana-saver-disabled, .qazana-panel #qazana-panel-saver-button-save-options.qazana-saver-disabled {
+    .qazana-panel #qazana-panel-footer-saver-button-publish.qazana-saver-disabled, .qazana-panel #qazana-panel-footer-saver-button-save-options.qazana-saver-disabled {
       background-color: #1a0316;
       color: #a0a5aa; }
-  .qazana-panel #qazana-panel-saver-button-publish {
+  .qazana-panel #qazana-panel-footer-saver-button-publish {
     width: 100%;
     -webkit-border-radius: 3px 0 0 3px;
             border-radius: 3px 0 0 3px; }
-  .qazana-panel #qazana-panel-saver-button-save-options {
+  .qazana-panel #qazana-panel-footer-saver-button-save-options {
     width: 25px; }
-  .qazana-panel #qazana-panel-saver-menu-save-draft.qazana-saver-disabled .qazana-icon,
-  .qazana-panel #qazana-panel-saver-menu-save-draft.qazana-saver-disabled .qazana-title {
+  .qazana-panel #qazana-panel-footer-saver-menu-save-draft.qazana-saver-disabled .qazana-icon,
+  .qazana-panel #qazana-panel-footer-saver-menu-save-draft.qazana-saver-disabled .qazana-title {
     color: #444; }
 
 #qazana-panel-inner {

@@ -4,7 +4,7 @@ module.exports = SaverBehavior.extend({
 	ui: function() {
 		var ui = SaverBehavior.prototype.ui.apply( this, arguments );
 
-		ui.menuConditions = '#qazana-panel-saver-conditions';
+		ui.menuConditions = '#qazana-panel-footer-saver-conditions';
 		ui.previewWrapper = '#qazana-panel-footer-document-conditions-button-preview-wrapper';
 		ui.buttonPreviewSettings = '#qazana-panel-footer-document-conditions-button-preview-settings';
 		ui.buttonOpenPreview = '#qazana-panel-footer-document-conditions-button-open-preview';
@@ -33,7 +33,7 @@ module.exports = SaverBehavior.extend({
 		SaverBehavior.prototype.onRender.apply( this, arguments );
 
 		var $menuConditions = jQuery( '<div />', {
-			id: 'qazana-panel-saver-conditions',
+			id: 'qazana-panel-footer-saver-conditions',
 			class: 'qazana-panel-footer-sub-menu-item',
 			html: '<i class="qazana-icon fa fa-paper-plane"></i>' + '<span class="qazana-title">' + qazana.translate( 'display_conditions' ) + '</span>'
 		});

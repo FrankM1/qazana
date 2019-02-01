@@ -13,8 +13,8 @@ module.exports = Module.extend( {
 
 		qazana.addControlView( 'Conditions_repeater', require( './conditions/repeater-control' ) );
 
-		qazana.hooks.addFilter( 'panel/footer/behaviors', this.addFooterSaver );
 		qazana.hooks.addFilter( 'panel/header/behaviors', this.addHeaderSaver );
+		qazana.hooks.addFilter( 'panel/footer/behaviors', this.addFooterSaver );
 
 		this.initConditionsLayout();
 

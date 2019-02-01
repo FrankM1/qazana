@@ -68,9 +68,7 @@ WidgetView = BaseElementView.extend( {
 	render: function() {
 		if ( this.model.isRemoteRequestActive() ) {
 			this.handleEmptyWidget();
-
 			this.$el.addClass( 'qazana-element' );
-
 			return;
 		}
 
