@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 175);
+/******/ 	return __webpack_require__(__webpack_require__.s = 176);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -234,7 +234,7 @@ module.exports = new HotKeys();
 
 /***/ }),
 
-/***/ 175:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -245,11 +245,11 @@ module.exports = new HotKeys();
 	var elements = {},
 	    EventManager = __webpack_require__(20),
 	    Module = __webpack_require__(4),
-	    ElementsHandler = __webpack_require__(176),
-	    YouTubeModule = __webpack_require__(192),
-	    VimeoModule = __webpack_require__(193),
-	    AnchorsModule = __webpack_require__(194),
-	    LightboxModule = __webpack_require__(195);
+	    ElementsHandler = __webpack_require__(177),
+	    YouTubeModule = __webpack_require__(193),
+	    VimeoModule = __webpack_require__(194),
+	    AnchorsModule = __webpack_require__(195),
+	    LightboxModule = __webpack_require__(196);
 	// CarouselModule = require( 'qazana-frontend/utils/carousel' );
 
 	var QazanaFrontend = function QazanaFrontend() {
@@ -292,7 +292,7 @@ module.exports = new HotKeys();
 			};
 
 			self.modules = {
-				StretchElement: __webpack_require__(196),
+				StretchElement: __webpack_require__(197),
 				Masonry: __webpack_require__(16)
 			};
 
@@ -496,7 +496,7 @@ if (!qazanaFrontend.isEditMode()) {
 
 /***/ }),
 
-/***/ 176:
+/***/ 177:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,26 +510,26 @@ ElementsHandler = function ElementsHandler($) {
 	// element-type.skin-type
 	var handlers = {
 		// Elements
-		section: __webpack_require__(177),
+		section: __webpack_require__(178),
 
 		// Widgets
-		'accordion.default': __webpack_require__(179),
-		'alert.default': __webpack_require__(180),
-		'counter.default': __webpack_require__(181),
-		'progress.default': __webpack_require__(182),
-		'tabs.default': __webpack_require__(183),
-		'toggle.default': __webpack_require__(184),
-		'video.default': __webpack_require__(185),
-		'tooltip.default': __webpack_require__(186),
-		'piechart.default': __webpack_require__(187),
+		'accordion.default': __webpack_require__(180),
+		'alert.default': __webpack_require__(181),
+		'counter.default': __webpack_require__(182),
+		'progress.default': __webpack_require__(183),
+		'tabs.default': __webpack_require__(184),
+		'toggle.default': __webpack_require__(185),
+		'video.default': __webpack_require__(186),
+		'tooltip.default': __webpack_require__(187),
+		'piechart.default': __webpack_require__(188),
 		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
-		'text-editor.default': __webpack_require__(188),
-		'spacer.default': __webpack_require__(189)
+		'text-editor.default': __webpack_require__(189),
+		'spacer.default': __webpack_require__(190)
 	};
 
 	var addGlobalHandlers = function addGlobalHandlers() {
-		qazanaFrontend.hooks.addAction('frontend/element_ready/global', __webpack_require__(190));
-		qazanaFrontend.hooks.addAction('frontend/element_ready/widget', __webpack_require__(191));
+		qazanaFrontend.hooks.addAction('frontend/element_ready/global', __webpack_require__(191));
+		qazanaFrontend.hooks.addAction('frontend/element_ready/widget', __webpack_require__(192));
 	};
 
 	var addElementsHandlers = function addElementsHandlers() {
@@ -614,13 +614,13 @@ module.exports = ElementsHandler;
 
 /***/ }),
 
-/***/ 177:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BackgroundVideo = __webpack_require__(178);
+var BackgroundVideo = __webpack_require__(179);
 
 var HandlerModule = __webpack_require__(4);
 
@@ -827,7 +827,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 178:
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -933,7 +933,7 @@ module.exports = BackgroundVideo;
 
 /***/ }),
 
-/***/ 179:
+/***/ 180:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -951,7 +951,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 180:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -965,7 +965,7 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 181:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -993,7 +993,7 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 182:
+/***/ 183:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1009,7 +1009,7 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 183:
+/***/ 184:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1026,7 +1026,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 184:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,7 +1046,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 185:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1146,7 +1146,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1167,7 +1167,7 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 187:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1212,7 +1212,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 188:
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1322,7 +1322,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 189:
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1361,7 +1361,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 190:
+/***/ 191:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1415,7 +1415,7 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 191:
+/***/ 192:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1437,7 +1437,7 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 192:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1494,7 +1494,7 @@ module.exports = ViewModule.extend({
 
 /***/ }),
 
-/***/ 193:
+/***/ 194:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1550,7 +1550,7 @@ module.exports = ViewModule.extend({
 
 /***/ }),
 
-/***/ 194:
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1634,7 +1634,7 @@ module.exports = ViewModule.extend({
 
 /***/ }),
 
-/***/ 195:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2104,7 +2104,7 @@ module.exports = LightboxModule;
 
 /***/ }),
 
-/***/ 196:
+/***/ 197:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

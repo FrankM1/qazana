@@ -33,8 +33,12 @@ class WPSEO extends Base {
 			}
 
 			return $retval;
-		}, 10, 2 );
-
+        }, 10, 2 );
+        
+        // Compatibility with Yoast SEO plugin when 'Removes unneeded query variables from the URL' enabled.
+		if ( qazana()->get_preview()->is_preview_mode() && class_exists( 'WPSEO_Frontend' ) ) {
+			remove_action( 'template_redirect', [ \WPSEO_Frontend::get_instance(), 'clean_permalink' ], 1 );
+		}
     }
 
 }

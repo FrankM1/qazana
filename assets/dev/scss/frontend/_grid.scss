@@ -301,3 +301,25 @@ ul.qazana-icon-list-items.qazana-inline-items {
 		@include grid_loop(-mobile);
 	}
 }
+
+.qazana-grid {
+	// grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
+	// grid-auto-rows: minmax(25%, auto);
+	// grid-auto-flow: dense;
+	// height: auto !important ;
+
+	.qazana-grid-item {
+		&__large {
+			grid-column-end: span 2;
+    		grid-row-end: span 2;
+		}
+
+		&__tall {
+    		grid-row-end: span 2;
+		}
+
+		&__medium {
+			grid-column-end: span 2;
+		}
+	}
+}

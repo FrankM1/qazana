@@ -143,7 +143,7 @@ class Utils {
 	 * @return string WordPress preview URL.
 	 */
 	public static function get_wp_preview_url( $post_id ) {
-	    //TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_wp_preview_url()' );
+	    _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_wp_preview_url()' );
 
 		$wp_preview_url = qazana()->get_documents()->get( $post_id )->get_wp_preview_url();
 

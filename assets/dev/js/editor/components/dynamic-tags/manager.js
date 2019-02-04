@@ -44,14 +44,19 @@ module.exports = Module.extend( {
 
 		this.cacheCallbacks = [];
 
-		qazana.ajax.send( 'render_tags', {
+		jQuery.ajax( {
+			type: 'POST',
+				url: qazana.config.ajaxurl,
 			data: {
+				action: 'qazana_render_tags',
 				post_id: qazana.config.document.id,
 				tags: Object.keys( cacheRequests ),
+				_nonce: qazana.config.nonce,
+				editor_post_id: qazana.config.document.id,
 			},
+			dataType: 'json',
 			success: function( data ) {
 				jQuery.extend( cache, data );
-
 				cacheCallbacks.forEach( function( callback ) {
 					callback();
 				} );

@@ -567,7 +567,7 @@ function qazana_register_controls_section_style_bullets_navigation( $element, $s
             ],
             'default' => array(
                 'unit' => 'px',
-                'size' => '-20',
+                'size' => '-30',
             ),
             'selectors' => [
                 '{{WRAPPER}} .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',

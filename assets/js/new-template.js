@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 172);
+/******/ 	return __webpack_require__(__webpack_require__.s = 173);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -180,14 +180,14 @@ module.exports = TemplateLibraryLoadingView;
 
 /***/ }),
 
-/***/ 172:
+/***/ 173:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var ViewModule = __webpack_require__(1),
-    NewTemplateLayout = __webpack_require__(173);
+    NewTemplateLayout = __webpack_require__(174);
 
 var NewTemplateModule = ViewModule.extend({
 
@@ -234,14 +234,14 @@ jQuery(function () {
 
 /***/ }),
 
-/***/ 173:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BaseModalLayout = __webpack_require__(7),
-    NewTemplateView = __webpack_require__(174);
+var BaseModalLayout = __webpack_require__(8),
+    NewTemplateView = __webpack_require__(175);
 
 module.exports = BaseModalLayout.extend({
 
@@ -276,7 +276,7 @@ module.exports = BaseModalLayout.extend({
 
 /***/ }),
 
-/***/ 174:
+/***/ 175:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -516,14 +516,14 @@ module.exports = Module;
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var TemplateLibraryHeaderView = __webpack_require__(14),
-    TemplateLibraryHeaderLogoView = __webpack_require__(8),
+    TemplateLibraryHeaderLogoView = __webpack_require__(9),
     TemplateLibraryLoadingView = __webpack_require__(15);
 
 module.exports = Marionette.LayoutView.extend({
@@ -616,7 +616,7 @@ module.exports = Marionette.LayoutView.extend({
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

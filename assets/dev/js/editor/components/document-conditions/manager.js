@@ -3,24 +3,26 @@ var Module = require( 'qazana-utils/module' );
 module.exports = Module.extend( {
 
     onInit: function() {
-        var self = this;
+		var self = this;
 
-		this.config = qazana.config.documentConditions;
+		if ( this.hasDocumentConditions() ) {
+			this.config = qazana.config.documentConditions;
 
-		if ( ! this.config ) {
-			return;
+			qazana.addControlView( 'Conditions_repeater', require( './conditions/repeater-control' ) );
+
+			qazana.hooks.addFilter( 'panel/header/behaviors', this.addHeaderSaver );
+			qazana.hooks.addFilter( 'panel/footer/behaviors', this.addFooterSaver );
+
+			this.initConditionsLayout();
 		}
 
-		qazana.addControlView( 'Conditions_repeater', require( './conditions/repeater-control' ) );
-
-		qazana.hooks.addFilter( 'panel/header/behaviors', this.addHeaderSaver );
-		qazana.hooks.addFilter( 'panel/footer/behaviors', this.addFooterSaver );
-
-		this.initConditionsLayout();
-
-        qazana.once( 'preview:loaded', function() {
-            self.onQazanaPreviewLoaded();
+		qazana.once( 'preview:loaded', function() {
+			self.onQazanaPreviewLoaded();
 		} );
+	},
+
+	hasDocumentConditions: function() {
+		return ( 'undefined' === typeof qazana.config.documentConditions ) ? false : true;
 	},
 
 	addHeaderSaver: function( behavior ) {
@@ -118,11 +120,6 @@ module.exports = Module.extend( {
 	},
 
 	onQazanaPreviewLoaded: function() {
-
-		if ( ! this.config ) {
-			return;
-		}
-
 		qazana.getPanelView().on( 'set:page:page_settings', this.updatePreviewIdOptions );
 
 		qazana.settings.page.model.on( 'change', this.onPageSettingsChange.bind( this ) );

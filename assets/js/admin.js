@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 168);
+/******/ 	return __webpack_require__(__webpack_require__.s = 169);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -119,7 +119,7 @@ module.exports = ViewModule;
 
 /***/ }),
 
-/***/ 168:
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -384,7 +384,7 @@ module.exports = ViewModule;
 		},
 
 		initMaintenanceMode: function initMaintenanceMode() {
-			var MaintenanceMode = __webpack_require__(169);
+			var MaintenanceMode = __webpack_require__(170);
 
 			this.maintenanceMode = new MaintenanceMode();
 		},
@@ -574,7 +574,7 @@ module.exports = ViewModule;
 
 /***/ }),
 
-/***/ 169:
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -91,7 +91,7 @@
 "use strict";
 
 
-var ControlBaseView = __webpack_require__(6),
+var ControlBaseView = __webpack_require__(7),
     TagsBehavior = __webpack_require__(98),
     Validator = __webpack_require__(18),
     ControlBaseDataView;
@@ -1045,6 +1045,48 @@ module.exports = ControlBaseMultipleItemView;
 "use strict";
 
 
+var ControlBaseDataView = __webpack_require__(0),
+    ControlSelect2ItemView;
+
+ControlSelect2ItemView = ControlBaseDataView.extend({
+	getSelect2Placeholder: function getSelect2Placeholder() {
+		return this.ui.select.children('option:first[value=""]').text();
+	},
+
+	getSelect2DefaultOptions: function getSelect2DefaultOptions() {
+		return {
+			allowClear: true,
+			placeholder: this.getSelect2Placeholder(),
+			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
+		};
+	},
+
+	getSelect2Options: function getSelect2Options() {
+		return jQuery.extend(this.getSelect2DefaultOptions(), this.model.get('select2options'));
+	},
+
+	onReady: function onReady() {
+		this.ui.select.select2(this.getSelect2Options());
+	},
+
+	onBeforeDestroy: function onBeforeDestroy() {
+		if (this.ui.select.data('select2')) {
+			this.ui.select.select2('destroy');
+		}
+
+		this.$el.remove();
+	}
+});
+
+module.exports = ControlSelect2ItemView;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var ControlBaseView;
 
 ControlBaseView = Marionette.CompositeView.extend({
@@ -1139,14 +1181,14 @@ ControlBaseView = Marionette.CompositeView.extend({
 module.exports = ControlBaseView;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var TemplateLibraryHeaderView = __webpack_require__(14),
-    TemplateLibraryHeaderLogoView = __webpack_require__(8),
+    TemplateLibraryHeaderLogoView = __webpack_require__(9),
     TemplateLibraryLoadingView = __webpack_require__(15);
 
 module.exports = Marionette.LayoutView.extend({
@@ -1238,7 +1280,7 @@ module.exports = Marionette.LayoutView.extend({
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1269,7 +1311,7 @@ module.exports = Marionette.ItemView.extend({
 });
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1332,7 +1374,7 @@ BaseElementView = BaseContainer.extend({
 
 		var behaviors = {
 			contextMenu: {
-				behaviorClass: __webpack_require__(10),
+				behaviorClass: __webpack_require__(11),
 				groups: groups
 			}
 		};
@@ -2067,7 +2109,7 @@ BaseElementView = BaseContainer.extend({
 module.exports = BaseElementView;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2179,48 +2221,6 @@ module.exports = Marionette.Behavior.extend({
 		}
 	}
 });
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ControlBaseDataView = __webpack_require__(0),
-    ControlSelect2ItemView;
-
-ControlSelect2ItemView = ControlBaseDataView.extend({
-	getSelect2Placeholder: function getSelect2Placeholder() {
-		return this.ui.select.children('option:first[value=""]').text();
-	},
-
-	getSelect2DefaultOptions: function getSelect2DefaultOptions() {
-		return {
-			allowClear: true,
-			placeholder: this.getSelect2Placeholder(),
-			dir: qazana.config.is_rtl ? 'rtl' : 'ltr'
-		};
-	},
-
-	getSelect2Options: function getSelect2Options() {
-		return jQuery.extend(this.getSelect2DefaultOptions(), this.model.get('select2options'));
-	},
-
-	onReady: function onReady() {
-		this.ui.select.select2(this.getSelect2Options());
-	},
-
-	onBeforeDestroy: function onBeforeDestroy() {
-		if (this.ui.select.data('select2')) {
-			this.ui.select.select2('destroy');
-		}
-
-		this.$el.remove();
-	}
-});
-
-module.exports = ControlSelect2ItemView;
 
 /***/ }),
 /* 12 */
@@ -4152,7 +4152,7 @@ var _inline2 = _interopRequireDefault(_inline);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var BaseElementView = __webpack_require__(9),
+var BaseElementView = __webpack_require__(10),
     SectionView;
 
 SectionView = BaseElementView.extend({
@@ -4541,7 +4541,7 @@ var AddSectionBase = function (_Marionette$ItemView) {
 		value: function behaviors() {
 			return {
 				contextMenu: {
-					behaviorClass: __webpack_require__(10),
+					behaviorClass: __webpack_require__(11),
 					groups: this.getContextMenuGroups()
 				}
 			};
@@ -5291,7 +5291,7 @@ module.exports = RepeaterRowView;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var BaseSettingsModel = __webpack_require__(3),
-    ColumnSettingsModel = __webpack_require__(126),
+    ColumnSettingsModel = __webpack_require__(127),
     ElementModel;
 
 ElementModel = Backbone.Model.extend({
@@ -5741,8 +5741,8 @@ module.exports = PanelSchemeColorsView;
 
 
 var childViewTypes = {
-	color: __webpack_require__(158),
-	typography: __webpack_require__(159)
+	color: __webpack_require__(159),
+	typography: __webpack_require__(160)
 },
     PanelSchemeBaseView;
 
@@ -6416,10 +6416,10 @@ var App = Marionette.Application.extend({
 				views: {
 					parts: {
 						headerParts: {
-							logo: __webpack_require__(8)
+							logo: __webpack_require__(9)
 						}
 					},
-					BaseModalLayout: __webpack_require__(7)
+					BaseModalLayout: __webpack_require__(8)
 				}
 			},
 			saver: {
@@ -6430,8 +6430,8 @@ var App = Marionette.Application.extend({
 			}
 		},
 		controls: {
-			Animation: __webpack_require__(11),
-			Base: __webpack_require__(6),
+			Animation: __webpack_require__(6),
+			Base: __webpack_require__(7),
 			BaseData: __webpack_require__(0),
 			BaseMultiple: __webpack_require__(5),
 			Box_shadow: __webpack_require__(33),
@@ -6443,26 +6443,27 @@ var App = Marionette.Application.extend({
 			Dimensions: __webpack_require__(106),
 			Font: __webpack_require__(107),
 			Gallery: __webpack_require__(108),
-			Hover_animation: __webpack_require__(11),
+			Hover_animation: __webpack_require__(6),
 			Icon: __webpack_require__(109),
 			Image_dimensions: __webpack_require__(110),
 			Media: __webpack_require__(111),
 			Number: __webpack_require__(112),
 			Order: __webpack_require__(114),
-			Popover_toggle: __webpack_require__(115),
-			Repeater: __webpack_require__(116),
+			Query: __webpack_require__(115),
+			Popover_toggle: __webpack_require__(116),
+			Repeater: __webpack_require__(117),
 			RepeaterRow: __webpack_require__(36),
-			Section: __webpack_require__(117),
-			Select: __webpack_require__(118),
-			Select2: __webpack_require__(11),
-			Slider: __webpack_require__(119),
-			Structure: __webpack_require__(120),
-			Switcher: __webpack_require__(121),
-			Tab: __webpack_require__(122),
+			Section: __webpack_require__(118),
+			Select: __webpack_require__(119),
+			Select2: __webpack_require__(6),
+			Slider: __webpack_require__(120),
+			Structure: __webpack_require__(121),
+			Switcher: __webpack_require__(122),
+			Tab: __webpack_require__(123),
 			Text_shadow: __webpack_require__(33),
-			Url: __webpack_require__(123),
-			Wp_widget: __webpack_require__(124),
-			Wysiwyg: __webpack_require__(125)
+			Url: __webpack_require__(124),
+			Wp_widget: __webpack_require__(125),
+			Wysiwyg: __webpack_require__(126)
 		},
 		elements: {
 			models: {
@@ -6470,7 +6471,7 @@ var App = Marionette.Application.extend({
 				Element: __webpack_require__(37)
 			},
 			views: {
-				Widget: __webpack_require__(127)
+				Widget: __webpack_require__(128)
 			}
 		},
 		layouts: {
@@ -6479,11 +6480,11 @@ var App = Marionette.Application.extend({
 					elements: {
 						views: {
 							Global: __webpack_require__(39),
-							Elements: __webpack_require__(129)
+							Elements: __webpack_require__(130)
 						}
 					},
 					menu: {
-						Menu: __webpack_require__(130)
+						Menu: __webpack_require__(131)
 					}
 				}
 			}
@@ -6502,31 +6503,6 @@ var App = Marionette.Application.extend({
 			element: '.qazana-tags-list',
 			ignore: '.qazana-control-dynamic-switcher'
 		}
-	},
-
-	// TODO: Temp modules bc method since 2.0.0
-	initModulesBC: function initModulesBC() {
-		var bcModules = {
-			ControlsStack: this.modules.views.ControlsStack,
-			element: {
-				Model: this.modules.elements.models.Element
-			},
-			RepeaterRowView: this.modules.controls.RepeaterRow,
-			WidgetView: this.modules.elements.views.Widget,
-			panel: {
-				Menu: this.modules.layouts.panel.pages.menu.Menu
-			},
-			saver: {
-				headerBehavior: this.modules.components.saver.behaviors.HeaderSaver,
-				footerBehavior: this.modules.components.saver.behaviors.FooterSaver
-			},
-			SettingsModel: this.modules.elements.models.BaseSettings,
-			templateLibrary: {
-				ElementsCollectionView: this.modules.layouts.panel.pages.elements.views.Elements
-			}
-		};
-
-		jQuery.extend(this.modules, bcModules);
 	},
 
 	userCan: function userCan(capability) {
@@ -6629,11 +6605,11 @@ var App = Marionette.Application.extend({
 
 	initComponents: function initComponents() {
 		var EventManager = __webpack_require__(20),
-		    DynamicTags = __webpack_require__(133),
-		    Settings = __webpack_require__(135),
-		    Saver = __webpack_require__(139),
-		    Notifications = __webpack_require__(140),
-		    DocumentConditions = __webpack_require__(141);
+		    DynamicTags = __webpack_require__(134),
+		    Settings = __webpack_require__(136),
+		    Saver = __webpack_require__(140),
+		    Notifications = __webpack_require__(141),
+		    DocumentConditions = __webpack_require__(142);
 
 		this.hooks = new EventManager();
 
@@ -6969,7 +6945,7 @@ var App = Marionette.Application.extend({
 	},
 
 	initPanel: function initPanel() {
-		this.addRegions({ panel: __webpack_require__(149) });
+		this.addRegions({ panel: __webpack_require__(150) });
 	},
 
 	initNavigator: function initNavigator() {
@@ -7213,8 +7189,6 @@ var App = Marionette.Application.extend({
 		Backbone.Radio.DEBUG = false;
 		Backbone.Radio.tuneIn('QAZANA');
 
-		this.initModulesBC();
-
 		this.initComponents();
 
 		if (!this.checkEnvCompatibility()) {
@@ -7282,7 +7256,7 @@ var App = Marionette.Application.extend({
 			sections: iframeRegion
 		});
 
-		var Preview = __webpack_require__(165);
+		var Preview = __webpack_require__(166);
 
 		this.sections.show(new Preview({ model: this.elementsModel }));
 
@@ -9845,7 +9819,7 @@ module.exports = new TemplateLibraryManager();
 "use strict";
 
 
-var BaseModalLayout = __webpack_require__(7),
+var BaseModalLayout = __webpack_require__(8),
     TemplateLibraryHeaderActionsView = __webpack_require__(63),
     TemplateLibraryHeaderMenuView = __webpack_require__(64),
     TemplateLibraryHeaderPreviewView = __webpack_require__(65),
@@ -12181,7 +12155,7 @@ module.exports = Marionette.Behavior.extend({
 		    didAction = false,
 		    behavior;
 
-		var BaseElementView = __webpack_require__(9);
+		var BaseElementView = __webpack_require__(10);
 
 		// Find the new behavior and work with him.
 		if (history.behavior.view instanceof BaseElementView) {
@@ -12504,7 +12478,7 @@ exports.default = AddSectionView;
 "use strict";
 
 
-var BaseElementView = __webpack_require__(9),
+var BaseElementView = __webpack_require__(10),
     ColumnEmptyView = __webpack_require__(92),
     ColumnView;
 
@@ -12745,7 +12719,7 @@ module.exports = Marionette.ItemView.extend({
 	behaviors: function behaviors() {
 		return {
 			contextMenu: {
-				behaviorClass: __webpack_require__(10),
+				behaviorClass: __webpack_require__(11),
 				groups: this.getContextMenuGroups()
 			}
 		};
@@ -13550,7 +13524,7 @@ module.exports = Marionette.ItemView.extend({
 "use strict";
 
 
-var ControlBaseView = __webpack_require__(6);
+var ControlBaseView = __webpack_require__(7);
 
 module.exports = ControlBaseView.extend({
 
@@ -13943,7 +13917,7 @@ module.exports = ControlDimensionsItemView;
 "use strict";
 
 
-var ControlSelect2View = __webpack_require__(11);
+var ControlSelect2View = __webpack_require__(6);
 
 module.exports = ControlSelect2View.extend({
 	getSelect2Options: function getSelect2Options() {
@@ -14511,6 +14485,86 @@ module.exports = ControlOrderItemView;
 "use strict";
 
 
+var ControlSelect2ItemView = __webpack_require__(6);
+
+module.exports = ControlSelect2ItemView.extend({
+    isTitlesReceived: false,
+
+    getSelect2Options: function getSelect2Options() {
+        var self = this;
+
+        return {
+            ajax: {
+                transport: function transport(params, success, failure) {
+                    var data = {
+                        q: params.data.q,
+                        filter_type: self.model.get('filter_type'),
+                        object_type: self.model.get('object_type')
+                    };
+
+                    return qazana.ajax.send('panel_posts_control_filter_autocomplete', {
+                        data: data,
+                        success: success,
+                        error: failure
+                    });
+                },
+                data: function data(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function escapeMarkup(response) {
+                return response;
+            },
+            minimumInputLength: 2
+        };
+    },
+
+    getValueTitles: function getValueTitles() {
+        var self = this,
+            value = self.getControlValue(),
+            filterType = self.model.get('filter_type');
+
+        if (!value || !filterType) {
+            return;
+        }
+
+        var data = {
+            filter_type: filterType,
+            object_type: self.model.get('object_type'),
+            value: value
+        };
+
+        var request = qazana.ajax.send('panel_posts_control_value_titles', { data: data });
+
+        request.then(function (response) {
+            self.isTitlesReceived = true;
+
+            self.model.set('options', response.data);
+
+            self.render();
+        });
+    },
+
+    onReady: function onReady() {
+        qazana.modules.controls.Select2.prototype.onReady.apply(this, arguments);
+
+        if (!this.isTitlesReceived) {
+            this.getValueTitles();
+        }
+    }
+});
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var ControlChooseView = __webpack_require__(34),
     ControlPopoverStarterView;
 
@@ -14542,7 +14596,7 @@ ControlPopoverStarterView = ControlChooseView.extend({
 module.exports = ControlPopoverStarterView;
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14838,13 +14892,13 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
 module.exports = ControlRepeaterItemView;
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ControlBaseView = __webpack_require__(6),
+var ControlBaseView = __webpack_require__(7),
     ControlSectionItemView;
 
 ControlSectionItemView = ControlBaseView.extend({
@@ -14864,7 +14918,7 @@ ControlSectionItemView = ControlBaseView.extend({
 module.exports = ControlSectionItemView;
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14889,7 +14943,7 @@ ControlSelectItemView = ControlBaseDataView.extend({}, {
 module.exports = ControlSelectItemView;
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14960,7 +15014,7 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend({
 module.exports = ControlSliderItemView;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15018,7 +15072,7 @@ ControlStructureItemView = ControlBaseDataView.extend({
 module.exports = ControlStructureItemView;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15039,13 +15093,13 @@ module.exports = ControlBaseDataView.extend({
 });
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ControlBaseView = __webpack_require__(6),
+var ControlBaseView = __webpack_require__(7),
     ControlTabItemView;
 
 ControlTabItemView = ControlBaseView.extend({
@@ -15060,7 +15114,7 @@ ControlTabItemView = ControlBaseView.extend({
 module.exports = ControlTabItemView;
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15147,7 +15201,7 @@ module.exports = BaseMultiple.extend({
 });
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15214,7 +15268,7 @@ ControlWPWidgetItemView = ControlBaseDataView.extend({
 module.exports = ControlWPWidgetItemView;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15402,7 +15456,7 @@ ControlWysiwygItemView = ControlBaseDataView.extend({
 module.exports = ControlWysiwygItemView;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15420,13 +15474,13 @@ ColumnSettingsModel = BaseSettingsModel.extend({
 module.exports = ColumnSettingsModel;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BaseElementView = __webpack_require__(9),
+var BaseElementView = __webpack_require__(10),
     WidgetView;
 
 WidgetView = BaseElementView.extend({
@@ -15462,7 +15516,7 @@ WidgetView = BaseElementView.extend({
 
 		_.extend(behaviors, {
 			InlineEditing: {
-				behaviorClass: __webpack_require__(128),
+				behaviorClass: __webpack_require__(129),
 				inlineEditingClass: 'qazana-inline-editing'
 			}
 		});
@@ -15496,9 +15550,7 @@ WidgetView = BaseElementView.extend({
 	render: function render() {
 		if (this.model.isRemoteRequestActive()) {
 			this.handleEmptyWidget();
-
 			this.$el.addClass('qazana-element');
-
 			return;
 		}
 
@@ -15627,7 +15679,7 @@ WidgetView = BaseElementView.extend({
 module.exports = WidgetView;
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15816,7 +15868,7 @@ InlineEditingBehavior = Marionette.Behavior.extend({
 module.exports = InlineEditingBehavior;
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15869,13 +15921,13 @@ PanelElementsElementsView = Marionette.CollectionView.extend({
 module.exports = PanelElementsElementsView;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var PanelMenuGroupView = __webpack_require__(131),
+var PanelMenuGroupView = __webpack_require__(132),
     PanelMenuPageView;
 
 PanelMenuPageView = Marionette.CompositeView.extend({
@@ -15982,13 +16034,13 @@ PanelMenuPageView = Marionette.CompositeView.extend({
 module.exports = PanelMenuPageView;
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var PanelMenuItemView = __webpack_require__(132);
+var PanelMenuItemView = __webpack_require__(133);
 
 module.exports = Marionette.CompositeView.extend({
 	template: '#tmpl-qazana-panel-menu-group',
@@ -16038,7 +16090,7 @@ module.exports = Marionette.CompositeView.extend({
 });
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16055,7 +16107,7 @@ module.exports = Marionette.ItemView.extend({
 });
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16069,7 +16121,7 @@ module.exports = Module.extend({
 	CACHE_KEY_NOT_FOUND_ERROR: 'Cache key not found',
 
 	tags: {
-		Base: __webpack_require__(134)
+		Base: __webpack_require__(135)
 	},
 
 	cache: {},
@@ -16107,14 +16159,19 @@ module.exports = Module.extend({
 
 		this.cacheCallbacks = [];
 
-		qazana.ajax.send('render_tags', {
+		jQuery.ajax({
+			type: 'POST',
+			url: qazana.config.ajaxurl,
 			data: {
+				action: 'qazana_render_tags',
 				post_id: qazana.config.document.id,
-				tags: Object.keys(cacheRequests)
+				tags: Object.keys(cacheRequests),
+				_nonce: qazana.config.nonce,
+				editor_post_id: qazana.config.document.id
 			},
+			dataType: 'json',
 			success: function success(data) {
 				jQuery.extend(cache, data);
-
 				cacheCallbacks.forEach(function (callback) {
 					callback();
 				});
@@ -16215,7 +16272,7 @@ module.exports = Module.extend({
 });
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16292,7 +16349,7 @@ module.exports = Marionette.ItemView.extend({
 });
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16303,12 +16360,12 @@ var Module = __webpack_require__(2);
 module.exports = Module.extend({
 	modules: {
 		base: __webpack_require__(21),
-		general: __webpack_require__(136),
-		page: __webpack_require__(137)
+		general: __webpack_require__(137),
+		page: __webpack_require__(138)
 	},
 
 	panelPages: {
-		base: __webpack_require__(138)
+		base: __webpack_require__(139)
 	},
 
 	onInit: function onInit() {
@@ -16327,7 +16384,7 @@ module.exports = Module.extend({
 });
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16387,7 +16444,7 @@ module.exports = BaseSettings.extend({
 });
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16478,7 +16535,7 @@ module.exports = BaseSettings.extend({
 });
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16507,7 +16564,7 @@ module.exports = ControlsStack.extend({
 });
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16728,7 +16785,7 @@ module.exports = Module.extend({
 });
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16822,7 +16879,7 @@ module.exports = Module.extend({
 });
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16835,27 +16892,29 @@ module.exports = Module.extend({
 	onInit: function onInit() {
 		var self = this;
 
-		this.config = qazana.config.documentConditions;
+		if (this.hasDocumentConditions()) {
+			this.config = qazana.config.documentConditions;
 
-		if (!this.config) {
-			return;
+			qazana.addControlView('Conditions_repeater', __webpack_require__(143));
+
+			qazana.hooks.addFilter('panel/header/behaviors', this.addHeaderSaver);
+			qazana.hooks.addFilter('panel/footer/behaviors', this.addFooterSaver);
+
+			this.initConditionsLayout();
 		}
-
-		qazana.addControlView('Conditions_repeater', __webpack_require__(142));
-
-		qazana.hooks.addFilter('panel/header/behaviors', this.addHeaderSaver);
-		qazana.hooks.addFilter('panel/footer/behaviors', this.addFooterSaver);
-
-		this.initConditionsLayout();
 
 		qazana.once('preview:loaded', function () {
 			self.onQazanaPreviewLoaded();
 		});
 	},
 
+	hasDocumentConditions: function hasDocumentConditions() {
+		return 'undefined' === typeof qazana.config.documentConditions ? false : true;
+	},
+
 	addHeaderSaver: function addHeaderSaver(behavior) {
 		behavior.saver = {
-			behaviorClass: __webpack_require__(144)
+			behaviorClass: __webpack_require__(145)
 		};
 
 		return behavior;
@@ -16863,7 +16922,7 @@ module.exports = Module.extend({
 
 	addFooterSaver: function addFooterSaver(behavior) {
 		behavior.saver = {
-			behaviorClass: __webpack_require__(145)
+			behaviorClass: __webpack_require__(146)
 		};
 
 		return behavior;
@@ -16949,11 +17008,6 @@ module.exports = Module.extend({
 	},
 
 	onQazanaPreviewLoaded: function onQazanaPreviewLoaded() {
-
-		if (!this.config) {
-			return;
-		}
-
 		qazana.getPanelView().on('set:page:page_settings', this.updatePreviewIdOptions);
 
 		qazana.settings.page.model.on('change', this.onPageSettingsChange.bind(this));
@@ -16969,14 +17023,14 @@ module.exports = Module.extend({
 	},
 
 	initConditionsLayout: function initConditionsLayout() {
-		var ConditionsLayout = __webpack_require__(146);
+		var ConditionsLayout = __webpack_require__(147);
 
 		this.conditionsLayout = new ConditionsLayout();
 	},
 
 	showConditionsModal: function showConditionsModal() {
 		var self = this,
-		    ConditionsView = __webpack_require__(147);
+		    ConditionsView = __webpack_require__(148);
 
 		var model = new qazana.modules.elements.models.BaseSettings(this.config.settings, {
 			controls: self.config.template_conditions.controls
@@ -16993,13 +17047,13 @@ module.exports = Module.extend({
 });
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var RepeaterRowView = __webpack_require__(143);
+var RepeaterRowView = __webpack_require__(144);
 
 module.exports = qazana.modules.controls.Repeater.extend({
 
@@ -17112,7 +17166,7 @@ module.exports = qazana.modules.controls.Repeater.extend({
 });
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17272,7 +17326,7 @@ module.exports = qazana.modules.controls.RepeaterRow.extend({
 });
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17380,7 +17434,7 @@ module.exports = SaverBehavior.extend({
 });
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17488,7 +17542,7 @@ module.exports = SaverBehavior.extend({
 });
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17518,13 +17572,13 @@ module.exports = BaseModalLayout.extend({
 });
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var inlineControlsStack = __webpack_require__(148);
+var inlineControlsStack = __webpack_require__(149);
 
 module.exports = inlineControlsStack.extend({
 	id: 'qazana-document-conditions-view',
@@ -17590,7 +17644,7 @@ module.exports = inlineControlsStack.extend({
 });
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17623,14 +17677,14 @@ module.exports = qazana.modules.views.ControlsStack.extend({
 });
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var BaseRegion = __webpack_require__(23);
-var PanelLayoutView = __webpack_require__(150);
+var PanelLayoutView = __webpack_require__(151);
 
 module.exports = BaseRegion.extend({
 	el: '#qazana-panel',
@@ -17920,13 +17974,13 @@ module.exports = BaseRegion.extend({
 });
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var EditModeItemView = __webpack_require__(151),
+var EditModeItemView = __webpack_require__(152),
     PanelLayoutView;
 
 PanelLayoutView = Marionette.LayoutView.extend({
@@ -17965,11 +18019,11 @@ PanelLayoutView = Marionette.LayoutView.extend({
 	buildPages: function buildPages() {
 		var pages = {
 			elements: {
-				view: __webpack_require__(152),
+				view: __webpack_require__(153),
 				title: qazana.config.document.title
 			},
 			editor: {
-				view: __webpack_require__(157)
+				view: __webpack_require__(158)
 			},
 			menu: {
 				view: qazana.modules.layouts.panel.pages.menu.Menu,
@@ -17979,10 +18033,10 @@ PanelLayoutView = Marionette.LayoutView.extend({
 				view: __webpack_require__(43)
 			},
 			typographyScheme: {
-				view: __webpack_require__(160)
+				view: __webpack_require__(161)
 			},
 			colorPickerScheme: {
-				view: __webpack_require__(161)
+				view: __webpack_require__(162)
 			}
 		};
 
@@ -17992,7 +18046,7 @@ PanelLayoutView = Marionette.LayoutView.extend({
 		_.each(disabledSchemes, function (schemeType) {
 			var scheme = qazana.schemes.getScheme(schemeType);
 
-			pages[schemeType + 'Scheme'].view = __webpack_require__(162).extend({
+			pages[schemeType + 'Scheme'].view = __webpack_require__(163).extend({
 				disabledTitle: scheme.disabled_title
 			});
 		});
@@ -18089,8 +18143,8 @@ PanelLayoutView = Marionette.LayoutView.extend({
 	},
 
 	onBeforeShow: function onBeforeShow() {
-		var PanelFooterItemView = __webpack_require__(163),
-		    PanelHeaderItemView = __webpack_require__(164);
+		var PanelFooterItemView = __webpack_require__(164),
+		    PanelHeaderItemView = __webpack_require__(165);
 
 		// Edit Mode
 		this.showChildView('modeSwitcher', new EditModeItemView());
@@ -18135,7 +18189,7 @@ PanelLayoutView = Marionette.LayoutView.extend({
 module.exports = PanelLayoutView;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18194,17 +18248,17 @@ EditModeItemView = Marionette.ItemView.extend({
 module.exports = EditModeItemView;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var PanelElementsCategoriesCollection = __webpack_require__(153),
+var PanelElementsCategoriesCollection = __webpack_require__(154),
     PanelElementsElementsCollection = __webpack_require__(42),
-    PanelElementsCategoriesView = __webpack_require__(154),
+    PanelElementsCategoriesView = __webpack_require__(155),
     PanelElementsElementsView = qazana.modules.layouts.panel.pages.elements.views.Elements,
-    PanelElementsSearchView = __webpack_require__(156),
+    PanelElementsSearchView = __webpack_require__(157),
     PanelElementsGlobalView = __webpack_require__(39),
     PanelElementsLayoutView;
 
@@ -18406,7 +18460,7 @@ PanelElementsLayoutView = Marionette.LayoutView.extend({
 module.exports = PanelElementsLayoutView;
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18422,13 +18476,13 @@ PanelElementsCategoriesCollection = Backbone.Collection.extend({
 module.exports = PanelElementsCategoriesCollection;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var PanelElementsCategoryView = __webpack_require__(155),
+var PanelElementsCategoryView = __webpack_require__(156),
     PanelElementsCategoriesView;
 
 PanelElementsCategoriesView = Marionette.CompositeView.extend({
@@ -18454,7 +18508,7 @@ PanelElementsCategoriesView = Marionette.CompositeView.extend({
 module.exports = PanelElementsCategoriesView;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18522,7 +18576,7 @@ PanelElementsCategoryView = Marionette.CompositeView.extend({
 module.exports = PanelElementsCategoryView;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18561,7 +18615,7 @@ PanelElementsSearchView = Marionette.ItemView.extend({
 module.exports = PanelElementsSearchView;
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18647,7 +18701,7 @@ EditorView = ControlsStack.extend({
 module.exports = EditorView;
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18689,7 +18743,7 @@ PanelSchemeColorView = PanelSchemeItemView.extend({
 module.exports = PanelSchemeColorView;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18771,7 +18825,7 @@ PanelSchemeTypographyView = PanelSchemeItemView.extend({
 module.exports = PanelSchemeTypographyView;
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18789,7 +18843,7 @@ PanelSchemeTypographyView = PanelSchemeBaseView.extend({
 module.exports = PanelSchemeTypographyView;
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18821,7 +18875,7 @@ PanelSchemeColorPickerView = PanelSchemeColorsView.extend({
 module.exports = PanelSchemeColorPickerView;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18848,7 +18902,7 @@ PanelSchemeDisabledView = Marionette.ItemView.extend({
 module.exports = PanelSchemeDisabledView;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18973,7 +19027,7 @@ module.exports = Marionette.ItemView.extend({
 });
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19083,19 +19137,19 @@ PanelHeaderItemView = Marionette.ItemView.extend({
 module.exports = PanelHeaderItemView;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _independent = __webpack_require__(166);
+var _independent = __webpack_require__(167);
 
 var _independent2 = _interopRequireDefault(_independent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var BaseSectionsContainerView = __webpack_require__(167),
+var BaseSectionsContainerView = __webpack_require__(168),
     Preview;
 
 Preview = BaseSectionsContainerView.extend({
@@ -19109,7 +19163,7 @@ Preview = BaseSectionsContainerView.extend({
 		var parentBehaviors = BaseSectionsContainerView.prototype.behaviors.apply(this, arguments),
 		    behaviors = {
 			contextMenu: {
-				behaviorClass: __webpack_require__(10),
+				behaviorClass: __webpack_require__(11),
 				groups: this.getContextMenuGroups()
 			}
 		};
@@ -19226,7 +19280,7 @@ Preview = BaseSectionsContainerView.extend({
 module.exports = Preview;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19277,7 +19331,7 @@ var AddSectionView = function (_BaseAddSectionView) {
 exports.default = AddSectionView;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

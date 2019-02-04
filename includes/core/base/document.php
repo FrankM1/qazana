@@ -225,13 +225,74 @@ abstract class Document extends Controls_Stack {
 	 * @access public
 	 */
 	public function get_wp_preview_url() {
-		$main_post_id = $this->get_main_id();
-		$url = get_preview_post_link(
-			$main_post_id,
-			[
-				'preview_nonce' => wp_create_nonce( 'post_preview_' . $main_post_id ),
-			]
-		);
+		$preview_id = (int) $this->get_settings( 'preview_id' );
+		$post_id = $this->get_main_id();
+
+		list( $preview_category, $preview_object_type ) = array_pad( explode( '/',  $this->get_settings( 'preview_type' ) ), 2,'' );
+
+		switch ( $preview_category ) {
+			case 'archive':
+				switch ( $preview_object_type ) {
+					case 'author':
+						if ( empty( $preview_id ) ) {
+							$preview_id = get_current_user_id();
+						}
+						$preview_url = get_author_posts_url( $preview_id );
+						break;
+					case 'date':
+						$preview_url = add_query_arg( 'year', date( 'Y' ), home_url() );
+						break;
+				}
+				break;
+			case 'search':
+				$preview_url = add_query_arg( 's', $this->get_settings( 'preview_search_term' ), home_url() );
+				break;
+			case 'taxonomy':
+				$term = get_term( $preview_id );
+
+				if ( $term && ! is_wp_error( $term ) ) {
+					$preview_url = get_term_link( $preview_id );
+				}
+
+				break;
+			case 'page':
+				switch ( $preview_object_type ) {
+					case 'home':
+						$preview_url = get_post_type_archive_link( 'post' );
+						break;
+					case 'front':
+						$preview_url = home_url();
+						break;
+					case '404':
+						$preview_url = add_query_arg( 'p', '0', home_url() );
+						break;
+				}
+				break;
+			case 'post_type_archive':
+				$post_type = $preview_object_type;
+				if ( post_type_exists( $post_type ) ) {
+					$preview_url = get_post_type_archive_link( $post_type );
+				}
+				break;
+			case 'single':
+				$post = get_post( $preview_id );
+				if ( $post ) {
+					$preview_url = get_permalink( $post );
+				}
+				break;
+		} // End switch().
+
+		if ( empty( $preview_url ) ) {
+			$preview_url = $this->get_permalink();
+		}
+
+		$query_args = [
+			'preview' => true,
+			'preview_nonce' => wp_create_nonce( 'post_preview_' . $post_id ),
+			'template_id' => $post_id,
+		];
+
+		$preview_url = set_url_scheme( add_query_arg( $query_args, $preview_url ) );
 
 		/**
 		 * Document "WordPress preview" URL.
@@ -240,12 +301,108 @@ abstract class Document extends Controls_Stack {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param string   $url  WordPress preview URL.
-		 * @param Document $this The document instance.
+		 * @param Document $this An instance of the theme document.
 		 */
-		$url = apply_filters( 'qazana/document/urls/wp_preview', $url, $this );
+		$preview_url = apply_filters( 'qazana/document/wp_preview_url', $preview_url, $this );
 
-		return $url;
+		return $preview_url;
+	}
+
+	public function get_preview_as_query_args() {
+		$preview_id = (int) $this->get_settings( 'preview_id' );
+
+		list( $preview_category, $preview_object_type ) = array_pad( explode( '/', $this->get_settings( 'preview_type' ) ), 2, '' );
+
+		switch ( $preview_category ) {
+			case 'singular':
+				switch ( $preview_object_type ) {
+					case 'author':
+						if ( empty( $preview_id ) ) {
+							$preview_id = get_current_user_id();
+						}
+
+						$query_args = [
+							'author' => $preview_id,
+						];
+						break;
+					case 'date':
+						$query_args = [
+							'year' => date( 'Y' ),
+						];
+						break;
+					case 'recent_posts':
+						$query_args = [
+							'post_type' => 'post',
+						];
+						break;
+				}
+				break;
+			case 'search':
+				$query_args = [
+					's' => $this->get_settings( 'preview_search_term' ),
+				];
+				break;
+			case 'taxonomy':
+				$term = get_term( $preview_id );
+
+				if ( $term && ! is_wp_error( $term ) ) {
+					$query_args = [
+						'tax_query' => [
+							[
+								'taxonomy' => $term->taxonomy,
+								'terms' => [ $preview_id ],
+								'field' => 'id',
+							],
+						],
+					];
+				}
+				break;
+			case 'page':
+				switch ( $preview_object_type ) {
+					case 'home':
+						$query_args = [];
+						break;
+					case 'front':
+						$query_args = [
+							'p' => get_option( 'page_on_front' ),
+							'post_type' => 'page',
+						];
+						break;
+					case '404':
+						$query_args = [
+							'p' => 0,
+						];
+						break;
+				}
+				break;
+			case 'post_type_singular':
+				$post_type = $preview_object_type;
+				if ( post_type_exists( $post_type ) ) {
+					$query_args = [
+						'post_type' => $post_type,
+					];
+				}
+				break;
+			case 'single':
+				$post = get_post( $preview_id );
+				if ( ! $post ) {
+					break;
+				}
+
+				$query_args = [
+					'p' => $post->ID,
+					'post_type' => $post->post_type,
+				];
+		} // End switch().
+
+		if ( empty( $query_args ) ) {
+			$query_args = [
+				'p' => $this->get_main_id(),
+				'post_type' => $this->get_main_post()->post_type,
+			];
+		}
+
+		return $query_args;
 	}
 
 	/**
@@ -1131,7 +1288,17 @@ abstract class Document extends Controls_Stack {
 		];
 	}
 
-	public function register_preview_controls() {
+	public static function get_preview_as_options() {
+		return array_merge(
+			[
+				'' => __( 'Select...', 'qazana' ),
+			],
+			self::get_archive_preview_as_options(),
+			self::get_single_preview_as_options()
+		);
+	}
+
+	public function _register_preview_controls() {
 
 		$this->start_controls_section(
 			'preview_settings',
@@ -1221,4 +1388,5 @@ abstract class Document extends Controls_Stack {
 		}
 
 	}
+	
 }

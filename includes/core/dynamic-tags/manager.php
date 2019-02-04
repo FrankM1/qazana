@@ -380,7 +380,7 @@ class Manager {
 		 */
 		do_action( 'qazana/dynamic_tags/after_render' );
 
-		return $tags_data;
+		wp_send_json( $tags_data );
 	}
 
 	/**
