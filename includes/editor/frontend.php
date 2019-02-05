@@ -167,6 +167,7 @@ class Frontend {
 	 * @since 2.1.0
 	 */
 	public function enqueue_dependencies() {
+		$this->register_widget_scripts();
 		$document = qazana()->get_documents()->get_doc_for_frontend( $this->post_id );
 		$document->get_dependencies();
 		$document->enqueue_dependencies();
