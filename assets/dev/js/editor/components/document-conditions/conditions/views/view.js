@@ -46,7 +46,7 @@ module.exports = inlineControlsStack.extend( {
 			.addClass( 'qazana-button-state' );
 
 		// Publish.
-		qazana.ajax.addRequest( 'site_archive_save_conditions', {
+		qazana.ajax.addRequest( 'document_save_conditions', {
 			data: data,
 			success: function() {
 				qazana.config.documentConditions.settings.conditions = self.model.get( 'conditions' );

@@ -25,7 +25,7 @@ module.exports = qazana.modules.controls.Repeater.extend( {
 
 		$error.remove();
 
-		qazana.ajax.addRequest( 'site_archive_conditions_check_conflicts', {
+		qazana.ajax.addRequest( 'document_conditions_check_conflicts', {
 			unique_id: rowId,
 			data: {
 				condition: model.toJSON( { removeDefaults: true } ),

@@ -17080,7 +17080,7 @@ module.exports = qazana.modules.controls.Repeater.extend({
 
 		$error.remove();
 
-		qazana.ajax.addRequest('site_archive_conditions_check_conflicts', {
+		qazana.ajax.addRequest('document_conditions_check_conflicts', {
 			unique_id: rowId,
 			data: {
 				condition: model.toJSON({ removeDefaults: true })
@@ -17624,7 +17624,7 @@ module.exports = inlineControlsStack.extend({
 		$button.attr('disabled', true).addClass('qazana-button-state');
 
 		// Publish.
-		qazana.ajax.addRequest('site_archive_save_conditions', {
+		qazana.ajax.addRequest('document_save_conditions', {
 			data: data,
 			success: function success() {
 				qazana.config.documentConditions.settings.conditions = self.model.get('conditions');

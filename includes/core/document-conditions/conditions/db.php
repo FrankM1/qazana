@@ -223,10 +223,8 @@ class DB {
 	 * @param Ajax_Manager $ajax_manager
 	 */
 	public function register_ajax_actions( $ajax_manager ) {
-		foreach ( qazana()->document_conditions->documents_support as $key ) {
-			$ajax_manager->register_ajax_action( str_replace( '-', '_', $key ) . '_save_conditions', [ $this, 'ajax_save_conditions' ] );
-			$ajax_manager->register_ajax_action( str_replace( '-', '_', $key ) . '_conditions_check_conflicts', [ $this, 'ajax_check_conditions_conflicts' ] );
-		}
+		$ajax_manager->register_ajax_action( 'document_save_conditions', [ $this, 'ajax_save_conditions' ] );
+		$ajax_manager->register_ajax_action( 'document_conditions_check_conflicts', [ $this, 'ajax_check_conditions_conflicts' ] );
 	}
 
 	public function save_conditions( $post_id, $conditions ) {
