@@ -316,7 +316,7 @@ abstract class Element_Base extends Controls_Stack {
 	/**
 	 * Get parent document.
 	 *
-	 * Retrieve the document parent. Used to check which document it belongs to.
+	 * Retrieve the document parent. Used to check which document the element it belongs to.
 	 *
 	 * @since 1.0.0
 	 * @access public
