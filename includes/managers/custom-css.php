@@ -104,29 +104,6 @@ class Custom_Css {
 		}
 	}
 
-	/**
-	 * Load template css
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	protected function get_css() {
-
-		$css_file = new Post_CSS( $this->get_instance_value( 'template_id' ) );
-
-		ob_start();
-
-		$css_file->enqueue();
-
-		if ( ! empty( $css_file ) ) {
-			$css_file->print_css();
-		}
-
-		$content = ob_get_clean();
-
-		return $content;
-	}
-
 	protected function add_actions() {
 		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 10, 3 );
 		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
