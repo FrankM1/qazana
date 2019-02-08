@@ -1143,10 +1143,19 @@ abstract class Document extends Controls_Stack {
 	}
 
 	/**
-	 * @param array $data a set of elements
-	 * @param string $method (on_export|on_import)
+	 * Load the document element scripts
 	 *
-	 * @return mixed
+	 * @param array $data a set of elements
+	 */
+	public function enqueue() {
+		$this->get_dependencies();
+		$this->enqueue_dependencies();
+	}
+
+	/**
+	 * Get all registered element scripts and stylesheets
+	 *
+	 * @param array $data a set of elements
 	 */
 	public function get_dependencies( $elements_data = null ) {
 
@@ -1206,6 +1215,11 @@ abstract class Document extends Controls_Stack {
 		);
 	}
 
+	/**
+	 * Enqueue scripts and stylesheets
+	 *
+	 * @param array $data a set of elements
+	 */
 	public function enqueue_dependencies() {
 
 		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {

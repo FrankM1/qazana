@@ -20,8 +20,20 @@ class Custom_Css {
 	 * @param $section_id string
 	 * @param $args       array
 	 */
-	public function register_controls( $element, $section_id, $args ) {
-		if ( Controls_Manager::TAB_ADVANCED !== $args['tab'] || ( '_section_responsive' !== $section_id /* Section/Widget */ && 'section_responsive' !== $section_id /* Column */ ) ) {
+	public function register_controls( Controls_Stack $element, $section_id, $args ) {
+		// if ( Controls_Manager::TAB_ADVANCED !== $args['tab'] ) {
+		// 	return;
+		// }
+
+		$required_section_id = '';
+
+		if ( $element instanceof Element_Section || $element instanceof Widget_Base ) {
+			$required_section_id = '_section_responsive';
+		} elseif ( $element instanceof Element_Column ) {
+			$required_section_id = 'section_advanced';
+		}
+
+		if ( $required_section_id !== $section_id ) {
 			return;
 		}
 
@@ -94,6 +106,29 @@ class Custom_Css {
 
 			$stylesheet->add_rules( implode( ',', $selectors ), $rules );
 		}
+	}
+
+	/**
+	 * Load template css
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	protected function get_css() {
+
+		$css_file = new Post_CSS( $this->get_instance_value( 'template_id' ) );
+
+		ob_start();
+
+		$css_file->enqueue();
+
+		if ( ! empty( $css_file ) ) {
+			$css_file->print_css();
+		}
+
+		$content = ob_get_clean();
+
+		return $content;
 	}
 
 	protected function add_actions() {

@@ -139,7 +139,6 @@ class Frontend {
 
 		if ( is_singular() && qazana()->get_db()->is_built_with_qazana( $this->post_id ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_dependencies' ] );
 		}
 
 		// Priority 7 to allow google fonts in header template to load in <head> tag
@@ -159,18 +158,6 @@ class Frontend {
 		} else {
 			$this->body_classes[] = $class;
 		}
-	}
-
-	/**
-	 * Generate dependencies for elements
-	 *
-	 * @since 2.1.0
-	 */
-	public function enqueue_dependencies() {
-		$this->register_widget_scripts();
-		$document = qazana()->get_documents()->get_doc_for_frontend( $this->post_id );
-		$document->get_dependencies();
-		$document->enqueue_dependencies();
 	}
 
 	/**
@@ -466,26 +453,6 @@ class Frontend {
 		do_action( 'qazana/frontend/after_enqueue_scripts' );
 	}
 
-	public function register_widget_scripts() {
-
-		do_action( 'qazana/frontend/before_register_widget_scripts' );
-
-		$suffix = Utils::is_script_debug() ? '' : '.min';
-
-		wp_register_script(
-			'jquery-slick',
-			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
-			[
-				'jquery',
-			],
-			'1.6.0',
-			true
-		);
-
-		do_action( 'qazana/frontend/after_register_widget_scripts' );
-
-	}
-
 	/**
 	 * Enqueue styles.
 	 *
@@ -519,9 +486,6 @@ class Frontend {
 
 		if ( ! qazana()->get_preview()->is_preview_mode() ) {
 			$this->parse_global_css_code();
-
-			$css_file = new Post_CSS( get_the_ID() );
-			$css_file->enqueue();
 		}
 	}
 
@@ -810,6 +774,7 @@ class Frontend {
 			$css_file->print_css();
 		}
 
+		$document->enqueue();
 		$document->print_elements_with_wrapper( $data );
 
 		$content = ob_get_clean();
