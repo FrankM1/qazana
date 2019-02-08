@@ -183,6 +183,28 @@ class Element_Column extends Element_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'column_position',
+			[
+				'label' => __( 'Column Position', 'energia' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'' => __( 'Default', 'energia' ),
+					'top' => _( 'Top' ),
+					'center' => __( 'Middle', 'energia' ),
+					'bottom' => __( 'Bottom', 'energia' ),
+				],
+				'selectors_dictionary' => [
+					'top' => 'flex-start',
+					'bottom' => 'flex-end',
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => 'align-self: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_control(
 			'content_position',
 			[
@@ -202,7 +224,7 @@ class Element_Column extends Element_Base {
 					'bottom' => 'flex-end',
 				],
 				'selectors' => [
-					'{{WRAPPER}}.qazana-column .qazana-column-wrap' => 'align-items: {{VALUE}}',
+					'{{WRAPPER}} .qazana-column-wrap' => 'align-items: {{VALUE}}',
 				],
 			]
 		);
