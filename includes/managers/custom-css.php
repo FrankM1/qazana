@@ -21,10 +21,6 @@ class Custom_Css {
 	 * @param $args       array
 	 */
 	public function register_controls( Controls_Stack $element, $section_id, $args ) {
-		// if ( Controls_Manager::TAB_ADVANCED !== $args['tab'] ) {
-		// 	return;
-		// }
-
 		$required_section_id = '';
 
 		if ( $element instanceof Element_Section || $element instanceof Widget_Base ) {
