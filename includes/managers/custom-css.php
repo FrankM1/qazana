@@ -38,7 +38,7 @@ class Custom_Css {
 		}
 
 		$element->start_controls_section(
-			'_section_custom_css',
+			'section_custom_css',
 			[
 				'label' => __( 'Custom CSS', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_ADVANCED,
@@ -58,7 +58,7 @@ class Custom_Css {
 		);
 
 		$element->add_control(
-			'_custom_css_description',
+			'custom_css_description',
 			[
 				'raw'     => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
 				'type'    => Controls_Manager::RAW_HTML,

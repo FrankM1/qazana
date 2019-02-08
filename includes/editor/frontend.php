@@ -256,6 +256,16 @@ class Frontend {
 		);
 
 		wp_register_script(
+			'jquery-slick',
+			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.8.1',
+			true
+		);
+
+		wp_register_script(
 			'qazana-dialog',
 			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
 			[
