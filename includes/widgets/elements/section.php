@@ -551,6 +551,9 @@ class Element_Section extends Element_Base {
 					'background' => [
 						'frontend_available' => true,
 					],
+					'video_source' => [
+						'frontend_available' => true,
+					],
 					'video_link' => [
 						'frontend_available' => true,
 					],

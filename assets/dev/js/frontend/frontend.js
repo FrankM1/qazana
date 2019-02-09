@@ -50,7 +50,7 @@
 			};
 
 			self.modules = {
-				StretchElement: require( 'qazana-frontend/modules/stretch-element' ),
+				StretchElement: require( 'qazana-frontend/tools/stretch-element' ),
 				Masonry: require( 'qazana-utils/masonry' )
 			};
 

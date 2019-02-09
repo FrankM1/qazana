@@ -116,7 +116,7 @@ module.exports = HandlerModule.extend( {
 			},
 		} );
 
-		qazanaFrontend.elements.$window.on( 'resize', self.changeVideoSize );
+		jQuery( window ).on( 'resize', self.changeVideoSize );
 	},
 
 	activate: function() {
