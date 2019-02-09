@@ -551,13 +551,13 @@ class Element_Section extends Element_Base {
 					'background' => [
 						'frontend_available' => true,
 					],
-					'video_source' => [
-						'frontend_available' => true,
-					],
-					'youtube_video_link' => [
-						'frontend_available' => true,
-					],
 					'video_link' => [
+						'frontend_available' => true,
+					],
+					'video_start' => [
+						'frontend_available' => true,
+					],
+					'video_end' => [
 						'frontend_available' => true,
 					],
 				],
@@ -1344,31 +1344,21 @@ class Element_Section extends Element_Base {
 	 */
 	protected function _content_template() {
 		?>
-		<# if ( 'video' === settings.background_background ) {
-			var videoLink = settings.background_video_link;
+		<# if ( settings.background_video_link ) { #>
+			<div class="qazana-background-video-container qazana-hidden-phone">
+				<div class="qazana-background-video-embed"></div>
+				<video class="qazana-background-video-hosted" autoplay loop muted></video>
+			</div>
+		<# } #>
 
-			if ( videoLink ) {
-				var videoID = qazana.helpers.getYoutubeIDFromURL( settings.background_video_link ); #>
-
-				<div class="qazana-background-video-container qazana-hidden-phone">
-					<# if ( videoID ) { #>
-						<div class="qazana-background-video" data-video-id="{{ videoID }}"></div>
-					<# } else { #>
-						<video class="qazana-background-video" src="{{ videoLink }}" autoplay loop muted></video>
-					<# } #>
-				</div>
-			<# }
-
-			if ( settings.background_video_fallback ) { #>
-				<div class="qazana-background-video-fallback" style="background-image: url({{ settings.background_video_fallback.url }})"></div>
-			<# }
-		} #>
+		<# if ( settings.background_video_fallback ) { #>
+			<div class="qazana-background-video-fallback" style="background-image: url({{ settings.background_video_fallback.url }})"></div>
+		<# } #>
 
         <div class="qazana-background-overlay"></div>
-
 		<div class="qazana-shape qazana-shape-top"></div>
 		<div class="qazana-shape qazana-shape-bottom"></div>
-		<div class="qazana-container qazana-column-gap-{{ settings.gap }}" <# if ( settings.get_render_attribute_string ) { #>{{{ settings.get_render_attribute_string( 'wrapper' ) }}} <# } #> >
+		<div class="qazana-container qazana-column-gap-{{ settings.gap }}" <# if ( settings.get_render_attribute_string ) { #>{{{ settings.get_render_attribute_string( '_wrapper' ) }}} <# } #> >
 			<div class="qazana-row"></div>
 		</div>
 		<?php
@@ -1386,7 +1376,7 @@ class Element_Section extends Element_Base {
 		$section_type = $this->get_data( 'isInner' ) ? 'inner' : 'top';
 
 		$this->add_render_attribute(
-			'wrapper',
+			'_wrapper',
 			'class',
 			[
 				'qazana-section',
@@ -1407,32 +1397,33 @@ class Element_Section extends Element_Base {
 				continue;
 			}
 
-			$this->add_render_attribute( 'wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
+			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
 		}
 
 		if ( ! empty( $settings['animation'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'data-animation', $settings['animation'] );
+			$this->add_render_attribute( '_wrapper', 'data-animation', $settings['animation'] );
 		}
 
-		$this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_name() );
+		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
 		$this->add_render_attribute( 'row', 'class', 'qazana-row' );
 
 		?>
-		<<?php echo $this->get_html_tag() . ' '. $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<<?php echo $this->get_html_tag() . ' '. $this->get_render_attribute_string( '_wrapper' ); ?>>
 			<?php
 
 			if ( 'video' === $settings['background_background'] ) :
 				if ( $settings['background_video_link'] ) :
-					$video_data = Utils::get_video_id_from_url( $settings['background_video_link'] );
+					$video_properties = Embed::get_video_properties( $settings['background_video_link'] );
 					?>
 					<div class="qazana-background-video-container qazana-hidden-phone">
-                        <?php if ( ! empty( $video_data ) ) : ?>
-							<div class="qazana-background-video" data-video-host="<?php echo $video_data['host']; ?>" data-video-id="<?php echo $video_data['id']; ?>"></div>
-                        <?php else : ?>
-							<video class="qazana-background-video qazana-html5-video" src="<?php echo $settings['background_video_link']; ?>" autoplay loop muted></video>
-                        <?php endif; ?>
+						<?php if ( $video_properties ) : ?>
+							<div class="qazana-background-video-embed"></div>
+						<?php else : ?>
+							<video class="qazana-background-video-hosted qazana-html5-video" autoplay loop muted></video>
+						<?php endif; ?>
 					</div>
-				<?php endif;
+					<?php
+				endif;
 			endif;
 
             if ( in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ) : ?>

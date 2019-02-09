@@ -186,14 +186,14 @@ class Element_Column extends Element_Base {
 		$this->add_responsive_control(
 			'column_position',
 			[
-				'label' => __( 'Column Position', 'energia' ),
+				'label' => __( 'Column Position', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'' => __( 'Default', 'energia' ),
+					'' => __( 'Default', 'qazana' ),
 					'top' => _( 'Top' ),
-					'center' => __( 'Middle', 'energia' ),
-					'bottom' => __( 'Bottom', 'energia' ),
+					'center' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
 				],
 				'selectors_dictionary' => [
 					'top' => 'flex-start',

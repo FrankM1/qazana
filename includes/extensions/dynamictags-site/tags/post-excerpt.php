@@ -30,27 +30,27 @@ class Post_Excerpt extends Tag {
 
 		$this->add_responsive_control( 'content_limit', [
 			'type'        => Controls_Manager::NUMBER,
-			'label'       => esc_html__( 'Excerpt limit', 'energia' ),
-			'description' => esc_html__( 'How many characters to display in the excerpt section.', 'energia' ),
+			'label'       => esc_html__( 'Excerpt limit', 'qazana' ),
+			'description' => esc_html__( 'How many characters to display in the excerpt section.', 'qazana' ),
 			'default'     => 150,
 			'label_block' => true,
 		]);
 
 		$this->add_responsive_control( 'read_more_style', [
 			'type'    => Controls_Manager::SELECT,
-			'label'   => esc_html__( 'Content limit style', 'energia' ),
+			'label'   => esc_html__( 'Content limit style', 'qazana' ),
 			'default' => 'preset',
 			'label_block' => true,
 			'options' => array(
-				'preset' => esc_html__( 'Preset',  'energia' ),
-				'custom' => esc_html__( 'Custom',  'energia' ),
+				'preset' => esc_html__( 'Preset',  'qazana' ),
+				'custom' => esc_html__( 'Custom',  'qazana' ),
 			),
 		]);
 
 	    $this->add_responsive_control( 'read_more_text', [
 			'type'        => Controls_Manager::TEXT,
-			'label'       => esc_html__( 'Read more text', 'energia' ),
-			'description' => esc_html__( 'Display read more link', 'energia' ),
+			'label'       => esc_html__( 'Read more text', 'qazana' ),
+			'description' => esc_html__( 'Display read more link', 'qazana' ),
 			'label_block' => true,
 			'condition'   => [
 				'content_limit!'  => '',
@@ -171,11 +171,11 @@ function get_the_content_limit( $max_characters, $more_link_text = '(more...)', 
 	        $post_format = $this->get_post_format();
 
 	        if ( $post_format === 'video' ) {
-	            $more = __( 'Watch Video', 'energia' );
+	            $more = __( 'Watch Video', 'qazana' );
 	        } elseif (  $post_format === 'audio' ) {
-	            $more = __( 'Listen to Audio', 'energia' );
+	            $more = __( 'Listen to Audio', 'qazana' );
 	        } else {
-	            $more = __( 'Read full story', 'energia' );
+	            $more = __( 'Read full story', 'qazana' );
 	        }
 
 	        $output .= sprintf( '<a href="%s" class="more-link go-right"><span>%s</span></a>', esc_url( get_permalink() ), esc_html( $more ) );

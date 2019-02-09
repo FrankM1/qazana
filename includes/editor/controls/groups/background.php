@@ -562,30 +562,37 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 		];
 
-		$fields['youtube_video_link'] = [
-			'label' => _x( 'Youtube Video Link', 'Background Control', 'qazana' ),
+		$fields['video_link'] = [
+			'label' => _x( 'Video Link', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::TEXT,
-			'placeholder' => 'https://www.youtube.com/watch?v=iNJdPyoqt8U',
-			'description' => __( 'Insert YouTube link', 'qazana' ),
+			'placeholder' => 'https://www.youtube.com/watch?v=0GK1xf6rv5w',
+			'description' => __( 'YouTube link or video file (mp4 is recommended).', 'qazana' ),
 			'label_block' => true,
 			'default' => '',
 			'condition' => [
 				'background' => [ 'video' ],
-				'video_source' => [ 'youtube' ],
 			],
 			'of_type' => 'video',
 		];
 
-		$fields['video_link'] = [
-			'label' => _x( 'Video Link', 'Background Control', 'qazana' ),
-			'type' => Controls_Manager::TEXT,
-			'placeholder' => '',
-			'description' => __( 'Insert video link', 'qazana' ),
-			'label_block' => true,
-			'default' => '',
+		$fields['video_start'] = [
+			'label' => __( 'Start Time', 'qazana' ),
+			'type' => Controls_Manager::NUMBER,
+			'description' => __( 'Specify a start time (in seconds)', 'qazana' ),
+			'placeholder' => 10,
 			'condition' => [
 				'background' => [ 'video' ],
-				'video_source' => [ 'self_hosted' ],
+			],
+			'of_type' => 'video',
+		];
+
+		$fields['video_end'] = [
+			'label' => __( 'End Time', 'qazana' ),
+			'type' => Controls_Manager::NUMBER,
+			'description' => __( 'Specify an end time (in seconds)', 'qazana' ),
+			'placeholder' => 70,
+			'condition' => [
+				'background' => [ 'video' ],
 			],
 			'of_type' => 'video',
 		];
