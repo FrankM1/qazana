@@ -1,6 +1,5 @@
 var HandlerModule = require( 'qazana-frontend/handler-module' );
 
-
 module.exports = HandlerModule.extend( {
 	player: null,
 
@@ -148,7 +147,6 @@ module.exports = HandlerModule.extend( {
 
 	run: function() {
 		var elementSettings = this.getElementSettings();
-		console.log(elementSettings);
 		if ( 'video' === elementSettings.background_background && elementSettings.background_video_link ) {
 			this.activate();
 		} else {

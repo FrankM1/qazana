@@ -917,7 +917,6 @@ module.exports = HandlerModule.extend({
 
 	run: function run() {
 		var elementSettings = this.getElementSettings();
-		console.log(elementSettings);
 		if ('video' === elementSettings.background_background && elementSettings.background_video_link) {
 			this.activate();
 		} else {

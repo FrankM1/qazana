@@ -634,7 +634,7 @@ class Element_Section extends Element_Base {
 				'types' => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}} > .qazana-background-overlay',
 				'condition' => [
-					'background_background' => [ 'none', 'classic', 'gradient', 'video' ],
+					'background_background' => [ 'classic', 'gradient', 'video' ],
 				],
 			]
 		);
