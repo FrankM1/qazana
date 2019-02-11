@@ -181,6 +181,23 @@
 			};
 		};
 
+		this.debounce = function( threshold, callback ) {
+			var timeout;
+
+			return function debounced( $event ) {
+				function delayed() {
+					callback.call( this, $event );
+					timeout = null;
+				}
+
+				if ( timeout ) {
+					clearTimeout( timeout );
+				}
+
+				timeout = setTimeout( delayed, threshold );
+			};
+		};
+
 		this.addListenerOnce = function( listenerID, event, callback, to ) {
 			if ( ! to ) {
 				to = self.getElements( '$window' );

@@ -12,17 +12,17 @@ module.exports = function( $scope, $ ) {
 					breakpoint: 767,
 					settings: {
 						slidesToShow: tabletSlides,
-						slidesToScroll: tabletSlides
-					}
+						slidesToScroll: tabletSlides,
+					},
 				},
 				{
 					breakpoint: 480,
 					settings: {
 						slidesToShow: 1,
-						slidesToScroll: 1
-					}
-				}
-			]
+						slidesToScroll: 1,
+					},
+				},
+			],
 		},
 
 		slickOptions = $.extend( {}, defaultOptions, $carousel.data( 'slider_options' ) );

@@ -423,6 +423,23 @@ module.exports = new HotKeys();
 			};
 		};
 
+		this.debounce = function (threshold, callback) {
+			var timeout;
+
+			return function debounced($event) {
+				function delayed() {
+					callback.call(this, $event);
+					timeout = null;
+				}
+
+				if (timeout) {
+					clearTimeout(timeout);
+				}
+
+				timeout = setTimeout(delayed, threshold);
+			};
+		};
+
 		this.addListenerOnce = function (listenerID, event, callback, to) {
 			if (!to) {
 				to = self.getElements('$window');
@@ -1443,9 +1460,11 @@ var HandlerModule = __webpack_require__(4),
     GlobalHandler;
 
 GlobalHandler = HandlerModule.extend({
+
 	getElementName: function getElementName() {
 		return 'global';
 	},
+
 	animate: function animate() {
 		var self = this,
 		    $element = this.$element,
@@ -1460,25 +1479,27 @@ GlobalHandler = HandlerModule.extend({
 			$element.addClass(animation).addClass('animated');
 		}, animationDelay);
 	},
+
 	getAnimation: function getAnimation() {
 		var elementSettings = this.getElementSettings();
 
 		return elementSettings._animation_animated && elementSettings._animation_in;
 	},
+
 	onInit: function onInit() {
 		var self = this;
 
 		HandlerModule.prototype.onInit.apply(self, arguments);
 
-		if (!self.getAnimation()) {
-			return;
-		}
+		if (!self.getAnimation()) {}
 	},
+
 	onElementChange: function onElementChange(propertyName) {
 		if (/^_?animation/.test(propertyName)) {
 			this.animate();
 		}
 	}
+
 });
 
 module.exports = function ($scope) {

@@ -20,8 +20,7 @@ module.exports = function( $scope, $ ) {
 		event.preventDefault();
 
 		$scrollable.animate( {
-			scrollTop: $anchor.offset().top - adminBarHeight
+			scrollTop: $anchor.offset().top - adminBarHeight,
 		}, 1000 );
 	} );
-	
 };
