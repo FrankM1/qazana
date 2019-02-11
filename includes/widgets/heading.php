@@ -213,6 +213,23 @@ class Widget_Heading extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+            'bottom_space',
+            [
+                'label' => __( 'Bottom Spacing', 'qazana-pro' ),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-heading' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(

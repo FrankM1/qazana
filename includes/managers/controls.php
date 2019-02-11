@@ -183,6 +183,11 @@ class Controls_Manager {
 	const REPEATER = 'repeater';
 
 	/**
+	 * Condition Repeater control.
+	 */
+	const CONDITIONS_REPEATER = 'conditions_repeater';
+
+	/**
 	 * Icon control.
 	 */
 	const ICON = 'icon';
@@ -418,6 +423,7 @@ class Controls_Manager {
 
 			self::URL,
 			self::REPEATER,
+			self::CONDITIONS_REPEATER,
 			self::ICON,
 			self::GALLERY,
 			self::STRUCTURE,
