@@ -717,6 +717,4 @@ class Widget_Testimonial extends Widget_Base {
 	</div><?php
 
 	}
-
-	protected function _content_template() { }
 }

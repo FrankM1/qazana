@@ -350,8 +350,6 @@ class Widget_Image_Carousel extends Widget_Base {
 
 	}
 
-	protected function _content_template() {}
-
 	/**
 	 * Retrieve image carousel link URL.
 	 *
