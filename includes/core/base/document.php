@@ -29,6 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Document extends Controls_Stack {
 
 	/**
+	 * Document location.
+	 */
+	const LOCATION_META_KEY = '_qazana_location';
+
+	/**
 	 * Document type meta key.
 	 */
 	const TYPE_META_KEY = '_qazana_template_type';
@@ -1081,6 +1086,52 @@ abstract class Document extends Controls_Stack {
 	public function get_widget_groups() {
 		return [ 'post' ];
 	}
+
+	public function get_locations_manager() {
+		return false;
+	}
+	
+	/**
+	 * Get document location
+	 */
+	public function get_location() {
+		$value = self::get_property( 'location' );
+		if ( ! $value ) {
+			$value = $this->get_main_meta( self::LOCATION_META_KEY );
+		}
+
+		return $value;
+	}
+
+	public function get_location_label() {
+		$location = $this->get_location();
+		$locations_settings = $this->get_locations_manager()->get_locations( $location );
+		$label = '';
+		$is_section_doc_type = 'section' === $this->get_name();
+
+		if ( $location ) {
+			if ( $is_section_doc_type ) {
+				$label .= isset( $locations_settings['label'] ) ? $locations_settings['label'] : $location;
+			}
+		}
+
+		$supported = true;
+
+		if ( $is_section_doc_type ) {
+			if ( $location && ! $locations_settings ) {
+				$supported = false;
+			}
+		} elseif ( ! $location || ! $locations_settings ) {
+			$supported = false;
+		}
+
+		if ( ! $supported ) {
+			$label .= ' (' . __( 'Unsupported', 'energia' ) . ')';
+		}
+
+		return $label;
+	}
+
 
 	/**
 	 * @since 2.0.0
