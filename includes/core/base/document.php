@@ -1087,6 +1087,13 @@ abstract class Document extends Controls_Stack {
 		return [ 'post' ];
 	}
 
+	/**
+	 * Get document location manager
+	 * 
+	 * Use this to get the document location
+	 * 
+ 	 * @return Locations/Manager
+	 */
 	public function get_locations_manager() {
 		return false;
 	}
