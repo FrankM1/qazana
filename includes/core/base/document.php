@@ -1133,7 +1133,7 @@ abstract class Document extends Controls_Stack {
 		}
 
 		if ( ! $supported ) {
-			$label .= ' (' . __( 'Unsupported', 'energia' ) . ')';
+			$label .= ' (' . __( 'Unsupported', 'qazana' ) . ')';
 		}
 
 		return $label;

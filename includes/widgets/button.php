@@ -260,8 +260,8 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-button .qazana-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-align-icon-right .qazana-button-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-align-icon-left .qazana-button-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -482,8 +482,9 @@ class Widget_Button extends Widget_Base {
             $this->add_render_attribute( 'button', 'class', 'qazana-button-' . $settings['button_type'] );
         }
 
+		$this->add_render_attribute( 'button', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
+
         $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-button-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
 
         ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
@@ -515,11 +516,11 @@ class Widget_Button extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-button-wrapper qazana-inner-wrapper">
+        <div class="qazana-button-wrapper qazana-inner-wrapper qazana-align-icon-{{ settings.icon_align }}">
             <a id="{{ settings.button_css_id }}" class="qazana-button qazana-button-{{ settings.button_type }} qazana-weight-{{ settings.button_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
                 <span class="qazana-button-content-wrapper">
                     <# if ( settings.icon ) { #>
-                    <span class="qazana-button-icon qazana-align-icon-{{ settings.icon_align }}">
+                    <span class="qazana-button-icon">
                         <i class="{{ settings.icon }}" aria-hidden="true"></i>
                     </span>
                     <# } #>

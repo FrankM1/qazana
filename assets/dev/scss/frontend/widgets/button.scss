@@ -12,7 +12,7 @@
   &right {
     .qazana-button {
       width: auto;
-          margin-left: auto;
+      margin-left: auto;
     }
   }
 
@@ -99,6 +99,7 @@
     text-align: center;
     line-height: 1;
     transition: $transition-hover;
+    display: flex;
   }
 
   &.qazana-size- {
@@ -140,51 +141,56 @@
 }
 
 .qazana-widget {
-    &.qazana-button- {
-      &info .qazana-button-content-wrapper {
-        border-color: $info;
-        background-color: $info;
-      }
-
-      &success .qazana-button-content-wrapper {
-        border-color: $success;
-        background-color: $success;
-      }
-
-      &warning .qazana-button-content-wrapper {
-        border-color: $warning;
-        background-color: $warning;
-      }
-
-      &danger .qazana-button-content-wrapper {
-        border-color: $danger;
-        background-color: $danger;
-      }
-
-      &clear .qazana-button-content-wrapper {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        color: inherit;
-        opacity: 1;
-      }
+  &.qazana-button- {
+    &info .qazana-button-content-wrapper {
+      border-color: $info;
+      background-color: $info;
     }
+
+    &success .qazana-button-content-wrapper {
+      border-color: $success;
+      background-color: $success;
+    }
+
+    &warning .qazana-button-content-wrapper {
+      border-color: $warning;
+      background-color: $warning;
+    }
+
+    &danger .qazana-button-content-wrapper {
+      border-color: $danger;
+      background-color: $danger;
+    }
+
+    &clear .qazana-button-content-wrapper {
+      padding: 0;
+      border: none;
+      background-color: transparent;
+      color: inherit;
+      opacity: 1;
+    }
+  }
+}
+
+.qazana-align-icon-right .qazana-button-content-wrapper {
+  flex-direction: row-reverse;
+}
+
+.qazana-button-content-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 // Icon Hover
 .qazana-icon-hover-reveal-yes {
   .qazana-button {
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
-  }
-
-  .qazana-align-icon-right .qazana-button-content-wrapper {
-    flex-direction: row-reverse;
+    transition: all .5s cubic-bezier(.3, .95, .3, .95);
   }
 
   .qazana-button-icon {
     overflow: hidden;
     max-width: 0;
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
+    transition: all .5s cubic-bezier(.3, .95, .3, .95);
 
     &.qazana-align-icon-right {
       margin-left: 0;

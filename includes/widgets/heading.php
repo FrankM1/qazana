@@ -216,7 +216,7 @@ class Widget_Heading extends Widget_Base {
 		$this->add_responsive_control(
             'bottom_space',
             [
-                'label' => __( 'Bottom Spacing', 'qazana-pro' ),
+                'label' => __( 'Bottom Spacing', 'qazana' ),
                 'type'  => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [

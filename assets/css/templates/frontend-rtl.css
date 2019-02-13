@@ -1197,7 +1197,8 @@ ul.qazana-icon-list-items.qazana-inline-items {
     color: #ffffff;
     text-align: center;
     line-height: 1;
-    transition: all 0.5s; }
+    transition: all 0.5s;
+    display: flex; }
   .qazana-button.qazana-size-xs .qazana-button-content-wrapper {
     padding: 10px 20px;
     font-size: 13px; }
@@ -1241,11 +1242,15 @@ ul.qazana-icon-list-items.qazana-inline-items {
   color: inherit;
   opacity: 1; }
 
+.qazana-align-icon-right .qazana-button-content-wrapper {
+  flex-direction: row-reverse; }
+
+.qazana-button-content-wrapper {
+  display: flex;
+  align-items: center; }
+
 .qazana-icon-hover-reveal-yes .qazana-button {
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
-
-.qazana-icon-hover-reveal-yes .qazana-align-icon-right .qazana-button-content-wrapper {
-  flex-direction: row-reverse; }
 
 .qazana-icon-hover-reveal-yes .qazana-button-icon {
   overflow: hidden;
