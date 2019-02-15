@@ -699,7 +699,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	public function before_render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 	    $this->_add_render_attributes();
 
@@ -731,7 +731,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function get_render_icon() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$output = null;
 
@@ -763,7 +763,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function get_render_description() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$output = null;
 
@@ -778,7 +778,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function render_style_1() {
 
-        $settings = $this->get_settings();
+        $settings = $this->get_settings_for_display();
 
 		if ( ! empty( $settings['icon'] ) ) {
 
@@ -795,7 +795,7 @@ class Widget_Icon_Box extends Widget_Base {
 
     protected function render_style_2() {
 
-        $settings = $this->get_settings();
+        $settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation_type'] ] );
 
@@ -817,8 +817,6 @@ class Widget_Icon_Box extends Widget_Base {
     }
 
 	protected function render_style_3() {
-
-        $settings = $this->get_settings();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
 
@@ -844,7 +842,7 @@ class Widget_Icon_Box extends Widget_Base {
 	 * @access protected
 	 */
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$this->icon_tag = 'span';
 

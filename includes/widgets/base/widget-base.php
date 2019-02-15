@@ -547,7 +547,7 @@ abstract class Widget_Base extends Element_Base {
 			]
 		);
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		foreach ( self::get_class_controls() as $control ) {
 			if ( empty( $settings[ $control['name'] ] ) ) {

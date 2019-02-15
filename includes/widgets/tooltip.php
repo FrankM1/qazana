@@ -333,7 +333,7 @@ class Widget_Tooltip extends Widget_Base {
      */
 	public function render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'tooltip-wrapper', 'class', 'qazana-tooltip');
 		$this->add_render_attribute( 'tooltip-icon', 'class', 'qazana-tooltip-icon' );

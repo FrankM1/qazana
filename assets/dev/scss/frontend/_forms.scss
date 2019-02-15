@@ -6,6 +6,7 @@
 	display: flex;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
 
 	&.qazana-labels-above {
 		> .qazana-field-group {
@@ -31,7 +32,8 @@
 .qazana-field-group {
 	flex-wrap: wrap;
 	align-items: center;
-
+    overflow: hidden;
+    
 	&.qazana-field-type-submit {
 		align-items: flex-end;
 	}
@@ -277,7 +279,7 @@
 		&.qazana-size- {
 
 			&xs {
-				min-height: 33px;
+				min-height: 32px;
 			}
 
 			&sm {
@@ -285,11 +287,11 @@
 			}
 
 			&md {
-				min-height: 47px;
+				min-height: 46px;
 			}
 
 			&lg {
-				min-height: 59px;
+				min-height: 58px;
 			}
 
 			&xl {

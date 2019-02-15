@@ -1350,7 +1350,7 @@ class Element_Section extends Element_Base {
 		<# if ( settings.background_video_link ) { #>
 			<div class="qazana-background-video-container qazana-hidden-phone">
 				<div class="qazana-background-video-embed"></div>
-				<video class="qazana-background-video-hosted" autoplay loop muted></video>
+				<video class="qazana-background-video-hosted" autoplay loop muted playsinline></video>
 			</div>
 		<# } #>
 
@@ -1422,7 +1422,7 @@ class Element_Section extends Element_Base {
 						<?php if ( $video_properties ) : ?>
 							<div class="qazana-background-video-embed"></div>
 						<?php else : ?>
-							<video class="qazana-background-video-hosted qazana-html5-video" autoplay loop muted></video>
+							<video class="qazana-background-video-hosted qazana-html5-video" autoplay loop muted playsinline></video>
 						<?php endif; ?>
 					</div>
 					<?php

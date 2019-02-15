@@ -36,8 +36,6 @@ class Query_Controls extends Base {
 	public function ajax_posts_filter_autocomplete() {
 		qazana()->get_editor()->verify_ajax_nonce();
 		
-		qazana_write_log( $_POST );
-
 		if ( empty( $_POST['filter_type'] ) || empty( $_POST['q'] ) ) {
 			wp_send_json_error( new WP_Error( 'Bad Request' ) );
 		}

@@ -42,7 +42,17 @@ abstract class Document extends Controls_Stack {
 	 * Document sub type meta key.
 	 */
 	const SUB_TYPE_META_KEY = '_qazana_template_sub_type';
+	
+	/**
+	 * The taxonomy type slug for the library document.
+	 */
+    const TAXONOMY_TYPE_SLUG = 'qazana_library_type';
 
+	/**
+	 * Document properties
+	 *
+	 * @var array
+	 */
 	private static $properties = [];
 
 	/**
@@ -94,11 +104,10 @@ abstract class Document extends Controls_Stack {
 
 	public static function get_editor_panel_config() {
 		return [
-			'widgets_settings' => [],
 			'elements_categories' => static::get_editor_panel_categories(),
 			'messages' => [
 				/* translators: %s: the document title. */
-				'publish_notification' => sprintf( __( 'Hurray! Your %s is live.', 'qazana' ), self::get_title() ),
+				'publish_notification' => sprintf( __( 'Your %s is now live.', 'qazana' ), self::get_title() ),
 			],
 		];
 	}

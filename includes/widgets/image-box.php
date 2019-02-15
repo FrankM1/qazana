@@ -624,7 +624,7 @@ class Widget_Image_Box extends Widget_Base {
 
 				view.addRenderAttribute( 'title_text', 'class', 'qazana-image-box-title' );
 
-				view.addInlineEditingAttributes( 'title_text', 'none' );
+				view.addInlineEditingAttributes( 'title_text' );
 
 				html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
 			}

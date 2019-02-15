@@ -895,7 +895,7 @@ class Element_Column extends Element_Base {
 
 		$column_type = ! empty( $is_inner ) ? 'inner' : 'top';
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute(
 			'_wrapper', 'class', [

@@ -460,7 +460,7 @@ class Widget_Icon extends Widget_Base {
 
 	protected function get_render_icon() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( $settings['icon_type'] === 'image' ) {
 			$filetype = wp_check_filetype( $settings['image']['url'] );
