@@ -76,10 +76,9 @@ class Group_Control_Box_Styles extends Group_Control_Base {
 		);
 
 		$fields['color'] = array(
-			'label'     => _x( 'Color', 'Background Control', 'qazana' ),
+			'label'     => _x( 'Background Color', 'Background Control', 'qazana' ),
 			'type'      => Controls_Manager::COLOR,
 			'default'   => '',
-			'title'     => _x( 'Background Color', 'Background Control', 'qazana' ),
 			'selectors' => array(
 				'{{SELECTOR}}' => 'background-color: {{VALUE}};',
 			),

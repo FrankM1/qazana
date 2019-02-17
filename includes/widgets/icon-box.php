@@ -106,7 +106,7 @@ class Widget_Icon_Box extends Widget_Base {
 					'align-left' => __( 'Icon Left', 'qazana' ),
 					'stacked'    => __( 'Stacked', 'qazana' ),
 					'framed'     => __( 'Framed', 'qazana' ),
-					'animated-1' => __( 'Animated 1', 'qazana' ),
+					'animated' => __( 'Animated 1', 'qazana' ),
 				],
 				'default'      => 'default',
 				'prefix_class' => 'qazana-view-',
@@ -128,7 +128,8 @@ class Widget_Icon_Box extends Widget_Base {
 						'title' => __( 'Icon', 'qazana' ),
 						'icon'  => 'fa fa-star',
 					],
-				],
+                ],
+                'prefix_class' => 'qazana-icon-type-',
 				'default' => 'icon',
 			]
 		);
@@ -324,7 +325,7 @@ class Widget_Icon_Box extends Widget_Base {
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
         );
- 
+
         $this->start_controls_tabs( 'tabs_icon_style' );
 
         $this->start_controls_tab(
@@ -423,6 +424,9 @@ class Widget_Icon_Box extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .qazana-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [
+					'icon_type' => 'image',
 				],
 			]
 		);
@@ -494,7 +498,7 @@ class Widget_Icon_Box extends Widget_Base {
 		);
 
         $this->end_controls_tab();
-        
+
         $this->start_controls_tab(
             'section_icon_hover',
             [
@@ -537,9 +541,9 @@ class Widget_Icon_Box extends Widget_Base {
 				'name' => 'hover_animation',
 			]
         );
-        
+
         $this->end_controls_tab();
-        
+
         $this->end_controls_tabs();
 
 		$this->end_controls_section();
@@ -698,10 +702,7 @@ class Widget_Icon_Box extends Widget_Base {
 	}
 
 	public function before_render() {
-
-		$settings = $this->get_settings_for_display();
-
-	    $this->_add_render_attributes();
+		$settings = $this->get_settings();
 
         if ( ! empty( $settings['link']['url'] ) ) {
             $this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
@@ -713,7 +714,6 @@ class Widget_Icon_Box extends Widget_Base {
         }
 
 		if ( $settings['icon_type'] === 'image' ) {
-
 			$filetype = wp_check_filetype( $settings['image']['url'] );
 
 			if ( $filetype['ext'] === 'svg' ) {
@@ -726,13 +726,12 @@ class Widget_Icon_Box extends Widget_Base {
 			}
 		}
 
+        $this->_add_render_attributes();
+
 		?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
 	}
 
 	protected function get_render_icon() {
-
-		$settings = $this->get_settings_for_display();
-
 		$output = null;
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
@@ -740,7 +739,8 @@ class Widget_Icon_Box extends Widget_Base {
 		$icon_attributes = $this->get_render_attribute_string( 'icon' );
 		$link_attributes = $this->get_render_attribute_string( 'link' );
 
-		if ( ! empty( $settings['icon'] ) ) {
+        $image = $this->get_settings( 'image' );
+		if ( $this->get_settings( 'icon' ) ) {
 
             if ( 'a' === $this->icon_tag ) {
                 $output .= '<'. implode( ' ', [ $this->icon_tag, $icon_attributes, $link_attributes ] ) .'>';
@@ -748,8 +748,8 @@ class Widget_Icon_Box extends Widget_Base {
                 $output .= '<'. $this->icon_tag .' '. $icon_attributes .'>';
             }
 
-			if ( $settings['icon_type'] === 'image' ) {
-				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $settings['image']['url'] ) .'" alt="icon" /></span>';
+			if ( 'image' === $this->get_settings( 'icon_type' ) ) {
+				$output .= '<span '. $this->get_render_attribute_string( 'image' ) .'><img src="'. qazana_maybe_ssl_url( $image['url'] ) .'" alt="icon" /></span>';
 			} else {
 				$output .= '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
 			}
@@ -778,9 +778,7 @@ class Widget_Icon_Box extends Widget_Base {
 
 	protected function render_style_1() {
 
-        $settings = $this->get_settings_for_display();
-
-		if ( ! empty( $settings['icon'] ) ) {
+		if ( $this->get_settings( 'icon' ) ) {
 
 		    ?><div class="qazana-icon-box-icon">
 				<?php echo $this->get_render_icon(); ?>
@@ -795,7 +793,7 @@ class Widget_Icon_Box extends Widget_Base {
 
     protected function render_style_2() {
 
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-hover-animation-' . $settings['hover_animation_type'] ] );
 
@@ -865,7 +863,7 @@ class Widget_Icon_Box extends Widget_Base {
             <div class="height-adjust"></div>
             <div class="qazana-icon-box-inner"><?php
 
-                if ( $settings['view'] === 'animated-1' ) {
+                if ( $settings['view'] === 'animated' ) {
                     $this->render_style_2();
                 } elseif( $settings['view'] === 'align-left' ) {
                     $this->render_style_3();

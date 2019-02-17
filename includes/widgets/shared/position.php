@@ -33,6 +33,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                  'selectors' => [ // You can use the selected value in an auto-generated css rule.
                     '{{WRAPPER}}' => 'position: {{VALUE}}',
                  ],
+                 'style_transfer' => false,
             ]
         );
 
@@ -42,7 +43,8 @@ function add_position_options_to_widget( $element, $section_id, $args) {
 				'label' => __( 'Z Index', 'qazana' ),
 				'type' => Controls_Manager::NUMBER,
 				'min' => 0,
-				'placeholder' => 0,
+                'placeholder' => 0,
+                'style_transfer' => false,
 				'selectors' => [
 					'{{WRAPPER}}' => 'z-index: {{VALUE}};',
 				],
@@ -57,7 +59,8 @@ function add_position_options_to_widget( $element, $section_id, $args) {
 				'default' => '',
 				'prefix_class' => 'qazana-',
 				'label_on' => 'On',
-				'label_off' => 'Off',
+                'label_off' => 'Off',
+                'style_transfer' => false,
 				'return_value' => 'element-inline',
 			]
 		);
@@ -67,6 +70,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
             [
                 'label'   => esc_html__( 'Left', 'qazana' ),
                 'type'    => Controls_Manager::SLIDER,
+                'style_transfer' => false,
                 'default' => [
                     'size' => 0,
                 ],
@@ -95,6 +99,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
             [
                 'label'   => esc_html__( 'Top', 'qazana' ),
                 'type'    => Controls_Manager::SLIDER,
+                'style_transfer' => false,
                 'default' => [
                     'size' => 0,
                 ],
@@ -123,6 +128,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
             '_element_rotate',
             [
                 'label'        => esc_html__( 'Rotate Item', 'qazana' ),
+                'style_transfer' => false,
                 'type'         => Controls_Manager::SWITCHER,
                 'default'      => '',
                 'label_on'     => esc_html__( 'On', 'qazana' ),
@@ -152,6 +158,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                 'condition' => [
                     '_element_rotate' => 'yes',
                 ],
+                'style_transfer' => false,
             ]
         );
 
@@ -167,6 +174,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                 'condition' => [
                     '_element_rotate' => 'yes',
                 ],
+                'style_transfer' => false,
             ]
         );
 
@@ -185,6 +193,7 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                     '{{WRAPPER}}' => 'overflow: {{VALUE}};',
                     '.qazana-editor-active {{WRAPPER}} ' => 'overflow: visible;',
                 ],
+                'style_transfer' => false,
             ]
         );
 

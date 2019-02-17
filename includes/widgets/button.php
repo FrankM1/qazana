@@ -205,7 +205,7 @@ class Widget_Button extends Widget_Base {
 					],
 				],
 				'prefix_class' => 'qazana%s-align-',
-				'default' => '',
+                'default' => '',
 			]
 		);
 

@@ -5,57 +5,56 @@
 // For the all elements with icon options
 
 .qazana-icon {
-	display: inline-block;
-	line-height: 1;
-	transition: $transition-hover;
-	color: $gray;
-	font-size: 50px;
-	position: relative;
+    display: inline-block;
+    line-height: 1;
+    transition: $transition-hover;
+    color: $gray;
+    font-size: 50px;
+    position: relative;
 
-	&:hover {
-		color: $gray;
-	}
+    &:hover {
+        color: $gray;
+    }
 
-	i,
-	svg,
-	img {
-		width: 1em;
-		height: 1em;
-	}
+    i,
+    svg {
+        width: 1em;
+        height: 1em;
+    }
 
-	.svg-baseline svg {
-		width: 1em;
-		height: 1em;
-		bottom: -0.125em;
-	}
+    .svg-baseline svg {
+        width: 1em;
+        height: 1em;
+        bottom: -0.125em;
+    }
 }
 
 .qazana-view-stacked {
 
-	.qazana-icon {
-		padding: .5em;
-		background-color: $gray;
-		color: #fff;
-	}
+    .qazana-icon {
+        padding: .5em;
+        background-color: $gray;
+        color: #fff;
+    }
 }
 
 .qazana-view-framed {
 
-	.qazana-icon {
-		padding: .5em;
-		color: $gray;
-		border: 3px solid $gray;
-		background-color: transparent;
+    .qazana-icon {
+        padding: .5em;
+        color: $gray;
+        border: 3px solid $gray;
+        background-color: transparent;
 
-	}
+    }
 }
 
 .qazana-shape {
 
-	&-circle {
+    &-circle {
 
-		.qazana-icon {
-			border-radius: 50%;
-		}
-	}
+        .qazana-icon {
+            border-radius: 50%;
+        }
+    }
 }

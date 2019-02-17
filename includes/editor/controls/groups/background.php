@@ -124,10 +124,9 @@ class Group_Control_Background extends Group_Control_Base {
 		];
 
 		$fields['color'] = [
-			'label' => _x( 'Color', 'Background Control', 'qazana' ),
+			'label' => _x( 'Background Color', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::COLOR,
 			'default' => '',
-			'title' => _x( 'Background Color', 'Background Control', 'qazana' ),
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-color: {{VALUE}};',
 			],
@@ -241,13 +240,12 @@ class Group_Control_Background extends Group_Control_Base {
 		];
 
 		$fields['image'] = [
-			'label' => _x( 'Image', 'Background Control', 'qazana' ),
+			'label' => _x( 'Background Image', 'Background Control', 'qazana' ),
 			'type' => Controls_Manager::MEDIA,
 			'dynamic' => [
 				'active' => true,
 			],
 			'responsive' => true,
-			'title' => _x( 'Background Image', 'Background Control', 'qazana' ),
 			'selectors' => [
 				'{{SELECTOR}}' => 'background-image: url("{{URL}}");',
 			],

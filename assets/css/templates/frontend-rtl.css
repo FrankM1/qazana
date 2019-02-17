@@ -911,7 +911,8 @@ ul.qazana-icon-list-items.qazana-inline-items {
 .qazana-form-fields-wrapper {
   display: flex;
   flex-wrap: wrap;
-  align-items: center; }
+  align-items: center;
+  width: 100%; }
   .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > input, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > textarea, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > .qazana-select-wrapper, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group .qazana-field-subgroup {
     flex-basis: 100%;
     max-width: 100%; }
@@ -920,7 +921,8 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 .qazana-field-group {
   flex-wrap: wrap;
-  align-items: center; }
+  align-items: center;
+  overflow: hidden; }
   .qazana-field-group.qazana-field-type-submit {
     align-items: flex-end; }
   .qazana-field-group .qazana-field-textual {
@@ -1099,13 +1101,13 @@ ul.qazana-icon-list-items.qazana-inline-items {
   .qazana-form .qazana-button .qazana-align-icon-left {
     order: 2; }
   .qazana-form .qazana-button.qazana-size-xs {
-    min-height: 33px; }
+    min-height: 32px; }
   .qazana-form .qazana-button.qazana-size-sm {
     min-height: 40px; }
   .qazana-form .qazana-button.qazana-size-md {
-    min-height: 47px; }
+    min-height: 46px; }
   .qazana-form .qazana-button.qazana-size-lg {
-    min-height: 59px; }
+    min-height: 58px; }
   .qazana-form .qazana-button.qazana-size-xl {
     min-height: 72px; }
 
@@ -1573,8 +1575,7 @@ ul.qazana-icon-list-items.qazana-inline-items {
   .qazana-icon:hover {
     color: #818a91; }
   .qazana-icon i,
-  .qazana-icon svg,
-  .qazana-icon img {
+  .qazana-icon svg {
     width: 1em;
     height: 1em; }
   .qazana-icon .svg-baseline svg {

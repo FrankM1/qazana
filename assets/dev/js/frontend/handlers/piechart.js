@@ -1,39 +1,93 @@
-module.exports = function( $scope ) {
+var HandlerModule = require( 'qazana-frontend/handler-module' );
 
-    var $chart = $scope.find( '.qazana-piechart' );
-    var $piechartProgress = $chart.find( '.qazana-piechart-number-count' );
+var PieChart = HandlerModule.extend( {
 
-    var animation = {
-        duration: $chart.data( 'duration' ),
-    };
+    getDefaultSettings: function() {
+		return {
+			selectors: {
+				chart: '.qazana-piechart-number',
+                number: '.qazana-piechart-number',
+                numberValue: '.qazana-piechart-number-value',
+			},
+		};
+	},
 
-    if ( $chart.closest( '.qazana-element' ).hasClass( 'qazana-piechart-animation-type-none' ) ) {
-        animation = {
-            duration: 0,
+    getDefaultElements: function() {
+		var selectors = this.getSettings( 'selectors' ),
+			elements = {
+                $chart: this.$element.find( selectors.chart ),
+                $number: this.$element.find( selectors.number ),
+                $numberValue: this.$element.find( selectors.numberValue ),
+			};
+
+		return elements;
+    },
+
+    onElementChange: function( propertyName ) {
+        if ( 'starting_number' === propertyName || 'ending_number' === propertyName ) {
+           this.elements.$number.circleProgress( 'redraw' );
+		}
+    },
+
+    drawCircle: function() {
+        var self = this,
+            fill = {
+                gradient: [],
+            };
+
+        fill.gradient.push( this.getElementSettings( 'circle_start_color' ) );
+        fill.gradient.push( this.getElementSettings( 'circle_end_color' ) );
+
+        this.elements.$numberValue.html( parseInt( this.getElementSettings( 'starting_number' ) ) );
+
+        var args = {
+            startAngle: -Math.PI / 4 * 2,
+            fill: fill,
+            emptyFill: 'transparent',
+            animation: {
+                duration: this.getElementSettings( 'duration' ),
+            },
+            size: this.getElementSettings( 'circle_size' ).size,
+            thickness: this.getElementSettings( 'circle_width' ).size,
+            reverse: true,
+            value: ( this.getElementSettings( 'ending_number' ).size / 100 ),
         };
-    }
 
-    if ( false === animation ) {
-        $piechartProgress.html( $piechartProgress.data( 'value' ) );
-        $chart.addClass( 'animated' );
-    }
-
-    qazanaFrontend.waypoint( $chart, function() {
-
-        if ( ! $chart.hasClass( 'animated' ) ) {
-
-            $chart.circleProgress( {
-                    startAngle: -Math.PI / 4 * 2,
-                    emptyFill: $chart.data( 'emptyfill' ),
-                    animation: animation,
-            } ).on( 'circle-animation-progress', function( event, progress ) {
-                $piechartProgress.html( parseInt( ( $piechartProgress.data( 'value' ) ) * progress ) );
-            } ).on( 'circle-animation-end', function() {
-                $chart.addClass( 'animated' );
-            } );
-
+        if ( 'none' === this.getElementSettings( 'animation_type' ) ) {
+            args.animation = {
+                duration: 0,
+            };
         }
 
-    }, { offset: '90%' } );
+        this.elements.$number.circleProgress( args )
+            .on( 'circle-animation-progress', function( event, progress ) {
+                self.elements.$numberValue.html( parseInt( ( self.elements.$numberValue.data( 'value' ) ) * progress ) );
+            } ).on( 'circle-animation-end', function() {
+                self.elements.$chart.addClass( 'animated' );
+            } );
+    },
 
+    onInit: function() {
+        HandlerModule.prototype.onInit.apply( this, arguments );
+
+        var self = this;
+        var animation = {
+                duration: this.getElementSettings( 'duration' ),
+            };
+
+        if ( ! animation ) {
+            this.elements.$number.html( this.elements.$number.data( 'value' ) );
+            this.elements.$chart.addClass( 'animated' );
+        }
+
+        qazanaFrontend.waypoint( this.elements.$chart, function() {
+            if ( ! self.elements.$chart.hasClass( 'animated' ) ) {
+              self.drawCircle();
+            }
+        }, { offset: '90%' } );
+    },
+} );
+
+module.exports = function( $scope ) {
+	new PieChart( { $element: $scope } );
 };

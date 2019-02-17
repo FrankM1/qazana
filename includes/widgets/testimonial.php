@@ -257,6 +257,18 @@ class Widget_Testimonial extends Widget_Base {
 			]
 		);
 
+        $this->add_responsive_control(
+			'carousel',
+			[
+				'label'        => __( 'Enable carousel', 'qazana' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => true,
+				'return_value' => 'true',
+				'render_type'  => 'template',
+				'prefix_class' => 'qazana-testimonial-carousel-'
+			]
+        );
+
 		$this->end_controls_section();
 
 		$this->end_controls_section();
@@ -264,12 +276,15 @@ class Widget_Testimonial extends Widget_Base {
 		$this->start_controls_section(
 			'section_carousel_settings',
 			[
-				'label' => __( 'Carousel Settings', 'qazana' ),
+                'label' => __( 'Carousel Settings', 'qazana' ),
+                'condition' => [
+                    'carousel!' => ''
+                ]
 			]
 		);
 
 		$this->end_controls_section();
-		
+
 		// Content Wrapper
 		$this->start_controls_section(
 			'section_style_testimonial_content_wrapper',
@@ -634,87 +649,89 @@ class Widget_Testimonial extends Widget_Base {
 	 * @access public
 	 */
 	public function render() {
-		$settings = $this->get_settings_for_display();
-		$testimonials = $this->get_settings_for_display( 'testimonials' );
 
-		if ( empty( $settings['testimonials'] ) )
-			return;
+		if ( ! $this->get_settings( 'testimonials' ) ) {
+            return;
+        }
 
-		$show_dots = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'dots', 'both' ] ) );
-		$show_arrows = ( in_array( $this->get_responsive_settings( 'navigation' ), [ 'arrows', 'both' ] ) );
-        $is_rtl = ( 'rtl' === $this->get_settings_for_display('direction') );
-        $direction = $is_rtl ? 'rtl' : 'ltr';
-        
-		$carousel_classes = [ 'qazana-slides' ];
+        if ( $this->get_settings( 'carousel' ) ) {
 
-		$carousel_classes[] = $this->get_settings_for_display('carousel_class');
-		
-		$this->add_render_attribute( 'slides', [
-			'class' => $carousel_classes,
-			'data-animation' => $settings['content_animation'],
-			'data-animation-delay' => $settings['content_animation_delay'],
-		] );
+            $this->add_render_attribute( 'slides-wrapper', [
+                'class' => [ 'qazana-slides-wrapper', 'qazana-slick-slider', 'qazana-dots-align-' . $this->get_settings_for_display( 'dots_align' ) ],
+                'dir' => ( 'rtl' === $this->get_settings_for_display('direction') ) ? 'rtl' : 'ltr',
+            ] );
 
-		$counter = 1;
+            $this->add_render_attribute( 'slides', [
+                'class' => [ 'qazana-slides', esc_attr( $this->get_settings_for_display( 'carousel_class' ) ) ],
+                'data-animation' => $this->get_settings_for_display('content_animation'),
+                'data-animation-delay' => $this->get_settings_for_display('content_animation_delay'),
+            ] );
 
-		?><div class="qazana-testimonials__wrapper">
-			<div class="qazana-slides-wrapper qazana-slick-slider qazana-dots-align-<?php echo $settings['dots_align']; ?>" dir="<?php echo $direction; ?>">
-				<div <?php $this->render_attribute_string( 'slides' ); ?>>
-					<div class="slick-slideshow-large-container-biggie">
-						<div class="slick-slides slick-slides-biggie"><?php
-								foreach ( $testimonials as $item ) :
+        }
 
-									$has_image = false;
+        ?><div class="qazana-testimonials__wrapper"><?php
 
-									if ( '' !== $item['testimonial_image']['url'] ) {
-										$image_url = qazana_maybe_ssl_url( $item['testimonial_image']['url'] );
-										$has_image = ' qazana-has-image';
-									}
+            if ( $this->get_settings( 'carousel' ) ) { ?>
+                <div <?php $this->render_attribute_string( 'slides-wrapper' ); ?>>
+                    <div <?php $this->render_attribute_string( 'slides' ); ?>>
+                        <div class="slick-slideshow-large-container-biggie">
+                            <div class="slick-slides slick-slides-biggie"><?php
+                }
 
-									?><div class="qazana-testimonial__wrapper qazana-testimonial__text-align-<?php echo $this->get_item_responsive_settings( 'testimonial_alignment', $item ); ?>">
-										<div class="qazana-testimonial__content-wrapper">
+                            foreach ( $this->get_settings( 'testimonials' ) as $item ) :
+                                $has_image = false;
 
-											<?php if ( ! empty( $item['testimonial_content'] ) ) : ?>
-												<p class="qazana-testimonial__content">
-													<?php echo $item['testimonial_content']; ?>
-												</p>
-											<?php endif; ?>
+                                if ( '' !== $item['testimonial_image']['url'] ) {
+                                    $image_url = qazana_maybe_ssl_url( $item['testimonial_image']['url'] );
+                                    $has_image = ' qazana-has-image';
+                                }
 
-											<div class="qazana-testimonial__meta<?php if ( $has_image ) echo $has_image; ?><?php echo $this->get_item_responsive_settings( 'testimonial_image_position', $item ); ?>">
-												<div class="qazana-testimonial__meta-inner">
-													<?php if ( isset( $image_url ) ) : ?>
-														<div class="qazana-testimonial__image">
-															<img src="<?php echo esc_attr( $image_url ); ?>" alt="<?php echo esc_attr( Control_Media::get_image_alt( $item['testimonial_image'] ) ); ?>" />
-														</div>
-													<?php endif; ?>
+                                ?><div class="qazana-testimonial__wrapper qazana-testimonial__text-align-<?php echo $this->get_item_responsive_settings( 'testimonial_alignment', $item ); ?>">
+                                    <div class="qazana-testimonial__content-wrapper">
 
-													<div class="qazana-testimonial__details">
-														<?php if ( ! empty( $item['testimonial_name'] ) ) : ?>
-															<div class="qazana-testimonial__name">
-																<?php echo $item['testimonial_name']; ?>
-															</div>
-														<?php endif; ?>
+                                        <?php if ( ! empty( $item['testimonial_content'] ) ) : ?>
+                                            <p class="qazana-testimonial__content">
+                                                <?php echo $item['testimonial_content']; ?>
+                                            </p>
+                                        <?php endif; ?>
 
-														<?php if ( ! empty( $item['testimonial_job'] ) ) : ?>
-															<div class="qazana-testimonial__job">
-																<?php echo $item['testimonial_job']; ?>
-															</div>
-														<?php endif; ?>
-													</div>
-												</div>
-											</div>
+                                        <div class="qazana-testimonial__meta<?php if ( $has_image ) echo $has_image; ?><?php echo $this->get_item_responsive_settings( 'testimonial_image_position', $item ); ?>">
+                                            <div class="qazana-testimonial__meta-inner">
+                                                <?php if ( isset( $image_url ) ) : ?>
+                                                    <div class="qazana-testimonial__image">
+                                                        <img src="<?php echo esc_attr( $image_url ); ?>" alt="<?php echo esc_attr( Control_Media::get_image_alt( $item['testimonial_image'] ) ); ?>" />
+                                                    </div>
+                                                <?php endif; ?>
 
-										</div>
-									</div>
+                                                <div class="qazana-testimonial__details">
+                                                    <?php if ( ! empty( $item['testimonial_name'] ) ) : ?>
+                                                        <div class="qazana-testimonial__name">
+                                                            <?php echo $item['testimonial_name']; ?>
+                                                        </div>
+                                                    <?php endif; ?>
 
-								<?php $counter++;
+                                                    <?php if ( ! empty( $item['testimonial_job'] ) ) : ?>
+                                                        <div class="qazana-testimonial__job">
+                                                            <?php echo $item['testimonial_job']; ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
 
-							endforeach;
-					?></div>
-				</div>
-			</div>
-		</div>
-	</div><?php
+                                    </div>
+                                </div>
+                                <?php
+
+                            endforeach;
+
+                            if ( $this->get_settings( 'carousel' ) ) { ?>
+					    </div>
+				    </div>
+			    </div>
+            </div>
+        <?php } ?>
+        </div><?php
 
 	}
 }

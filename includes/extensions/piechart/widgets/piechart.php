@@ -21,7 +21,7 @@ class Piechart extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'eicon-counter-circle';
+		return 'eicon-circle-circle';
 	}
 
 	public function get_categories() {
@@ -45,7 +45,7 @@ class Piechart extends Widget_Base {
 		$this->start_controls_section(
 			'section_piechart',
 			[
-				'label' => __( 'Counter', 'qazana' ),
+				'label' => __( 'Circle', 'qazana' ),
 			]
 		);
 
@@ -62,20 +62,42 @@ class Piechart extends Widget_Base {
 						'title' => __( 'No Animation', 'qazana' ),
 					],
 				],
-				'prefix_class' => 'qazana-piechart-animation-type-',
+                'prefix_class' => 'qazana-piechart-animation-type-',
+                'frontend_available' => true
 			]
-		);
+        );
+
+        $this->add_control(
+			'position',
+			[
+				'label' => __( 'Circle Position', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => 'top',
+				'options' => [
+					'left' => [
+						'title_text' => __( 'Left', 'qazana' ),
+						'icon' => 'fa fa-align-left',
+					],
+					'top' => [
+						'title_text' => __( 'Top', 'qazana' ),
+						'icon' => 'fa fa-align-center',
+					],
+					'right' => [
+						'title_text' => __( 'Right', 'qazana' ),
+						'icon' => 'fa fa-align-right',
+					],
+				],
+				'prefix_class' => 'qazana-position-',
+				'toggle' => false,
+			]
+        );
 
 		$this->add_control(
-			'counterclock',
+			'circleclock',
 			[
-				'label' => __( 'Counterclock', 'qazana' ),
+				'label' => __( 'Reverse Animation', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'default' => '',
-				'label_on' => __( 'Yes', 'qazana' ),
-				'label_off' => __( 'No', 'qazana' ),
-				'prefix_class' => 'qazana-piechart-counterclockwise-',
-				'description' => __( 'Reverse chart animation direction', 'qazana' )
+				'prefix_class' => 'qazana-piechart-clockwise-',
 			]
 		);
 
@@ -92,7 +114,8 @@ class Piechart extends Widget_Base {
 				],
 				'default' => [
 					'size' => 0
-				]
+                ],
+                'frontend_available' => true
 			]
 		);
 
@@ -109,9 +132,31 @@ class Piechart extends Widget_Base {
 				],
 				'default' => [
 					'size' => 75
-				]
+                ],
+                'frontend_available' => true
+			]
+        );
+
+        $this->add_control(
+			'duration',
+			[
+				'label' => __( 'Animation Duration', 'qazana' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 1700,
+				'min' => 100,
+                'step' => 100,
+                'frontend_available' => true
 			]
 		);
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'section_secondary',
+			[
+				'label' => __( 'Prefix & Suffix', 'qazana' ),
+			]
+        );
 
 		$this->add_control(
 			'prefix',
@@ -133,55 +178,110 @@ class Piechart extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'duration',
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'section_content',
 			[
-				'label' => __( 'Animation Duration', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 1700,
-				'min' => 100,
-				'step' => 100,
+				'label' => __( 'Content', 'qazana' ),
 			]
-		);
+        );
 
 		$this->add_control(
-			'title',
+			'title_size',
+			[
+				'label' => __( 'Title HTML Tag', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'h1' => 'H1',
+					'h2' => 'H2',
+					'h3' => 'H3',
+					'h4' => 'H4',
+					'h5' => 'H5',
+					'h6' => 'H6',
+					'div' => 'div',
+					'span' => 'span',
+					'p' => 'p',
+				],
+				'default' => 'h3',
+			]
+        );
+
+		$this->add_control(
+			'title_text',
 			[
 				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-				'default' => __( 'Cool Chart', 'qazana' ),
-				'placeholder' => __( 'Cool Chart', 'qazana' ),
+				'default' => __( 'Cool Number Title', 'qazana' ),
+				'placeholder' => __( 'Cool Number Title', 'qazana' ),
 			]
 		);
 
 		$this->add_control(
-			'subtitle',
+			'description_text',
 			[
-				'label' => __( 'Sub Title', 'qazana' ),
+				'label' => __( 'Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-				'default' => __( 'Cool chart subtitle', 'qazana' ),
-				'placeholder' => __( 'Cool chart Subtitle', 'qazana' ),
+				'default' => __( 'Cool number description', 'qazana' ),
+				'placeholder' => __( 'Cool number description', 'qazana' ),
+			]
+        );
+
+        $this->add_control(
+			'link',
+			[
+				'label' => __( 'Link to', 'qazana' ),
+				'type' => Controls_Manager::URL,
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
+				'separator' => 'before',
 			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_circle',
+			'section_style_circle',
 			[
 				'label' => __( 'Circle', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
 
+        $this->add_responsive_control(
+			'circle_space',
+			[
+				'label' => __( 'Circle Box Spacing', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 15,
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}.qazana-position-right .qazana-circle-number' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-left .qazana-circle-number' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-top .qazana-circle-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}} .qazana-circle-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+        );
+
 		$this->add_control(
 			'circle_start_color',
 			[
 				'label' => __( 'Start Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => 'green',
+                'default' => 'green',
+                'frontend_available' => true
 			]
 		);
 
@@ -190,7 +290,8 @@ class Piechart extends Widget_Base {
 			[
 				'label' => __( 'End Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => 'blue',
+                'default' => 'blue',
+                'frontend_available' => true
 			]
 		);
 
@@ -210,8 +311,9 @@ class Piechart extends Widget_Base {
 					'size' => 160
 				],
 				'selectors' => [
-					'{{WRAPPER}} .piechart-number' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
-				],
+					'{{WRAPPER}} .qazana-piechart-number' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+                ],
+                'frontend_available' => true
 			]
 		);
 
@@ -229,7 +331,7 @@ class Piechart extends Widget_Base {
 				'default' => [
 					'size' => 5
 				],
-
+                'frontend_available' => true
 			]
 		);
 
@@ -248,7 +350,7 @@ class Piechart extends Widget_Base {
 					'size' => 1
 				],
 				'selectors' => [
-					'{{WRAPPER}} .piechart-number:before' => 'border-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-piechart-number:before' => 'border-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -260,7 +362,7 @@ class Piechart extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .piechart-number:before' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart-number:before' => 'border-color: {{VALUE}};',
 				],
 			]
 		);
@@ -277,7 +379,7 @@ class Piechart extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .piechart-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-piechart-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -285,32 +387,79 @@ class Piechart extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_title',
+			'section_style_content',
 			[
-				'label' => __( 'Title', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Content', 'qazana' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->add_control(
-			'title_color',
+		$this->add_responsive_control(
+			'text_align',
 			[
-				'label' => __( 'Title Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_2,
+				'label' => __( 'Alignment', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => __( 'Left', 'qazana' ),
+						'icon' => 'fa fa-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'qazana' ),
+						'icon' => 'fa fa-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'qazana' ),
+						'icon' => 'fa fa-align-right',
+					],
+					'justify' => [
+						'title' => __( 'Justified', 'qazana' ),
+						'icon' => 'fa fa-align-justify',
+					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-piechart-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-piechart' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'title_spacing',
+			'content_vertical_alignment',
 			[
-				'label' => __( 'Title Spacing', 'qazana' ),
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+				'default' => 'top',
+				'prefix_class' => 'qazana-vertical-align-',
+			]
+		);
+
+		$this->add_control(
+			'heading_title',
+			[
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'title_bottom_space',
+			[
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -324,75 +473,108 @@ class Piechart extends Widget_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+		$this->add_control(
+			'title_color',
 			[
-				'name' => 'typography_title',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-piechart-title',
+				'label' => __( 'Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-piechart-content .qazana-piechart-title' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_1,
+				],
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_subtitle',
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			[
-				'label' => __( 'Sub Title', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'name' => 'title_typography',
+				'selector' => '{{WRAPPER}} .qazana-piechart-content .qazana-piechart-title',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
 
 		$this->add_control(
-			'subtitle_color',
+			'heading_description',
 			[
-				'label' => __( 'Sub Title Color', 'qazana' ),
+				'label' => __( 'Description', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'description_color',
+			[
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-piechart-content .qazana-piechart-description' => 'color: {{VALUE}};',
+				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_3,
 				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-piechart-subtitle' => 'color: {{VALUE}};',
-				],
 			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'name' => 'typography_subtitle',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-piechart-subtitle',
+				'name' => 'description_typography',
+				'selector' => '{{WRAPPER}} .qazana-piechart-content .qazana-piechart-description',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
 
-		$this->add_control(
-			'subtitle_spacing',
-			[
-				'label' => __( 'Sub Title Spacing', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-piechart-subtitle' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->end_controls_section();
+        $this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_prefix_style',
+			'section_style_prefix',
 			[
 				'label' => __( 'Prefix Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+                'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+					'prefix!' => '',
+				],
 			]
 		);
+
+        $this->add_control(
+			'prefix_vertical_alignment',
+			[
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+                'default' => 'middle',
+                'selectors' => [
+					'{{WRAPPER}} .qazana-piechart-number-prefix' => 'align-self: {{VALUE}}',
+                ],
+                'selectors_dictionary' => [
+					'top'    => 'flex-start',
+					'middle' => 'center',
+					'bottom' => 'flex-end',
+				],
+			]
+        );
 
 		$this->add_control(
 			'prefix_color',
@@ -421,12 +603,46 @@ class Piechart extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_suffix_style',
+			'section_style_suffix',
 			[
 				'label' => __( 'Suffix Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+                'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+					'suffix!' => '',
+				],
 			]
-		);
+        );
+
+        $this->add_control(
+			'suffix_vertical_alignment',
+			[
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+                'default' => 'middle',
+                'selectors' => [
+					'{{WRAPPER}} .qazana-piechart-number-suffix' => 'align-self: {{VALUE}}',
+                ],
+                'selectors_dictionary' => [
+					'top'    => 'flex-start',
+					'middle' => 'center',
+					'bottom' => 'flex-end',
+				],
+			]
+        );
 
 		$this->add_control(
 			'suffix_color',
@@ -456,79 +672,153 @@ class Piechart extends Widget_Base {
 
 	}
 
-	public function style_1() {
-
-		$settings = $this->get_settings();
-
-		?><div <?php $this->render_attribute_string( 'piechart' ); ?>>
-			<div class="piechart-number">
-				<span class="qazana-piechart-number-progress">
-					<span class="qazana-piechart-number-prefix"><?php echo $settings['prefix']; ?></span>
-					<span class="qazana-piechart-number-count" data-value="<?php echo $settings['ending_number']['size']; ?>">0</span>
-					<span class="qazana-piechart-number-suffix"><?php echo $settings['suffix']; ?></span>
-				</span>
-			</div>
-			<?php if ( $settings['title'] ) : ?>
-				<div class="qazana-piechart-title"><?php echo $settings['title']; ?></div>
-			<?php endif; ?>
-
-			<?php if ( $settings['subtitle'] ) : ?>
-				<div class="qazana-piechart-subtitle"><?php echo $settings['subtitle']; ?></div>
-			<?php endif; ?>
-  		</div><?php
-
-	}
-
 	public function render() {
-		$settings = $this->get_settings();
+        $settings = $this->get_settings();
 
-		$this->add_render_attribute( 'piechart', [
-			'class' => 'qazana-piechart',
-			'data-duration' => $settings['duration'],
-			'data-emptyfill' => "transparent",
-			'data-animation-start-value' => $settings['starting_number']['size'],
-			'data-value' => ( $settings['ending_number']['size'] / 100 ),
-			'data-size' => $settings['circle_size']['size'],
-			'data-thickness' => $settings['circle_width']['size'],
-			'data-fill' => "{&quot;gradient&quot;: [&quot;". $settings['circle_start_color'] ."&quot;,&quot;". $settings['circle_end_color'] ."&quot;]}",
-			'data-reverse' => "true",
+        $this->add_render_attribute( 'piechart', [
+            'class' => 'qazana-piechart',
+        ] );
+
+        $this->add_render_attribute( 'piechart-number', [
+			'class' => 'qazana-piechart-number',
 		] );
 
-		$this->style_1();
+		$this->add_render_attribute( 'piechart-value', [
+            'class' => 'qazana-piechart-number-value',
+			'data-value' => ( $settings['ending_number']['size'] / 100 ),
+		] );
+
+		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );
+
+        if ( ! empty( $settings['link']['url'] ) ) {
+			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
+
+			if ( $settings['link']['is_external'] ) {
+				$this->add_render_attribute( 'link', 'target', '_blank' );
+			}
+
+			if ( ! empty( $settings['link']['nofollow'] ) ) {
+				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			}
+        }
+
+		$html = '<div ' . $this->get_render_attribute_string( 'piechart' ) . '>';
+
+            $this->add_render_attribute( 'piechart-progress', 'class', 'qazana-piechart-number-progress' );
+
+            $counter_html = '<div ' . $this->get_render_attribute_string( 'piechart-progress' ) . '>';
+
+            if ( $this->get_settings_for_display('hover_animation') ) {
+                $this->add_render_attribute( 'piechart-progress', 'class', 'qazana-animation-' . $this->get_settings_for_display('hover_animation') );
+            }
+
+            $counter_html .= '<span class="qazana-piechart-number-prefix">'. $settings['prefix'] . '</span>';
+            $counter_html .= '<span ' . $this->get_render_attribute_string( 'piechart-value' ) . '>' . $settings['starting_number']['size'] . '</span>';
+            $counter_html .= '<span class="qazana-piechart-number-suffix">'. $settings['suffix'] .'</span>';
+
+            $counter_html .= '</div>';
+
+            if ( ! empty( $settings['link']['url'] ) ) {
+                $counter_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $counter_html . '</a>';
+            }
+
+            $html .= '<div ' . $this->get_render_attribute_string( 'piechart-number' ) . '>' . $counter_html . '</div>';
+
+            if ( $has_content ) {
+			    $html .= '<div class="qazana-piechart-content">';
+
+                if ( ! empty( $settings['title_text'] ) ) {
+                    $this->add_render_attribute( 'title_text', 'class', 'qazana-piechart-title' );
+
+                    $this->add_inline_editing_attributes( 'title_text', 'none' );
+
+                    $title_html = $settings['title_text'];
+
+                    if ( ! empty( $settings['link']['url'] ) ) {
+                        $title_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $title_html . '</a>';
+                    }
+
+                    $html .= sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['title_size'], $this->get_render_attribute_string( 'title_text' ), $title_html );
+                }
+
+                if ( ! empty( $settings['description_text'] ) ) {
+                    $this->add_render_attribute( 'description_text', 'class', 'qazana-piechart-description' );
+
+                    $this->add_inline_editing_attributes( 'description_text' );
+
+                    $html .= sprintf( '<p %1$s>%2$s</p>', $this->get_render_attribute_string( 'description_text' ), $settings['description_text'] );
+                }
+                $html .= '</div>';
+
+            }
+
+            $html .= '</div>';
+
+        echo $html;
 
 	}
 
 	protected function _content_template() {
 		?>
+        <#
 
-		<div class="qazana-piechart"
-			data-duration="{{{ settings.duration }}}"
-			data-emptyfill="transparent"
-			data-animation-start-value="{{{ settings.starting_number.size }}}"
-			data-value="{{ ( settings.ending_number.size / 100 ) }}"
-			data-size="{{{ settings.circle_size.size }}}"
-			data-thickness="{{{ settings.circle_width.size }}}"
-			data-reverse="true"
-			data-fill = "{&quot;gradient&quot;: [&quot;{{{ settings.circle_start_color }}}&quot;,&quot;{{{ settings.circle_end_color }}}&quot;]}"
-		>
-			<div class="piechart-number">
-				<div class="qazana-piechart-number-progress">
-					<span class="qazana-piechart-number-prefix">{{{ settings.prefix }}}</span>
-					<span class="qazana-piechart-number-count" data-value="{{ settings.ending_number.size }}">0</span>
-					<span class="qazana-piechart-number-suffix">{{{ settings.suffix }}}</span>
-				</div>
-			</div>
+        view.addRenderAttribute( 'piechart', {
+            'class': [ 'qazana-piechart' ],
+        } );
 
-			<# if ( settings.title ) {
-				#><div class="qazana-piechart-title">{{{ settings.title }}}</div><#
-			} #>
-			<# if ( settings.subtitle ) {
-				#><div class="qazana-piechart-subtitle">{{{ settings.subtitle }}}</div><#
-			} #>
+        view.addRenderAttribute( 'piechart-number', {
+            'class': [ 'qazana-piechart-number' ]
+        } );
 
-  		</div>
+        view.addRenderAttribute( 'piechart-value', {
+            'class': ['qazana-piechart-number-value'],
+			'data-value': ( settings.ending_number.size / 100 )
+         } );
+
+		var html = '<div ' + view.getRenderAttributeString( 'piechart' ) + '>';
+
+        html += '<div ' + view.getRenderAttributeString( 'piechart-number' ) + '>';
+            html += '<div class="qazana-piechart-progress qazana-animation-'+ settings.hover_animation + '">';
+                html += '<span class="qazana-piechart-number-prefix">' + settings.prefix  + '</span>';
+                html += '<span ' + view.getRenderAttributeString( 'piechart-value' ) + '>' + settings.starting_number.size + '</span>';
+                html += '<span class="qazana-piechart-number-suffix">' + settings.suffix  + '</span>';
+            html += '</div>';
+        html += '</div>';
+
+        var hasContent = !! ( settings.title_text || settings.description_text );
+
+        if ( hasContent ) {
+            html += '<div class="qazana-piechart-content">';
+
+            if ( settings.title_text ) {
+                var title_html = settings.title_text;
+
+                if ( settings.link.url ) {
+                    title_html = '<a href="' + settings.link.url + '">' + title_html + '</a>';
+                }
+
+                view.addRenderAttribute( 'title_text', 'class', 'qazana-piechart-title' );
+
+                view.addInlineEditingAttributes( 'title_text' );
+
+                html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
+            }
+
+            if ( settings.description_text ) {
+                view.addRenderAttribute( 'description_text', 'class', 'qazana-piechart-description' );
+
+                view.addInlineEditingAttributes( 'description_text' );
+
+                html += '<p ' + view.getRenderAttributeString( 'description_text' ) + '>' + settings.description_text + '</p>';
+            }
+
+            html += '</div>';
+        }
+
+		html += '</div>';
+
+		print( html );
+		#>
 		<?php
 	}
-
-
 }

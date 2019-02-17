@@ -64,7 +64,7 @@ class Counter extends Widget_Base {
 				'default' => 'odometer',
 			]
         );
-        
+
         $this->add_control(
 			'position',
 			[
@@ -89,7 +89,7 @@ class Counter extends Widget_Base {
 				'toggle' => false,
 			]
         );
-        
+
 		$this->add_control(
 			'starting_number',
 			[
@@ -109,7 +109,7 @@ class Counter extends Widget_Base {
 				'default' => 100,
 			]
 		);
-        
+
         $this->add_control(
 			'duration',
 			[
@@ -121,7 +121,7 @@ class Counter extends Widget_Base {
 				'step' => 100,
 			]
         );
-        
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -130,7 +130,7 @@ class Counter extends Widget_Base {
 				'label' => __( 'Prefix & Suffix', 'qazana' ),
 			]
         );
-        
+
 		$this->add_control(
 			'prefix',
 			[
@@ -181,7 +181,7 @@ class Counter extends Widget_Base {
 				'default' => 'h3',
 			]
         );
-        
+
 		$this->add_control(
 			'title_text',
 			[
@@ -203,7 +203,7 @@ class Counter extends Widget_Base {
 				'placeholder' => __( 'Cool number description', 'qazana' ),
 			]
         );
-        
+
         $this->add_control(
 			'link',
 			[
@@ -226,7 +226,7 @@ class Counter extends Widget_Base {
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
         );
-        
+
         $this->add_responsive_control(
 			'counter_space',
 			[
@@ -482,7 +482,7 @@ class Counter extends Widget_Base {
 				],
 			]
         );
-        
+
 		$this->add_control(
 			'prefix_color',
 			[
@@ -519,7 +519,7 @@ class Counter extends Widget_Base {
 				],
 			]
         );
-        
+
         $this->add_control(
 			'suffix_vertical_alignment',
 			[
@@ -608,7 +608,7 @@ class Counter extends Widget_Base {
             if ( $this->get_settings_for_display('hover_animation') ) {
                 $this->add_render_attribute( 'counter', 'class', 'qazana-animation-' . $this->get_settings_for_display('hover_animation') );
             }
-                
+
             $counter_html = '<span class="qazana-counter-number-prefix">'. $settings['prefix'] . '</span>';
             $counter_html .= '<span ' . $this->get_render_attribute_string( 'counter' ) . '>' . $settings['starting_number'] . '</span>';
             $counter_html .= '<span class="qazana-counter-number-suffix">'. $settings['suffix'] .'</span>';
@@ -624,15 +624,15 @@ class Counter extends Widget_Base {
 
                 if ( ! empty( $settings['title_text'] ) ) {
                     $this->add_render_attribute( 'title_text', 'class', 'qazana-counter-title' );
-    
+
                     $this->add_inline_editing_attributes( 'title_text', 'none' );
-    
+
                     $title_html = $settings['title_text'];
-    
+
                     if ( ! empty( $settings['link']['url'] ) ) {
                         $title_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $title_html . '</a>';
                     }
-    
+
                     $html .= sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['title_size'], $this->get_render_attribute_string( 'title_text' ), $title_html );
                 }
 
@@ -647,9 +647,9 @@ class Counter extends Widget_Base {
 
             } ?>
         <?php
-        
+
         $html .= '</div>';
-        
+
         echo $html;
 	}
 
@@ -663,7 +663,7 @@ class Counter extends Widget_Base {
             html += '<span class="qazana-counter-number-value" data-animation-type="' + settings.animation_type  + '" data-duration="' + settings.duration  + '" data-to-value="' + settings.ending_number  + '">' + settings.starting_number  + '</span>';
             html += '<span class="qazana-counter-number-suffix">' + settings.suffix  + '</span>';
         html += '</div>';
-        
+
         var hasContent = !! ( settings.title_text || settings.description_text );
 
         if ( hasContent ) {
@@ -678,7 +678,7 @@ class Counter extends Widget_Base {
 
 				view.addRenderAttribute( 'title_text', 'class', 'qazana-counter-title' );
 
-				view.addInlineEditingAttributes( 'title_text', 'none' );
+				view.addInlineEditingAttributes( 'title_text' );
 
 				html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
 			}

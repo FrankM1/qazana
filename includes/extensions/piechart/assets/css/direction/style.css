@@ -1,51 +1,27 @@
-.qazana-piechart {
+.qazana-widget-piechart canvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  max-width: 100%;
+  transform: rotateY(180deg) translateX(50%); }
+
+.qazana-widget-piechart .qazana-piechart {
+  width: 100%;
   position: relative;
   text-align: center; }
-  .qazana-piechart canvas {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    z-index: 1;
-    margin-bottom: 13px;
-    max-width: 100%;
-    transform: rotateY(180deg) translateX(50%); }
-  .qazana-piechart-counterclockwise-yes canvas {
+  .qazana-widget-piechart .qazana-piechart-clockwise-yes canvas {
     transform: rotateY(0) translateX(-50%); }
-  .qazana-piechart-title {
-    color: #666666;
-    text-align: center;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 2.5; }
-  .qazana-piechart-subtitle {
-    color: #666666;
-    text-align: center;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.5; }
-  .qazana-piechart-number-progress {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: -2px;
-    font-size: 35px; }
-    .qazana-piechart-number-progress-prefix {
-      flex-grow: 1;
-      text-align: right; }
-    .qazana-piechart-number-progress-suffix {
-      flex-grow: 1;
-      text-align: left;
-      font-size: 70%; }
-  .qazana-piechart .piechart-number {
+  .qazana-widget-piechart .qazana-piechart-number {
     position: relative;
-    overflow: hidden;
     margin: 0 auto;
-    margin-bottom: 22px;
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    line-height: 160px; }
-    .qazana-piechart .piechart-number:before {
+    line-height: 160px;
+    display: flex;
+    justify-content: center; }
+    .qazana-widget-piechart .qazana-piechart-number:before {
       position: absolute;
       top: 0;
       right: 0;
@@ -54,7 +30,42 @@
       border: 1px solid grey;
       border-radius: inherit;
       content: ''; }
-    .qazana-piechart .piechart-number > * {
-      line-height: inherit; }
+    .qazana-widget-piechart .qazana-piechart-number-prefix {
+      flex-grow: 1;
+      text-align: right; }
+    .qazana-widget-piechart .qazana-piechart-number-suffix {
+      flex-grow: 1;
+      text-align: left;
+      font-size: 70%; }
+    .qazana-widget-piechart .qazana-piechart-number-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -2px;
+      font-size: 35px; }
+  .qazana-widget-piechart .qazana-piechart-title a {
+    color: inherit; }
+  .qazana-widget-piechart .qazana-piechart-description {
+    margin: 0; }
+
+@media (min-width: 768px) {
+  .qazana-widget-piechart.qazana-position-left .qazana-piechart, .qazana-widget-piechart.qazana-position-right .qazana-piechart {
+    display: flex;
+    align-items: center; }
+  .qazana-widget-piechart.qazana-position-right .qazana-piechart {
+    text-align: right;
+    flex-direction: row-reverse; }
+  .qazana-widget-piechart.qazana-position-left .qazana-piechart {
+    text-align: left;
+    flex-direction: row; }
+  .qazana-widget-piechart.qazana-position-top .qazana-piechart-number {
+    margin: auto;
+    text-align: center; }
+  .qazana-widget-piechart.qazana-vertical-align-top .qazana-piechart {
+    align-items: flex-start; }
+  .qazana-widget-piechart.qazana-vertical-align-middle .qazana-piechart {
+    align-items: center; }
+  .qazana-widget-piechart.qazana-vertical-align-bottom .qazana-piechart {
+    align-items: flex-end; } }
 
 /*# sourceMappingURL=style.css.map */
