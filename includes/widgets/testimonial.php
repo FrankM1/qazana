@@ -70,11 +70,30 @@ class Widget_Testimonial extends Widget_Base {
 	 */
 	public function get_keywords() {
 		return [ 'testimonial', 'blockquote' ];
-	}
+    }
+
+    /**
+	 * Retrieve the list of categories the alert widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general' ];
 	}
 
+    /**
+	 * Add element dependencies
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param return $id  array of script tags.
+	 */
 	public function add_element_dependencies() {
 		$this->add_frontend_stylesheet( 'qazana-slick' );
 		$this->add_frontend_script( 'jquery-slick' );

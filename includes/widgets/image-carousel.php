@@ -152,7 +152,10 @@ class Widget_Image_Carousel extends Widget_Base {
 			'link',
 			[
 				'label' => 'Link to',
-				'type' => Controls_Manager::URL,
+                'type' => Controls_Manager::URL,
+                'dynamic' => [
+					'active' => true,
+				],
 				'placeholder' => __( 'http://your-link.com', 'qazana' ),
 				'condition' => [
 					'link_to' => 'custom',
@@ -327,10 +330,10 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_render_attribute( 'slides', [
 			'class' => $carousel_classes
 		] );
-		
+
 		?><div class="qazana-slides-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
 			<div <?php $this->render_attribute_string( 'slides' ); ?>>
-				
+
 				<div class="slick-slideshow-large-container-biggie">
 					<div class="slick-slides slick-slides-biggie">
 						<?php echo implode( '', $slides ); ?>

@@ -149,6 +149,13 @@ abstract class Element_Base extends Controls_Stack {
 		}
 	}
 
+    /**
+	 * Check whether edit buttons are enabled in Qazana settings.
+     *
+	 * @since 2.2.0
+	 * @access public
+	 * @static
+	 */
 	final public static function is_edit_buttons_enabled() {
 		return get_option( 'qazana_edit_buttons' );
 	}
@@ -457,6 +464,21 @@ abstract class Element_Base extends Controls_Stack {
 		return $this->add_render_attribute( $element, $key, $value, true );
 	}
 
+    /**
+	 * Unset render attribute.
+	 *
+	 * Used to remove the value of the HTML element render attribute of
+	 * an existing render attribute.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array|string $element The HTML element.
+	 * @param array|string $key     Optional. Attribute key. Default is null.
+	 * @param array|string $value   Optional. Attribute value. Default is null.
+	 *
+	 * @return Element_Base Current instance of the element.
+	 */
 	public function unset_render_attribute( $element, $key = null, $value = null ) {
 		unset( $this->_render_attributes[ $element ][ $key ] );
 	}
@@ -866,16 +888,31 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	/**
-	 * Add elements scripts
+	 * Add element dependencies
 	 *
 	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param return $id  array of script tags.
 	 */
 	public function add_element_dependencies() {}
 
+    /**
+	 * Add frontend stylesheets
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_stylesheet( $args ) {
 		$this->_element_stylesheets[] = $args;
 	}
 
+    /**
+	 * Add frontend scripts
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_script( $args ) {
 		$this->_element_scripts[] = $args;
 	}

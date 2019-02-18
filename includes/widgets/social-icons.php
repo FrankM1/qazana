@@ -380,7 +380,7 @@ class Widget_Social_Icons extends Widget_Base {
 		);
 
 		$this->end_controls_tab();
-	
+
 		$this->start_controls_tab(
 			"tab_hover_style",
 			[
@@ -466,7 +466,7 @@ class Widget_Social_Icons extends Widget_Base {
 				$social = str_replace( ' ', '-', $social );
 
                 $link_key = 'link_' . $index;
-                
+
                 if ( ! empty( $item['link']['url'] ) ) {
                     $this->add_render_attribute( $link_key, 'href', $item['link']['url'] );
 

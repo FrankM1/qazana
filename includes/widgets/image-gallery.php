@@ -56,7 +56,7 @@ class Widget_Image_Gallery extends Widget_Base {
 		return 'eicon-gallery-grid';
 	}
 
-    	/**
+    /**
 	 * Retrieve widget categories.
 	 *
 	 * @since 1.0.0
@@ -66,9 +66,9 @@ class Widget_Image_Gallery extends Widget_Base {
 	 */
 	public function get_categories() {
 		return [ 'general' ];
-    	}
+    }
 
-    	/**
+    /**
 	 * Get widget keywords.
 	 *
 	 * Retrieve the list of keywords the widget belongs to.
@@ -81,7 +81,8 @@ class Widget_Image_Gallery extends Widget_Base {
 	public function get_keywords() {
 		return [ 'image', 'photo', 'gallery', 'visual', 'media' ];
     }
-	/**
+
+    /**
 	 * Add lightbox data to image link.
 	 *
 	 * Used to add lightbox data attributes to image link HTML.
