@@ -75,15 +75,15 @@ class Piechart extends Widget_Base {
 				'default' => 'top',
 				'options' => [
 					'left' => [
-						'title_text' => __( 'Left', 'qazana' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'top' => [
-						'title_text' => __( 'Top', 'qazana' ),
+						'title' => __( 'Top', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title_text' => __( 'Right', 'qazana' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],
@@ -365,7 +365,25 @@ class Piechart extends Widget_Base {
 					'{{WRAPPER}} .qazana-piechart-number:before' => 'border-color: {{VALUE}};',
 				],
 			]
-		);
+        );
+
+        $this->add_control(
+			'line_cap',
+			[
+				'label' => __( 'Curve Ending Shape', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => 'round',
+				'options' => [
+					'round' => [
+						'title' => __( 'Round', 'qazana' ),
+					],
+					'square' => [
+						'title' => __( 'Square', 'qazana' ),
+					],
+				],
+                'frontend_available' => true,
+			]
+        );
 
 		$this->add_control(
 			'number_spacing',

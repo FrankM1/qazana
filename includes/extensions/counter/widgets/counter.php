@@ -49,15 +49,15 @@ class Counter extends Widget_Base {
 				'options' => [
 					'count' => [
                         'icon' => false,
-                        'title_text' => __( 'Count', 'qazana' ),
+                        'title' => __( 'Count', 'qazana' ),
 					],
 					'odometer' => [
                         'icon' => false,
-                        'title_text' => __( 'Odometer', 'qazana' ),
+                        'title' => __( 'Odometer', 'qazana' ),
 					],
 					'none' => [
                         'icon' => false,
-                        'title_text' => __( 'No Animation', 'qazana' ),
+                        'title' => __( 'No Animation', 'qazana' ),
 					],
 				],
 				'prefix_class' => 'qazana-counter-animation-type-',
@@ -73,15 +73,15 @@ class Counter extends Widget_Base {
 				'default' => 'top',
 				'options' => [
 					'left' => [
-						'title_text' => __( 'Left', 'qazana' ),
+						'title' => __( 'Left', 'qazana' ),
 						'icon' => 'fa fa-align-left',
 					],
 					'top' => [
-						'title_text' => __( 'Top', 'qazana' ),
+						'title' => __( 'Top', 'qazana' ),
 						'icon' => 'fa fa-align-center',
 					],
 					'right' => [
-						'title_text' => __( 'Right', 'qazana' ),
+						'title' => __( 'Right', 'qazana' ),
 						'icon' => 'fa fa-align-right',
 					],
 				],

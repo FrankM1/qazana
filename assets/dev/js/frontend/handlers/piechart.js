@@ -44,6 +44,7 @@ var PieChart = HandlerModule.extend( {
             startAngle: -Math.PI / 4 * 2,
             fill: fill,
             emptyFill: 'transparent',
+            lineCap: this.getElementSettings( 'line_cap' ),
             animation: {
                 duration: this.getElementSettings( 'duration' ),
             },
