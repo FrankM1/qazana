@@ -679,7 +679,11 @@ class Widget_Icon_Box extends Widget_Base {
 	public function render() {
 		$settings = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon', 'qazana-animation-' . $settings['hover_animation'] ] );
+		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
+
+        if ( ! empty( $settings['hover_animation_type'] ) ) {
+            $this->add_render_attribute( 'icon', 'class', [ 'qazana-animation-' . $this->get_settings_for_display('hover_animation_type') ] );
+        }
 
 		$icon_tag = 'span';
 		$has_icon = ! empty( $settings['icon'] ) || ! empty( $settings['image'] );
@@ -791,7 +795,7 @@ class Widget_Icon_Box extends Widget_Base {
 		<div class="qazana-icon-box-wrapper">
 			<# if ( settings.icon || settings.image ) { #>
 			<div class="qazana-icon-box-icon">
-                <{{{ iconTag + ' ' + link }}} class="qazana-icon qazana-animation-{{ settings.hover_animation }}">
+                <{{{ iconTag + ' ' + link }}} class="qazana-icon qazana-animation-{{ settings.hover_animation_type }}">
                     <# if ( image_url && 'image' === settings.icon_type ) { #>
                     <span {{{ view.getRenderAttributeString( 'image' ) }}}>
                         <img src="{{ image_url }}" alt="icon" />
