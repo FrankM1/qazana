@@ -61,7 +61,7 @@ var PieChart = HandlerModule.extend( {
 
         this.elements.$number.circleProgress( args )
             .on( 'circle-animation-progress', function( event, progress ) {
-                self.elements.$numberValue.html( parseInt( ( self.elements.$numberValue.data( 'value' ) ) * progress ) );
+                self.elements.$numberValue.html( parseInt( self.elements.$numberValue.data( 'value' ) * progress ) );
             } ).on( 'circle-animation-end', function() {
                 self.elements.$chart.addClass( 'animated' );
             } );
@@ -72,8 +72,8 @@ var PieChart = HandlerModule.extend( {
 
         var self = this;
         var animation = {
-                duration: this.getElementSettings( 'duration' ),
-            };
+            duration: this.getElementSettings( 'duration' ),
+        };
 
         if ( ! animation ) {
             this.elements.$number.html( this.elements.$number.data( 'value' ) );

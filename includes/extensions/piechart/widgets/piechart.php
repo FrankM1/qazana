@@ -685,7 +685,7 @@ class Piechart extends Widget_Base {
 
 		$this->add_render_attribute( 'piechart-value', [
             'class' => 'qazana-piechart-number-value',
-			'data-value' => ( $settings['ending_number']['size'] / 100 ),
+			'data-value' => $settings['ending_number']['size']
 		] );
 
 		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );
@@ -772,7 +772,7 @@ class Piechart extends Widget_Base {
 
         view.addRenderAttribute( 'piechart-value', {
             'class': ['qazana-piechart-number-value'],
-			'data-value': ( settings.ending_number.size / 100 )
+			'data-value': settings.ending_number.size
          } );
 
 		var html = '<div ' + view.getRenderAttributeString( 'piechart' ) + '>';
