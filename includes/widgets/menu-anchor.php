@@ -87,14 +87,6 @@ class Widget_Menu_Anchor extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'anchor_description',
-			[
-				'raw' => __( 'This ID will be the CSS ID you will have to use in your own page, Without #.', 'qazana' ),
-				'type' => Controls_Manager::RAW_HTML,
-				'content_classes' => 'qazana-descriptor',
-			]
-		);
 
 		$this->add_control(
 			'anchor',
@@ -102,7 +94,17 @@ class Widget_Menu_Anchor extends Widget_Base {
 				'label' => __( 'The ID of Menu Anchor.', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'placeholder' => __( 'For Example: About', 'qazana' ),
+				'description' => __( 'This ID will be the CSS ID you will have to use in your own page, Without #.', 'qazana' ),
 				'label_block' => true,
+			]
+		);
+
+		$this->add_control(
+			'anchor_description',
+			[
+				'type' => Controls_Manager::RAW_HTML,
+				'raw' => sprintf( __( 'Note: The ID link ONLY accepts these chars: %s', 'qazana' ), '`A-Z, a-z, 0-9, _ , -`' ),
+				'content_classes' => 'qazana-panel-alert qazana-panel-alert-warning',
 			]
 		);
 
@@ -121,7 +123,7 @@ class Widget_Menu_Anchor extends Widget_Base {
 		$anchor = $this->get_settings_for_display( 'anchor' );
 
 		if ( ! empty( $anchor ) ) {
-			$this->add_render_attribute( 'inner', 'id', $anchor );
+			$this->add_render_attribute( 'inner', 'id', sanitize_html_class( $anchor ) );
 		}
 
 		$this->add_render_attribute( 'inner', 'class', 'qazana-menu-anchor' );

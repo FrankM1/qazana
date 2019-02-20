@@ -17280,8 +17280,9 @@ var AddSectionBase = function (_Marionette$ItemView) {
 
 			var selectedStructure = event.currentTarget.dataset.structure,
 			    parsedStructure = qazana.presetsFactory.getParsedStructure(selectedStructure),
-			    elements = [],
-			    loopIndex;
+			    elements = [];
+
+			var loopIndex = void 0;
 
 			for (loopIndex = 0; loopIndex < parsedStructure.columnsCount; loopIndex++) {
 				elements.push({
@@ -17299,6 +17300,8 @@ var AddSectionBase = function (_Marionette$ItemView) {
 			var newSection = this.addSection({ elements: elements });
 
 			newSection.setStructure(selectedStructure);
+
+			newSection.getEditModel().trigger('request:edit');
 
 			qazana.channels.data.trigger('element:after:add');
 		}

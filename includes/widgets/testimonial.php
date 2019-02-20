@@ -14,6 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Widget_Testimonial extends Widget_Base {
 
+    /**
+	 * Add carousel support.
+	 *
+	 * Register carousel support in the widget, enables extra controls.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param bool Carousel Support.
+	 */
 	public $carousel = true;
 
 	/**
@@ -659,7 +669,8 @@ class Widget_Testimonial extends Widget_Base {
 
 		$this->end_controls_section();
 	}
-	/**
+
+    /**
 	 * Render testimonial widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.

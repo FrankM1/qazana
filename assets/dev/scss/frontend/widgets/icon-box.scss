@@ -4,61 +4,50 @@
 .qazana-widget-icon-box {
     @media (min-width: $screen-md-min) {
         &.qazana-position- {
-
-            &left,
-            &right {
+            &left, &right {
                 .qazana-icon-box-wrapper {
                     display: flex;
                 }
-
                 .qazana-icon-box-icon {
                     flex: 0 0 auto; // Hack for Safari
                 }
             }
-
             &right {
                 .qazana-icon-box-wrapper {
                     text-align: $end;
                     flex-direction: getValueByDirection(row-reverse, row);
                 }
             }
-
             &left {
                 .qazana-icon-box-wrapper {
                     text-align: $start;
                     flex-direction: getValueByDirection(row, row-reverse);
                 }
             }
-
             &top {
                 .qazana-icon-box-img {
                     margin: auto;
                 }
             }
         }
-
         &.qazana-vertical-align- {
             &top {
                 .qazana-icon-box-wrapper {
                     align-items: flex-start;
                 }
             }
-
             &middle {
                 .qazana-icon-box-wrapper {
                     align-items: center;
                 }
             }
-
             &bottom {
                 .qazana-icon-box-wrapper {
                     align-items: flex-end;
                 }
             }
         }
-
         @media (max-width: $screen-sm-max) {
-
             // TEMP code to override the icon spacing
             .qazana-icon-box-icon {
                 margin-left: auto !important;
@@ -66,17 +55,12 @@
                 margin-bottom: 15px;
             }
         }
-
         .qazana-icon-box-wrapper {
             text-align: center;
         }
-
-        .qazana-icon-box-title {
-            a {
-                color: inherit;
-            }
+        .qazana-icon-box-title a {
+            color: inherit;
         }
-
         .qazana-icon-box-description {
             margin: 0;
         }

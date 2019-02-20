@@ -586,7 +586,7 @@ class Utils {
 	public static function get_site_domain() {
 		return str_ireplace( 'www.', '', parse_url( home_url(), PHP_URL_HOST ) );
     }
-    
+
     /**
 	 * Used to overcome core bug when taxonomy is in more then one post type
 	 *
@@ -836,5 +836,28 @@ class Utils {
 		}
 
 		return $post_types;
+    }
+
+	/**
+	 * Render html attributes
+	 *
+	 * @access public
+	 * @static
+	 * @param array $attributes
+	 *
+	 * @return string
+	 */
+	public static function render_html_attributes( array $attributes ) {
+		$rendered_attributes = [];
+
+		foreach ( $attributes as $attribute_key => $attribute_values ) {
+			if ( is_array( $attribute_values ) ) {
+				$attribute_values = implode( ' ', $attribute_values );
+			}
+
+			$rendered_attributes[] = sprintf( '%1$s="%2$s"', $attribute_key, esc_attr( $attribute_values ) );
+		}
+
+		return implode( ' ', $rendered_attributes );
 	}
 }
