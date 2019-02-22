@@ -1,10 +1,8 @@
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
-  -webkit-border-radius: 3px;
-          border-radius: 3px;
-  -webkit-box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
-          box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
   overflow: hidden; }
 
 .dialog-message {
@@ -19,10 +17,7 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 100010;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
+  user-select: none; }
   .dialog-type-lightbox .dialog-widget-content {
     margin: auto;
     width: 375px; }
@@ -136,15 +131,11 @@
     width: 100%; }
 
 .qazana {
-  -webkit-hyphens: manual;
-      -ms-hyphens: manual;
-          hyphens: manual; }
+  hyphens: manual; }
   .qazana *, .qazana *:before, .qazana *:after {
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box; }
+    box-sizing: border-box; }
   .qazana a {
-    -webkit-box-shadow: none;
-            box-shadow: none;
+    box-shadow: none;
     text-decoration: none; }
   .qazana hr {
     margin: 0;
@@ -153,10 +144,8 @@
     height: auto;
     max-width: 100%;
     border: none;
-    -webkit-border-radius: 0;
-            border-radius: 0;
-    -webkit-box-shadow: none;
-            box-shadow: none; }
+    border-radius: 0;
+    box-shadow: none; }
   .qazana .qazana-widget:not(.qazana-widget-text-editor) figure {
     margin: 0; }
   .qazana embed,
@@ -178,8 +167,6 @@
     position: absolute;
     overflow: hidden;
     z-index: 0;
-    -webkit-transition: opacity 1s;
-    -o-transition: opacity 1s;
     transition: opacity 1s; }
     .qazana .qazana-background-video-container.qazana-loading {
       opacity: 0; }
@@ -188,20 +175,15 @@
     position: absolute;
     top: 50%;
     left: 0;
-    -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-            transform: translateY(-50%); }
+    transform: translateY(-50%); }
   .qazana .qazana-background-video {
     position: absolute;
     max-width: none;
     top: 50%;
     left: 50%;
-    -webkit-transform: translateY(-50%) translateX(-50%);
-        -ms-transform: translateY(-50%) translateX(-50%);
-            transform: translateY(-50%) translateX(-50%); }
+    transform: translateY(-50%) translateX(-50%); }
   .qazana .qazana-html5-video {
-    -o-object-fit: cover;
-       object-fit: cover; }
+    object-fit: cover; }
   .qazana .qazana-background-overlay {
     height: 100%;
     width: 100%;
@@ -235,45 +217,32 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-      -ms-transform: translateX(-50%) translateY(-50%);
-          transform: translateX(-50%) translateY(-50%); }
+  transform: translateX(-50%) translateY(-50%); }
   .qazana-custom-embed-play i {
     font-size: 100px;
     color: #fff;
     opacity: 0.8;
     text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
-    -webkit-transition: all .5s;
-    -o-transition: all .5s;
     transition: all .5s; }
   .qazana-custom-embed-play.qazana-playing i {
     font-family: 'FontAwesome';
-    -webkit-animation: fa-spin 2s infinite linear;
-            animation: fa-spin 2s infinite linear; }
+    animation: fa-spin 2s infinite linear; }
     .qazana-custom-embed-play.qazana-playing i:before {
       content: "\f1ce"; }
 
 .qazana-swiper-button {
   position: absolute;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   z-index: 1;
   cursor: pointer;
   font-size: 25px;
   color: rgba(238, 238, 238, 0.9);
   top: 50%;
-  -webkit-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-          transform: translateY(-50%); }
+  transform: translateY(-50%); }
   .qazana-swiper-button.swiper-button-disabled {
     opacity: 0.3; }
 
 .qazana-tag {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex; }
 
 @media (max-width: 1024px) {
@@ -293,15 +262,9 @@
     text-align: left; } }
 
 .qazana-element-inline {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex; }
 
 .qazana-editor-active .qazana-element-inline {
-  display: -webkit-inline-box !important;
-  display: -webkit-inline-flex !important;
-  display: -ms-inline-flexbox !important;
   display: inline-flex !important; }
 
 .qazana-editor-active .qazana-widget-container {
@@ -312,8 +275,6 @@ a.qazana-edit-template {
 
 #wpadminbar #wp-admin-bar-qazana_edit_page {
   background-color: #360061;
-  -webkit-transition: background-color 0.3s;
-  -o-transition: background-color 0.3s;
   transition: background-color 0.3s; }
   #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item {
     text-transform: uppercase;
@@ -322,23 +283,14 @@ a.qazana-edit-template {
     color: #bbc5ff;
     letter-spacing: 2px;
     padding: 0 18px 0 22px !important;
-    -webkit-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
     transition: all 0.3s ease-in;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
     #wpadminbar #wp-admin-bar-qazana_edit_page > .ab-item::before {
       background-image: url(../images/logo-small-light.png) !important;
       background-repeat: no-repeat;
       content: " ";
-      -webkit-background-size: 9px 9px;
-              background-size: 9px;
+      background-size: 9px;
       background-position: 7px 9px;
       position: absolute;
       left: 0;
@@ -368,9 +320,6 @@ a.qazana-edit-template {
 .qazana-section {
   position: relative; }
   .qazana-section .qazana-container {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     margin-right: auto;
     margin-left: auto;
@@ -381,20 +330,11 @@ a.qazana-edit-template {
     position: relative;
     width: 100%; }
   .qazana-section.qazana-section-items-top > .qazana-container {
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start; }
+    align-items: flex-start; }
   .qazana-section.qazana-section-items-middle > .qazana-container {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
   .qazana-section.qazana-section-items-bottom > .qazana-container {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-        -ms-flex-align: end;
-            align-items: flex-end; }
+    align-items: flex-end; }
   @media (min-width: 768px) {
     .qazana-section.qazana-section-height-full {
       height: 100vh; }
@@ -402,51 +342,29 @@ a.qazana-edit-template {
         height: 100%; } }
 
 .qazana-section-content-top > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
-  -webkit-box-align: start;
-  -webkit-align-items: flex-start;
-      -ms-flex-align: start;
-          align-items: flex-start; }
+  align-items: flex-start; }
 
 .qazana-section-content-middle > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center; }
+  align-items: center; }
 
 .qazana-section-content-bottom > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
-  -webkit-box-align: end;
-  -webkit-align-items: flex-end;
-      -ms-flex-align: end;
-          align-items: flex-end; }
+  align-items: flex-end; }
 
 .qazana-section-content-fill > .qazana-container > .qazana-row > .qazana-column > .qazana-column-wrap {
-  -webkit-box-align: stretch;
-  -webkit-align-items: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch; }
+  align-items: stretch; }
 
 .qazana-row {
   width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex; }
   @media (max-width: 1024px) {
     .qazana-row {
-      -webkit-flex-wrap: wrap;
-          -ms-flex-wrap: wrap;
-              flex-wrap: wrap; } }
+      flex-wrap: wrap; } }
 
 @media (max-width: 1024px) {
   .qazana-row {
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; } }
+    flex-wrap: wrap; } }
 
 .qazana-column-wrap {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   width: 100%; }
 
@@ -457,9 +375,6 @@ a.qazana-edit-template {
 .qazana-column {
   position: relative;
   min-height: 1px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex; }
 
 .qazana-column-gap-narrow > .qazana-row > .qazana-column > .qazana-element-populated {
@@ -644,20 +559,11 @@ a.qazana-edit-template {
   .qazana-column {
     width: 100%; }
   .qazana-reverse-mobile > .qazana-container > .qazana-row {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: column-reverse;
-        -ms-flex-direction: column-reverse;
-            flex-direction: column-reverse; } }
+    flex-direction: column-reverse; } }
 
 ul.qazana-icon-list-items.qazana-inline-items {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
   ul.qazana-icon-list-items.qazana-inline-items .qazana-inline-item {
     word-break: break-word; }
 
@@ -666,168 +572,108 @@ ul.qazana-icon-list-items.qazana-inline-items {
   min-width: 0; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-1 {
   grid-template-columns: repeat(1, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-2 {
   grid-template-columns: repeat(2, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-3 {
   grid-template-columns: repeat(3, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-4 {
   grid-template-columns: repeat(4, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-5 {
   grid-template-columns: repeat(5, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-6 {
   grid-template-columns: repeat(6, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-7 {
   grid-template-columns: repeat(7, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-8 {
   grid-template-columns: repeat(8, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-9 {
   grid-template-columns: repeat(9, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-10 {
   grid-template-columns: repeat(10, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-11 {
   grid-template-columns: repeat(11, 1fr);
   display: grid; }
 
 .qazana-grid-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .qazana-grid-12 {
   grid-template-columns: repeat(12, 1fr);
@@ -835,292 +681,172 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 @media (max-width: 1024px) {
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-1 {
     grid-template-columns: repeat(1, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-2 {
     grid-template-columns: repeat(2, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-3 {
     grid-template-columns: repeat(3, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-4 {
     grid-template-columns: repeat(4, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-5 {
     grid-template-columns: repeat(5, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-6 {
     grid-template-columns: repeat(6, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-7 {
     grid-template-columns: repeat(7, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-8 {
     grid-template-columns: repeat(8, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-9 {
     grid-template-columns: repeat(9, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-10 {
     grid-template-columns: repeat(10, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-11 {
     grid-template-columns: repeat(11, 1fr);
     display: grid; }
   .qazana-grid-tablet-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-tablet-12 {
     grid-template-columns: repeat(12, 1fr);
     display: grid; } }
 
 @media (max-width: 767px) {
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-1 {
     grid-template-columns: repeat(1, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-2 {
     grid-template-columns: repeat(2, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-3 {
     grid-template-columns: repeat(3, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-4 {
     grid-template-columns: repeat(4, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-5 {
     grid-template-columns: repeat(5, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-6 {
     grid-template-columns: repeat(6, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-7 {
     grid-template-columns: repeat(7, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-8 {
     grid-template-columns: repeat(8, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-9 {
     grid-template-columns: repeat(9, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-10 {
     grid-template-columns: repeat(10, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-11 {
     grid-template-columns: repeat(11, 1fr);
     display: grid; }
   .qazana-grid-mobile-0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap; }
+    flex-wrap: wrap; }
   .qazana-grid-mobile-12 {
     grid-template-columns: repeat(12, 1fr);
     display: grid; } }
@@ -1157,43 +883,22 @@ ul.qazana-icon-list-items.qazana-inline-items {
   height: 0; }
 
 .qazana-form-fields-wrapper {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
   width: 100%; }
   .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > input, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > textarea, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > .qazana-select-wrapper, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group .qazana-field-subgroup {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%;
+    flex-basis: 100%;
     max-width: 100%; }
   .qazana-form-fields-wrapper.qazana-labels-inline > .qazana-field-group > input, .qazana-form-fields-wrapper.qazana-labels-inline > .qazana-field-group .qazana-select-wrapper {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    flex-grow: 1; }
 
 .qazana-field-group {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
   overflow: hidden; }
   .qazana-field-group.qazana-field-type-submit {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-        -ms-flex-align: end;
-            align-items: flex-end; }
+    align-items: flex-end; }
   .qazana-field-group .qazana-field-textual {
     width: 100%;
     max-width: 100%;
@@ -1201,13 +906,9 @@ ul.qazana-icon-list-items.qazana-inline-items {
     background-color: transparent;
     color: #373a3c;
     vertical-align: middle;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    flex-grow: 1; }
     .qazana-field-group .qazana-field-textual:focus {
-      -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
-              box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
       outline: 0; }
     .qazana-field-group .qazana-field-textual::-webkit-input-placeholder {
       color: inherit;
@@ -1217,7 +918,11 @@ ul.qazana-icon-list-items.qazana-inline-items {
       color: inherit;
       font-family: inherit;
       opacity: 0.6; }
-    .qazana-field-group .qazana-field-textual::-ms-input-placeholder {
+    .qazana-field-group .qazana-field-textual::-moz-placeholder {
+      color: inherit;
+      font-family: inherit;
+      opacity: 0.6; }
+    .qazana-field-group .qazana-field-textual:-moz-placeholder {
       color: inherit;
       font-family: inherit;
       opacity: 0.6; }
@@ -1226,9 +931,6 @@ ul.qazana-icon-list-items.qazana-inline-items {
       font-family: inherit;
       opacity: 0.6; }
   .qazana-field-group .qazana-select-wrapper {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     position: relative;
     width: 100%; }
@@ -1244,9 +946,7 @@ ul.qazana-icon-list-items.qazana-inline-items {
       text-transform: inherit;
       letter-spacing: inherit;
       line-height: inherit;
-      -webkit-flex-basis: 100%;
-          -ms-flex-preferred-size: 100%;
-              flex-basis: 100%;
+      flex-basis: 100%;
       padding-left: 20px; }
     .qazana-field-group .qazana-select-wrapper:before {
       content: '\f0d7';
@@ -1254,30 +954,21 @@ ul.qazana-icon-list-items.qazana-inline-items {
       font-size: 15px;
       position: absolute;
       top: 50%;
-      -webkit-transform: translateY(-50%);
-          -ms-transform: translateY(-50%);
-              transform: translateY(-50%);
+      transform: translateY(-50%);
       left: 10px;
       pointer-events: none; }
   .qazana-field-group.qazana-field-type-select-multiple .qazana-select-wrapper:before {
     content: ''; }
 
 .qazana-field-subgroup {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
   .qazana-field-subgroup .qazana-field-option label {
     display: inline-block; }
   .qazana-field-subgroup.qazana-subgroup-inline .qazana-field-option {
     padding-left: 10px; }
   .qazana-field-subgroup:not(.qazana-subgroup-inline) .qazana-field-option {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%; }
+    flex-basis: 100%; }
 
 .qazana-field-label {
   cursor: pointer; }
@@ -1292,97 +983,59 @@ ul.qazana-icon-list-items.qazana-inline-items {
     font-size: 13px;
     min-height: 33px;
     padding: 4px 12px;
-    -webkit-border-radius: 2px;
-            border-radius: 2px; }
+    border-radius: 2px; }
   .qazana-field-textual.qazana-size-sm {
     font-size: 15px;
     min-height: 40px;
     padding: 5px 14px;
-    -webkit-border-radius: 3px;
-            border-radius: 3px; }
+    border-radius: 3px; }
   .qazana-field-textual.qazana-size-md {
     font-size: 16px;
     min-height: 47px;
     padding: 6px 16px;
-    -webkit-border-radius: 4px;
-            border-radius: 4px; }
+    border-radius: 4px; }
   .qazana-field-textual.qazana-size-lg {
     font-size: 18px;
     min-height: 59px;
     padding: 7px 20px;
-    -webkit-border-radius: 5px;
-            border-radius: 5px; }
+    border-radius: 5px; }
   .qazana-field-textual.qazana-size-xl {
     font-size: 20px;
     min-height: 72px;
     padding: 8px 24px;
-    -webkit-border-radius: 6px;
-            border-radius: 6px; }
+    border-radius: 6px; }
 
 .qazana-button-align-center .qazana-field-type-submit {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
+  justify-content: center; }
 
 .qazana-button-align-stretch .qazana-field-type-submit button {
-  -webkit-flex-basis: 100%;
-      -ms-flex-preferred-size: 100%;
-          flex-basis: 100%; }
+  flex-basis: 100%; }
 
 .qazana-button-align-start .qazana-field-type-submit {
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
+  justify-content: flex-end; }
 
 .qazana-button-align-end .qazana-field-type-submit {
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-      -ms-flex-pack: start;
-          justify-content: flex-start; }
+  justify-content: flex-start; }
 
 @media screen and (max-width: 1024px) {
   .qazana-tablet-button-align-center .qazana-field-type-submit {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-tablet-button-align-stretch .qazana-field-type-submit button {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%; }
+    flex-basis: 100%; }
   .qazana-tablet-button-align-start .qazana-field-type-submit {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end; }
+    justify-content: flex-end; }
   .qazana-tablet-button-align-end .qazana-field-type-submit {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start; } }
+    justify-content: flex-start; } }
 
 @media screen and (max-width: 767px) {
   .qazana-mobile-button-align-center .qazana-field-type-submit {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-mobile-button-align-stretch .qazana-field-type-submit button {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%; }
+    flex-basis: 100%; }
   .qazana-mobile-button-align-start .qazana-field-type-submit {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end; }
+    justify-content: flex-end; }
   .qazana-mobile-button-align-end .qazana-field-type-submit {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start; } }
+    justify-content: flex-start; } }
 
 .qazana-error .qazana-field {
   border-color: #f7423d; }
@@ -1415,24 +1068,12 @@ ul.qazana-icon-list-items.qazana-inline-items {
   padding-bottom: 0;
   border: 0 none; }
   .qazana-form .qazana-button > span {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-form .qazana-button .qazana-align-icon-right {
-    -webkit-box-ordinal-group: 1;
-    -webkit-order: 0;
-        -ms-flex-order: 0;
-            order: 0; }
+    order: 0; }
   .qazana-form .qazana-button .qazana-align-icon-left {
-    -webkit-box-ordinal-group: 3;
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2; }
+    order: 2; }
   .qazana-form .qazana-button.qazana-size-xs {
     min-height: 32px; }
   .qazana-form .qazana-button.qazana-size-sm {
@@ -1532,12 +1173,7 @@ ul.qazana-icon-list-items.qazana-inline-items {
     color: #ffffff;
     text-align: center;
     line-height: 1;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
     transition: all 0.5s;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex; }
   .qazana-button.qazana-size-xs .qazana-button-content-wrapper {
     padding: 10px 20px;
@@ -1583,32 +1219,18 @@ ul.qazana-icon-list-items.qazana-inline-items {
   opacity: 1; }
 
 .qazana-align-icon-right .qazana-button-content-wrapper {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-  -webkit-flex-direction: row-reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse; }
+  flex-direction: row-reverse; }
 
 .qazana-button-content-wrapper {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center; }
+  align-items: center; }
 
 .qazana-icon-hover-reveal-yes .qazana-button {
-  -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
 
 .qazana-icon-hover-reveal-yes .qazana-button-icon {
   overflow: hidden;
   max-width: 0;
-  -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
   .qazana-icon-hover-reveal-yes .qazana-button-icon.qazana-align-icon-right {
     margin-left: 0; }
@@ -1689,46 +1311,23 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 @media (min-width: 768px) {
   .qazana-widget-icon-box.qazana-position-left .qazana-icon-box-wrapper, .qazana-widget-icon-box.qazana-position-right .qazana-icon-box-wrapper {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex; }
   .qazana-widget-icon-box.qazana-position-left .qazana-icon-box-icon, .qazana-widget-icon-box.qazana-position-right .qazana-icon-box-icon {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto; }
+    flex: 0 0 auto; }
   .qazana-widget-icon-box.qazana-position-right .qazana-icon-box-wrapper {
     text-align: left;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    flex-direction: row; }
   .qazana-widget-icon-box.qazana-position-left .qazana-icon-box-wrapper {
     text-align: right;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse; }
+    flex-direction: row-reverse; }
   .qazana-widget-icon-box.qazana-position-top .qazana-icon-box-img {
     margin: auto; }
   .qazana-widget-icon-box.qazana-vertical-align-top .qazana-icon-box-wrapper {
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start; }
+    align-items: flex-start; }
   .qazana-widget-icon-box.qazana-vertical-align-middle .qazana-icon-box-wrapper {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
   .qazana-widget-icon-box.qazana-vertical-align-bottom .qazana-icon-box-wrapper {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-        -ms-flex-align: end;
-            align-items: flex-end; } }
+    align-items: flex-end; } }
 
 @media (min-width: 768px) and (max-width: 767px) {
   .qazana-widget-icon-box .qazana-icon-box-icon {
@@ -1757,9 +1356,7 @@ ul.qazana-icon-list-items.qazana-inline-items {
       position: relative;
       height: 100%;
       top: 50%;
-      -webkit-transform: translateY(-50%);
-          -ms-transform: translateY(-50%);
-              transform: translateY(-50%);
+      transform: translateY(-50%);
       border-top: 0;
       border-bottom: 0;
       border-right: 0;
@@ -1781,68 +1378,40 @@ ul.qazana-icon-list-items.qazana-inline-items {
     bottom: 0;
     width: 100%; }
   .qazana-widget .qazana-icon-list-item, .qazana-widget .qazana-icon-list-item a {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start; }
+    align-items: flex-start; }
   .qazana-widget .qazana-icon-list-item a {
     width: 100%; }
 
 .qazana-widget .qazana-icon-list-icon + .qazana-icon-list-text {
-  -webkit-align-self: center;
-      -ms-flex-item-align: center;
-          align-self: center;
+  align-self: center;
   padding-right: 5px; }
 
 .qazana-widget .qazana-icon-list-icon {
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0; }
+  flex-shrink: 0; }
 
 .qazana-widget.qazana-align-center .qazana-icon-list-item, .qazana-widget.qazana-align-center .qazana-icon-list-item a {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
+  justify-content: center; }
 
 .qazana-widget.qazana-align-center .qazana-icon-list-item:after {
   margin: auto; }
 
 .qazana-widget.qazana-align-center .qazana-inline-items {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
+  justify-content: center; }
 
 .qazana-widget.qazana-align-left .qazana-icon-list-item, .qazana-widget.qazana-align-left .qazana-icon-list-item a {
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  justify-content: flex-end;
   text-align: left; }
 
 .qazana-widget.qazana-align-left .qazana-inline-items {
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
+  justify-content: flex-end; }
 
 .qazana-widget.qazana-align-right .qazana-icon-list-item, .qazana-widget.qazana-align-right .qazana-icon-list-item a {
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  justify-content: flex-start;
   text-align: right; }
 
 .qazana-widget.qazana-align-right .qazana-icon-list-items {
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-      -ms-flex-pack: start;
-          justify-content: flex-start; }
+  justify-content: flex-start; }
 
 .qazana-widget:not(.qazana-align-right) .qazana-icon-list-item:after {
   right: 0; }
@@ -1852,38 +1421,20 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 @media (max-width: 1024px) {
   .qazana-widget.qazana-tablet-align-center .qazana-icon-list-items {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-widget.qazana-tablet-align-center .qazana-icon-list-item, .qazana-widget.qazana-tablet-align-center .qazana-icon-list-item a {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-widget.qazana-tablet-align-center .qazana-icon-list-item:after {
     margin: auto; }
   .qazana-widget.qazana-tablet-align-left .qazana-icon-list-items {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end; }
+    justify-content: flex-end; }
   .qazana-widget.qazana-tablet-align-left .qazana-icon-list-item, .qazana-widget.qazana-tablet-align-left .qazana-icon-list-item a {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    justify-content: flex-end;
     text-align: left; }
   .qazana-widget.qazana-tablet-align-right .qazana-icon-list-items {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start; }
+    justify-content: flex-start; }
   .qazana-widget.qazana-tablet-align-right .qazana-icon-list-item, .qazana-widget.qazana-tablet-align-right .qazana-icon-list-item a {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
+    justify-content: flex-start;
     text-align: right; }
   .qazana-widget:not(.qazana-tablet-align-right) .qazana-icon-list-item:after {
     right: 0; }
@@ -1892,38 +1443,20 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 @media (max-width: 767px) {
   .qazana-widget.qazana-mobile-align-center .qazana-icon-list-items {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-widget.qazana-mobile-align-center .qazana-icon-list-item, .qazana-widget.qazana-mobile-align-center .qazana-icon-list-item a {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   .qazana-widget.qazana-mobile-align-center .qazana-icon-list-item:after {
     margin: auto; }
   .qazana-widget.qazana-mobile-align-left .qazana-icon-list-items {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end; }
+    justify-content: flex-end; }
   .qazana-widget.qazana-mobile-align-left .qazana-icon-list-item, .qazana-widget.qazana-mobile-align-left .qazana-icon-list-item a {
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    justify-content: flex-end;
     text-align: left; }
   .qazana-widget.qazana-mobile-align-right .qazana-icon-list-items {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start; }
+    justify-content: flex-start; }
   .qazana-widget.qazana-mobile-align-right .qazana-icon-list-item, .qazana-widget.qazana-mobile-align-right .qazana-icon-list-item a {
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
+    justify-content: flex-start;
     text-align: right; }
   .qazana-widget:not(.qazana-mobile-align-right) .qazana-icon-list-item:after {
     right: 0; }
@@ -1933,8 +1466,6 @@ ul.qazana-icon-list-items.qazana-inline-items {
 .qazana-icon {
   display: inline-block;
   line-height: 1;
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
   color: #818a91;
   font-size: 50px;
@@ -1962,49 +1493,28 @@ ul.qazana-icon-list-items.qazana-inline-items {
   background-color: transparent; }
 
 .qazana-shape-circle .qazana-icon {
-  -webkit-border-radius: 50%;
-          border-radius: 50%; }
+  border-radius: 50%; }
 
 .qazana-widget-image-box .qazana-image-box-content {
   width: 100%; }
 
 @media (min-width: 768px) {
   .qazana-widget-image-box.qazana-position-left .qazana-image-box-wrapper, .qazana-widget-image-box.qazana-position-right .qazana-image-box-wrapper {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex; }
   .qazana-widget-image-box.qazana-position-right .qazana-image-box-wrapper {
     text-align: left;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    flex-direction: row; }
   .qazana-widget-image-box.qazana-position-left .qazana-image-box-wrapper {
     text-align: right;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse; }
+    flex-direction: row-reverse; }
   .qazana-widget-image-box.qazana-position-top .qazana-image-box-img {
     margin: auto; }
   .qazana-widget-image-box.qazana-vertical-align-top .qazana-image-box-wrapper {
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start; }
+    align-items: flex-start; }
   .qazana-widget-image-box.qazana-vertical-align-middle .qazana-image-box-wrapper {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
   .qazana-widget-image-box.qazana-vertical-align-bottom .qazana-image-box-wrapper {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-        -ms-flex-align: end;
-            align-items: flex-end; } }
+    align-items: flex-end; } }
 
 @media (max-width: 767px) {
   .qazana-widget-image-box .qazana-image-box-img {
@@ -2050,68 +1560,38 @@ ul.qazana-icon-list-items.qazana-inline-items {
     vertical-align: middle;
     display: inline-block; }
   .qazana-widget-image .qazana-image.qazana-image-shape-circle {
-    -webkit-border-radius: 50%;
-            border-radius: 50%; }
+    border-radius: 50%; }
 
 .qazana-link {
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s; }
-  .qazana-link .qazana-link-wrapper {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    position: relative;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
-  .qazana-link.qazana-align-icon-right .qazana-link-wrapper {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse; }
+  transition: all 0.5s;
+  display: flex;
+  position: relative;
+  align-items: center; }
+  .qazana-align-icon-right .qazana-link {
+    flex-direction: row-reverse; }
   .qazana-link .qazana-align-icon-right {
     margin-left: 5px; }
   .qazana-link .qazana-align-icon-left {
     margin-right: 5px; }
 
-.qazana-align-right .qazana-link-wrapper {
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
+.qazana-align-right .qazana-link {
+  justify-content: flex-end; }
 
-.qazana-align-left .qazana-link-wrapper {
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-      -ms-flex-pack: start;
-          justify-content: flex-start; }
+.qazana-align-left .qazana-link {
+  justify-content: flex-start; }
 
-.qazana-align-center .qazana-link-wrapper {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
+.qazana-align-center .qazana-link {
+  justify-content: center; }
 
-.qazana-align-justify .qazana-link-wrapper {
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
+.qazana-align-justify .qazana-link {
+  justify-content: space-between; }
 
 .qazana-icon-hover-reveal-yes .qazana-link {
-  -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
 
 .qazana-icon-hover-reveal-yes .qazana-link-icon {
   overflow: hidden;
   max-width: 0;
-  -webkit-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
-  -o-transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
   transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95); }
   .qazana-icon-hover-reveal-yes .qazana-link-icon.qazana-align-icon-right {
     margin-left: 0; }
@@ -2140,8 +1620,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   color: #ffffff;
   height: 30px;
   line-height: 30px;
-  -webkit-border-radius: 2px;
-          border-radius: 2px; }
+  border-radius: 2px; }
 
 .qazana-progress-bar {
   position: absolute;
@@ -2149,10 +1628,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   background-color: #818a91;
   height: 100%;
   width: 0;
-  -webkit-border-radius: 2px;
-          border-radius: 2px;
-  -webkit-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
+  border-radius: 2px;
   transition: width 1s ease-in-out; }
 
 .qazana-progress-inner-text {
@@ -2162,8 +1638,6 @@ body.qazana-page .qazana-widget-menu-anchor {
   padding: 0 15px;
   font-size: 11px;
   width: 0;
-  -webkit-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
   transition: width 1s ease-in-out; }
   .qazana-progress-inner-text .qazana-progress-percentage {
     position: relative;
@@ -2235,8 +1709,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     height: 50px;
     z-index: 3;
     color: #fff;
-    -webkit-transition: background-color 0.3s;
-    -o-transition: background-color 0.3s;
     transition: background-color 0.3s;
     margin-top: -25px; }
     .slick-slideshow-large-container-smalls a.next i,
@@ -2315,32 +1787,18 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-social-icons-wrapper {
   font-size: 0; }
   .qazana-social-icons-wrapper.qazana-social-icons-align-justify {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row;
-    -webkit-box-align: stretch;
-    -webkit-align-items: stretch;
-        -ms-flex-align: stretch;
-            align-items: stretch; }
+    flex-direction: row;
+    align-items: stretch; }
     .qazana-social-icons-wrapper.qazana-social-icons-align-justify .qazana-social-icon {
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-          -ms-flex: 1;
-              flex: 1; }
+      flex: 1; }
   .qazana-social-icons-wrapper .qazana-social-icon {
     font-size: 16px;
     text-align: center;
     padding: 10px;
     margin-left: 4px;
     cursor: pointer;
-    -webkit-border-radius: 5px;
-            border-radius: 5px;
+    border-radius: 5px;
     border: 2px solid; }
     .qazana-social-icons-wrapper .qazana-social-icon:last-child {
       margin: 0; }
@@ -2724,16 +2182,13 @@ body.qazana-page .qazana-widget-menu-anchor {
     background-color: #f49727; }
 
 .qazana-shape-square .qazana-icon.qazana-social-icon {
-  -webkit-border-radius: 0;
-          border-radius: 0; }
+  border-radius: 0; }
 
 .qazana-shape-rounded .qazana-icon.qazana-social-icon {
-  -webkit-border-radius: 5px;
-          border-radius: 5px; }
+  border-radius: 5px; }
 
 .qazana-shape-circle .qazana-icon.qazana-social-icon {
-  -webkit-border-radius: 50%;
-          border-radius: 50%; }
+  border-radius: 50%; }
 
 .qazana-testimonial__wrapper {
   overflow: hidden;
@@ -2794,8 +2249,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     .qazana-testimonial__wrapper .qazana-testimonial__meta .qazana-testimonial__image img {
       width: 60px;
       height: 60px;
-      -webkit-border-radius: 50%;
-              border-radius: 50%; }
+      border-radius: 50%; }
 
 .qazana-widget-text-editor.qazana-drop-cap-view-stacked .qazana-drop-cap {
   background-color: #818a91;
@@ -2831,8 +2285,6 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 .qazana-tooltip__content {
   display: none;
-  -webkit-transition: all .1s;
-  -o-transition: all .1s;
   transition: all .1s;
   position: absolute;
   z-index: 100;
@@ -2843,8 +2295,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   text-align: left;
   padding: 17px 20px 20px;
   background-color: #ffffff;
-  -webkit-box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
   width: 300px;
   max-width: 300px;
   bottom: 100%;
@@ -2877,9 +2328,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     margin-left: 28px; }
   .qazana-tooltip__content.v--east {
     top: 50%;
-    -webkit-transform: translate(40%, -54%);
-        -ms-transform: translate(40%, -54%);
-            transform: translate(40%, -54%);
+    transform: translate(40%, -54%);
     bottom: auto;
     margin-bottom: 0;
     margin-left: 22px;
@@ -2952,9 +2401,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     left: auto;
     bottom: 50%;
     margin-bottom: 0;
-    -webkit-transform: translate(-54%, 50%);
-        -ms-transform: translate(-54%, 50%);
-            transform: translate(-54%, 50%);
+    transform: translate(-54%, 50%);
     margin-right: 22px;
     border-left: 3px solid #eeb523; }
   .qazana-tooltip__content.v--west:after {
@@ -3000,13 +2447,11 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 @media (max-width: 767px) {
   .qazana-tooltip__content {
-    font-size: -webkit-calc(1rem + (-2 * (100vw - 400px)/ 624));
     font-size: calc(1rem + (-2 * (100vw - 400px)/ 624)); } }
 
 .qazana-widget-video .qazana-widget-container {
   overflow: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0); }
+  transform: translate3d(0, 0, 0); }
 
 .qazana-widget-video .qazana-open-inline .qazana-custom-embed-image-overlay {
   position: absolute;
@@ -3014,8 +2459,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   left: 0;
   width: 100%;
   height: 100%;
-  -webkit-background-size: cover;
-          background-size: cover;
+  background-size: cover;
   background-position: 50%; }
 
 .qazana-widget-video .qazana-custom-embed-image-overlay {
@@ -3028,8 +2472,7 @@ body.qazana-page .qazana-widget-menu-anchor {
     width: 100%; }
 
 .qazana-widget-video .qazana-video {
-  -o-object-fit: cover;
-     object-fit: cover; }
+  object-fit: cover; }
 
 .qazana-video-popup-image {
   text-align: center; }
@@ -3037,15 +2480,10 @@ body.qazana-page .qazana-widget-menu-anchor {
 .slick-slider {
   position: relative;
   display: block;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  -ms-touch-action: pan-y;
-      touch-action: pan-y;
+  user-select: none;
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent; }
 
 /**
@@ -3064,48 +2502,29 @@ body.qazana-page .qazana-widget-menu-anchor {
   float: left; }
 
 .swiper-container-vertical > .swiper-wrapper {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
+  flex-direction: column; }
 
 .swiper-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box; }
+  box-sizing: content-box; }
 
 .swiper-container-android .swiper-slide, .swiper-wrapper {
-  -webkit-transform: translate3d(0px, 0, 0);
-          transform: translate3d(0px, 0, 0); }
+  transform: translate3d(0px, 0, 0); }
 
 .swiper-container-multirow > .swiper-wrapper {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  flex-wrap: wrap; }
 
 .swiper-container-free-mode > .swiper-wrapper {
-  -webkit-transition-timing-function: ease-out;
-       -o-transition-timing-function: ease-out;
-          transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
   margin: 0 auto; }
 
 .swiper-slide {
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0;
+  flex-shrink: 0;
   width: 100%;
   height: 100%;
   position: relative; }
@@ -3116,15 +2535,8 @@ body.qazana-page .qazana-widget-menu-anchor {
   .swiper-container-autoheight .swiper-slide {
     height: auto; }
   .swiper-container-autoheight .swiper-wrapper {
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    -webkit-transition-property: height, -webkit-transform;
-    transition-property: height, -webkit-transform;
-    -o-transition-property: transform, height;
-    transition-property: transform, height;
-    transition-property: transform, height, -webkit-transform; }
+    align-items: flex-start;
+    transition-property: transform, height; }
 
 /* a11y */
 .swiper-container .swiper-notification {
@@ -3137,12 +2549,10 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 /* IE10 Windows Phone 8 Fixes */
 .swiper-wp8-horizontal {
-  -ms-touch-action: pan-y;
-      touch-action: pan-y; }
+  touch-action: pan-y; }
 
 .swiper-wp8-vertical {
-  -ms-touch-action: pan-x;
-      touch-action: pan-x; }
+  touch-action: pan-x; }
 
 /* Arrows */
 .swiper-button-prev, .swiper-button-next {
@@ -3153,8 +2563,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   margin-top: -22px;
   z-index: 10;
   cursor: pointer;
-  -webkit-background-size: 27px 44px;
-          background-size: 27px 44px;
+  background-size: 27px 44px;
   background: no-repeat center; }
 
 .swiper-button-prev.swiper-button-disabled, .swiper-button-next.swiper-button-disabled {
@@ -3188,11 +2597,8 @@ body.qazana-page .qazana-widget-menu-anchor {
 .swiper-pagination {
   position: absolute;
   text-align: center;
-  -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   z-index: 10; }
   .swiper-pagination.swiper-pagination-hidden {
     opacity: 0; }
@@ -3208,8 +2614,7 @@ body.qazana-page .qazana-widget-menu-anchor {
   width: 6px;
   height: 6px;
   display: inline-block;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  border-radius: 50%;
   background: #000;
   opacity: 0.2; }
 
@@ -3220,8 +2625,7 @@ button.swiper-pagination-bullet {
   border: none;
   margin: 0;
   padding: 0;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none; }
@@ -3244,8 +2648,7 @@ button.swiper-pagination-bullet {
 .swiper-container-vertical > .swiper-pagination-bullets {
   right: 10px;
   top: 50%;
-  -webkit-transform: translate3d(0px, -50%, 0);
-          transform: translate3d(0px, -50%, 0); }
+  transform: translate3d(0px, -50%, 0); }
   .swiper-container-vertical > .swiper-pagination-bullets .swiper-pagination-bullet {
     margin: 5px 0;
     display: block; }
@@ -3264,17 +2667,11 @@ button.swiper-pagination-bullet {
     top: 0;
     width: 100%;
     height: 100%;
-    -webkit-transform: scale(0);
-        -ms-transform: scale(0);
-            transform: scale(0);
-    -webkit-transform-origin: left top;
-        -ms-transform-origin: left top;
-            transform-origin: left top; }
+    transform: scale(0);
+    transform-origin: left top; }
 
 .swiper-container-rtl .swiper-pagination-progress .swiper-pagination-progressbar {
-  -webkit-transform-origin: right top;
-      -ms-transform-origin: right top;
-          transform-origin: right top; }
+  transform-origin: right top; }
 
 .swiper-container-horizontal > .swiper-pagination-progress {
   width: 100%;
@@ -3298,11 +2695,9 @@ button.swiper-pagination-bullet {
 
 /* 3D Container */
 .swiper-container-3d {
-  -webkit-perspective: 1200px;
-          perspective: 1200px; }
+  perspective: 1200px; }
   .swiper-container-3d .swiper-wrapper, .swiper-container-3d .swiper-slide, .swiper-container-3d .swiper-slide-shadow-left, .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-top, .swiper-container-3d .swiper-slide-shadow-bottom, .swiper-container-3d .swiper-cube-shadow {
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d; }
+    transform-style: preserve-3d; }
   .swiper-container-3d .swiper-slide-shadow-left, .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-top, .swiper-container-3d .swiper-slide-shadow-bottom {
     position: absolute;
     left: 0;
@@ -3312,24 +2707,12 @@ button.swiper-pagination-bullet {
     pointer-events: none;
     z-index: 10; }
   .swiper-container-3d .swiper-slide-shadow-left {
-    background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-    background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); }
   .swiper-container-3d .swiper-slide-shadow-right {
-    background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); }
   .swiper-container-3d .swiper-slide-shadow-top {
-    background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-    background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); }
   .swiper-container-3d .swiper-slide-shadow-bottom {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); }
 
 /* Coverflow */
@@ -3343,8 +2726,7 @@ button.swiper-pagination-bullet {
 
 .swiper-container-cube .swiper-slide, .swiper-container-flip .swiper-slide {
   pointer-events: none;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   z-index: 1; }
 
 .swiper-container-cube .swiper-slide .swiper-slide, .swiper-container-flip .swiper-slide .swiper-slide {
@@ -3355,22 +2737,17 @@ button.swiper-pagination-bullet {
 
 .swiper-container-cube .swiper-slide-shadow-top, .swiper-container-flip .swiper-slide-shadow-top, .swiper-container-cube .swiper-slide-shadow-bottom, .swiper-container-flip .swiper-slide-shadow-bottom, .swiper-container-cube .swiper-slide-shadow-left, .swiper-container-flip .swiper-slide-shadow-left, .swiper-container-cube .swiper-slide-shadow-right, .swiper-container-flip .swiper-slide-shadow-right {
   z-index: 0;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden; }
+  backface-visibility: hidden; }
 
 /* Cube */
 .swiper-container-cube .swiper-slide {
   visibility: hidden;
-  -webkit-transform-origin: 0 0;
-      -ms-transform-origin: 0 0;
-          transform-origin: 0 0;
+  transform-origin: 0 0;
   width: 100%;
   height: 100%; }
 
 .swiper-container-cube.swiper-container-rtl .swiper-slide {
-  -webkit-transform-origin: 100% 0;
-      -ms-transform-origin: 100% 0;
-          transform-origin: 100% 0; }
+  transform-origin: 100% 0; }
 
 .swiper-container-cube .swiper-slide-active, .swiper-container-cube .swiper-slide-next, .swiper-container-cube .swiper-slide-prev, .swiper-container-cube .swiper-slide-next + .swiper-slide {
   pointer-events: auto;
@@ -3390,14 +2767,10 @@ button.swiper-pagination-bullet {
 
 /* Fade */
 .swiper-container-fade.swiper-container-free-mode .swiper-slide {
-  -webkit-transition-timing-function: ease-out;
-       -o-transition-timing-function: ease-out;
-          transition-timing-function: ease-out; }
+  transition-timing-function: ease-out; }
 
 .swiper-container-fade .swiper-slide {
   pointer-events: none;
-  -webkit-transition-property: opacity;
-  -o-transition-property: opacity;
   transition-property: opacity; }
   .swiper-container-fade .swiper-slide .swiper-slide {
     pointer-events: none; }
@@ -3410,29 +2783,18 @@ button.swiper-pagination-bullet {
 .swiper-zoom-container {
   width: 100%;
   height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   text-align: center; }
   .swiper-zoom-container > img, .swiper-zoom-container > svg, .swiper-zoom-container > canvas {
     max-width: 100%;
     max-height: 100%;
-    -o-object-fit: contain;
-       object-fit: contain; }
+    object-fit: contain; }
 
 /* Scrollbar */
 .swiper-scrollbar {
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  border-radius: 10px;
   position: relative;
   -ms-touch-action: none;
   background: rgba(0, 0, 0, 0.1); }
@@ -3458,8 +2820,7 @@ button.swiper-pagination-bullet {
   width: 100%;
   position: relative;
   background: rgba(0, 0, 0, 0.5);
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  border-radius: 10px;
   left: 0;
   top: 0; }
 
@@ -3476,46 +2837,34 @@ button.swiper-pagination-bullet {
   margin-left: -21px;
   margin-top: -21px;
   z-index: 10;
-  -webkit-transform-origin: 50%;
-      -ms-transform-origin: 50%;
-          transform-origin: 50%;
-  -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;
-          animation: swiper-preloader-spin 1s steps(12, end) infinite; }
+  transform-origin: 50%;
+  animation: swiper-preloader-spin 1s steps(12, end) infinite; }
   .swiper-lazy-preloader:after {
     display: block;
     content: "";
     width: 100%;
     height: 100%;
-    -webkit-background-size: 100% 100%;
-            background-size: 100%;
+    background-size: 100%;
     background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat 50%; }
 
 .swiper-lazy-preloader-white:after {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
 
-@-webkit-keyframes swiper-preloader-spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
 @keyframes swiper-preloader-spin {
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
+    transform: rotate(360deg); } }
 
 .qazana-lightbox .dialog-header {
   display: none; }
 
 .qazana-lightbox .dialog-widget-content {
   background: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   width: 100%;
   height: 100%; }
 
 .qazana-lightbox .dialog-message {
-  -webkit-animation-duration: .4s;
-          animation-duration: .4s; }
+  animation-duration: .4s; }
   .qazana-lightbox .dialog-message:not(.qazana-fit-aspect-ratio) {
     height: 100%; }
 
@@ -3533,8 +2882,6 @@ button.swiper-pagination-bullet {
 .qazana-lightbox .dialog-lightbox-close-button,
 .qazana-lightbox .qazana-swiper-button {
   color: rgba(238, 238, 238, 0.9);
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
   opacity: 1; }
   .qazana-lightbox .dialog-lightbox-close-button:hover,
@@ -3545,22 +2892,12 @@ button.swiper-pagination-bullet {
   height: 100%; }
 
 .qazana-lightbox .qazana-lightbox-item {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   position: relative;
   padding: 70px 80px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   height: 100%;
   margin: auto; }
   @media (max-width: 767px) {
@@ -3574,9 +2911,7 @@ button.swiper-pagination-bullet {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-      -ms-transform: translateX(-50%) translateY(-50%);
-          transform: translateX(-50%) translateY(-50%); }
+  transform: translateX(-50%) translateY(-50%); }
   @media (min-width: 1025px) {
     .qazana-lightbox .qazana-video-container {
       width: 75%; } }
@@ -3597,944 +2932,447 @@ button.swiper-pagination-bullet {
     right: 10px; } }
 
 .qazana-hover-animation-grow {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform; }
+  transition-duration: 0.3s;
+  transition-property: transform; }
 
 .qazana-hover-animation-grow:active,
 .qazana-hover-animation-grow:focus,
 .qazana-hover-animation-grow:hover {
-  -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-          transform: scale(1.1); }
+  transform: scale(1.1); }
 
 .qazana-hover-animation-shrink {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform; }
+  transition-duration: 0.3s;
+  transition-property: transform; }
 
 .qazana-hover-animation-shrink:active,
 .qazana-hover-animation-shrink:focus,
 .qazana-hover-animation-shrink:hover {
-  -webkit-transform: scale(0.9);
-      -ms-transform: scale(0.9);
-          transform: scale(0.9); }
-
-@-webkit-keyframes qazana-hover-animation-pulse {
-  25% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1); }
-  75% {
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9); } }
+  transform: scale(0.9); }
 
 @keyframes qazana-hover-animation-pulse {
   25% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1); }
+    transform: scale(1.1); }
   75% {
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9); } }
+    transform: scale(0.9); } }
 
 .qazana-hover-animation-pulse:active,
 .qazana-hover-animation-pulse:focus,
 .qazana-hover-animation-pulse:hover {
-  -webkit-animation-name: qazana-hover-animation-pulse;
-          animation-name: qazana-hover-animation-pulse;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite; }
-
-@-webkit-keyframes qazana-hover-animation-pulse-grow {
-  to {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1); } }
+  animation-name: qazana-hover-animation-pulse;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite; }
 
 @keyframes qazana-hover-animation-pulse-grow {
   to {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1); } }
+    transform: scale(1.1); } }
 
 .qazana-hover-animation-pulse-grow:active,
 .qazana-hover-animation-pulse-grow:focus,
 .qazana-hover-animation-pulse-grow:hover {
-  -webkit-animation-name: qazana-hover-animation-pulse-grow;
-          animation-name: qazana-hover-animation-pulse-grow;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-          animation-direction: alternate; }
-
-@-webkit-keyframes qazana-hover-animation-pulse-shrink {
-  to {
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9); } }
+  animation-name: qazana-hover-animation-pulse-grow;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
 
 @keyframes qazana-hover-animation-pulse-shrink {
   to {
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9); } }
+    transform: scale(0.9); } }
 
 .qazana-hover-animation-pulse-shrink:active,
 .qazana-hover-animation-pulse-shrink:focus,
 .qazana-hover-animation-pulse-shrink:hover {
-  -webkit-animation-name: qazana-hover-animation-pulse-shrink;
-          animation-name: qazana-hover-animation-pulse-shrink;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-          animation-direction: alternate; }
-
-@-webkit-keyframes qazana-hover-animation-push {
-  50% {
-    -webkit-transform: scale(0.8);
-            transform: scale(0.8); }
-  100% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
+  animation-name: qazana-hover-animation-pulse-shrink;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
 
 @keyframes qazana-hover-animation-push {
   50% {
-    -webkit-transform: scale(0.8);
-            transform: scale(0.8); }
+    transform: scale(0.8); }
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
+    transform: scale(1); } }
 
 .qazana-hover-animation-push:active,
 .qazana-hover-animation-push:focus,
 .qazana-hover-animation-push:hover {
-  -webkit-animation-name: qazana-hover-animation-push;
-          animation-name: qazana-hover-animation-push;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-pop {
-  50% {
-    -webkit-transform: scale(1.2);
-            transform: scale(1.2); } }
+  animation-name: qazana-hover-animation-push;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-pop {
   50% {
-    -webkit-transform: scale(1.2);
-            transform: scale(1.2); } }
+    transform: scale(1.2); } }
 
 .qazana-hover-animation-pop:active,
 .qazana-hover-animation-pop:focus,
 .qazana-hover-animation-pop:hover {
-  -webkit-animation-name: qazana-hover-animation-pop;
-          animation-name: qazana-hover-animation-pop;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
+  animation-name: qazana-hover-animation-pop;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1; }
 
 .qazana-hover-animation-bounce-in {
-  -webkit-transition-duration: 0.5s;
-       -o-transition-duration: 0.5s;
-          transition-duration: 0.5s; }
+  transition-duration: 0.5s; }
 
 .qazana-hover-animation-bounce-in:active,
 .qazana-hover-animation-bounce-in:focus,
 .qazana-hover-animation-bounce-in:hover {
-  -webkit-transform: scale(1.2);
-      -ms-transform: scale(1.2);
-          transform: scale(1.2);
-  -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-       -o-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-          transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
+  transform: scale(1.2);
+  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
 
 .qazana-hover-animation-bounce-out {
-  -webkit-transition-duration: 0.5s;
-       -o-transition-duration: 0.5s;
-          transition-duration: 0.5s; }
+  transition-duration: 0.5s; }
 
 .qazana-hover-animation-bounce-out:active,
 .qazana-hover-animation-bounce-out:focus,
 .qazana-hover-animation-bounce-out:hover {
-  -webkit-transform: scale(0.8);
-      -ms-transform: scale(0.8);
-          transform: scale(0.8);
-  -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-       -o-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-          transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
+  transform: scale(0.8);
+  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36); }
 
 .qazana-hover-animation-rotate {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform; }
+  transition-duration: 0.3s;
+  transition-property: transform; }
 
 .qazana-hover-animation-rotate:active,
 .qazana-hover-animation-rotate:focus,
 .qazana-hover-animation-rotate:hover {
-  -webkit-transform: rotate(4deg);
-      -ms-transform: rotate(4deg);
-          transform: rotate(4deg); }
+  transform: rotate(4deg); }
 
 .qazana-hover-animation-grow-rotate {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform; }
+  transition-duration: 0.3s;
+  transition-property: transform; }
 
 .qazana-hover-animation-grow-rotate:active,
 .qazana-hover-animation-grow-rotate:focus,
 .qazana-hover-animation-grow-rotate:hover {
-  -webkit-transform: scale(1.1) rotate(4deg);
-      -ms-transform: scale(1.1) rotate(4deg);
-          transform: scale(1.1) rotate(4deg); }
+  transform: scale(1.1) rotate(4deg); }
 
 .qazana-hover-animation-float {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
+  transition-duration: 0.3s;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-transition-timing-function: ease-out;
-       -o-transition-timing-function: ease-out;
-          transition-timing-function: ease-out; }
+  transition-timing-function: ease-out; }
 
 .qazana-hover-animation-float:active,
 .qazana-hover-animation-float:focus,
 .qazana-hover-animation-float:hover {
-  -webkit-transform: translateY(-8px);
-      -ms-transform: translateY(-8px);
-          transform: translateY(-8px); }
+  transform: translateY(-8px); }
 
 .qazana-hover-animation-sink {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
+  transition-duration: 0.3s;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-transition-timing-function: ease-out;
-       -o-transition-timing-function: ease-out;
-          transition-timing-function: ease-out; }
+  transition-timing-function: ease-out; }
 
 .qazana-hover-animation-sink:active,
 .qazana-hover-animation-sink:focus,
 .qazana-hover-animation-sink:hover {
-  -webkit-transform: translateY(8px);
-      -ms-transform: translateY(8px);
-          transform: translateY(8px); }
-
-@-webkit-keyframes qazana-hover-animation-bob {
-  0% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); }
-  50% {
-    -webkit-transform: translateY(-4px);
-            transform: translateY(-4px); }
-  100% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); } }
+  transform: translateY(8px); }
 
 @keyframes qazana-hover-animation-bob {
   0% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); }
+    transform: translateY(-8px); }
   50% {
-    -webkit-transform: translateY(-4px);
-            transform: translateY(-4px); }
+    transform: translateY(-4px); }
   100% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); } }
-
-@-webkit-keyframes qazana-hover-animation-bob-float {
-  100% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); } }
+    transform: translateY(-8px); } }
 
 @keyframes qazana-hover-animation-bob-float {
   100% {
-    -webkit-transform: translateY(-8px);
-            transform: translateY(-8px); } }
+    transform: translateY(-8px); } }
 
 .qazana-hover-animation-bob:active,
 .qazana-hover-animation-bob:focus,
 .qazana-hover-animation-bob:hover {
-  -webkit-animation-name: qazana-hover-animation-bob-float, qazana-hover-animation-bob;
-          animation-name: qazana-hover-animation-bob-float, qazana-hover-animation-bob;
-  -webkit-animation-duration: 0.3s, 1.5s;
-          animation-duration: 0.3s, 1.5s;
-  -webkit-animation-delay: 0s, 0.3s;
-          animation-delay: 0s, 0.3s;
-  -webkit-animation-timing-function: ease-out, ease-in-out;
-          animation-timing-function: ease-out, ease-in-out;
-  -webkit-animation-iteration-count: 1, infinite;
-          animation-iteration-count: 1, infinite;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-  -webkit-animation-direction: normal, alternate;
-          animation-direction: normal, alternate; }
-
-@-webkit-keyframes qazana-hover-animation-hang {
-  0% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); }
-  50% {
-    -webkit-transform: translateY(4px);
-            transform: translateY(4px); }
-  100% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); } }
+  animation-name: qazana-hover-animation-bob-float, qazana-hover-animation-bob;
+  animation-duration: 0.3s, 1.5s;
+  animation-delay: 0s, 0.3s;
+  animation-timing-function: ease-out, ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: forwards;
+  animation-direction: normal, alternate; }
 
 @keyframes qazana-hover-animation-hang {
   0% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); }
+    transform: translateY(8px); }
   50% {
-    -webkit-transform: translateY(4px);
-            transform: translateY(4px); }
+    transform: translateY(4px); }
   100% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); } }
-
-@-webkit-keyframes qazana-hover-animation-hang-sink {
-  100% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); } }
+    transform: translateY(8px); } }
 
 @keyframes qazana-hover-animation-hang-sink {
   100% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); } }
+    transform: translateY(8px); } }
 
 .qazana-hover-animation-hang:active,
 .qazana-hover-animation-hang:focus,
 .qazana-hover-animation-hang:hover {
-  -webkit-animation-name: qazana-hover-animation-hang-sink, qazana-hover-animation-hang;
-          animation-name: qazana-hover-animation-hang-sink, qazana-hover-animation-hang;
-  -webkit-animation-duration: 0.3s, 1.5s;
-          animation-duration: 0.3s, 1.5s;
-  -webkit-animation-delay: 0s, 0.3s;
-          animation-delay: 0s, 0.3s;
-  -webkit-animation-timing-function: ease-out, ease-in-out;
-          animation-timing-function: ease-out, ease-in-out;
-  -webkit-animation-iteration-count: 1, infinite;
-          animation-iteration-count: 1, infinite;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-  -webkit-animation-direction: normal, alternate;
-          animation-direction: normal, alternate; }
+  animation-name: qazana-hover-animation-hang-sink, qazana-hover-animation-hang;
+  animation-duration: 0.3s, 1.5s;
+  animation-delay: 0s, 0.3s;
+  animation-timing-function: ease-out, ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: forwards;
+  animation-direction: normal, alternate; }
 
 .qazana-hover-animation-skew {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform; }
+  transition-duration: 0.3s;
+  transition-property: transform; }
 
 .qazana-hover-animation-skew:active,
 .qazana-hover-animation-skew:focus,
 .qazana-hover-animation-skew:hover {
-  -webkit-transform: skew(-10deg);
-      -ms-transform: skew(-10deg);
-          transform: skew(-10deg); }
+  transform: skew(-10deg); }
 
 .qazana-hover-animation-skew-forward {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
+  transition-duration: 0.3s;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-transform-origin: 0 100%;
-      -ms-transform-origin: 0 100%;
-          transform-origin: 0 100%; }
+  transform-origin: 0 100%; }
 
 .qazana-hover-animation-skew-forward:active,
 .qazana-hover-animation-skew-forward:focus,
 .qazana-hover-animation-skew-forward:hover {
-  -webkit-transform: skew(-10deg);
-      -ms-transform: skew(-10deg);
-          transform: skew(-10deg); }
+  transform: skew(-10deg); }
 
 .qazana-hover-animation-skew-backward {
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
+  transition-duration: 0.3s;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-transform-origin: 0 100%;
-      -ms-transform-origin: 0 100%;
-          transform-origin: 0 100%; }
+  transform-origin: 0 100%; }
 
 .qazana-hover-animation-skew-backward:active,
 .qazana-hover-animation-skew-backward:focus,
 .qazana-hover-animation-skew-backward:hover {
-  -webkit-transform: skew(10deg);
-      -ms-transform: skew(10deg);
-          transform: skew(10deg); }
-
-@-webkit-keyframes qazana-hover-animation-wobble-vertical {
-  16.65% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); }
-  33.3% {
-    -webkit-transform: translateY(-6px);
-            transform: translateY(-6px); }
-  49.95% {
-    -webkit-transform: translateY(4px);
-            transform: translateY(4px); }
-  66.6% {
-    -webkit-transform: translateY(-2px);
-            transform: translateY(-2px); }
-  83.25% {
-    -webkit-transform: translateY(1px);
-            transform: translateY(1px); }
-  100% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0); } }
+  transform: skew(10deg); }
 
 @keyframes qazana-hover-animation-wobble-vertical {
   16.65% {
-    -webkit-transform: translateY(8px);
-            transform: translateY(8px); }
+    transform: translateY(8px); }
   33.3% {
-    -webkit-transform: translateY(-6px);
-            transform: translateY(-6px); }
+    transform: translateY(-6px); }
   49.95% {
-    -webkit-transform: translateY(4px);
-            transform: translateY(4px); }
+    transform: translateY(4px); }
   66.6% {
-    -webkit-transform: translateY(-2px);
-            transform: translateY(-2px); }
+    transform: translateY(-2px); }
   83.25% {
-    -webkit-transform: translateY(1px);
-            transform: translateY(1px); }
+    transform: translateY(1px); }
   100% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0); } }
+    transform: translateY(0); } }
 
 .qazana-hover-animation-wobble-vertical:active,
 .qazana-hover-animation-wobble-vertical:focus,
 .qazana-hover-animation-wobble-vertical:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-vertical;
-          animation-name: qazana-hover-animation-wobble-vertical;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-horizontal {
-  16.65% {
-    -webkit-transform: translateX(8px);
-            transform: translateX(8px); }
-  33.3% {
-    -webkit-transform: translateX(-6px);
-            transform: translateX(-6px); }
-  49.95% {
-    -webkit-transform: translateX(4px);
-            transform: translateX(4px); }
-  66.6% {
-    -webkit-transform: translateX(-2px);
-            transform: translateX(-2px); }
-  83.25% {
-    -webkit-transform: translateX(1px);
-            transform: translateX(1px); }
-  100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0); } }
+  animation-name: qazana-hover-animation-wobble-vertical;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-horizontal {
   16.65% {
-    -webkit-transform: translateX(8px);
-            transform: translateX(8px); }
+    transform: translateX(8px); }
   33.3% {
-    -webkit-transform: translateX(-6px);
-            transform: translateX(-6px); }
+    transform: translateX(-6px); }
   49.95% {
-    -webkit-transform: translateX(4px);
-            transform: translateX(4px); }
+    transform: translateX(4px); }
   66.6% {
-    -webkit-transform: translateX(-2px);
-            transform: translateX(-2px); }
+    transform: translateX(-2px); }
   83.25% {
-    -webkit-transform: translateX(1px);
-            transform: translateX(1px); }
+    transform: translateX(1px); }
   100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0); } }
+    transform: translateX(0); } }
 
 .qazana-hover-animation-wobble-horizontal:active,
 .qazana-hover-animation-wobble-horizontal:focus,
 .qazana-hover-animation-wobble-horizontal:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-horizontal;
-          animation-name: qazana-hover-animation-wobble-horizontal;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-to-bottom-right {
-  16.65% {
-    -webkit-transform: translate(8px, 8px);
-            transform: translate(8px, 8px); }
-  33.3% {
-    -webkit-transform: translate(-6px, -6px);
-            transform: translate(-6px, -6px); }
-  49.95% {
-    -webkit-transform: translate(4px, 4px);
-            transform: translate(4px, 4px); }
-  66.6% {
-    -webkit-transform: translate(-2px, -2px);
-            transform: translate(-2px, -2px); }
-  83.25% {
-    -webkit-transform: translate(1px, 1px);
-            transform: translate(1px, 1px); }
-  100% {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0); } }
+  animation-name: qazana-hover-animation-wobble-horizontal;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-to-bottom-right {
   16.65% {
-    -webkit-transform: translate(8px, 8px);
-            transform: translate(8px, 8px); }
+    transform: translate(8px, 8px); }
   33.3% {
-    -webkit-transform: translate(-6px, -6px);
-            transform: translate(-6px, -6px); }
+    transform: translate(-6px, -6px); }
   49.95% {
-    -webkit-transform: translate(4px, 4px);
-            transform: translate(4px, 4px); }
+    transform: translate(4px, 4px); }
   66.6% {
-    -webkit-transform: translate(-2px, -2px);
-            transform: translate(-2px, -2px); }
+    transform: translate(-2px, -2px); }
   83.25% {
-    -webkit-transform: translate(1px, 1px);
-            transform: translate(1px, 1px); }
+    transform: translate(1px, 1px); }
   100% {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0); } }
+    transform: translate(0, 0); } }
 
 .qazana-hover-animation-wobble-to-bottom-right:active,
 .qazana-hover-animation-wobble-to-bottom-right:focus,
 .qazana-hover-animation-wobble-to-bottom-right:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-to-bottom-right;
-          animation-name: qazana-hover-animation-wobble-to-bottom-right;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-to-top-right {
-  16.65% {
-    -webkit-transform: translate(8px, -8px);
-            transform: translate(8px, -8px); }
-  33.3% {
-    -webkit-transform: translate(-6px, 6px);
-            transform: translate(-6px, 6px); }
-  49.95% {
-    -webkit-transform: translate(4px, -4px);
-            transform: translate(4px, -4px); }
-  66.6% {
-    -webkit-transform: translate(-2px, 2px);
-            transform: translate(-2px, 2px); }
-  83.25% {
-    -webkit-transform: translate(1px, -1px);
-            transform: translate(1px, -1px); }
-  100% {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0); } }
+  animation-name: qazana-hover-animation-wobble-to-bottom-right;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-to-top-right {
   16.65% {
-    -webkit-transform: translate(8px, -8px);
-            transform: translate(8px, -8px); }
+    transform: translate(8px, -8px); }
   33.3% {
-    -webkit-transform: translate(-6px, 6px);
-            transform: translate(-6px, 6px); }
+    transform: translate(-6px, 6px); }
   49.95% {
-    -webkit-transform: translate(4px, -4px);
-            transform: translate(4px, -4px); }
+    transform: translate(4px, -4px); }
   66.6% {
-    -webkit-transform: translate(-2px, 2px);
-            transform: translate(-2px, 2px); }
+    transform: translate(-2px, 2px); }
   83.25% {
-    -webkit-transform: translate(1px, -1px);
-            transform: translate(1px, -1px); }
+    transform: translate(1px, -1px); }
   100% {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0); } }
+    transform: translate(0, 0); } }
 
 .qazana-hover-animation-wobble-to-top-right:active,
 .qazana-hover-animation-wobble-to-top-right:focus,
 .qazana-hover-animation-wobble-to-top-right:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-to-top-right;
-          animation-name: qazana-hover-animation-wobble-to-top-right;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-top {
-  16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
-  33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
-  49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
-  66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
-  83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
-  100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+  animation-name: qazana-hover-animation-wobble-to-top-right;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-top {
   16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
+    transform: skew(-12deg); }
   33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
+    transform: skew(10deg); }
   49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
+    transform: skew(-6deg); }
   66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
+    transform: skew(4deg); }
   83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
+    transform: skew(-2deg); }
   100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+    transform: skew(0); } }
 
 .qazana-hover-animation-wobble-top {
-  -webkit-transform-origin: 0 100%;
-      -ms-transform-origin: 0 100%;
-          transform-origin: 0 100%; }
+  transform-origin: 0 100%; }
 
 .qazana-hover-animation-wobble-top:active,
 .qazana-hover-animation-wobble-top:focus,
 .qazana-hover-animation-wobble-top:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-top;
-          animation-name: qazana-hover-animation-wobble-top;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-bottom {
-  16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
-  33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
-  49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
-  66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
-  83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
-  100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+  animation-name: qazana-hover-animation-wobble-top;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-bottom {
   16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
+    transform: skew(-12deg); }
   33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
+    transform: skew(10deg); }
   49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
+    transform: skew(-6deg); }
   66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
+    transform: skew(4deg); }
   83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
+    transform: skew(-2deg); }
   100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+    transform: skew(0); } }
 
 .qazana-hover-animation-wobble-bottom {
-  -webkit-transform-origin: 100% 0;
-      -ms-transform-origin: 100% 0;
-          transform-origin: 100% 0; }
+  transform-origin: 100% 0; }
 
 .qazana-hover-animation-wobble-bottom:active,
 .qazana-hover-animation-wobble-bottom:focus,
 .qazana-hover-animation-wobble-bottom:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-bottom;
-          animation-name: qazana-hover-animation-wobble-bottom;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-wobble-skew {
-  16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
-  33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
-  49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
-  66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
-  83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
-  100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+  animation-name: qazana-hover-animation-wobble-bottom;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-wobble-skew {
   16.65% {
-    -webkit-transform: skew(-12deg);
-            transform: skew(-12deg); }
+    transform: skew(-12deg); }
   33.3% {
-    -webkit-transform: skew(10deg);
-            transform: skew(10deg); }
+    transform: skew(10deg); }
   49.95% {
-    -webkit-transform: skew(-6deg);
-            transform: skew(-6deg); }
+    transform: skew(-6deg); }
   66.6% {
-    -webkit-transform: skew(4deg);
-            transform: skew(4deg); }
+    transform: skew(4deg); }
   83.25% {
-    -webkit-transform: skew(-2deg);
-            transform: skew(-2deg); }
+    transform: skew(-2deg); }
   100% {
-    -webkit-transform: skew(0);
-            transform: skew(0); } }
+    transform: skew(0); } }
 
 .qazana-hover-animation-wobble-skew:active,
 .qazana-hover-animation-wobble-skew:focus,
 .qazana-hover-animation-wobble-skew:hover {
-  -webkit-animation-name: qazana-hover-animation-wobble-skew;
-          animation-name: qazana-hover-animation-wobble-skew;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
-
-@-webkit-keyframes qazana-hover-animation-buzz {
-  50% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
-  100% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); } }
+  animation-name: qazana-hover-animation-wobble-skew;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1; }
 
 @keyframes qazana-hover-animation-buzz {
   50% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
+    transform: translateX(3px) rotate(2deg); }
   100% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); } }
+    transform: translateX(-3px) rotate(-2deg); } }
 
 .qazana-hover-animation-buzz:active,
 .qazana-hover-animation-buzz:focus,
 .qazana-hover-animation-buzz:hover {
-  -webkit-animation-name: qazana-hover-animation-buzz;
-          animation-name: qazana-hover-animation-buzz;
-  -webkit-animation-duration: 0.15s;
-          animation-duration: 0.15s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite; }
-
-@-webkit-keyframes qazana-hover-animation-buzz-out {
-  10% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
-  20% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); }
-  30% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
-  40% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); }
-  50% {
-    -webkit-transform: translateX(2px) rotate(1deg);
-            transform: translateX(2px) rotate(1deg); }
-  60% {
-    -webkit-transform: translateX(-2px) rotate(-1deg);
-            transform: translateX(-2px) rotate(-1deg); }
-  70% {
-    -webkit-transform: translateX(2px) rotate(1deg);
-            transform: translateX(2px) rotate(1deg); }
-  80% {
-    -webkit-transform: translateX(-2px) rotate(-1deg);
-            transform: translateX(-2px) rotate(-1deg); }
-  90% {
-    -webkit-transform: translateX(1px) rotate(0);
-            transform: translateX(1px) rotate(0); }
-  100% {
-    -webkit-transform: translateX(-1px) rotate(0);
-            transform: translateX(-1px) rotate(0); } }
+  animation-name: qazana-hover-animation-buzz;
+  animation-duration: 0.15s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite; }
 
 @keyframes qazana-hover-animation-buzz-out {
   10% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
+    transform: translateX(3px) rotate(2deg); }
   20% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); }
+    transform: translateX(-3px) rotate(-2deg); }
   30% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-            transform: translateX(3px) rotate(2deg); }
+    transform: translateX(3px) rotate(2deg); }
   40% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-            transform: translateX(-3px) rotate(-2deg); }
+    transform: translateX(-3px) rotate(-2deg); }
   50% {
-    -webkit-transform: translateX(2px) rotate(1deg);
-            transform: translateX(2px) rotate(1deg); }
+    transform: translateX(2px) rotate(1deg); }
   60% {
-    -webkit-transform: translateX(-2px) rotate(-1deg);
-            transform: translateX(-2px) rotate(-1deg); }
+    transform: translateX(-2px) rotate(-1deg); }
   70% {
-    -webkit-transform: translateX(2px) rotate(1deg);
-            transform: translateX(2px) rotate(1deg); }
+    transform: translateX(2px) rotate(1deg); }
   80% {
-    -webkit-transform: translateX(-2px) rotate(-1deg);
-            transform: translateX(-2px) rotate(-1deg); }
+    transform: translateX(-2px) rotate(-1deg); }
   90% {
-    -webkit-transform: translateX(1px) rotate(0);
-            transform: translateX(1px) rotate(0); }
+    transform: translateX(1px) rotate(0); }
   100% {
-    -webkit-transform: translateX(-1px) rotate(0);
-            transform: translateX(-1px) rotate(0); } }
+    transform: translateX(-1px) rotate(0); } }
 
 .qazana-hover-animation-buzz-out:active,
 .qazana-hover-animation-buzz-out:focus,
 .qazana-hover-animation-buzz-out:hover {
-  -webkit-animation-name: qazana-hover-animation-buzz-out;
-          animation-name: qazana-hover-animation-buzz-out;
-  -webkit-animation-duration: 0.75s;
-          animation-duration: 0.75s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1; }
+  animation-name: qazana-hover-animation-buzz-out;
+  animation-duration: 0.75s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1; }
 
 .qazana-hover-animation-shadow-bottom {
-  -webkit-transition: border-color 0.2s ease-in-out, background-color 0.4s ease, -webkit-box-shadow 0.3s ease;
-  transition: border-color 0.2s ease-in-out, background-color 0.4s ease, -webkit-box-shadow 0.3s ease;
-  -o-transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease, -webkit-box-shadow 0.3s ease; }
+  transition: border-color 0.2s ease-in-out, box-shadow 0.3s ease, background-color 0.4s ease; }
 
 .qazana-hover-animation-shadow-bottom:active,
 .qazana-hover-animation-shadow-bottom:focus,
 .qazana-hover-animation-shadow-bottom:hover {
-  -webkit-box-shadow: 0 10px 27px 0 rgba(0, 0, 0, 0.1) !important;
-          box-shadow: 0 10px 27px 0 rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 27px 0 rgba(0, 0, 0, 0.1) !important;
   border-color: transparent !important; }
 
 .qazana-hover-animation-no-shadow {
-  -webkit-transition: -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease;
-  transition: -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease;
-  -o-transition: transform 0.2s ease, box-shadow 0.3s ease;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  transition: transform 0.2s ease, box-shadow 0.3s ease, -webkit-transform 0.2s ease, -webkit-box-shadow 0.3s ease; }
+  transition: transform 0.2s ease, box-shadow 0.3s ease; }
   .qazana-hover-animation-no-shadow .qazana-widget-container {
-    -webkit-transition: -webkit-box-shadow 0.3s ease;
-    transition: -webkit-box-shadow 0.3s ease;
-    -o-transition: box-shadow 0.3s ease;
-    transition: box-shadow 0.3s ease;
-    transition: box-shadow 0.3s ease, -webkit-box-shadow 0.3s ease; }
+    transition: box-shadow 0.3s ease; }
 
 .qazana-hover-animation-no-shadow:active,
 .qazana-hover-animation-no-shadow:focus,
 .qazana-hover-animation-no-shadow:hover {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-  -webkit-transform: translateY(-2px);
-      -ms-transform: translateY(-2px);
-          transform: translateY(-2px); }
+  box-shadow: none !important;
+  transform: translateY(-2px); }
   .qazana-hover-animation-no-shadow:active .qazana-widget-container,
   .qazana-hover-animation-no-shadow:focus .qazana-widget-container,
   .qazana-hover-animation-no-shadow:hover .qazana-widget-container {
-    -webkit-box-shadow: none !important;
-            box-shadow: none !important; }
+    box-shadow: none !important; }
 
 .qazana-shape {
   overflow: hidden;
@@ -4549,41 +3387,27 @@ button.swiper-pagination-bullet {
   .qazana-shape-bottom {
     bottom: -1px; }
   .qazana-shape[data-negative="false"].qazana-shape-bottom {
-    -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-            transform: rotate(180deg); }
+    transform: rotate(180deg); }
   .qazana-shape[data-negative="true"].qazana-shape-top {
-    -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-            transform: rotate(180deg); }
+    transform: rotate(180deg); }
   .qazana-shape svg {
     display: block;
-    width: -webkit-calc(100% + 1.3px);
     width: calc(100% + 1.3px);
     position: relative;
     left: 50%;
-    -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-            transform: translateX(-50%); }
+    transform: translateX(-50%); }
   .qazana-shape .qazana-shape-fill {
     fill: #fff;
-    -webkit-transform-origin: center;
-        -ms-transform-origin: center;
-            transform-origin: center;
-    -webkit-transform: rotateY(0deg);
-            transform: rotateY(0deg); }
+    transform-origin: center;
+    transform: rotateY(0deg); }
 
 #wp-admin-bar-qazana_edit_page .ab-submenu .ab-item {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   width: 200px; }
 
 #wp-admin-bar-qazana_edit_page .qazana-edit-link-title {
   overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
+  text-overflow: ellipsis;
   width: 100%; }
 
 #wp-admin-bar-qazana_edit_page .qazana-edit-link-type {
@@ -4592,15 +3416,12 @@ button.swiper-pagination-bullet {
   line-height: 9px;
   margin-top: 6px;
   padding: 4px 8px;
-  -webkit-border-radius: 3px;
-          border-radius: 3px; }
+  border-radius: 3px; }
 
 .page-template-qazana_canvas.qazana-page:before {
   display: none; }
 
 .qazana-post__thumbnail__link {
-  -webkit-transition: none;
-  -o-transition: none;
   transition: none; }
 
 #left-area ul.qazana-icon-list-items,
@@ -4619,4 +3440,5 @@ button.swiper-pagination-bullet {
 @media (min-width: 1025px) {
   .qazana:not(.qazana-edit-area-active) .qazana-hidden-desktop {
     display: none; } }
+
 /*# sourceMappingURL=frontend-rtl.css.map */

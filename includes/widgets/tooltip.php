@@ -364,7 +364,7 @@ class Widget_Tooltip extends Widget_Base {
      */
 	protected function _content_template() {
         ?>
-        <# 
+        <#
 			view.addInlineEditingAttributes( 'tooltip_text', 'none' );
 		#>
 		<div class="qazana-tooltip v--{{{ settings.tooltip_state }}}">
@@ -374,7 +374,7 @@ class Widget_Tooltip extends Widget_Base {
 					<path d="M-204.8 348.4c-26.9 0-48.8 21.9-48.8 48.8s21.9 48.8 48.8 48.8 48.8-21.9 48.8-48.8-21.9-48.8-48.8-48.8zm0 90.2c-22.8 0-41.4-18.6-41.4-41.4 0-22.8 18.6-41.4 41.4-41.4s41.4 18.6 41.4 41.4c-.1 22.8-18.6 41.4-41.4 41.4z"></path>
 				</svg>
 			</span>
-			<div class="qazana-tooltip__content v--{{{ settings.tooltip_position }}} v--border-{{{ settings.tooltip_position }}}" {{{ view.getRenderAttributeString( 'tooltip_text' ) }}}>>{{ settings.tooltip_editor }}</div>
+			<div class="qazana-tooltip__content v--{{{ settings.tooltip_position }}} v--border-{{{ settings.tooltip_position }}}" {{{ view.getRenderAttributeString( 'tooltip_text' ) }}}>{{ settings.tooltip_editor }}</div>
 		</div>
 		<?php
 	}

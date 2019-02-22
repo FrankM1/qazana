@@ -299,7 +299,7 @@ class Widget_Link extends Widget_Base {
 				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
-        
+
         $this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -341,7 +341,7 @@ class Widget_Link extends Widget_Base {
 				],
 			]
         );
-        
+
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
@@ -364,7 +364,6 @@ class Widget_Link extends Widget_Base {
 
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
-			$this->add_render_attribute( 'link', 'class', 'qazana-link-link' );
 
 			if ( ! empty( $settings['link']['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
@@ -398,20 +397,17 @@ class Widget_Link extends Widget_Base {
             $this->add_render_attribute( 'link', 'class', 'qazana-link-' . $settings['link_type'] );
         }
 
-        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-link-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
+        $this->add_render_attribute( 'wrapper', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
         $this->add_render_attribute( 'icon-align', 'class', 'qazana-link-icon' );
 
         ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
             <a <?php $this->render_attribute_string( 'link' ); ?>>
-                <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
-                    <?php if ( $this->get_settings_for_display('icon') ) : ?>
-                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
-                            <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
-                        </span>
-                    <?php endif; ?>
-                    <span class="qazana-link-text"><?php echo $settings['text']; ?></span>
-                </span>
+                <?php if ( $this->get_settings_for_display('icon') ) : ?>
+                    <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
+                        <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
+                    </span>
+                <?php endif; ?>
+                <span class="qazana-link-text"><?php echo $settings['text']; ?></span>
             </a>
         </div><?php
 
@@ -431,16 +427,14 @@ class Widget_Link extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-link-wrapper qazana-inner-wrapper">
+        <div class="qazana-link-wrapper qazana-inner-wrapper qazana-align-icon-{{ settings.icon_align }}">
             <a id="{{ settings.link_css_id }}" class="qazana-link {{ settings.link_css_class }} qazana-link-{{ settings.link_type }} qazana-weight-{{ settings.link_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="link">
-                <span class="qazana-link-content-wrapper">
-                    <# if ( settings.icon ) { #>
-                    <span class="qazana-link-icon qazana-align-icon-{{ settings.icon_align }}">
-                        <i class="{{ settings.icon }}" aria-hidden="true"></i>
-                    </span>
-                    <# } #>
-                    <span {{{ view.getRenderAttributeString( 'text' ) }}}>{{{ settings.text }}}</span>
+                <# if ( settings.icon ) { #>
+                <span class="qazana-link-icon">
+                    <i class="{{ settings.icon }}" aria-hidden="true"></i>
                 </span>
+                <# } #>
+                <span {{{ view.getRenderAttributeString( 'text' ) }}}>{{{ settings.text }}}</span>
             </a>
         </div>
         <?php
