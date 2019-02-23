@@ -1,0 +1,126 @@
+/** Loading Dots **/
+.qazana-loading-indicator__color-spinner {
+  width: 55px;
+  height: 55px;
+  display: block;
+
+  .qazana-loading-indicator__spinner {
+    color: #f00;
+    animation: qazana-color-bubble 2s linear 0s infinite;
+
+    &:after,
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: 100%;
+      box-shadow: 0 0 0 3px;
+      animation: qazana-spinner-bubble 1.3s linear 0s infinite;
+      margin: auto;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+    }
+
+    &:before {
+      animation: qazana-spinner-bubble 1.3s linear 2s infinite;
+    }
+  }
+}
+@-webkit-keyframes qazana-spinner-bubble {
+  from {
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+  }
+
+  to {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+@keyframes qazana-spinner-bubble {
+  from {
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+  }
+
+  to {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+@-webkit-keyframes qazana-color-bubble {
+  0% {
+    color: #009ddc;
+  }
+
+  33% {
+    color: #50b949;
+  }
+
+  66% {
+    color: #ee2d24;
+  }
+
+  100% {
+    color: #feb825;
+  }
+}
+@keyframes qazana-color-bubble {
+  0% {
+    color: #009ddc;
+  }
+
+  33% {
+    color: #50b949;
+  }
+
+  66% {
+    color: #ee2d24;
+  }
+
+  100% {
+    color: #feb825;
+  }
+}
+@-webkit-keyframes qazana-color-change {
+  0% {
+    background: #009ddc;
+  }
+
+  33% {
+    background: #50b949;
+  }
+
+  66% {
+    background: #ee2d24;
+  }
+
+  100% {
+    background: #feb825;
+  }
+}
+@keyframes qazana-color-change {
+  0% {
+    background: #009ddc;
+  }
+
+  33% {
+    background: #50b949;
+  }
+
+  66% {
+    background: #ee2d24;
+  }
+
+  100% {
+    background: #feb825;
+  }
+}

@@ -81,160 +81,138 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 176);
+/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/frontend/frontend.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 1:
+/***/ "../assets/dev/js/frontend/elements-handler.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/frontend/elements-handler.js ***!
+  \*****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Module = __webpack_require__(2),
-    ViewModule;
+var ElementsHandler;
 
-ViewModule = Module.extend({
-	elements: null,
+ElementsHandler = function ElementsHandler($) {
+	var self = this;
 
-	getDefaultElements: function getDefaultElements() {
-		return {};
-	},
+	// element-type.skin-type
+	var handlers = {
+		// Elements
+		section: __webpack_require__(/*! qazana-frontend/handlers/section */ "../assets/dev/js/frontend/handlers/section.js"),
 
-	bindEvents: function bindEvents() {},
+		// Widgets
+		'accordion.default': __webpack_require__(/*! qazana-frontend/handlers/accordion */ "../assets/dev/js/frontend/handlers/accordion.js"),
+		'alert.default': __webpack_require__(/*! qazana-frontend/handlers/alert */ "../assets/dev/js/frontend/handlers/alert.js"),
+		'counter.default': __webpack_require__(/*! qazana-frontend/handlers/counter */ "../assets/dev/js/frontend/handlers/counter.js"),
+		'progress.default': __webpack_require__(/*! qazana-frontend/handlers/progress */ "../assets/dev/js/frontend/handlers/progress.js"),
+		'tabs.default': __webpack_require__(/*! qazana-frontend/handlers/tabs */ "../assets/dev/js/frontend/handlers/tabs.js"),
+		'toggle.default': __webpack_require__(/*! qazana-frontend/handlers/toggle */ "../assets/dev/js/frontend/handlers/toggle.js"),
+		'video.default': __webpack_require__(/*! qazana-frontend/handlers/video */ "../assets/dev/js/frontend/handlers/video.js"),
+		'tooltip.default': __webpack_require__(/*! qazana-frontend/handlers/tooltip */ "../assets/dev/js/frontend/handlers/tooltip.js"),
+		'piechart.default': __webpack_require__(/*! qazana-frontend/handlers/piechart */ "../assets/dev/js/frontend/handlers/piechart.js"),
+		'image-carousel.default': __webpack_require__(/*! qazana-frontend/handlers/image-carousel */ "../assets/dev/js/frontend/handlers/image-carousel.js"),
+		'text-editor.default': __webpack_require__(/*! qazana-frontend/handlers/text-editor */ "../assets/dev/js/frontend/handlers/text-editor.js"),
+		'spacer.default': __webpack_require__(/*! qazana-frontend/handlers/spacer */ "../assets/dev/js/frontend/handlers/spacer.js")
+	};
 
-	onInit: function onInit() {
-		this.initElements();
+	var addGlobalHandlers = function addGlobalHandlers() {
+		qazanaFrontend.hooks.addAction('frontend/element_ready/global', __webpack_require__(/*! qazana-frontend/handlers/global */ "../assets/dev/js/frontend/handlers/global.js"));
+		qazanaFrontend.hooks.addAction('frontend/element_ready/widget', __webpack_require__(/*! qazana-frontend/handlers/widget */ "../assets/dev/js/frontend/handlers/widget.js"));
+	};
 
-		this.bindEvents();
-	},
-
-	initElements: function initElements() {
-		this.elements = this.getDefaultElements();
-	}
-});
-
-module.exports = ViewModule;
-
-/***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ViewModule = __webpack_require__(1);
-
-module.exports = ViewModule.extend({
-
-	getDefaultSettings: function getDefaultSettings() {
-		return {
-			container: null,
-			items: null,
-			columnsCount: 3,
-			verticalSpaceBetween: 30
-		};
-	},
-
-	getDefaultElements: function getDefaultElements() {
-		return {
-			$container: jQuery(this.getSettings('container')),
-			$items: jQuery(this.getSettings('items'))
-		};
-	},
-
-	run: function run() {
-		var heights = [],
-		    distanceFromTop = this.elements.$container.position().top,
-		    settings = this.getSettings(),
-		    columnsCount = settings.columnsCount;
-
-		distanceFromTop += parseInt(this.elements.$container.css('margin-top'), 10);
-
-		this.elements.$items.each(function (index) {
-			var row = Math.floor(index / columnsCount),
-			    $item = jQuery(this),
-			    itemHeight = $item[0].getBoundingClientRect().height + settings.verticalSpaceBetween;
-
-			if (row) {
-				var itemPosition = $item.position(),
-				    indexAtRow = index % columnsCount,
-				    pullHeight = itemPosition.top - distanceFromTop - heights[indexAtRow];
-
-				pullHeight -= parseInt($item.css('margin-top'), 10);
-
-				pullHeight *= -1;
-
-				$item.css('margin-top', pullHeight + 'px');
-
-				heights[indexAtRow] += itemHeight;
-			} else {
-				heights.push(itemHeight);
-			}
+	var addElementsHandlers = function addElementsHandlers() {
+		$.each(handlers, function (elementName, funcCallback) {
+			qazanaFrontend.hooks.addAction('frontend/element_ready/' + elementName, funcCallback);
 		});
-	}
-});
+	};
 
-/***/ }),
+	var runElementsHandlers = function runElementsHandlers() {
+		var $elements;
 
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
+		if (qazanaFrontend.isEditMode()) {
+			// Elements outside from the Preview
+			$elements = jQuery('.qazana-element', '.qazana:not(.qazana-edit-mode)');
+		} else {
+			$elements = $('.qazana-element');
+		}
 
-"use strict";
+		$elements.each(function () {
+			self.runReadyTrigger($(this));
+		});
+	};
 
+	var init = function init() {
+		if (!qazanaFrontend.isEditMode()) {
+			self.initHandlers();
+		}
+	};
 
-var HotKeys = function HotKeys() {
-	var hotKeysHandlers = {};
+	this.initHandlers = function () {
+		addGlobalHandlers();
 
-	var applyHotKey = function applyHotKey(event) {
-		var handlers = hotKeysHandlers[event.which];
+		addElementsHandlers();
 
-		if (!handlers) {
+		runElementsHandlers();
+	};
+
+	this.reInit = function ($scope) {
+		var $elements = $scope.find('.qazana-element');
+
+		$elements.each(function () {
+			self.runReadyTrigger($(this));
+		});
+	};
+
+	this.getHandlers = function (handlerName) {
+		if (handlerName) {
+			return handlers[handlerName];
+		}
+
+		return handlers;
+	};
+
+	this.runReadyTrigger = function ($scope) {
+		// Initializing the `$scope` as frontend jQuery instance
+		$scope = jQuery($scope);
+
+		var elementType = $scope.attr('data-element_type');
+
+		if (!elementType) {
 			return;
 		}
 
-		jQuery.each(handlers, function () {
-			var handler = this;
+		var elementName = $scope.attr('data-element_type').split('.')[0];
 
-			if (handler.isWorthHandling && !handler.isWorthHandling(event)) {
-				return;
-			}
+		qazanaFrontend.hooks.doAction('frontend/element_ready/global', $scope, $);
 
-			// Fix for some keyboard sources that consider alt key as ctrl key
-			if (!handler.allowAltKey && event.altKey) {
-				return;
-			}
+		var isWidgetType = -1 === ['section', 'column'].indexOf(elementType);
 
-			event.preventDefault();
-
-			handler.handle(event);
-		});
-	};
-
-	this.isControlEvent = function (event) {
-		return event[qazana.envData.mac ? 'metaKey' : 'ctrlKey'];
-	};
-
-	this.addHotKeyHandler = function (keyCode, handlerName, handler) {
-		if (!hotKeysHandlers[keyCode]) {
-			hotKeysHandlers[keyCode] = {};
+		if (isWidgetType) {
+			qazanaFrontend.hooks.doAction('frontend/element_ready/widget', $scope, $);
+			qazanaFrontend.hooks.doAction('frontend/element_ready/' + elementType, $scope, $);
 		}
 
-		hotKeysHandlers[keyCode][handlerName] = handler;
+		qazanaFrontend.hooks.doAction('frontend/element_ready/' + elementName, $scope, $);
 	};
 
-	this.bindListener = function ($listener) {
-		$listener.on('keydown', applyHotKey);
-	};
+	init();
 };
 
-module.exports = new HotKeys();
+module.exports = ElementsHandler;
 
 /***/ }),
 
-/***/ 176:
+/***/ "../assets/dev/js/frontend/frontend.js":
+/*!*********************************************!*\
+  !*** ../assets/dev/js/frontend/frontend.js ***!
+  \*********************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -243,14 +221,14 @@ module.exports = new HotKeys();
 /* global qazanaFrontendConfig */
 (function ($) {
 	var elements = {},
-	    EventManager = __webpack_require__(20),
-	    Module = __webpack_require__(3),
-	    ElementsHandler = __webpack_require__(177),
-	    YouTubeModule = __webpack_require__(193),
-	    VimeoModule = __webpack_require__(194),
-	    AnchorsModule = __webpack_require__(195),
-	    LightboxModule = __webpack_require__(196);
-	// CarouselModule = require( 'qazana-frontend/utils/carousel' );
+	    EventManager = __webpack_require__(/*! qazana-utils/hooks */ "../assets/dev/js/utils/hooks.js"),
+	    Module = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+	    ElementsHandler = __webpack_require__(/*! qazana-frontend/elements-handler */ "../assets/dev/js/frontend/elements-handler.js"),
+	    YouTubeModule = __webpack_require__(/*! qazana-frontend/utils/youtube */ "../assets/dev/js/frontend/utils/youtube.js"),
+	    VimeoModule = __webpack_require__(/*! qazana-frontend/utils/vimeo */ "../assets/dev/js/frontend/utils/vimeo.js"),
+	    AnchorsModule = __webpack_require__(/*! qazana-frontend/utils/anchors */ "../assets/dev/js/frontend/utils/anchors.js"),
+	    LightboxModule = __webpack_require__(/*! qazana-frontend/utils/lightbox */ "../assets/dev/js/frontend/utils/lightbox.js"),
+	    CarouselModule = __webpack_require__(/*! qazana-frontend/utils/carousel */ "../assets/dev/js/frontend/utils/carousel.js");
 
 	var QazanaFrontend = function QazanaFrontend() {
 		var self = this,
@@ -287,20 +265,21 @@ module.exports = new HotKeys();
 				youtube: new YouTubeModule(),
 				vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
-				// carousel: new CarouselModule()
+				lightbox: new LightboxModule(),
+				carousel: new CarouselModule()
+				// loadingIndicator: new LoadingIndicatorModule(),
 			};
 
 			self.modules = {
-				StretchElement: __webpack_require__(197),
-				Masonry: __webpack_require__(16)
+				StretchElement: __webpack_require__(/*! qazana-frontend/tools/stretch-element */ "../assets/dev/js/frontend/tools/stretch-element.js"),
+				Masonry: __webpack_require__(/*! qazana-utils/masonry */ "../assets/dev/js/utils/masonry.js")
 			};
 
 			self.elementsHandler = new ElementsHandler($);
 		};
 
 		var initHotKeys = function initHotKeys() {
-			self.hotKeys = __webpack_require__(17);
+			self.hotKeys = __webpack_require__(/*! qazana-utils/hot-keys */ "../assets/dev/js/utils/hot-keys.js");
 
 			self.hotKeys.bindListener(elements.$window);
 		};
@@ -492,7 +471,7 @@ module.exports = new HotKeys();
 				var element = this.element || this,
 				    result = callback.apply(element, arguments);
 
-				// If is Waypoint new API and is frontend
+				// If is WayPoint new API and is frontend
 				if (options.triggerOnce && this.destroy) {
 					this.destroy();
 				}
@@ -513,133 +492,940 @@ if (!qazanaFrontend.isEditMode()) {
 
 /***/ }),
 
-/***/ 177:
+/***/ "../assets/dev/js/frontend/handler-module.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/frontend/handler-module.js ***!
+  \***************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ElementsHandler;
+var ViewModule = __webpack_require__(/*! ../utils/view-module */ "../assets/dev/js/utils/view-module.js"),
+    HandlerModule;
 
-ElementsHandler = function ElementsHandler($) {
-	var self = this;
+HandlerModule = ViewModule.extend({
+	$element: null,
 
-	// element-type.skin-type
-	var handlers = {
-		// Elements
-		section: __webpack_require__(178),
+	editorListeners: null,
 
-		// Widgets
-		'accordion.default': __webpack_require__(180),
-		'alert.default': __webpack_require__(181),
-		'counter.default': __webpack_require__(182),
-		'progress.default': __webpack_require__(183),
-		'tabs.default': __webpack_require__(184),
-		'toggle.default': __webpack_require__(185),
-		'video.default': __webpack_require__(186),
-		'tooltip.default': __webpack_require__(187),
-		'piechart.default': __webpack_require__(188),
-		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
-		'text-editor.default': __webpack_require__(189),
-		'spacer.default': __webpack_require__(190)
-	};
+	onElementChange: null,
 
-	var addGlobalHandlers = function addGlobalHandlers() {
-		qazanaFrontend.hooks.addAction('frontend/element_ready/global', __webpack_require__(191));
-		qazanaFrontend.hooks.addAction('frontend/element_ready/widget', __webpack_require__(192));
-	};
+	onEditSettingsChange: null,
 
-	var addElementsHandlers = function addElementsHandlers() {
-		$.each(handlers, function (elementName, funcCallback) {
-			qazanaFrontend.hooks.addAction('frontend/element_ready/' + elementName, funcCallback);
+	onGeneralSettingsChange: null,
+
+	onPageSettingsChange: null,
+
+	isEdit: null,
+
+	__construct: function __construct(settings) {
+		this.$element = settings.$element;
+
+		this.isEdit = this.$element.hasClass('qazana-element-edit-mode');
+
+		if (this.isEdit) {
+			this.addEditorListeners();
+		}
+	},
+
+	findElement: function findElement(selector) {
+		var $mainElement = this.$element;
+
+		return $mainElement.find(selector).filter(function () {
+			return jQuery(this).closest('.qazana-element').is($mainElement);
 		});
-	};
+	},
 
-	var runElementsHandlers = function runElementsHandlers() {
-		var $elements;
+	getUniqueHandlerID: function getUniqueHandlerID(cid, $element) {
+		if (!cid) {
+			cid = this.getModelCID();
+		}
 
+		if (!$element) {
+			$element = this.$element;
+		}
+
+		return cid + $element.attr('data-element_type') + this.getConstructorID();
+	},
+
+	initEditorListeners: function initEditorListeners() {
+		var self = this;
+
+		self.editorListeners = [{
+			event: 'element:destroy',
+			to: qazana.channels.data,
+			callback: function callback(removedModel) {
+				if (removedModel.cid !== self.getModelCID()) {
+					return;
+				}
+
+				self.onDestroy();
+			}
+		}];
+
+		if (self.onElementChange) {
+			var elementName = self.getElementName(),
+			    eventName = 'change';
+
+			if ('global' !== elementName) {
+				eventName += ':' + elementName;
+			}
+
+			self.editorListeners.push({
+				event: eventName,
+				to: qazana.channels.editor,
+				callback: function callback(controlView, elementView) {
+					var elementViewHandlerID = self.getUniqueHandlerID(elementView.model.cid, elementView.$el);
+
+					if (elementViewHandlerID !== self.getUniqueHandlerID()) {
+						return;
+					}
+
+					self.onElementChange(controlView.model.get('name'), controlView, elementView);
+				}
+			});
+		}
+
+		if (self.onEditSettingsChange) {
+			self.editorListeners.push({
+				event: 'change:editSettings',
+				to: qazana.channels.editor,
+				callback: function callback(changedModel, view) {
+					if (view.model.cid !== self.getModelCID()) {
+						return;
+					}
+
+					self.onEditSettingsChange(Object.keys(changedModel.changed)[0]);
+				}
+			});
+		}
+
+		['page', 'general'].forEach(function (settingsType) {
+			var listenerMethodName = 'on' + qazana.helpers.firstLetterUppercase(settingsType) + 'SettingsChange';
+
+			if (self[listenerMethodName]) {
+				self.editorListeners.push({
+					event: 'change',
+					to: qazana.settings[settingsType].model,
+					callback: function callback(model) {
+						self[listenerMethodName](model.changed);
+					}
+				});
+			}
+		});
+	},
+
+	getEditorListeners: function getEditorListeners() {
+		if (!this.editorListeners) {
+			this.initEditorListeners();
+		}
+
+		return this.editorListeners;
+	},
+
+	addEditorListeners: function addEditorListeners() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach(function (listener) {
+			qazanaFrontend.addListenerOnce(uniqueHandlerID, listener.event, listener.callback, listener.to);
+		});
+	},
+
+	removeEditorListeners: function removeEditorListeners() {
+		var uniqueHandlerID = this.getUniqueHandlerID();
+
+		this.getEditorListeners().forEach(function (listener) {
+			qazanaFrontend.removeListeners(uniqueHandlerID, listener.event, null, listener.to);
+		});
+	},
+
+	getElementName: function getElementName() {
+		return this.$element.data('element_type').split('.')[0];
+	},
+
+	getSkinName: function getSkinName() {
+		return this.$element.data('element_type').split('.')[1];
+	},
+
+	getID: function getID() {
+		return this.$element.data('id');
+	},
+
+	getModelCID: function getModelCID() {
+		return this.$element.data('model-cid');
+	},
+
+	getDocumentSettings: function getDocumentSettings() {
 		if (qazanaFrontend.isEditMode()) {
-			// Elements outside from the Preview
-			$elements = jQuery('.qazana-element', '.qazana:not(.qazana-edit-mode)');
+			return qazana.settings.page.getSettings().settings;
+		}
+
+		return jQuery(this.$element).closest('.qazana').data('settings');
+	},
+
+	getElementSettings: function getElementSettings(setting) {
+		var elementSettings = {},
+		    skinName,
+		    settings,
+		    modelCID = this.getModelCID(),
+		    self = this,
+		    elementName = self.getElementName().replace(/-/g, '_'),
+		    handHeldDevice = this.getDeviceName();
+
+		if (qazanaFrontend.isEditMode() && modelCID) {
+			settings = qazanaFrontend.config.elements.data[modelCID];
+
+			skinName = 'global' !== elementName ? settings.attributes._skin : 'default';
+
+			jQuery.each(settings.getActiveControls(), function (controlKey) {
+				var newControlKey = controlKey;
+				if (skinName !== 'default') {
+					newControlKey = controlKey.replace(skinName + '_', '');
+				}
+				elementSettings[newControlKey] = settings.attributes[controlKey];
+			});
 		} else {
-			$elements = $('.qazana-element');
+			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
+			settings = this.$element.data('settings') || {};
+
+			elementSettings = settings;
+
+			if (settings && skinName !== 'default') {
+				jQuery.each(settings, function (controlKey) {
+					var newControlKey = controlKey;
+					newControlKey = controlKey.replace(skinName + '_', '');
+					elementSettings[newControlKey] = self.getItems(settings, controlKey);
+				});
+			}
 		}
 
-		$elements.each(function () {
-			self.runReadyTrigger($(this));
-		});
-	};
-
-	var init = function init() {
-		if (!qazanaFrontend.isEditMode()) {
-			self.initHandlers();
-		}
-	};
-
-	this.initHandlers = function () {
-		addGlobalHandlers();
-
-		addElementsHandlers();
-
-		runElementsHandlers();
-	};
-
-	this.reInit = function ($scope) {
-		var $elements = $scope.find('.qazana-element');
-
-		$elements.each(function () {
-			self.runReadyTrigger($(this));
-		});
-	};
-
-	this.getHandlers = function (handlerName) {
-		if (handlerName) {
-			return handlers[handlerName];
+		if (handHeldDevice) {
+			jQuery.each(elementSettings, function (controlKey) {
+				if (typeof elementSettings[controlKey + '_' + handHeldDevice] !== 'undefined') {
+					elementSettings[controlKey] = elementSettings[controlKey + '_' + handHeldDevice]; // rewrite main value with mobile version
+				}
+			});
 		}
 
-		return handlers;
-	};
+		return this.getItems(elementSettings, setting);
+	},
 
-	this.runReadyTrigger = function ($scope) {
-		// Initializing the `$scope` as frontend jQuery instance
-		$scope = jQuery($scope);
+	getEditSettings: function getEditSettings(setting) {
+		var attributes = {};
 
-		var elementType = $scope.attr('data-element_type');
-
-		if (!elementType) {
-			return;
+		if (this.isEdit) {
+			attributes = qazanaFrontend.config.elements.editSettings[this.getModelCID()].attributes;
 		}
 
-		var elementName = $scope.attr('data-element_type').split('.')[0];
+		return this.getItems(attributes, setting);
+	},
 
-		qazanaFrontend.hooks.doAction('frontend/element_ready/global', $scope, $);
+	onDestroy: function onDestroy() {
+		this.removeEditorListeners();
 
-		var isWidgetType = -1 === ['section', 'column'].indexOf(elementType);
-
-		if (isWidgetType) {
-			qazanaFrontend.hooks.doAction('frontend/element_ready/widget', $scope, $);
-			qazanaFrontend.hooks.doAction('frontend/element_ready/' + elementType, $scope, $);
+		if (this.unbindEvents) {
+			this.unbindEvents();
 		}
+	}
+});
 
-		qazanaFrontend.hooks.doAction('frontend/element_ready/' + elementName, $scope, $);
-	};
-
-	init();
-};
-
-module.exports = ElementsHandler;
+module.exports = HandlerModule;
 
 /***/ }),
 
-/***/ 178:
+/***/ "../assets/dev/js/frontend/handlers/accordion.js":
+/*!*******************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/accordion.js ***!
+  \*******************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BackgroundVideo = __webpack_require__(179);
+var TabsModule = __webpack_require__(/*! qazana-frontend/handlers/base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js");
 
-var HandlerModule = __webpack_require__(3);
+module.exports = function ($scope) {
+	new TabsModule({
+		$element: $scope,
+		showTabFn: 'slideDown',
+		hideTabFn: 'slideUp'
+	});
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/alert.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/alert.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function ($scope, $) {
+	$scope.find('.qazana-alert-dismiss').on('click', function () {
+		$(this).parent().fadeOut();
+	});
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/background-video.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/background-video.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js");
+
+module.exports = HandlerModule.extend({
+	player: null,
+
+	isYTVideo: null,
+
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			selectors: {
+				backgroundVideoContainer: '.qazana-background-video-container',
+				backgroundVideoEmbed: '.qazana-background-video-embed',
+				backgroundVideoHosted: '.qazana-background-video-hosted'
+			}
+		};
+	},
+
+	getDefaultElements: function getDefaultElements() {
+		var selectors = this.getSettings('selectors'),
+		    elements = {
+			$backgroundVideoContainer: this.$element.find(selectors.backgroundVideoContainer)
+		};
+
+		elements.$backgroundVideoEmbed = elements.$backgroundVideoContainer.children(selectors.backgroundVideoEmbed);
+
+		elements.$backgroundVideoHosted = elements.$backgroundVideoContainer.children(selectors.backgroundVideoHosted);
+
+		return elements;
+	},
+
+	calcVideosSize: function calcVideosSize() {
+		var containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
+		    containerHeight = this.elements.$backgroundVideoContainer.outerHeight(),
+		    aspectRatioSetting = '16:9',
+		    //TEMP
+		aspectRatioArray = aspectRatioSetting.split(':'),
+		    aspectRatio = aspectRatioArray[0] / aspectRatioArray[1],
+		    ratioWidth = containerWidth / aspectRatio,
+		    ratioHeight = containerHeight * aspectRatio,
+		    isWidthFixed = containerWidth / containerHeight > aspectRatio;
+
+		return {
+			width: isWidthFixed ? containerWidth : ratioHeight,
+			height: isWidthFixed ? ratioWidth : containerHeight
+		};
+	},
+
+	changeVideoSize: function changeVideoSize() {
+		var $video = this.isYTVideo ? jQuery(this.player.getIframe()) : this.elements.$backgroundVideoHosted,
+		    size = this.calcVideosSize();
+
+		$video.width(size.width).height(size.height);
+	},
+
+	startVideoLoop: function startVideoLoop() {
+		var self = this;
+
+		// If the section has been removed
+		if (!self.player.getIframe().contentWindow) {
+			return;
+		}
+
+		var elementSettings = self.getElementSettings(),
+		    startPoint = elementSettings.background_video_start || 0,
+		    endPoint = elementSettings.background_video_end;
+
+		self.player.seekTo(startPoint);
+
+		if (endPoint) {
+			var durationToEnd = endPoint - startPoint + 1;
+
+			setTimeout(function () {
+				self.startVideoLoop();
+			}, durationToEnd * 1000);
+		}
+	},
+
+	prepareYTVideo: function prepareYTVideo(YT, videoID) {
+		var self = this,
+		    $backgroundVideoContainer = self.elements.$backgroundVideoContainer,
+		    elementSettings = self.getElementSettings(),
+		    startStateCode = YT.PlayerState.PLAYING;
+
+		// Since version 67, Chrome doesn't fire the `PLAYING` state at start time
+		if (window.chrome) {
+			startStateCode = YT.PlayerState.UNSTARTED;
+		}
+
+		$backgroundVideoContainer.addClass('qazana-loading qazana-invisible');
+
+		self.player = new YT.Player(self.elements.$backgroundVideoEmbed[0], {
+			videoId: videoID,
+			events: {
+				onReady: function onReady() {
+					self.player.mute();
+
+					self.changeVideoSize();
+
+					self.startVideoLoop();
+
+					self.player.playVideo();
+				},
+				onStateChange: function onStateChange(event) {
+					switch (event.data) {
+						case startStateCode:
+							$backgroundVideoContainer.removeClass('qazana-invisible qazana-loading');
+
+							break;
+						case YT.PlayerState.ENDED:
+							self.player.seekTo(elementSettings.background_video_start || 0);
+					}
+				}
+			},
+			playerVars: {
+				controls: 0,
+				rel: 0
+			}
+		});
+
+		jQuery(window).on('resize', self.changeVideoSize);
+	},
+
+	activate: function activate() {
+		var self = this,
+		    videoLink = self.getElementSettings('background_video_link'),
+		    videoID = qazanaFrontend.utils.youtube.getYoutubeIDFromURL(videoLink);
+
+		self.isYTVideo = !!videoID;
+
+		if (videoID) {
+			qazanaFrontend.utils.youtube.onYoutubeApiReady(function (YT) {
+				setTimeout(function () {
+					self.prepareYTVideo(YT, videoID);
+				}, 1);
+			});
+		} else {
+			self.elements.$backgroundVideoHosted.attr('src', videoLink).one('canplay', self.changeVideoSize);
+		}
+	},
+
+	deactivate: function deactivate() {
+		if (this.isYTVideo && this.player.getIframe()) {
+			this.player.destroy();
+		} else {
+			this.elements.$backgroundVideoHosted.removeAttr('src');
+		}
+	},
+
+	run: function run() {
+		var elementSettings = this.getElementSettings();
+		if ('video' === elementSettings.background_background && elementSettings.background_video_link) {
+			this.activate();
+		} else {
+			this.deactivate();
+		}
+	},
+
+	onInit: function onInit() {
+		HandlerModule.prototype.onInit.apply(this, arguments);
+
+		this.run();
+	},
+
+	onElementChange: function onElementChange(propertyName) {
+		if ('background_background' === propertyName) {
+			this.run();
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/base-tabs.js":
+/*!*******************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/base-tabs.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js");
+
+module.exports = HandlerModule.extend({
+	$activeContent: null,
+
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			selectors: {
+				tabTitle: '.qazana-tab-title',
+				tabContent: '.qazana-tab-content'
+			},
+			classes: {
+				active: 'qazana-active'
+			},
+			showTabFn: 'show',
+			hideTabFn: 'hide',
+			toggleSelf: true,
+			hidePrevious: true,
+			autoExpand: true
+		};
+	},
+
+	getDefaultElements: function getDefaultElements() {
+		var selectors = this.getSettings('selectors');
+
+		return {
+			$tabTitles: this.findElement(selectors.tabTitle),
+			$tabContents: this.findElement(selectors.tabContent)
+		};
+	},
+
+	activateDefaultTab: function activateDefaultTab() {
+		var settings = this.getSettings();
+
+		if (!settings.autoExpand || 'editor' === settings.autoExpand && !this.isEdit) {
+			return;
+		}
+
+		var defaultActiveTab = this.getEditSettings('activeItemIndex') || 1,
+		    originalToggleMethods = {
+			showTabFn: settings.showTabFn,
+			hideTabFn: settings.hideTabFn
+		};
+
+		// Toggle tabs without animation to avoid jumping
+		this.setSettings({
+			showTabFn: 'show',
+			hideTabFn: 'hide'
+		});
+
+		this.changeActiveTab(defaultActiveTab);
+
+		// Return back original toggle effects
+		this.setSettings(originalToggleMethods);
+	},
+
+	deactivateActiveTab: function deactivateActiveTab(tabIndex) {
+		var settings = this.getSettings(),
+		    activeClass = settings.classes.active,
+		    activeFilter = tabIndex ? '[data-tab="' + tabIndex + '"]' : '.' + activeClass,
+		    $activeTitle = this.elements.$tabTitles.filter(activeFilter),
+		    $activeContent = this.elements.$tabContents.filter(activeFilter);
+
+		$activeTitle.add($activeContent).removeClass(activeClass);
+
+		$activeContent[settings.hideTabFn]();
+	},
+
+	activateTab: function activateTab(tabIndex) {
+		var settings = this.getSettings(),
+		    activeClass = settings.classes.active,
+		    $requestedTitle = this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]'),
+		    $requestedContent = this.elements.$tabContents.filter('[data-tab="' + tabIndex + '"]');
+
+		$requestedTitle.add($requestedContent).addClass(activeClass);
+
+		$requestedContent[settings.showTabFn]();
+	},
+
+	isActiveTab: function isActiveTab(tabIndex) {
+		return this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]').hasClass(this.getSettings('classes.active'));
+	},
+
+	bindEvents: function bindEvents() {
+		var self = this;
+
+		self.elements.$tabTitles.on('focus', function (event) {
+			self.changeActiveTab(event.currentTarget.dataset.tab);
+		});
+
+		if (self.getSettings('toggleSelf')) {
+			self.elements.$tabTitles.on('mousedown', function (event) {
+				if (jQuery(event.currentTarget).is(':focus')) {
+					self.changeActiveTab(event.currentTarget.dataset.tab);
+				}
+			});
+		}
+	},
+
+	onInit: function onInit() {
+		HandlerModule.prototype.onInit.apply(this, arguments);
+
+		this.activateDefaultTab();
+	},
+
+	onEditSettingsChange: function onEditSettingsChange(propertyName) {
+		if ('activeItemIndex' === propertyName) {
+			this.activateDefaultTab();
+		}
+	},
+
+	changeActiveTab: function changeActiveTab(tabIndex) {
+		var isActiveTab = this.isActiveTab(tabIndex),
+		    settings = this.getSettings();
+
+		if ((settings.toggleSelf || !isActiveTab) && settings.hidePrevious) {
+			this.deactivateActiveTab();
+		}
+
+		if (!settings.hidePrevious && isActiveTab) {
+			this.deactivateActiveTab(tabIndex);
+		}
+
+		if (!isActiveTab) {
+			this.activateTab(tabIndex);
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/counter.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/counter.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function ($scope, $) {
+	var $counter = $scope.find('.qazana-counter-number-value');
+	var animation = $counter.data('animation-type');
+	var odometer;
+
+	if ('none' === animation) {
+		return;
+	}
+
+	if ('count' === animation) {
+		odometer = new Odometer({ el: $counter[0], animation: 'count' });
+	} else {
+		odometer = new Odometer({ el: $counter[0] });
+	}
+
+	qazanaFrontend.waypoint($counter, function () {
+		odometer.update($(this).data('to-value'));
+	}, { offset: '90%' });
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/global.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/global.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+    GlobalHandler;
+
+GlobalHandler = HandlerModule.extend({
+
+	getElementName: function getElementName() {
+		return 'global';
+	},
+
+	animate: function animate() {
+		var self = this,
+		    $element = this.$element,
+		    animation = this.getAnimation(),
+		    elementSettings = this.getElementSettings(),
+		    animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
+
+		$element.removeClass('animated').removeClass(self.prevAnimation);
+
+		setTimeout(function () {
+			self.prevAnimation = animation;
+			$element.addClass(animation).addClass('animated');
+		}, animationDelay);
+	},
+
+	getAnimation: function getAnimation() {
+		var elementSettings = this.getElementSettings();
+
+		return elementSettings._animation_animated && elementSettings._animation_in;
+	},
+
+	removeLoader: function removeLoader() {
+		this.$element.find('.qazana-loading-indicator').remove();
+		this.$element.removeClass('qazana-has-loading-indicator');
+	},
+
+	onInit: function onInit() {
+		HandlerModule.prototype.onInit.apply(this, arguments);
+		this.removeLoader();
+	},
+
+	onElementChange: function onElementChange(propertyName) {
+		if (/^_?animation/.test(propertyName)) {
+			this.animate();
+		}
+	}
+
+});
+
+module.exports = function ($scope) {
+	new GlobalHandler({ $element: $scope });
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/image-carousel.js":
+/*!************************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/image-carousel.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+    ImageCarouselHandler;
+
+ImageCarouselHandler = HandlerModule.extend({
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			selectors: {
+				carousel: '.qazana-image-carousel'
+			}
+		};
+	},
+
+	getDefaultElements: function getDefaultElements() {
+		var selectors = this.getSettings('selectors');
+
+		return {
+			$carousel: this.$element.find(selectors.carousel)
+		};
+	},
+
+	onInit: function onInit() {
+		HandlerModule.prototype.onInit.apply(this, arguments);
+
+		var self = this,
+		    elementSettings = this.getElementSettings(),
+		    slidesToShow = +elementSettings.slidesToShow || 3,
+		    isSingleSlide = 1 === slidesToShow,
+		    defaultLGDevicesSlidesCount = isSingleSlide ? 1 : 2,
+		    breakpoints = qazanaFrontend.config.breakpoints,
+		    addNav = qazanaFrontend.utils.carousel.addNav,
+		    slickGlobals = qazanaFrontend.utils.carousel.slickGlobals;
+
+		var slickOptions = {
+			slidesToShow: slidesToShow,
+			autoplay: 'yes' === elementSettings.autoplay,
+			autoplaySpeed: elementSettings.autoplaySpeed,
+			infinite: 'yes' === elementSettings.infinite,
+			pauseOnHover: 'yes' === elementSettings.pauseOnHover,
+			speed: elementSettings.speed,
+			rtl: 'rtl' === elementSettings.direction,
+			responsive: [{
+				breakpoint: breakpoints.lg,
+				settings: {
+					slidesToShow: +elementSettings.slidesToShow_tablet || defaultLGDevicesSlidesCount,
+					slidesToScroll: +elementSettings.slidesToScroll_tablet || defaultLGDevicesSlidesCount
+				}
+			}, {
+				breakpoint: breakpoints.md,
+				settings: {
+					slidesToShow: +elementSettings.slidesToShow_mobile || 1,
+					slidesToScroll: +elementSettings.slidesToScroll_mobile || 1
+				}
+			}]
+		};
+
+		if (isSingleSlide) {
+			slickOptions.fade = 'fade' === elementSettings.effect;
+		} else {
+			slickOptions.slidesToScroll = +elementSettings.slidesToScroll || defaultLGDevicesSlidesCount;
+		}
+
+		var options = jQuery.extend({}, slickOptions, slickGlobals);
+		var navOptions = {
+			slidesToScroll: elementSettings.slidesToScroll,
+			arrows: -1 !== ['arrows', 'both'].indexOf(elementSettings.navigation),
+			dots: -1 !== ['dots', 'both'].indexOf(elementSettings.navigation)
+		};
+
+		// after slick is initialized (these wouldn't work properly if done before init);
+		this.elements.$carousel.on('init', function (event, slick) {
+			addNav(self.elements.$carousel, slick.$slider, navOptions);
+		});
+
+		this.elements.$carousel.slick(options);
+	}
+});
+
+module.exports = function ($scope) {
+	new ImageCarouselHandler({ $element: $scope });
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/piechart.js":
+/*!******************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/piechart.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js");
+
+var PieChart = HandlerModule.extend({
+
+    getDefaultSettings: function getDefaultSettings() {
+        return {
+            selectors: {
+                chart: '.qazana-piechart-number',
+                number: '.qazana-piechart-number',
+                numberValue: '.qazana-piechart-number-value'
+            }
+        };
+    },
+
+    getDefaultElements: function getDefaultElements() {
+        var selectors = this.getSettings('selectors'),
+            elements = {
+            $chart: this.$element.find(selectors.chart),
+            $number: this.$element.find(selectors.number),
+            $numberValue: this.$element.find(selectors.numberValue)
+        };
+
+        return elements;
+    },
+
+    onElementChange: function onElementChange(propertyName) {
+        if ('starting_number' === propertyName || 'ending_number' === propertyName) {
+            this.elements.$number.circleProgress('redraw');
+        }
+    },
+
+    drawCircle: function drawCircle() {
+        var self = this,
+            fill = {
+            gradient: []
+        };
+
+        fill.gradient.push(this.getElementSettings('circle_start_color'));
+        fill.gradient.push(this.getElementSettings('circle_end_color'));
+
+        this.elements.$numberValue.html(parseInt(this.getElementSettings('starting_number')));
+
+        var args = {
+            startAngle: -Math.PI / 4 * 2,
+            fill: fill,
+            emptyFill: 'transparent',
+            lineCap: this.getElementSettings('line_cap'),
+            animation: {
+                duration: this.getElementSettings('duration')
+            },
+            size: this.getElementSettings('circle_size').size,
+            thickness: this.getElementSettings('circle_width').size,
+            reverse: true,
+            value: this.getElementSettings('ending_number').size / 100
+        };
+
+        if ('none' === this.getElementSettings('animation_type')) {
+            args.animation = {
+                duration: 0
+            };
+        }
+
+        this.elements.$number.circleProgress(args).on('circle-animation-progress', function (event, progress) {
+            self.elements.$numberValue.html(parseInt(self.elements.$numberValue.data('value') * progress));
+        }).on('circle-animation-end', function () {
+            self.elements.$chart.addClass('animated');
+        });
+    },
+
+    onInit: function onInit() {
+        HandlerModule.prototype.onInit.apply(this, arguments);
+
+        var self = this;
+        var animation = {
+            duration: this.getElementSettings('duration')
+        };
+
+        if (!animation) {
+            this.elements.$number.html(this.elements.$number.data('value'));
+            this.elements.$chart.addClass('animated');
+        }
+
+        qazanaFrontend.waypoint(this.elements.$chart, function () {
+            if (!self.elements.$chart.hasClass('animated')) {
+                self.drawCircle();
+            }
+        }, { offset: '90%' });
+    }
+});
+
+module.exports = function ($scope) {
+    new PieChart({ $element: $scope });
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/progress.js":
+/*!******************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/progress.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function ($scope, $) {
+	qazanaFrontend.waypoint($scope.find('.qazana-progress-bar'), function () {
+		var $progressbar = $(this);
+
+		$progressbar.css('width', $progressbar.data('max') + '%');
+	}, { offset: '90%' });
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/section.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/section.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var BackgroundVideo = __webpack_require__(/*! qazana-frontend/handlers/background-video */ "../assets/dev/js/frontend/handlers/background-video.js");
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js");
 
 var StretchedSection = HandlerModule.extend({
 
@@ -844,267 +1630,56 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 179:
+/***/ "../assets/dev/js/frontend/handlers/spacer.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/spacer.js ***!
+  \****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var HandlerModule = __webpack_require__(3);
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+    SpaceModule;
 
-module.exports = HandlerModule.extend({
-	player: null,
+SpaceModule = HandlerModule.extend({
 
-	isYTVideo: null,
-
-	getDefaultSettings: function getDefaultSettings() {
-		return {
-			selectors: {
-				backgroundVideoContainer: '.qazana-background-video-container',
-				backgroundVideoEmbed: '.qazana-background-video-embed',
-				backgroundVideoHosted: '.qazana-background-video-hosted'
-			}
-		};
-	},
-
-	getDefaultElements: function getDefaultElements() {
-		var selectors = this.getSettings('selectors'),
-		    elements = {
-			$backgroundVideoContainer: this.$element.find(selectors.backgroundVideoContainer)
-		};
-
-		elements.$backgroundVideoEmbed = elements.$backgroundVideoContainer.children(selectors.backgroundVideoEmbed);
-
-		elements.$backgroundVideoHosted = elements.$backgroundVideoContainer.children(selectors.backgroundVideoHosted);
-
-		return elements;
-	},
-
-	calcVideosSize: function calcVideosSize() {
-		var containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
-		    containerHeight = this.elements.$backgroundVideoContainer.outerHeight(),
-		    aspectRatioSetting = '16:9',
-		    //TEMP
-		aspectRatioArray = aspectRatioSetting.split(':'),
-		    aspectRatio = aspectRatioArray[0] / aspectRatioArray[1],
-		    ratioWidth = containerWidth / aspectRatio,
-		    ratioHeight = containerHeight * aspectRatio,
-		    isWidthFixed = containerWidth / containerHeight > aspectRatio;
-
-		return {
-			width: isWidthFixed ? containerWidth : ratioHeight,
-			height: isWidthFixed ? ratioWidth : containerHeight
-		};
-	},
-
-	changeVideoSize: function changeVideoSize() {
-		var $video = this.isYTVideo ? jQuery(this.player.getIframe()) : this.elements.$backgroundVideoHosted,
-		    size = this.calcVideosSize();
-
-		$video.width(size.width).height(size.height);
-	},
-
-	startVideoLoop: function startVideoLoop() {
-		var self = this;
-
-		// If the section has been removed
-		if (!self.player.getIframe().contentWindow) {
-			return;
-		}
-
-		var elementSettings = self.getElementSettings(),
-		    startPoint = elementSettings.background_video_start || 0,
-		    endPoint = elementSettings.background_video_end;
-
-		self.player.seekTo(startPoint);
-
-		if (endPoint) {
-			var durationToEnd = endPoint - startPoint + 1;
-
-			setTimeout(function () {
-				self.startVideoLoop();
-			}, durationToEnd * 1000);
-		}
-	},
-
-	prepareYTVideo: function prepareYTVideo(YT, videoID) {
-		var self = this,
-		    $backgroundVideoContainer = self.elements.$backgroundVideoContainer,
-		    elementSettings = self.getElementSettings(),
-		    startStateCode = YT.PlayerState.PLAYING;
-
-		// Since version 67, Chrome doesn't fire the `PLAYING` state at start time
-		if (window.chrome) {
-			startStateCode = YT.PlayerState.UNSTARTED;
-		}
-
-		$backgroundVideoContainer.addClass('qazana-loading qazana-invisible');
-
-		self.player = new YT.Player(self.elements.$backgroundVideoEmbed[0], {
-			videoId: videoID,
-			events: {
-				onReady: function onReady() {
-					self.player.mute();
-
-					self.changeVideoSize();
-
-					self.startVideoLoop();
-
-					self.player.playVideo();
-				},
-				onStateChange: function onStateChange(event) {
-					switch (event.data) {
-						case startStateCode:
-							$backgroundVideoContainer.removeClass('qazana-invisible qazana-loading');
-
-							break;
-						case YT.PlayerState.ENDED:
-							self.player.seekTo(elementSettings.background_video_start || 0);
-					}
-				}
-			},
-			playerVars: {
-				controls: 0,
-				rel: 0
-			}
-		});
-
-		jQuery(window).on('resize', self.changeVideoSize);
-	},
-
-	activate: function activate() {
-		var self = this,
-		    videoLink = self.getElementSettings('background_video_link'),
-		    videoID = qazanaFrontend.utils.youtube.getYoutubeIDFromURL(videoLink);
-
-		self.isYTVideo = !!videoID;
-
-		if (videoID) {
-			qazanaFrontend.utils.youtube.onYoutubeApiReady(function (YT) {
-				setTimeout(function () {
-					self.prepareYTVideo(YT, videoID);
-				}, 1);
-			});
-		} else {
-			self.elements.$backgroundVideoHosted.attr('src', videoLink).one('canplay', self.changeVideoSize);
-		}
-	},
-
-	deactivate: function deactivate() {
-		if (this.isYTVideo && this.player.getIframe()) {
-			this.player.destroy();
-		} else {
-			this.elements.$backgroundVideoHosted.removeAttr('src');
-		}
-	},
-
-	run: function run() {
-		var elementSettings = this.getElementSettings();
-		if ('video' === elementSettings.background_background && elementSettings.background_video_link) {
-			this.activate();
-		} else {
-			this.deactivate();
+	onElementChange: function onElementChange(propertyName) {
+		if ('space' === propertyName) {
+			var space = this.getElementSettings('space');
+			this.$element.find('.qazana-space-resize-value').html('Spacing: ' + space.size + space.unit);
 		}
 	},
 
 	onInit: function onInit() {
-		HandlerModule.prototype.onInit.apply(this, arguments);
-
-		this.run();
-	},
-
-	onElementChange: function onElementChange(propertyName) {
-		if ('background_background' === propertyName) {
-			this.run();
+		if (!qazanaFrontend.isEditMode()) {
+			return;
 		}
+		var space = this.getElementSettings('space');
+		var text = '<span class="qazana-space-resize-value">Spacing: ' + space.size + space.unit + '</span>';
+		this.$element.find('.qazana-spacer-inner').html(text);
 	}
+
 });
 
-/***/ }),
-
-/***/ 180:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TabsModule = __webpack_require__(22);
-
 module.exports = function ($scope) {
-	new TabsModule({
-		$element: $scope,
-		showTabFn: 'slideDown',
-		hideTabFn: 'slideUp'
-	});
+	new SpaceModule({ $element: $scope });
 };
 
 /***/ }),
 
-/***/ 181:
+/***/ "../assets/dev/js/frontend/handlers/tabs.js":
+/*!**************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/tabs.js ***!
+  \**************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function ($scope, $) {
-	$scope.find('.qazana-alert-dismiss').on('click', function () {
-		$(this).parent().fadeOut();
-	});
-};
-
-/***/ }),
-
-/***/ 182:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function ($scope, $) {
-	var $counter = $scope.find('.qazana-counter-number-value');
-	var animation = $counter.data('animation-type');
-	var odometer;
-
-	if ('none' === animation) {
-		return;
-	}
-
-	if ('count' === animation) {
-		odometer = new Odometer({ el: $counter[0], animation: 'count' });
-	} else {
-		odometer = new Odometer({ el: $counter[0] });
-	}
-
-	qazanaFrontend.waypoint($counter, function () {
-		odometer.update($(this).data('to-value'));
-	}, { offset: '90%' });
-};
-
-/***/ }),
-
-/***/ 183:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function ($scope, $) {
-	qazanaFrontend.waypoint($scope.find('.qazana-progress-bar'), function () {
-		var $progressbar = $(this);
-
-		$progressbar.css('width', $progressbar.data('max') + '%');
-	}, { offset: '90%' });
-};
-
-/***/ }),
-
-/***/ 184:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TabsModule = __webpack_require__(22);
+var TabsModule = __webpack_require__(/*! qazana-frontend/handlers/base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js");
 
 module.exports = function ($scope) {
 	new TabsModule({
@@ -1115,256 +1690,17 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 185:
+/***/ "../assets/dev/js/frontend/handlers/text-editor.js":
+/*!*********************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/text-editor.js ***!
+  \*********************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var TabsModule = __webpack_require__(22);
-
-module.exports = function ($scope) {
-	new TabsModule({
-		$element: $scope,
-		showTabFn: 'slideDown',
-		hideTabFn: 'slideUp',
-		hidePrevious: false,
-		autoExpand: 'editor'
-	});
-};
-
-/***/ }),
-
-/***/ 186:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var HandlerModule = __webpack_require__(3),
-    VideoModule;
-
-VideoModule = HandlerModule.extend({
-	getDefaultSettings: function getDefaultSettings() {
-		return {
-			selectors: {
-				imageOverlay: '.qazana-custom-embed-image-overlay',
-				video: '.qazana-video',
-				videoIframe: '.qazana-video-iframe'
-			}
-		};
-	},
-
-	getDefaultElements: function getDefaultElements() {
-		var selectors = this.getSettings('selectors');
-
-		return {
-			$imageOverlay: this.$element.find(selectors.imageOverlay),
-			$video: this.$element.find(selectors.video),
-			$videoIframe: this.$element.find(selectors.videoIframe)
-		};
-	},
-
-	getLightBox: function getLightBox() {
-		return qazanaFrontend.utils.lightbox;
-	},
-
-	handleVideo: function handleVideo() {
-		if (!this.getElementSettings('lightbox')) {
-			this.elements.$imageOverlay.remove();
-
-			this.playVideo();
-		}
-	},
-
-	playVideo: function playVideo() {
-		if (this.elements.$video.length) {
-			this.elements.$video[0].play();
-
-			return;
-		}
-
-		var $videoIframe = this.elements.$videoIframe,
-		    lazyLoad = $videoIframe.data('lazy-load');
-
-		if (lazyLoad) {
-			$videoIframe.attr('src', lazyLoad);
-		}
-
-		var newSourceUrl = $videoIframe[0].src.replace('&autoplay=0', '');
-
-		$videoIframe[0].src = newSourceUrl + '&autoplay=1';
-	},
-
-	animateVideo: function animateVideo() {
-		this.getLightBox().setEntranceAnimation(this.getElementSettings('lightbox_content_animation'));
-	},
-
-	handleAspectRatio: function handleAspectRatio() {
-		this.getLightBox().setVideoAspectRatio(this.getElementSettings('aspect_ratio'));
-	},
-
-	bindEvents: function bindEvents() {
-		this.elements.$imageOverlay.on('click', this.handleVideo);
-	},
-
-	onElementChange: function onElementChange(propertyName) {
-		if ('lightbox_content_animation' === propertyName) {
-			this.animateVideo();
-
-			return;
-		}
-
-		var isLightBoxEnabled = this.getElementSettings('lightbox');
-
-		if ('lightbox' === propertyName && !isLightBoxEnabled) {
-			this.getLightBox().getModal().hide();
-
-			return;
-		}
-
-		if ('aspect_ratio' === propertyName && isLightBoxEnabled) {
-			this.handleAspectRatio();
-		}
-	}
-});
-
-module.exports = function ($scope) {
-	new VideoModule({ $element: $scope });
-};
-
-/***/ }),
-
-/***/ 187:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function ($scope, $) {
-
-	if ($scope.find('.qazana-tooltip').hasClass('v--show')) {
-		return;
-	}
-
-	$scope.mouseenter(function () {
-		$(this).find('.qazana-tooltip').addClass('v--show');
-	}).mouseleave(function () {
-		$(this).find('.qazana-tooltip').removeClass('v--show');
-	});
-};
-
-/***/ }),
-
-/***/ 188:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var HandlerModule = __webpack_require__(3);
-
-var PieChart = HandlerModule.extend({
-
-    getDefaultSettings: function getDefaultSettings() {
-        return {
-            selectors: {
-                chart: '.qazana-piechart-number',
-                number: '.qazana-piechart-number',
-                numberValue: '.qazana-piechart-number-value'
-            }
-        };
-    },
-
-    getDefaultElements: function getDefaultElements() {
-        var selectors = this.getSettings('selectors'),
-            elements = {
-            $chart: this.$element.find(selectors.chart),
-            $number: this.$element.find(selectors.number),
-            $numberValue: this.$element.find(selectors.numberValue)
-        };
-
-        return elements;
-    },
-
-    onElementChange: function onElementChange(propertyName) {
-        if ('starting_number' === propertyName || 'ending_number' === propertyName) {
-            this.elements.$number.circleProgress('redraw');
-        }
-    },
-
-    drawCircle: function drawCircle() {
-        var self = this,
-            fill = {
-            gradient: []
-        };
-
-        fill.gradient.push(this.getElementSettings('circle_start_color'));
-        fill.gradient.push(this.getElementSettings('circle_end_color'));
-
-        this.elements.$numberValue.html(parseInt(this.getElementSettings('starting_number')));
-
-        var args = {
-            startAngle: -Math.PI / 4 * 2,
-            fill: fill,
-            emptyFill: 'transparent',
-            lineCap: this.getElementSettings('line_cap'),
-            animation: {
-                duration: this.getElementSettings('duration')
-            },
-            size: this.getElementSettings('circle_size').size,
-            thickness: this.getElementSettings('circle_width').size,
-            reverse: true,
-            value: this.getElementSettings('ending_number').size / 100
-        };
-
-        if ('none' === this.getElementSettings('animation_type')) {
-            args.animation = {
-                duration: 0
-            };
-        }
-
-        this.elements.$number.circleProgress(args).on('circle-animation-progress', function (event, progress) {
-            self.elements.$numberValue.html(parseInt(self.elements.$numberValue.data('value') * progress));
-        }).on('circle-animation-end', function () {
-            self.elements.$chart.addClass('animated');
-        });
-    },
-
-    onInit: function onInit() {
-        HandlerModule.prototype.onInit.apply(this, arguments);
-
-        var self = this;
-        var animation = {
-            duration: this.getElementSettings('duration')
-        };
-
-        if (!animation) {
-            this.elements.$number.html(this.elements.$number.data('value'));
-            this.elements.$chart.addClass('animated');
-        }
-
-        qazanaFrontend.waypoint(this.elements.$chart, function () {
-            if (!self.elements.$chart.hasClass('animated')) {
-                self.drawCircle();
-            }
-        }, { offset: '90%' });
-    }
-});
-
-module.exports = function ($scope) {
-    new PieChart({ $element: $scope });
-};
-
-/***/ }),
-
-/***/ 189:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var HandlerModule = __webpack_require__(3),
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
     TextEditor;
 
 TextEditor = HandlerModule.extend({
@@ -1468,100 +1804,164 @@ module.exports = function ($scope) {
 
 /***/ }),
 
-/***/ 190:
+/***/ "../assets/dev/js/frontend/handlers/toggle.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/toggle.js ***!
+  \****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var HandlerModule = __webpack_require__(3),
-    SpaceModule;
+var TabsModule = __webpack_require__(/*! qazana-frontend/handlers/base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js");
 
-SpaceModule = HandlerModule.extend({
+module.exports = function ($scope) {
+	new TabsModule({
+		$element: $scope,
+		showTabFn: 'slideDown',
+		hideTabFn: 'slideUp',
+		hidePrevious: false,
+		autoExpand: 'editor'
+	});
+};
 
-	onElementChange: function onElementChange(propertyName) {
-		if ('space' === propertyName) {
-			var space = this.getElementSettings('space');
-			this.$element.find('.qazana-space-resize-value').html('Spacing: ' + space.size + space.unit);
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/tooltip.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/tooltip.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function ($scope, $) {
+
+	if ($scope.find('.qazana-tooltip').hasClass('v--show')) {
+		return;
+	}
+
+	$scope.mouseenter(function () {
+		$(this).find('.qazana-tooltip').addClass('v--show');
+	}).mouseleave(function () {
+		$(this).find('.qazana-tooltip').removeClass('v--show');
+	});
+};
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/video.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/video.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+    VideoModule;
+
+VideoModule = HandlerModule.extend({
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			selectors: {
+				imageOverlay: '.qazana-custom-embed-image-overlay',
+				video: '.qazana-video',
+				videoIframe: '.qazana-video-iframe'
+			}
+		};
+	},
+
+	getDefaultElements: function getDefaultElements() {
+		var selectors = this.getSettings('selectors');
+
+		return {
+			$imageOverlay: this.$element.find(selectors.imageOverlay),
+			$video: this.$element.find(selectors.video),
+			$videoIframe: this.$element.find(selectors.videoIframe)
+		};
+	},
+
+	getLightBox: function getLightBox() {
+		return qazanaFrontend.utils.lightbox;
+	},
+
+	handleVideo: function handleVideo() {
+		if (!this.getElementSettings('lightbox')) {
+			this.elements.$imageOverlay.remove();
+
+			this.playVideo();
 		}
 	},
 
-	onInit: function onInit() {
-		if (!qazanaFrontend.isEditMode()) {
+	playVideo: function playVideo() {
+		if (this.elements.$video.length) {
+			this.elements.$video[0].play();
+
 			return;
 		}
-		var space = this.getElementSettings('space');
-		var text = '<span class="qazana-space-resize-value">Spacing: ' + space.size + space.unit + '</span>';
-		this.$element.find('.qazana-spacer-inner').html(text);
-	}
 
-});
+		var $videoIframe = this.elements.$videoIframe,
+		    lazyLoad = $videoIframe.data('lazy-load');
 
-module.exports = function ($scope) {
-	new SpaceModule({ $element: $scope });
-};
+		if (lazyLoad) {
+			$videoIframe.attr('src', lazyLoad);
+		}
 
-/***/ }),
+		var newSourceUrl = $videoIframe[0].src.replace('&autoplay=0', '');
 
-/***/ 191:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var HandlerModule = __webpack_require__(3),
-    GlobalHandler;
-
-GlobalHandler = HandlerModule.extend({
-
-	getElementName: function getElementName() {
-		return 'global';
+		$videoIframe[0].src = newSourceUrl + '&autoplay=1';
 	},
 
-	animate: function animate() {
-		var self = this,
-		    $element = this.$element,
-		    animation = this.getAnimation(),
-		    elementSettings = this.getElementSettings(),
-		    animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
-
-		$element.removeClass('animated').removeClass(self.prevAnimation);
-
-		setTimeout(function () {
-			self.prevAnimation = animation;
-			$element.addClass(animation).addClass('animated');
-		}, animationDelay);
+	animateVideo: function animateVideo() {
+		this.getLightBox().setEntranceAnimation(this.getElementSettings('lightbox_content_animation'));
 	},
 
-	getAnimation: function getAnimation() {
-		var elementSettings = this.getElementSettings();
-
-		return elementSettings._animation_animated && elementSettings._animation_in;
+	handleAspectRatio: function handleAspectRatio() {
+		this.getLightBox().setVideoAspectRatio(this.getElementSettings('aspect_ratio'));
 	},
 
-	onInit: function onInit() {
-		var self = this;
-
-		HandlerModule.prototype.onInit.apply(self, arguments);
-
-		if (!self.getAnimation()) {}
+	bindEvents: function bindEvents() {
+		this.elements.$imageOverlay.on('click', this.handleVideo);
 	},
 
 	onElementChange: function onElementChange(propertyName) {
-		if (/^_?animation/.test(propertyName)) {
-			this.animate();
+		if ('lightbox_content_animation' === propertyName) {
+			this.animateVideo();
+
+			return;
+		}
+
+		var isLightBoxEnabled = this.getElementSettings('lightbox');
+
+		if ('lightbox' === propertyName && !isLightBoxEnabled) {
+			this.getLightBox().getModal().hide();
+
+			return;
+		}
+
+		if ('aspect_ratio' === propertyName && isLightBoxEnabled) {
+			this.handleAspectRatio();
 		}
 	}
-
 });
 
 module.exports = function ($scope) {
-	new GlobalHandler({ $element: $scope });
+	new VideoModule({ $element: $scope });
 };
 
 /***/ }),
 
-/***/ 192:
+/***/ "../assets/dev/js/frontend/handlers/widget.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/widget.js ***!
+  \****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1583,126 +1983,107 @@ module.exports = function ($scope, $) {
 
 /***/ }),
 
-/***/ 193:
+/***/ "../assets/dev/js/frontend/tools/stretch-element.js":
+/*!**********************************************************!*\
+  !*** ../assets/dev/js/frontend/tools/stretch-element.js ***!
+  \**********************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1);
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js");
 
 module.exports = ViewModule.extend({
 	getDefaultSettings: function getDefaultSettings() {
 		return {
-			isInserted: false,
-			APISrc: 'https://www.youtube.com/iframe_api',
+			element: null,
+			direction: qazanaFrontend.config.is_rtl ? 'right' : 'left',
 			selectors: {
-				firstScript: 'script:first'
+				container: window
 			}
 		};
 	},
 
 	getDefaultElements: function getDefaultElements() {
 		return {
-			$firstScript: jQuery(this.getSettings('selectors.firstScript'))
+			$element: jQuery(this.getSettings('element'))
 		};
 	},
 
-	insertYTAPI: function insertYTAPI() {
-		this.setSettings('isInserted', true);
+	stretch: function stretch() {
+		var containerSelector = this.getSettings('selectors.container'),
+		    $container;
 
-		this.elements.$firstScript.before(jQuery('<script>', { src: this.getSettings('APISrc') }));
-	},
+		try {
+			$container = jQuery(containerSelector);
+		} catch (e) {}
 
-	onYoutubeApiReady: function onYoutubeApiReady(callback) {
-		var self = this;
-
-		if (!self.getSettings('IsInserted')) {
-			self.insertYTAPI();
+		if (!$container || !$container.length) {
+			$container = jQuery(this.getDefaultSettings().selectors.container);
 		}
 
-		if (window.YT && YT.loaded) {
-			callback(YT);
-		} else {
-			// If not ready check again by timeout..
-			setTimeout(function () {
-				self.onYoutubeApiReady(callback);
-			}, 350);
-		}
-	},
+		this.reset();
 
-	getYoutubeIDFromURL: function getYoutubeIDFromURL(url) {
-		var videoIDParts = url.match(/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?vi?=|(?:embed|v|vi|user)\/))([^?&"'>]+)/);
+		var $element = this.elements.$element,
+		    containerWidth = $container.outerWidth(),
+		    elementOffset = $element.offset().left,
+		    isFixed = 'fixed' === $element.css('position'),
+		    correctOffset = isFixed ? 0 : elementOffset;
 
-		return videoIDParts && videoIDParts[1];
-	}
-});
+		if (window !== $container[0]) {
+			var containerOffset = $container.offset().left;
 
-/***/ }),
-
-/***/ 194:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ViewModule = __webpack_require__(1);
-
-module.exports = ViewModule.extend({
-	getDefaultSettings: function getDefaultSettings() {
-		return {
-			isInserted: false,
-			APISrc: 'https://f.vimeocdn.com/js/froogaloop2.min.js', // using froogaloop2. New vimeo js api is dead buggy
-			selectors: {
-				firstScript: 'script:first'
+			if (isFixed) {
+				correctOffset = containerOffset;
 			}
-		};
-	},
-
-	getDefaultElements: function getDefaultElements() {
-		return {
-			$firstScript: jQuery(this.getSettings('selectors.firstScript'))
-		};
-	},
-
-	insertVimeoAPI: function insertVimeoAPI() {
-		this.setSettings('isInserted', true);
-		this.elements.$firstScript.before(jQuery('<script>', { src: this.getSettings('APISrc') }));
-	},
-
-	onVimeoApiReady: function onVimeoApiReady(callback) {
-		var self = this;
-
-		if (!self.getSettings('IsInserted')) {
-			self.insertVimeoAPI();
+			if (elementOffset > containerOffset) {
+				correctOffset = elementOffset - containerOffset;
+			}
 		}
 
-		if (window.$f) {
-			callback($f);
-		} else {
-			// If not ready check again by timeout..
-			setTimeout(function () {
-				self.onVimeoApiReady(callback);
-			}, 350);
+		if (!isFixed) {
+			if (qazanaFrontend.config.is_rtl) {
+				correctOffset = containerWidth - ($element.outerWidth() + correctOffset);
+			}
+
+			correctOffset = -correctOffset;
 		}
+
+		var css = {};
+
+		css.width = containerWidth + 'px';
+
+		css[this.getSettings('direction')] = correctOffset + 'px';
+
+		$element.css(css);
 	},
 
-	getVimeoIDFromURL: function getVimeoIDFromURL(url) {
-		var videoIDParts = url.match(/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/);
-		return videoIDParts && videoIDParts[1];
+	reset: function reset() {
+		var css = {};
+
+		css.width = '';
+
+		css[this.getSettings('direction')] = '';
+
+		this.elements.$element.css(css);
 	}
-
 });
 
 /***/ }),
 
-/***/ 195:
+/***/ "../assets/dev/js/frontend/utils/anchors.js":
+/*!**************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/anchors.js ***!
+  \**************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1);
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js");
 
 module.exports = ViewModule.extend({
 	getDefaultSettings: function getDefaultSettings() {
@@ -1780,13 +2161,147 @@ module.exports = ViewModule.extend({
 
 /***/ }),
 
-/***/ 196:
+/***/ "../assets/dev/js/frontend/utils/carousel.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/carousel.js ***!
+  \***************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1),
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js"),
+    CarouselModule;
+
+CarouselModule = ViewModule.extend({
+
+    slickGlobals: {
+        dots: true, // Change the slider's direction to become right-to-left
+        accessibility: false, // Enables tabbing and arrow key navigation
+        asNavFor: null, // Set the slider to be the navigation of other slider (Class or ID Name)
+        appendArrows: null, // Change where the navigation arrows are attached (Selector, htmlString, Array, Element, jQuery object)
+        prevArrow: null, // Allows you to select a node or customize the HTML for the "Previous" arrow.
+        nextArrow: null, // Allows you to select a node or customize the HTML for the "Next" arrow.
+        centerMode: false, // Enables centered view with partial prev/next slides. Use with odd numbered slidesToShow counts.
+        centerPadding: '50px', // Side padding when in center mode (px or %)
+        cssEase: 'cubic-bezier(.29,1,.29,1)', // Custom easing. See http://cubic-bezier.com/#.29,1,.29,1 Mimicking Greenshock Power4.Ease-Out
+        draggable: Modernizr.touch, // Enable mouse dragging
+        focusOnSelect: false, // Enable focus on selected element (click)
+        easing: 'linear', // Add easing for jQuery animate. Use with easing libraries or default easing methods
+        lazyLoad: 'ondemand', // Set lazy loading technique. Accepts 'ondemand' or 'progressive'.
+        pauseOnDotsHover: true, // Pause Autoplay when a dot is hovered
+        slide: 'div', // Element query to use as slide
+        swipe: true, // Enable swiping
+        touchMove: true, // Enable slide motion with touch
+        touchThreshold: 5, // To advance slides, the user must swipe a length of (1/touchThreshold) * the width of the slider.
+        useCSS: true, // Enable/Disable CSS Transitions
+        vertical: false, // Vertical slide mode
+        rtl: false // Change the slider's direction to become right-to-left
+    },
+
+    addNav: function addNav($scope, $slick, settings) {
+        if ($scope.data('has-nav')) {
+            return;
+        }
+
+        var $wrapper = $scope.parent();
+        var $dots = $scope.find('.slick-dots'); // slick has already been initialized, so we know the dots are already in the DOM;
+
+        if (settings.dots && $dots.length <= 0) {
+            $dots = $scope.append("<ul class='slick-dots' />"); // slick has already been initialized, so we know the dots are already in the DOM;
+        }
+
+        if (settings.arrows) {
+            // wrap the $dots so we can put our arrows next to them;
+            $wrapper.append('<div class="slick-navigation" />');
+
+            $wrapper.find('.slick-navigation').prepend('<a class="prev"><i class="ricon ricon-slider-arrow-left"></i></a>').append('<a class="next"><i class="ricon ricon-slider-arrow-right"></i></a>');
+
+            if ($slick.length && settings.slidesToScroll) {
+                // attach previous button events;
+                $wrapper.find('a.prev').on('click', function () {
+                    $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') - settings.slidesToScroll);
+                }).end()
+                // attach next button events;
+                .find('a.next').on('click', function () {
+                    $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') + settings.slidesToScroll);
+                });
+            }
+        }
+
+        $scope.data('has-nav', 'true');
+    },
+
+    Carousel: function Carousel() {
+        HandlerModule.prototype.onInit.apply(this, arguments);
+
+        var self = this,
+            elementSettings = this.getElementSettings(),
+            slidesToShow = +elementSettings.slidesToShow || 3,
+            isSingleSlide = 1 === slidesToShow,
+            defaultLGDevicesSlidesCount = isSingleSlide ? 1 : 2,
+            breakpoints = qazanaFrontend.config.breakpoints;
+
+        var slickOptions = {
+            slidesToShow: slidesToShow,
+            autoplay: 'yes' === elementSettings.autoplay,
+            autoplaySpeed: elementSettings.autoplaySpeed,
+            infinite: 'yes' === elementSettings.infinite,
+            pauseOnHover: 'yes' === elementSettings.pauseOnHover,
+            speed: elementSettings.speed,
+            arrows: -1 !== ['arrows', 'both'].indexOf(elementSettings.navigation),
+            dots: -1 !== ['dots', 'both'].indexOf(elementSettings.navigation),
+            rtl: 'rtl' === elementSettings.direction,
+            responsive: [{
+                breakpoint: breakpoints.lg,
+                settings: {
+                    slidesToShow: +elementSettings.slidesToShow_tablet || defaultLGDevicesSlidesCount,
+                    slidesToScroll: +elementSettings.slidesToScroll_tablet || defaultLGDevicesSlidesCount
+                }
+            }, {
+                breakpoint: breakpoints.md,
+                settings: {
+                    slidesToShow: +elementSettings.slidesToShow_mobile || 1,
+                    slidesToScroll: +elementSettings.slidesToScroll_mobile || 1
+                }
+            }]
+        };
+
+        if (isSingleSlide) {
+            slickOptions.fade = 'fade' === elementSettings.effect;
+        } else {
+            slickOptions.slidesToScroll = +elementSettings.slidesToScroll || defaultLGDevicesSlidesCount;
+        }
+
+        var options = jQuery.extend({}, this.slickGlobals, slickOptions);
+
+        this.elements.$carousel.slick(options);
+
+        // after slick is initialized (these wouldn't work properly if done before init);
+        this.elements.$carousel.on('init', function (event, slick) {
+            // add the navigation.
+            self.addNav(slick.$slider.parent(), slick.$slider, options);
+        });
+    }
+
+});
+
+module.exports = CarouselModule;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/utils/lightbox.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/lightbox.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js"),
     LightboxModule;
 
 LightboxModule = ViewModule.extend({
@@ -2250,312 +2765,132 @@ module.exports = LightboxModule;
 
 /***/ }),
 
-/***/ 197:
+/***/ "../assets/dev/js/frontend/utils/vimeo.js":
+/*!************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/vimeo.js ***!
+  \************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1);
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js");
 
 module.exports = ViewModule.extend({
 	getDefaultSettings: function getDefaultSettings() {
 		return {
-			element: null,
-			direction: qazanaFrontend.config.is_rtl ? 'right' : 'left',
+			isInserted: false,
+			APISrc: 'https://f.vimeocdn.com/js/froogaloop2.min.js', // using froogaloop2. New vimeo js api is dead buggy
 			selectors: {
-				container: window
+				firstScript: 'script:first'
 			}
 		};
 	},
 
 	getDefaultElements: function getDefaultElements() {
 		return {
-			$element: jQuery(this.getSettings('element'))
+			$firstScript: jQuery(this.getSettings('selectors.firstScript'))
 		};
 	},
 
-	stretch: function stretch() {
-		var containerSelector = this.getSettings('selectors.container'),
-		    $container;
-
-		try {
-			$container = jQuery(containerSelector);
-		} catch (e) {}
-
-		if (!$container || !$container.length) {
-			$container = jQuery(this.getDefaultSettings().selectors.container);
-		}
-
-		this.reset();
-
-		var $element = this.elements.$element,
-		    containerWidth = $container.outerWidth(),
-		    elementOffset = $element.offset().left,
-		    isFixed = 'fixed' === $element.css('position'),
-		    correctOffset = isFixed ? 0 : elementOffset;
-
-		if (window !== $container[0]) {
-			var containerOffset = $container.offset().left;
-
-			if (isFixed) {
-				correctOffset = containerOffset;
-			}
-			if (elementOffset > containerOffset) {
-				correctOffset = elementOffset - containerOffset;
-			}
-		}
-
-		if (!isFixed) {
-			if (qazanaFrontend.config.is_rtl) {
-				correctOffset = containerWidth - ($element.outerWidth() + correctOffset);
-			}
-
-			correctOffset = -correctOffset;
-		}
-
-		var css = {};
-
-		css.width = containerWidth + 'px';
-
-		css[this.getSettings('direction')] = correctOffset + 'px';
-
-		$element.css(css);
+	insertVimeoAPI: function insertVimeoAPI() {
+		this.setSettings('isInserted', true);
+		this.elements.$firstScript.before(jQuery('<script>', { src: this.getSettings('APISrc') }));
 	},
 
-	reset: function reset() {
-		var css = {};
+	onVimeoApiReady: function onVimeoApiReady(callback) {
+		var self = this;
 
-		css.width = '';
+		if (!self.getSettings('IsInserted')) {
+			self.insertVimeoAPI();
+		}
 
-		css[this.getSettings('direction')] = '';
+		if (window.$f) {
+			callback($f);
+		} else {
+			// If not ready check again by timeout..
+			setTimeout(function () {
+				self.onVimeoApiReady(callback);
+			}, 350);
+		}
+	},
 
-		this.elements.$element.css(css);
+	getVimeoIDFromURL: function getVimeoIDFromURL(url) {
+		var videoIDParts = url.match(/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/);
+		return videoIDParts && videoIDParts[1];
 	}
+
 });
 
 /***/ }),
 
-/***/ 2:
+/***/ "../assets/dev/js/frontend/utils/youtube.js":
+/*!**************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/youtube.js ***!
+  \**************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var ViewModule = __webpack_require__(/*! ../../utils/view-module */ "../assets/dev/js/utils/view-module.js");
 
-var Module = function Module() {
-	var $ = jQuery,
-	    instanceParams = arguments,
-	    self = this,
-	    settings,
-	    events = {};
-
-	var ensureClosureMethods = function ensureClosureMethods() {
-		$.each(self, function (methodName) {
-			var oldMethod = self[methodName];
-
-			if ('function' !== typeof oldMethod) {
-				return;
+module.exports = ViewModule.extend({
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			isInserted: false,
+			APISrc: 'https://www.youtube.com/iframe_api',
+			selectors: {
+				firstScript: 'script:first'
 			}
+		};
+	},
 
-			self[methodName] = function () {
-				return oldMethod.apply(self, arguments);
-			};
-		});
-	};
+	getDefaultElements: function getDefaultElements() {
+		return {
+			$firstScript: jQuery(this.getSettings('selectors.firstScript'))
+		};
+	},
 
-	var initSettings = function initSettings() {
-		settings = self.getDefaultSettings();
+	insertYTAPI: function insertYTAPI() {
+		this.setSettings('isInserted', true);
 
-		var instanceSettings = instanceParams[0];
+		this.elements.$firstScript.before(jQuery('<script>', { src: this.getSettings('APISrc') }));
+	},
 
-		if (instanceSettings) {
-			$.extend(settings, instanceSettings);
-		}
-	};
+	onYoutubeApiReady: function onYoutubeApiReady(callback) {
+		var self = this;
 
-	var init = function init() {
-		self.__construct.apply(self, instanceParams);
-
-		ensureClosureMethods();
-
-		initSettings();
-
-		self.trigger('init');
-	};
-
-	this.getItems = function (items, itemKey) {
-		if (itemKey) {
-			var keyStack = itemKey.split('.'),
-			    currentKey = keyStack.splice(0, 1);
-
-			if (!keyStack.length) {
-				return items[currentKey];
-			}
-
-			if (!items[currentKey]) {
-				return;
-			}
-
-			return this.getItems(items[currentKey], keyStack.join('.'));
+		if (!self.getSettings('IsInserted')) {
+			self.insertYTAPI();
 		}
 
-		return items;
-	};
-
-	this.getSettings = function (setting) {
-		return this.getItems(settings, setting);
-	};
-
-	this.setSettings = function (settingKey, value, settingsContainer) {
-		if (!settingsContainer) {
-			settingsContainer = settings;
+		if (window.YT && YT.loaded) {
+			callback(YT);
+		} else {
+			// If not ready check again by timeout..
+			setTimeout(function () {
+				self.onYoutubeApiReady(callback);
+			}, 350);
 		}
+	},
 
-		if ('object' === (typeof settingKey === 'undefined' ? 'undefined' : _typeof(settingKey))) {
-			$.extend(settingsContainer, settingKey);
+	getYoutubeIDFromURL: function getYoutubeIDFromURL(url) {
+		var videoIDParts = url.match(/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?vi?=|(?:embed|v|vi|user)\/))([^?&"'>]+)/);
 
-			return self;
-		}
-
-		var keyStack = settingKey.split('.'),
-		    currentKey = keyStack.splice(0, 1);
-
-		if (!keyStack.length) {
-			settingsContainer[currentKey] = value;
-
-			return self;
-		}
-
-		if (!settingsContainer[currentKey]) {
-			settingsContainer[currentKey] = {};
-		}
-
-		return self.setSettings(keyStack.join('.'), value, settingsContainer[currentKey]);
-	};
-
-	this.forceMethodImplementation = function (methodArguments) {
-		var functionName = methodArguments.callee.name;
-
-		throw new ReferenceError('The method ' + functionName + ' must to be implemented in the inheritor child.');
-	};
-
-	this.on = function (eventName, callback) {
-		if ('object' === (typeof eventName === 'undefined' ? 'undefined' : _typeof(eventName))) {
-			$.each(eventName, function (singleEventName) {
-				self.on(singleEventName, this);
-			});
-
-			return self;
-		}
-
-		var eventNames = eventName.split(' ');
-
-		eventNames.forEach(function (singleEventName) {
-			if (!events[singleEventName]) {
-				events[singleEventName] = [];
-			}
-
-			events[singleEventName].push(callback);
-		});
-
-		return self;
-	};
-
-	this.off = function (eventName, callback) {
-		if (!events[eventName]) {
-			return self;
-		}
-
-		if (!callback) {
-			delete events[eventName];
-
-			return self;
-		}
-
-		var callbackIndex = events[eventName].indexOf(callback);
-
-		if (-1 !== callbackIndex) {
-			delete events[eventName][callbackIndex];
-		}
-
-		return self;
-	};
-
-	this.trigger = function (eventName) {
-		var methodName = 'on' + eventName[0].toUpperCase() + eventName.slice(1),
-		    params = Array.prototype.slice.call(arguments, 1);
-
-		if (self[methodName]) {
-			self[methodName].apply(self, params);
-		}
-
-		var callbacks = events[eventName];
-
-		if (!callbacks) {
-			return self;
-		}
-
-		$.each(callbacks, function (index, callback) {
-			callback.apply(self, params);
-		});
-
-		return self;
-	};
-
-	this.getDeviceName = function () {
-		return jQuery('body').data('qazana-device-mode');
-	};
-
-	init();
-};
-
-Module.prototype.__construct = function () {};
-
-Module.prototype.getDefaultSettings = function () {
-	return {};
-};
-
-Module.extendsCount = 0;
-
-Module.extend = function (properties) {
-	var $ = jQuery,
-	    parent = this;
-
-	var child = function child() {
-		return parent.apply(this, arguments);
-	};
-
-	$.extend(child, parent);
-
-	child.prototype = Object.create($.extend({}, parent.prototype, properties));
-
-	child.prototype.constructor = child;
-
-	/*
-  * Constructor ID is used to set an unique ID
-     * to every extend of the Module.
-     *
-  * It's useful in some cases such as unique
-  * listener for frontend handlers.
-  */
-	var constructorID = ++Module.extendsCount;
-
-	child.prototype.getConstructorID = function () {
-		return constructorID;
-	};
-
-	child.__super__ = parent.prototype;
-
-	return child;
-};
-
-module.exports = Module;
+		return videoIDParts && videoIDParts[1];
+	}
+});
 
 /***/ }),
 
-/***/ 20:
+/***/ "../assets/dev/js/utils/hooks.js":
+/*!***************************************!*\
+  !*** ../assets/dev/js/utils/hooks.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2822,379 +3157,386 @@ module.exports = EventManager;
 
 /***/ }),
 
-/***/ 22:
+/***/ "../assets/dev/js/utils/hot-keys.js":
+/*!******************************************!*\
+  !*** ../assets/dev/js/utils/hot-keys.js ***!
+  \******************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var HandlerModule = __webpack_require__(3);
+var HotKeys = function HotKeys() {
+	var hotKeysHandlers = {};
 
-module.exports = HandlerModule.extend({
-	$activeContent: null,
+	var applyHotKey = function applyHotKey(event) {
+		var handlers = hotKeysHandlers[event.which];
+
+		if (!handlers) {
+			return;
+		}
+
+		jQuery.each(handlers, function () {
+			var handler = this;
+
+			if (handler.isWorthHandling && !handler.isWorthHandling(event)) {
+				return;
+			}
+
+			// Fix for some keyboard sources that consider alt key as ctrl key
+			if (!handler.allowAltKey && event.altKey) {
+				return;
+			}
+
+			event.preventDefault();
+
+			handler.handle(event);
+		});
+	};
+
+	this.isControlEvent = function (event) {
+		return event[qazana.envData.mac ? 'metaKey' : 'ctrlKey'];
+	};
+
+	this.addHotKeyHandler = function (keyCode, handlerName, handler) {
+		if (!hotKeysHandlers[keyCode]) {
+			hotKeysHandlers[keyCode] = {};
+		}
+
+		hotKeysHandlers[keyCode][handlerName] = handler;
+	};
+
+	this.bindListener = function ($listener) {
+		$listener.on('keydown', applyHotKey);
+	};
+};
+
+module.exports = new HotKeys();
+
+/***/ }),
+
+/***/ "../assets/dev/js/utils/masonry.js":
+/*!*****************************************!*\
+  !*** ../assets/dev/js/utils/masonry.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ViewModule = __webpack_require__(/*! ./view-module */ "../assets/dev/js/utils/view-module.js");
+
+module.exports = ViewModule.extend({
 
 	getDefaultSettings: function getDefaultSettings() {
 		return {
-			selectors: {
-				tabTitle: '.qazana-tab-title',
-				tabContent: '.qazana-tab-content'
-			},
-			classes: {
-				active: 'qazana-active'
-			},
-			showTabFn: 'show',
-			hideTabFn: 'hide',
-			toggleSelf: true,
-			hidePrevious: true,
-			autoExpand: true
+			container: null,
+			items: null,
+			columnsCount: 3,
+			verticalSpaceBetween: 30
 		};
 	},
 
 	getDefaultElements: function getDefaultElements() {
-		var selectors = this.getSettings('selectors');
-
 		return {
-			$tabTitles: this.findElement(selectors.tabTitle),
-			$tabContents: this.findElement(selectors.tabContent)
+			$container: jQuery(this.getSettings('container')),
+			$items: jQuery(this.getSettings('items'))
 		};
 	},
 
-	activateDefaultTab: function activateDefaultTab() {
-		var settings = this.getSettings();
+	run: function run() {
+		var heights = [],
+		    distanceFromTop = this.elements.$container.position().top,
+		    settings = this.getSettings(),
+		    columnsCount = settings.columnsCount;
 
-		if (!settings.autoExpand || 'editor' === settings.autoExpand && !this.isEdit) {
-			return;
-		}
+		distanceFromTop += parseInt(this.elements.$container.css('margin-top'), 10);
 
-		var defaultActiveTab = this.getEditSettings('activeItemIndex') || 1,
-		    originalToggleMethods = {
-			showTabFn: settings.showTabFn,
-			hideTabFn: settings.hideTabFn
-		};
+		this.elements.$items.each(function (index) {
+			var row = Math.floor(index / columnsCount),
+			    $item = jQuery(this),
+			    itemHeight = $item[0].getBoundingClientRect().height + settings.verticalSpaceBetween;
 
-		// Toggle tabs without animation to avoid jumping
-		this.setSettings({
-			showTabFn: 'show',
-			hideTabFn: 'hide'
+			if (row) {
+				var itemPosition = $item.position(),
+				    indexAtRow = index % columnsCount,
+				    pullHeight = itemPosition.top - distanceFromTop - heights[indexAtRow];
+
+				pullHeight -= parseInt($item.css('margin-top'), 10);
+
+				pullHeight *= -1;
+
+				$item.css('margin-top', pullHeight + 'px');
+
+				heights[indexAtRow] += itemHeight;
+			} else {
+				heights.push(itemHeight);
+			}
 		});
-
-		this.changeActiveTab(defaultActiveTab);
-
-		// Return back original toggle effects
-		this.setSettings(originalToggleMethods);
-	},
-
-	deactivateActiveTab: function deactivateActiveTab(tabIndex) {
-		var settings = this.getSettings(),
-		    activeClass = settings.classes.active,
-		    activeFilter = tabIndex ? '[data-tab="' + tabIndex + '"]' : '.' + activeClass,
-		    $activeTitle = this.elements.$tabTitles.filter(activeFilter),
-		    $activeContent = this.elements.$tabContents.filter(activeFilter);
-
-		$activeTitle.add($activeContent).removeClass(activeClass);
-
-		$activeContent[settings.hideTabFn]();
-	},
-
-	activateTab: function activateTab(tabIndex) {
-		var settings = this.getSettings(),
-		    activeClass = settings.classes.active,
-		    $requestedTitle = this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]'),
-		    $requestedContent = this.elements.$tabContents.filter('[data-tab="' + tabIndex + '"]');
-
-		$requestedTitle.add($requestedContent).addClass(activeClass);
-
-		$requestedContent[settings.showTabFn]();
-	},
-
-	isActiveTab: function isActiveTab(tabIndex) {
-		return this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]').hasClass(this.getSettings('classes.active'));
-	},
-
-	bindEvents: function bindEvents() {
-		var self = this;
-
-		self.elements.$tabTitles.on('focus', function (event) {
-			self.changeActiveTab(event.currentTarget.dataset.tab);
-		});
-
-		if (self.getSettings('toggleSelf')) {
-			self.elements.$tabTitles.on('mousedown', function (event) {
-				if (jQuery(event.currentTarget).is(':focus')) {
-					self.changeActiveTab(event.currentTarget.dataset.tab);
-				}
-			});
-		}
-	},
-
-	onInit: function onInit() {
-		HandlerModule.prototype.onInit.apply(this, arguments);
-
-		this.activateDefaultTab();
-	},
-
-	onEditSettingsChange: function onEditSettingsChange(propertyName) {
-		if ('activeItemIndex' === propertyName) {
-			this.activateDefaultTab();
-		}
-	},
-
-	changeActiveTab: function changeActiveTab(tabIndex) {
-		var isActiveTab = this.isActiveTab(tabIndex),
-		    settings = this.getSettings();
-
-		if ((settings.toggleSelf || !isActiveTab) && settings.hidePrevious) {
-			this.deactivateActiveTab();
-		}
-
-		if (!settings.hidePrevious && isActiveTab) {
-			this.deactivateActiveTab(tabIndex);
-		}
-
-		if (!isActiveTab) {
-			this.activateTab(tabIndex);
-		}
 	}
 });
 
 /***/ }),
 
-/***/ 3:
+/***/ "../assets/dev/js/utils/module.js":
+/*!****************************************!*\
+  !*** ../assets/dev/js/utils/module.js ***!
+  \****************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1),
-    HandlerModule;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-HandlerModule = ViewModule.extend({
-	$element: null,
+var Module = function Module() {
+	var $ = jQuery,
+	    instanceParams = arguments,
+	    self = this,
+	    settings,
+	    events = {};
 
-	editorListeners: null,
+	var ensureClosureMethods = function ensureClosureMethods() {
+		$.each(self, function (methodName) {
+			var oldMethod = self[methodName];
 
-	onElementChange: null,
-
-	onEditSettingsChange: null,
-
-	onGeneralSettingsChange: null,
-
-	onPageSettingsChange: null,
-
-	isEdit: null,
-
-	__construct: function __construct(settings) {
-		this.$element = settings.$element;
-
-		this.isEdit = this.$element.hasClass('qazana-element-edit-mode');
-
-		if (this.isEdit) {
-			this.addEditorListeners();
-		}
-	},
-
-	findElement: function findElement(selector) {
-		var $mainElement = this.$element;
-
-		return $mainElement.find(selector).filter(function () {
-			return jQuery(this).closest('.qazana-element').is($mainElement);
-		});
-	},
-
-	getUniqueHandlerID: function getUniqueHandlerID(cid, $element) {
-		if (!cid) {
-			cid = this.getModelCID();
-		}
-
-		if (!$element) {
-			$element = this.$element;
-		}
-
-		return cid + $element.attr('data-element_type') + this.getConstructorID();
-	},
-
-	initEditorListeners: function initEditorListeners() {
-		var self = this;
-
-		self.editorListeners = [{
-			event: 'element:destroy',
-			to: qazana.channels.data,
-			callback: function callback(removedModel) {
-				if (removedModel.cid !== self.getModelCID()) {
-					return;
-				}
-
-				self.onDestroy();
-			}
-		}];
-
-		if (self.onElementChange) {
-			var elementName = self.getElementName(),
-			    eventName = 'change';
-
-			if ('global' !== elementName) {
-				eventName += ':' + elementName;
+			if ('function' !== typeof oldMethod) {
+				return;
 			}
 
-			self.editorListeners.push({
-				event: eventName,
-				to: qazana.channels.editor,
-				callback: function callback(controlView, elementView) {
-					var elementViewHandlerID = self.getUniqueHandlerID(elementView.model.cid, elementView.$el);
+			self[methodName] = function () {
+				return oldMethod.apply(self, arguments);
+			};
+		});
+	};
 
-					if (elementViewHandlerID !== self.getUniqueHandlerID()) {
-						return;
-					}
+	var initSettings = function initSettings() {
+		settings = self.getDefaultSettings();
 
-					self.onElementChange(controlView.model.get('name'), controlView, elementView);
-				}
-			});
+		var instanceSettings = instanceParams[0];
+
+		if (instanceSettings) {
+			$.extend(settings, instanceSettings);
 		}
+	};
 
-		if (self.onEditSettingsChange) {
-			self.editorListeners.push({
-				event: 'change:editSettings',
-				to: qazana.channels.editor,
-				callback: function callback(changedModel, view) {
-					if (view.model.cid !== self.getModelCID()) {
-						return;
-					}
+	var init = function init() {
+		self.__construct.apply(self, instanceParams);
 
-					self.onEditSettingsChange(Object.keys(changedModel.changed)[0]);
-				}
-			});
-		}
+		ensureClosureMethods();
 
-		['page', 'general'].forEach(function (settingsType) {
-			var listenerMethodName = 'on' + qazana.helpers.firstLetterUppercase(settingsType) + 'SettingsChange';
+		initSettings();
 
-			if (self[listenerMethodName]) {
-				self.editorListeners.push({
-					event: 'change',
-					to: qazana.settings[settingsType].model,
-					callback: function callback(model) {
-						self[listenerMethodName](model.changed);
-					}
-				});
+		self.trigger('init');
+	};
+
+	this.getItems = function (items, itemKey) {
+		if (itemKey) {
+			var keyStack = itemKey.split('.'),
+			    currentKey = keyStack.splice(0, 1);
+
+			if (!keyStack.length) {
+				return items[currentKey];
 			}
-		});
-	},
 
-	getEditorListeners: function getEditorListeners() {
-		if (!this.editorListeners) {
-			this.initEditorListeners();
-		}
-
-		return this.editorListeners;
-	},
-
-	addEditorListeners: function addEditorListeners() {
-		var uniqueHandlerID = this.getUniqueHandlerID();
-
-		this.getEditorListeners().forEach(function (listener) {
-			qazanaFrontend.addListenerOnce(uniqueHandlerID, listener.event, listener.callback, listener.to);
-		});
-	},
-
-	removeEditorListeners: function removeEditorListeners() {
-		var uniqueHandlerID = this.getUniqueHandlerID();
-
-		this.getEditorListeners().forEach(function (listener) {
-			qazanaFrontend.removeListeners(uniqueHandlerID, listener.event, null, listener.to);
-		});
-	},
-
-	getElementName: function getElementName() {
-		return this.$element.data('element_type').split('.')[0];
-	},
-
-	getSkinName: function getSkinName() {
-		return this.$element.data('element_type').split('.')[1];
-	},
-
-	getID: function getID() {
-		return this.$element.data('id');
-	},
-
-	getModelCID: function getModelCID() {
-		return this.$element.data('model-cid');
-	},
-
-	getDocumentSettings: function getDocumentSettings() {
-		if (qazanaFrontend.isEditMode()) {
-			return qazana.settings.page.getSettings().settings;
-		}
-
-		return jQuery(this.$element).closest('.qazana').data('settings');
-	},
-
-	getElementSettings: function getElementSettings(setting) {
-		var elementSettings = {},
-		    skinName,
-		    settings,
-		    modelCID = this.getModelCID(),
-		    self = this,
-		    elementName = self.getElementName().replace(/-/g, '_'),
-		    handHeldDevice = this.getDeviceName();
-
-		if (qazanaFrontend.isEditMode() && modelCID) {
-			settings = qazanaFrontend.config.elements.data[modelCID];
-
-			skinName = 'global' !== elementName ? settings.attributes._skin : 'default';
-
-			jQuery.each(settings.getActiveControls(), function (controlKey) {
-				var newControlKey = controlKey;
-				if (skinName !== 'default') {
-					newControlKey = controlKey.replace(skinName + '_', '');
-				}
-				elementSettings[newControlKey] = settings.attributes[controlKey];
-			});
-		} else {
-			skinName = self.getSkinName() && 'global' !== elementName ? self.getSkinName().replace(/-/g, '_') : 'default';
-			settings = this.$element.data('settings') || {};
-
-			elementSettings = settings;
-
-			if (settings && skinName !== 'default') {
-				jQuery.each(settings, function (controlKey) {
-					var newControlKey = controlKey;
-					newControlKey = controlKey.replace(skinName + '_', '');
-					elementSettings[newControlKey] = self.getItems(settings, controlKey);
-				});
+			if (!items[currentKey]) {
+				return;
 			}
+
+			return this.getItems(items[currentKey], keyStack.join('.'));
 		}
 
-		if (handHeldDevice) {
-			jQuery.each(elementSettings, function (controlKey) {
-				if (typeof elementSettings[controlKey + '_' + handHeldDevice] !== 'undefined') {
-					elementSettings[controlKey] = elementSettings[controlKey + '_' + handHeldDevice]; // rewrite main value with mobile version
-				}
+		return items;
+	};
+
+	this.getSettings = function (setting) {
+		return this.getItems(settings, setting);
+	};
+
+	this.setSettings = function (settingKey, value, settingsContainer) {
+		if (!settingsContainer) {
+			settingsContainer = settings;
+		}
+
+		if ('object' === (typeof settingKey === 'undefined' ? 'undefined' : _typeof(settingKey))) {
+			$.extend(settingsContainer, settingKey);
+
+			return self;
+		}
+
+		var keyStack = settingKey.split('.'),
+		    currentKey = keyStack.splice(0, 1);
+
+		if (!keyStack.length) {
+			settingsContainer[currentKey] = value;
+
+			return self;
+		}
+
+		if (!settingsContainer[currentKey]) {
+			settingsContainer[currentKey] = {};
+		}
+
+		return self.setSettings(keyStack.join('.'), value, settingsContainer[currentKey]);
+	};
+
+	this.forceMethodImplementation = function (methodArguments) {
+		var functionName = methodArguments.callee.name;
+
+		throw new ReferenceError('The method ' + functionName + ' must to be implemented in the inheritor child.');
+	};
+
+	this.on = function (eventName, callback) {
+		if ('object' === (typeof eventName === 'undefined' ? 'undefined' : _typeof(eventName))) {
+			$.each(eventName, function (singleEventName) {
+				self.on(singleEventName, this);
 			});
+
+			return self;
 		}
 
-		return this.getItems(elementSettings, setting);
+		var eventNames = eventName.split(' ');
+
+		eventNames.forEach(function (singleEventName) {
+			if (!events[singleEventName]) {
+				events[singleEventName] = [];
+			}
+
+			events[singleEventName].push(callback);
+		});
+
+		return self;
+	};
+
+	this.off = function (eventName, callback) {
+		if (!events[eventName]) {
+			return self;
+		}
+
+		if (!callback) {
+			delete events[eventName];
+
+			return self;
+		}
+
+		var callbackIndex = events[eventName].indexOf(callback);
+
+		if (-1 !== callbackIndex) {
+			delete events[eventName][callbackIndex];
+		}
+
+		return self;
+	};
+
+	this.trigger = function (eventName) {
+		var methodName = 'on' + eventName[0].toUpperCase() + eventName.slice(1),
+		    params = Array.prototype.slice.call(arguments, 1);
+
+		if (self[methodName]) {
+			self[methodName].apply(self, params);
+		}
+
+		var callbacks = events[eventName];
+
+		if (!callbacks) {
+			return self;
+		}
+
+		$.each(callbacks, function (index, callback) {
+			callback.apply(self, params);
+		});
+
+		return self;
+	};
+
+	this.getDeviceName = function () {
+		return jQuery('body').data('qazana-device-mode');
+	};
+
+	init();
+};
+
+Module.prototype.__construct = function () {};
+
+Module.prototype.getDefaultSettings = function () {
+	return {};
+};
+
+Module.extendsCount = 0;
+
+Module.extend = function (properties) {
+	var $ = jQuery,
+	    parent = this;
+
+	var child = function child() {
+		return parent.apply(this, arguments);
+	};
+
+	$.extend(child, parent);
+
+	child.prototype = Object.create($.extend({}, parent.prototype, properties));
+
+	child.prototype.constructor = child;
+
+	/*
+  * Constructor ID is used to set an unique ID
+     * to every extend of the Module.
+     *
+  * It's useful in some cases such as unique
+  * listener for frontend handlers.
+  */
+	var constructorID = ++Module.extendsCount;
+
+	child.prototype.getConstructorID = function () {
+		return constructorID;
+	};
+
+	child.__super__ = parent.prototype;
+
+	return child;
+};
+
+module.exports = Module;
+
+/***/ }),
+
+/***/ "../assets/dev/js/utils/view-module.js":
+/*!*********************************************!*\
+  !*** ../assets/dev/js/utils/view-module.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
+    ViewModule;
+
+ViewModule = Module.extend({
+	elements: null,
+
+	getDefaultElements: function getDefaultElements() {
+		return {};
 	},
 
-	getEditSettings: function getEditSettings(setting) {
-		var attributes = {};
+	bindEvents: function bindEvents() {},
 
-		if (this.isEdit) {
-			attributes = qazanaFrontend.config.elements.editSettings[this.getModelCID()].attributes;
-		}
+	onInit: function onInit() {
+		this.initElements();
 
-		return this.getItems(attributes, setting);
+		this.bindEvents();
 	},
 
-	onDestroy: function onDestroy() {
-		this.removeEditorListeners();
-
-		if (this.unbindEvents) {
-			this.unbindEvents();
-		}
+	initElements: function initElements() {
+		this.elements = this.getDefaultElements();
 	}
 });
 
-module.exports = HandlerModule;
+module.exports = ViewModule;
 
 /***/ })
 

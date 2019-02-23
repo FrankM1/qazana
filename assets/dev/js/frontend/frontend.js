@@ -7,8 +7,8 @@
         YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
         VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
-		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
-		// CarouselModule = require( 'qazana-frontend/utils/carousel' );
+		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
+		CarouselModule = require( 'qazana-frontend/utils/carousel' );
 
 	var QazanaFrontend = function() {
 		var self = this,
@@ -45,13 +45,14 @@
                 youtube: new YouTubeModule(),
                 vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
-				// carousel: new CarouselModule()
+				lightbox: new LightboxModule(),
+                carousel: new CarouselModule(),
+                // loadingIndicator: new LoadingIndicatorModule(),
 			};
 
 			self.modules = {
 				StretchElement: require( 'qazana-frontend/tools/stretch-element' ),
-				Masonry: require( 'qazana-utils/masonry' )
+				Masonry: require( 'qazana-utils/masonry' ),
 			};
 
 			self.elementsHandler = new ElementsHandler( $ );
@@ -250,7 +251,7 @@
 				var element = this.element || this,
 					result = callback.apply( element, arguments );
 
-				// If is Waypoint new API and is frontend
+				// If is WayPoint new API and is frontend
 				if ( options.triggerOnce && this.destroy ) {
 					this.destroy();
 				}

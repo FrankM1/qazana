@@ -1,147 +1,122 @@
-var addNav = function($scope, $slick, settings) {
-    
-    $scope = $scope.closest('.qazana-widget-container');
+var ViewModule = require( '../../utils/view-module' ),
+    CarouselModule;
 
-    if ( $scope.data( 'nav' ) ) {
-        return;
-    }
+CarouselModule = ViewModule.extend( {
 
-    var $wrapper = $scope.find(".qazana-loop-wrapper");
+    slickGlobals: {
+        dots: true, // Change the slider's direction to become right-to-left
+        accessibility: false, // Enables tabbing and arrow key navigation
+        asNavFor: null, // Set the slider to be the navigation of other slider (Class or ID Name)
+        appendArrows: null, // Change where the navigation arrows are attached (Selector, htmlString, Array, Element, jQuery object)
+        prevArrow: null, // Allows you to select a node or customize the HTML for the "Previous" arrow.
+        nextArrow: null, // Allows you to select a node or customize the HTML for the "Next" arrow.
+        centerMode: false, // Enables centered view with partial prev/next slides. Use with odd numbered slidesToShow counts.
+        centerPadding: '50px', // Side padding when in center mode (px or %)
+        cssEase: 'cubic-bezier(.29,1,.29,1)', // Custom easing. See http://cubic-bezier.com/#.29,1,.29,1 Mimicking Greenshock Power4.Ease-Out
+        draggable: Modernizr.touch, // Enable mouse dragging
+        focusOnSelect: false, // Enable focus on selected element (click)
+        easing: 'linear', // Add easing for jQuery animate. Use with easing libraries or default easing methods
+        lazyLoad: 'ondemand', // Set lazy loading technique. Accepts 'ondemand' or 'progressive'.
+        pauseOnDotsHover: true, // Pause Autoplay when a dot is hovered
+        slide: 'div', // Element query to use as slide
+        swipe: true, // Enable swiping
+        touchMove: true, // Enable slide motion with touch
+        touchThreshold: 5, // To advance slides, the user must swipe a length of (1/touchThreshold) * the width of the slider.
+        useCSS: true, // Enable/Disable CSS Transitions
+        vertical: false, // Vertical slide mode
+        rtl: false, // Change the slider's direction to become right-to-left
+    },
 
-    // slick has already been initialized, so we know the dots are already in the DOM;
-    var $dots = $scope.find(".slick-dots");
-
-    if ( $dots.length <= 0 ) {
-        // slick has already been initialized, so we know the dots are already in the DOM;
-        $dots = $scope.append("<ul class='slick-dots' />");
-    }
-
-    if ( settings.arrows ) {
-
-        // wrap the $dots so we can put our arrows next to them;
-        $wrapper.parent().append("<div class=\"slick-navigation\"></div>");
-
-        $wrapper.parent().find('.slick-navigation')
-            .prepend("<a class=\"prev\"><i class=\"ricon ricon-slider-arrow-left\"></i></a>")
-            .append("<a class=\"next\"><i class=\"ricon ricon-slider-arrow-right\"></i></a>");
-
-        if ( $slick.length && settings.slidesToScroll ) {
-            // attach previous button events;
-            $dots.parent().find("a.prev").on("click", function() {
-                $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') - settings.slidesToScroll);
-            }).end()
-            // attach next button events;
-            .find("a.next").on("click", function() {
-                $slick.slick('slickGoTo', $slick.slick('slickCurrentSlide') + settings.slidesToScroll);
-            });
-        }
-    }
-
-    $scope.attr( 'data-nav', 'true' );
-};
-
-var Carousel = function( $carousel, settings ) {
-    
-    if ( $carousel.find("div.slick-slides-biggie").length < 1 || typeof settings === 'undefined' ) {
-        return;
-    }
-    
-    var elementSettings = {};
-    var slick_globals = window.slick_globals;
-    
-    settings.direction = settings.is_rtl ? 'rtl' : 'ltr';
-    settings.rtl = ( 'rtl' === settings.direction );
-    settings.dots = ( settings.navigation === 'dots' || settings.navigation === 'both' );
-    settings.arrows = ( settings.navigation === 'arrows' || settings.navigation === 'both' );
-     
-    var is_slideshow = '1' === parseFloat(settings.slidesToShow);
-
-    if ( ! is_slideshow ) {
-        settings.slidesToScroll = parseFloat(settings.slidesToScroll);
-    } else {
-        settings.fade = ( 'fade' === settings.effect );
-    }
-
-    if ( ! settings.slidesToScroll ) {
-        settings.slidesToScroll = 1;
-    }
-
-    settings.slidesToShow = parseFloat(settings.slidesToShow);
-
-    jQuery.each( settings, function( controlKey ) {
-
-        var value = settings[ controlKey ];
-
-        if ( value === 'yes' ) {
-            elementSettings[ controlKey ] = true;
-        } else {
-            elementSettings[ controlKey ] = value;
+    addNav: function( $scope, $slick, settings ) {
+        if ( $scope.data( 'has-nav' ) ) {
+            return;
         }
 
-    } );
+        var $wrapper = $scope.parent();
+        var $dots = $scope.find( '.slick-dots' ); // slick has already been initialized, so we know the dots are already in the DOM;
 
-    var optionsBiggie = jQuery.extend( {}, slick_globals, elementSettings ),
-        // large slideshow;
-        $biggie = $carousel.find("div.slick-slides-biggie"),
-        // class to indicate the slideshow is disabled (on mouseover so the user can see the full photo);
-        disabledClass = "is-disabled",
+        if ( settings.dots && $dots.length <= 0 ) {
+            $dots = $scope.append( "<ul class='slick-dots' />" ); // slick has already been initialized, so we know the dots are already in the DOM;
+        }
 
-        // prev/next button click events - trigger a change the large slideshow;
-        goToPreviousSlide = function() {
-            var index = Number($biggie.slick('slickCurrentSlide'));
-            $biggie.slick('slickGoTo', (index - 1));
+        if ( settings.arrows ) {
+            // wrap the $dots so we can put our arrows next to them;
+            $wrapper.append( '<div class="slick-navigation" />' );
 
-        },
-        goToNextSlide = function() {
-            var index = Number($biggie.slick('slickCurrentSlide'));
-            $biggie.slick('slickGoTo', (index + 1));
-        };
+            $wrapper.find( '.slick-navigation' )
+                .prepend( '<a class="prev"><i class="ricon ricon-slider-arrow-left"></i></a>' )
+                .append( '<a class="next"><i class="ricon ricon-slider-arrow-right"></i></a>' );
 
-    // after slick is initialized (these wouldn't work properly if done before init);
-    $biggie.on('init', function() {
-        // add the navigation;
-        new addNav($biggie.parent(), $biggie, optionsBiggie);
-    });
+            if ( $slick.length && settings.slidesToScroll ) {
+                // attach previous button events;
+                $wrapper.find( 'a.prev' ).on( 'click', function() {
+                    $slick.slick( 'slickGoTo', $slick.slick( 'slickCurrentSlide' ) - settings.slidesToScroll );
+                } ).end()
+                // attach next button events;
+                .find( 'a.next' ).on( 'click', function() {
+                    $slick.slick( 'slickGoTo', $slick.slick( 'slickCurrentSlide' ) + settings.slidesToScroll );
+                } );
+            }
+        }
 
-    if ( ! $biggie.hasClass('slick-initialized') ) {
-        // init the slideshows;
-        $biggie.slick(optionsBiggie);
-    } else {
-        $biggie.slick('refresh');
-    }
+        $scope.data( 'has-nav', 'true' );
+    },
 
-    // attach prev/next button events now that the smalls arrows have been added;
-    $carousel
-        // attach previous button events;
-        .find("a.prev").on("click", goToPreviousSlide).end()
-        // attach next button events;
-        .find("a.next").on("click", goToNextSlide);
+    Carousel: function() {
+		HandlerModule.prototype.onInit.apply( this, arguments );
 
-    // if the device is NOT a touchscreen;
-    // then hide the controls when the user isn't interacting with them;
-    if (Modernizr.touch === false) {
+        var self = this,
+            elementSettings = this.getElementSettings(),
+			slidesToShow = +elementSettings.slidesToShow || 3,
+			isSingleSlide = 1 === slidesToShow,
+			defaultLGDevicesSlidesCount = isSingleSlide ? 1 : 2,
+            breakpoints = qazanaFrontend.config.breakpoints;
 
-        // show/hide the elements that overlay $slideshow1 (social, prev, next);
-        $biggie.parent().on("mouseenter", function() {
-            $biggie.parent().removeClass(disabledClass);
-        }).on("mouseleave", function() {
-            $biggie.parent().addClass(disabledClass);
-        })
-        // on load, disable the slideshow (maybe);
-        .each(function() {
-            var disable = function() {
+		var slickOptions = {
+			slidesToShow: slidesToShow,
+			autoplay: 'yes' === elementSettings.autoplay,
+			autoplaySpeed: elementSettings.autoplaySpeed,
+			infinite: 'yes' === elementSettings.infinite,
+			pauseOnHover: 'yes' === elementSettings.pauseOnHover,
+			speed: elementSettings.speed,
+			arrows: -1 !== [ 'arrows', 'both' ].indexOf( elementSettings.navigation ),
+			dots: -1 !== [ 'dots', 'both' ].indexOf( elementSettings.navigation ),
+			rtl: 'rtl' === elementSettings.direction,
+			responsive: [
+				{
+					breakpoint: breakpoints.lg,
+					settings: {
+						slidesToShow: +elementSettings.slidesToShow_tablet || defaultLGDevicesSlidesCount,
+						slidesToScroll: +elementSettings.slidesToScroll_tablet || defaultLGDevicesSlidesCount,
+					},
+				},
+				{
+					breakpoint: breakpoints.md,
+					settings: {
+						slidesToShow: +elementSettings.slidesToShow_mobile || 1,
+						slidesToScroll: +elementSettings.slidesToScroll_mobile || 1,
+					},
+				},
+			],
+		};
 
-                // make sure the user isn't hovering over the photo gallery;
-                if ($biggie.parent().is(":hover") === false) {
-                    $biggie.parent().addClass(disabledClass);
-                }
-            };
+		if ( isSingleSlide ) {
+			slickOptions.fade = 'fade' === elementSettings.effect;
+		} else {
+			slickOptions.slidesToScroll = +elementSettings.slidesToScroll || defaultLGDevicesSlidesCount;
+		}
 
-            // before "disabling" the overlay elements, wait 2 seconds;
-            window.setTimeout(disable, 2000);
-        });
-    }
+        var options = jQuery.extend( {}, this.slickGlobals, slickOptions );
 
-};
+        this.elements.$carousel.slick( options );
 
-module.exports = Carousel;
+        // after slick is initialized (these wouldn't work properly if done before init);
+        this.elements.$carousel.on( 'init', function( event, slick ) {
+            // add the navigation.
+            self.addNav( slick.$slider.parent(), slick.$slider, options );
+        } );
+	},
+
+} );
+
+module.exports = CarouselModule;

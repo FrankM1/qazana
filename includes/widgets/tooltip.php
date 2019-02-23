@@ -212,9 +212,6 @@ class Widget_Tooltip extends Widget_Base {
 			[
 				'label'     => __( 'Style', 'qazana' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'tooltip_style' => 'custom'
-				]
 			]
 		);
 

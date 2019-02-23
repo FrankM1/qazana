@@ -18,7 +18,7 @@ ElementsHandler = function( $ ) {
 		'video.default': require( 'qazana-frontend/handlers/video' ),
 		'tooltip.default': require( 'qazana-frontend/handlers/tooltip' ),
 		'piechart.default': require( 'qazana-frontend/handlers/piechart' ),
-		//'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
+		'image-carousel.default': require( 'qazana-frontend/handlers/image-carousel' ),
 		'text-editor.default': require( 'qazana-frontend/handlers/text-editor' ),
 		'spacer.default': require( 'qazana-frontend/handlers/spacer' ),
 	};

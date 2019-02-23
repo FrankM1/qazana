@@ -28,14 +28,14 @@ GlobalHandler = HandlerModule.extend( {
 		return elementSettings._animation_animated && elementSettings._animation_in;
 	},
 
+    removeLoader: function() {
+        this.$element.find( '.qazana-loading-indicator' ).remove();
+        this.$element.removeClass( 'qazana-has-loading-indicator' );
+    },
+
 	onInit: function() {
-		var self = this;
-
-		HandlerModule.prototype.onInit.apply( self, arguments );
-
-		if ( ! self.getAnimation() ) {
-
-		}
+		HandlerModule.prototype.onInit.apply( this, arguments );
+       this.removeLoader();
 	},
 
 	onElementChange: function( propertyName ) {

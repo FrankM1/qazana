@@ -30,7 +30,7 @@ abstract class Widget_Base extends Element_Base {
 	 *
 	 * @var bool
 	 */
-	protected $_has_template_content = true;
+    protected $_has_template_content = true;
 
 	/**
 	 * Retrieve element type.
@@ -214,6 +214,20 @@ abstract class Widget_Base extends Element_Base {
 		return true;
 	}
 
+    /**
+	 * Show loading indicator.
+	 *
+	 * Whether to show the widget's loading indicator or not. By default returns false.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return bool Whether to show the widget's loading indicator or not.
+	 */
+	public function show_loading_indicator() {
+		return false;
+    }
+
 	/**
 	 * Start widget controls section.
 	 *
@@ -328,6 +342,22 @@ abstract class Widget_Base extends Element_Base {
 		}
 
 		return $edit_tools;
+    }
+
+    /**
+	 * Get loading indicator.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @return array Default edit tools.
+	 */
+	protected function get_default_loading_indicator() {
+        $html = '<div class="qazana-loading-indicator">';
+            $html .= '<span class="qazana-loading-indicator__color-spinner"><span class="qazana-loading-indicator__spinner"></span></span>';
+        $html .= '</div>';
+
+		return $html;
 	}
 
 	/**
@@ -568,7 +598,12 @@ abstract class Widget_Base extends Element_Base {
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
 
 		$this->add_render_attribute( '_wrapper', 'class', $this->get_name() . '-skin-' . $skin_type );
-		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
+        $this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
+
+
+        if ( $this->show_loading_indicator() ) {
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-has-loading-indicator' );
+		}
 
 		$skin = $this->get_current_skin();
 		if ( $skin ) {
@@ -587,8 +622,14 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
-		$this->_add_render_attributes();
-		?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
+
+        $this->_add_render_attributes();
+
+        ?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
+
+        if ( $this->show_loading_indicator() ) {
+            echo $this->get_default_loading_indicator();
+        }
 	}
 
 	/**

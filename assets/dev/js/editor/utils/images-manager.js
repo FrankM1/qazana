@@ -91,7 +91,7 @@ ImagesManager = function() {
 
 	self.getRemoteItems = function() {
 		var requestedItems = [],
-		registeredItemsLength = Object.keys( registeredItems ).length,
+            registeredItemsLength = Object.keys( registeredItems ).length,
 			image,
 			index;
 
@@ -101,7 +101,7 @@ ImagesManager = function() {
 		} else if ( 1 === registeredItemsLength ) {
 			image = registeredItems[ Object.keys( registeredItems )[ 0 ] ];
 
-			if ( image && image.model ) {
+			if ( image && image.model && ! image.preview ) {
 				image.model.renderRemoteServer();
 				return;
 			}
@@ -119,7 +119,7 @@ ImagesManager = function() {
 				size: size,
 				is_first_time: isFirstTime,
 			} );
-		}
+        }
 
 		qazana.ajax.send(
 			'get_images_details', {

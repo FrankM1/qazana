@@ -81,7 +81,11 @@ class Group_Control_Image_Size extends Group_Control_Base {
 			$settings[ $image_size_key . '_size' ] = '';
 		}
 
-		$size = $settings[ $image_size_key . '_size' ];
+        if ( empty( $settings[ $image_size_key . '_resize' ] ) ) {
+            $size = 'full';
+        } else {
+            $size = $settings[ $image_size_key . '_size' ];
+        }
 
 		$image_class = ! empty( $settings['hover_animation'] ) ? 'qazana-animation-' . $settings['hover_animation'] : '';
 
@@ -201,10 +205,19 @@ class Group_Control_Image_Size extends Group_Control_Base {
 	protected function init_fields() {
 		$fields = [];
 
+		$fields['resize'] = [
+            'label'        => __( 'Resize images', 'qazana' ),
+            'type'         => Controls_Manager::SWITCHER,
+            'return_value' => 'true',
+        ];
+
 		$fields['size'] = [
 			'label' => _x( 'Image Size', 'Image Size Control', 'qazana' ),
 			'type' => Controls_Manager::SELECT,
-			'label_block' => false,
+            'label_block' => false,
+            'condition'   => [
+                'resize!' => '',
+            ],
 		];
 
 		$fields['custom_dimension'] = [

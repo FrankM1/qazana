@@ -25,8 +25,39 @@ ControlMediaItemView = ControlBaseDataView.extend( {
 		this.initRemoveDialog();
 	},
 
-	applySavedValue: function() {
-		var images = this.getControlValue(),
+    generateThumbnails: function( images ) {
+        var imageThumbnail = [];
+
+        images.forEach( function( image ) {
+            // Generate thumbnail previews for control.
+            var thumbnailImage = {
+				id: image.id,
+				url: image.url,
+                size: 'custom',
+                dimension: {
+                    width: 100,
+                    height: 100,
+                },
+                preview: true,
+            };
+
+            var imageUrl = qazana.imagesManager.getImageUrl( thumbnailImage );
+
+            if ( imageUrl ) {
+                imageThumbnail.push( {
+                    id: image.id,
+                    url: imageUrl,
+                } );
+            }
+
+        } );
+
+        return imageThumbnail;
+    },
+
+    applySavedValue: function() {
+        var images = this.getControlValue(),
+            thumbnailImages,
 			imagesCount = images.length,
 			hasImages = !! imagesCount;
 
@@ -42,15 +73,22 @@ ControlMediaItemView = ControlBaseDataView.extend( {
 
 		if ( ! hasImages ) {
 			return;
-		}
+        }
 
-		this.getControlValue().forEach( function( image ) {
-			var $thumbnail = jQuery( '<div>', { class: 'qazana-control-gallery-thumbnail' } );
+        thumbnailImages = this.generateThumbnails( images );
 
-			$thumbnail.css( 'background-image', 'url(' + image.url + ')' );
+        // There is a bug here whereby first load doesn't generate thumbs
+        if ( _.isEmpty( thumbnailImages ) ) {
+            thumbnailImages = images;
+        }
 
-			$galleryThumbnails.append( $thumbnail );
-		} );
+        thumbnailImages.forEach( function( image ) {
+            var $thumbnail = jQuery( '<div>', { class: 'qazana-control-gallery-thumbnail' } );
+
+            $thumbnail.css( 'background-image', 'url(' + image.url + ')' );
+
+            $galleryThumbnails.append( $thumbnail );
+        } );
 	},
 
 	hasImages: function() {

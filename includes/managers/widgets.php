@@ -94,7 +94,8 @@ class Widgets_Manager {
 			'shortcode',
 			'sidebar',
 			'social-icons',
-			'spacer',
+            'spacer',
+            'star-rating',
 			'testimonial',
 			'text-editor',
 			'tooltip',
@@ -391,7 +392,7 @@ class Widgets_Manager {
 
 		return $widget_obj->get_form();
 	}
-	
+
 	/**
 	 * Retrieve inline editing configuration.
 	 *

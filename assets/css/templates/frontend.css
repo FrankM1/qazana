@@ -1563,28 +1563,27 @@ ul.qazana-icon-list-items.qazana-inline-items {
     border-radius: 50%; }
 
 .qazana-link {
-  transition: all 0.5s; }
-  .qazana-link .qazana-link-wrapper {
-    display: flex;
-    position: relative;
-    align-items: center; }
-  .qazana-link.qazana-align-icon-right .qazana-link-wrapper {
+  transition: all 0.5s;
+  display: flex;
+  position: relative;
+  align-items: center; }
+  .qazana-align-icon-right .qazana-link {
     flex-direction: row-reverse; }
   .qazana-link .qazana-align-icon-right {
     margin-left: 5px; }
   .qazana-link .qazana-align-icon-left {
     margin-right: 5px; }
 
-.qazana-align-right .qazana-link-wrapper {
+.qazana-align-right .qazana-link {
   justify-content: flex-end; }
 
-.qazana-align-left .qazana-link-wrapper {
+.qazana-align-left .qazana-link {
   justify-content: flex-start; }
 
-.qazana-align-center .qazana-link-wrapper {
+.qazana-align-center .qazana-link {
   justify-content: center; }
 
-.qazana-align-justify .qazana-link-wrapper {
+.qazana-align-justify .qazana-link {
   justify-content: space-between; }
 
 .qazana-icon-hover-reveal-yes .qazana-link {
@@ -2190,6 +2189,70 @@ body.qazana-page .qazana-widget-menu-anchor {
 
 .qazana-shape-circle .qazana-icon.qazana-social-icon {
   border-radius: 50%; }
+
+.qazana-star-rating {
+  color: #CCD6DF;
+  font-family: FontAwesome;
+  display: inline-block; }
+  .qazana-star-rating i {
+    display: inline-block;
+    position: relative;
+    font-style: normal;
+    cursor: default; }
+    .qazana-star-rating i:before {
+      content: '\f005';
+      display: block;
+      font-size: inherit;
+      font-family: inherit;
+      position: absolute;
+      overflow: hidden;
+      color: #f0ad4e;
+      top: 0;
+      left: 0; }
+  .qazana-star-rating .qazana-star-empty:before {
+    content: none; }
+  .qazana-star-rating .qazana-star-1:before {
+    width: 10%; }
+  .qazana-star-rating .qazana-star-2:before {
+    width: 20%; }
+  .qazana-star-rating .qazana-star-3:before {
+    width: 30%; }
+  .qazana-star-rating .qazana-star-4:before {
+    width: 40%; }
+  .qazana-star-rating .qazana-star-5:before {
+    width: 50%; }
+  .qazana-star-rating .qazana-star-6:before {
+    width: 60%; }
+  .qazana-star-rating .qazana-star-7:before {
+    width: 70%; }
+  .qazana-star-rating .qazana-star-8:before {
+    width: 80%; }
+  .qazana-star-rating .qazana-star-9:before {
+    width: 90%; }
+  .qazana-star-rating__wrapper {
+    display: flex;
+    align-items: center; }
+  .qazana-star-rating__title {
+    margin-right: 10px; }
+  .qazana-star-rating--align-right .qazana-star-rating__wrapper {
+    text-align: right;
+    justify-content: flex-end; }
+  .qazana-star-rating--align-left .qazana-star-rating__wrapper {
+    text-align: left;
+    justify-content: flex-start; }
+  .qazana-star-rating--align-center .qazana-star-rating__wrapper {
+    text-align: center;
+    justify-content: center; }
+  .qazana-star-rating--align-justify .qazana-star-rating__title {
+    margin-right: auto; }
+
+.last-star {
+  letter-spacing: 0; }
+
+.qazana--star-style-star_unicode .qazana-star-rating {
+  font-family: 'Arial', 'Helvetica', sans-serif; }
+  .qazana--star-style-star_unicode .qazana-star-rating i:not(.qazana-star-empty):before {
+    content: '\002605'; }
 
 .qazana-testimonial__wrapper {
   overflow: hidden;
