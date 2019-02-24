@@ -101,7 +101,8 @@ class Group_Control_Box_Shadow extends Group_Control_Base {
 			'popover' => [
 				'starter_title' => _x( 'Box Shadow', 'Box Shadow Control', 'qazana' ),
 				'starter_name' => 'box_shadow_type',
-				'starter_value' => 'yes',
+                'starter_value' => 'yes',
+                'seperator' => 'before',
 			],
 		];
 	}

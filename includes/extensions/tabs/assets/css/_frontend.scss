@@ -3,16 +3,24 @@ $direction: ltr;
 @import "helpers/mixins";
 @import "helpers/direction";
 @import "frontend/breakpoints/breakpoints";
+//
+// Tabs
+//
 
 .qazana-widget-tabs {
+
     &.qazana-tabs-view-vertical {
+
         .qazana-tabs-wrapper {
             width: 25%;
             flex-shrink: 0;
         }
+
         .qazana-tab-desktop-title {
+
             &.qazana-active {
                 @include border-end-property(style, none);
+
                 &:before,
                 &:after {
                     height: 999em;
@@ -20,101 +28,128 @@ $direction: ltr;
                     @include end(0);
                     @include border-end-property(style, solid);
                 }
+
                 &:before {
                     top: 0;
                     transform: translateY(-100%);
                 }
+
                 &:after {
                     top: 100%;
                 }
             }
         }
     }
+
     &.qazana-tabs-view-horizontal {
+
         .qazana-tab-desktop-title {
             display: table-cell;
+            border: 1px solid #e9e9e9;
+            letter-spacing: -.4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 11px;
+
+            &:first-child {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            &:last-child {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+            &,
+            a {
+                color: #383838;
+            }
+
             &.qazana-active {
                 border-bottom-style: none;
-                &:before,
-                &:after {
-                    bottom: 0;
-                    height: 0;
-                    width: 999em;
-                    border-bottom-style: solid;
-                }
-                &:before {
-                    right: 100%;
-                }
-                &:after {
-                    left: 100%;
+                background-color: #3b55e6;
+
+                &,
+                a {
+                    color: white;
                 }
             }
         }
     }
-    .qazana-tab-title,
-    .qazana-tab-title:before,
-    .qazana-tab-title:after,
-    .qazana-tab-content,
-    .qazana-tabs-content-wrapper {
-        border: 1px none $gray-light;
-    }
-    .qazana-tab-title {
-        &::-moz-focus-inner {
-            padding: 0;
-            border: 0;
-        }
-        &:focus {
-            outline: 0;
-        }
-    }
+
     .qazana-tabs {
         text-align: $start;
     }
+
     .qazana-tabs-wrapper {
         overflow: hidden;
     }
+
     .qazana-tab-title {
         cursor: pointer;
+        outline: none;
     }
+
     .qazana-tab-desktop-title {
         position: relative;
-        padding: 20px 25px;
+        padding: 5px 30px;
         font-weight: bold;
         line-height: 1;
         border: solid transparent;
+
+        a {
+            line-height: 28px;
+        }
+
         &.qazana-active {
-            border-color: $gray-light;
-            &:before,
-            &:after {
-                display: block;
-                content: '';
-                position: absolute;
-            }
+            border-color: transparent;
         }
     }
+
     .qazana-tab-mobile-title {
         padding: 10px 10px;
         cursor: pointer;
     }
-    .qazana-tab-content {
-        padding: 20px;
-        display: none;
-    }
-} // Responsive mode
 
+    .qazana-tab-content {
+        padding: 20px 0;
+        display: none;
+        opacity: 0;
+        transition: transform .25s cubic-bezier(.5, 0, .7, .3), opacity .3s cubic-bezier(.5, 0, .7, .3);
+        transform: translateY(50%);
+        visibility: hidden;
+
+        &.qazana-active {
+            transform: translateY(0);
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            animation-name: qazanaChangeTabSlideActive;
+            animation-timing-function: ease;
+            animation-duration: .4s;
+        }
+    }
+}
+
+// Responsive mode
 @media (max-width: $screen-sm-max) {
+
     .qazana-tabs {
-        .qazana-tab-title,
-        .qazana-tab-content {
+
+        .qazana-tab-title {
             border-style: solid;
             border-bottom-style: none;
         }
+
         .qazana-tabs-wrapper {
             display: none;
         }
+
         .qazana-tabs-content-wrapper {
             border-bottom-style: solid;
         }
+
         .qazana-tab-content {
             padding: 10px;
         }
@@ -122,11 +157,15 @@ $direction: ltr;
 }
 
 @media (min-width: $screen-md-min) {
+
     .qazana-widget-tabs {
+
         &.qazana-tabs-view-vertical {
+
             .qazana-tabs {
                 display: flex;
             }
+
             .qazana-tabs-content-wrapper {
                 flex-grow: 1;
                 border-style: solid;
@@ -134,17 +173,21 @@ $direction: ltr;
             }
         }
     }
-    .qazana-widget-tabs {
-        &.qazana-tabs-view-horizontal {
-            .qazana-tab-content {
-                border-style: solid;
-                border-top-style: none;
-            }
-        }
-    }
+
     .qazana-tabs {
+
         .qazana-tab-mobile-title {
             display: none;
         }
+    }
+}
+
+@keyframes qazanaChangeTabSlideActive {
+    from {
+        transform: translateX(50px);
+    }
+
+    to {
+        transform: translateX(0);
     }
 }

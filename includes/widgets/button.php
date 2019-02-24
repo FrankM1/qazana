@@ -260,8 +260,8 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-align-icon-right .qazana-button-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-align-icon-left .qazana-button-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-align-icon-right .qazana-inline-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-align-icon-left .qazana-inline-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -283,7 +283,7 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -330,7 +330,7 @@ class Widget_Button extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -341,7 +341,7 @@ class Widget_Button extends Widget_Base {
 				'name' => 'typography',
 				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
-				'selector' => '{{WRAPPER}} .qazana-button .qazana-button-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-button .qazana-inline-content',
 			]
 		);
 
@@ -355,7 +355,7 @@ class Widget_Button extends Widget_Base {
 					'value' => Scheme_Color::COLOR_4,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -367,7 +367,7 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Border', 'qazana' ),
 				'placeholder' => '1px',
 				'default' => '1px',
-				'selector' => '{{WRAPPER}} .qazana-button .qazana-button-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-button .qazana-inline-content',
 			]
 		);
 
@@ -378,7 +378,7 @@ class Widget_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'border_border!' => ''
@@ -393,7 +393,7 @@ class Widget_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -415,7 +415,7 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -426,7 +426,7 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -440,7 +440,7 @@ class Widget_Button extends Widget_Base {
 					'border_border!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'border-color: {{VALUE}};',
 				],
 			]
 		);
@@ -512,8 +512,8 @@ class Widget_Button extends Widget_Base {
 
 		$this->add_render_attribute( 'button', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
 
-        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-button-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
+        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-inline-content' );
+        $this->add_render_attribute( 'button-icon', 'class', 'qazana-inline-icon' );
     }
 
     /**
@@ -531,7 +531,7 @@ class Widget_Button extends Widget_Base {
             <a <?php $this->render_attribute_string( 'button' ); ?>>
                 <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
                     <?php if ( $this->get_settings_for_display('icon') ) : ?>
-                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
+                        <span <?php $this->render_attribute_string( 'button-icon' ); ?>>
                             <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
                         </span>
                     <?php endif; ?>
@@ -560,9 +560,9 @@ class Widget_Button extends Widget_Base {
 		#>
         <div class="qazana-button-wrapper qazana-inner-wrapper qazana-align-icon-{{ settings.icon_align }}">
             <a id="{{ settings.css_id }}" class="qazana-button qazana-button-{{ settings.type }} qazana-weight-{{ settings.weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
-                <span class="qazana-button-content-wrapper">
+                <span class="qazana-inline-content">
                     <# if ( settings.icon ) { #>
-                    <span class="qazana-button-icon">
+                    <span class="qazana-inline-icon">
                         <i class="{{ settings.icon }}" aria-hidden="true"></i>
                     </span>
                     <# } #>

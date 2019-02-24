@@ -33,7 +33,7 @@
 	flex-wrap: wrap;
 	align-items: center;
     overflow: hidden;
-    
+
 	&.qazana-field-type-submit {
 		align-items: flex-end;
 	}
@@ -266,14 +266,6 @@
 		& > span {
 			display: flex;
 			justify-content: center;
-		}
-
-		.qazana-align-icon-right {
-			order: getValueByDirection( 2 ,0 );
-		}
-
-		.qazana-align-icon-left {
-			order: getValueByDirection( 0 ,2 );
 		}
 
 		&.qazana-size- {

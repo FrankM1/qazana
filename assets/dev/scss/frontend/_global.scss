@@ -1,24 +1,31 @@
 //
 // Global selectors for Qazana Front-End
 @import "global/aspect-ratio";
+@import "global/icon-align";
 
 .qazana {
     * {
+
         &,
         &:before,
         &:after {
             box-sizing: border-box;
         }
-    } // Reset Style for some themes and browsers
+    }
+
+    // Reset Style for some themes and browsers
     hyphens: manual;
+
     a {
         box-shadow: none;
         text-decoration: none;
     }
+
     hr {
         margin: 0;
         background-color: transparent;
     }
+
     img {
         height: auto;
         max-width: 100%;
@@ -26,9 +33,12 @@
         border-radius: 0;
         box-shadow: none;
     }
+
     .qazana-widget:not(.qazana-widget-text-editor) figure {
         margin: 0;
-    } // Responsive Embed
+    }
+
+    // Responsive Embed
     embed,
     iframe,
     object,
@@ -39,9 +49,12 @@
         line-height: 1;
         border: none;
     }
+
     .qazana-custom-embed {
         line-height: 0; //for google maps margin bottom
-    } // Background Video
+    }
+
+    // Background Video
     .qazana-background-video-container {
         height: 100%;
         width: 100%;
@@ -51,10 +64,12 @@
         overflow: hidden;
         z-index: $ground-layer;
         transition: opacity 1s;
+
         &.qazana-loading {
             opacity: 0;
         }
     }
+
     .qazana-background-video-embed {
         max-width: none; //Stretch the background video on all section
         position: absolute;
@@ -62,6 +77,7 @@
         left: 0; //reset when the parent has set text-align: center;
         transform: translateY(-50%);
     }
+
     .qazana-background-video {
         position: absolute;
         max-width: none;
@@ -69,9 +85,12 @@
         left: 50%;
         transform: translateY(-50%) translateX(-50%);
     }
+
     .qazana-html5-video {
         object-fit: cover; // For HTML5 portrait video
-    } // End Background Video
+    }
+
+    // End Background Video
     .qazana-background-overlay {
         height: 100%;
         width: 100%;
@@ -90,20 +109,59 @@
 .qazana-align- {
     &center {
         text-align: center;
+
         .qazana-inner-wrapper {
             margin: 0 auto;
         }
     }
+
     &right {
         text-align: right;
+
         .qazana-inner-wrapper {
             margin-left: auto;
         }
     }
+
     &left {
         text-align: left;
+
         .qazana-inner-wrapper {
             margin-right: auto;
+        }
+    }
+}
+
+// Alignment for Tablet
+@media (max-width: $screen-md-max) {
+    .qazana-tablet-align- {
+        &center {
+            text-align: center;
+        }
+
+        &right {
+            text-align: right;
+        }
+
+        &left {
+            text-align: left;
+        }
+    }
+}
+
+// Alignment for Mobile
+@media (max-width: $screen-sm-max) {
+    .qazana-mobile-align- {
+        &center {
+            text-align: center;
+        }
+
+        &right {
+            text-align: right;
+        }
+
+        &left {
+            text-align: left;
         }
     }
 }
@@ -117,6 +175,7 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+
     i {
         font-size: 100px;
         color: #fff;
@@ -124,10 +183,12 @@
         text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
         transition: all .5s;
     }
+
     &.qazana-playing {
         i {
             font-family: 'FontAwesome';
             animation: fa-spin 2s infinite linear;
+
             &:before {
                 content: "\f1ce";
             }
@@ -144,6 +205,7 @@
     color: $slides_gui;
     top: 50%;
     transform: translateY(-50%);
+
     &.swiper-button-disabled {
         opacity: 0.3;
     }
@@ -151,36 +213,6 @@
 
 .qazana-tag {
     display: inline-flex;
-}
-
-// Alignment for Tablet
-@media (max-width: $screen-md-max) {
-    .qazana-tablet-align- {
-        &center {
-            text-align: center;
-        }
-        &right {
-            text-align: right;
-        }
-        &left {
-            text-align: left;
-        }
-    }
-}
-
-// Alignment for Mobile
-@media (max-width: $screen-sm-max) {
-    .qazana-mobile-align- {
-        &center {
-            text-align: center;
-        }
-        &right {
-            text-align: right;
-        }
-        &left {
-            text-align: left;
-        }
-    }
 }
 
 .qazana-element-inline {
@@ -191,6 +223,7 @@
     .qazana-element-inline {
         display: inline-flex !important;
     }
+
     .qazana-widget-container {
         z-index: 1;
     }
@@ -204,6 +237,7 @@ a.qazana-edit-template {
 #wpadminbar #wp-admin-bar-qazana_edit_page {
     background-color: $brand-primary;
     transition: background-color 0.3s;
+
     >.ab-item {
         text-transform: uppercase;
         background-color: transparent;
@@ -214,6 +248,7 @@ a.qazana-edit-template {
         transition: all 0.3s ease-in;
         display: flex;
         align-items: center;
+
         &::before {
             background-image: url(../images/logo-small-light.png) !important;
             background-repeat: no-repeat;

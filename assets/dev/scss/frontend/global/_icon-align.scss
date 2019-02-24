@@ -1,0 +1,27 @@
+.qazana-inline-content {
+    display: flex;
+}
+
+.qazana-align-icon-right {
+    flex-direction: row-reverse;
+}
+
+.qazana-align-icon- {
+    &right .qazana-inline-icon {
+        margin-left: 5px;
+    }
+
+    &left .qazana-inline-icon {
+        margin-right: 5px;
+    }
+}
+
+.qazana-icon-hover-reveal-yes {
+    &.qazana-align-icon-right .qazana-inline-icon {
+        margin-left: 0;
+    }
+
+    &.qazana-align-icon-left .qazana-inline-icon {
+        margin-right: 0;
+    }
+}

@@ -1051,19 +1051,22 @@ module.exports = HandlerModule.extend({
 	},
 
 	bindEvents: function bindEvents() {
-		var self = this;
+		var _this = this;
 
-		self.elements.$tabTitles.on('focus', function (event) {
-			self.changeActiveTab(event.currentTarget.dataset.tab);
-		});
+		this.elements.$tabTitles.on({
+			keydown: function keydown(event) {
+				if ('Enter' === event.key) {
+					event.preventDefault();
 
-		if (self.getSettings('toggleSelf')) {
-			self.elements.$tabTitles.on('mousedown', function (event) {
-				if (jQuery(event.currentTarget).is(':focus')) {
-					self.changeActiveTab(event.currentTarget.dataset.tab);
+					_this.changeActiveTab(event.currentTarget.dataset.tab);
 				}
-			});
-		}
+			},
+			click: function click(event) {
+				event.preventDefault();
+
+				_this.changeActiveTab(event.currentTarget.dataset.tab);
+			}
+		});
 	},
 
 	onInit: function onInit() {
