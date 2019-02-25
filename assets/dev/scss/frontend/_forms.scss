@@ -34,10 +34,6 @@
 	align-items: center;
     overflow: hidden;
 
-	&.qazana-field-type-submit {
-		align-items: flex-end;
-	}
-
 	.qazana-field-textual {
 		width: 100%;
 		max-width: 100%; // Tweak for themes that set this property
@@ -176,12 +172,11 @@
 
 @mixin btn-align() {
 
-	&center .qazana-field-type-submit{
+	&center .qazana-field-type-submit {
 		justify-content: center;
 	}
 
-	&stretch .qazana-field-type-submit{
-
+	&stretch .qazana-field-type-submit {
 		button {
 			flex-basis: 100%;
 		}
@@ -259,9 +254,6 @@
 .qazana-form {
 
 	.qazana-button {
-		padding-top: 0;
-		padding-bottom: 0;
-		border: 0 none;
 
 		& > span {
 			display: flex;

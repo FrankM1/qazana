@@ -260,8 +260,8 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-align-icon-right .qazana-inline-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-align-icon-left .qazana-inline-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-content-right .qazana-inline-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-content-left .qazana-inline-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -510,7 +510,7 @@ class Widget_Button extends Widget_Base {
             $this->add_render_attribute( 'button', 'class', 'qazana-button-' . $settings['type'] );
         }
 
-		$this->add_render_attribute( 'button', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
+		$this->add_render_attribute( 'button', 'class', 'qazana-inline-content-' . $this->get_responsive_settings('icon_align') );
 
         $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-inline-content' );
         $this->add_render_attribute( 'button-icon', 'class', 'qazana-inline-icon' );
@@ -558,7 +558,7 @@ class Widget_Button extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-button-wrapper qazana-inner-wrapper qazana-align-icon-{{ settings.icon_align }}">
+        <div class="qazana-button-wrapper qazana-inner-wrapper qazana-inline-content-{{ settings.icon_align }}">
             <a id="{{ settings.css_id }}" class="qazana-button qazana-button-{{ settings.type }} qazana-weight-{{ settings.weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
                 <span class="qazana-inline-content">
                     <# if ( settings.icon ) { #>

@@ -26,7 +26,6 @@ function qazana_register_controls_section_carousel_settings( $element, $section_
             'label'              => __( 'Slides to Show', 'qazana' ),
             'type'               => \Qazana\Controls_Manager::SELECT,
             'default'            => 2,
-            'tablet_default'     => 2,
             'mobile_default'     => 1,
             'options'            => $slides_to_show,
             'frontend_available' => true,
@@ -235,7 +234,6 @@ function qazana_register_controls_section_carousel_settings( $element, $section_
         [
             'label'       => esc_html__( 'Carousel Class', 'qazana' ),
             'type'        => \Qazana\Controls_Manager::TEXT,
-            'default'     => '',
             'description' => esc_html__( 'Class added to the carousel item (e.g., ".my-nav-carousel")', 'qazana' ),
         ]
     );
@@ -245,7 +243,6 @@ function qazana_register_controls_section_carousel_settings( $element, $section_
         [
             'label'       => esc_html__( 'Sync With', 'qazana' ),
             'type'        => \Qazana\Controls_Manager::TEXT,
-            'default'     => '',
             'description' => esc_html__( 'Selector of another carousel to sync with (e.g., ".my-other-nav-carousel")', 'qazana' ),
         ]
     );
@@ -354,14 +351,6 @@ function qazana_register_controls_section_style_arrows_navigation( $element, $se
                 'bottom' => 'auto',
                 'left'   => '',
             ],
-            'default' => array(
-                'unit'     => 'px',
-                'top'      => 0,
-                'right'    => '-60',
-                'bottom'   => 0,
-                'left'     => '-60',
-                'isLinked' => false,
-            ),
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation a.prev' => 'left: {{LEFT}}{{UNIT}};',
                 '{{WRAPPER}} div.slick-navigation a.next' => 'right: {{RIGHT}}{{UNIT}};',
@@ -385,10 +374,6 @@ function qazana_register_controls_section_style_arrows_navigation( $element, $se
                 ],
             ],
             'size_units' => [ '%', 'px' ],
-            'default'    => array(
-                'unit' => '%',
-                'size' => '50',
-            ),
             'selectors' => [
                 '{{WRAPPER}} div.slick-navigation a.prev, {{WRAPPER}} div.slick-navigation a.next' => 'top: {{SIZE}}{{UNIT}};',
             ],
@@ -525,7 +510,7 @@ function qazana_register_controls_section_style_bullets_navigation( $element, $s
                 ],
             ],
             'selectors' => [
-                '{{WRAPPER}} ul.slick-dots li' => 'margin:0 {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} ul.slick-dots li' => 'margin: 0 {{SIZE}}{{UNIT}};',
             ],
             'condition' => [
                 'navigation' => [ 'dots', 'both' ],
@@ -565,10 +550,6 @@ function qazana_register_controls_section_style_bullets_navigation( $element, $s
                     'max' => 100,
                 ],
             ],
-            'default' => array(
-                'unit' => 'px',
-                'size' => '-30',
-            ),
             'selectors' => [
                 '{{WRAPPER}} .slick-dots' => 'bottom: {{SIZE}}{{UNIT}};',
             ],

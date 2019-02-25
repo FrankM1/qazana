@@ -1,5 +1,11 @@
 // Button
 
+.qazana-align-justify {
+    .qazana-button {
+        display: block;
+    }
+}
+
 .qazana-button {
     display: inline-block;
 
@@ -88,11 +94,11 @@
     .qazana-button:hover,
     button:hover {
 
-        &.qazana-align-icon-right .qazana-inline-icon {
+        &.qazana-inline-content-right .qazana-inline-icon {
             margin-left: 10px;
         }
 
-        &.qazana-align-icon-left .qazana-inline-icon {
+        &.qazana-inline-content-left .qazana-inline-icon {
             margin-right: 10px;
         }
     }

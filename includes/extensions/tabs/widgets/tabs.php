@@ -409,7 +409,7 @@ class Tabs extends Widget_Base {
 
                     $this->add_render_attribute( $tab_inline_content_setting_key, [
                         'href' => '#!',
-						'class' => [ 'qazana-inline-content', 'qazana-align-icon-' . $this->get_settings( 'icon_align' ) ]
+						'class' => [ 'qazana-inline-content', 'qazana-inline-content-' . $this->get_settings( 'icon_align' ) ]
                     ] );
 
 					?>

@@ -1,12 +1,23 @@
 .qazana-inline-content {
     display: flex;
+    align-items: center;
 }
 
-.qazana-align-icon-right {
-    flex-direction: row-reverse;
+.qazana-align-justify {
+    .qazana-inline-content {
+        justify-content: center;
+    }
 }
 
-.qazana-align-icon- {
+.qazana-inline-content-right {
+
+    &,
+    .qazana-inline-content {
+        flex-direction: row-reverse;
+    }
+}
+
+.qazana-inline-content- {
     &right .qazana-inline-icon {
         margin-left: 5px;
     }
@@ -17,11 +28,11 @@
 }
 
 .qazana-icon-hover-reveal-yes {
-    &.qazana-align-icon-right .qazana-inline-icon {
+    &.qazana-inline-content-right .qazana-inline-icon {
         margin-left: 0;
     }
 
-    &.qazana-align-icon-left .qazana-inline-icon {
+    &.qazana-inline-content-left .qazana-inline-icon {
         margin-right: 0;
     }
 }

@@ -2187,9 +2187,11 @@ CarouselModule = ViewModule.extend({
         prevArrow: null, // Allows you to select a node or customize the HTML for the "Previous" arrow.
         nextArrow: null, // Allows you to select a node or customize the HTML for the "Next" arrow.
         centerMode: false, // Enables centered view with partial prev/next slides. Use with odd numbered slidesToShow counts.
+        draggable: window.Modernizr && true === window.Modernizr.touch || function checkTouch() {
+            return !!('ontouchstart' in window || window.DocumentTouch && doc instanceof window.DocumentTouch);
+        }(), // Enable mouse dragging
         centerPadding: '50px', // Side padding when in center mode (px or %)
         cssEase: 'cubic-bezier(.29,1,.29,1)', // Custom easing. See http://cubic-bezier.com/#.29,1,.29,1 Mimicking Greenshock Power4.Ease-Out
-        draggable: Modernizr.touch, // Enable mouse dragging
         focusOnSelect: false, // Enable focus on selected element (click)
         easing: 'linear', // Add easing for jQuery animate. Use with easing libraries or default easing methods
         lazyLoad: 'ondemand', // Set lazy loading technique. Accepts 'ondemand' or 'progressive'.

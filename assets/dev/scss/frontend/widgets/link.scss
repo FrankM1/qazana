@@ -1,26 +1,7 @@
 .qazana-link {
     transition: $transition-hover;
-    display: flex;
     position: relative;
     align-items: center;
-}
-
-.qazana-align- {
-    &right .qazana-link {
-        justify-content: flex-end;
-    }
-
-    &left .qazana-link {
-        justify-content: flex-start;
-    }
-
-    &center .qazana-link {
-        justify-content: center;
-    }
-
-    &justify .qazana-link {
-        justify-content: space-between;
-    }
 }
 
 // Icon Hover
@@ -39,11 +20,11 @@
     .link:hover .qazana-link-icon {
         max-width: 100px;
 
-        &.qazana-align-icon-right {
+        &.qazana-inline-content-right {
             margin-left: 10px;
         }
 
-        &.qazana-align-icon-left {
+        &.qazana-inline-content-left {
             margin-right: 10px;
         }
     }
