@@ -239,13 +239,28 @@ class Widget_Progress extends Widget_Base {
 					'value' => Scheme_Color::COLOR_1,
 				],
 			]
+        );
+
+        $this->add_control(
+			'percentage_color',
+			[
+				'label' => __( 'Percentage Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .qazana-progress-percentage' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_1,
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'typography',
-				'selector' => '{{WRAPPER}} .qazana-title',
+				'selector' => '{{WRAPPER}} .qazana-title, {{WRAPPER}} .qazana-progress-percentage',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
         );
@@ -281,7 +296,7 @@ class Widget_Progress extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-progress-text, {{WRAPPER}} .qazana-progress-percentage' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-progress-description, {{WRAPPER}} .qazana-progress-percentage' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -294,7 +309,7 @@ class Widget_Progress extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'description_typography',
-				'selector' => '{{WRAPPER}} .qazana-progress-text, {{WRAPPER}} .qazana-progress-percentage',
+				'selector' => '{{WRAPPER}} .qazana-progress-description, {{WRAPPER}} .qazana-progress-percentage',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
         );
@@ -321,7 +336,7 @@ class Widget_Progress extends Widget_Base {
 			'aria-valuenow' => $settings['percent']['size'],
 			'aria-valuetext' => $settings['inner_text'],
         ] );
-        
+
 		if ( ! empty( $settings['progress_type'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'progress-' . $settings['progress_type'] );
 		}
@@ -333,7 +348,7 @@ class Widget_Progress extends Widget_Base {
 
 		if ( ! empty( $settings['title'] ) ) { ?>
 			<span class="qazana-title"><?php echo $settings['title']; ?></span>
-			<span class="qazana-progress-text"><?php echo $settings['inner_text']; ?></span>
+			<span class="qazana-progress-description"><?php echo $settings['inner_text']; ?></span>
 		<?php } ?>
 
 		<?php if ( 'true' === $settings['display_percentage'] ) { ?>
@@ -370,7 +385,7 @@ class Widget_Progress extends Widget_Base {
 		<# if ( settings.title ) { #>
 		<span class="qazana-title">{{{ settings.title }}}</span><#
 		} #>
-		<span class="qazana-progress-text">{{{ settings.inner_text }}}</span>
+		<span class="qazana-progress-description">{{{ settings.inner_text }}}</span>
 		<# if ( 'true' === settings.display_percentage ) { #>
 			<span class="qazana-progress-percentage">{{{ settings.percent.size }}}%</span>
 		<# } #>

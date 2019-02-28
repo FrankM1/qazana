@@ -4,92 +4,92 @@
 
 .qazana {
 
-	&:after {
-		position: absolute;
-		opacity: 0;
-		width: 0;
-		height: 0;
-		padding: 0;
-		overflow: hidden;
-		clip: rect(0,0,0,0);
-		border: 0;
+    &:after {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
 
-		@media (min-width: $screen-lg-min) {
-			content: 'desktop';
-		}
+        @media (min-width: $screen-lg-min) {
+            content: 'desktop';
+        }
 
-		@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-			content: 'tablet';
-		}
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            content: 'tablet';
+        }
 
-		@media (max-width: $screen-sm-max) {
-			content: 'mobile';
-		}
+        @media (max-width: $screen-sm-max) {
+            content: 'mobile';
+        }
 
-	}
+    }
 }
 
 // Section
 .qazana-section {
-	position: relative;
+    position: relative;
 
-	// Container
-	.qazana-container {
-		display: flex;
-		margin-right: auto;
-		margin-left: auto;
-		position: relative;
-	}
+    // Container
+    .qazana-container {
+        display: flex;
+        margin-right: auto;
+        margin-left: auto;
+        position: relative;
+    }
 
-	// Max-width of container depending on section settings
-	&.qazana-section-boxed {
-		& > .qazana-container {
-			max-width: 1140px;
-		}
-	}
+    // Max-width of container depending on section settings
+    &.qazana-section-boxed {
+        &>.qazana-container {
+            max-width: 1140px;
+        }
+    }
 
-	// Stretched section settings
-	&.qazana-section-stretched {
-		position: relative;
-		width: 100%;
-	}
+    // Stretched section settings
+    &.qazana-section-stretched {
+        position: relative;
+        width: 100%;
+    }
 
-	// In section min-height / fit to screen mode
-	&.qazana-section-items- {
+    // In section min-height / fit to screen mode
+    &.qazana-section-items- {
 
-		&top {
+        &top {
 
-			> .qazana-container {
-				align-items: flex-start;
-			}
-		}
+            >.qazana-container {
+                align-items: flex-start;
+            }
+        }
 
-		&middle {
+        &middle {
 
-			> .qazana-container {
-				align-items: center;
-			}
-		}
+            >.qazana-container {
+                align-items: center;
+            }
+        }
 
-		&bottom {
+        &bottom {
 
-			> .qazana-container {
-				align-items: flex-end;
-			}
-		}
-	}
+            >.qazana-container {
+                align-items: flex-end;
+            }
+        }
+    }
 
-	@media (min-width: $screen-md-min) {
+    @media (min-width: $screen-md-min) {
 
-		// Section Full Height (note: don't be smart - min-height does not work well with the content position)
-		&.qazana-section-height-full {
-			height: 100vh;
+        // Section Full Height (note: don't be smart - min-height does not work well with the content position)
+        &.qazana-section-height-full {
+            height: 100vh;
 
-			> .qazana-container {
-				height: 100%;
-			}
-		}
-	}
+            >.qazana-container {
+                height: 100%;
+            }
+        }
+    }
 }
 
 
@@ -97,229 +97,248 @@
 
 .qazana-container {
 
-	> .qazana-row {
+    >.qazana-row {
 
-		> .qazana-column {
+        >.qazana-column {
 
-			> .qazana-column-wrap {
+            >.qazana-column-wrap {
 
-				.qazana-section-content-top > & {
-					align-items: flex-start;
-				}
+                .qazana-section-content-top>& {
+                    align-items: flex-start;
+                }
 
-				.qazana-section-content-middle > & {
-					align-items: center;
-				}
+                .qazana-section-content-middle>& {
+                    align-items: center;
+                }
 
-				.qazana-section-content-bottom > & {
-					align-items: flex-end;
-				}
+                .qazana-section-content-bottom>& {
+                    align-items: flex-end;
+                }
 
-				.qazana-section-content-fill > & {
-					align-items: stretch;
-				}
-			}
-		}
-	}
+                .qazana-section-content-fill>& {
+                    align-items: stretch;
+                }
+            }
+        }
+    }
 }
 
 // Row
 .qazana-row {
-	width: 100%;
-	display: flex;
+    width: 100%;
+    display: flex;
 
-	@media (max-width: $screen-md-max) {
-		flex-wrap: wrap;
-	}
+    @media (max-width: $screen-md-max) {
+        flex-wrap: wrap;
+    }
 }
 
 @media (max-width: 1024px) {
-  .qazana-row {
-    flex-wrap: wrap;
-  }
+    .qazana-row {
+        flex-wrap: wrap;
+    }
 }
 
 // Widget
 .qazana-column-wrap {
-	display: flex;
-	width: 100%;
+    display: flex;
+    width: 100%;
 }
 
 .qazana-widget-wrap {
-	width: 100%;
+    width: 100%;
     z-index: $ground-layer-overlay;
 }
 
 // Columns
 .qazana-column {
-	position: relative;
-	min-height: 1px;
-	display: flex;
-
+    position: relative;
+    min-height: 1px;
+    display: flex;
 }
 
 @mixin qazana-grid-classes {
 
-	@each $sizeKey, $size in $column-sizes {
+    @each $sizeKey,
+    $size in $column-sizes {
 
-		&.qazana-col-#{$sizeKey}, &[data-col="#{$sizeKey}"] {
-			width: $size;
-		}
-	}
+        &.qazana-col-#{$sizeKey},
+        &[data-col="#{$sizeKey}"] {
+            width: $size;
+        }
+    }
 }
 
 @mixin qazana-responsive($breakpoint-name) {
 
-	@each $size-name, $size in $column-sizes {
+    @each $size-name,
+    $size in $column-sizes {
 
-		&.qazana-#{$breakpoint-name}-#{$size-name} {
-			width: $size;
-		}
-	}
+        &.qazana-#{$breakpoint-name}-#{$size-name} {
+            width: $size;
+        }
+    }
 
 }
 
 // Columns Gap
 .qazana-row {
-	> .qazana-column {
-		> .qazana-element-populated {
-			.qazana-column-gap-narrow  > & {
-				padding: 5px;
-			}
+    >.qazana-column {
+        >.qazana-element-populated {
+            .qazana-column-gap-narrow>& {
+                padding: 5px;
+            }
 
-			.qazana-column-gap-default > & {
-				padding: 10px;
-			}
+            .qazana-column-gap-default>& {
+                padding: 10px;
+            }
 
-			.qazana-column-gap-extended > & {
-				padding: 15px;
-			}
+            .qazana-column-gap-extended>& {
+                padding: 15px;
+            }
 
-			.qazana-column-gap-wide > & {
-				padding: 20px;
-			}
+            .qazana-column-gap-wide>& {
+                padding: 20px;
+            }
 
-			.qazana-column-gap-wider > & {
-				padding: 30px;
-			}
-		}
-	}
+            .qazana-column-gap-wider>& {
+                padding: 30px;
+            }
+        }
+    }
 }
 
 // Columns Gap for Inner section
 .qazana-inner-section {
 
-	.qazana-column-gap-no {
+    .qazana-column-gap-no {
+        .qazana-element-populated {
+            padding: 0;
+        }
+    }
 
-		.qazana-element-populated {
-			padding: 0;
-		}
-	}
+    &.qazana-section-content-top {
+        margin-bottom: auto;
+    }
+
+    &.qazana-section-content-middle {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    &.qazana-section-content-bottom {
+        margin-top: auto;
+    }
+}
+
+.qazana-column-wrap>.qazana-widget-wrap {
+    display: flex;
+    flex-direction: column;
 }
 
 // Responsive Grid
 @media (min-width: $screen-md-min) {
 
-	.qazana-column {
-		@include qazana-grid-classes;
-	}
+    .qazana-column {
+        @include qazana-grid-classes;
+    }
 }
 
 .qazana-column {
 
-	@media (max-width: $screen-xs-max) {
-		@include qazana-responsive(xs);
-	}
+    @media (max-width: $screen-xs-max) {
+        @include qazana-responsive(xs);
+    }
 
-	@media (max-width: $screen-sm-max) {
-		@include qazana-responsive(sm);
-	}
+    @media (max-width: $screen-sm-max) {
+        @include qazana-responsive(sm);
+    }
 
-	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-		@include qazana-responsive(md);
-	}
+    @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+        @include qazana-responsive(md);
+    }
 }
 
 @media (max-width: $screen-sm-max) {
 
-	.qazana-column {
-		width: 100%;
-	}
+    .qazana-column {
+        width: 100%;
+    }
 
-	.qazana-reverse-mobile > .qazana-container > .qazana-row {
-		flex-direction: column-reverse;
-	}
+    .qazana-reverse-mobile>.qazana-container>.qazana-row {
+        flex-direction: column-reverse;
+    }
 }
 
 
 // Minimal simple Grid
 
 ul.qazana-icon-list-items.qazana-inline-items {
-	display: flex;
-	flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 
-	.qazana-inline-item {
-		word-break: break-word;
-	}
+    .qazana-inline-item {
+        word-break: break-word;
+    }
 }
 
 // Simple 12 Columns responsive grid
 
 .qazana-grid-item {
-	word-break: break-word;
-	min-width: 0; // Prevent columns from overflowing the grid area in Firefox browser
+    word-break: break-word;
+    min-width: 0; // Prevent columns from overflowing the grid area in Firefox browser
 }
 
 .qazana-grid {
 
-	@mixin grid_loop($device) {
-		@for $i from 1 through 12 {
-			&#{$device}-0 {
-				& {
-					display: flex;
-					overflow: hidden;
-					flex-wrap: wrap;
-				}
-			}
+    @mixin grid_loop($device) {
+        @for $i from 1 through 12 {
+            &#{$device}-0 {
+                & {
+                    display: flex;
+                    overflow: hidden;
+                    flex-wrap: wrap;
+                }
+            }
 
-			&#{$device}-#{$i} {
-				& {
-					grid-template-columns: repeat(#{$i}, 1fr);
-					display: grid;
-				}
-			}
-		}
-	}
+            &#{$device}-#{$i} {
+                & {
+                    grid-template-columns: repeat(#{$i}, 1fr);
+                    display: grid;
+                }
+            }
+        }
+    }
 
-	@include grid_loop('');
+    @include grid_loop('');
 
-	@media (max-width: $screen-md-max) {
-		@include grid_loop(-tablet);
-	}
+    @media (max-width: $screen-md-max) {
+        @include grid_loop(-tablet);
+    }
 
-	@media (max-width: $screen-sm-max) {
-		@include grid_loop(-mobile);
-	}
+    @media (max-width: $screen-sm-max) {
+        @include grid_loop(-mobile);
+    }
 }
 
 .qazana-grid {
-	// grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
-	// grid-auto-rows: minmax(25%, auto);
-	// grid-auto-flow: dense;
-	// height: auto !important ;
+    // grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
+    // grid-auto-rows: minmax(25%, auto);
+    // grid-auto-flow: dense;
+    // height: auto !important ;
 
-	.qazana-grid-item {
-		&__large {
-			grid-column-end: span 2;
-    		grid-row-end: span 2;
-		}
+    .qazana-grid-item {
+        &__large {
+            grid-column-end: span 2;
+            grid-row-end: span 2;
+        }
 
-		&__tall {
-    		grid-row-end: span 2;
-		}
+        &__tall {
+            grid-row-end: span 2;
+        }
 
-		&__medium {
-			grid-column-end: span 2;
-		}
-	}
+        &__medium {
+            grid-column-end: span 2;
+        }
+    }
 }

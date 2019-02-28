@@ -143,7 +143,8 @@ class Widget_Heading extends Widget_Base {
 					'large' => __( 'Large', 'qazana' ),
 					'xl' => __( 'XL', 'qazana' ),
 					'xxl' => __( 'XXL', 'qazana' ),
-				],
+                ],
+                'style_transfer' => true
 			]
 		);
 

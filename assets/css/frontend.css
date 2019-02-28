@@ -418,6 +418,20 @@ a.qazana-edit-template {
 .qazana-inner-section .qazana-column-gap-no .qazana-element-populated {
   padding: 0; }
 
+.qazana-inner-section.qazana-section-content-top {
+  margin-bottom: auto; }
+
+.qazana-inner-section.qazana-section-content-middle {
+  margin-top: auto;
+  margin-bottom: auto; }
+
+.qazana-inner-section.qazana-section-content-bottom {
+  margin-top: auto; }
+
+.qazana-column-wrap > .qazana-widget-wrap {
+  display: flex;
+  flex-direction: column; }
+
 @media (min-width: 768px) {
   .qazana-column.qazana-col-10, .qazana-column[data-col="10"] {
     width: 10%; }
@@ -1559,13 +1573,22 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-widget-progress {
   text-align: left; }
 
+.qazana-widget-container {
+  display: flex;
+  flex-direction: column; }
+
 .qazana-progress-wrapper {
   position: relative;
   background-color: #eeeeee;
   color: #ffffff;
+  width: 100%;
   height: 30px;
   line-height: 30px;
   border-radius: 2px; }
+
+.qazana-progress-percentage {
+  align-self: flex-end;
+  position: absolute; }
 
 .qazana-progress-bar {
   position: absolute;
@@ -1575,18 +1598,6 @@ body.qazana-page .qazana-widget-menu-anchor {
   width: 0;
   border-radius: 2px;
   transition: width 1s ease-in-out; }
-
-.qazana-progress-inner-text {
-  display: inline-block;
-  position: absolute;
-  left: 0;
-  padding: 0 15px;
-  font-size: 11px;
-  width: 0;
-  transition: width 1s ease-in-out; }
-  .qazana-progress-inner-text .qazana-progress-percentage {
-    position: relative;
-    float: right; }
 
 .qazana-widget-progress .qazana-progress-wrapper.progress-info .qazana-progress-bar {
   background-color: #2296FA; }
@@ -1606,9 +1617,7 @@ body.qazana-page .qazana-widget-menu-anchor {
 @media (max-width: 767px) {
   .qazana-progress-wrapper {
     height: 25px;
-    line-height: 25px; }
-    .qazana-progress-wrapper .qazana-progress-inner-text {
-      padding: 0 10px; } }
+    line-height: 25px; } }
 
 .qazana-social-icons-wrapper {
   font-size: 0; }

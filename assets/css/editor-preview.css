@@ -1563,7 +1563,7 @@ html.qazana-html {
 .qazana-editor-active .qazana.qazana-edit-area-active .qazana-top-section > .qazana-container > .qazana-row {
   min-height: 40px; }
 
-.qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section:first-child {
+.qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section:first-child:not(.qazana-section-content-middle):not(.qazana-section-content-bottom) {
   margin-top: 15px; }
 
 .qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section > .qazana-container > .qazana-row {

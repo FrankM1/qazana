@@ -37,7 +37,7 @@ html.qazana-html {
 
 		.qazana-inner-section {
 
-			&:first-child {
+			&:first-child:not(.qazana-section-content-middle):not(.qazana-section-content-bottom) {
 				margin-top: 15px;
 			}
 
@@ -719,7 +719,7 @@ html.qazana-html {
         padding: 0 10px;
 		transition: all .3s;
         cursor: pointer;
-        
+
         i {
             margin-right: 10px;
         }
