@@ -63,11 +63,11 @@ class Plugin {
 	public $controls_manager;
 
 	public $templates_manager;
-	
+
 	public $skins_manager;
 
 	public $elements_manager;
-	
+
 	public $widgets_manager;
 
 	public $extensions_manager;
@@ -79,9 +79,9 @@ class Plugin {
 	public $ajax;
 
 	public $editor;
-	
+
 	public $preview;
-	
+
 	public $frontend;
 
 	/**
@@ -459,7 +459,7 @@ class Plugin {
 	public function get_skins_manager() {
 		return $this->skins_manager;
 	}
-	
+
 	/**
 	 * Get controls manager
 	 */
@@ -536,7 +536,7 @@ class Plugin {
 	public function get_db() {
 		return $this->db;
 	}
-	
+
 	/**
 	 * Get files manager
 	 */
@@ -608,7 +608,10 @@ class Plugin {
 		$this->mobile_detect      = new MobileDetect();
 		$this->mobile_detect->setDetectionType( 'extended' );
 		$this->preview            = new Preview();
-		$this->frontend           = new Frontend();
+        $this->frontend           = new Frontend();
+
+        new Shared_Position_Controls();
+        new Shared_Carousel_Controls();
 
 		do_action( 'qazana/after/init_classes' );
 	}

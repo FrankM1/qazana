@@ -105,7 +105,7 @@ class Custom_Css {
 	}
 
 	protected function add_actions() {
-		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 10, 3 );
+		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 99, 3 );
 		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
 	}
 }

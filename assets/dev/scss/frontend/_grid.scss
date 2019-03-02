@@ -123,6 +123,23 @@
     }
 }
 
+// Widgets Container structure
+.qazana-column-wrap {
+    >.qazana-widget-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.qazana-widgets-inline {
+    >.qazana-column-wrap {
+        >.qazana-widget-wrap {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+}
+
 // Row
 .qazana-row {
     width: 100%;
@@ -229,11 +246,6 @@
     &.qazana-section-content-bottom {
         margin-top: auto;
     }
-}
-
-.qazana-column-wrap>.qazana-widget-wrap {
-    display: flex;
-    flex-direction: column;
 }
 
 // Responsive Grid

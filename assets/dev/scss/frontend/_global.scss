@@ -215,15 +215,7 @@
     display: inline-flex;
 }
 
-.qazana-element-inline {
-    display: inline-flex;
-}
-
 .qazana-editor-active {
-    .qazana-element-inline {
-        display: inline-flex !important;
-    }
-
     .qazana-widget-container {
         z-index: 1;
     }

@@ -87,7 +87,7 @@ class DynamicTags_Site extends DynamicTags {
 			],
 		];
     }
-   
+
 	public function include_files() {
         require 'tags/archive-description.php';
         require 'tags/archive-meta.php';
@@ -117,7 +117,7 @@ class DynamicTags_Site extends DynamicTags {
 		require 'tags/site-url.php';
         require 'tags/internal-url.php';
     }
-    
+
     public function __construct() {
         $this->include_files();
 

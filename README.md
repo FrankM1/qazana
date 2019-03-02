@@ -1,14 +1,14 @@
 # Qazana Layout builder for WordPress [![Build Status](https://travis-ci.org/frankM1/qazana.svg?branch=master)](https://travis-ci.org/frankM1/qazana) [![Coverage Status](https://coveralls.io/repos/github/frankM1/qazana/badge.svg?branch=master)](https://coveralls.io/github/frankM1/qazana?branch=frankM1/qazana) [![Dependency Status](https://david-dm.org/frankM1/qazana/dev-status.svg)](https://david-dm.org/frankM1/qazana#info=devDependencies) [![WordPress](https://img.shields.io/wordpress/v/qazana.svg?style=flat-square)](https://wordpress.org/plugins/qazana/) [![WordPress](https://img.shields.io/wordpress/plugin/r/qazana.svg?style=flat-square)](https://wordpress.org/plugins/qazana/) [![WordPress](https://img.shields.io/wordpress/plugin/v/qazana.svg?style=flat-square)](https://wordpress.org/plugins/qazana/) [![WordPress](https://img.shields.io/wordpress/plugin/dt/qazana.svg?style=flat-square)](https://wordpress.org/plugins/qazana/) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.svg)](http://gruntjs.com/)
 
 
-**Contributors:** [frankgitonga](https://profiles.wordpress.org/frankgitonga), [radiumthemes](https://profiles.wordpress.org/radiumthemes)
-**Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8T9VMQZ8URY4
-**License:** GPLv2+
-**License URI:** https://www.gnu.org/licenses/gpl.html
-**Tags:** page qazana, editor, landing page, drag-and-drop, builder, visual composer, visual editor, visual builder, wysiwyg, design, website builder, landing page builder, front-end builder, frontend editor, frontend builder, theme builder, site-builder, layout builder, drag-and-drop, builder, editor, responsive, mobile, layout, front end, frontend, Page Layout, squeeze page, page builder plugin, drag-n-drop page builder, qazana
-**Requires at least:** 4.6
-**Tested up to:** 5.1
-**Stable tag:** 2.0.0
+**Contributors:** [frankgitonga](https://profiles.wordpress.org/frankgitonga), [radiumthemes](https://profiles.wordpress.org/radiumthemes)  
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8T9VMQZ8URY4  
+**License:** GPLv2+  
+**License URI:** https://www.gnu.org/licenses/gpl.html  
+**Tags:** page qazana, editor, landing page, drag-and-drop, builder, visual composer, visual editor, visual builder, wysiwyg, design, website builder, landing page builder, front-end builder, frontend editor, frontend builder, theme builder, site-builder, layout builder, drag-and-drop, builder, editor, responsive, mobile, layout, front end, frontend, Page Layout, squeeze page, page builder plugin, drag-n-drop page builder, qazana  
+**Requires at least:** 4.6  
+**Tested up to:** 5.1  
+**Stable tag:** 2.0.0  
 
 Qazana is the ultimate page layout builder for WordPress.
 

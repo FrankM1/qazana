@@ -6,8 +6,8 @@ use Qazana\Template_Library\Source_Local;
 use Qazana\Admin\Settings\Panel;
 use Qazana\Admin\Settings\Tools;
 
-class Maintenance_Mode extends Base {
-    
+class Site_Maintenance_Mode extends Base {
+
     const OPTION_PREFIX = 'qazana_maintenance_mode_';
     const MODE_MAINTENANCE = 'maintenance';
     const MODE_COMING_SOON = 'coming_soon';
@@ -18,6 +18,7 @@ class Maintenance_Mode extends Base {
      */
     public function __construct() {
 
+        require( 'documents/site-maintenance-mode.php' );
         require( 'classes/hooks.php' );
 
         $is_enabled = (bool) self::get( 'mode' ) && (bool) self::get( 'template_id' );
@@ -64,7 +65,7 @@ class Maintenance_Mode extends Base {
 	 * @return string
 	 */
     public function get_name() {
-        return 'maintenance_mode';
+        return 'site-maintenance-mode';
     }
 
     /**
@@ -194,7 +195,7 @@ class Maintenance_Mode extends Base {
      * @param Tools $tools An instance of the Tools settings page.
      */
     public function register_settings_fields( Panel $tools ) {
-        $templates = qazana()->get_templates_manager()->get_source( 'local' )->get_items( ['type' => 'page'] );
+        $templates = qazana()->get_templates_manager()->get_source( 'local' )->get_items( ['type' => 'site-maintenance-mode'] );
 
         $templates_options = [];
 

@@ -1,13 +1,103 @@
 <?php
 namespace Qazana;
 
-add_action( 'qazana/element/after_section_end', 'Qazana\add_position_options_to_widget', 10, 3);
-/**
- * Position controls
- */
-function add_position_options_to_widget( $element, $section_id, $args) {
+class Shared_Position_Controls {
 
-    if ( $section_id == 'section_advanced' || '_section_style' === $section_id ) {
+    public function __construct() {
+        add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 1, 3 );
+        add_action( 'qazana/element/after_section_end', [ $this, 'columns_register_controls' ], 1, 3 );
+    }
+
+     /**
+      * Column Position controls
+      */
+    function columns_register_controls( Controls_Stack $element, $section_id, $args ) {
+
+        $required_section_id = '';
+
+        if ( $element instanceof Element_Column ) {
+			$required_section_id = 'section_advanced';
+		}
+
+		if ( $required_section_id !== $section_id ) {
+			return;
+		}
+
+        $element->start_injection(
+			[
+				'of' => 'layout',
+			]
+		);
+
+        $element->add_control(
+            '_inline_element',
+            [
+                'label' => __( 'Show Widgets Inline', 'qazana' ),
+                'type' => Controls_Manager::SWITCHER,
+                'prefix_class' => 'qazana-',
+                'label_on' => 'On',
+                'label_off' => 'Off',
+                'style_transfer' => false,
+                'return_value' => 'widgets-inline',
+            ]
+        );
+
+        $element->add_control(
+            '_inline_element_align',
+            [
+                'label' => __( 'Align Widgets', 'qazana' ),
+                'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => __( 'Left', 'qazana' ),
+						'icon'  => 'eicon-h-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'qazana' ),
+						'icon'  => 'eicon-h-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'qazana' ),
+						'icon'  => 'eicon-h-align-right',
+					],
+					'justify' => [
+						'title' => __( 'Even Distribution', 'qazana' ),
+						'icon' => 'eicon-h-align-stretch',
+					],
+				],
+                'selectors_dictionary' => [
+                    'left' => 'flex-start',
+                    'justify' => 'space-evenly',
+                    'right' => 'flex-end',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}}.qazana-widgets-inline > .qazana-column-wrap > .qazana-widget-wrap' => 'justify-content: {{VALUE}}',
+                ],
+                'condition' => [
+                    '_inline_element!' => ''
+                ]
+            ]
+        );
+
+		$element->end_injection();
+    }
+
+    /**
+     * Position controls
+     */
+    function register_controls( Controls_Stack $element, $section_id, $args ) {
+
+        $required_section_id = '';
+
+		if ( $element instanceof Element_Section || $element instanceof Widget_Base ) {
+			$required_section_id = '_section_responsive';
+		} elseif ( $element instanceof Element_Column ) {
+			$required_section_id = 'section_advanced';
+		}
+
+		if ( $required_section_id !== $section_id ) {
+			return;
+		}
 
         $element->start_controls_section(
             '_section_element_position',
@@ -29,41 +119,27 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                     'relative' => esc_html__( 'Relative', 'qazana' ),
                     'absolute' => esc_html__( 'Absolute', 'qazana' ),
                     'fixed'    => esc_html__( 'Fixed', 'qazana' ),
-                 ],
-                 'selectors' => [ // You can use the selected value in an auto-generated css rule.
+                ],
+                'selectors' => [ // You can use the selected value in an auto-generated css rule.
                     '{{WRAPPER}}' => 'position: {{VALUE}}',
-                 ],
-                 'style_transfer' => false,
+                ],
+                'style_transfer' => false,
             ]
         );
 
         $element->add_control(
-			'_z_index',
-			[
-				'label' => __( 'Z Index', 'qazana' ),
-				'type' => Controls_Manager::NUMBER,
-				'min' => 0,
+            '_z_index',
+            [
+                'label' => __( 'Z Index', 'qazana' ),
+                'type' => Controls_Manager::NUMBER,
+                'min' => 0,
                 'placeholder' => 0,
                 'style_transfer' => false,
-				'selectors' => [
-					'{{WRAPPER}}' => 'z-index: {{VALUE}};',
-				],
-			]
-		);
-
-		$element->add_control(
-			'_inline_element',
-			[
-				'label' => __( 'Inline Element', 'qazana' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => '',
-				'prefix_class' => 'qazana-',
-				'label_on' => 'On',
-                'label_off' => 'Off',
-                'style_transfer' => false,
-				'return_value' => 'element-inline',
-			]
-		);
+                'selectors' => [
+                    '{{WRAPPER}}' => 'z-index: {{VALUE}};',
+                ],
+            ]
+        );
 
         $element->add_responsive_control(
             '_element_left',
@@ -185,9 +261,9 @@ function add_position_options_to_widget( $element, $section_id, $args) {
                 'type'    => Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                   ''        => esc_html__( 'Default', 'qazana' ),
-                   'hidden'  => esc_html__( 'Hidden', 'qazana' ),
-                   'visible' => esc_html__( 'Visible', 'qazana' ),
+                ''        => esc_html__( 'Default', 'qazana' ),
+                'hidden'  => esc_html__( 'Hidden', 'qazana' ),
+                'visible' => esc_html__( 'Visible', 'qazana' ),
                 ],
                 'selectors' => [
                     '{{WRAPPER}}' => 'overflow: {{VALUE}};',

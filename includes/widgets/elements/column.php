@@ -224,7 +224,8 @@ class Element_Column extends Element_Base {
 					'bottom' => 'flex-end',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-column-wrap' => 'align-items: {{VALUE}}',
+                    '{{WRAPPER}} .qazana-column-wrap' => 'align-items: {{VALUE}}',
+                    '{{WRAPPER}}.qazana-widgets-inline > .qazana-column-wrap > .qazana-widget-wrap' => 'align-items: {{VALUE}}',
 				],
 			]
 		);
@@ -236,8 +237,9 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::NUMBER,
 				'placeholder' => 20,
 				'selectors' => [
-					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-bottom: {{VALUE}}px', //Need the full path for exclude the inner section
-				],
+                    '{{WRAPPER}}:not(.qazana-widgets-inline) > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget' => 'margin-bottom: {{VALUE}}px',  //Need the full path for exclude the inner section
+                    '{{WRAPPER}}.qazana-widgets-inline > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-right: {{VALUE}}px',
+                ],
 			]
 		);
 
@@ -924,7 +926,7 @@ class Element_Column extends Element_Base {
 		if ( ! empty( $settings['hover_animation'] ) ) {
             $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 		}
-	
+
 	}
 
 	/**
