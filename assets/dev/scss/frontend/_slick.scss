@@ -117,6 +117,12 @@
     }
 }
 
+.qazana-has-loading-indicator {
+    .slick-slides>div:not(:first-child) {
+        display: none;
+    }
+}
+
 .slick-arrow.slick-hidden {
     display: none;
 }

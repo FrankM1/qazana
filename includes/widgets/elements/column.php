@@ -751,13 +751,6 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Animations::get_type(),
-			[
-				'name' => '_animation',
-			]
-		);
-
 		$this->add_control(
 			'_element_id',
 			[
@@ -802,7 +795,25 @@ class Element_Column extends Element_Base {
 		);
 		// END Backward comparability
 
-		$this->end_controls_section();
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'_section_effects',
+			[
+				'label' => __( 'Effects', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+        );
+
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
+			[
+				'name' => '_animation',
+			]
+        );
+
+        $this->end_controls_section();
+
 	}
 
 	protected function render_edit_tools() {

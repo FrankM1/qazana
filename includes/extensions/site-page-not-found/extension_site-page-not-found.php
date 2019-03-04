@@ -85,7 +85,7 @@ class Site_Page_Not_Found extends Base {
      * @return string
      */
     public function get_title() {
-        return __( 'Page not found ', 'energia' );
+        return __( 'Page not found ', 'qazana' );
     }
 
     /**
@@ -157,21 +157,21 @@ class Site_Page_Not_Found extends Base {
             $templates_options[ $template['template_id'] ] = $template['title'];
         }
 
-        $template_description = sprintf( ' <a target="_blank" class="qazana-edit-template" style="display: none" href="%s">%s</a>', Utils::get_edit_link( self::get( 'template_id' ) ), __( 'Edit Template', 'energia' ) );
+        $template_description = sprintf( ' <a target="_blank" class="qazana-edit-template" style="display: none" href="%s">%s</a>', Utils::get_edit_link( self::get( 'template_id' ) ), __( 'Edit Template', 'qazana' ) );
 
-        $template_description .= '<span class="qazana-is-404-mode-error" style="display: none">' . __( 'To set a template for the 404 page.', 'energia' ) . '<br>' . sprintf( __( 'Select one or go ahead and <a target="_blank" href="%s">create one</a> now.', 'energia' ), admin_url( 'post-new.php?post_type=' . Source_Local::CPT ) ) .'</span>';
+        $template_description .= '<span class="qazana-is-404-mode-error" style="display: none">' . __( 'To set a template for the 404 page.', 'qazana' ) . '<br>' . sprintf( __( 'Select one or go ahead and <a target="_blank" href="%s">create one</a> now.', 'qazana' ), admin_url( 'post-new.php?post_type=' . Source_Local::CPT ) ) .'</span>';
 
         $tools->add_tab(
             'not_found_page', [
-                'label'    => __( 'Page not found ', 'energia' ),
+                'label'    => __( 'Page not found ', 'qazana' ),
                 'sections' => [
                     'not_found_page' => [
                         'callback' => function() {
-                            echo '<div>' . __( 'Set a template to use on the 404 page.', 'energia' ) . '</div>';
+                            echo '<div>' . __( 'Set a template to use on the 404 page.', 'qazana' ) . '</div>';
                         },
                         'fields' => [
                             'not_found_page_mode' => [
-                                'label'      => __( 'Custom 404 page', 'energia' ),
+                                'label'      => __( 'Custom 404 page', 'qazana' ),
                                 'field_args' => [
                                     'type'  => 'checkbox',
                                     'value' => 1,
@@ -180,7 +180,7 @@ class Site_Page_Not_Found extends Base {
                                 ],
                             ],
                             'not_found_page_template_id' => [
-                                'label'      => __( 'Choose Template', 'energia' ),
+                                'label'      => __( 'Choose Template', 'qazana' ),
                                 'field_args' => [
                                     'class'       => 'qazana-default-hide',
                                     'type'        => 'select',
@@ -203,14 +203,14 @@ class Site_Page_Not_Found extends Base {
     public function add_menu_in_admin_bar( \WP_Admin_Bar $wp_admin_bar ) {
         $wp_admin_bar->add_node( [
             'id'    => 'qazana-is-404',
-            'title' => __( '404 Page', 'energia' ),
+            'title' => __( '404 Page', 'qazana' ),
             'href'  => admin_url( 'admin.php?page=' . qazana()->slug ) . '#tab-not_found_page',
         ] );
 
         $wp_admin_bar->add_node( [
             'id'     => 'qazana-is-404-edit',
             'parent' => 'qazana-is-404',
-            'title'  => __( 'Edit Template', 'energia' ),
+            'title'  => __( 'Edit Template', 'qazana' ),
             'href'   => Utils::get_edit_link( self::get( 'template_id' ) ),
         ] );
     }
@@ -225,7 +225,7 @@ class Site_Page_Not_Found extends Base {
 
 	public function register() {
 		return [
-			'title'              => esc_attr__( 'Site 404 Pageq', 'energia' ),
+			'title'              => esc_attr__( 'Site 404 Pageq', 'qazana' ),
 			'name'               => 'site-page-not-found',
 			'required'           => true,
 			'default_activation' => true,

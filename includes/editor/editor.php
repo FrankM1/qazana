@@ -767,14 +767,14 @@ class Editor {
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
 		$direction_suffix = is_rtl() ? '-rtl' : '';
-     
+
         wp_register_style(
 			'qazana-select2',
 			qazana()->core_assets_url . 'lib/e-select2/css/e-select2' . $suffix . '.css',
 			[],
 			'4.0.6-rc.1'
         );
-        
+
         wp_register_style(
 			'flatpickr',
 			qazana()->core_assets_url . 'lib/flatpickr/flatpickr' . $suffix . '.css',

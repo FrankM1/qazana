@@ -91,14 +91,7 @@ class Widget_Common extends Widget_Base {
 					'{{WRAPPER}} > .qazana-widget-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Animations::get_type(),
-			[
-				'name' => '_animation',
-			]
-		);
+        );
 
 		$this->add_control(
 			'_element_id',
@@ -120,6 +113,23 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+        $this->start_controls_section(
+			'_section_effects',
+			[
+				'label' => __( 'Effects', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+        );
+
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
+			[
+				'name' => '_animation',
+			]
+		);
+
+        $this->end_controls_section();
 
 		$this->start_controls_section(
 			'_section_background',

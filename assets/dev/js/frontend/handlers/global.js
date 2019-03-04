@@ -31,6 +31,7 @@ GlobalHandler = HandlerModule.extend( {
     removeLoader: function() {
         this.$element.find( '.qazana-loading-indicator' ).remove();
         this.$element.removeClass( 'qazana-has-loading-indicator' );
+        jQuery( window ).trigger( 'resize' );
     },
 
 	onInit: function() {

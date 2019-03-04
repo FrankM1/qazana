@@ -562,7 +562,7 @@ abstract class Element_Base extends Controls_Stack {
 		 *
 		 * Fires before Qazana element is rendered in the frontend.
 		 *
-		 * @since 2.2.0
+		 * @since 2.0.0
 		 *
 		 * @param Element_Base $this The element.
 		 */
@@ -583,8 +583,34 @@ abstract class Element_Base extends Controls_Stack {
 
 		$this->_add_render_attributes();
 
-		$this->before_render();
-		$this->_print_content();
+        $this->before_render();
+
+		/**
+		 * Before frontend element content.
+		 *
+		 * Fires before Qazana element content is rendered in the frontend.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param Element_Base $this The element.
+		 */
+		do_action( 'qazana/frontend/print_content', $this );
+
+		/**
+		 * Before frontend element content.
+		 *
+		 * Fires before Qazana element content is rendered in the frontend.
+		 *
+		 * The dynamic portion of the hook name, `$element_type`, refers to the element type.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param Element_Base $this The element.
+		 */
+		do_action( "qazana/frontend/{$element_type}/print_content", $this );
+
+        $this->_print_content();
+
 		$this->after_render();
 
 		/**

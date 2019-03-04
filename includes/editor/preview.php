@@ -41,7 +41,7 @@ class Preview {
 		if ( is_admin() || ! $this->is_preview_mode() ) {
 			return;
 		}
-	
+
 		$this->post_id = get_the_ID();
 
 		// Don't redirect to permalink.

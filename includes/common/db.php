@@ -274,7 +274,7 @@ class DB {
 			],
 		];
     }
-    
+
 	/**
 	 * Is using Qazana.
 	 *

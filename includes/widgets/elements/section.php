@@ -1183,13 +1183,6 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-        $this->add_group_control(
-			Group_Control_Animations::get_type(),
-			[
-				'name' => '_animation',
-			]
-		);
-
 		$this->add_control(
 			'_element_id',
 			[
@@ -1215,6 +1208,23 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->end_controls_section();
+
+        $this->start_controls_section(
+			'_section_effects',
+			[
+				'label' => __( 'Effects', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+        );
+
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
+			[
+				'name' => '_animation',
+			]
+        );
+
+        $this->end_controls_section();
 
 		// Section Responsive
 		$this->start_controls_section(
