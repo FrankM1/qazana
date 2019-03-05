@@ -2450,6 +2450,9 @@ body.qazana-page .qazana-widget-menu-anchor {
     height: auto;
     border: 1px solid transparent; }
 
+.qazana-has-loading-indicator .slick-slides > div:not(:first-child) {
+  display: none; }
+
 .slick-arrow.slick-hidden {
   display: none; }
 
