@@ -18,6 +18,12 @@ $direction: ltr;
                 flex-grow: 1;
                 text-align: $start;
             }
+
+            &value {
+                font-size: 5rem;
+                font-weight: bold;
+                line-height: 1em;
+            }
         }
     }
 

@@ -12,6 +12,11 @@
           flex-grow: 1;
   text-align: left; }
 
+.qazana-widget-counter .qazana-counter-number-value {
+  font-size: 5rem;
+  font-weight: bold;
+  line-height: 1em; }
+
 @media (min-width: 768px) {
   .qazana-widget-counter.qazana-position-left .qazana-counter, .qazana-widget-counter.qazana-position-right .qazana-counter {
     display: -webkit-box;

@@ -44,7 +44,7 @@ class Shared_Carousel_Controls {
             'slidesToShow',
             [
                 'label'              => __( 'Slides to Show', 'qazana' ),
-                'type'               => Controls_Manager::SELECT,
+                'type'               => Controls_Manager::NUMBER,
                 'default'            => 2,
                 'mobile_default'     => 1,
                 'options'            => $slides_to_show,

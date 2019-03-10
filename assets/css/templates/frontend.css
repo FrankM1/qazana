@@ -137,7 +137,6 @@
 .qazana-align-justify .qazana-inline-content {
   justify-content: center; }
 
-.qazana-inline-content-right,
 .qazana-inline-content-right .qazana-inline-content {
   flex-direction: row-reverse; }
 
@@ -917,15 +916,22 @@ ul.qazana-icon-list-items.qazana-inline-items {
   width: 0;
   height: 0; }
 
+.qazana-form-fields,
 .qazana-form-fields-wrapper {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: center; }
+
+.qazana-form-fields-wrapper {
   width: 100%; }
-  .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > input, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > textarea, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group > .qazana-select-wrapper, .qazana-form-fields-wrapper.qazana-labels-above > .qazana-field-group .qazana-field-subgroup {
+  .qazana-form-fields-wrapper.qazana-labels-above .qazana-form-field > .qazana-field-group > input,
+  .qazana-form-fields-wrapper.qazana-labels-above .qazana-form-field > .qazana-field-group > textarea,
+  .qazana-form-fields-wrapper.qazana-labels-above .qazana-form-field > .qazana-field-group > .qazana-select-wrapper,
+  .qazana-form-fields-wrapper.qazana-labels-above .qazana-form-field > .qazana-field-group .qazana-field-subgroup {
     flex-basis: 100%;
     max-width: 100%; }
-  .qazana-form-fields-wrapper.qazana-labels-inline > .qazana-field-group > input, .qazana-form-fields-wrapper.qazana-labels-inline > .qazana-field-group .qazana-select-wrapper {
+  .qazana-form-fields-wrapper.qazana-labels-inline .qazana-form-field > .qazana-field-group > input,
+  .qazana-form-fields-wrapper.qazana-labels-inline .qazana-form-field > .qazana-field-group .qazana-select-wrapper {
     flex-grow: 1; }
 
 .qazana-field-group {

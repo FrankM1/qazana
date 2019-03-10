@@ -42,7 +42,7 @@ abstract class Document extends Controls_Stack {
 	 * Document sub type meta key.
 	 */
 	const SUB_TYPE_META_KEY = '_qazana_template_sub_type';
-	
+
 	/**
 	 * The taxonomy type slug for the library document.
 	 */
@@ -871,7 +871,7 @@ abstract class Document extends Controls_Stack {
 	public function get_content( $with_css = false ) {
 		return qazana()->get_frontend()->get_builder_content( $this->post->ID, $with_css );
 	}
-	
+
 	/**
 	 * @since 2.0.0
 	 * @access public
@@ -1069,7 +1069,7 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get widgets
-	 * 
+	 *
 	 * @return object
 	 */
 	public function get_widgets() {
@@ -1078,7 +1078,7 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get elements
-	 * 
+	 *
 	 * @return object
 	 */
 	public function get_elements() {
@@ -1087,9 +1087,9 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get widget group to use
-	 * 
+	 *
 	 * Use this to specify widgets by document types.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_widget_groups() {
@@ -1098,15 +1098,15 @@ abstract class Document extends Controls_Stack {
 
 	/**
 	 * Get document location manager
-	 * 
+	 *
 	 * Use this to get the document location
-	 * 
+	 *
  	 * @return Locations/Manager
 	 */
 	public function get_locations_manager() {
 		return false;
 	}
-	
+
 	/**
 	 * Get document location
 	 */
@@ -1469,5 +1469,5 @@ abstract class Document extends Controls_Stack {
 		}
 
 	}
-	
+
 }
