@@ -7,15 +7,21 @@
 }
 
 .qazana-button {
-    display: inline-block;
-    border-radius: 0;
-    border: none;
-    border-color: transparent;
-    background-color: transparent;
-    box-shadow: none;
-    text-shadow: none;
-    padding: 0;
-    margin: 0;
+
+    &,
+    &:focus,
+    &:hover {
+        display: inline-block;
+        border-radius: 0;
+        border: none;
+        border-color: transparent;
+        background-color: transparent;
+        box-shadow: none;
+        text-shadow: none;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
 
     .qazana-inline-content {
         border: none;

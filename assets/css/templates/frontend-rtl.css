@@ -1169,30 +1169,45 @@ ul.qazana-icon-list-items.qazana-inline-items {
 .qazana-align-justify .qazana-button {
   display: block; }
 
-.qazana-button {
-  display: inline-block; }
-  .qazana-button .qazana-inline-content {
-    border: none;
-    background-color: #818a91;
-    color: #ffffff;
-    text-align: center;
-    line-height: 1;
-    transition: all 0.5s; }
-  .qazana-button.qazana-size-xs .qazana-inline-content {
-    padding: 10px 20px;
-    font-size: 13px; }
-  .qazana-button.qazana-size-sm .qazana-inline-content {
-    padding: 12px 24px;
-    font-size: 15px; }
-  .qazana-button.qazana-size-md .qazana-inline-content {
-    padding: 15px 30px;
-    font-size: 16px; }
-  .qazana-button.qazana-size-lg .qazana-inline-content {
-    padding: 20px 40px;
-    font-size: 18px; }
-  .qazana-button.qazana-size-xl .qazana-inline-content {
-    padding: 25px 50px;
-    font-size: 20px; }
+.qazana-button, .qazana-button:focus, .qazana-button:hover {
+  display: inline-block;
+  border-radius: 0;
+  border: none;
+  border-color: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1; }
+
+.qazana-button .qazana-inline-content {
+  border: none;
+  background-color: #818a91;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  transition: all 0.5s; }
+
+.qazana-button.qazana-size-xs .qazana-inline-content {
+  padding: 10px 20px;
+  font-size: 13px; }
+
+.qazana-button.qazana-size-sm .qazana-inline-content {
+  padding: 12px 24px;
+  font-size: 15px; }
+
+.qazana-button.qazana-size-md .qazana-inline-content {
+  padding: 15px 30px;
+  font-size: 16px; }
+
+.qazana-button.qazana-size-lg .qazana-inline-content {
+  padding: 20px 40px;
+  font-size: 18px; }
+
+.qazana-button.qazana-size-xl .qazana-inline-content {
+  padding: 25px 50px;
+  font-size: 20px; }
 
 .qazana-widget.qazana-button-info .qazana-inline-content {
   border-color: #2296FA;
