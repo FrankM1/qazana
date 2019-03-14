@@ -1439,7 +1439,7 @@ class Element_Section extends Element_Base {
 				endif;
 			endif;
 
-            if ( in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ) : ?>
+			if ( ! empty( $settings['background_overlay_background'] ) && in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ] ) ) : ?>
                 <div class="qazana-background-overlay"></div>
             <?php endif;
 		if ( $settings['shape_divider_top'] ) {
