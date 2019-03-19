@@ -273,13 +273,21 @@ abstract class Widget_Base extends Element_Base {
 				$skin_options[''] = __( 'Default', 'qazana' );
 			}
 
+            $skin_control = Controls_Manager::SELECT;
+
 			foreach ( $skins as $skin_id => $skin ) {
-				$skin_options[ $skin_id ] = $skin->get_title();
+                if ( method_exists( $skin, 'get_icon' ) && $skin->get_icon() ) {
+                    $skin_control = Controls_Manager::CHOOSE;
+                    $skin_options[ $skin_id ]['label'] = $skin->get_title();
+                    $skin_options[ $skin_id ]['icon'] = $skin->get_icon();
+                } else {
+                    $skin_options[ $skin_id ] = $skin->get_title();
+                }
 			}
 
-			// Get the first item for default value
-			$default_value = array_keys( $skin_options );
-			$default_value = array_shift( $default_value );
+            // Get the first item for default value
+            $default_value = array_keys( $skin_options );
+            $default_value = array_shift( $default_value );
 
 			if ( 1 >= count( $skin_options ) ) {
 				$this->add_control(
@@ -291,18 +299,17 @@ abstract class Widget_Base extends Element_Base {
 					]
 				);
 			} else {
-				$this->add_control(
-					'_skin',
-					[
-						'label' => __( 'Skin', 'qazana' ),
-						'type' => Controls_Manager::SELECT,
-						'default' => $default_value,
-						'options' => $skin_options,
-					]
-				);
+                $args = [
+                    'label' => __( 'Skin', 'qazana' ),
+                    'type' => $skin_control,
+                    'default' => $default_value,
+                    'options' => $skin_options,
+                ];
+
+				$this->add_control( '_skin', $args );
 			}
 		}
-	}
+    }
 
 	/**
 	 * Get default edit tools.
