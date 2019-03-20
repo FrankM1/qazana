@@ -81,113 +81,69 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 173);
+/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/new-template/new-template.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
+/***/ "../assets/dev/js/admin/new-template/layout.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/admin/new-template/layout.js ***!
+  \*****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Module = __webpack_require__(2),
-    ViewModule;
+var BaseModalLayout = __webpack_require__(/*! qazana-templates/views/base-modal-layout */ "../assets/dev/js/editor/components/template-library/views/base-modal-layout.js"),
+    NewTemplateView = __webpack_require__(/*! qazana-admin/new-template/view */ "../assets/dev/js/admin/new-template/view.js");
 
-ViewModule = Module.extend({
-	elements: null,
+module.exports = BaseModalLayout.extend({
 
-	getDefaultElements: function getDefaultElements() {
-		return {};
-	},
-
-	bindEvents: function bindEvents() {},
-
-	onInit: function onInit() {
-		this.initElements();
-
-		this.bindEvents();
-	},
-
-	initElements: function initElements() {
-		this.elements = this.getDefaultElements();
-	}
-});
-
-module.exports = ViewModule;
-
-/***/ }),
-
-/***/ 14:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TemplateLibraryHeaderView;
-
-TemplateLibraryHeaderView = Marionette.LayoutView.extend({
-
-	className: 'qazana-templates-modal__header',
-
-	template: '#tmpl-qazana-templates-modal__header',
-
-	regions: {
-		logoArea: '.qazana-templates-modal__header__logo-area',
-		tools: '#qazana-template-library-header-tools',
-		menuArea: '.qazana-templates-modal__header__menu-area'
-	},
-
-	ui: {
-		closeModal: '.qazana-templates-modal__header__close'
-	},
-
-	events: {
-		'click @ui.closeModal': 'onCloseModalClick'
-	},
-
-	templateHelpers: function templateHelpers() {
+	getModalOptions: function getModalOptions() {
 		return {
-			closeType: this.getOption('closeType')
+			id: 'qazana-new-template-modal'
 		};
 	},
 
-	onCloseModalClick: function onCloseModalClick() {
-		this._parent._parent._parent.hideModal();
+	getLogoOptions: function getLogoOptions() {
+		return {
+			title: qazanaAdmin.config.i18n.new_template
+		};
+	},
+
+	initialize: function initialize() {
+		BaseModalLayout.prototype.initialize.apply(this, arguments);
+
+		this.showLogo();
+
+		this.showContentView();
+	},
+
+	getDialogsManager: function getDialogsManager() {
+		return qazanaAdmin.getDialogsManager();
+	},
+
+	showContentView: function showContentView() {
+		this.modalContent.show(new NewTemplateView());
 	}
 });
 
-module.exports = TemplateLibraryHeaderView;
-
 /***/ }),
 
-/***/ 15:
+/***/ "../assets/dev/js/admin/new-template/new-template.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/admin/new-template/new-template.js ***!
+  \***********************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var TemplateLibraryLoadingView;
-
-TemplateLibraryLoadingView = Marionette.ItemView.extend({
-	id: 'qazana-template-library-loading',
-
-	template: '#tmpl-qazana-template-library-loading'
-});
-
-module.exports = TemplateLibraryLoadingView;
-
-/***/ }),
-
-/***/ 173:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ViewModule = __webpack_require__(0),
-    NewTemplateLayout = __webpack_require__(174);
+var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js"),
+    NewTemplateLayout = __webpack_require__(/*! qazana-admin/new-template/layout */ "../assets/dev/js/admin/new-template/layout.js");
 
 var NewTemplateModule = ViewModule.extend({
 
@@ -234,49 +190,11 @@ jQuery(function () {
 
 /***/ }),
 
-/***/ 174:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var BaseModalLayout = __webpack_require__(8),
-    NewTemplateView = __webpack_require__(175);
-
-module.exports = BaseModalLayout.extend({
-
-	getModalOptions: function getModalOptions() {
-		return {
-			id: 'qazana-new-template-modal'
-		};
-	},
-
-	getLogoOptions: function getLogoOptions() {
-		return {
-			title: qazanaAdmin.config.i18n.new_template
-		};
-	},
-
-	initialize: function initialize() {
-		BaseModalLayout.prototype.initialize.apply(this, arguments);
-
-		this.showLogo();
-
-		this.showContentView();
-	},
-
-	getDialogsManager: function getDialogsManager() {
-		return qazanaAdmin.getDialogsManager();
-	},
-
-	showContentView: function showContentView() {
-		this.modalContent.show(new NewTemplateView());
-	}
-});
-
-/***/ }),
-
-/***/ 175:
+/***/ "../assets/dev/js/admin/new-template/view.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/admin/new-template/view.js ***!
+  \***************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,7 +215,220 @@ module.exports = Marionette.ItemView.extend({
 
 /***/ }),
 
-/***/ 2:
+/***/ "../assets/dev/js/editor/components/template-library/views/base-modal-layout.js":
+/*!**************************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/template-library/views/base-modal-layout.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var TemplateLibraryHeaderView = __webpack_require__(/*! qazana-templates/views/parts/header */ "../assets/dev/js/editor/components/template-library/views/parts/header.js"),
+    TemplateLibraryHeaderLogoView = __webpack_require__(/*! qazana-templates/views/parts/header-parts/logo */ "../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js"),
+    TemplateLibraryLoadingView = __webpack_require__(/*! qazana-templates/views/parts/loading */ "../assets/dev/js/editor/components/template-library/views/parts/loading.js");
+
+module.exports = Marionette.LayoutView.extend({
+	el: function el() {
+		return this.modal.getElements('widget');
+	},
+
+	modal: null,
+
+	regions: function regions() {
+		return {
+			modalHeader: '.dialog-header',
+			modalContent: '.dialog-lightbox-content',
+			modalLoading: '.dialog-lightbox-loading'
+		};
+	},
+
+	constructor: function constructor() {
+		this.initModal();
+
+		Marionette.LayoutView.prototype.constructor.apply(this, arguments);
+	},
+
+	initialize: function initialize() {
+		this.modalHeader.show(new TemplateLibraryHeaderView(this.getHeaderOptions()));
+	},
+
+	initModal: function initModal() {
+		var modalOptions = {
+			className: 'qazana-templates-modal',
+			closeButton: false,
+			hide: {
+				onOutsideClick: false
+			}
+		};
+
+		jQuery.extend(true, modalOptions, this.getModalOptions());
+
+		this.modal = this.getDialogsManager().createWidget('lightbox', modalOptions);
+
+		this.modal.getElements('message').append(this.modal.addElement('content'), this.modal.addElement('loading'));
+	},
+
+	getDialogsManager: function getDialogsManager() {
+		return qazana.dialogsManager;
+	},
+
+	showModal: function showModal() {
+		this.modal.show();
+	},
+
+	hideModal: function hideModal() {
+		this.modal.hide();
+	},
+
+	getModalOptions: function getModalOptions() {
+		return {};
+	},
+
+	getLogoOptions: function getLogoOptions() {
+		return {};
+	},
+
+	getHeaderOptions: function getHeaderOptions() {
+		return {};
+	},
+
+	getHeaderView: function getHeaderView() {
+		return this.modalHeader.currentView;
+	},
+
+	showLoadingView: function showLoadingView() {
+		this.modalLoading.show(new TemplateLibraryLoadingView());
+
+		this.modalLoading.$el.show();
+
+		this.modalContent.$el.hide();
+	},
+
+	hideLoadingView: function hideLoadingView() {
+		this.modalContent.$el.show();
+
+		this.modalLoading.$el.hide();
+	},
+
+	showLogo: function showLogo() {
+		this.getHeaderView().logoArea.show(new TemplateLibraryHeaderLogoView(this.getLogoOptions()));
+	}
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js":
+/*!********************************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = Marionette.ItemView.extend({
+	template: '#tmpl-qazana-templates-modal__header__logo',
+
+	className: 'qazana-templates-modal__header__logo',
+
+	events: {
+		click: 'onClick'
+	},
+
+	templateHelpers: function templateHelpers() {
+		return {
+			title: this.getOption('title')
+		};
+	},
+
+	onClick: function onClick() {
+		var clickCallback = this.getOption('click');
+
+		if (clickCallback) {
+			clickCallback();
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/template-library/views/parts/header.js":
+/*!*********************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/template-library/views/parts/header.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var TemplateLibraryHeaderView;
+
+TemplateLibraryHeaderView = Marionette.LayoutView.extend({
+
+	className: 'qazana-templates-modal__header',
+
+	template: '#tmpl-qazana-templates-modal__header',
+
+	regions: {
+		logoArea: '.qazana-templates-modal__header__logo-area',
+		tools: '#qazana-template-library-header-tools',
+		menuArea: '.qazana-templates-modal__header__menu-area'
+	},
+
+	ui: {
+		closeModal: '.qazana-templates-modal__header__close'
+	},
+
+	events: {
+		'click @ui.closeModal': 'onCloseModalClick'
+	},
+
+	templateHelpers: function templateHelpers() {
+		return {
+			closeType: this.getOption('closeType')
+		};
+	},
+
+	onCloseModalClick: function onCloseModalClick() {
+		this._parent._parent._parent.hideModal();
+	}
+});
+
+module.exports = TemplateLibraryHeaderView;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/template-library/views/parts/loading.js":
+/*!**********************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/template-library/views/parts/loading.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var TemplateLibraryLoadingView;
+
+TemplateLibraryLoadingView = Marionette.ItemView.extend({
+	id: 'qazana-template-library-loading',
+
+	template: '#tmpl-qazana-template-library-loading'
+});
+
+module.exports = TemplateLibraryLoadingView;
+
+/***/ }),
+
+/***/ "../assets/dev/js/utils/module.js":
+/*!****************************************!*\
+  !*** ../assets/dev/js/utils/module.js ***!
+  \****************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -516,135 +647,40 @@ module.exports = Module;
 
 /***/ }),
 
-/***/ 8:
+/***/ "../assets/dev/js/utils/view-module.js":
+/*!*********************************************!*\
+  !*** ../assets/dev/js/utils/view-module.js ***!
+  \*********************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var TemplateLibraryHeaderView = __webpack_require__(14),
-    TemplateLibraryHeaderLogoView = __webpack_require__(9),
-    TemplateLibraryLoadingView = __webpack_require__(15);
+var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
+    ViewModule;
 
-module.exports = Marionette.LayoutView.extend({
-	el: function el() {
-		return this.modal.getElements('widget');
-	},
+ViewModule = Module.extend({
+	elements: null,
 
-	modal: null,
-
-	regions: function regions() {
-		return {
-			modalHeader: '.dialog-header',
-			modalContent: '.dialog-lightbox-content',
-			modalLoading: '.dialog-lightbox-loading'
-		};
-	},
-
-	constructor: function constructor() {
-		this.initModal();
-
-		Marionette.LayoutView.prototype.constructor.apply(this, arguments);
-	},
-
-	initialize: function initialize() {
-		this.modalHeader.show(new TemplateLibraryHeaderView(this.getHeaderOptions()));
-	},
-
-	initModal: function initModal() {
-		var modalOptions = {
-			className: 'qazana-templates-modal',
-			closeButton: false,
-			hide: {
-				onOutsideClick: false
-			}
-		};
-
-		jQuery.extend(true, modalOptions, this.getModalOptions());
-
-		this.modal = this.getDialogsManager().createWidget('lightbox', modalOptions);
-
-		this.modal.getElements('message').append(this.modal.addElement('content'), this.modal.addElement('loading'));
-	},
-
-	getDialogsManager: function getDialogsManager() {
-		return qazana.dialogsManager;
-	},
-
-	showModal: function showModal() {
-		this.modal.show();
-	},
-
-	hideModal: function hideModal() {
-		this.modal.hide();
-	},
-
-	getModalOptions: function getModalOptions() {
+	getDefaultElements: function getDefaultElements() {
 		return {};
 	},
 
-	getLogoOptions: function getLogoOptions() {
-		return {};
+	bindEvents: function bindEvents() {},
+
+	onInit: function onInit() {
+		this.initElements();
+
+		this.bindEvents();
 	},
 
-	getHeaderOptions: function getHeaderOptions() {
-		return {};
-	},
-
-	getHeaderView: function getHeaderView() {
-		return this.modalHeader.currentView;
-	},
-
-	showLoadingView: function showLoadingView() {
-		this.modalLoading.show(new TemplateLibraryLoadingView());
-
-		this.modalLoading.$el.show();
-
-		this.modalContent.$el.hide();
-	},
-
-	hideLoadingView: function hideLoadingView() {
-		this.modalContent.$el.show();
-
-		this.modalLoading.$el.hide();
-	},
-
-	showLogo: function showLogo() {
-		this.getHeaderView().logoArea.show(new TemplateLibraryHeaderLogoView(this.getLogoOptions()));
+	initElements: function initElements() {
+		this.elements = this.getDefaultElements();
 	}
 });
 
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = Marionette.ItemView.extend({
-	template: '#tmpl-qazana-templates-modal__header__logo',
-
-	className: 'qazana-templates-modal__header__logo',
-
-	events: {
-		click: 'onClick'
-	},
-
-	templateHelpers: function templateHelpers() {
-		return {
-			title: this.getOption('title')
-		};
-	},
-
-	onClick: function onClick() {
-		var clickCallback = this.getOption('click');
-
-		if (clickCallback) {
-			clickCallback();
-		}
-	}
-});
+module.exports = ViewModule;
 
 /***/ })
 

@@ -34,7 +34,6 @@ CarouselModule = ViewModule.extend( {
             return;
         }
 
-        var $wrapper = $scope.parent();
         var $dots = $scope.find( '.slick-dots' ); // slick has already been initialized, so we know the dots are already in the DOM;
 
         if ( settings.dots && $dots.length <= 0 ) {
@@ -43,15 +42,15 @@ CarouselModule = ViewModule.extend( {
 
         if ( settings.arrows ) {
             // wrap the $dots so we can put our arrows next to them;
-            $wrapper.append( '<div class="slick-navigation" />' );
+            $scope.append( '<div class="slick-navigation" />' );
 
-            $wrapper.find( '.slick-navigation' )
+            $scope.find( '.slick-navigation' )
                 .prepend( '<a class="prev"><i class="ricon ricon-slider-arrow-left"></i></a>' )
                 .append( '<a class="next"><i class="ricon ricon-slider-arrow-right"></i></a>' );
 
             if ( $slick.length && settings.slidesToScroll ) {
                 // attach previous button events;
-                $wrapper.find( 'a.prev' ).on( 'click', function() {
+                $scope.find( 'a.prev' ).on( 'click', function() {
                     $slick.slick( 'slickGoTo', $slick.slick( 'slickCurrentSlide' ) - settings.slidesToScroll );
                 } ).end()
                 // attach next button events;
@@ -115,7 +114,7 @@ CarouselModule = ViewModule.extend( {
         // after slick is initialized (these wouldn't work properly if done before init);
         this.elements.$carousel.on( 'init', function( event, slick ) {
             // add the navigation.
-            self.addNav( slick.$slider.parent(), slick.$slider, options );
+            self.addNav( self.$element, slick.$slider, options );
         } );
 	},
 

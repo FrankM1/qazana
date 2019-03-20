@@ -49,7 +49,7 @@ Class Loader {
      * @return array The filtered value after all hooked functions are applied to it.
      */
     protected function get_file_locations() {
-        return $this->_locations;
+        return array_unique( $this->_locations );
     }
 
     /**
@@ -61,7 +61,7 @@ Class Loader {
      * @return array The filtered value after all hooked functions are applied to it.
      */
     protected function get_file_stack() {
-        return $this->_stack;
+        return array_unique( $this->_stack );
     }
 
     /**
@@ -73,7 +73,7 @@ Class Loader {
      * @return array The filtered value after all hooked functions are applied to it.
      */
     protected function get_file_stack_uri() {
-        return $this->_stack_uri;
+        return array_unique( $this->_stack_uri );
     }
 
     public function locate_folder( $folder_names ) {
@@ -236,10 +236,10 @@ Class Loader {
         $retval = array();
 
         // Get widget locations
-        $stacks = array_unique( $this->get_file_stack() );
+        $stacks = $this->get_file_stack();
     	// Get alternate locations
-        $locations = array_unique( $this->get_file_locations() );
-        
+        $locations = $this->get_file_locations();
+
     	// Loop through locations and stacks and combine
     	foreach ( (array) $stacks as $stack ) {
     		foreach ( (array) $locations as $location ) {
@@ -263,9 +263,9 @@ Class Loader {
         $retval = array();
 
         // Get widget locations
-        $stacks = array_unique( $this->get_file_stack_uri() );
+        $stacks = $this->get_file_stack_uri();
     	// Get alternate locations
-    	$locations = array_unique( $this->get_file_locations() );
+    	$locations = $this->get_file_locations();
 
     	// Loop through locations and stacks and combine
     	foreach ( (array) $stacks as $stack ) {

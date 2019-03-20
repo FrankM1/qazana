@@ -71,7 +71,7 @@ ImageCarouselHandler = HandlerModule.extend( {
 
         // after slick is initialized (these wouldn't work properly if done before init);
         this.elements.$carousel.on( 'init', function( event, slick ) {
-            addNav( self.elements.$carousel, slick.$slider, navOptions );
+            addNav( self.$element, slick.$slider, navOptions );
         } );
 
         this.elements.$carousel.slick( options );
