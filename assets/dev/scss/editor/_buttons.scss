@@ -2,7 +2,7 @@
 // Buttons
 //
 .qazana-button {
-    font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+    font-family: $editor-font;
     text-transform: uppercase;
     outline: none;
     border: none;
@@ -97,6 +97,6 @@
         &:focus {
           box-shadow: none !important;
         }
-        
+
     }
 }

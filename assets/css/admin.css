@@ -129,7 +129,7 @@
     line-height: 37px; }
 
 .qazana-button {
-  font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   text-transform: uppercase;
   outline: none;
   border: none;
@@ -598,7 +598,7 @@ body .gutenberg #qazana-switch-mode {
     font-size: 50px;
     color: #a0a5aa; }
   .qazana-blank_state h2 {
-    font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 32px;
     font-weight: 300;
     color: inherit;
