@@ -487,7 +487,7 @@ class Shared_Carousel_Controls {
         $element->start_controls_section(
             'section_style_bullet_navigation',
             [
-                'label'     => __( 'Bullet Navigation Style', 'qazana' ),
+                'label'     => __( 'Bullet Navigation', 'qazana' ),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'navigation!' => 'none',
