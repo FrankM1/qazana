@@ -4,32 +4,23 @@
   left: 50%;
   z-index: 1;
   max-width: 100%;
-  -webkit-transform: rotateY(180deg) translateX(50%);
-          transform: rotateY(180deg) translateX(50%); }
+  transform: rotateY(180deg) translateX(50%); }
 
 .qazana-widget-piechart .qazana-piechart {
   width: 100%;
   position: relative;
   text-align: center; }
   .qazana-widget-piechart .qazana-piechart-clockwise-yes canvas {
-    -webkit-transform: rotateY(0) translateX(-50%);
-            transform: rotateY(0) translateX(-50%); }
+    transform: rotateY(0) translateX(-50%); }
   .qazana-widget-piechart .qazana-piechart-number {
     position: relative;
     margin: 0 auto;
     width: 160px;
     height: 160px;
-    -webkit-border-radius: 50%;
-            border-radius: 50%;
+    border-radius: 50%;
     line-height: 160px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    justify-content: center; }
     .qazana-widget-piechart .qazana-piechart-number:before {
       position: absolute;
       top: 0;
@@ -37,35 +28,19 @@
       bottom: 0;
       left: 0;
       border: 1px solid grey;
-      -webkit-border-radius: inherit;
-              border-radius: inherit;
+      border-radius: inherit;
       content: ''; }
     .qazana-widget-piechart .qazana-piechart-number-prefix {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1;
+      flex-grow: 1;
       text-align: right; }
     .qazana-widget-piechart .qazana-piechart-number-suffix {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1;
+      flex-grow: 1;
       text-align: left;
       font-size: 70%; }
     .qazana-widget-piechart .qazana-piechart-number-progress {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-          -ms-flex-align: center;
-              align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-          -ms-flex-pack: center;
-              justify-content: center;
+      align-items: center;
+      justify-content: center;
       letter-spacing: -2px;
       font-size: 35px; }
   .qazana-widget-piechart .qazana-piechart-title a {
@@ -75,44 +50,22 @@
 
 @media (min-width: 768px) {
   .qazana-widget-piechart.qazana-position-left .qazana-piechart, .qazana-widget-piechart.qazana-position-right .qazana-piechart {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
   .qazana-widget-piechart.qazana-position-right .qazana-piechart {
     text-align: right;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse; }
+    flex-direction: row-reverse; }
   .qazana-widget-piechart.qazana-position-left .qazana-piechart {
     text-align: left;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    flex-direction: row; }
   .qazana-widget-piechart.qazana-position-top .qazana-piechart-number {
     margin: auto;
     text-align: center; }
   .qazana-widget-piechart.qazana-vertical-align-top .qazana-piechart {
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start; }
+    align-items: flex-start; }
   .qazana-widget-piechart.qazana-vertical-align-middle .qazana-piechart {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    align-items: center; }
   .qazana-widget-piechart.qazana-vertical-align-bottom .qazana-piechart {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-        -ms-flex-align: end;
-            align-items: flex-end; } }
+    align-items: flex-end; } }
+
 /*# sourceMappingURL=style.css.map */

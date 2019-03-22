@@ -810,7 +810,7 @@ class Source_Local extends Source_Base {
 
 	    return $data;
 	}
-	
+
 	/**
 	 * Import local template.
 	 *
@@ -838,7 +838,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'zip_error', 'PHP Zip extension not loaded.' );
 		}
 
-	
+
 		if ( empty( $import_file ) ) {
 			return new \WP_Error( 'file_error', 'Please upload a file to import' );
 		}

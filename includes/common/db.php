@@ -88,7 +88,7 @@ class DB {
 	 * @return bool
 	 */
 	public function save_editor( $post_id, $data, $status = self::STATUS_PUBLISH ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->save()' );
+		//_deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->save( $data )' );
 
 		$document = qazana()->get_documents()->get( $post_id );
 
@@ -178,7 +178,7 @@ class DB {
 	 * @return array Post data.
 	 */
 	public function get_plain_editor( $post_id, $status = self::STATUS_PUBLISH ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get_elements_data()' );
+		// _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_elements_data( $status )' );
 
 		$document = qazana()->get_documents()->get( $post_id );
 
@@ -204,7 +204,7 @@ class DB {
 	 * @return \WP_Post|false The auto-saved post, or false.
 	 */
 	public function get_newer_autosave( $post_id ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get_newer_autosave()' );
+		_deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_newer_autosave()' );
 
 		$document = qazana()->get_documents()->get( $post_id );
 

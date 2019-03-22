@@ -228,18 +228,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/template" id="tmpl-qazana-template-library-import">
 	<form id="qazana-template-library-import-form">
-		<div class="qazana-template-library-blank-icon">
+
+    <div class="qazana-template-library-blank-icon">
 			<i class="eicon-library-upload" aria-hidden="true"></i>
 		</div>
-		<div class="qazana-template-library-blank-title"><?php _e( 'Import Template to Your Library', 'qazana' ); ?></div>
+
+        <div class="qazana-template-library-blank-title"><?php _e( 'Import Template to Your Library', 'qazana' ); ?></div>
 		<div class="qazana-template-library-blank-message"><?php _e( 'Drag & drop your .JSON or .zip template file', 'qazana' ); ?></div>
-		<div id="qazana-template-library-import-form-or"><?php _e( 'or', 'qazana' ); ?></div>
-		<label for="qazana-template-library-import-form-input" id="qazana-template-library-import-form-label" class="qazana-button qazana-button-success"><?php _e( 'Select File', 'qazana' ); ?></label>
-		<input id="qazana-template-library-import-form-input" type="file" name="file" accept=".json,.zip" required/>
-		<div class="qazana-template-library-blank-footer">
+        <div id="qazana-template-library-import-form-or"><?php _e( 'or', 'qazana' ); ?></div>
+
+        <div class="qazana-template-library-import-field">
+            <label for="qazana-template-library-import-form-checkbox" id="qazana-template-library-import-form-label" class="qazana-checkbox"><?php _e( 'Save as Template', 'qazana' ); ?></label>
+            <input id="qazana-template-library-import-form-checkbox" type="checkbox" name="import" checked required/>
+        </div>
+
+        <div class="qazana-template-library-import-field">
+            <label for="qazana-template-library-import-form-input" id="qazana-template-library-import-form-label" class="qazana-button qazana-button-success"><?php _e( 'Select File', 'qazana' ); ?></label>
+            <input id="qazana-template-library-import-form-input" type="file" name="file" accept=".json,.zip" required/>
+        </div>
+
+        <div class="qazana-template-library-blank-footer">
 			<?php _e( 'Want to learn more about the Qazana library?', 'qazana' ); ?>
 			<a class="qazana-template-library-blank-footer-link" href="https://go.qazana.net/docs-library/" target="_blank"><?php _e( 'Click here', 'qazana' ); ?></a>
-		</div>
+        </div>
+
 	</form>
 </script>
 

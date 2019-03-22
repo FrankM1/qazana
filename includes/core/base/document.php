@@ -899,7 +899,7 @@ abstract class Document extends Controls_Stack {
 	protected function save_elements( $elements ) {
 		$editor_data = $this->get_elements_raw_data( $elements );
 
-		// We need the `wp_slash` in order to avoid the unslashing during the `update_post_meta`
+		// We need the `wp_slash` in order to avoid the un-slashing during the `update_post_meta`
 		$json_value = wp_slash( wp_json_encode( $editor_data ) );
 
 		// Don't use `update_post_meta` that can't handle `revision` post type

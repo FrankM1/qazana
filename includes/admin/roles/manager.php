@@ -42,6 +42,10 @@ class Manager extends Panel {
 			self::PAGE_ID,
 			[ $this, 'display_settings_page' ]
 		);
+    }
+
+    public function save_advanced_options( $input ) {
+		return $input;
 	}
 
 	/**
@@ -49,7 +53,7 @@ class Manager extends Panel {
 	 * @access protected
 	 */
 	protected function create_tabs() {
-		$validation_class = 'Qazana\Settings_Validations';
+		$validation_class = 'Qazana\Admin\Settings\Validations';
 		return [
 			'general' => [
 				'label' => __( 'General', 'qazana' ),
@@ -124,7 +128,7 @@ class Manager extends Panel {
 		if ( false === $options ) {
 			$options = $this->get_role_manager_options();
         }
-        
+
         $role_options = isset($options[$role_slug]) ? $options[$role_slug] : [];
         $name = 'qazana_' . self::ROLE_MANAGER_OPTION_NAME  . '[' . $role_slug . '][]';
 
@@ -252,6 +256,6 @@ class Manager extends Panel {
      * Registers a text field setting for Wordpress 4.7 and higher.
      */
     function register_setting() {
-        register_setting('qazana-role-manager', 'qazana_' . self::ROLE_MANAGER_OPTION_NAME ); 
-    } 
+        register_setting('qazana-role-manager', 'qazana_' . self::ROLE_MANAGER_OPTION_NAME );
+    }
 }
