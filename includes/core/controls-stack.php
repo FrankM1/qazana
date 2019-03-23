@@ -1698,7 +1698,7 @@ abstract class Controls_Stack extends Base_Object {
 	 *                        Default is `control`.
 	 *     @type string $at   Where to inject. If `$type` is `control` accepts
 	 *                        `before` and `after`. If `$type` is `section`
-	 *                        accepts `start` and `end`. Dafault values based on
+	 *                        accepts `start` and `end`. Default values based on
 	 *                        the `type`.
 	 *     @type string $of   Control/Section ID.
 	 * }

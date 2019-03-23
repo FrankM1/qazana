@@ -493,7 +493,7 @@ abstract class Skin_Base {
 	 * be injected to a specific position in the stack, until you stop the
 	 * injection using `end_injection()` method.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @param array $position {
@@ -503,19 +503,13 @@ abstract class Skin_Base {
 	 *                        Default is `control`.
 	 *     @type string $at   Where to inject. If `$type` is `control` accepts
 	 *                        `before` and `after`. If `$type` is `section`
-	 *                        accepts `start` and `end`. Dafault values based on
+	 *                        accepts `start` and `end`. Default values based on
 	 *                        the `type`.
 	 *     @type string $of   Control/Section ID.
 	 * }
 	 */
 	final public function start_injection( array $position ) {
-		if ( $this->get_parent()->injection_point ) {
-			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_parent()->get_name() . ' Skin name - `' . $this->get_id() . '`.' );
-		}
-
-		$position['of'] = $this->get_id();
-
-		$this->get_parent()->injection_point = $this->get_parent()->get_position_info( $position );
+		$this->get_parent()->start_injection( $position );
 	}
 
 	/**
@@ -525,11 +519,11 @@ abstract class Skin_Base {
 	 * it stops adding new controls to this point and continue to add controls
 	 * to the regular position in the stack.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 * @access public
 	 */
 	final public function end_injection() {
-		$this->get_parent()->injection_point = null;
+		$this->get_parent()->end_injection();
 	}
 
 	/**
