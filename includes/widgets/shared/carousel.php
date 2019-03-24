@@ -315,8 +315,8 @@ class Shared_Carousel_Controls {
                 'type'  => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
-                        'min' => 20,
-                        'max' => 60,
+                        'min' => 1,
+                        'max' => 100,
                     ],
                 ],
                 'selectors' => [
@@ -335,6 +335,20 @@ class Shared_Carousel_Controls {
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'arrows_background_color',
+            [
+                'label'     => __( 'Background Color', 'qazana' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'background-color: {{VALUE}};',
                 ],
                 'condition' => [
                     'navigation' => [ 'arrows', 'both' ],
@@ -400,6 +414,27 @@ class Shared_Carousel_Controls {
                 'size_units' => [ '%', 'px' ],
                 'selectors' => [
                     '{{WRAPPER}} div.slick-navigation a.prev, {{WRAPPER}} div.slick-navigation a.next' => 'top: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [
+                    'navigation' => [ 'arrows', 'both' ],
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'arrows_width',
+            [
+                'label' => __( 'Size', 'qazana' ),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    '%' => [
+                        'min' => 0,
+                        'max' => 50,
+                    ],
+                ],
+                'size_units' => [ '%', 'px' ],
+                'selectors' => [
+                    '{{WRAPPER}} div.slick-navigation a.prev, {{WRAPPER}} div.slick-navigation a.next' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
                 ],
                 'condition' => [
                     'navigation' => [ 'arrows', 'both' ],

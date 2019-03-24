@@ -2395,23 +2395,6 @@ body.qazana-page .qazana-widget-menu-anchor {
 .qazana-video-popup-image {
   text-align: center; }
 
-.slick-list:focus {
-  outline: none; }
-
-.slick-loading .slick-track {
-  visibility: hidden; }
-
-.slick-slide.dragging img {
-  pointer-events: none; }
-
-.slick-slides {
-  z-index: 1;
-  transition: opacity 0.3s; }
-  .slick-slides:not(:first-child) {
-    display: none; }
-  .slick-slides.invisible {
-    opacity: 0; }
-
 .slick-slider {
   position: relative;
   display: block;
@@ -2451,8 +2434,19 @@ body.qazana-page .qazana-widget-menu-anchor {
 .slick-slide {
   float: left;
   height: 100%;
-  min-height: 1px;
-  display: none; }
+  min-height: 1px; }
+  .slick-slide:not(:first-child) {
+    display: none; }
+  .slick-initialized .slick-slide {
+    display: block; }
+  .slick-loading .slick-slide {
+    visibility: hidden; }
+  .slick-vertical .slick-slide {
+    display: block;
+    height: auto;
+    border: 1px solid transparent; }
+  .slick-slide.invisible {
+    opacity: 0; }
   .qazana-slick-slider[dir="rtl"] .slick-slide {
     float: right; }
   .slick-slide img {
@@ -2462,14 +2456,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     display: none; }
   .slick-slide.dragging img {
     pointer-events: none; }
-  .slick-initialized .slick-slide {
-    display: block; }
-  .slick-loading .slick-slide {
-    visibility: hidden; }
-  .slick-vertical .slick-slide {
-    display: block;
-    height: auto;
-    border: 1px solid transparent; }
 
 .qazana-has-loading-indicator .slick-slides > div:not(:first-child) {
   display: none; }
@@ -2484,18 +2470,15 @@ body.qazana-page .qazana-widget-menu-anchor {
     position: absolute;
     top: 50%;
     z-index: 4;
-    width: 34px;
-    height: 34px;
     border: 2px solid white;
     border-radius: 4px;
     text-align: center;
     font-size: 10px;
-    line-height: 32px;
+    line-height: 1;
     cursor: pointer;
     transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
     transform: translateY(-50%);
     transform-style: preserve-3d;
-    margin-top: -17px;
     color: #ffffff;
     transition: background-color 0.3s; }
     .slick-navigation a.next:hover,

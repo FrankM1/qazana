@@ -2481,7 +2481,6 @@ body.qazana-page .qazana-widget-menu-anchor {
     transition: all 0.5s cubic-bezier(0.3, 0.95, 0.3, 0.95);
     transform: translateY(-50%);
     transform-style: preserve-3d;
-    margin-top: -17px;
     color: #ffffff;
     transition: background-color 0.3s; }
     .slick-navigation a.next:hover,
