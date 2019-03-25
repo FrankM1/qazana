@@ -334,7 +334,7 @@ class Shared_Carousel_Controls {
                 'label'     => __( 'Color', 'qazana' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+                    '{{WRAPPER}} div.slick-navigation .prev, {{WRAPPER}} div.slick-navigation .next' => 'color: {{VALUE}};',
                 ],
                 'condition' => [
                     'navigation' => [ 'arrows', 'both' ],
@@ -442,6 +442,14 @@ class Shared_Carousel_Controls {
             ]
         );
 
+        $element->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'arrows_box_shadow',
+                'selector' => '{{WRAPPER}} div.slick-navigation a.prev, {{WRAPPER}} div.slick-navigation a.next',
+			]
+		);
+
         $element->end_controls_tab();
 
         $element->start_controls_tab(
@@ -492,6 +500,14 @@ class Shared_Carousel_Controls {
                 ],
             ]
         );
+
+        $element->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'arrows_hover_box_shadow',
+                'selector' => '{{WRAPPER}} div.slick-navigation .prev:hover, {{WRAPPER}} div.slick-navigation .next:hover',
+			]
+		);
 
         $element->end_controls_tab();
 
