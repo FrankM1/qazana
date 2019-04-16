@@ -8,7 +8,8 @@
         VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
-		CarouselModule = require( 'qazana-frontend/utils/carousel' );
+		CarouselModule = require( 'qazana-frontend/utils/carousel' ),
+		AnimationModule = require( 'qazana-frontend/utils/animation' );
 
 	var QazanaFrontend = function() {
 		var self = this,
@@ -47,6 +48,7 @@
 				anchors: new AnchorsModule(),
 				lightbox: new LightboxModule(),
                 carousel: new CarouselModule(),
+                animation: new AnimationModule(),
                 // loadingIndicator: new LoadingIndicatorModule(),
 			};
 
