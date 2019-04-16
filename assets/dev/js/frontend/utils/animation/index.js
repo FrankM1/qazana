@@ -1,4 +1,4 @@
-var ViewModule = require( '../../utils/view-module' );
+var ViewModule = require( '../../../utils/view-module' );
 
 module.exports = ViewModule.extend( {
 	getDefaultSettings: function() {

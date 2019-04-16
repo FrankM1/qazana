@@ -301,7 +301,8 @@ ul.qazana-icon-list-items.qazana-inline-items {
     min-width: 0; // Prevent columns from overflowing the grid area in Firefox browser
 }
 
-.qazana-grid {
+.qazana-grid,
+.qazana-multigrid {
 
     @mixin grid_loop($device) {
         @for $i from 1 through 12 {
@@ -333,11 +334,8 @@ ul.qazana-icon-list-items.qazana-inline-items {
     }
 }
 
-.qazana-grid {
-    // grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
-    // grid-auto-rows: minmax(25%, auto);
-    // grid-auto-flow: dense;
-    // height: auto !important ;
+.qazana-multigrid {
+    grid-auto-flow: dense;
 
     .qazana-grid-item {
         &__large {

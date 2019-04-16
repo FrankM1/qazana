@@ -49,7 +49,6 @@ ControlMediaItemView = ControlBaseDataView.extend( {
                     url: imageUrl,
                 } );
             }
-
         } );
 
         return imageThumbnail;
