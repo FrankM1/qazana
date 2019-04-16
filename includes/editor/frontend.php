@@ -274,6 +274,14 @@ class Frontend {
 			],
 			'4.7.1',
 			true
+        );
+
+        wp_register_script(
+			'animejs',
+			qazana()->core_assets_url . 'lib/animejs/animejs' . $suffix . '.js',
+			[],
+			'3.0.1',
+			true
 		);
 
 		wp_register_script(

@@ -24,7 +24,7 @@ module.exports = function( grunt ) {
 		release: require( './.grunt-config/release' ),
 		copy: require( './.grunt-config/copy' ),
 		clean: require( './.grunt-config/clean' ),
-		webpack: require( './.grunt-config/webpack' ),
+        webpack: require( './.grunt-config/webpack' ),
 		qunit: {
 			src: 'tests/qunit/index.html',
 		},
@@ -36,6 +36,7 @@ module.exports = function( grunt ) {
 		'wp_readme_to_markdown',
 		'scripts',
         'styles',
+        'assets',
 	] );
 
 	grunt.registerTask( 'i18n', [
@@ -54,6 +55,10 @@ module.exports = function( grunt ) {
 
 	grunt.registerTask( 'watch_scripts', () => {
 		grunt.task.run( 'webpack:development' );
+    } );
+
+    grunt.registerTask( 'assets', () => {
+		grunt.task.run( 'copy:animejs' );
 	} );
 
 	grunt.registerTask( 'styles', ( isDevMode = false ) => {

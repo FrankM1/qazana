@@ -31,7 +31,7 @@ const getBuildFiles = [
 
 	'!assets/dev/**',
 	'!assets/**/*.map',
-	'!*~'
+	'!*~',
 ];
 /**
  * @type {{main: {src: string[], expand: boolean, dest: string}, secondary: {src: string[], expand: boolean, dest: string}}}
@@ -40,13 +40,23 @@ const copy = {
 	main: {
 		src: getBuildFiles,
 		expand: true,
-		dest: 'build/'
+		dest: 'build/',
 	},
 	secondary: {
 		src: getBuildFiles,
 		expand: true,
-		dest: '/tmp/qazana-builds/<%= pkg.version %>/'
-	}
+		dest: '/tmp/qazana-builds/<%= pkg.version %>/',
+	},
+	animejs: {
+		src: [
+			'node_modules/animejs/lib/*.*',
+			'!node_modules/animejs/lib/anime.es.js',
+        ],
+        dest: 'assets/lib/animejs',
+        flatten: true,
+        expand: true,
+        filter: 'isFile',
+	},
 };
 
 module.exports = copy;
