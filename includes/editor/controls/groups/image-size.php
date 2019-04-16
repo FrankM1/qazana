@@ -343,7 +343,6 @@ class Group_Control_Image_Size extends Group_Control_Base {
 	protected function get_default_options() {
 		return [
             'popover' => false,
-            'resize' => true,
 		];
 	}
 }
