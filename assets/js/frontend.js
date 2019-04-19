@@ -853,9 +853,7 @@ var ElementsHandler = function ElementsHandler() {
 					targets: targets,
 					duration: duration,
 					easing: easing,
-					delay: function delay(el, i) {
-						return i * _delay + startDelay;
-					},
+					delay: anime.stagger(_delay, { start: startDelay }),
 					complete: function complete(anime) {
 						self._onAnimationsComplete(anime);
 					}
