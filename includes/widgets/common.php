@@ -125,7 +125,7 @@ class Widget_Common extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Animations::get_type(),
 			[
-				'name' => '_animation',
+                'name' => '_animation',
 			]
 		);
 

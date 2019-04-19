@@ -1796,7 +1796,7 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element-overlay .qaza
 body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-section {
   overflow: visible; }
 
-#qazana .animated {
+#qazana .qazana-animated {
   -webkit-animation-fill-mode: none !important;
           animation-fill-mode: none !important; }
 

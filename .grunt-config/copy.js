@@ -47,12 +47,21 @@ const copy = {
 		expand: true,
 		dest: '/tmp/qazana-builds/<%= pkg.version %>/',
 	},
-	animejs: {
+	anime: {
 		src: [
 			'node_modules/animejs/lib/*.*',
 			'!node_modules/animejs/lib/anime.es.js',
         ],
-        dest: 'assets/lib/animejs',
+        dest: 'assets/lib/anime',
+        flatten: true,
+        expand: true,
+        filter: 'isFile',
+    },
+    fontfaceobserver: {
+		src: [
+			'node_modules/fontfaceobserver/fontfaceobserver.js',
+        ],
+        dest: 'assets/lib/fontfaceobserver',
         flatten: true,
         expand: true,
         filter: 'isFile',

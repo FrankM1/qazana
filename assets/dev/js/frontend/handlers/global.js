@@ -14,11 +14,11 @@ GlobalHandler = HandlerModule.extend( {
 			elementSettings = this.getElementSettings(),
 			animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
 
-		$element.removeClass( 'animated' ).removeClass( self.prevAnimation );
+		$element.removeClass( 'qazana-animated' ).removeClass( self.prevAnimation );
 
 		setTimeout( function() {
 			self.prevAnimation = animation;
-			$element.addClass( animation ).addClass( 'animated' );
+			$element.addClass( animation ).addClass( 'qazana-animated' );
 		}, animationDelay );
 	},
 

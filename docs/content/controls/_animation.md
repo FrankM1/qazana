@@ -12,7 +12,7 @@ $this->add_control(
     [
         'label' => __( 'Entrance Animation', 'your-plugin' ),
         'type' => Controls_Manager::ANIMATION,
-        'prefix_class' => 'animated ',
+        'prefix_class' => 'qazana-animated ',
     ]
 );
 ```
@@ -24,12 +24,12 @@ Most times you won't have to manually retrieve the value of animation controls s
 ```php
 $animation = $this->get_settings( 'animation' );
 
-echo '<div class="animated ' . $animation . '"> ... </div>';
+echo '<div class="qazana-animated ' . $animation . '"> ... </div>';
 ```
 
 **JS:** *(Under `_content_template()` method)*
 ```html
-<div class="animated  {{ settings.animation }}"> ... </div>
+<div class="qazana-animated  {{ settings.animation }}"> ... </div>
 ```
 
 ## Arguments

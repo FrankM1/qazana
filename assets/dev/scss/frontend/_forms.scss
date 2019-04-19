@@ -257,38 +257,3 @@
         color: $success;
     }
 }
-
-// Form Submit Button
-.qazana-form {
-
-    .qazana-button {
-
-        &>span {
-            display: flex;
-            justify-content: center;
-        }
-
-        &.qazana-size- {
-
-            &xs {
-                min-height: 32px;
-            }
-
-            &sm {
-                min-height: 40px;
-            }
-
-            &md {
-                min-height: 46px;
-            }
-
-            &lg {
-                min-height: 58px;
-            }
-
-            &xl {
-                min-height: 72px;
-            }
-        }
-    }
-}

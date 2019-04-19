@@ -25,7 +25,8 @@ ElementsHandler = function( $ ) {
 
 	var addGlobalHandlers = function() {
 		qazanaFrontend.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/global' ) );
-		qazanaFrontend.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
+        qazanaFrontend.hooks.addAction( 'frontend/element_ready/widget', require( 'qazana-frontend/handlers/widget' ) );
+        qazanaFrontend.hooks.addAction( 'frontend/element_ready/global', require( 'qazana-frontend/handlers/animations' ) );
 	};
 
 	var addElementsHandlers = function() {

@@ -277,18 +277,45 @@ class Frontend {
         );
 
         wp_register_script(
-			'animejs',
-			qazana()->core_assets_url . 'lib/animejs/animejs' . $suffix . '.js',
+			'anime',
+			'https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js',
 			[],
 			'3.0.1',
 			true
-		);
+        );
+
+        wp_register_script(
+			'fontfaceobserver',
+			qazana()->core_assets_url . 'lib/fontfaceobserver/fontfaceobserver.js',
+			[],
+			'3.0.1',
+			true
+        );
+
+        wp_register_script(
+			'splittext',
+			qazana()->core_assets_url . 'lib/greensock/utils/splittext.js',
+			[],
+			'3.0.1',
+			true
+        );
+
+        wp_register_script(
+			'tweenMax',
+			'https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js',
+			[],
+			'2.1.2',
+			true
+        );
 
 		wp_register_script(
 			'qazana-frontend',
 			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
-			[
-				'waypoints',
+			[   'anime',
+                'waypoints',
+                'tweenMax',
+                'splittext',
+                'fontfaceobserver',
 				'qazana-dialog',
 				'jquery-swiper',
 			],

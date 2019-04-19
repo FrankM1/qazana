@@ -58,7 +58,7 @@ module.exports = function( grunt ) {
     } );
 
     grunt.registerTask( 'assets', () => {
-		grunt.task.run( 'copy:animejs' );
+        //grunt.task.run( 'copy:anime' );
 	} );
 
 	grunt.registerTask( 'styles', ( isDevMode = false ) => {

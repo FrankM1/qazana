@@ -4,8 +4,8 @@
 		EventManager = require( 'qazana-utils/hooks' ),
 		Module = require( 'qazana-frontend/handler-module' ),
 		ElementsHandler = require( 'qazana-frontend/elements-handler' ),
-        YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
-        VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
+		YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
+		VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
 		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
 		CarouselModule = require( 'qazana-frontend/utils/carousel' ),
@@ -20,7 +20,10 @@
 		this.Module = Module;
 
 		var setDeviceModeData = function() {
-			elements.$body.attr( 'data-qazana-device-mode', self.getCurrentDeviceMode() );
+			elements.$body.attr(
+				'data-qazana-device-mode',
+				self.getCurrentDeviceMode()
+			);
 		};
 
 		var initElements = function() {
@@ -43,13 +46,13 @@
 
 		var initOnReadyComponents = function() {
 			self.utils = {
-                youtube: new YouTubeModule(),
-                vimeo: new VimeoModule(),
+				youtube: new YouTubeModule(),
+				vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
 				lightbox: new LightboxModule(),
-                carousel: new CarouselModule(),
-                animation: new AnimationModule(),
-                // loadingIndicator: new LoadingIndicatorModule(),
+				carousel: new CarouselModule(),
+				animation: new AnimationModule(),
+				// loadingIndicator: new LoadingIndicatorModule(),
 			};
 
 			self.modules = {
@@ -67,7 +70,9 @@
 		};
 
 		var getSiteSettings = function( settingType, settingName ) {
-			var settingsObject = self.isEditMode() ? qazana.settings[ settingType ].model.attributes : self.config.settings[ settingType ];
+			var settingsObject = self.isEditMode() ?
+				qazana.settings[ settingType ].model.attributes :
+				self.config.settings[ settingType ];
 
 			if ( settingName ) {
 				return settingsObject[ settingName ];
@@ -77,7 +82,11 @@
 		};
 
 		var addIeCompatibility = function() {
-			var isIE = 'Microsoft Internet Explorer' === navigator.appName || !! navigator.userAgent.match( /Trident/g ) || !! navigator.userAgent.match( /MSIE/g ) || !! navigator.userAgent.match( /rv:11/ ),
+			var isIE =
+					'Microsoft Internet Explorer' === navigator.appName ||
+					!! navigator.userAgent.match( /Trident/g ) ||
+					!! navigator.userAgent.match( /MSIE/g ) ||
+					!! navigator.userAgent.match( /rv:11/ ),
 				el = document.createElement( 'div' ),
 				supportsGrid = 'string' === typeof el.style.grid;
 
@@ -86,7 +95,12 @@
 			}
 			elements.$body.addClass( 'qazana-msie' );
 
-			var msieCss = '<link rel="stylesheet" id="qazana-frontend-css-msie" href="' + qazanaFrontend.config.urls.assets + 'css/frontend-msie.min.css?' + qazanaFrontend.config.version + '" type="text/css" />';
+			var msieCss =
+				'<link rel="stylesheet" id="qazana-frontend-css-msie" href="' +
+				qazanaFrontend.config.urls.assets +
+				'css/frontend-msie.min.css?' +
+				qazanaFrontend.config.version +
+				'" type="text/css" />';
 
 			elements.$body.append( msieCss );
 		};
@@ -109,6 +123,10 @@
 			}
 
 			initOnReadyComponents();
+
+			var CustomAnimation = require( 'qazana-frontend/custom-animations' );
+
+			new CustomAnimation();
 		};
 
 		this.getElements = function( element ) {
@@ -238,7 +256,10 @@
 		};
 
 		this.getCurrentDeviceMode = function() {
-			return getComputedStyle( elements.$qazana[ 0 ], ':after' ).content.replace( /"/g, '' );
+			return getComputedStyle(
+				elements.$qazana[ 0 ],
+				':after'
+			).content.replace( /"/g, '' );
 		};
 
 		this.waypoint = function( $element, callback, options ) {

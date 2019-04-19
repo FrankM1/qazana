@@ -67,18 +67,39 @@ class Control_Select2 extends Base_Data_Control {
 			<label for="<?php echo $control_uid; ?>" class="qazana-control-title">{{{ data.label }}}</label>
 			<div class="qazana-control-input-wrapper">
 				<# var multiple = ( data.multiple ) ? 'multiple' : ''; #>
-				<select id="<?php echo $control_uid; ?>" class="qazana-select2" type="select2" {{ multiple }} data-setting="{{ data.name }}">
-					<# _.each( data.options, function( option_title, option_value ) {
-						var value = data.controlValue;
-						if ( typeof value == 'string' ) {
-							var selected = ( option_value === value ) ? 'selected' : '';
-						} else if ( null !== value ) {
-							var value = _.values( value );
-							var selected = ( -1 !== value.indexOf( option_value ) ) ? 'selected' : '';
-						}
-						#>
-					<option {{ selected }} value="{{ option_value }}">{{{ option_title }}}</option>
-					<# } ); #>
+                <select id="<?php echo $control_uid; ?>" class="qazana-select2" type="select2" {{ multiple }} data-setting="{{ data.name }}">
+
+                    <#
+                    var value = data.controlValue;
+
+                    var printOptions = function( options ) {
+						_.each( options, function( option_title, option_value ) {
+
+                            if ( typeof value == 'string' ) {
+                                var selected = ( option_value === value ) ? 'selected' : '';
+                            } else if ( null !== value ) {
+                                var value = _.values( value );
+                                var selected = ( -1 !== value.indexOf( option_value ) ) ? 'selected' : '';
+                            }
+                            #>
+							<option {{ selected }} value="{{ option_value }}">{{{ option_title }}}</option>
+						<# } );
+                    };
+
+                    if ( data.options && data.options[0] && 'undefined' !== data.options[0].options ){
+                        _.each( data.options, function( groupArgs ) {
+                            if ( groupArgs ) { #>
+                                <optgroup label="{{ groupArgs.label }}">
+                                    <# printOptions( groupArgs.options ); #>
+                                </optgroup>
+                            <# } else if ( _.isString( groupArgs ) ) {
+                                printOptions( groupArgs.options );
+                            }
+                        } );
+                    } else {
+                        printOptions( data.options );
+                    }
+					#>
 				</select>
 			</div>
 		</div>
