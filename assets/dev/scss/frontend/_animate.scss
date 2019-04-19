@@ -1,5 +1,21 @@
 // Global style for animate.css
 
+.qazana-perspective {
+    perspective: 1800px;
+}
+
+.qazana-will-change {
+    will-change: transform, opacity;
+}
+
+.qazana-transition-none {
+    transition: none !important;
+}
+
+.qazana-ws-nowrap {
+    white-space: nowrap;
+}
+
 .qazana-hover-animation-grow {
     transition-duration: 0.3s;
     transition-property: transform;
@@ -21,6 +37,7 @@
 .qazana-hover-animation-shrink:hover {
     transform: scale(0.9);
 }
+
 @keyframes qazana-hover-animation-pulse {
     25% {
         transform: scale(1.1);
@@ -39,6 +56,7 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
+
 @keyframes qazana-hover-animation-pulse-grow {
     to {
         transform: scale(1.1);
@@ -54,6 +72,7 @@
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
+
 @keyframes qazana-hover-animation-pulse-shrink {
     to {
         transform: scale(0.9);
@@ -69,6 +88,7 @@
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
+
 @keyframes qazana-hover-animation-push {
     50% {
         transform: scale(0.8);
@@ -87,6 +107,7 @@
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-pop {
     50% {
         transform: scale(1.2);
@@ -169,6 +190,7 @@
 .qazana-hover-animation-sink:hover {
     transform: translateY(8px);
 }
+
 @keyframes qazana-hover-animation-bob {
     0% {
         transform: translateY(-8px);
@@ -182,6 +204,7 @@
         transform: translateY(-8px);
     }
 }
+
 @keyframes qazana-hover-animation-bob-float {
     100% {
         transform: translateY(-8px);
@@ -199,6 +222,7 @@
     animation-fill-mode: forwards;
     animation-direction: normal, alternate;
 }
+
 @keyframes qazana-hover-animation-hang {
     0% {
         transform: translateY(8px);
@@ -212,6 +236,7 @@
         transform: translateY(8px);
     }
 }
+
 @keyframes qazana-hover-animation-hang-sink {
     100% {
         transform: translateY(8px);
@@ -264,6 +289,7 @@
 .qazana-hover-animation-skew-backward:hover {
     transform: skew(10deg);
 }
+
 @keyframes qazana-hover-animation-wobble-vertical {
     16.65% {
         transform: translateY(8px);
@@ -298,6 +324,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-horizontal {
     16.65% {
         transform: translateX(8px);
@@ -332,6 +359,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-to-bottom-right {
     16.65% {
         transform: translate(8px, 8px);
@@ -366,6 +394,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-to-top-right {
     16.65% {
         transform: translate(8px, -8px);
@@ -400,6 +429,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-top {
     16.65% {
         transform: skew(-12deg);
@@ -438,6 +468,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-bottom {
     16.65% {
         transform: skew(-12deg);
@@ -476,6 +507,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-wobble-skew {
     16.65% {
         transform: skew(-12deg);
@@ -510,6 +542,7 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
+
 @keyframes qazana-hover-animation-buzz {
     50% {
         transform: translateX(3px) rotate(2deg);
@@ -528,6 +561,7 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
+
 @keyframes qazana-hover-animation-buzz-out {
     10% {
         transform: translateX(3px) rotate(2deg);
@@ -586,7 +620,7 @@
 .qazana-hover-animation-shadow-bottom:active,
 .qazana-hover-animation-shadow-bottom:focus,
 .qazana-hover-animation-shadow-bottom:hover {
-    box-shadow: 0 10px 27px 0 rgba(0,0,0,0.1) !important;
+    box-shadow: 0 10px 27px 0 rgba(0, 0, 0, 0.1) !important;
     border-color: transparent !important;
 }
 

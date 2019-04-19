@@ -375,7 +375,55 @@ class Widget_Text_Editor extends Widget_Base {
 		// In plain mode, render without shortcode
 		echo $this->get_settings_for_display( 'editor' );
     }
-    
+
+        /**
+	 * Add render attributes.
+	 *
+	 * Used to add several attributes to current widget `_wrapper` element.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function _add_render_attributes() {
+        parent::_add_render_attributes();
+
+        $this->add_render_attribute( '_wrapper', 'data-split-text', 'true' );
+
+        $options = [
+            'target' => 'p',
+            'forceApply' => true,
+            'type' => 'lines',
+        ];
+
+        $this->add_render_attribute( '_wrapper', 'data-split-options', json_encode( $options ) );
+
+        if ( $this->get_settings('_animation_enable' ) ) {
+            $this->add_render_attribute( '_wrapper', 'data-custom-animations', 'true' );
+        }
+
+        $options = [
+            'triggerHandler' => 'inview',
+            'animationTarget' => '.qazana-split-inner',
+            'duration' => 1000,
+            'startDelay' => 150,
+            'delay' => 40,
+            'direction' => 'forward',
+            'easing' => 'easeOutBack',
+            'initValues' => [
+                'translateY' => 35,
+                'rotateZ' => 5,
+                'opacity' => 0,
+            ],
+            'animations' => [
+                'translateY' => 0,
+                'rotateZ' => 0,
+                'opacity' => 1,
+            ],
+        ];
+
+        $this->add_render_attribute( '_wrapper', 'data-ca-options', json_encode( $options ) );
+    }
+
 	/**
 	 * Render text editor widget output on the frontend.
 	 *

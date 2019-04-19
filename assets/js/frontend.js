@@ -107,19 +107,17 @@
  * Date: Thu May 05 14:23:00 2011 -0600
  */
 var defaults = {
-	parentElClass: '.qazana-widget-heading-animated',
+	parentElClass: '.qazana-element',
 	compressor: 1,
 	minFontSize: Number.NEGATIVE_INFINITY,
 	maxFontSize: Number.POSITIVE_INFINITY
 };
 
 var Plugin = function Plugin($element, options) {
-	this.element = $element[0];
-	this.$element = $element;
+	this.element = $element.find(options.target).get(0);
+	this.$element = $element.find(options.target);
 
 	this.options = $.extend({}, defaults, options);
-
-	this._defaults = defaults;
 
 	this.init = function () {
 		this.setMinFontSize();
@@ -148,7 +146,7 @@ var Plugin = function Plugin($element, options) {
 
 	this.resizer = function () {
 		// if it's a heading, get parent width. because parent is set to display: inline-block
-		var elementWidth = this.$element.parent(this.options.parentElClass).length ? this.$element.parent().width() : this.$element.width();
+		var elementWidth = this.$element.closest(this.options.parentElClass).length ? this.$element.parent().width() : this.$element.width();
 
 		this.$element.css('font-size', Math.max(Math.min(elementWidth / (this.options.compressor * 10), parseFloat(this.options.maxFontSize)), parseFloat(this.options.minFontSize)));
 	};
@@ -174,15 +172,18 @@ module.exports = Plugin;
 "use strict";
 
 
+var QazanaRotateText = __webpack_require__(/*! ./textRotator */ "../assets/dev/js/frontend/animations/textRotator.js");
+
 var defaults = {
+	target: '',
 	type: 'words', // "words", "chars", "lines". or mixed e.g. "words, chars"
 	forceApply: false
 };
 
-var Plugin = function Plugin(element, options) {
+var Plugin = function Plugin($element, options) {
 	var self = this;
-	this.element = element[0];
-	this.$element = jQuery(element);
+	this.element = $element[0];
+	this.$element = $element;
 
 	this.options = jQuery.extend({}, defaults, options);
 	this.splittedTextArray = [];
@@ -197,17 +198,18 @@ var Plugin = function Plugin(element, options) {
 			return false;
 		}
 
-		new IntersectionObserver(function (enteries, observer) {
-			enteries.forEach(function (entery) {
-				if (entery.isIntersecting) {
+		new IntersectionObserver(function (entries, observer) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) {
 					self._initSplit();
 					self._windowResize();
 
-					observer.unobserve(entery.target);
+					observer.unobserve(entry.target);
 				}
 			});
 		}, { rootMargin: '10%' }).observe(this.element);
 	};
+
 	this._initSplit = function () {
 		if (this.options.forceApply) {
 			this.splitTextInstance = this._doSplit();
@@ -218,6 +220,7 @@ var Plugin = function Plugin(element, options) {
 
 		this._onFontsLoad();
 	};
+
 	this._onFontsLoad = function () {
 		var elementFontFamily = this.$element.css('font-family').replace(/\"/g, '').replace(/\'/g, '').split(',')[0];
 		var elementFontWeight = this.$element.css('font-weight');
@@ -236,6 +239,7 @@ var Plugin = function Plugin(element, options) {
 			self._onSplittingDone();
 		});
 	};
+
 	this.getSplitTypeArray = function () {
 		var type = this.options.type;
 
@@ -246,10 +250,12 @@ var Plugin = function Plugin(element, options) {
 		if (!this.isRTL) {
 			return splitTypeArray;
 		}
+
 		return splitTypeArray.filter(function (type) {
 			return type !== 'chars';
 		});
 	};
+
 	this._doSplit = function () {
 		if (this.$element.hasClass('split-text-applied') || this.$element.closest('.tabs-pane').length && this.$element.closest('.tabs-pane').is(':hidden')) {
 			return false;
@@ -257,7 +263,9 @@ var Plugin = function Plugin(element, options) {
 
 		var splitType = this.getSplitTypeArray();
 
-		var splittedText = new SplitText(this.element, {
+		var targetElement = this.options.target ? this.$element.find(this.options.target).get(0) : this.element;
+
+		var splittedText = new SplitText(targetElement, {
 			type: splitType,
 			charsClass: 'qazana-text-chars',
 			linesClass: 'qazana-text-lines',
@@ -272,54 +280,54 @@ var Plugin = function Plugin(element, options) {
 
 		this._unitsOp(this.splittedTextArray);
 
-		jQuery(this.element).addClass('split-text-applied');
+		this.$element.addClass('split-text-applied');
 
 		return splittedText;
 	};
+
 	this._unitsOp = function (splittedElements) {
 		jQuery.each(splittedElements, function () {
-			var $element = jQuery(this).addClass('split-unit');
+			var $element = jQuery(this).addClass('qazana-split-unit');
 			var innerText = $element.text();
 
-			$element.wrapInner('<span data-text="' + innerText + '" class="split-inner" />');
+			$element.wrapInner('<span data-text="' + innerText + '" class="qazana-split-inner" />');
 		});
 	};
-	this._onSplittingDone = function () {
-		var parentColumn = jQuery(this.element).closest('.qazana-column');
 
-		/*
-         if it's only a split text, then call textRotator
-         Otherwise if it has custom animations, then wait for animations to be done
-         and then textRotator will be called from customAnimations
-        */
-		if (jQuery(this.element).is('[data-text-rotator]') && !this.element.hasAttribute('data-custom-animations') && parentColumn.length && !parentColumn.get(0).hasAttribute('data-custom-animations')) {
-			jQuery(this.element).liquidTextRotator();
+	this._onSplittingDone = function () {
+		var parentColumn = this.$element.closest('.qazana-column');
+
+		/**
+         * if it's only a split text, then call textRotator
+         * Otherwise if it has custom animations, then wait for animations to be done
+         * and then textRotator will be called from customAnimations
+         */
+		if (this.$element.is('[data-text-rotator]') && !this.element.hasAttribute('data-custom-animations') && parentColumn.length && !parentColumn.get(0).hasAttribute('data-custom-animations')) {
+			new QazanaRotateText(this.$element, this.$element.data('text-rotator'));
 		}
 	};
 
-	// this._onCollapse = function() {
+	this._onCollapse = function () {
+		jQuery('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			var href = e.target.getAttribute('href');
+			var targetPane = jQuery(e.target).closest('.tabs').find(href);
+			var element = targetPane.find(self.element);
 
-	// 	jQuery( '[data-toggle="tab"]' ).on( 'shown.bs.tab', function( e ) {
-	// 		var href = e.target.getAttribute( 'href' );
-	// 		var targetPane = jQuery( e.target )
-	// 			.closest( '.tabs' )
-	// 			.find( href );
-	// 		var element = targetPane.find( self.element );
+			if (!element.length) {
+				return;
+			}
 
-	// 		if ( ! element.length ) {
-	// 			return;
-	// 		}
-
-	// 		self.splitText.revert();
-	// 		self._doSplit();
-	// 	} );
-	// };
+			self.splitText.revert();
+			self._doSplit();
+		});
+	};
 
 	this._windowResize = function () {
 		var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
 
 		jQuery(window).on('resize', onResize.bind(this));
 	};
+
 	this._onWindowResize = function () {
 		jQuery('html').addClass('window-resizing');
 
@@ -330,6 +338,7 @@ var Plugin = function Plugin(element, options) {
 
 		self._onAfterWindowResize();
 	};
+
 	this._onAfterWindowResize = function () {
 		jQuery('html').removeClass('window-resizing');
 
@@ -357,7 +366,8 @@ var defaults = {
 	delay: 2000,
 	activeKeyword: 0,
 	duration: 800,
-	easing: 'easeInOutCirc'
+	easing: 'easeInOutCirc',
+	animation: 'rotate' // rotate, type,
 };
 
 var Plugin = function Plugin($element, options) {
@@ -367,10 +377,9 @@ var Plugin = function Plugin($element, options) {
 	this.$element = $element;
 
 	this.options = jQuery.extend({}, defaults, options);
-	this._defaults = defaults;
 
-	this.$keywordsContainer = jQuery('.txt-rotate-keywords', this.element);
-	this.$keywords = jQuery('.keyword', this.$keywordsContainer);
+	this.$keywordsContainer = jQuery('.qazana-text-rotate-keywords', this.element);
+	this.$keywords = jQuery('.qazana-text-keyword', this.$keywordsContainer);
 	this.keywordsLength = this.$keywords.length;
 	this.$activeKeyword = this.$keywords.eq(this.options.activeKeyword);
 	this.isFirstItterate = true;
@@ -379,7 +388,7 @@ var Plugin = function Plugin($element, options) {
 		this.setContainerWidth(this.$activeKeyword);
 		this.setIntersectionObserver();
 
-		this.$element.addClass('text-slide-activated');
+		this.$element.addClass('qazana-text-slide-activated');
 	};
 
 	this.getNextKeyword = function () {
@@ -387,7 +396,7 @@ var Plugin = function Plugin($element, options) {
 	};
 
 	this.setContainerWidth = function ($keyword) {
-		this.$keywordsContainer.addClass('is-changing ws-nowrap');
+		this.$keywordsContainer.addClass('is-changing qazana-ws-nowrap');
 
 		var keywordContainer = this.$keywordsContainer.get(0);
 
@@ -403,15 +412,13 @@ var Plugin = function Plugin($element, options) {
 
 	this.setActiveKeyword = function ($keyword) {
 		this.$activeKeyword = $keyword;
-		$keyword.addClass('active').siblings().removeClass('active');
+		$keyword.addClass('qazana-active').siblings().removeClass('qazana-active');
 	};
 
 	this.slideInNextKeyword = function () {
-		var _this = this;
-
 		var $nextKeyword = this.getNextKeyword();
 
-		this.$activeKeyword.addClass('will-change');
+		this.$activeKeyword.addClass('qazana-will-change');
 
 		anime.remove($nextKeyword.get(0));
 
@@ -426,17 +433,17 @@ var Plugin = function Plugin($element, options) {
 			easing: this.options.easing,
 			delay: this.isFirstItterate ? this.options.delay / 2 : this.options.delay,
 			changeBegin: function changeBegin() {
-				_this.isFirstItterate = false;
+				self.isFirstItterate = false;
 
-				_this.setContainerWidth($nextKeyword);
-				_this.slideOutAciveKeyword();
+				self.setContainerWidth($nextKeyword);
+				self.slideOutAciveKeyword();
 			},
 			complete: function complete() {
-				_this.$keywordsContainer.removeClass('is-changing ws-nowrap');
+				self.$keywordsContainer.removeClass('is-changing qazana-ws-nowrap');
 
-				_this.setActiveKeyword($nextKeyword);
-				_this.$keywords.removeClass('is-next will-change');
-				_this.getNextKeyword().addClass('is-next will-change');
+				self.setActiveKeyword($nextKeyword);
+				self.$keywords.removeClass('is-next qazana-will-change');
+				self.getNextKeyword().addClass('is-next qazana-will-change');
 			}
 		});
 	};
@@ -462,16 +469,23 @@ var Plugin = function Plugin($element, options) {
 	};
 
 	this.initAnimations = function () {
-		this.slideInNextKeyword();
+		switch (this.options.animation) {
+			case 'rotate':
+				this.slideInNextKeyword();
+				break;
+
+			default:
+				this.slideInNextKeyword();
+				break;
+		}
 	};
 
 	this.setIntersectionObserver = function () {
-		var inViewCallback = function inViewCallback(enteries, observer) {
-			enteries.forEach(function (entery) {
-				if (entery.isIntersecting) {
+		var inViewCallback = function inViewCallback(entries, observer) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) {
 					self.initAnimations();
-
-					observer.unobserve(entery.target);
+					observer.unobserve(entry.target);
 				}
 			});
 		};
@@ -570,9 +584,7 @@ var ElementsHandler = function ElementsHandler() {
 			var $splitTextElements = self.$element.find('[data-split-text]');
 
 			if ($splitTextElements.length) {
-				this.splitText = new QazanaSplitText($splitTextElements, {
-					forceApply: true
-				});
+				this.splitText = new QazanaSplitText($splitTextElements, $splitTextElements.data('split-options'));
 
 				var fonts = {};
 
@@ -603,9 +615,7 @@ var ElementsHandler = function ElementsHandler() {
 					self._init();
 				});
 			} else if (this.$element.is('[data-split-text]')) {
-				this.splitText = new QazanaSplitText(this.$element, {
-					forceApply: true
-				});
+				this.splitText = new QazanaSplitText(this.$element, this.$element.data('split-options'));
 
 				var elementFontFamily = this.$element.css('font-family').replace(/\"/g, '').replace(/\'/g, '').split(',')[0];
 				var elementFontWeight = this.$element.css('font-weight');
@@ -629,6 +639,8 @@ var ElementsHandler = function ElementsHandler() {
 		this._init = function () {
 			this.animationTarget = this._getAnimationTargets();
 
+			console.log(this.animationTarget);
+
 			this._initValues();
 			this._eventHandlers();
 			this._handleResize();
@@ -639,7 +651,7 @@ var ElementsHandler = function ElementsHandler() {
 
 			if ('this' === animationTarget) {
 				return this.element;
-			} else if ('all-childs' === animationTarget) {
+			} else if ('all-children' === animationTarget) {
 				return this._getChildElments();
 			}
 
@@ -647,74 +659,46 @@ var ElementsHandler = function ElementsHandler() {
 		};
 
 		this._getChildElments = function () {
-			var $children = this.$element.children();
+			var elementsArray = [],
+			    elementType = this.$element.data('element_type');
 
-			if ($children.is('.wpb_wrapper-inner')) {
-				$children = $children.children();
+			switch (elementType) {
+				case 'section':
+
+					this.$element.find('.qazana-column').each(function (i, element) {
+						elementsArray.push(element);
+					});
+
+					break;
+
+				case 'column':
+
+					if ($element.is('.qazana-top-column')) {
+						$element.find('> .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget').each(function (i, innerColumn) {
+							if (!jQuery(this).is('.qazana-widget-spacer')) {
+								elementsArray.push(innerColumn);
+							}
+						});
+					}
+
+					break;
+
+				default:
+					if (!this.$element.is('.qazana-widget-spacer') && !this.$element.is('[data-split-text]')) {
+						this.$element.find(this.options.targets).each(function (i, element) {
+							elementsArray.push(element);
+						});
+					} else {
+						elementsArray.push($element.get(0));
+					}
+					break;
 			}
-
-			return this._getInnerChildElements($children);
-		};
-
-		this._getInnerChildElements = function (elements) {
-			var elementsArray = [];
-
-			var $elements = jQuery(elements).map(function () {
-				// eslint-disable-next-line no-shadow
-				var $element = jQuery(this);
-
-				if ($element.is('.vc_inner')) {
-					return $element.find('.wpb_wrapper-inner').children().get();
-				} else if ($element.is('.qazana-row')) {
-					return $element.find('.qazana-column').children().get();
-				}
-				return $element.not('style').get();
-			});
-
-			jQuery.each($elements, function () {
-				// eslint-disable-next-line no-shadow
-				var $element = jQuery(this);
-
-				if ($element.is('ul')) {
-					jQuery.each($element.children('li'), function () {
-						elementsArray.push(this);
-					});
-				} else if ($element.find('.split-inner').length || $element.find('[data-split-text]').length) {
-					jQuery.each($element.find('.split-inner'), function () {
-						var $innerSplitInner = jQuery(this).find('.split-inner');
-
-						if ($innerSplitInner.length) {
-							elementsArray.push($innerSplitInner.get(0));
-						} else {
-							elementsArray.push(this);
-						}
-					});
-				} else if ($element.is('.accordion')) {
-					jQuery.each($element.children(), function () {
-						elementsArray.push(this);
-					});
-				} else if ($element.is('.vc_inner')) {
-					jQuery.each($element.find('.wpb_wrapper').children('.wpb_wrapper-inner'), function (i, innerColumn) {
-						elementsArray.push(innerColumn);
-					});
-				} else if ($element.is('.qazna-section')) {
-					jQuery.each($element.find('.qazana-column'), function () {
-						elementsArray.push(this);
-					});
-				} else if ($element.is('.fancy-title')) {
-					jQuery.each($element.children(), function () {
-						elementsArray.push(this);
-					});
-				} else if (!$element.is('.vc_empty_space') && !$element.is('.ld-empty-space') && !$element.is('[data-split-text]')) {
-					elementsArray.push($element.get(0));
-				}
-			});
 
 			return elementsArray;
 		};
 
 		this._eventHandlers = function () {
-			var triggerTarget = !this.options.triggerRelation ? this.$element : this.$element[options.triggerRelation](this.options.triggerTarget);
+			var triggerTarget = !this.options.triggerRelation ? this.$element : this.$element[this.options.triggerRelation](this.options.triggerTarget);
 
 			if ('inview' == this.options.triggerHandler && !this.options.animateTargetsWhenVisible) {
 				this._initInviewAnimations(triggerTarget);
@@ -722,9 +706,8 @@ var ElementsHandler = function ElementsHandler() {
 				this._targetsIO();
 			}
 
-			triggerTarget.on(this.options.triggerHandler, self._runAnimations.bind(self, false));
-
-			triggerTarget.on(this.options.offTriggerHandler, self._offAnimations.bind(self));
+			//triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
+			//triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
 		};
 
 		this._initInviewAnimations = function ($triggerTarget) {
@@ -745,6 +728,30 @@ var ElementsHandler = function ElementsHandler() {
 			});
 
 			observer.observe($triggerTarget.get(0));
+		};
+
+		this._targetsIO = function () {
+			var inviewCallback = function inviewCallback(entries, observer) {
+				var inviewTargetsArray = [];
+
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						inviewTargetsArray.push(entry.target);
+
+						self._runAnimations(inviewTargetsArray);
+
+						observer.unobserve(entry.target);
+					}
+				});
+			};
+
+			var observer = new IntersectionObserver(inviewCallback, {
+				threshold: 0.35
+			});
+
+			jQuery.each(this.animationTarget, function (i, target) {
+				observer.observe(target);
+			});
 		};
 
 		this._inviewAnimationsThreshold = function ($element) {
@@ -784,53 +791,35 @@ var ElementsHandler = function ElementsHandler() {
 		};
 
 		this._initValues = function () {
-			var $animationTarget = jQuery(this.animationTarget);
+			jQuery(this.animationTarget).each(function () {
+				var $animationTarget = jQuery(this);
+				var animationOptions = $animationTarget.data('ca-options');
 
-			// $animationTarget.css( 'transition', 'none' );
+				$animationTarget.css('transition', 'none');
 
-			if ('inview' == this.options.triggerHandler) {
-				$animationTarget.addClass('will-change');
-			}
+				if ('inview' == self.options.triggerHandler) {
+					$animationTarget.addClass('qazana-will-change');
+				}
 
-			var initValues = {
-				targets: '.split-inner',
-				duration: 0,
-				easing: 'linear'
-			};
+				/** Default animation value */
+				var initValues = {
+					targets: '.qazana-split-inner',
+					duration: 0,
+					easing: 'linear'
+				};
 
-			var animations = jQuery.extend({}, this.options.initValues, initValues);
+				var animations = jQuery.extend({}, animationOptions.initValues, initValues);
 
-			anime(animations);
+				animations.targets = animationOptions.animationTarget;
+
+				anime(animations);
+			});
 
 			this.$element.addClass('ca-initvalues-applied');
 
 			if (this._needPerspective() && 'inview' == this.options.triggerHandler) {
-				this.$element.addClass('perspective');
+				this.$element.addClass('qazana-perspective');
 			}
-		};
-
-		this._targetsIO = function () {
-			var inviewCallback = function inviewCallback(entries, observer) {
-				var inviewTargetsArray = [];
-
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						inviewTargetsArray.push(entry.target);
-
-						self._runAnimations(inviewTargetsArray);
-
-						observer.unobserve(entry.target);
-					}
-				});
-			};
-
-			var observer = new IntersectionObserver(inviewCallback, {
-				threshold: 0.35
-			});
-
-			jQuery.each(this.animationTarget, function (i, target) {
-				observer.observe(target);
-			});
 		};
 
 		this._getTargetThreshold = function ($element) {
@@ -854,25 +843,32 @@ var ElementsHandler = function ElementsHandler() {
 				targets = jQuery.isArray(this.animationTarget) ? this.animationTarget : jQuery.makeArray(this.animationTarget);
 			}
 
-			targets = 'backward' === this.options.direction ? targets.reverse() : targets;
+			jQuery(this.animationTarget).each(function () {
+				var $animationTarget = jQuery(this);
+				var animationOptions = $animationTarget.data('ca-options');
 
-			var defaultAnimations = {
-				targets: targets,
-				duration: duration,
-				easing: easing,
-				delay: function delay(el, i) {
-					return i * _delay + startDelay;
-				},
-				complete: function complete(anime) {
-					self._onAnimationsComplete(anime);
-				}
-			};
+				targets = 'backward' === self.options.direction ? targets.reverse() : targets;
 
-			var animations = jQuery.extend({}, this.options.animations, defaultAnimations);
+				var defaultAnimations = {
+					targets: targets,
+					duration: duration,
+					easing: easing,
+					delay: function delay(el, i) {
+						return i * _delay + startDelay;
+					},
+					complete: function complete(anime) {
+						self._onAnimationsComplete(anime);
+					}
+				};
 
-			anime.remove(targets);
+				var animations = jQuery.extend({}, animationOptions.animations, defaultAnimations);
 
-			anime(animations);
+				animations.targets = animationOptions.animationTarget;
+
+				anime.remove(animationOptions.animationTarget);
+
+				anime(animations);
+			});
 		};
 
 		this._onAnimationsComplete = function (anime) {
@@ -881,7 +877,7 @@ var ElementsHandler = function ElementsHandler() {
 
 				$element.css({
 					transition: ''
-				}).removeClass('will-change');
+				}).removeClass('qazana-will-change');
 
 				if ('inview' == self.options.triggerHandler && $element.is('.btn')) {
 					$element.css({
@@ -890,12 +886,14 @@ var ElementsHandler = function ElementsHandler() {
 				}
 			});
 
-			// /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
-			// QazanaRotateText(this.$element.find( '[data-text-rotator]' ));
+			/* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
+			if (this.$element.find('[data-text-rotator]').length > 0) {
+				new QazanaRotateText(this.$element.find('[data-text-rotator]'));
+			}
 
-			// if ( this.$element.is( '[data-text-rotator]' ) ) {
-			//     QazanaRotateText(this.$element.);
-			// }
+			if (this.$element.is('[data-text-rotator]')) {
+				new QazanaRotateText(this.$element);
+			}
 		};
 
 		this._offAnimations = function () {
@@ -947,7 +945,7 @@ var ElementsHandler = function ElementsHandler() {
 
 	jQuery('[data-custom-animations]').map(function (i, element) {
 		var $element = jQuery(element);
-		var $customAnimationParent = $element.parents('.wpb_wrapper[data-custom-animations], .qazana-column[data-custom-animations]');
+		var $customAnimationParent = $element.parents('.qazana-section[data-custom-animations], .qazana-column[data-custom-animations]');
 
 		if ($customAnimationParent.length) {
 			$element.removeAttr('data-custom-animations');
@@ -1683,17 +1681,14 @@ var SplitText = __webpack_require__(/*! ../animations/splitText */ "../assets/de
 var FitText = __webpack_require__(/*! ../animations/fitText */ "../assets/dev/js/frontend/animations/fitText.js");
 
 module.exports = function ($scope) {
-	if ($scope.parents('[data-custom-animations]').length || $scope[0].hasAttribute('data-custom-animations')) {
-		return;
-	}
 
-	if ($scope.is('[data-split-text]')) {
-		new FitText($scope, $scope.data('fittext-options'));
-	}
+    if ($scope.is('[data-fittext-options]')) {
+        new FitText($scope, $scope.data('fittext-options'));
+    }
 
-	if ($scope.is('[data-split-text]')) {
-		new SplitText($scope, $scope.data('split-options'));
-	}
+    if (!$scope.parents('[data-custom-animations]').length && !$scope[0].hasAttribute('data-custom-animations') && $scope.is('[data-split-text]')) {
+        new SplitText($scope, $scope.data('split-options'));
+    }
 };
 
 /***/ }),

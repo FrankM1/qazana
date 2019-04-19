@@ -70,9 +70,7 @@ var ElementsHandler = function() {
 			var $splitTextElements = self.$element.find( '[data-split-text]' );
 
 			if ( $splitTextElements.length ) {
-				this.splitText = new QazanaSplitText( $splitTextElements, {
-					forceApply: true,
-                } );
+				this.splitText = new QazanaSplitText( $splitTextElements, $splitTextElements.data( 'split-options' ) );
 
 				var fonts = {};
 
@@ -109,9 +107,7 @@ var ElementsHandler = function() {
 						self._init();
 					} );
 			} else if ( this.$element.is( '[data-split-text]' ) ) {
-				this.splitText = new QazanaSplitText( this.$element, {
-					forceApply: true,
-				} );
+				this.splitText = new QazanaSplitText( this.$element, this.$element.data( 'split-options' ) );
 
 				var elementFontFamily = this.$element
 					.css( 'font-family' )
@@ -142,6 +138,8 @@ var ElementsHandler = function() {
 		this._init = function() {
 			this.animationTarget = this._getAnimationTargets();
 
+            console.log( this.animationTarget );
+
 			this._initValues();
 			this._eventHandlers();
 			this._handleResize();
@@ -152,7 +150,7 @@ var ElementsHandler = function() {
 
 			if ( 'this' === animationTarget ) {
 				return this.element;
-			} else if ( 'all-childs' === animationTarget ) {
+			} else if ( 'all-children' === animationTarget ) {
 				return this._getChildElments();
             }
 
@@ -160,103 +158,55 @@ var ElementsHandler = function() {
 		};
 
 		this._getChildElments = function() {
-			var $children = this.$element.children();
+            var elementsArray = [],
+                elementType = this.$element.data( 'element_type' );
 
-			if ( $children.is( '.wpb_wrapper-inner' ) ) {
-				$children = $children.children();
-			}
+            switch ( elementType ) {
+                case 'section':
 
-			return this._getInnerChildElements( $children );
-		};
+                    this.$element.find( '.qazana-column' ).each( function( i, element ) {
+                        elementsArray.push( element );
+                    } );
 
-		this._getInnerChildElements = function( elements ) {
-			var elementsArray = [];
+                    break;
 
-			var $elements = jQuery( elements ).map( function() {
-				// eslint-disable-next-line no-shadow
-				var $element = jQuery( this );
+                case 'column':
 
-				if ( $element.is( '.vc_inner' ) ) {
-					return $element
-						.find( '.wpb_wrapper-inner' )
-						.children()
-						.get();
-				} else if ( $element.is( '.qazana-row' ) ) {
-					return $element
-						.find( '.qazana-column' )
-						.children()
-						.get();
-				}
-				return $element.not( 'style' ).get();
-            } );
+                    if ( $element.is( '.qazana-top-column' ) ) {
+                        $element.find( '> .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget' ).each( function( i, innerColumn ) {
+                            if ( ! jQuery( this ).is( '.qazana-widget-spacer' ) ) {
+                                elementsArray.push( innerColumn );
+                            }
+                        } );
+                    }
 
-			jQuery.each( $elements, function() {
-				// eslint-disable-next-line no-shadow
-				var $element = jQuery( this );
+                    break;
 
-				if ( $element.is( 'ul' ) ) {
-					jQuery.each( $element.children( 'li' ), function() {
-						elementsArray.push( this );
-					} );
-				} else if (
-					$element.find( '.split-inner' ).length ||
-					$element.find( '[data-split-text]' ).length
-				) {
-					jQuery.each( $element.find( '.split-inner' ), function() {
-						var $innerSplitInner = jQuery( this ).find( '.split-inner' );
-
-						if ( $innerSplitInner.length ) {
-							elementsArray.push( $innerSplitInner.get( 0 ) );
-						} else {
-							elementsArray.push( this );
-						}
-					} );
-				} else if ( $element.is( '.accordion' ) ) {
-					jQuery.each( $element.children(), function() {
-						elementsArray.push( this );
-					} );
-				} else if ( $element.is( '.vc_inner' ) ) {
-					jQuery.each(
-						$element
-							.find( '.wpb_wrapper' )
-							.children( '.wpb_wrapper-inner' ),
-						function( i, innerColumn ) {
-							elementsArray.push( innerColumn );
-						}
-					);
-				} else if ( $element.is( '.qazna-section' ) ) {
-					jQuery.each( $element.find( '.qazana-column' ), function() {
-						elementsArray.push( this );
-					} );
-				} else if ( $element.is( '.fancy-title' ) ) {
-					jQuery.each( $element.children(), function() {
-						elementsArray.push( this );
-					} );
-				} else if ( ! $element.is( '.vc_empty_space' ) && ! $element.is( '.ld-empty-space' ) && ! $element.is( '[data-split-text]' ) ) {
-					elementsArray.push( $element.get( 0 ) );
-				}
-			} );
+                default:
+                    if ( ! this.$element.is( '.qazana-widget-spacer' ) && ! this.$element.is( '[data-split-text]' ) ) {
+                        this.$element.find( this.options.targets ).each( function( i, element ) {
+                            elementsArray.push( element );
+                        } );
+                    } else {
+                        elementsArray.push( $element.get( 0 ) );
+                    }
+                break;
+            }
 
 			return elementsArray;
 		};
 
 		this._eventHandlers = function() {
-			var triggerTarget = ! this.options.triggerRelation ?
-                this.$element :
-                this.$element[ options.triggerRelation ]( this.options.triggerTarget );
+			var triggerTarget = ! this.options.triggerRelation ? this.$element : this.$element[ this.options.triggerRelation ]( this.options.triggerTarget );
 
 			if ( 'inview' == this.options.triggerHandler && ! this.options.animateTargetsWhenVisible ) {
-				this._initInviewAnimations( triggerTarget );
-			} else if (
-				'inview' == this.options.triggerHandler &&
-				this.options.animateTargetsWhenVisible
-			) {
-				this._targetsIO();
+                this._initInviewAnimations( triggerTarget );
+			} else if ( 'inview' == this.options.triggerHandler && this.options.animateTargetsWhenVisible ) {
+                this._targetsIO();
 			}
 
-			triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
-
-			triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
+			//triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
+			//triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
 		};
 
 		this._initInviewAnimations = function( $triggerTarget ) {
@@ -277,6 +227,30 @@ var ElementsHandler = function() {
 			} );
 
 			observer.observe( $triggerTarget.get( 0 ) );
+		};
+
+        this._targetsIO = function() {
+			var inviewCallback = function inviewCallback( entries, observer ) {
+				var inviewTargetsArray = [];
+
+				entries.forEach( function( entry ) {
+					if ( entry.isIntersecting ) {
+						inviewTargetsArray.push( entry.target );
+
+						self._runAnimations( inviewTargetsArray );
+
+						observer.unobserve( entry.target );
+					}
+				} );
+			};
+
+			var observer = new IntersectionObserver( inviewCallback, {
+				threshold: 0.35,
+			} );
+
+			jQuery.each( this.animationTarget, function( i, target ) {
+				observer.observe( target );
+			} );
 		};
 
 		this._inviewAnimationsThreshold = function( $element ) {
@@ -324,57 +298,39 @@ var ElementsHandler = function() {
 		};
 
 		this._initValues = function() {
-			var $animationTarget = jQuery( this.animationTarget );
+            jQuery( this.animationTarget ).each( function() {
+                var $animationTarget = jQuery( this );
+                var animationOptions = $animationTarget.data( 'ca-options' );
 
-			// $animationTarget.css( 'transition', 'none' );
+                $animationTarget.css( 'transition', 'none' );
 
-			if ( 'inview' == this.options.triggerHandler ) {
-				$animationTarget.addClass( 'will-change' );
-			}
+                if ( 'inview' == self.options.triggerHandler ) {
+                    $animationTarget.addClass( 'qazana-will-change' );
+                }
 
-			var initValues = {
-				targets: '.split-inner',
-				duration: 0,
-				easing: 'linear',
-			};
+                /** Default animation value */
+                var initValues = {
+                    targets: '.qazana-split-inner',
+                    duration: 0,
+                    easing: 'linear',
+                };
 
-			var animations = jQuery.extend(
-				{},
-				this.options.initValues,
-				initValues
-            );
+                var animations = jQuery.extend(
+                    {},
+                    animationOptions.initValues,
+                    initValues
+                );
 
-			anime( animations );
+                animations.targets = animationOptions.animationTarget;
+
+                anime( animations );
+            } );
 
 			this.$element.addClass( 'ca-initvalues-applied' );
 
 			if ( this._needPerspective() && 'inview' == this.options.triggerHandler ) {
-				this.$element.addClass( 'perspective' );
+				this.$element.addClass( 'qazana-perspective' );
 			}
-		};
-
-		this._targetsIO = function() {
-			var inviewCallback = function inviewCallback( entries, observer ) {
-				var inviewTargetsArray = [];
-
-				entries.forEach( function( entry ) {
-					if ( entry.isIntersecting ) {
-						inviewTargetsArray.push( entry.target );
-
-						self._runAnimations( inviewTargetsArray );
-
-						observer.unobserve( entry.target );
-					}
-				} );
-			};
-
-			var observer = new IntersectionObserver( inviewCallback, {
-				threshold: 0.35,
-			} );
-
-			jQuery.each( this.animationTarget, function( i, target ) {
-				observer.observe( target );
-			} );
 		};
 
 		this._getTargetThreshold = function( $element ) {
@@ -398,37 +354,39 @@ var ElementsHandler = function() {
 			if ( inviewTargetsArray ) {
 				targets = inviewTargetsArray;
 			} else {
-				targets = jQuery.isArray( this.animationTarget ) ?
-					this.animationTarget :
-					jQuery.makeArray( this.animationTarget );
-			}
+				targets = jQuery.isArray( this.animationTarget ) ? this.animationTarget : jQuery.makeArray( this.animationTarget );
+            }
 
-			targets =
-				'backward' === this.options.direction ?
-					targets.reverse() :
-					targets;
+            jQuery( this.animationTarget ).each( function() {
+                var $animationTarget = jQuery( this );
+                var animationOptions = $animationTarget.data( 'ca-options' );
 
-			var defaultAnimations = {
-				targets: targets,
-				duration: duration,
-				easing: easing,
-				delay: function delay( el, i ) {
-					return ( i * _delay ) + startDelay;
-				},
-				complete: function complete( anime ) {
-					self._onAnimationsComplete( anime );
-				},
-			};
+                targets = 'backward' === self.options.direction ? targets.reverse() : targets;
 
-			var animations = jQuery.extend(
-				{},
-				this.options.animations,
-				defaultAnimations
-            );
+                var defaultAnimations = {
+                    targets: targets,
+                    duration: duration,
+                    easing: easing,
+                    delay: function delay( el, i ) {
+                        return ( i * _delay ) + startDelay;
+                    },
+                    complete: function complete( anime ) {
+                        self._onAnimationsComplete( anime );
+                    },
+                };
 
-            anime.remove( targets );
+                var animations = jQuery.extend(
+                    {},
+                    animationOptions.animations,
+                    defaultAnimations
+                );
 
-			anime( animations );
+                animations.targets = animationOptions.animationTarget;
+
+                anime.remove( animationOptions.animationTarget );
+
+                anime( animations );
+            } );
 		};
 
 		this._onAnimationsComplete = function( anime ) {
@@ -439,7 +397,7 @@ var ElementsHandler = function() {
 					.css( {
 						transition: '',
 					} )
-					.removeClass( 'will-change' );
+					.removeClass( 'qazana-will-change' );
 
 				if (
 					'inview' == self.options.triggerHandler &&
@@ -451,12 +409,14 @@ var ElementsHandler = function() {
 				}
 			} );
 
-			// /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
-			// QazanaRotateText(this.$element.find( '[data-text-rotator]' ));
+			/* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
+            if ( this.$element.find( '[data-text-rotator]' ).length > 0 ) {
+                new QazanaRotateText( this.$element.find( '[data-text-rotator]' ) );
+            }
 
-            // if ( this.$element.is( '[data-text-rotator]' ) ) {
-            //     QazanaRotateText(this.$element.);
-            // }
+            if ( this.$element.is( '[data-text-rotator]' ) ) {
+                new QazanaRotateText( this.$element );
+            }
 		};
 
 		this._offAnimations = function() {
@@ -514,7 +474,7 @@ var ElementsHandler = function() {
 
     jQuery( '[data-custom-animations]' ).map( function( i, element ) {
 		var $element = jQuery( element );
-		var $customAnimationParent = $element.parents( '.wpb_wrapper[data-custom-animations], .qazana-column[data-custom-animations]' );
+		var $customAnimationParent = $element.parents( '.qazana-section[data-custom-animations], .qazana-column[data-custom-animations]' );
 
 		if ( $customAnimationParent.length ) {
 			$element.removeAttr( 'data-custom-animations' );

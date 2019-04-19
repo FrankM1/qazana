@@ -3,6 +3,7 @@ var defaults = {
 	activeKeyword: 0,
 	duration: 800,
 	easing: 'easeInOutCirc',
+	animation: 'rotate', // rotate, type,
 };
 
 var Plugin = function( $element, options ) {
@@ -12,19 +13,21 @@ var Plugin = function( $element, options ) {
 	this.$element = $element;
 
 	this.options = jQuery.extend( {}, defaults, options );
-	this._defaults = defaults;
 
-	this.$keywordsContainer = jQuery( '.txt-rotate-keywords', this.element );
-	this.$keywords = jQuery( '.keyword', this.$keywordsContainer );
+	this.$keywordsContainer = jQuery(
+		'.qazana-text-rotate-keywords',
+		this.element
+	);
+	this.$keywords = jQuery( '.qazana-text-keyword', this.$keywordsContainer );
 	this.keywordsLength = this.$keywords.length;
 	this.$activeKeyword = this.$keywords.eq( this.options.activeKeyword );
-	this.isFirstItterate = true;
+    this.isFirstItterate = true;
 
 	this.init = function() {
 		this.setContainerWidth( this.$activeKeyword );
 		this.setIntersectionObserver();
 
-		this.$element.addClass( 'text-slide-activated' );
+		this.$element.addClass( 'qazana-text-slide-activated' );
 	};
 
 	this.getNextKeyword = function() {
@@ -34,7 +37,7 @@ var Plugin = function( $element, options ) {
 	};
 
 	this.setContainerWidth = function( $keyword ) {
-		this.$keywordsContainer.addClass( 'is-changing ws-nowrap' );
+		this.$keywordsContainer.addClass( 'is-changing qazana-ws-nowrap' );
 
 		var keywordContainer = this.$keywordsContainer.get( 0 );
 
@@ -51,17 +54,15 @@ var Plugin = function( $element, options ) {
 	this.setActiveKeyword = function( $keyword ) {
 		this.$activeKeyword = $keyword;
 		$keyword
-			.addClass( 'active' )
+			.addClass( 'qazana-active' )
 			.siblings()
-			.removeClass( 'active' );
+			.removeClass( 'qazana-active' );
 	};
 
 	this.slideInNextKeyword = function() {
-		var _this = this;
-
 		var $nextKeyword = this.getNextKeyword();
 
-		this.$activeKeyword.addClass( 'will-change' );
+		this.$activeKeyword.addClass( 'qazana-will-change' );
 
 		anime.remove( $nextKeyword.get( 0 ) );
 
@@ -78,17 +79,17 @@ var Plugin = function( $element, options ) {
 				this.options.delay / 2 :
 				this.options.delay,
 			changeBegin: function changeBegin() {
-				_this.isFirstItterate = false;
+				self.isFirstItterate = false;
 
-				_this.setContainerWidth( $nextKeyword );
-				_this.slideOutAciveKeyword();
+				self.setContainerWidth( $nextKeyword );
+				self.slideOutAciveKeyword();
 			},
 			complete: function complete() {
-				_this.$keywordsContainer.removeClass( 'is-changing ws-nowrap' );
+				self.$keywordsContainer.removeClass( 'is-changing qazana-ws-nowrap' );
 
-				_this.setActiveKeyword( $nextKeyword );
-				_this.$keywords.removeClass( 'is-next will-change' );
-				_this.getNextKeyword().addClass( 'is-next will-change' );
+				self.setActiveKeyword( $nextKeyword );
+				self.$keywords.removeClass( 'is-next qazana-will-change' );
+				self.getNextKeyword().addClass( 'is-next qazana-will-change' );
 			},
 		} );
 	};
@@ -114,16 +115,23 @@ var Plugin = function( $element, options ) {
 	};
 
 	this.initAnimations = function() {
-		this.slideInNextKeyword();
+        switch ( this.options.animation ) {
+            case 'rotate':
+                this.slideInNextKeyword();
+                break;
+
+            default:
+                this.slideInNextKeyword();
+                break;
+        }
 	};
 
 	this.setIntersectionObserver = function() {
-		var inViewCallback = function inViewCallback( enteries, observer ) {
-			enteries.forEach( function( entery ) {
-				if ( entery.isIntersecting ) {
+		var inViewCallback = function inViewCallback( entries, observer ) {
+			entries.forEach( function( entry ) {
+				if ( entry.isIntersecting ) {
 					self.initAnimations();
-
-					observer.unobserve( entery.target );
+					observer.unobserve( entry.target );
 				}
 			} );
 		};

@@ -47,6 +47,24 @@ class Group_Control_Animations extends Group_Control_Base {
         $fields = [];
         $args = $this->get_args();
 
+        $fields['enable'] = [
+            'label'        => __( 'Enable animations', 'qazana' ),
+            'type'         => Controls_Manager::SWITCHER,
+            'return_value' => 'true',
+        ];
+
+        $fields['target'] = [
+            'label' => __( 'Target', 'qazana' ),
+            'type' => Controls_Manager::SELECT2,
+            'default' => 'this',
+            'options' => [
+                'this' => __( 'This Element', 'qazana' ),
+                'all-children' => __( 'Inner Children', 'qazana' ),
+            ],
+        ];
+
+        return $fields;
+
         $animation_types = [
             'inview' => __( 'In View', 'qazana' ),
             'exit' => __( 'Exit', 'qazana' ),
