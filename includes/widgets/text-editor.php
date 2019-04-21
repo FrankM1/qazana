@@ -389,39 +389,40 @@ class Widget_Text_Editor extends Widget_Base {
 
         $this->add_render_attribute( '_wrapper', 'data-split-text', 'true' );
 
-        $options = [
-            'target' => 'p',
-            'forceApply' => true,
-            'type' => 'lines',
-        ];
-
-        $this->add_render_attribute( '_wrapper', 'data-split-options', json_encode( $options ) );
-
         if ( $this->get_settings('_animation_enable' ) ) {
             $this->add_render_attribute( '_wrapper', 'data-custom-animations', 'true' );
         }
 
         $options = [
-            'triggerHandler' => 'inview',
-            'animationTarget' => '.qazana-split-inner',
-            'duration' => 1000,
-            'startDelay' => 150,
-            'delay' => 40,
-            'direction' => 'forward',
-            'easing' => 'easeOutBack',
-            'initValues' => [
-                'translateY' => 35,
-                'rotateZ' => 5,
-                'opacity' => 0,
+            'inView' => [
+                [
+                    'triggerHandler' => 'inview',
+                    'target' => '.qazana-split-inner', // element added by split element
+                    'duration' => 1000,
+                    'startDelay' => 150,
+                    'delay' => 40,
+                    'direction' => 'forward',
+                    'easing' => 'easeOutBack',
+                    'initValues' => [
+                        'translateY' => 35,
+                        'rotateZ' => 5,
+                        'opacity' => 0,
+                    ],
+                    'finalValues' => [
+                        'translateY' => 0,
+                        'rotateZ' => 0,
+                        'opacity' => 1,
+                    ],
+                ]
             ],
-            'animations' => [
-                'translateY' => 0,
-                'rotateZ' => 0,
-                'opacity' => 1,
-            ],
+            'splitText' => [
+                'target' => 'p',
+                'forceApply' => true,
+                'type' => 'lines',
+            ]
         ];
 
-        $this->add_render_attribute( '_wrapper', 'data-ca-options', json_encode( $options ) );
+        $this->add_render_attribute( '_wrapper', 'data-animations', json_encode( $options ) );
     }
 
 	/**

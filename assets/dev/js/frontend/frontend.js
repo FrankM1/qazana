@@ -124,9 +124,9 @@
 
 			initOnReadyComponents();
 
-			var CustomAnimation = require( 'qazana-frontend/custom-animations' );
+			// var CustomAnimation = require( 'qazana-frontend/custom-animations' );
 
-			new CustomAnimation();
+			// new CustomAnimation();
 		};
 
 		this.getElements = function( element ) {
@@ -292,3 +292,20 @@
 if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
+
+/**
+ * @param {number} y
+ * @return {?}
+ */
+jQuery.fn.inView = function( y ) {
+    y = void 0 !== y ? y : 100;
+    var $win = jQuery( window );
+    var coord = {
+        top: $win.scrollTop(),
+        left: $win.scrollLeft(),
+    };
+    coord.right = coord.left + $win.width() - y;
+    coord.bottom = coord.top + $win.height() - y;
+    var rect2 = this.offset();
+    return rect2.right = rect2.left + this.outerWidth(), rect2.bottom = rect2.top + this.outerHeight(), ! ( coord.right < rect2.left || ( coord.left > rect2.right || ( coord.bottom < rect2.top || coord.top > rect2.bottom ) ) );
+};

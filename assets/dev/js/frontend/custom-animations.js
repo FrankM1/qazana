@@ -3,161 +3,83 @@ var ElementsHandler = function() {
     var QazanaSplitText = require( './animations/splitText' );
     var QazanaRotateText = require( './animations/textRotator' );
 
-	var defaults = {
-		delay: 0,
-		startDelay: 0,
-		offDelay: 0,
-		direction: 'forward',
-		duration: 300,
-		offDuration: 300,
-		easing: 'easeOutQuint',
-		animationTarget: 'this', // it can be also a selector e.g. '.selector'
-		initValues: {
-			translateX: 0,
-			translateY: 0,
-			translateZ: 0,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			scaleX: 1,
-			scaleY: 1,
-			opacity: 1,
-		},
-		animations: {},
+    var defaults = {
+        delay: 0,
+        startDelay: 0,
+        offDelay: 0,
+        direction: 'forward',
+        duration: 300,
+        offDuration: 300,
+        easing: 'easeOutQuint',
+        target: 'this', // it can be also a selector e.g. '.selector'
+        initValues: {
+            translateX: 0,
+            translateY: 0,
+            translateZ: 0,
+            rotateX: 0,
+            rotateY: 0,
+            rotateZ: 0,
+            scaleX: 1,
+            scaleY: 1,
+            opacity: 1,
+        },
+        animations: {},
         animateTargetsWhenVisible: true,
 
-		// triggerHandler: 'focus', // "inview"
-		// triggerTarget: 'input',
-		// triggerRelation: 'siblings',
-		// offTriggerHandler: 'blur',
-	};
+        // triggerHandler: 'focus', // "focus", "inview"
+        // triggerTarget: 'input',
+        // triggerRelation: 'siblings',
+        // offTriggerHandler: 'blur',
+    };
 
-	var Plugin = function( $element, options ) {
+    var Plugin = function( $element ) {
         var self = this;
 
         this.element = $element[ 0 ];
-		this.$element = $element;
-        this.options = jQuery.extend( {}, defaults, options );
+        this.$element = $element;
 
-		if ( 'mouseenter' === this.options.triggerHandler ) {
-			this.options.triggerHandler = 'mouseenter touchstart';
-		}
-		if ( 'mouseleave' === this.options.triggerHandler ) {
-			this.options.triggerHandler = 'mouseleave touchend';
-		}
+        this.isRTL = 'rtl' === jQuery( 'html' ).attr( 'dir' );
 
-		this.splitText = null;
-		this.isRTL = 'rtl' === jQuery( 'html' ).attr( 'dir' );
+        this.getElements = function() {
+            this.animationTarget = this._getAnimationTargets();
+        };
 
-		this.init = function() {
-			var callback = function callback( entries, observer ) {
-				entries.forEach( function( entry ) {
-					if ( entry.isIntersecting ) {
-						self._build();
-						observer.unobserve( entry.target );
-					}
-				} );
-			};
+        this.elementConfig = function( $currentElement ) {
+            var elementConfig = jQuery.extend( {}, defaults, $currentElement.data( 'animations' ) );
 
-			var observer = new IntersectionObserver( callback, {
-				rootMargin: '10%',
-            } );
-
-			observer.observe( self.element );
-		};
-
-		this._build = function() {
-			var $splitTextElements = self.$element.find( '[data-split-text]' );
-
-			if ( $splitTextElements.length ) {
-				this.splitText = new QazanaSplitText( $splitTextElements, $splitTextElements.data( 'split-options' ) );
-
-				var fonts = {};
-
-				jQuery.each( $splitTextElements, function( i, element ) {
-					var elementFontFamily = jQuery( element )
-						.css( 'font-family' )
-						.replace( /\"/g, '' )
-						.replace( /\'/g, '' )
-						.split( ',' )[ 0 ];
-					var elementFontWeight = jQuery( element ).css( 'font-weight' );
-					var elementFontStyle = jQuery( element ).css( 'font-style' );
-
-					fonts[ elementFontFamily ] = {
-						weight: elementFontWeight,
-						style: elementFontStyle,
-					};
-				} );
-
-				var observers = [];
-
-				Object.keys( fonts ).forEach( function( family ) {
-					var data = fonts[ family ];
-					var obs = new FontFaceObserver( family, data );
-					observers.push( obs.load() );
-				} );
-
-				Promise.all( observers )
-					.then( function() {
-						self._init();
-					} )
-					.catch( function( err ) {
-						// eslint-disable-next-line no-console
-						console.warn( 'Some critical fonts are not available:', err );
-						self._init();
-					} );
-			} else if ( this.$element.is( '[data-split-text]' ) ) {
-				this.splitText = new QazanaSplitText( this.$element, this.$element.data( 'split-options' ) );
-
-				var elementFontFamily = this.$element
-					.css( 'font-family' )
-					.replace( /\"/g, '' )
-					.replace( /\'/g, '' )
-					.split( ',' )[ 0 ];
-				var elementFontWeight = this.$element.css( 'font-weight' );
-				var elementFontStyle = this.$element.css( 'font-style' );
-
-				var font = new FontFaceObserver( elementFontFamily, {
-					weight: elementFontWeight,
-					style: elementFontStyle,
-				} );
-
-				font.load().then(
-					function() {
-						self._init();
-					},
-					function() {
-						self._init();
-					}
-				);
-			} else {
-				self._init();
-			}
-		};
-
-		this._init = function() {
-			this.animationTarget = this._getAnimationTargets();
-
-            console.log( this.animationTarget );
-
-			this._initValues();
-			this._eventHandlers();
-			this._handleResize();
-		};
-
-		this._getAnimationTargets = function() {
-            var animationTarget = this.options.animationTarget;
-
-			if ( 'this' === animationTarget ) {
-				return this.element;
-			} else if ( 'all-children' === animationTarget ) {
-				return this._getChildElments();
+            if ( 'mouseenter' === elementConfig.triggerHandler ) {
+                elementConfig.triggerHandler = 'mouseenter touchstart';
+            }
+            if ( 'mouseleave' === elementConfig.triggerHandler ) {
+                elementConfig.triggerHandler = 'mouseleave touchend';
             }
 
-			return this.element.querySelectorAll( animationTarget );
-		};
+            return elementConfig;
+        };
 
-		this._getChildElments = function() {
+        this._build = function( activeElement ) {
+            self._init( activeElement );
+        };
+
+        this._init = function( activeElement ) {
+            this._initValues( activeElement );
+            this._eventHandlers( activeElement );
+           // this._handleResize( activeElement );
+        };
+
+        this._getAnimationTargets = function() {
+            var animationTarget = this.options.target;
+
+            if ( 'this' === animationTarget ) {
+                return this.element;
+            } else if ( 'all-children' === animationTarget ) {
+                return this._getChildElments();
+            }
+
+            return this.element.querySelectorAll( animationTarget );
+        };
+
+        this._getChildElments = function() {
             var elementsArray = [],
                 elementType = this.$element.data( 'element_type' );
 
@@ -183,231 +105,194 @@ var ElementsHandler = function() {
                     break;
 
                 default:
-                    if ( ! this.$element.is( '.qazana-widget-spacer' ) && ! this.$element.is( '[data-split-text]' ) ) {
+                    if ( ! this.$element.is( '.qazana-widget-spacer' ) ) {
                         this.$element.find( this.options.targets ).each( function( i, element ) {
                             elementsArray.push( element );
                         } );
                     } else {
                         elementsArray.push( $element.get( 0 ) );
                     }
-                break;
+                    break;
             }
 
-			return elementsArray;
-		};
+            return elementsArray;
+        };
 
-		this._eventHandlers = function() {
-			var triggerTarget = ! this.options.triggerRelation ? this.$element : this.$element[ this.options.triggerRelation ]( this.options.triggerTarget );
+        this._eventHandlers = function( _activeElement ) {
+            var triggerTarget = ! this.options.triggerRelation ? this.$element : this.$element[ this.options.triggerRelation ]( this.options.triggerTarget );
 
-			if ( 'inview' == this.options.triggerHandler && ! this.options.animateTargetsWhenVisible ) {
+            if ( 'inview' === this.options.triggerHandler && ! this.options.animateTargetsWhenVisible ) {
                 this._initInviewAnimations( triggerTarget );
-			} else if ( 'inview' == this.options.triggerHandler && this.options.animateTargetsWhenVisible ) {
+            } else if ( 'inview' === this.options.triggerHandler && this.options.animateTargetsWhenVisible ) {
                 this._targetsIO();
-			}
+            }
 
-			//triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
-			//triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
-		};
+            triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
+            triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
+        };
 
-		this._initInviewAnimations = function( $triggerTarget ) {
-			var threshold = this._inviewAnimationsThreshold( $triggerTarget );
+        this._initInviewAnimations = function( $triggerTarget ) {
+            var threshold = this._inviewAnimationsThreshold( $triggerTarget );
 
-			var inviewCallback = function inviewCallback( entries, observer ) {
-				entries.forEach( function( entry ) {
-					if ( entry.isIntersecting ) {
-						self._runAnimations();
+            var inviewCallback = function inviewCallback( entries, observer ) {
+                entries.forEach( function( entry ) {
+                    if ( entry.isIntersecting ) {
+                        self._runAnimations();
+                        observer.unobserve( entry.target );
+                    }
+                } );
+            };
 
-						observer.unobserve( entry.target );
-					}
-				} );
-			};
+            var observer = new IntersectionObserver( inviewCallback, {
+                threshold: threshold,
+            } );
 
-			var observer = new IntersectionObserver( inviewCallback, {
-				threshold: threshold,
-			} );
-
-			observer.observe( $triggerTarget.get( 0 ) );
-		};
+            observer.observe( $triggerTarget.get( 0 ) );
+        };
 
         this._targetsIO = function() {
-			var inviewCallback = function inviewCallback( entries, observer ) {
-				var inviewTargetsArray = [];
+            var inviewCallback = function inviewCallback( entries, observer ) {
+                entries.forEach( function( entry ) {
+                    if ( entry.isIntersecting ) {
+                        self._runAnimations( entry.target );
+                        observer.unobserve( entry.target );
+                    }
+                } );
+            };
 
-				entries.forEach( function( entry ) {
-					if ( entry.isIntersecting ) {
-						inviewTargetsArray.push( entry.target );
-
-						self._runAnimations( inviewTargetsArray );
-
-						observer.unobserve( entry.target );
-					}
-				} );
-			};
-
-			var observer = new IntersectionObserver( inviewCallback, {
-				threshold: 0.35,
-			} );
-
-			jQuery.each( this.animationTarget, function( i, target ) {
-				observer.observe( target );
-			} );
-		};
-
-		this._inviewAnimationsThreshold = function( $element ) {
-			var windowWidth = window.innerWidth;
-			var windowHeight = window.innerHeight;
-			var elementOuterWidth = $element.outerWidth();
-			var elementOuterHeight = $element.outerHeight();
-			var elementOffset = $element.offset();
-
-			var w = windowWidth / elementOuterWidth;
-			var h = windowHeight / elementOuterHeight;
-
-			if ( elementOuterWidth + elementOffset.left >= windowWidth ) {
-				w =
-					windowWidth /
-					( elementOuterWidth -
-						( elementOuterWidth + elementOffset.left - windowWidth ) );
-			}
-
-			return Math.min( Math.max( h / w / 2, 0 ), 0.8 );
-		};
-
-		this._needPerspective = function() {
-			var initValues = this.options.initValues;
-			var valuesNeedPerspective = [
-				'translateZ',
-				'rotateX',
-				'rotateY',
-				'scaleZ',
-			];
-			var needPerspective = false;
-
-			for ( var prop in initValues ) {
-				for ( var i = 0; i <= valuesNeedPerspective.length - 1; i++ ) {
-					var val = valuesNeedPerspective[ i ];
-
-					if ( prop === val ) {
-						needPerspective = true;
-						break;
-					}
-				}
-			}
-
-			return needPerspective;
-		};
-
-		this._initValues = function() {
-            jQuery( this.animationTarget ).each( function() {
-                var $animationTarget = jQuery( this );
-                var animationOptions = $animationTarget.data( 'ca-options' );
-
-                $animationTarget.css( 'transition', 'none' );
-
-                if ( 'inview' == self.options.triggerHandler ) {
-                    $animationTarget.addClass( 'qazana-will-change' );
-                }
-
-                /** Default animation value */
-                var initValues = {
-                    targets: '.qazana-split-inner',
-                    duration: 0,
-                    easing: 'linear',
-                };
-
-                var animations = jQuery.extend(
-                    {},
-                    animationOptions.initValues,
-                    initValues
-                );
-
-                animations.targets = animationOptions.animationTarget;
-
-                anime( animations );
+            var observer = new IntersectionObserver( inviewCallback, {
+                threshold: 0.35,
             } );
 
-			this.$element.addClass( 'ca-initvalues-applied' );
+            jQuery.each( this.animationTarget, function( _i, target ) {
+                observer.observe( target );
+            } );
+        };
 
-			if ( this._needPerspective() && 'inview' == this.options.triggerHandler ) {
-				this.$element.addClass( 'qazana-perspective' );
-			}
-		};
+        // eslint-disable-next-line no-shadow
+        this._inviewAnimationsThreshold = function( $element ) {
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
+            var elementOuterWidth = $element.outerWidth();
+            var elementOuterHeight = $element.outerHeight();
+            var elementOffset = $element.offset();
 
-		this._getTargetThreshold = function( $element ) {
-			var windowHeight = jQuery( window ).height();
-			var elementOuterHeight = $element.outerHeight();
+            var width = windowWidth / elementOuterWidth;
+            var height = windowHeight / elementOuterHeight;
 
-			return Math.min(
-				Math.max( windowHeight / elementOuterHeight / 5, 0 ),
-				1
-			);
-		};
-
-		this._runAnimations = function( inviewTargetsArray ) {
-			var _delay = parseInt( this.options.delay, 10 );
-			var startDelay = parseInt( this.options.startDelay, 10 );
-			var duration = parseInt( this.options.duration, 10 );
-			var easing = this.options.easing;
-
-			var targets = [];
-
-			if ( inviewTargetsArray ) {
-				targets = inviewTargetsArray;
-			} else {
-				targets = jQuery.isArray( this.animationTarget ) ? this.animationTarget : jQuery.makeArray( this.animationTarget );
+            if ( elementOuterWidth + elementOffset.left >= windowWidth ) {
+                width = windowWidth / ( elementOuterWidth - ( elementOuterWidth + elementOffset.left - windowWidth ) );
             }
 
-            jQuery( this.animationTarget ).each( function() {
-                var $animationTarget = jQuery( this );
-                var animationOptions = $animationTarget.data( 'ca-options' );
+            return Math.min( Math.max( height / width / 2, 0 ), 0.8 );
+        };
 
-                targets = 'backward' === self.options.direction ? targets.reverse() : targets;
+        this._needPerspective = function( options ) {
+            var initValues = options.initValues;
+            var valuesNeedPerspective = [
+                'translateZ',
+                'rotateX',
+                'rotateY',
+                'scaleZ',
+            ];
+            var needPerspective = false;
 
-                var defaultAnimations = {
-                    targets: targets,
-                    duration: duration,
-                    easing: easing,
-                    delay: anime.stagger( _delay, { start: startDelay } ),
-                    complete: function complete( anime ) {
-                        self._onAnimationsComplete( anime );
-                    },
-                };
+            for ( var prop in initValues ) {
+                for ( var i = 0; i <= valuesNeedPerspective.length - 1; i++ ) {
+                    var val = valuesNeedPerspective[ i ];
 
-                var animations = jQuery.extend(
-                    {},
-                    animationOptions.animations,
-                    defaultAnimations
-                );
+                    if ( prop === val ) {
+                        needPerspective = true;
+                        break;
+                    }
+                }
+            }
 
-                animations.targets = animationOptions.animationTarget;
+            return needPerspective;
+        };
 
-                anime.remove( animationOptions.animationTarget );
+        this._initValues = function( activeElement ) {
+            var $activeElement = jQuery( activeElement );
 
-                anime( animations );
+            var animationOptions = self.elementConfig( $activeElement );
+
+            var $animationTarget = $activeElement.find( animationOptions.target );
+
+            $activeElement.css( 'transition', 'none' );
+
+            if ( 'inview' === self.options.triggerHandler ) {
+                $animationTarget.addClass( 'qazana-will-change' );
+            }
+
+            /** Default animation value */
+            var initValues = {
+                targets: animationOptions.target,
+                duration: 0,
+                easing: 'linear',
+            };
+
+            var animations = jQuery.extend( {}, animationOptions.initValues, initValues );
+
+            anime( animations );
+
+            $activeElement.addClass( 'qazana-animation-initialized' );
+
+            if ( this._needPerspective( animationOptions ) && 'inview' === animationOptions.triggerHandler ) {
+                $activeElement.addClass( 'qazana-perspective' );
+            }
+        };
+
+        // eslint-disable-next-line no-shadow
+        this._getTargetThreshold = function( $element ) {
+            var windowHeight = jQuery( window ).height();
+            var elementOuterHeight = $element.outerHeight();
+
+            return Math.min( Math.max( windowHeight / elementOuterHeight / 5, 0 ), 1 );
+        };
+
+        this._runAnimations = function( activeElement ) {
+            var $animationTarget = jQuery( activeElement ).closest( '.qazana-element' );
+            var options = self.elementConfig( $animationTarget );
+
+            var defaultAnimations = {
+                targets: activeElement,
+                duration: options.duration,
+                easing: options.easing,
+                delay: anime.stagger( options.delay, {
+                    start: options.startDelay,
+                } ),
+                complete: function complete( anime ) {
+                    self._onAnimationsComplete( anime );
+                },
+            };
+
+            var animations = jQuery.extend( {}, options.animations, defaultAnimations );
+
+            console.log( $animationTarget );
+            console.log( animations );
+
+            anime.remove( activeElement );
+
+            anime( animations );
+        };
+
+        this._onAnimationsComplete = function( anime ) {
+            jQuery.each( anime.animatables, function( _i, animatable ) {
+                // eslint-disable-next-line no-shadow
+                var $element = jQuery( animatable.target );
+
+                $element.css( {
+                    transition: '',
+                } ).removeClass( 'qazana-will-change' );
+
+                if ( 'inview' === self.options.triggerHandler && $element.is( '.btn' ) ) {
+                    $element.css( {
+                        transform: '',
+                    } );
+                }
             } );
-		};
 
-		this._onAnimationsComplete = function( anime ) {
-			jQuery.each( anime.animatables, function( i, animatable ) {
-				var $element = jQuery( animatable.target );
-
-				$element
-					.css( {
-						transition: '',
-					} )
-					.removeClass( 'qazana-will-change' );
-
-				if (
-					'inview' == self.options.triggerHandler &&
-					$element.is( '.btn' )
-				) {
-					$element.css( {
-						transform: '',
-					} );
-				}
-			} );
-
-			/* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
+            /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
             if ( this.$element.find( '[data-text-rotator]' ).length > 0 ) {
                 new QazanaRotateText( this.$element.find( '[data-text-rotator]' ) );
             }
@@ -415,82 +300,73 @@ var ElementsHandler = function() {
             if ( this.$element.is( '[data-text-rotator]' ) ) {
                 new QazanaRotateText( this.$element );
             }
-		};
+        };
 
-		this._offAnimations = function() {
-			var _delay2 = this.options.delay;
-			var offDuration = this.options.offDuration;
-			var offDelay = this.options.offDelay;
-			var easing = this.options.easing;
-			var animationTarget = Array.prototype.slice
-				.call( this.animationTarget )
-				.reverse();
+        this._offAnimations = function() {
+            var animationTarget = Array.prototype.slice.call( this.animationTarget ).reverse();
 
-			if ( 'this' === this.options.animationTarget ) {
-				animationTarget = this.element;
-			}
+            if ( 'this' === this.options.target ) {
+                animationTarget = this.element;
+            }
 
-			var offAnimationVal = {
-				targets: animationTarget,
-				easing: easing,
-				duration: offDuration,
-				delay: function delay( el, i ) {
-					return ( i * ( _delay2 / 2 ) ) + offDelay;
-				},
-				complete: function complete() {
-					self._initValues();
-				},
-			};
+            var offAnimationVal = {
+                targets: animationTarget,
+                easing: this.options.easing,
+                duration: this.options.offDuration,
+                delay: anime.stagger( ( this.options.delay / 2 ), {
+                    start: this.options.offDelay,
+                } ),
+                complete: function complete() {
+                    self._initValues();
+                },
+            };
 
-			var _offAnimations = jQuery.extend(
-				{},
-				this.options.initValues,
-				offAnimationVal
-			);
+            var _offAnimations = jQuery.extend( {}, this.options.initValues, offAnimationVal );
 
-			anime.remove( this.animationTarget );
+            anime.remove( this.animationTarget );
 
-			anime( _offAnimations );
-		};
+            anime( _offAnimations );
+        };
 
-		this._handleResize = function() {
-			var onResize = qazanaFrontend.debounce( 500, this._onWindowResize );
+        this._handleResize = function( _activeElement ) {
+            var onResize = qazanaFrontend.debounce( 500, this._onWindowResize );
 
-			jQuery( window ).on( 'resize', onResize.bind( this ) );
-		};
+            jQuery( window ).on( 'resize', onResize.bind( this ) );
+        };
 
-		this._onWindowResize = function() {
-			if ( self.options.triggerHandler !== 'inview' ) {
-				self.animationTarget = self._getAnimationTargets();
-				self._initValues();
-				self._eventHandlers();
-			}
-		};
+        this._onWindowResize = function() {
+            if ( self.options.triggerHandler !== 'inview' ) {
+                self.animationTarget = self._getAnimationTargets();
+                self._initValues();
+                self._eventHandlers();
+            }
+        };
+
+        this.init = function() {
+            this.options = this.elementConfig( this.$element );
+            this.getElements();
+
+            var callback = function callback( entries, observer ) {
+                entries.forEach( function( entry ) {
+                    if ( entry.isIntersecting ) {
+                        self._build( entry.target );
+                        observer.unobserve( entry.target );
+                    }
+                } );
+            };
+
+            var observer = new IntersectionObserver( callback, {
+                rootMargin: '10%',
+            } );
+
+            observer.observe( self.element );
+        };
 
         this.init();
-	};
+    };
 
-    jQuery( '[data-custom-animations]' ).map( function( i, element ) {
-		var $element = jQuery( element );
-		var $customAnimationParent = $element.parents( '.qazana-section[data-custom-animations], .qazana-column[data-custom-animations]' );
-
-		if ( $customAnimationParent.length ) {
-			$element.removeAttr( 'data-custom-animations' );
-			$element.removeAttr( 'data-ca-options' );
-		}
-	} );
-
-	var $elements = jQuery( '[data-custom-animations]' ).filter( function( i, element ) {
-		var $element = jQuery( element );
-		var $rowBgparent = $element.closest( '.vc_row[data-row-bg]' );
-		var $slideshowBgParent = $element.closest( '.vc_row[data-slideshow-bg]' );
-		var $fullpageSection = $element.closest( '.vc_row.pp-section' );
-
-		return ! $rowBgparent.length && ! $slideshowBgParent.length && ! $fullpageSection.length;
-    } );
-
-    $elements.each( function() {
-        new Plugin( jQuery( this ), jQuery( this ).data( 'ca-options' ) );
+    jQuery( '[data-custom-animations]' ).each( function() {
+        new Plugin( jQuery( this ) );
     } );
 };
 

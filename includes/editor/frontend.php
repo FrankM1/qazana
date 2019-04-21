@@ -293,14 +293,6 @@ class Frontend {
         );
 
         wp_register_script(
-			'splittext',
-			qazana()->core_assets_url . 'lib/greensock/utils/splittext.js',
-			[],
-			'3.0.1',
-			true
-        );
-
-        wp_register_script(
 			'tweenMax',
 			'https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js',
 			[],
@@ -314,10 +306,9 @@ class Frontend {
 			[   'anime',
                 'waypoints',
                 'tweenMax',
-                'splittext',
                 'fontfaceobserver',
 				'qazana-dialog',
-				'jquery-swiper',
+                'jquery-swiper',
 			],
 			qazana_get_version(),
 			true

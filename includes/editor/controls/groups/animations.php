@@ -66,7 +66,7 @@ class Group_Control_Animations extends Group_Control_Base {
         return $fields;
 
         $animation_types = [
-            'inview' => __( 'In View', 'qazana' ),
+            'inView' => __( 'In View', 'qazana' ),
             'exit' => __( 'Exit', 'qazana' ),
             'hover' => __( 'Hover', 'qazana' ),
         ];
@@ -76,7 +76,7 @@ class Group_Control_Animations extends Group_Control_Base {
             'frontend_available' => true,
             'type' => Controls_Manager::SELECT2,
             'multiple' => true,
-            'default' => [ 'inview', 'exit', 'hover' ],
+            'default' => [ 'inView', 'exit', 'hover' ],
             'options' => $animation_types,
         ];
 
@@ -90,7 +90,7 @@ class Group_Control_Animations extends Group_Control_Base {
 
             switch ($type) {
 
-                case 'inview':
+                case 'inView':
 
                     $fields[ $type . '_in' ] = [
                         'label' => __( 'Entrance Animation', 'qazana' ),

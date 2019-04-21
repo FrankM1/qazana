@@ -86,82 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../assets/dev/js/frontend/animations/fitText.js":
-/*!*******************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/fitText.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*global jQuery */
-/*!
- * FitText.js 1.2
- *
- * Copyright 2011, Dave Rupert http://daverupert.com
- * Released under the WTFPL license
- * http://sam.zoy.org/wtfpl/
- *
- * Date: Thu May 05 14:23:00 2011 -0600
- */
-var defaults = {
-	parentElClass: '.qazana-element',
-	compressor: 1,
-	minFontSize: Number.NEGATIVE_INFINITY,
-	maxFontSize: Number.POSITIVE_INFINITY
-};
-
-var Plugin = function Plugin($element, options) {
-	this.element = $element.find(options.target).get(0);
-	this.$element = $element.find(options.target);
-
-	this.options = $.extend({}, defaults, options);
-
-	this.init = function () {
-		this.setMinFontSize();
-		this.setMaxFontSize();
-		this.resizer();
-		this.onWindowResize();
-	};
-
-	this.setMinFontSize = function () {
-		var minFontSize = this.options.minFontSize;
-		var elementFontSize = this.$element.css('fontSize');
-
-		if ('currentFontSize' === minFontSize) {
-			this.options.minFontSize = elementFontSize;
-		}
-	};
-
-	this.setMaxFontSize = function () {
-		var maxFontSize = this.options.maxFontSize;
-		var elementFontSize = this.$element.css('fontSize');
-
-		if ('currentFontSize' === maxFontSize) {
-			this.options.maxFontSize = elementFontSize;
-		}
-	};
-
-	this.resizer = function () {
-		// if it's a heading, get parent width. because parent is set to display: inline-block
-		var elementWidth = this.$element.closest(this.options.parentElClass).length ? this.$element.parent().width() : this.$element.width();
-
-		this.$element.css('font-size', Math.max(Math.min(elementWidth / (this.options.compressor * 10), parseFloat(this.options.maxFontSize)), parseFloat(this.options.minFontSize)));
-	};
-
-	this.onWindowResize = function () {
-		$(window).on('resize.fittext orientationchange.fittext', this.resizer.bind(this));
-	};
-
-	this.init();
-};
-
-module.exports = Plugin;
-
-/***/ }),
-
 /***/ "../assets/dev/js/frontend/animations/splitText.js":
 /*!*********************************************************!*\
   !*** ../assets/dev/js/frontend/animations/splitText.js ***!
@@ -173,179 +97,138 @@ module.exports = Plugin;
 
 
 var QazanaRotateText = __webpack_require__(/*! ./textRotator */ "../assets/dev/js/frontend/animations/textRotator.js");
+var SplitText = __webpack_require__(/*! ../utils/splitText */ "../assets/dev/js/frontend/utils/splitText.js");
 
 var defaults = {
-	target: '',
-	type: 'words', // "words", "chars", "lines". or mixed e.g. "words, chars"
-	forceApply: false
+    target: '',
+    type: 'words', // "words", "chars", "lines". or mixed e.g. "words, chars"
+    forceApply: false
 };
 
-var Plugin = function Plugin($element, options) {
-	var self = this;
-	this.element = $element[0];
-	this.$element = $element;
+var Plugin = function Plugin($element) {
+    var self = this;
+    this.element = $element[0];
+    this.$element = $element;
 
-	this.options = jQuery.extend({}, defaults, options);
-	this.splittedTextArray = [];
-	this.splitTextInstance = null;
-	this.isRTL = 'rtl' === jQuery('html').attr('dir');
+    var options = this.$element.data('animations').splitText;
 
-	this.init = function () {
-		if (this.options.forceApply) {
-			this._initSplit();
-			this._windowResize();
+    this.options = jQuery.extend({}, defaults, options);
+    this.splittedTextArray = [];
+    this.splitTextInstance = null;
+    this.isRTL = 'rtl' === jQuery('html').attr('dir');
 
-			return false;
-		}
+    this.init = function () {
+        this.splitTextInstance = this._doSplit();
+        this._onSplittingDone();
+        this._windowResize();
+    };
 
-		new IntersectionObserver(function (entries, observer) {
-			entries.forEach(function (entry) {
-				if (entry.isIntersecting) {
-					self._initSplit();
-					self._windowResize();
+    this.getSplitTypeArray = function () {
+        var type = this.options.type;
 
-					observer.unobserve(entry.target);
-				}
-			});
-		}, { rootMargin: '10%' }).observe(this.element);
-	};
+        var splitTypeArray = type.split(',').map(function (item) {
+            return item.replace(' ', '');
+        });
 
-	this._initSplit = function () {
-		if (this.options.forceApply) {
-			this.splitTextInstance = this._doSplit();
-			this._onSplittingDone();
+        if (!this.isRTL) {
+            return splitTypeArray;
+        }
 
-			return false;
-		}
+        return splitTypeArray.filter(function (splitType) {
+            return splitType !== 'chars';
+        });
+    };
 
-		this._onFontsLoad();
-	};
+    this._doSplit = function () {
+        if (this.$element.hasClass('qazana-split-text-applied')) {
+            return false;
+        }
 
-	this._onFontsLoad = function () {
-		var elementFontFamily = this.$element.css('font-family').replace(/\"/g, '').replace(/\'/g, '').split(',')[0];
-		var elementFontWeight = this.$element.css('font-weight');
-		var elementFontStyle = this.$element.css('font-style');
+        var splitType = this.getSplitTypeArray();
 
-		var font = new FontFaceObserver(elementFontFamily, {
-			weight: elementFontWeight,
-			style: elementFontStyle
-		});
+        var targetElement = this.options.target ? this.$element.find(this.options.target).get(0) : this.element;
 
-		font.load().then(function () {
-			self.splitTextInstance = self._doSplit();
-			self._onSplittingDone();
-		}, function () {
-			self.splitTextInstance = self._doSplit();
-			self._onSplittingDone();
-		});
-	};
+        var splittedText = new SplitText(targetElement, {
+            type: splitType,
+            charsClass: 'qazana-text-chars',
+            linesClass: 'qazana-text-lines',
+            wordsClass: 'qazana-text-words'
+        });
 
-	this.getSplitTypeArray = function () {
-		var type = this.options.type;
+        jQuery.each(splitType, function (i, type) {
+            jQuery.each(splittedText[type], function (i, element) {
+                self.splittedTextArray.push(element);
+            });
+        });
 
-		var splitTypeArray = type.split(',').map(function (item) {
-			return item.replace(' ', '');
-		});
+        this._unitsOp(this.splittedTextArray);
 
-		if (!this.isRTL) {
-			return splitTypeArray;
-		}
+        this.$element.addClass('qazana-split-text-applied');
 
-		return splitTypeArray.filter(function (type) {
-			return type !== 'chars';
-		});
-	};
+        return splittedText;
+    };
 
-	this._doSplit = function () {
-		if (this.$element.hasClass('split-text-applied') || this.$element.closest('.tabs-pane').length && this.$element.closest('.tabs-pane').is(':hidden')) {
-			return false;
-		}
+    this._unitsOp = function (splittedElements) {
+        jQuery.each(splittedElements, function (i, element) {
+            var $splitUnit = jQuery(element).addClass('qazana-split-unit');
+            var innerText = $splitUnit.text();
 
-		var splitType = this.getSplitTypeArray();
+            $splitUnit.wrapInner('<span data-text="' + innerText + '" class="qazana-split-inner" />');
+        });
+    };
 
-		var targetElement = this.options.target ? this.$element.find(this.options.target).get(0) : this.element;
+    this._onSplittingDone = function () {
+        var parentColumn = this.$element.closest('.qazana-column');
 
-		var splittedText = new SplitText(targetElement, {
-			type: splitType,
-			charsClass: 'qazana-text-chars',
-			linesClass: 'qazana-text-lines',
-			wordsClass: 'qazana-text-words'
-		});
-
-		jQuery.each(splitType, function (i, type) {
-			jQuery.each(splittedText[type], function () {
-				self.splittedTextArray.push(this);
-			});
-		});
-
-		this._unitsOp(this.splittedTextArray);
-
-		this.$element.addClass('split-text-applied');
-
-		return splittedText;
-	};
-
-	this._unitsOp = function (splittedElements) {
-		jQuery.each(splittedElements, function () {
-			var $element = jQuery(this).addClass('qazana-split-unit');
-			var innerText = $element.text();
-
-			$element.wrapInner('<span data-text="' + innerText + '" class="qazana-split-inner" />');
-		});
-	};
-
-	this._onSplittingDone = function () {
-		var parentColumn = this.$element.closest('.qazana-column');
-
-		/**
+        /**
          * if it's only a split text, then call textRotator
          * Otherwise if it has custom animations, then wait for animations to be done
          * and then textRotator will be called from customAnimations
          */
-		if (this.$element.is('[data-text-rotator]') && !this.element.hasAttribute('data-custom-animations') && parentColumn.length && !parentColumn.get(0).hasAttribute('data-custom-animations')) {
-			new QazanaRotateText(this.$element, this.$element.data('text-rotator'));
-		}
-	};
+        if (this.$element.is('[data-text-rotator]') && !this.element.hasAttribute('data-custom-animations') && parentColumn.length && !parentColumn.get(0).hasAttribute('data-custom-animations')) {
+            new QazanaRotateText(this.$element, this.$element.data('text-rotator'));
+        }
+    };
 
-	this._onCollapse = function () {
-		jQuery('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			var href = e.target.getAttribute('href');
-			var targetPane = jQuery(e.target).closest('.tabs').find(href);
-			var element = targetPane.find(self.element);
+    this._onCollapse = function () {
+        jQuery('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var href = e.target.getAttribute('href');
+            var targetPane = jQuery(e.target).closest('.tabs').find(href);
+            var element = targetPane.find(self.element);
 
-			if (!element.length) {
-				return;
-			}
+            if (!element.length) {
+                return;
+            }
 
-			self.splitText.revert();
-			self._doSplit();
-		});
-	};
+            self.splitText.revert();
+            self._doSplit();
+        });
+    };
 
-	this._windowResize = function () {
-		var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
+    this._windowResize = function () {
+        var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
 
-		jQuery(window).on('resize', onResize.bind(this));
-	};
+        jQuery(window).on('resize', onResize.bind(this));
+    };
 
-	this._onWindowResize = function () {
-		jQuery('html').addClass('window-resizing');
+    this._onWindowResize = function () {
+        jQuery('html').addClass('window-resizing');
 
-		if (self.splitTextInstance) {
-			self.splitTextInstance.revert();
-			self.$element.removeClass('split-text-applied');
-		}
+        if (self.splitTextInstance) {
+            self.splitTextInstance.revert();
+            self.$element.removeClass('qazana-split-text-applied');
+        }
 
-		self._onAfterWindowResize();
-	};
+        self._onAfterWindowResize();
+    };
 
-	this._onAfterWindowResize = function () {
-		jQuery('html').removeClass('window-resizing');
+    this._onAfterWindowResize = function () {
+        jQuery('html').removeClass('window-resizing');
 
-		this.splitTextInstance = this._doSplit();
-	};
+        this.splitTextInstance = this._doSplit();
+    };
 
-	this.init();
+    this.init();
 };
 
 module.exports = Plugin;
@@ -499,473 +382,6 @@ var Plugin = function Plugin($element, options) {
 };
 
 module.exports = Plugin;
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/custom-animations.js":
-/*!******************************************************!*\
-  !*** ../assets/dev/js/frontend/custom-animations.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ElementsHandler = function ElementsHandler() {
-	var FontFaceObserver = __webpack_require__(/*! fontfaceobserver */ "../node_modules/fontfaceobserver/fontfaceobserver.standalone.js");
-	var QazanaSplitText = __webpack_require__(/*! ./animations/splitText */ "../assets/dev/js/frontend/animations/splitText.js");
-	var QazanaRotateText = __webpack_require__(/*! ./animations/textRotator */ "../assets/dev/js/frontend/animations/textRotator.js");
-
-	var defaults = {
-		delay: 0,
-		startDelay: 0,
-		offDelay: 0,
-		direction: 'forward',
-		duration: 300,
-		offDuration: 300,
-		easing: 'easeOutQuint',
-		animationTarget: 'this', // it can be also a selector e.g. '.selector'
-		initValues: {
-			translateX: 0,
-			translateY: 0,
-			translateZ: 0,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			scaleX: 1,
-			scaleY: 1,
-			opacity: 1
-		},
-		animations: {},
-		animateTargetsWhenVisible: true
-
-		// triggerHandler: 'focus', // "inview"
-		// triggerTarget: 'input',
-		// triggerRelation: 'siblings',
-		// offTriggerHandler: 'blur',
-	};
-
-	var Plugin = function Plugin($element, options) {
-		var self = this;
-
-		this.element = $element[0];
-		this.$element = $element;
-		this.options = jQuery.extend({}, defaults, options);
-
-		if ('mouseenter' === this.options.triggerHandler) {
-			this.options.triggerHandler = 'mouseenter touchstart';
-		}
-		if ('mouseleave' === this.options.triggerHandler) {
-			this.options.triggerHandler = 'mouseleave touchend';
-		}
-
-		this.splitText = null;
-		this.isRTL = 'rtl' === jQuery('html').attr('dir');
-
-		this.init = function () {
-			var callback = function callback(entries, observer) {
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						self._build();
-						observer.unobserve(entry.target);
-					}
-				});
-			};
-
-			var observer = new IntersectionObserver(callback, {
-				rootMargin: '10%'
-			});
-
-			observer.observe(self.element);
-		};
-
-		this._build = function () {
-			var $splitTextElements = self.$element.find('[data-split-text]');
-
-			if ($splitTextElements.length) {
-				this.splitText = new QazanaSplitText($splitTextElements, $splitTextElements.data('split-options'));
-
-				var fonts = {};
-
-				jQuery.each($splitTextElements, function (i, element) {
-					var elementFontFamily = jQuery(element).css('font-family').replace(/\"/g, '').replace(/\'/g, '').split(',')[0];
-					var elementFontWeight = jQuery(element).css('font-weight');
-					var elementFontStyle = jQuery(element).css('font-style');
-
-					fonts[elementFontFamily] = {
-						weight: elementFontWeight,
-						style: elementFontStyle
-					};
-				});
-
-				var observers = [];
-
-				Object.keys(fonts).forEach(function (family) {
-					var data = fonts[family];
-					var obs = new FontFaceObserver(family, data);
-					observers.push(obs.load());
-				});
-
-				Promise.all(observers).then(function () {
-					self._init();
-				}).catch(function (err) {
-					// eslint-disable-next-line no-console
-					console.warn('Some critical fonts are not available:', err);
-					self._init();
-				});
-			} else if (this.$element.is('[data-split-text]')) {
-				this.splitText = new QazanaSplitText(this.$element, this.$element.data('split-options'));
-
-				var elementFontFamily = this.$element.css('font-family').replace(/\"/g, '').replace(/\'/g, '').split(',')[0];
-				var elementFontWeight = this.$element.css('font-weight');
-				var elementFontStyle = this.$element.css('font-style');
-
-				var font = new FontFaceObserver(elementFontFamily, {
-					weight: elementFontWeight,
-					style: elementFontStyle
-				});
-
-				font.load().then(function () {
-					self._init();
-				}, function () {
-					self._init();
-				});
-			} else {
-				self._init();
-			}
-		};
-
-		this._init = function () {
-			this.animationTarget = this._getAnimationTargets();
-
-			console.log(this.animationTarget);
-
-			this._initValues();
-			this._eventHandlers();
-			this._handleResize();
-		};
-
-		this._getAnimationTargets = function () {
-			var animationTarget = this.options.animationTarget;
-
-			if ('this' === animationTarget) {
-				return this.element;
-			} else if ('all-children' === animationTarget) {
-				return this._getChildElments();
-			}
-
-			return this.element.querySelectorAll(animationTarget);
-		};
-
-		this._getChildElments = function () {
-			var elementsArray = [],
-			    elementType = this.$element.data('element_type');
-
-			switch (elementType) {
-				case 'section':
-
-					this.$element.find('.qazana-column').each(function (i, element) {
-						elementsArray.push(element);
-					});
-
-					break;
-
-				case 'column':
-
-					if ($element.is('.qazana-top-column')) {
-						$element.find('> .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget').each(function (i, innerColumn) {
-							if (!jQuery(this).is('.qazana-widget-spacer')) {
-								elementsArray.push(innerColumn);
-							}
-						});
-					}
-
-					break;
-
-				default:
-					if (!this.$element.is('.qazana-widget-spacer') && !this.$element.is('[data-split-text]')) {
-						this.$element.find(this.options.targets).each(function (i, element) {
-							elementsArray.push(element);
-						});
-					} else {
-						elementsArray.push($element.get(0));
-					}
-					break;
-			}
-
-			return elementsArray;
-		};
-
-		this._eventHandlers = function () {
-			var triggerTarget = !this.options.triggerRelation ? this.$element : this.$element[this.options.triggerRelation](this.options.triggerTarget);
-
-			if ('inview' == this.options.triggerHandler && !this.options.animateTargetsWhenVisible) {
-				this._initInviewAnimations(triggerTarget);
-			} else if ('inview' == this.options.triggerHandler && this.options.animateTargetsWhenVisible) {
-				this._targetsIO();
-			}
-
-			//triggerTarget.on( this.options.triggerHandler, self._runAnimations.bind( self, false ) );
-			//triggerTarget.on( this.options.offTriggerHandler, self._offAnimations.bind( self ) );
-		};
-
-		this._initInviewAnimations = function ($triggerTarget) {
-			var threshold = this._inviewAnimationsThreshold($triggerTarget);
-
-			var inviewCallback = function inviewCallback(entries, observer) {
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						self._runAnimations();
-
-						observer.unobserve(entry.target);
-					}
-				});
-			};
-
-			var observer = new IntersectionObserver(inviewCallback, {
-				threshold: threshold
-			});
-
-			observer.observe($triggerTarget.get(0));
-		};
-
-		this._targetsIO = function () {
-			var inviewCallback = function inviewCallback(entries, observer) {
-				var inviewTargetsArray = [];
-
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						inviewTargetsArray.push(entry.target);
-
-						self._runAnimations(inviewTargetsArray);
-
-						observer.unobserve(entry.target);
-					}
-				});
-			};
-
-			var observer = new IntersectionObserver(inviewCallback, {
-				threshold: 0.35
-			});
-
-			jQuery.each(this.animationTarget, function (i, target) {
-				observer.observe(target);
-			});
-		};
-
-		this._inviewAnimationsThreshold = function ($element) {
-			var windowWidth = window.innerWidth;
-			var windowHeight = window.innerHeight;
-			var elementOuterWidth = $element.outerWidth();
-			var elementOuterHeight = $element.outerHeight();
-			var elementOffset = $element.offset();
-
-			var w = windowWidth / elementOuterWidth;
-			var h = windowHeight / elementOuterHeight;
-
-			if (elementOuterWidth + elementOffset.left >= windowWidth) {
-				w = windowWidth / (elementOuterWidth - (elementOuterWidth + elementOffset.left - windowWidth));
-			}
-
-			return Math.min(Math.max(h / w / 2, 0), 0.8);
-		};
-
-		this._needPerspective = function () {
-			var initValues = this.options.initValues;
-			var valuesNeedPerspective = ['translateZ', 'rotateX', 'rotateY', 'scaleZ'];
-			var needPerspective = false;
-
-			for (var prop in initValues) {
-				for (var i = 0; i <= valuesNeedPerspective.length - 1; i++) {
-					var val = valuesNeedPerspective[i];
-
-					if (prop === val) {
-						needPerspective = true;
-						break;
-					}
-				}
-			}
-
-			return needPerspective;
-		};
-
-		this._initValues = function () {
-			jQuery(this.animationTarget).each(function () {
-				var $animationTarget = jQuery(this);
-				var animationOptions = $animationTarget.data('ca-options');
-
-				$animationTarget.css('transition', 'none');
-
-				if ('inview' == self.options.triggerHandler) {
-					$animationTarget.addClass('qazana-will-change');
-				}
-
-				/** Default animation value */
-				var initValues = {
-					targets: '.qazana-split-inner',
-					duration: 0,
-					easing: 'linear'
-				};
-
-				var animations = jQuery.extend({}, animationOptions.initValues, initValues);
-
-				animations.targets = animationOptions.animationTarget;
-
-				anime(animations);
-			});
-
-			this.$element.addClass('ca-initvalues-applied');
-
-			if (this._needPerspective() && 'inview' == this.options.triggerHandler) {
-				this.$element.addClass('qazana-perspective');
-			}
-		};
-
-		this._getTargetThreshold = function ($element) {
-			var windowHeight = jQuery(window).height();
-			var elementOuterHeight = $element.outerHeight();
-
-			return Math.min(Math.max(windowHeight / elementOuterHeight / 5, 0), 1);
-		};
-
-		this._runAnimations = function (inviewTargetsArray) {
-			var _delay = parseInt(this.options.delay, 10);
-			var startDelay = parseInt(this.options.startDelay, 10);
-			var duration = parseInt(this.options.duration, 10);
-			var easing = this.options.easing;
-
-			var targets = [];
-
-			if (inviewTargetsArray) {
-				targets = inviewTargetsArray;
-			} else {
-				targets = jQuery.isArray(this.animationTarget) ? this.animationTarget : jQuery.makeArray(this.animationTarget);
-			}
-
-			jQuery(this.animationTarget).each(function () {
-				var $animationTarget = jQuery(this);
-				var animationOptions = $animationTarget.data('ca-options');
-
-				targets = 'backward' === self.options.direction ? targets.reverse() : targets;
-
-				var defaultAnimations = {
-					targets: targets,
-					duration: duration,
-					easing: easing,
-					delay: anime.stagger(_delay, { start: startDelay }),
-					complete: function complete(anime) {
-						self._onAnimationsComplete(anime);
-					}
-				};
-
-				var animations = jQuery.extend({}, animationOptions.animations, defaultAnimations);
-
-				animations.targets = animationOptions.animationTarget;
-
-				anime.remove(animationOptions.animationTarget);
-
-				anime(animations);
-			});
-		};
-
-		this._onAnimationsComplete = function (anime) {
-			jQuery.each(anime.animatables, function (i, animatable) {
-				var $element = jQuery(animatable.target);
-
-				$element.css({
-					transition: ''
-				}).removeClass('qazana-will-change');
-
-				if ('inview' == self.options.triggerHandler && $element.is('.btn')) {
-					$element.css({
-						transform: ''
-					});
-				}
-			});
-
-			/* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
-			if (this.$element.find('[data-text-rotator]').length > 0) {
-				new QazanaRotateText(this.$element.find('[data-text-rotator]'));
-			}
-
-			if (this.$element.is('[data-text-rotator]')) {
-				new QazanaRotateText(this.$element);
-			}
-		};
-
-		this._offAnimations = function () {
-			var _delay2 = this.options.delay;
-			var offDuration = this.options.offDuration;
-			var offDelay = this.options.offDelay;
-			var easing = this.options.easing;
-			var animationTarget = Array.prototype.slice.call(this.animationTarget).reverse();
-
-			if ('this' === this.options.animationTarget) {
-				animationTarget = this.element;
-			}
-
-			var offAnimationVal = {
-				targets: animationTarget,
-				easing: easing,
-				duration: offDuration,
-				delay: function delay(el, i) {
-					return i * (_delay2 / 2) + offDelay;
-				},
-				complete: function complete() {
-					self._initValues();
-				}
-			};
-
-			var _offAnimations = jQuery.extend({}, this.options.initValues, offAnimationVal);
-
-			anime.remove(this.animationTarget);
-
-			anime(_offAnimations);
-		};
-
-		this._handleResize = function () {
-			var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
-
-			jQuery(window).on('resize', onResize.bind(this));
-		};
-
-		this._onWindowResize = function () {
-			if (self.options.triggerHandler !== 'inview') {
-				self.animationTarget = self._getAnimationTargets();
-				self._initValues();
-				self._eventHandlers();
-			}
-		};
-
-		this.init();
-	};
-
-	jQuery('[data-custom-animations]').map(function (i, element) {
-		var $element = jQuery(element);
-		var $customAnimationParent = $element.parents('.qazana-section[data-custom-animations], .qazana-column[data-custom-animations]');
-
-		if ($customAnimationParent.length) {
-			$element.removeAttr('data-custom-animations');
-			$element.removeAttr('data-ca-options');
-		}
-	});
-
-	var $elements = jQuery('[data-custom-animations]').filter(function (i, element) {
-		var $element = jQuery(element);
-		var $rowBgparent = $element.closest('.vc_row[data-row-bg]');
-		var $slideshowBgParent = $element.closest('.vc_row[data-slideshow-bg]');
-		var $fullpageSection = $element.closest('.vc_row.pp-section');
-
-		return !$rowBgparent.length && !$slideshowBgParent.length && !$fullpageSection.length;
-	});
-
-	$elements.each(function () {
-		new Plugin(jQuery(this), jQuery(this).data('ca-options'));
-	});
-};
-
-module.exports = ElementsHandler;
 
 /***/ }),
 
@@ -1214,9 +630,9 @@ module.exports = ElementsHandler;
 
 			initOnReadyComponents();
 
-			var CustomAnimation = __webpack_require__(/*! qazana-frontend/custom-animations */ "../assets/dev/js/frontend/custom-animations.js");
+			// var CustomAnimation = require( 'qazana-frontend/custom-animations' );
 
-			new CustomAnimation();
+			// new CustomAnimation();
 		};
 
 		this.getElements = function (element) {
@@ -1379,6 +795,23 @@ module.exports = ElementsHandler;
 if (!qazanaFrontend.isEditMode()) {
 	jQuery(qazanaFrontend.init);
 }
+
+/**
+ * @param {number} y
+ * @return {?}
+ */
+jQuery.fn.inView = function (y) {
+	y = void 0 !== y ? y : 100;
+	var $win = jQuery(window);
+	var coord = {
+		top: $win.scrollTop(),
+		left: $win.scrollLeft()
+	};
+	coord.right = coord.left + $win.width() - y;
+	coord.bottom = coord.top + $win.height() - y;
+	var rect2 = this.offset();
+	return rect2.right = rect2.left + this.outerWidth(), rect2.bottom = rect2.top + this.outerHeight(), !(coord.right < rect2.left || coord.left > rect2.right || coord.bottom < rect2.top || coord.top > rect2.bottom);
+};
 
 /***/ }),
 
@@ -1675,18 +1108,215 @@ module.exports = function ($scope, $) {
 "use strict";
 
 
+var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
+    AnimationHandler;
 var SplitText = __webpack_require__(/*! ../animations/splitText */ "../assets/dev/js/frontend/animations/splitText.js");
-var FitText = __webpack_require__(/*! ../animations/fitText */ "../assets/dev/js/frontend/animations/fitText.js");
+
+AnimationHandler = HandlerModule.extend({
+
+    getAnimationDefaults: {
+        delay: 0,
+        startDelay: 0,
+        offDelay: 0,
+        direction: 'forward',
+        duration: 300,
+        offDuration: 300,
+        easing: 'easeOutQuint',
+        target: 'this', // it can be also a selector e.g. '.selector'
+        initValues: {
+            translateX: 0,
+            translateY: 0,
+            translateZ: 0,
+            rotateX: 0,
+            rotateY: 0,
+            rotateZ: 0,
+            scaleX: 1,
+            scaleY: 1,
+            opacity: 1
+        },
+        animations: {},
+        animateTargetsWhenVisible: true
+
+        // triggerHandler: 'focus', // "focus", "inview"
+        // triggerTarget: 'input',
+        // triggerRelation: 'siblings',
+        // offTriggerHandler: 'blur',
+    },
+
+    getAnimationSettings: function getAnimationSettings() {
+        return this.$element.data('animations');
+    },
+
+    getElementName: function getElementName() {
+        return 'global';
+    },
+
+    splitText: function splitText() {
+        var settings = this.getAnimationSettings();
+
+        if (settings.splitText) {
+            this.Text = new SplitText(this.$element);
+        }
+    },
+
+    animate: function animate() {
+        var self = this;
+
+        var settings = this.getAnimationSettings();
+
+        // if ( 'button.default' === this.$element.data( 'element_type' ) ) {
+        //     console.log( settings );
+        // }
+
+        if (!settings || !settings.inView || !settings.inView[0]) {
+            return;
+        }
+
+        jQuery.each(settings.inView, function (_i, animationGroup) {
+            if (animationGroup.target !== 'all-children') {
+                self.$element.css('transition', 'none');
+
+                var $target = self.$element.find(animationGroup.target);
+
+                if ('inview' === animationGroup.triggerHandler) {
+                    $target.addClass('qazana-will-change');
+                }
+
+                /** Default animation value */
+                var initValues = {
+                    targets: $target.get(),
+                    duration: 0,
+                    easing: 'linear'
+                };
+
+                var animations = jQuery.extend({}, animationGroup.initValues, initValues);
+
+                anime(animations);
+
+                self.$element.addClass('qazana-animation-initialized');
+
+                if (self.needPerspective(animationGroup) && 'inview' === animationGroup.triggerHandler) {
+                    self.$element.addClass('qazana-perspective');
+                }
+
+                self.$element.addClass('qazana-perspective');
+            }
+        });
+
+        this.animateInview(settings.inView);
+    },
+
+    animateInview: function animateInview(inView) {
+        var self = this;
+
+        jQuery.each(inView, function (_i, animationGroup) {
+            if (animationGroup.target !== 'all-children') {
+                var $target = self.$element.find(animationGroup.target);
+
+                if ('inview' === animationGroup.triggerHandler) {
+                    $target.addClass('qazana-will-change');
+                }
+
+                /** Default animation value */
+                var defaultValues = {
+                    targets: $target.get(),
+                    duration: animationGroup.duration,
+                    easing: animationGroup.easing,
+                    delay: anime.stagger(animationGroup.delay, {
+                        start: animationGroup.startDelay
+                    }),
+                    complete: function complete(anime) {
+                        self.onAnimationsComplete(anime, animationGroup);
+                    }
+                };
+
+                var animations = jQuery.extend({}, defaultValues, animationGroup.finalValues);
+
+                console.log(animationGroup.finalValues);
+
+                anime.remove($target.get());
+
+                anime(animations);
+            }
+        });
+    },
+
+    onAnimationsComplete: function onAnimationsComplete(anime, animationGroup) {
+        var self = this;
+
+        jQuery.each(anime.animatables, function (_i, animatable) {
+            // eslint-disable-next-line no-shadow
+            var $element = self.$element.find(animatable.target);
+
+            $element.css({
+                transition: ''
+            }).removeClass('qazana-will-change');
+
+            if ('inview' === animationGroup.triggerHandler && $element.is('.btn')) {
+                $element.css({
+                    transform: ''
+                });
+            }
+        });
+
+        /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
+        // if ( this.$element.find( '[data-text-rotator]' ).length > 0 ) {
+        //     new QazanaRotateText( this.$element.find( '[data-text-rotator]' ) );
+        // }
+
+        // if ( this.$element.is( '[data-text-rotator]' ) ) {
+        //     new QazanaRotateText( this.$element );
+        // }
+    },
+
+    needPerspective: function needPerspective(options) {
+        var initValues = options.initValues;
+        var valuesNeedPerspective = ['translateZ', 'rotateX', 'rotateY', 'scaleZ'];
+        var needPerspective = false;
+
+        for (var prop in initValues) {
+            for (var i = 0; i <= valuesNeedPerspective.length - 1; i++) {
+                var val = valuesNeedPerspective[i];
+
+                if (prop === val) {
+                    needPerspective = true;
+                    break;
+                }
+            }
+        }
+
+        return needPerspective;
+    },
+
+    removeLoader: function removeLoader() {
+        this.$element.find('.qazana-loading-indicator').remove();
+        this.$element.removeClass('qazana-has-loading-indicator');
+        jQuery(window).trigger('resize');
+    },
+
+    onInit: function onInit() {
+        var self = this;
+        HandlerModule.prototype.onInit.apply(this, arguments);
+        self.removeLoader();
+
+        if (self.$element.is('[data-custom-animations]')) {
+            // self.splitText();
+            self.animate();
+        }
+    },
+
+    onElementChange: function onElementChange(propertyName) {
+        if (/^_?animation/.test(propertyName)) {
+            this.animate();
+        }
+    }
+
+});
 
 module.exports = function ($scope) {
-
-    if ($scope.is('[data-fittext-options]')) {
-        new FitText($scope, $scope.data('fittext-options'));
-    }
-
-    if (!$scope.parents('[data-custom-animations]').length && !$scope[0].hasAttribute('data-custom-animations') && $scope.is('[data-split-text]')) {
-        new SplitText($scope, $scope.data('split-options'));
-    }
+    new AnimationHandler({
+        $element: $scope
+    });
 };
 
 /***/ }),
@@ -2061,55 +1691,14 @@ module.exports = function ($scope, $) {
 
 var HandlerModule = __webpack_require__(/*! qazana-frontend/handler-module */ "../assets/dev/js/frontend/handler-module.js"),
     GlobalHandler;
+var SplitText = __webpack_require__(/*! ../animations/splitText */ "../assets/dev/js/frontend/animations/splitText.js");
 
-GlobalHandler = HandlerModule.extend({
-
-	getElementName: function getElementName() {
-		return 'global';
-	},
-
-	animate: function animate() {
-		var self = this,
-		    $element = this.$element,
-		    animation = this.getAnimation(),
-		    elementSettings = this.getElementSettings(),
-		    animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
-
-		$element.removeClass('qazana-animated').removeClass(self.prevAnimation);
-
-		setTimeout(function () {
-			self.prevAnimation = animation;
-			$element.addClass(animation).addClass('qazana-animated');
-		}, animationDelay);
-	},
-
-	getAnimation: function getAnimation() {
-		var elementSettings = this.getElementSettings();
-
-		return elementSettings._animation_animated && elementSettings._animation_in;
-	},
-
-	removeLoader: function removeLoader() {
-		this.$element.find('.qazana-loading-indicator').remove();
-		this.$element.removeClass('qazana-has-loading-indicator');
-		jQuery(window).trigger('resize');
-	},
-
-	onInit: function onInit() {
-		HandlerModule.prototype.onInit.apply(this, arguments);
-		this.removeLoader();
-	},
-
-	onElementChange: function onElementChange(propertyName) {
-		if (/^_?animation/.test(propertyName)) {
-			this.animate();
-		}
-	}
-
-});
+GlobalHandler = HandlerModule.extend({});
 
 module.exports = function ($scope) {
-	new GlobalHandler({ $element: $scope });
+    new GlobalHandler({
+        $element: $scope
+    });
 };
 
 /***/ }),
@@ -3713,6 +3302,418 @@ module.exports = LightboxModule;
 
 /***/ }),
 
+/***/ "../assets/dev/js/frontend/utils/splitText.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/splitText.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function SplitText(identifier, vars) {
+    function duplicateObject(obj) {
+        if ('object' === (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) && obj !== null) {
+            var ret = {};
+            for (var index in obj) {
+                ret[index] = duplicateObject(obj[index]);
+            }
+            return ret;
+        }
+        return obj;
+    }
+
+    String.prototype.replaceAll = function (search, replacement) {
+        var target = this;
+        return target.split(search).join(replacement);
+    };
+
+    function hasClass(obj, c) {
+        return new RegExp('(\\s|^)' + c + '(\\s|$)').test(obj.className);
+    }
+
+    function addClass(obj, c) {
+        if (!hasClass(obj, c)) {
+            obj.className += ' ' + c;
+        }
+    }
+
+    function findPos(node) {
+        var node = node;
+        var curtop = 0;
+        var curtopscroll = 0;
+        var curleft = 0;
+        var curleftscroll = 0;
+        //var needHTML = true;
+        if (node.offsetParent) {
+            do {
+                if (node.offsetParent && node.offsetParent == document.getElementsByTagName('html')[0]) {
+                    // needHTML = false;
+                }
+                curtop += node.offsetTop;
+                curtopscroll += node.offsetParent ? node.offsetParent.scrollTop : 0;
+                curleft += node.offsetLeft;
+                curleftscroll += node.offsetParent ? node.offsetParent.scrollLeft : 0;
+            } while (node = node.offsetParent);
+
+            // if(needHTML){
+            // 	curtopscroll += document.getElementsByTagName("html")[0].scrollTop;
+            // 	curleftscroll += document.getElementsByTagName("html")[0].scrollLeft;
+            // }
+
+            return [curleft - curleftscroll, curtop - curtopscroll];
+        }
+    }
+
+    var identifier = identifier || [];
+    var defaults = {
+        type: 'chars,words,lines',
+        charsClass: undefined,
+        linesClass: undefined,
+        wordsClass: undefined,
+        position: 'relative',
+        ignore: 'span'
+    };
+
+    this.HTMLobjects = [];
+    this.vars = {};
+    this.originalHTML = [];
+
+    this.lines = [];
+    this.words = [];
+    this.chars = [];
+
+    //if the identifier isn't an array, make it one.  If it already is, don't worry.  :)
+    if (!Array.isArray(identifier)) {
+        identifier = [identifier];
+    }
+
+    //iterate through the array
+    for (var i = 0; i < identifier.length; i++) {
+        //if it is an html element, simply add it
+        if (1 == identifier[i].nodeType) {
+            this.HTMLobjects.push(identifier[i]);
+        }
+
+        //if jquery Element add each html Element
+        if (window.jQuery && identifier[i] && (identifier[i] instanceof jQuery || identifier[i].constructor.prototype.jquery)) {
+            //itterate through array of html elements inside jquery object
+            for (var j = 0; j < identifier[i].length; j++) {
+                //Check that it is an html element before appending it
+                if (1 == identifier[i][j].nodeType) {
+                    this.HTMLobjects.push(identifier[i][j]);
+                }
+            }
+        }
+
+        //if it's a string, try query selector all
+        if ('string' === typeof identifier[i]) {
+            elements = document.querySelectorAll(identifier[i]);
+            for (var j = 0; j < elements.length; j++) {
+                if (1 == elements[j].nodeType) {
+                    this.HTMLobjects.push(elements[j]);
+                }
+            }
+        }
+    }
+
+    //if there is an object of variables replace defaults otherwise use defaults
+    if (vars && 'object' === (typeof vars === 'undefined' ? 'undefined' : _typeof(vars)) && vars !== null) {
+        //if type is passed and it's a string, try and validate otherwise use default
+
+        if (vars.type && 'string' === typeof vars.type) {
+            vars.type = vars.type.split(',');
+        }
+
+        if (vars.type && 'object' === _typeof(vars.type)) {
+            var possible = ['chars', 'words', 'lines'];
+            var use = [];
+            for (var i = 0; i < vars.type.length; i++) {
+                if (possible.indexOf(vars.type[i].toLowerCase()) != -1 && -1 == use.indexOf(vars.type[i].toLowerCase())) {
+                    use.push(vars.type[i].toLowerCase());
+                } else {
+                    console.error(vars.type[i] + 'is not a valid type');
+                }
+            }
+
+            if (0 == use.length) {
+                this.vars.type = defaults.type;
+            } else {
+                this.vars.type = use.join(',');
+            }
+        } else {
+            this.vars.type = defaults.type;
+        }
+
+        //if charsClass is set then use it
+        this.vars.charsClass = vars.charsClass && 'string' === typeof vars.charsClass ? vars.charsClass : defaults.charsClass;
+
+        //if wordsClass is set then use it
+        this.vars.wordsClass = vars.wordsClass && 'string' === typeof vars.wordsClass ? vars.wordsClass : defaults.wordsClass;
+
+        //if linesClass is set then use it
+        this.vars.linesClass = vars.linesClass && 'string' === typeof vars.linesClass ? vars.linesClass : defaults.linesClass;
+
+        //greensock's splittext doesn't allow static or null.  null will not set position and leave it to any css on the page
+        var allowedPositions = ['absolute', 'relative', 'static', 'fixed', 'inherit', 'initial', null];
+        this.vars.position = vars.position && allowedPositions.indexOf(vars.position) != -1 ? vars.position : defaults.position;
+    } else {
+        this.vars = duplicateObject(defaults);
+    }
+
+    //Store the original state so we can revert easily
+    for (var i = 0; i < this.HTMLobjects.length; i++) {
+        this.originalHTML[i] = this.HTMLobjects[i].innerHTML;
+    }
+
+    //add the revert function
+    this.revert = function () {
+        for (var i = 0; i < this.HTMLobjects.length; i++) {
+            this.HTMLobjects[i].innerHTML = this.originalHTML[i];
+        }
+    };
+
+    //
+    //By now we should have an array at this.HTMLobjects of html objects that need spliting.
+    //
+
+    this.vars.type = this.vars.type.split(',');
+
+    for (var i = 0; i < this.HTMLobjects.length; i++) {
+        var current = this.HTMLobjects[i];
+
+        //remove tags from element
+        //ideally, this won't be needed in the future
+        current.innerHTML = current.innerHTML.replace(/<\/?[^>]+(>|$)/g, '');
+
+        var currentLists = {
+            lines: [],
+            words: [],
+            chars: []
+        };
+
+        //Split Lines
+        if (this.vars.type.indexOf('lines') != -1) {
+            var text = current.innerHTML;
+            var words = text.split(' ');
+            var splitPoints = [];
+            current.innerHTML = words[0];
+            var height = current.offsetHeight;
+
+            //work out where the splits are
+            for (var j = 1; j < words.length; j++) {
+                current.innerHTML = current.innerHTML + ' ' + words[j];
+                if (current.offsetHeight > height) {
+                    height = current.offsetHeight;
+                    splitPoints.push(current.innerHTML.length - (words[j].length + 1));
+                }
+            }
+            //add the last line
+            splitPoints.push(current.innerHTML.length);
+
+            //add the text to the element, adding in the tags
+
+            current.innerHTML = '';
+
+            for (var j = 0; j < splitPoints.length; j++) {
+                var lineStart = 0 == j ? 0 : splitPoints[j - 1] + 1;
+                var lineEnd = j == splitPoints.length - 1 ? text.length : splitPoints[j];
+
+                var div = document.createElement('div');
+
+                div.style.display = 'block';
+                if (this.vars.linesClass !== undefined && this.vars.linesClass != 'undefined') {
+                    this.class = this.vars.linesClass.replace('++', j + 1);
+                }
+                div.innerHTML = text.substring(lineStart, lineEnd);
+                current.appendChild(div);
+
+                if (this.vars.position !== null) {
+                    if ('absolute' == this.vars.position) {
+                        div.toBe = {
+                            top: div.offsetTop,
+                            left: div.offsetLeft
+                        };
+                        div.style.position = 'relative';
+                    } else if ('fixed' == this.vars.position) {
+                        var pos = findPos(div);
+                        div.toBe = {
+                            top: pos[1],
+                            left: pos[0]
+                        };
+                        div.style.position = 'relative';
+                    } else {
+                        div.style.position = this.vars.position;
+                    }
+                }
+
+                currentLists.lines.push(div);
+            }
+        }
+
+        //split the words
+        if (this.vars.type.indexOf('words') != -1) {
+            var splitWords = function splitWords(parent, st) {
+                var startTag = "<div style='display:inline-block;'>";
+                var endTag = '</div>';
+                parent.innerHTML = startTag + parent.innerHTML.replaceAll(' ', endTag + ' ' + startTag) + endTag;
+
+                var nodes = parent.querySelectorAll('div');
+
+                for (var j = 0; j < nodes.length; j++) {
+                    if (st.vars.wordsClass !== undefined && st.vars.wordsClass != 'undefined') {
+                        addClass(nodes[j], st.vars.wordsClass.replaceAll('++', j + 1));
+                    }
+
+                    if (st.vars.position !== null) {
+                        if ('absolute' == st.vars.position) {
+                            nodes[j].toBe = {
+                                top: nodes[j].offsetTop,
+                                left: nodes[j].offsetLeft
+                            };
+                            nodes[j].style.position = 'relative';
+                        } else if ('fixed' == st.vars.position) {
+                            var pos = findPos(nodes[j]);
+                            nodes[j].toBe = {
+                                top: pos[1],
+                                left: pos[0]
+                            };
+                            nodes[j].style.position = 'relative';
+                        } else {
+                            nodes[j].style.position = st.vars.position;
+                        }
+                    }
+
+                    currentLists.words.push(nodes[j]);
+                }
+            };
+
+            //if it has been split by lines, split each line by words
+
+
+            if (this.vars.type.indexOf('lines') != -1) {
+                for (var j = 0; j < currentLists.lines.length; j++) {
+                    splitWords(currentLists.lines[j], this);
+                }
+            } else {
+                splitWords(current, this);
+            }
+        }
+
+        //split the characters
+        if (this.vars.type.indexOf('chars') != -1) {
+            var splitChars = function splitChars(parent, st) {
+                var startTag = "<div style='display:inline-block;'>";
+                var endTag = '</div>';
+                var specials = parent.innerHTML.match(/(&\w+;)/g);
+                parent.innerHTML = startTag + parent.innerHTML.replace(/&\w+;/g, 'ህ').split('').join(endTag + startTag) + endTag;
+
+                var nodes = parent.querySelectorAll('div');
+
+                for (var j = 0; j < nodes.length; j++) {
+                    if (st.vars.charsClass !== undefined && st.vars.charsClass != 'undefined') {
+                        var newClass = st.vars.charsClass.replaceAll('++', j + 1);
+                        if (j != nodes.length - 1) {
+                            newClass = newClass.replaceAll('**', nodes[j].innerHTML + nodes[j + 1].innerHTML);
+                        } else {
+                            newClass = newClass.replaceAll('**', '');
+                        }
+                        addClass(nodes[j], newClass);
+                    }
+
+                    if (st.vars.position !== null) {
+                        if ('absolute' == st.vars.position) {
+                            nodes[j].toBe = {
+                                top: nodes[j].offsetTop,
+                                left: nodes[j].offsetLeft
+                            };
+                            nodes[j].style.position = 'relative';
+                        } else if ('fixed' == st.vars.position) {
+                            var pos = findPos(nodes[j]);
+                            nodes[j].toBe = {
+                                top: pos[1],
+                                left: pos[0]
+                            };
+                            nodes[j].style.position = 'relative';
+                        } else {
+                            nodes[j].style.position = st.vars.position;
+                        }
+                    }
+
+                    if ('ህ' == nodes[j].innerHTML) {
+                        nodes[j].innerHTML = specials[0];
+                        specials.splice(0, 1);
+                    }
+
+                    currentLists.chars.push(nodes[j]);
+                }
+            };
+
+            //if it has been split by words, split each word by characters
+            //if it has only be split by lines, split each line by characters
+
+
+            if (this.vars.type.indexOf('words') != -1) {
+                for (var j = 0; j < currentLists.words.length; j++) {
+                    splitChars(currentLists.words[j], this);
+                }
+            } else if (this.vars.type.indexOf('lines') != -1) {
+                for (var j = 0; j < currentLists.lines.length; j++) {
+                    splitChars(currentLists.lines[j], this);
+                }
+            } else {
+                splitChars(current, this);
+            }
+        }
+
+        if ('absolute' == this.vars.position || 'fixed' == this.vars.position) {
+            for (var j = currentLists.chars.length - 1; j >= 0; j--) {
+                currentLists.chars[j].style.width = currentLists.chars[j].offsetWidth + 'px';
+                currentLists.chars[j].style.height = currentLists.chars[j].offsetHeight + 'px';
+                currentLists.chars[j].style.left = currentLists.chars[j].toBe.left + 'px';
+                currentLists.chars[j].style.top = currentLists.chars[j].toBe.top + 'px';
+            }
+
+            for (var j = currentLists.words.length - 1; j >= 0; j--) {
+                currentLists.words[j].style.width = currentLists.words[j].offsetWidth + 'px';
+                currentLists.words[j].style.height = currentLists.words[j].offsetHeight + 'px';
+                currentLists.words[j].style.left = currentLists.words[j].toBe.left + 'px';
+                currentLists.words[j].style.top = currentLists.words[j].toBe.top + 'px';
+            }
+
+            for (var j = currentLists.lines.length - 1; j >= 0; j--) {
+                currentLists.lines[j].style.width = currentLists.lines[j].offsetWidth + 'px';
+                currentLists.lines[j].style.height = currentLists.lines[j].offsetHeight + 'px';
+                currentLists.lines[j].style.left = currentLists.lines[j].toBe.left + 'px';
+                currentLists.lines[j].style.top = currentLists.lines[j].toBe.top + 'px';
+            }
+
+            for (var j = currentLists.chars.length - 1; j >= 0; j--) {
+                currentLists.chars[j].style.position = this.vars.position;
+            }
+
+            for (var j = currentLists.words.length - 1; j >= 0; j--) {
+                currentLists.words[j].style.position = this.vars.position;
+            }
+
+            for (var j = currentLists.lines.length - 1; j >= 0; j--) {
+                currentLists.lines[j].style.position = this.vars.position;
+            }
+        }
+
+        this.lines = this.lines.concat(currentLists.lines);
+        this.words = this.words.concat(currentLists.words);
+        this.chars = this.chars.concat(currentLists.chars);
+    }
+}
+
+module.exports = SplitText;
+
+/***/ }),
+
 /***/ "../assets/dev/js/frontend/utils/vimeo.js":
 /*!************************************************!*\
   !*** ../assets/dev/js/frontend/utils/vimeo.js ***!
@@ -4485,25 +4486,6 @@ ViewModule = Module.extend({
 });
 
 module.exports = ViewModule;
-
-/***/ }),
-
-/***/ "../node_modules/fontfaceobserver/fontfaceobserver.standalone.js":
-/*!***********************************************************************!*\
-  !*** ../node_modules/fontfaceobserver/fontfaceobserver.standalone.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* Font Face Observer v2.1.0 - © Bram Stein. License: BSD-3-Clause */(function(){function l(a,b){document.addEventListener?a.addEventListener("scroll",b,!1):a.attachEvent("scroll",b)}function m(a){document.body?a():document.addEventListener?document.addEventListener("DOMContentLoaded",function c(){document.removeEventListener("DOMContentLoaded",c);a()}):document.attachEvent("onreadystatechange",function k(){if("interactive"==document.readyState||"complete"==document.readyState)document.detachEvent("onreadystatechange",k),a()})};function t(a){this.a=document.createElement("div");this.a.setAttribute("aria-hidden","true");this.a.appendChild(document.createTextNode(a));this.b=document.createElement("span");this.c=document.createElement("span");this.h=document.createElement("span");this.f=document.createElement("span");this.g=-1;this.b.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.c.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";
-this.f.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.h.style.cssText="display:inline-block;width:200%;height:200%;font-size:16px;max-width:none;";this.b.appendChild(this.h);this.c.appendChild(this.f);this.a.appendChild(this.b);this.a.appendChild(this.c)}
-function u(a,b){a.a.style.cssText="max-width:none;min-width:20px;min-height:20px;display:inline-block;overflow:hidden;position:absolute;width:auto;margin:0;padding:0;top:-999px;white-space:nowrap;font-synthesis:none;font:"+b+";"}function z(a){var b=a.a.offsetWidth,c=b+100;a.f.style.width=c+"px";a.c.scrollLeft=c;a.b.scrollLeft=a.b.scrollWidth+100;return a.g!==b?(a.g=b,!0):!1}function A(a,b){function c(){var a=k;z(a)&&a.a.parentNode&&b(a.g)}var k=a;l(a.b,c);l(a.c,c);z(a)};function B(a,b){var c=b||{};this.family=a;this.style=c.style||"normal";this.weight=c.weight||"normal";this.stretch=c.stretch||"normal"}var C=null,D=null,E=null,F=null;function G(){if(null===D)if(J()&&/Apple/.test(window.navigator.vendor)){var a=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))(?:\.([0-9]+))/.exec(window.navigator.userAgent);D=!!a&&603>parseInt(a[1],10)}else D=!1;return D}function J(){null===F&&(F=!!document.fonts);return F}
-function K(){if(null===E){var a=document.createElement("div");try{a.style.font="condensed 100px sans-serif"}catch(b){}E=""!==a.style.font}return E}function L(a,b){return[a.style,a.weight,K()?a.stretch:"","100px",b].join(" ")}
-B.prototype.load=function(a,b){var c=this,k=a||"BESbswy",r=0,n=b||3E3,H=(new Date).getTime();return new Promise(function(a,b){if(J()&&!G()){var M=new Promise(function(a,b){function e(){(new Date).getTime()-H>=n?b(Error(""+n+"ms timeout exceeded")):document.fonts.load(L(c,'"'+c.family+'"'),k).then(function(c){1<=c.length?a():setTimeout(e,25)},b)}e()}),N=new Promise(function(a,c){r=setTimeout(function(){c(Error(""+n+"ms timeout exceeded"))},n)});Promise.race([N,M]).then(function(){clearTimeout(r);a(c)},
-b)}else m(function(){function v(){var b;if(b=-1!=f&&-1!=g||-1!=f&&-1!=h||-1!=g&&-1!=h)(b=f!=g&&f!=h&&g!=h)||(null===C&&(b=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(window.navigator.userAgent),C=!!b&&(536>parseInt(b[1],10)||536===parseInt(b[1],10)&&11>=parseInt(b[2],10))),b=C&&(f==w&&g==w&&h==w||f==x&&g==x&&h==x||f==y&&g==y&&h==y)),b=!b;b&&(d.parentNode&&d.parentNode.removeChild(d),clearTimeout(r),a(c))}function I(){if((new Date).getTime()-H>=n)d.parentNode&&d.parentNode.removeChild(d),b(Error(""+
-n+"ms timeout exceeded"));else{var a=document.hidden;if(!0===a||void 0===a)f=e.a.offsetWidth,g=p.a.offsetWidth,h=q.a.offsetWidth,v();r=setTimeout(I,50)}}var e=new t(k),p=new t(k),q=new t(k),f=-1,g=-1,h=-1,w=-1,x=-1,y=-1,d=document.createElement("div");d.dir="ltr";u(e,L(c,"sans-serif"));u(p,L(c,"serif"));u(q,L(c,"monospace"));d.appendChild(e.a);d.appendChild(p.a);d.appendChild(q.a);document.body.appendChild(d);w=e.a.offsetWidth;x=p.a.offsetWidth;y=q.a.offsetWidth;I();A(e,function(a){f=a;v()});u(e,
-L(c,'"'+c.family+'",sans-serif'));A(p,function(a){g=a;v()});u(p,L(c,'"'+c.family+'",serif'));A(q,function(a){h=a;v()});u(q,L(c,'"'+c.family+'",monospace'))})})}; true?module.exports=B:(undefined);}());
-
 
 /***/ })
 
