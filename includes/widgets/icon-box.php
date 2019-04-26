@@ -82,6 +82,48 @@ class Widget_Icon_Box extends Widget_Base {
 		return [ 'icon box', 'icon' ];
 	}
 
+    /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [
+                '.qazana-widget-container'
+            ],
+            'svg' => [
+                '.svg-icon-holder' => [
+                    'options' => [
+                        'animated' => true,
+                        'triggerHandler' => 'inview',
+                        'duration' => $this->get_settings('svg_animation_speed'),
+                        'delay' => $this->get_settings('svg_animation_delay'),
+                        'resetOnHover' => true,
+                        'type' => 'sync',
+                        'customColorApplied' => true,
+                        'color' => '#f42958',
+                        'hoverColor' => '#fff',
+                        'gradientColor' => [ '#f42958', '#000' ],
+                        'hoverGradientColor' => [ '#B22222', '#00008B' ],
+                    ]
+                ]
+            ],
+            'splitText' => [
+                'p' => [
+                    'options' => [
+                        'type' => 'lines',
+                    ],
+                ],
+            ],
+        ];
+    }
+
 	/**
 	 * Register icon box widget controls.
 	 *
@@ -298,7 +340,7 @@ class Widget_Icon_Box extends Widget_Base {
 			[
 				'label'       => __( 'Animation Delay', 'qazana' ),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => 200,
+				'default'     => 0,
 				'label_block' => true,
 				'condition'   => [
                     'svg_animation!' => '',
@@ -311,7 +353,7 @@ class Widget_Icon_Box extends Widget_Base {
 			[
 				'label'       => __( 'Animation Speed', 'qazana' ),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => 200,
+				'default'     => 100,
 				'label_block' => true,
 				'condition'   => [
                     'svg_animation!' => '',
@@ -408,13 +450,6 @@ class Widget_Icon_Box extends Widget_Base {
 					'{{WRAPPER}}.qazana-view-framed .qazana-icon:hover' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}.qazana-view-stacked .qazana-icon:hover' => 'color: {{VALUE}};',
 				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Hover_Animations::get_type(),
-			[
-				'name' => 'hover_animation',
 			]
 		);
 
@@ -668,6 +703,34 @@ class Widget_Icon_Box extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+    protected function get_render_icon() {
+
+		$settings = $this->get_settings_for_display();
+
+		if ( $settings['icon_type'] === 'image' ) {
+			$filetype = wp_check_filetype( $settings['image']['url'] );
+			if ( $filetype['ext'] === 'svg' ) {
+                $this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
+                $this->add_render_attribute( 'image', 'data-animate-icon', 'true' );
+				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
+				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
+            }
+
+            if ( $filetype['ext'] === 'svg' ) {
+                $output = wp_remote_fopen( $settings['image']['url'] );
+            } else {
+                $output = '<img src="' . qazana_maybe_ssl_url( $settings['image']['url'] ) . '" alt="icon"/>';
+            }
+
+            $output = '<span ' . $this->get_render_attribute_string( 'image' ) . '>' . $output . '</span>';
+
+		} else {
+			$output = '<i ' . $this->get_render_attribute_string( 'i' ) . '></i>';
+		}
+
+		return $output;
+	}
+
 	/**
 	 * Render icon box widget output on the frontend.
 	 *
@@ -680,10 +743,6 @@ class Widget_Icon_Box extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'icon', 'class', [ 'qazana-icon' ] );
-
-        if ( ! empty( $settings['hover_animation_type'] ) ) {
-            $this->add_render_attribute( 'icon', 'class', [ 'qazana-animation-' . $this->get_settings_for_display('hover_animation_type') ] );
-        }
 
 		$icon_tag = 'span';
 		$has_icon = ! empty( $settings['icon'] ) || ! empty( $settings['image'] );
@@ -702,19 +761,6 @@ class Widget_Icon_Box extends Widget_Base {
 			}
 		}
 
-        if ( $settings['icon_type'] === 'image' ) {
-			$filetype = wp_check_filetype( $settings['image']['url'] );
-
-			if ( $filetype['ext'] === 'svg' ) {
-				$this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
-				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['svg_animation_speed'] );
-				$this->add_render_attribute( 'image', 'data-size', $settings['icon_size']['size'] );
-				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['svg_animation_delay'] );
-				$this->add_render_attribute( 'image', 'data-color', $settings['primary_color'] );
-				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
-			}
-        }
-
 		if ( $has_icon ) {
 			$this->add_render_attribute( 'i', 'class', $settings['icon'] );
 			$this->add_render_attribute( 'i', 'aria-hidden', 'true' );
@@ -732,13 +778,7 @@ class Widget_Icon_Box extends Widget_Base {
 		<?php if ( $has_icon ) : ?>
 			<div class="qazana-icon-box-icon">
 				<<?php echo implode( ' ', [ $icon_tag, $icon_attributes, $link_attributes ] ); ?>>
-                    <?php if ( 'image' === $this->get_settings( 'icon_type' ) ) { ?>
-                        <span <?php echo $this->get_render_attribute_string( 'image' ); ?>>
-                            <img src="<?php echo qazana_maybe_ssl_url( $image['url'] )  ?>" alt="icon" />
-                        </span>
-                    <?php } else { ?>
-                        <i <?php echo $this->get_render_attribute_string( 'i' ); ?>></i>
-                    <?php } ?>
+                    <?php echo $this->get_render_icon(); ?>
 				</<?php echo $icon_tag; ?>>
 			</div>
 			<?php endif; ?>
@@ -795,7 +835,7 @@ class Widget_Icon_Box extends Widget_Base {
 		<div class="qazana-icon-box-wrapper">
 			<# if ( settings.icon || settings.image ) { #>
 			<div class="qazana-icon-box-icon">
-                <{{{ iconTag + ' ' + link }}} class="qazana-icon qazana-animation-{{ settings.hover_animation_type }}">
+                <{{{ iconTag + ' ' + link }}} class="qazana-icon">
                     <# if ( image_url && 'image' === settings.icon_type ) { #>
                     <span {{{ view.getRenderAttributeString( 'image' ) }}}>
                         <img src="{{ image_url }}" alt="icon" />

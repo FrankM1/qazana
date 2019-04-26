@@ -30,7 +30,6 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 			mediaType = this.getMediaType();
 
 		if ( 'image' === mediaType ) {
-
               // Fetch thumbnails instead of full size images in editor.
               var thumbnailImage = {
 				id: this.getControlValue( 'id' ),

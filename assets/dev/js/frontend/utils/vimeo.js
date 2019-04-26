@@ -6,14 +6,14 @@ module.exports = ViewModule.extend( {
 			isInserted: false,
 			APISrc: 'https://f.vimeocdn.com/js/froogaloop2.min.js', // using froogaloop2. New vimeo js api is dead buggy
 			selectors: {
-				firstScript: 'script:first'
-			}
+				firstScript: 'script:first',
+			},
 		};
 	},
 
 	getDefaultElements: function() {
 		return {
-			$firstScript: jQuery( this.getSettings( 'selectors.firstScript' ) )
+			$firstScript: jQuery( this.getSettings( 'selectors.firstScript' ) ),
 		};
 	},
 
@@ -41,7 +41,7 @@ module.exports = ViewModule.extend( {
 
 	getVimeoIDFromURL: function( url ) {
 		var videoIDParts = url.match( /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/ );
-		return videoIDParts && videoIDParts[1];
-    }
-    
+		return videoIDParts && videoIDParts[ 1 ];
+    },
+
 } );

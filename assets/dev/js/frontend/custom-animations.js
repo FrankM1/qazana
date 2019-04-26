@@ -110,7 +110,7 @@ var ElementsHandler = function() {
                             elementsArray.push( element );
                         } );
                     } else {
-                        elementsArray.push( $element.get( 0 ) );
+                        elementsArray.push( $element.get() );
                     }
                     break;
             }
@@ -147,7 +147,7 @@ var ElementsHandler = function() {
                 threshold: threshold,
             } );
 
-            observer.observe( $triggerTarget.get( 0 ) );
+            observer.observe( $triggerTarget.get() );
         };
 
         this._targetsIO = function() {

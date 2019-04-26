@@ -86,6 +86,31 @@ class Widget_Heading extends Widget_Base {
 		return [ 'heading', 'title', 'text' ];
 	}
 
+    /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [
+                '.qazana-heading-title.words',
+            ],
+            'splitText' => [
+                '.qazana-heading-title' => [
+                    'options' => [
+                        'type' => 'words',
+                    ],
+                ],
+            ],
+        ];
+    }
+
 	/**
 	 * Register heading widget controls.
 	 *

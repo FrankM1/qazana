@@ -123,10 +123,6 @@
 			}
 
 			initOnReadyComponents();
-
-			// var CustomAnimation = require( 'qazana-frontend/custom-animations' );
-
-			// new CustomAnimation();
 		};
 
 		this.getElements = function( element ) {

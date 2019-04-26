@@ -39,7 +39,7 @@ var Plugin = function( $element, options ) {
 	this.setContainerWidth = function( $keyword ) {
 		this.$keywordsContainer.addClass( 'is-changing qazana-ws-nowrap' );
 
-		var keywordContainer = this.$keywordsContainer.get( 0 );
+		var keywordContainer = this.$keywordsContainer.get();
 
 		anime.remove( keywordContainer );
 
@@ -64,10 +64,10 @@ var Plugin = function( $element, options ) {
 
 		this.$activeKeyword.addClass( 'qazana-will-change' );
 
-		anime.remove( $nextKeyword.get( 0 ) );
+		anime.remove( $nextKeyword.get() );
 
 		anime( {
-			targets: $nextKeyword.get( 0 ),
+			targets: $nextKeyword.get(),
 			translateY: [ '65%', '0%' ],
 			translateZ: [ -120, 1 ],
 			rotateX: [ -95, -1 ],
@@ -95,7 +95,7 @@ var Plugin = function( $element, options ) {
 	};
 
 	this.slideOutAciveKeyword = function() {
-		var activeKeyword = this.$activeKeyword.get( 0 );
+		var activeKeyword = this.$activeKeyword.get();
 
 		anime.remove( activeKeyword );
 

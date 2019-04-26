@@ -427,13 +427,6 @@ class Widget_Social_Icons extends Widget_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Hover_Animations::get_type(),
-			[
-				'name' => 'hover_animation',
-			]
-		);
-
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
@@ -452,12 +445,6 @@ class Widget_Social_Icons extends Widget_Base {
 	 */
 	public function render() {
 		$settings = $this->get_settings_for_display();
-
-		$class_animation = '';
-		if ( ! empty( $settings['hover_animation_type'] ) ) {
-			$class_animation = ' qazana-animation-' . $settings['hover_animation_type'];
-		}
-
 		?>
 		<div class="qazana-social-icons-wrapper qazana-social-icons-<?php echo $this->get_settings_for_display('icon_color'); ?> qazana-social-icons-align-<?php echo $this->get_settings_for_display('align'); ?>">
 			<?php foreach ( $this->get_settings_for_display( 'social_icon_list' ) as $index => $item ) :
@@ -479,7 +466,7 @@ class Widget_Social_Icons extends Widget_Base {
                     }
                 }
 				?>
-				<a class="qazana-social-icon qazana-social-icon-<?php echo $social . $class_animation; ?>" <?php $this->render_attribute_string( $link_key ); ?>>
+				<a class="qazana-social-icon qazana-social-icon-<?php echo $social; ?>" <?php $this->render_attribute_string( $link_key ); ?>>
 					<span class="qazana-screen-only"><?php echo ucwords( $social ); ?></span>
 					<i class="<?php echo $item['social']; ?>"></i>
 				</a>

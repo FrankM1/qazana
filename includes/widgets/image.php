@@ -373,18 +373,6 @@ class Widget_Image extends Widget_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Hover_Animations::get_type(),
-			[
-				'name' => 'hover_animation',
-				'fields_options' => [
-					'type' => [
-						'default' => '',
-					],
-				],
-			]
-		);
-
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
@@ -618,10 +606,6 @@ class Widget_Image extends Widget_Base {
 			#><div class="qazana-image{{ settings.shape ? ' qazana-image-shape-' + settings.shape : '' }}"><#
 			var imgClass = '',
 				hasCaption = '' !== settings.caption;
-
-			if ( '' !== settings.hover_animation_type ) {
-				imgClass = 'qazana-hover-animation-' + settings.hover_animation_type;
-			}
 
 			if ( hasCaption ) {
 				#><figure class="wp-caption"><#

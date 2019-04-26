@@ -4,6 +4,9 @@
 @import "breakpoints/breakpoints";
 @import "../helpers/mixins";
 
+@import "splitting/dist/splitting.css";
+@import "splitting/dist/splitting-cells.css";
+
 // Common
 @import "../common/common";
 

@@ -292,12 +292,13 @@ class Frontend {
 			true
         );
 
+
         wp_register_script(
-			'tweenMax',
-			'https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js',
-			[],
-			'2.1.2',
-			true
+            'vivus',
+            qazana()->core_assets_url . 'lib/vivus/vivus.min.js',
+            [],
+            '0.4.2',
+            true
         );
 
 		wp_register_script(
@@ -305,7 +306,7 @@ class Frontend {
 			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
 			[   'anime',
                 'waypoints',
-                'tweenMax',
+                'vivus',
                 'fontfaceobserver',
 				'qazana-dialog',
                 'jquery-swiper',

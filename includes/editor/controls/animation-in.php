@@ -23,12 +23,13 @@ class Control_Animation_In extends Base_Data_Control {
 		if ( is_null( self::$_animations ) ) {
 			self::$_animations = [
 				'Fading' => [
+                    'fadeInPerspective' => 'Fade In Perspective',
 					'fadeIn' => 'Fade In',
 					'fadeInDown' => 'Fade In Down',
 					'fadeInLeft' => 'Fade In Left',
 					'fadeInRight' => 'Fade In Right',
 					'fadeInUp' => 'Fade In Up',
-				],
+                ],
 				'Zooming' => [
 					'zoomIn' => 'Zoom In',
 					'zoomInDown' => 'Zoom In Down',
@@ -44,6 +45,7 @@ class Control_Animation_In extends Base_Data_Control {
 					'bounceInUp' => 'Bounce In Up',
 				],
 				'Sliding' => [
+                    'slideInDown' => 'Slide In Down',
 					'slideInDown' => 'Slide In Down',
 					'slideInLeft' => 'Slide In Left',
 					'slideInRight' => 'Slide In Right',

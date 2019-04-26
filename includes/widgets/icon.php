@@ -233,7 +233,7 @@ class Widget_Icon extends Widget_Base {
 			[
 				'label' => __( 'Enable animation', 'qazana' ),
 				'type' => Controls_Manager::SWITCHER,
-				'default' => '',
+				'default' => 'true',
 				'label_on' => __( 'Yes', 'qazana' ),
 				'label_off' => __( 'No', 'qazana' ),
 				'return_value' => 'true',
@@ -247,7 +247,7 @@ class Widget_Icon extends Widget_Base {
 			[
 				'label' => __( 'Animation Delay', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => 200,
+				'default' => 0,
 				'label_block' => true,
 				'condition' => [
                     'svg_animation!' => '',
@@ -260,7 +260,7 @@ class Widget_Icon extends Widget_Base {
 			[
 				'label' => __( 'Animation Speed', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => 200,
+				'default' => 100,
 				'label_block' => true,
 				'condition' => [
                     'svg_animation!' => '',
@@ -448,13 +448,6 @@ class Widget_Icon extends Widget_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Hover_Animations::get_type(),
-			[
-				'name' => 'hover_animation',
-			]
-		);
-
 		$this->end_controls_section();
 	}
 
@@ -466,15 +459,18 @@ class Widget_Icon extends Widget_Base {
 			$filetype = wp_check_filetype( $settings['image']['url'] );
 			if ( $filetype['ext'] === 'svg' ) {
 				$this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
-				$this->add_render_attribute( 'image', 'data-animation-speed', $settings['svg_animation_speed'] );
-				$this->add_render_attribute( 'image', 'data-animation-delay', $settings['svg_animation_delay'] );
 				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
 				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
-			}
-		}
+            }
 
-		if ( $settings['icon_type'] === 'image' ) {
-			$output = '<span ' . $this->get_render_attribute_string( 'image' ) . '><img src="' . qazana_maybe_ssl_url( $settings['image']['url'] ) . '" alt="icon"/></span>';
+            if ( $filetype['ext'] === 'svg' ) {
+                $output = wp_remote_fopen( $settings['image']['url'] );
+            } else {
+                $output = '<img src="' . qazana_maybe_ssl_url( $settings['image']['url'] ) . '" alt="icon"/>';
+            }
+
+            $output = '<span ' . $this->get_render_attribute_string( 'image' ) . '>' . $output . '</span>';
+
 		} else {
 			$output = '<i ' . $this->get_render_attribute_string( 'i' ) . '></i>';
 		}
@@ -497,10 +493,6 @@ class Widget_Icon extends Widget_Base {
 		$this->add_render_attribute( 'wrapper', 'class', 'qazana-icon-wrapper' );
 
 		$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-icon' );
-
-		if ( ! empty( $settings['hover_animation_type'] ) ) {
-			$this->add_render_attribute( 'icon-wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation_type'] );
-		}
 
 		$icon_tag = 'div';
 

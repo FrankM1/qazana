@@ -1,6 +1,7 @@
 var HandlerModule = require( 'qazana-frontend/handler-module' ),
     AnimationHandler;
-var SplitText = require( '../animations/splitText' );
+var SvgAnimation = require( '../animations/svgAnimation' );
+var SplitText = require( '../animations/splitText' ).default;
 
 AnimationHandler = HandlerModule.extend( {
 
@@ -27,7 +28,6 @@ AnimationHandler = HandlerModule.extend( {
         animations: {},
         animateTargetsWhenVisible: true,
 
-        // triggerHandler: 'focus', // "focus", "inview"
         // triggerTarget: 'input',
         // triggerRelation: 'siblings',
         // offTriggerHandler: 'blur',
@@ -41,115 +41,121 @@ AnimationHandler = HandlerModule.extend( {
         return 'global';
     },
 
-    splitText: function() {
-        var settings = this.getAnimationSettings();
-
-        if ( settings.splitText ) {
+    splitText: function( settings ) {
+        if ( settings && settings.splitText ) {
             this.Text = new SplitText( this.$element );
         }
     },
 
-    animate: function() {
+    animateInBulk: function( settings ) {
         var self = this;
 
-        var settings = this.getAnimationSettings();
+        var $elements = this.$element.find( '.qazana-widget' );
 
-        // if ( 'button.default' === this.$element.data( 'element_type' ) ) {
-        //     console.log( settings );
-        // }
+        if ( ! settings || ! settings.inView || ! settings.inView[ 0 ] ) {
+            return;
+        }
+
+       // var targets = $();
+
+        // $elements.each( function() {
+        //     var $el = jQuery( this );
+        //     var animations = $el.data( 'animations' );
+        //     if ( animations && 'spacer.default' !== $el.data( 'element_type' ) ) {
+        //         jQuery.each( animations.inView, function( _i, target ) {
+        //             if ( $el.find( target.target ).length > 0 ) {
+        //                 targets.add( $el.find( target.target ) );
+        //             } else if ( jQuery( target.target ).is( '.qazana-element' ) ) {
+        //                 targets.add( $el );
+        //             } else {
+        //             }
+        //         } );
+        //     }
+        // } );
+
+        self.splitText( settings );
+        self.resetElement( $elements.not( 'qazana-widget-spacer' ), settings.inView[ 0 ] );
+        self.animateElement( $elements.not( 'qazana-widget-spacer' ), settings.inView[ 0 ] );
+    },
+
+    resetElement: function( $targets, animationGroup ) {
+        var self = this;
+
+        self.$element.css( 'transition', 'none' );
+
+        $targets.addClass( 'qazana-will-change' );
+
+        /** Default animation value */
+        var initValues = {
+            targets: $targets.get(),
+            duration: 0,
+            easing: 'linear',
+        };
+
+        var animations = jQuery.extend( {},
+            animationGroup.initValues,
+            initValues
+        );
+
+        anime( animations );
+
+        self.$element.addClass( 'qazana-animation-initialized' );
+
+        if ( self.needPerspective( animationGroup ) ) {
+            self.$element.addClass( 'qazana-perspective' );
+        }
+
+        self.$element.addClass( 'qazana-perspective' );
+    },
+
+    animateElement: function( $targets, animationGroup ) {
+        var self = this;
+
+        $targets.addClass( 'qazana-will-change' );
+
+        /** Default animation value */
+        var defaultValues = {
+            targets: $targets.get(),
+            duration: animationGroup.duration,
+            easing: animationGroup.easing,
+            delay: anime.stagger( animationGroup.delay, {
+                start: animationGroup.startDelay,
+            } ),
+            complete: function complete( anime ) {
+               self.onAnimationsComplete( anime, animationGroup );
+            },
+        };
+
+        var animations = jQuery.extend( {}, defaultValues, animationGroup.finalValues );
+
+        anime.remove( $targets.get() );
+
+        anime( animations );
+    },
+
+    animate: function( settings ) {
+        var self = this;
 
         if ( ! settings || ! settings.inView || ! settings.inView[ 0 ] ) {
             return;
         }
 
         jQuery.each( settings.inView, function( _i, animationGroup ) {
-            if ( animationGroup.target !== 'all-children' ) {
-                self.$element.css( 'transition', 'none' );
-
-                var $target = self.$element.find( animationGroup.target );
-
-                if ( 'inview' === animationGroup.triggerHandler ) {
-                    $target.addClass( 'qazana-will-change' );
-                }
-
-                /** Default animation value */
-                var initValues = {
-                    targets: $target.get(),
-                    duration: 0,
-                    easing: 'linear',
-                };
-
-                var animations = jQuery.extend( {},
-                    animationGroup.initValues,
-                    initValues
-                );
-
-                anime( animations );
-
-                self.$element.addClass( 'qazana-animation-initialized' );
-
-                if ( self.needPerspective( animationGroup ) && 'inview' === animationGroup.triggerHandler ) {
-                    self.$element.addClass( 'qazana-perspective' );
-                }
-
-                self.$element.addClass( 'qazana-perspective' );
-            }
-        } );
-
-        this.animateInview( settings.inView );
-    },
-
-    animateInview: function( inView ) {
-        var self = this;
-
-        jQuery.each( inView, function( _i, animationGroup ) {
-            if ( animationGroup.target !== 'all-children' ) {
-                var $target = self.$element.find( animationGroup.target );
-
-                if ( 'inview' === animationGroup.triggerHandler ) {
-                    $target.addClass( 'qazana-will-change' );
-                }
-
-                /** Default animation value */
-                var defaultValues = {
-                    targets: $target.get(),
-                    duration: animationGroup.duration,
-                    easing: animationGroup.easing,
-                    delay: anime.stagger( animationGroup.delay, {
-                        start: animationGroup.startDelay,
-                    } ),
-                    complete: function complete( anime ) {
-                       self.onAnimationsComplete( anime, animationGroup );
-                    },
-                };
-
-                var animations = jQuery.extend( {}, defaultValues, animationGroup.finalValues );
-
-                console.log( animationGroup.finalValues );
-
-                anime.remove( $target.get() );
-
-                anime( animations );
-            }
+            self.resetElement( self.$element.find( animationGroup.target ), animationGroup );
+            self.animateElement( self.$element.find( animationGroup.target ), animationGroup );
         } );
     },
 
-    onAnimationsComplete: function( anime, animationGroup ) {
+    // eslint-disable-next-line no-unused-vars
+    onAnimationsComplete: function( anime, _animationGroup ) {
         var self = this;
 
         jQuery.each( anime.animatables, function( _i, animatable ) {
-            // eslint-disable-next-line no-shadow
             var $element = self.$element.find( animatable.target );
 
             $element.css( {
                 transition: '',
             } ).removeClass( 'qazana-will-change' );
-
-            if ( 'inview' === animationGroup.triggerHandler && $element.is( '.btn' ) ) {
-                $element.css( {
-                    transform: '',
-                } );
-            }
         } );
 
         /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
@@ -186,26 +192,64 @@ AnimationHandler = HandlerModule.extend( {
         return needPerspective;
     },
 
+    svgAnimation: function() {
+        new SvgAnimation( this.$element );
+    },
+
     removeLoader: function() {
         this.$element.find( '.qazana-loading-indicator' ).remove();
         this.$element.removeClass( 'qazana-has-loading-indicator' );
         jQuery( window ).trigger( 'resize' );
     },
 
-    onInit: function() {
+    targetsIO: function() {
         var self = this;
-        HandlerModule.prototype.onInit.apply( this, arguments );
-        self.removeLoader();
 
-        if ( self.$element.is( '[data-custom-animations]' ) ) {
-         // self.splitText();
-            self.animate();
+        var inviewCallback = function inviewCallback( entries, observer ) {
+            entries.forEach( function( entry ) {
+                if ( entry.isIntersecting ) {
+                    self._runAnimations( entry.target );
+                    observer.unobserve( entry.target );
+                }
+            } );
+        };
+
+        var observer = new IntersectionObserver( inviewCallback, {
+            threshold: 0.35,
+        } );
+
+        this.$element.each( function() {
+            observer.observe( this );
+        } );
+    },
+
+    _runAnimations: function() {
+        var self = this;
+
+        var settings = this.getAnimationSettings();
+
+        if ( self.getElementSettings()._animation_enable && -1 !== self.getElementSettings()._animation_trigger.indexOf( 'inView' ) ) {
+            if ( ! this.$element.is( '.qazana-widget' ) ) {
+                self.animateInBulk( settings );
+            } else {
+                self.splitText( settings );
+                self.animate( settings );
+            }
         }
     },
 
+    onInit: function() {
+        HandlerModule.prototype.onInit.apply( this, arguments );
+        this.svgAnimation();
+        this.removeLoader();
+        this.targetsIO();
+    },
+
     onElementChange: function( propertyName ) {
+        var settings = this.getAnimationSettings();
+
         if ( /^_?animation/.test( propertyName ) ) {
-            this.animate();
+            this.animate( settings );
         }
     },
 

@@ -15,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Icons_Manager {
 
 	/**
-	 * [$_iconsets description]
-	 * @var [type]
+	 * Default Icons
+     *
+	 * @var array
 	 */
 	private static $default_iconsets = [
 		'font-awesome' => array(
@@ -30,17 +31,18 @@ class Icons_Manager {
 	];
 
 	/**
-	 * [add_iconset description]
-	 * @param Widget_Base $iconset [description]
+	 * Add iconset Register new iconset
+     *
+	 * @param ID
 	 * @param Skin_Base   $skin   [description]
 	 */
-	public function add_iconset( $iconset_id, $icons ) {
+	public function add_iconset( $set_id, $icons ) {
 
-		if ( ! isset( $this->_iconsets[ $iconset_id ] ) ) {
-			$this->_iconsets[ $iconset_id ] = [];
+		if ( ! isset( $this->_iconsets[ $set_id ] ) ) {
+			$this->_iconsets[ $set_id ] = [];
 		}
 
-		$this->_iconsets[ $iconset_id ] = $icons;
+		$this->_iconsets[ $set_id ] = $icons;
 
 		return true;
 	}

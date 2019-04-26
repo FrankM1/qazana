@@ -339,13 +339,6 @@ class Widget_Image_Box extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Hover_Animations::get_type(),
-			[
-				'name' => 'hover_animation',
-			]
-		);
-
-		$this->add_group_control(
 			Group_Control_Css_Filter::get_type(),
 			[
 				'name' => 'css_filters_hover',

@@ -89,6 +89,53 @@ abstract class Widget_Base extends Element_Base {
 		return [ 'general' ];
 	}
 
+    /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [
+                '.qazana-inner-wrapper',
+            ],
+            'splitText' => [
+                'h1, h2, h3, h4, h5, h6' => [
+                    'options' => [
+                        'type' => 'words',
+                    ],
+                ],
+                'p' => [
+                    'options' => [
+                        'type' => 'lines',
+                    ],
+                ],
+            ],
+            'svg' => [
+                '.svg-icon-holder' => [
+                    'options' => [
+                        'animated' => true,
+                        'triggerHandler' => 'inview',
+                        'duration' => $this->get_settings('svg_animation_speed'),
+                        'delay' => $this->get_settings('svg_animation_delay'),
+                        'resetOnHover' => true,
+                        'type' => 'sync',
+                        'customColorApplied' => true,
+                        'color' => '#f42958',
+                        'hoverColor' => '#fff',
+                        'gradientColor' => [ '#f42958', '#000' ],
+                        'hoverGradientColor' => [ '#B22222', '#00008B' ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
 	/**
 	 * Get widget supported documents.
 	 *
@@ -560,7 +607,95 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function render_plain_content() {
 		$this->render_content();
-	}
+    }
+
+    public function parse_animation_attributes( $type, $args ) {
+        $animationType = $this->get_settings_for_display( "_animation_{$type}_type" );
+        $config = qazana()->animations_manager->get_animation( $animationType );
+
+        $defaults = [
+            'duration' => $this->get_settings_for_display( "_animation_{$type}_duration" ),
+            'startDelay' => $this->get_settings_for_display( "_animation_{$type}_start_delay" ),
+            'delay' => $this->get_settings_for_display( "_animation_{$type}_delay" ),
+            'direction' => 'forward',
+            'easing' => $config['easing'],
+            'initValues' => $config['animation']['out'],
+            'finalValues' => $config['animation']['in'],
+        ];
+
+        return wp_parse_args( $args, $defaults );
+    }
+
+    protected function _add_animation_attributes() {
+        if ( $this->get_settings_for_display( '_animation_enable' ) ) {
+            $this->add_render_attribute( '_wrapper', 'data-custom-animations', 'true' );
+        }
+
+        $options = [];
+
+        foreach ( $this->get_animation_config() as $type => $target ) {
+            if ( count( $target ) !== count( $target, COUNT_RECURSIVE ) ) {
+                foreach ( $target as $selector => $selector_options ) {
+                    switch ( $type ) {
+                        case 'svg':
+                            $options[$type][] = [
+                                'target' => $selector,
+                            ];
+                        break;
+
+                        case 'splitText':
+                            $options[$type][] = [
+                                'target' => $selector,
+                                'type' => $selector_options['options']['type'],
+                            ];
+                        break;
+
+                        case 'hover':
+                            $options[$type][] = $this->parse_animation_attributes( 'hover', [
+                                'target' => $selector
+                            ] );
+                        break;
+                        case 'inView':
+                            $options[$type][] = $this->parse_animation_attributes( 'inView', [
+                                'target' => $selector
+                            ] );
+                            break;
+                    }
+                }
+            } else {
+                foreach ( $target as $selector ) {
+
+                    switch ( $type ) {
+                        case 'svg':
+                            $options[$type][] = [
+                                'target' => $selector,
+                            ];
+                        break;
+
+                        case 'splitText':
+                            $options[$type][] = [
+                                'target' => $selector,
+                            ];
+                        break;
+
+                        case 'hover':
+                            $options[$type][] = $this->parse_animation_attributes( 'hover', [
+                                'target' => $selector
+                            ] );
+                        break;
+                        case 'inView':
+                            $options[$type][] = $this->parse_animation_attributes( 'inView', [
+                                'target' => $selector
+                            ] );
+                            break;
+                    }
+
+                }
+            }
+        }
+
+        $this->add_render_attribute( '_wrapper', 'data-animations', json_encode( $options ) );
+    }
 
 	/**
 	 * Add render attributes.
@@ -584,7 +719,9 @@ abstract class Widget_Base extends Element_Base {
 			]
 		);
 
-		$settings = $this->get_settings_for_display();
+		$this->_add_animation_attributes();
+
+        $settings = $this->get_settings_for_display();
 
 		foreach ( self::get_class_controls() as $control ) {
 			if ( empty( $settings[ $control['name'] ] ) ) {
@@ -596,10 +733,6 @@ abstract class Widget_Base extends Element_Base {
 			}
 
 			$this->add_render_attribute( '_wrapper', 'class', $control['prefix_class'] . $settings[ $control['name'] ] );
-		}
-
-		if ( ! empty( $settings['_hover_animation'] ) ) {
-			$this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['_hover_animation'] );
 		}
 
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
@@ -901,5 +1034,5 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function get_skins() {
 		return qazana()->get_skins_manager()->get_skins( $this );
-	}
+    }
 }

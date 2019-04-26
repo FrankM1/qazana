@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url(splitting/dist/splitting.css);
+@import url(splitting/dist/splitting-cells.css);
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
@@ -1549,6 +1551,9 @@ ul.qazana-icon-list-items.qazana-inline-items {
 
 .qazana-shape-circle .qazana-icon {
   border-radius: 50%; }
+
+.icon-svg-animation-true .svg-icon-holder {
+  opacity: 0; }
 
 .qazana-widget-image-box .qazana-image-box-content {
   width: 100%; }
@@ -3341,19 +3346,10 @@ button.swiper-pagination-bullet {
 .qazana-ws-nowrap {
   white-space: nowrap; }
 
-[data-custom-animations=true].qazana-animation-initialized {
-  visibility: visible;
-  opacity: 1; }
-
 [data-custom-animations=true] {
-  visibility: hidden;
   opacity: 0; }
-
-[data-split-text] {
-  visibility: hidden; }
-
-[data-split-text].split-text-applied {
-  visibility: visible; }
+  [data-custom-animations=true].qazana-animation-initialized {
+    opacity: 1; }
 
 .qazana-shape {
   overflow: hidden;
@@ -3410,16 +3406,18 @@ button.swiper-pagination-bullet {
 #qazana .qazana-element ul.qazana-icon-list-items {
   padding: 0; }
 
-.qazana-has-loading-indicator .qazana-loading-indicator {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -27px;
-  margin-top: -27px; }
-
-.qazana-has-loading-indicator .qazana-widget-container {
-  opacity: 0;
-  visibility: hidden; }
+.qazana-has-loading-indicator {
+  position: relative; }
+  .qazana-has-loading-indicator .qazana-loading-indicator {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -27px;
+    margin-top: -27px;
+    z-index: 10; }
+  .qazana-has-loading-indicator .qazana-widget-container {
+    opacity: 0;
+    visibility: hidden; }
 
 /** Loading Dots **/
 .qazana-loading-indicator__color-spinner {

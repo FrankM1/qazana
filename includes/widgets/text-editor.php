@@ -87,6 +87,31 @@ class Widget_Text_Editor extends Widget_Base {
 		return [ 'text', 'editor' ];
 	}
 
+    /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [
+                '.qazana-inner-wrapper .words',
+            ],
+            'splitText' => [
+                'h1, h2, h3, h4, h5, h6, p' => [
+                    'options' => [
+                        'type' => 'lines',
+                    ],
+                ],
+            ],
+        ];
+    }
+
 	/**
 	 * Register text editor widget controls.
 	 *
@@ -374,55 +399,6 @@ class Widget_Text_Editor extends Widget_Base {
 	public function render_plain_content() {
 		// In plain mode, render without shortcode
 		echo $this->get_settings_for_display( 'editor' );
-    }
-
-        /**
-	 * Add render attributes.
-	 *
-	 * Used to add several attributes to current widget `_wrapper` element.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 */
-	protected function _add_render_attributes() {
-        parent::_add_render_attributes();
-
-        $this->add_render_attribute( '_wrapper', 'data-split-text', 'true' );
-
-        if ( $this->get_settings('_animation_enable' ) ) {
-            $this->add_render_attribute( '_wrapper', 'data-custom-animations', 'true' );
-        }
-
-        $options = [
-            'inView' => [
-                [
-                    'triggerHandler' => 'inview',
-                    'target' => '.qazana-split-inner', // element added by split element
-                    'duration' => 1000,
-                    'startDelay' => 150,
-                    'delay' => 40,
-                    'direction' => 'forward',
-                    'easing' => 'easeOutBack',
-                    'initValues' => [
-                        'translateY' => 35,
-                        'rotateZ' => 5,
-                        'opacity' => 0,
-                    ],
-                    'finalValues' => [
-                        'translateY' => 0,
-                        'rotateZ' => 0,
-                        'opacity' => 1,
-                    ],
-                ]
-            ],
-            'splitText' => [
-                'target' => 'p',
-                'forceApply' => true,
-                'type' => 'lines',
-            ]
-        ];
-
-        $this->add_render_attribute( '_wrapper', 'data-animations', json_encode( $options ) );
     }
 
 	/**

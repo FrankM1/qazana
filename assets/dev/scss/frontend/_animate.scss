@@ -16,17 +16,10 @@
 }
 
 [data-custom-animations=true] {
-    visibility: hidden;
+   // visibility: hidden;
     opacity: 0;
     &.qazana-animation-initialized {
-        visibility: visible;
+        //visibility: visible;
         opacity: 1;
-    }
-}
-
-[data-split-text] {
-    visibility: hidden;
-    &.qazana-split-text-applied {
-        visibility: visible;
     }
 }

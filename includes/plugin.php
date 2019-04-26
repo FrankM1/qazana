@@ -382,6 +382,7 @@ class Plugin {
 		require_once $this->includes_dir . 'editor/user.php';
 		require_once $this->includes_dir . 'editor/conditions.php';
 
+        require_once $this->includes_dir . 'managers/animations.php';
 		require_once $this->includes_dir . 'managers/icons.php';
 		require_once $this->includes_dir . 'managers/ajax.php';
 		require_once $this->includes_dir . 'managers/controls.php';
@@ -601,6 +602,7 @@ class Plugin {
 		$this->skins_manager      = new Skins_Manager();
 		$this->elements_manager   = new Elements_Manager();
 		$this->templates_manager  = new Template_Library\Manager();
+        $this->animations_manager  = new Animation_Manager();
 
 		$this->custom_css         = new Custom_Css();
 		$this->cron               = new Cron();
@@ -609,6 +611,7 @@ class Plugin {
 		$this->mobile_detect->setDetectionType( 'extended' );
 		$this->preview            = new Preview();
         $this->frontend           = new Frontend();
+
 
         new Shared_Position_Controls();
         new Shared_Carousel_Controls();

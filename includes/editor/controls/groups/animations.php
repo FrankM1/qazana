@@ -50,6 +50,7 @@ class Group_Control_Animations extends Group_Control_Base {
         $fields['enable'] = [
             'label'        => __( 'Enable animations', 'qazana' ),
             'type'         => Controls_Manager::SWITCHER,
+            'frontend_available' => true,
             'return_value' => 'true',
         ];
 
@@ -61,14 +62,16 @@ class Group_Control_Animations extends Group_Control_Base {
                 'this' => __( 'This Element', 'qazana' ),
                 'all-children' => __( 'Inner Children', 'qazana' ),
             ],
+            'condition' => [
+                'enable!' => '',
+            ],
         ];
-
-        return $fields;
 
         $animation_types = [
             'inView' => __( 'In View', 'qazana' ),
             'exit' => __( 'Exit', 'qazana' ),
             'hover' => __( 'Hover', 'qazana' ),
+            'svg' => __( 'SVG Paths', 'qazana' ),
         ];
 
         $fields['trigger'] = [
@@ -76,9 +79,14 @@ class Group_Control_Animations extends Group_Control_Base {
             'frontend_available' => true,
             'type' => Controls_Manager::SELECT2,
             'multiple' => true,
-            'default' => [ 'inView', 'exit', 'hover' ],
+            'default' => [ 'inView' ],
             'options' => $animation_types,
+            'condition' => [
+                'enable!' => '',
+            ],
         ];
+
+        $options = [];
 
         foreach ( $animation_types as $type => $label ) {
 
@@ -86,137 +94,50 @@ class Group_Control_Animations extends Group_Control_Base {
                 'label' => $label,
                 'type' => Controls_Manager::HEADING,
                 'separator' => 'before',
-            ];
-
-            switch ($type) {
-
-                case 'inView':
-
-                    $fields[ $type . '_in' ] = [
-                        'label' => __( 'Entrance Animation', 'qazana' ),
-                        'type'        => Controls_Manager::SELECT2,
-                        'default' => 'fadeInUp',
-                        'options' => [
-                            [
-                                'label' => 'Fade',
-                                'options' => [
-                                    'fadeIn' => 'Fade In',
-                                    'fadeInDown' => 'Fade In Down',
-                                    'fadeInLeft' => 'Fade In Left',
-                                    'fadeInRight' => 'Fade In Right',
-                                ]
-                            ],
-                            [
-                                'label' => 'Reveal',
-                                'options' => [
-                                    'revealLeft' => 'revealLeft',
-                                ],
-                            ],
-                            [
-                                'label' => 'Move',
-                                'options' => [
-                                    'moveLeft' => 'Move Left',
-                                ]
-                            ]
-                        ],
-                        'label_block' => true,
-                        'frontend_available' => true,
-                        'render_type' => 'template',
-                        'condition' => [
-                            'trigger' => $type,
-                        ],
-                    ];
-                    break;
-
-                case 'exit':
-
-                    $fields[ $type . '_out' ] = [
-                        'label' => $label .' '. __( 'Animation', 'qazana' ),
-                        'type' => Controls_Manager::ANIMATION_OUT,
-                        'default' => 'fadeOutDown',
-                        'label_block' => true,
-                        'frontend_available' => true,
-                        'render_type' => 'template',
-                        'condition' => [
-                            'trigger' => $type,
-                        ],
-                    ];
-                    break;
-
-                default:
-                    $fields[ $type . '_hover' ] = [
-                        'label' => $label .' '. __( 'Animation', 'qazana' ),
-                        'type'        => Controls_Manager::SELECT2,
-                        'default'     => 'shadow-bottom',
-                        'label_block' => true,
-                        'options'     => [
-                            'none'                   => __( 'None', 'qazana'),
-                            'custom'                 => __( 'Custom', 'qazana'),
-                            'grow'                   => __( 'Grow', 'qazana'),
-                            'shadow-bottom'          => __( 'Shadow Bottom', 'qazana'),
-                            'no-shadow'              => __( 'Remove Shadow', 'qazana'),
-                            'shrink'                 => __( 'Shrink', 'qazana'),
-                            'pulse'                  => __( 'Pulse', 'qazana'),
-                            'pulse-grow'             => __( 'Pulse Grow', 'qazana'),
-                            'pulse-shrink'           => __( 'Pulse Shrink', 'qazana'),
-                            'push'                   => __( 'Push', 'qazana'),
-                            'pop'                    => __( 'Pop', 'qazana'),
-                            'bounce-in'              => __( 'Bounce In', 'qazana'),
-                            'bounce-out'             => __( 'Bounce Out', 'qazana'),
-                            'rotate'                 => __( 'Rotate', 'qazana'),
-                            'grow-rotate'            => __( 'Grow Rotate', 'qazana'),
-                            'float'                  => __( 'Float', 'qazana'),
-                            'sink'                   => __( 'Sink', 'qazana'),
-                            'bob'                    => __( 'Bob', 'qazana'),
-                            'hang'                   => __( 'Hang', 'qazana'),
-                            'skew'                   => __( 'Skew', 'qazana'),
-                            'skew-forward'           => __( 'Skew Forward', 'qazana'),
-                            'skew-backward'          => __( 'Skew Backward', 'qazana'),
-                            'wobble-vertical'        => __( 'Wobble Vertical', 'qazana'),
-                            'wobble-horizontal'      => __( 'Wobble Horizontal', 'qazana'),
-                            'wobble-to-bottom-right' => __( 'Wobble To Bottom Right', 'qazana'),
-                            'wobble-to-top-right'    => __( 'Wobble To Top Right', 'qazana'),
-                            'wobble-top'             => __( 'Wobble Top', 'qazana'),
-                            'wobble-bottom'          => __( 'Wobble Bottom', 'qazana'),
-                            'wobble-skew'            => __( 'Wobble Skew', 'qazana'),
-                            'buzz'                   => __( 'Buzz', 'qazana'),
-                            'buzz-out'               => __( 'Buzz Out', 'qazana'),
-                        ],
-                        'label_block' => true,
-                        'frontend_available' => true,
-                        'render_type' => 'template',
-                        'condition' => [
-                            'trigger' => $type,
-                        ],
-                    ];
-                    break;
-            }
-
-            $fields[$type . '_delay'] = [
-                'label' => __( 'Animation Delay', 'qazana' ),
-                'type' => Controls_Manager::NUMBER,
-                'default' => '',
-                'frontend_available' => true,
                 'condition' => [
                     'trigger' => $type,
+                    'enable!' => '',
+                ],
+            ];
+
+            $fields[$type . '_type'] = [
+                'label' => __( 'Type', 'qazana' ),
+                'type' => Controls_Manager::ANIMATION_IN,
+                'condition' => [
+                    'trigger' => $type,
+                    'enable!' => '',
+                ],
+            ];
+
+            $fields[$type . '_start_delay'] = [
+                'label' => __( 'Start Delay', 'qazana' ),
+                'type' => Controls_Manager::NUMBER,
+                'default' => 0,
+                'condition' => [
+                    'trigger' => $type,
+                    'enable!' => '',
+                ],
+            ];
+
+            $fields[$type . '_delay'] = [
+                'label' => __( 'Delay', 'qazana' ),
+                'type' => Controls_Manager::NUMBER,
+                'default' => 100,
+                'condition' => [
+                    'trigger' => $type,
+                    'enable!' => '',
                 ],
             ];
 
             $fields[$type . '_duration'] = [
-                'label' => __( 'Animation Duration', 'qazana' ),
-                'type' => Controls_Manager::SELECT,
-                'default' => '',
-                'options' => [
-                    'slow' => __( 'Slow', 'qazana' ),
-                    '' => __( 'Normal', 'qazana' ),
-                    'fast' => __( 'Fast', 'qazana' ),
-                ],
-                'frontend_available' => true,
+                'label' => __( 'Duration', 'qazana' ),
+                'type' => Controls_Manager::NUMBER,
+                'default' => 1000,
                 'condition' => [
                     'trigger' => $type,
+                    'enable!' => '',
                 ],
             ];
-
         }
 
 		return $fields;
@@ -238,5 +159,4 @@ class Group_Control_Animations extends Group_Control_Base {
 			'popover' => false,
 		];
 	}
-
 }
