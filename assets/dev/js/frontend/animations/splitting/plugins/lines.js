@@ -7,6 +7,7 @@ export var linePlugin = createPlugin(
     /*depends: */ [WORDS],
     /*key: */ 'line',
     /*split: */ function(el, options, ctx) {
+        console.log(el);
       return detectGrid(el, { matching: ctx[WORDS] }, 'offsetTop')
     }
 );

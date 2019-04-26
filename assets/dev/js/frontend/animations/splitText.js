@@ -2,17 +2,19 @@ import { QazanaRotateText } from './textRotator';
 //var Splitting = require( '../utils/splitText' );
 import Splitting from './splitting/all';
 import { splitText } from './splitting/utils/split-text';
+import { detectGrid } from './splitting/utils/detect-grid';
+import { WORDS } from './splitting/plugins/words';
 
-var qazanaWords = {
-    by: 'qazanaWords',
-    depends: 0,
-    key: 'qw',
-    split: function( el ) {
-        return splitText( el, 'word', /\s+/, 0, 1 );
+var qazanaLines = {
+    by: 'qazanaLines',
+    depends: [ WORDS ],
+    key: 'ql',
+    split: function( el, options, ctx ) {
+        return detectGrid( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
     },
 };
 
-Splitting.add( qazanaWords );
+Splitting.add( qazanaLines );
 
 var defaults = {
     target: '',
@@ -55,7 +57,7 @@ export default class SplitText {
         jQuery.each( this.options, function( _i, target ) {
             var instance = new Splitting( {
                 target: self.$element.find( target.target ).get(),
-                by: 'qazanaWords', //target.type,
+                by: 'qazanaLines', //target.type,
             } );
             splitTextInstance.push( instance );
         } );

@@ -100,6 +100,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textRotator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_textRotator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _splitting_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./splitting/all */ "../assets/dev/js/frontend/animations/splitting/all.js");
 /* harmony import */ var _splitting_utils_split_text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./splitting/utils/split-text */ "../assets/dev/js/frontend/animations/splitting/utils/split-text.js");
+/* harmony import */ var _splitting_utils_detect_grid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./splitting/utils/detect-grid */ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js");
+/* harmony import */ var _splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./splitting/plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -110,15 +112,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var qazanaWords = {
-  by: 'qazanaWords',
-  depends: 0,
-  key: 'qw',
-  split: function split(el) {
-    return Object(_splitting_utils_split_text__WEBPACK_IMPORTED_MODULE_2__["splitText"])(el, 'word', /\s+/, 0, 1);
+
+
+var qazanaLines = {
+  by: 'qazanaLines',
+  depends: [_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__["WORDS"]],
+  key: 'ql',
+  split: function split(el, options, ctx) {
+    return Object(_splitting_utils_detect_grid__WEBPACK_IMPORTED_MODULE_3__["detectGrid"])(el, {
+      matching: ctx[_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__["WORDS"]]
+    }, 'offsetTop');
   }
 };
-_splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"].add(qazanaWords);
+_splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"].add(qazanaLines);
 var defaults = {
   target: '',
   type: 'words' // "words", "chars", "lines".
@@ -165,7 +171,7 @@ function () {
       jQuery.each(this.options, function (_i, target) {
         var instance = new _splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"]({
           target: self.$element.find(target.target).get(),
-          by: 'qazanaWords' //target.type,
+          by: 'qazanaLines' //target.type,
 
         });
         splitTextInstance.push(instance);
@@ -755,6 +761,7 @@ var linePlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["creat
 'line',
 /*split: */
 function (el, options, ctx) {
+  console.log(el);
   return Object(_utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__["detectGrid"])(el, {
     matching: ctx[_words__WEBPACK_IMPORTED_MODULE_2__["WORDS"]]
   }, 'offsetTop');
