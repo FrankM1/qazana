@@ -14,7 +14,6 @@ export function Array2D(len) {
 }
 
 export function each(items, fn) {
-    // eslint-disable-next-line no-unused-expressions
     items && items.some(fn);
 }
 

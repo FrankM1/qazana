@@ -99,9 +99,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textRotator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./textRotator */ "../assets/dev/js/frontend/animations/textRotator.js");
 /* harmony import */ var _textRotator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_textRotator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _splitting_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./splitting/all */ "../assets/dev/js/frontend/animations/splitting/all.js");
-/* harmony import */ var _splitting_utils_split_text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./splitting/utils/split-text */ "../assets/dev/js/frontend/animations/splitting/utils/split-text.js");
-/* harmony import */ var _splitting_utils_detect_grid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./splitting/utils/detect-grid */ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js");
-/* harmony import */ var _splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./splitting/plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
+/* harmony import */ var _splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./splitting/utils/dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
+/* harmony import */ var _splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./splitting/plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
+/* harmony import */ var _splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./splitting/utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -114,14 +114,47 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
+function detectGrid(el, options, side) {
+  var items = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["$"])(options.matching || el.children, el);
+  var c = {};
+  Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["each"])(items, function (w) {
+    var val = Math.round(w[side]);
+    (c[val] || (c[val] = [])).push(w);
+  });
+  return Object.keys(c).map(Number).sort(byNumber).map(Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["selectFrom"])(c));
+}
+
+function byNumber(a, b) {
+  return a - b;
+}
+
+var LinesSplit = function LinesSplit(el, opts, ctx) {
+  var lines = [];
+  var words = detectGrid(el, {
+    matching: ctx[_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]]
+  }, 'offsetTop');
+  var container = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(false, 'qazana-text-lines');
+  Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["each"])(words, function (wordGroup, i) {
+    var line = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(container, 'qazana-text-line qazana-text-line-' + i);
+
+    for (var i = 0; i < wordGroup.length; ++i) {
+      line.appendChild(wordGroup[i]);
+    }
+
+    lines.push(line);
+  }); // Append lines back into the parent
+
+  Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["appendChild"])(el, container);
+  return lines;
+};
+
 var qazanaLines = {
   by: 'qazanaLines',
-  depends: [_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__["WORDS"]],
+  depends: [_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]],
   key: 'ql',
   split: function split(el, options, ctx) {
-    return Object(_splitting_utils_detect_grid__WEBPACK_IMPORTED_MODULE_3__["detectGrid"])(el, {
-      matching: ctx[_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_4__["WORDS"]]
-    }, 'offsetTop');
+    return LinesSplit(el, options, ctx);
   }
 };
 _splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"].add(qazanaLines);
@@ -216,6 +249,11 @@ function () {
       jQuery(window).on('resize', onResize.bind(this));
     }
   }, {
+    key: "_onAfterWindowResize",
+    value: function _onAfterWindowResize() {
+      this.splitTextInstance = this._doSplit();
+    }
+  }, {
     key: "_onWindowResize",
     value: function _onWindowResize() {
       var self = this;
@@ -225,11 +263,6 @@ function () {
       }
 
       self._onAfterWindowResize();
-    }
-  }, {
-    key: "_onAfterWindowResize",
-    value: function _onAfterWindowResize() {
-      this.splitTextInstance = this._doSplit();
     }
   }]);
 
@@ -253,43 +286,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
 /* harmony import */ var _plugins_words__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
 /* harmony import */ var _plugins_chars__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/chars */ "../assets/dev/js/frontend/animations/splitting/plugins/chars.js");
-/* harmony import */ var _plugins_lines__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/lines */ "../assets/dev/js/frontend/animations/splitting/plugins/lines.js");
-/* harmony import */ var _plugins_items__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plugins/items */ "../assets/dev/js/frontend/animations/splitting/plugins/items.js");
-/* harmony import */ var _plugins_rows__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plugins/rows */ "../assets/dev/js/frontend/animations/splitting/plugins/rows.js");
-/* harmony import */ var _plugins_columns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plugins/columns */ "../assets/dev/js/frontend/animations/splitting/plugins/columns.js");
-/* harmony import */ var _plugins_grid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/grid */ "../assets/dev/js/frontend/animations/splitting/plugins/grid.js");
-/* harmony import */ var _plugins_layout__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/layout */ "../assets/dev/js/frontend/animations/splitting/plugins/layout.js");
-/* harmony import */ var _plugins_cellRows__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./plugins/cellRows */ "../assets/dev/js/frontend/animations/splitting/plugins/cellRows.js");
-/* harmony import */ var _plugins_cellColumns__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./plugins/cellColumns */ "../assets/dev/js/frontend/animations/splitting/plugins/cellColumns.js");
-/* harmony import */ var _plugins_cells__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./plugins/cells */ "../assets/dev/js/frontend/animations/splitting/plugins/cells.js");
 
 
 
-
-
-
-
-
-
-
-
-
- // install plugins
+ //import { linePlugin } from "./plugins/lines";
+// import { itemPlugin } from "./plugins/items";
+// import { rowPlugin } from "./plugins/rows";
+// import { columnPlugin } from "./plugins/columns";
+// import { gridPlugin } from "./plugins/grid";
+// import { layoutPlugin } from "./plugins/layout";
+// import { cellRowPlugin } from "./plugins/cellRows";
+// import { cellColumnPlugin } from "./plugins/cellColumns";
+// import { cellPlugin } from "./plugins/cells";
+// install plugins
 // word/char plugins
 
 Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_words__WEBPACK_IMPORTED_MODULE_2__["wordPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_chars__WEBPACK_IMPORTED_MODULE_3__["charPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_lines__WEBPACK_IMPORTED_MODULE_4__["linePlugin"]); // grid plugins
+Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_chars__WEBPACK_IMPORTED_MODULE_3__["charPlugin"]); // add(linePlugin);
+// // grid plugins
+// add(itemPlugin);
+// add(rowPlugin);
+// add(columnPlugin);
+// add(gridPlugin);
+// // cell-layout plugins
+// add(layoutPlugin);
+// add(cellRowPlugin);
+// add(cellColumnPlugin);
+// add(cellPlugin);
 
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_items__WEBPACK_IMPORTED_MODULE_5__["itemPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_rows__WEBPACK_IMPORTED_MODULE_6__["rowPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_columns__WEBPACK_IMPORTED_MODULE_7__["columnPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_grid__WEBPACK_IMPORTED_MODULE_8__["gridPlugin"]); // cell-layout plugins
-
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_layout__WEBPACK_IMPORTED_MODULE_9__["layoutPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_cellRows__WEBPACK_IMPORTED_MODULE_10__["cellRowPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_cellColumns__WEBPACK_IMPORTED_MODULE_11__["cellColumnPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_cells__WEBPACK_IMPORTED_MODULE_12__["cellPlugin"]);
 /* harmony default export */ __webpack_exports__["default"] = (_core_splitting__WEBPACK_IMPORTED_MODULE_0__["Splitting"]);
 
 /***/ }),
@@ -456,107 +480,6 @@ Splitting.add = _plugin_manager__WEBPACK_IMPORTED_MODULE_3__["add"];
 
 /***/ }),
 
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/cellColumns.js":
-/*!*****************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/cellColumns.js ***!
-  \*****************************************************************************/
-/*! exports provided: cellColumnPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cellColumnPlugin", function() { return cellColumnPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_arrays__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "../assets/dev/js/frontend/animations/splitting/plugins/layout.js");
-
-
-
-var cellColumnPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-"cellColumns",
-/*depends: */
-[_layout__WEBPACK_IMPORTED_MODULE_2__["LAYOUT"]],
-/*key: */
-"col",
-/*split: */
-function (el, opts, ctx) {
-  var columnCount = opts.columns;
-  var result = Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_1__["Array2D"])(columnCount);
-  Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(ctx[_layout__WEBPACK_IMPORTED_MODULE_2__["LAYOUT"]], function (cell, i) {
-    result[i % columnCount].push(cell);
-  });
-  return result;
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/cellRows.js":
-/*!**************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/cellRows.js ***!
-  \**************************************************************************/
-/*! exports provided: cellRowPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cellRowPlugin", function() { return cellRowPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_arrays__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "../assets/dev/js/frontend/animations/splitting/plugins/layout.js");
-
-
-
-var cellRowPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-"cellRows",
-/*depends: */
-[_layout__WEBPACK_IMPORTED_MODULE_2__["LAYOUT"]],
-/*key: */
-"row",
-/*split: */
-function (el, opts, ctx) {
-  var rowCount = opts.rows;
-  var result = Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_1__["Array2D"])(rowCount);
-  Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(ctx[_layout__WEBPACK_IMPORTED_MODULE_2__["LAYOUT"]], function (cell, i, src) {
-    result[Math.floor(i / (src.length / rowCount))].push(cell);
-  });
-  return result;
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/cells.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/cells.js ***!
-  \***********************************************************************/
-/*! exports provided: cellPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cellPlugin", function() { return cellPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "../assets/dev/js/frontend/animations/splitting/plugins/layout.js");
-
-
-
-var cellPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-"cells",
-/*depends: */
-['cellRows', 'cellColumns'],
-/*key: */
-"cell",
-/*split: */
-function (el, opt, ctx) {
-  // re-index the layout as the cells
-  return ctx[_layout__WEBPACK_IMPORTED_MODULE_2__["LAYOUT"]];
-});
-
-/***/ }),
-
 /***/ "../assets/dev/js/frontend/animations/splitting/plugins/chars.js":
 /*!***********************************************************************!*\
   !*** ../assets/dev/js/frontend/animations/splitting/plugins/chars.js ***!
@@ -591,210 +514,6 @@ function (el, options, ctx) {
     results.push.apply(results, Object(_utils_split_text__WEBPACK_IMPORTED_MODULE_1__["splitText"])(word, "char", "", options.whitespace && i));
   });
   return results;
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/columns.js":
-/*!*************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/columns.js ***!
-  \*************************************************************************/
-/*! exports provided: columnPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "columnPlugin", function() { return columnPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/detect-grid */ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-var columnPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-'cols',
-/*depends: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*key: */
-"col",
-/*split: */
-function (el, options) {
-  return Object(_utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__["detectGrid"])(el, options, "offsetLeft");
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/grid.js":
-/*!**********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/grid.js ***!
-  \**********************************************************************/
-/*! exports provided: gridPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "gridPlugin", function() { return gridPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-
-var gridPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-'grid',
-/*depends: */
-['rows', 'cols']);
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/items.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/items.js ***!
-  \***********************************************************************/
-/*! exports provided: itemPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "itemPlugin", function() { return itemPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-var itemPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-'items',
-/*depends: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*key: */
-'item',
-/*split: */
-function (el, options) {
-  return Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["$"])(options.matching || el.children, el);
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/layout.js":
-/*!************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/layout.js ***!
-  \************************************************************************/
-/*! exports provided: LAYOUT, layoutPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYOUT", function() { return LAYOUT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "layoutPlugin", function() { return layoutPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-var LAYOUT = "layout";
-var layoutPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-LAYOUT,
-/*depends: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*key: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*split: */
-function (el, opts) {
-  // detect and set options
-  var rows = opts.rows = +(opts.rows || Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["getData"])(el, 'rows') || 1);
-  var columns = opts.columns = +(opts.columns || Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["getData"])(el, 'columns') || 1); // Seek out the first <img> if the value is true 
-
-  opts.image = opts.image || Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["getData"])(el, 'image') || el.currentSrc || el.src;
-
-  if (opts.image) {
-    var img = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["$"])("img", el)[0];
-    opts.image = img && (img.currentSrc || img.src);
-  } // add optional image to background
-
-
-  if (opts.image) {
-    Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["setProperty"])(el, "background-image", "url(" + opts.image + ")");
-  }
-
-  var totalCells = rows * columns;
-  var elements = [];
-  var container = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"], "cell-grid");
-
-  while (totalCells--) {
-    // Create a span
-    var cell = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["createElement"])(container, "cell");
-    Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["createElement"])(cell, "cell-inner");
-    elements.push(cell);
-  } // Append elements back into the parent
-
-
-  Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["appendChild"])(el, container);
-  return elements;
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/lines.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/lines.js ***!
-  \***********************************************************************/
-/*! exports provided: linePlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "linePlugin", function() { return linePlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/detect-grid */ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js");
-/* harmony import */ var _words__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
-
-
-
-var linePlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-'lines',
-/*depends: */
-[_words__WEBPACK_IMPORTED_MODULE_2__["WORDS"]],
-/*key: */
-'line',
-/*split: */
-function (el, options, ctx) {
-  console.log(el);
-  return Object(_utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__["detectGrid"])(el, {
-    matching: ctx[_words__WEBPACK_IMPORTED_MODULE_2__["WORDS"]]
-  }, 'offsetTop');
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/rows.js":
-/*!**********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/rows.js ***!
-  \**********************************************************************/
-/*! exports provided: rowPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rowPlugin", function() { return rowPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/detect-grid */ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-var rowPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-'rows',
-/*depends: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*key: */
-'row',
-/*split: */
-function (el, options) {
-  return Object(_utils_detect_grid__WEBPACK_IMPORTED_MODULE_1__["detectGrid"])(el, options, "offsetTop");
 });
 
 /***/ }),
@@ -860,7 +579,6 @@ function Array2D(len) {
   return a;
 }
 function each(items, fn) {
-  // eslint-disable-next-line no-unused-expressions
   items && items.some(fn);
 }
 function selectFrom(obj) {
@@ -907,36 +625,6 @@ function index(element, key, items) {
     }
   });
   Object(_dom__WEBPACK_IMPORTED_MODULE_0__["setProperty"])(element, prefix + "-total", items.length);
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js":
-/*!***************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/detect-grid.js ***!
-  \***************************************************************************/
-/*! exports provided: detectGrid */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "detectGrid", function() { return detectGrid; });
-/* harmony import */ var _arrays__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-
-
-function detectGrid(el, options, side) {
-  var items = Object(_dom__WEBPACK_IMPORTED_MODULE_1__["$"])(options.matching || el.children, el);
-  var c = {};
-  Object(_arrays__WEBPACK_IMPORTED_MODULE_0__["each"])(items, function (w) {
-    var val = Math.round(w[side]);
-    (c[val] || (c[val] = [])).push(w);
-  });
-  return Object.keys(c).map(Number).sort(byNumber).map(Object(_arrays__WEBPACK_IMPORTED_MODULE_0__["selectFrom"])(c));
-}
-
-function byNumber(a, b) {
-  return a - b;
 }
 
 /***/ }),
@@ -1096,11 +784,13 @@ function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
 
 
       Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(contents.split(splitOn), function (splitText, i) {
-        if (i && preserveWhitespace) {
-          allElements.push(Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])(F, "whitespace " + key, " ", preserveWhitespace));
+        var whitespace = '';
+
+        if (preserveWhitespace) {
+          whitespace = ' ';
         }
 
-        var splitEl = Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])(F, key, splitText);
+        var splitEl = Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])(F, key, splitText + whitespace);
         elements.push(splitEl);
         allElements.push(splitEl);
       }); // insert trailing space if there was one

@@ -1,16 +1,53 @@
 import { QazanaRotateText } from './textRotator';
 //var Splitting = require( '../utils/splitText' );
 import Splitting from './splitting/all';
-import { splitText } from './splitting/utils/split-text';
-import { detectGrid } from './splitting/utils/detect-grid';
+import { $, createElement, appendChild } from './splitting/utils/dom';
 import { WORDS } from './splitting/plugins/words';
+import { selectFrom, each } from './splitting/utils/arrays';
+
+function detectGrid( el, options, side ) {
+    var items = $( options.matching || el.children, el );
+    var c = {};
+
+    each( items, function( w ) {
+        var val = Math.round( w[ side ] );
+        ( c[ val ] || ( c[ val ] = [] ) ).push( w );
+    } );
+
+    return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
+}
+
+function byNumber( a, b ) {
+    return a - b;
+}
+
+var LinesSplit = function( el, opts, ctx ) {
+    var lines = [];
+    var words = detectGrid( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
+    var container = createElement( false, 'qazana-text-lines' );
+
+    each( words, function( wordGroup, i ) {
+        var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
+
+        for ( var i = 0; i < wordGroup.length; ++i ) {
+            line.appendChild( wordGroup[ i ] );
+        }
+
+        lines.push( line );
+    } );
+
+    // Append lines back into the parent
+    appendChild( el, container );
+
+    return lines;
+};
 
 var qazanaLines = {
     by: 'qazanaLines',
     depends: [ WORDS ],
     key: 'ql',
     split: function( el, options, ctx ) {
-        return detectGrid( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
+        return LinesSplit( el, options, ctx );
     },
 };
 
@@ -109,6 +146,10 @@ export default class SplitText {
         jQuery( window ).on( 'resize', onResize.bind( this ) );
     }
 
+    _onAfterWindowResize() {
+        this.splitTextInstance = this._doSplit();
+    }
+
     _onWindowResize() {
         var self = this;
 
@@ -117,9 +158,5 @@ export default class SplitText {
         }
 
         self._onAfterWindowResize();
-    }
-
-    _onAfterWindowResize() {
-        this.splitTextInstance = this._doSplit();
     }
 }

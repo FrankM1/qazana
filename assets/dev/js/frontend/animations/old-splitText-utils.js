@@ -161,9 +161,8 @@ function SplitText( identifier, vars ) {
     };
 
     //
-    //By now we should have an array at this.HTMLobjects of html objects that need spliting.
+    //By now we should have an array at this.HTMLobjects of html objects that need splitting.
     //
-
     this.vars.type = this.vars.type.split( ',' );
 
     for ( var i = 0; i < this.HTMLobjects.length; i++ ) {

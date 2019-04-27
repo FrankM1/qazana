@@ -23,12 +23,15 @@ export function splitText(el, key, splitOn, includePrevious, preserveWhitespace)
     }
 
     var allElements = [];
+
     $(el.childNodes).some(function(next) {
+
         if (next.tagName && !next.hasChildNodes()) {
             // keep elements without child nodes (no text and no children)
             allElements.push(next);
             return;
         }
+
         // Recursively run through child nodes
         if (next.childNodes && next.childNodes.length) {
             allElements.push(next);
@@ -45,19 +48,25 @@ export function splitText(el, key, splitOn, includePrevious, preserveWhitespace)
         if (contents.length) {
             // insert leading space if there was one
             if (wholeText[0] === ' ') {
-                allElements.push(createText(' '));
+                allElements.push( createText(' ') );
             }
+
             // Concatenate the split text children back into the full array
-            each(contents.split(splitOn), function(splitText, i) {
-                if (i && preserveWhitespace) {
-                    allElements.push(createElement(F, "whitespace " + key, " ", preserveWhitespace));
+            each( contents.split(splitOn), function(splitText, i) {
+                var whitespace = '';
+
+                if ( preserveWhitespace ) {
+                    whitespace = ' ';
                 }
-                var splitEl = createElement(F, key, splitText);
+
+                var splitEl = createElement(F, key, splitText + whitespace);
+
                 elements.push(splitEl);
                 allElements.push(splitEl);
             });
+
             // insert trailing space if there was one
-            if (wholeText[wholeText.length - 1] === ' ') {
+            if ( wholeText[wholeText.length - 1] === ' ' ) {
                 allElements.push(createText(' '));
             }
         }

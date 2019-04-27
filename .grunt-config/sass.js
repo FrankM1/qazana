@@ -1,10 +1,12 @@
+const nodesass = require('node-sass');
+
 const sass = {
 	dist: {
 		options: {
+            implementation: nodesass,
 			sourceMap: true,
 			includePaths: ['assets/dev/scss'],
 		},
-
 		files: [
 			{
 				expand: true,
