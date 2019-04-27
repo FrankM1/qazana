@@ -26,6 +26,8 @@ var LinesSplit = function( el, opts, ctx ) {
     var words = detectGrid( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
     var container = createElement( false, 'qazana-text-lines' );
 
+    var lines = SplitLines( el );
+
     each( words, function( wordGroup, i ) {
         var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
 
@@ -56,6 +58,7 @@ Splitting.add( qazanaLines );
 var defaults = {
     target: '',
     type: 'words', // "words", "chars", "lines".
+    exclude: '.qazana-text-rotate-keywords',
 };
 
 export default class SplitText {
@@ -95,6 +98,7 @@ export default class SplitText {
             var instance = new Splitting( {
                 target: self.$element.find( target.target ).get(),
                 by: 'qazanaLines', //target.type,
+                exclude: '.qazana-text-rotate-keywords',
             } );
             splitTextInstance.push( instance );
         } );

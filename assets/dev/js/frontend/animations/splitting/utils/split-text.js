@@ -10,7 +10,7 @@ import { each } from "./arrays";
  * @param includeSpace {boolean}
  * @returns {HTMLElement[]}
  */
-export function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
+export function splitText(el, key, splitOn, includePrevious, preserveWhitespace, exclude) {
     // Combine any strange text nodes or empty whitespace.
     el.normalize();
 
@@ -22,35 +22,38 @@ export function splitText(el, key, splitOn, includePrevious, preserveWhitespace)
         elements.push(el.previousSibling);
     }
 
-    var allElements = [];
+    $(el.childNodes).some( function(node) {
 
-    $(el.childNodes).some(function(next) {
-
-        if (next.tagName && !next.hasChildNodes()) {
+        if ( node.tagName && ! node.hasChildNodes() ) {
             // keep elements without child nodes (no text and no children)
-            allElements.push(next);
             return;
         }
 
+        if ( 'SPAN' === node.tagName && node.hasChildNodes() ) {
+            // keep elements without child nodes (no text and no children)
+            key && (node.className = node.className + ' ' + key);
+            elements.push(node);
+            return;
+        }
+
+        console.log(exclude);
+        console.log( node.classList );
+        console.log( elements );
+
         // Recursively run through child nodes
-        if (next.childNodes && next.childNodes.length) {
-            allElements.push(next);
-            elements.push.apply(elements, splitText(next, key, splitOn, includePrevious, preserveWhitespace));
+        if ( node.childNodes && node.childNodes.length ) {
+            console.log(node.childNodes);
+            elements.push.apply(elements, splitText(node, key, splitOn, includePrevious, preserveWhitespace, exclude));
             return;
         }
 
         // Get the text to split, trimming out the whitespace
         /** @type {string} */
-        var wholeText = next.wholeText || '';
+        var wholeText = node.wholeText || '';
         var contents = wholeText.trim();
 
         // If there's no text left after trimming whitespace, continue the loop
-        if (contents.length) {
-            // insert leading space if there was one
-            if (wholeText[0] === ' ') {
-                allElements.push( createText(' ') );
-            }
-
+        if ( contents.length ) {
             // Concatenate the split text children back into the full array
             each( contents.split(splitOn), function(splitText, i) {
                 var whitespace = '';
@@ -62,18 +65,8 @@ export function splitText(el, key, splitOn, includePrevious, preserveWhitespace)
                 var splitEl = createElement(F, key, splitText + whitespace);
 
                 elements.push(splitEl);
-                allElements.push(splitEl);
             });
-
-            // insert trailing space if there was one
-            if ( wholeText[wholeText.length - 1] === ' ' ) {
-                allElements.push(createText(' '));
-            }
         }
-    });
-
-    each(allElements, function(el) {
-        appendChild(F, el);
     });
 
     // Clear out the existing element

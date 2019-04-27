@@ -135,6 +135,7 @@ var LinesSplit = function LinesSplit(el, opts, ctx) {
     matching: ctx[_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]]
   }, 'offsetTop');
   var container = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(false, 'qazana-text-lines');
+  var lines = SplitLines(el);
   Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["each"])(words, function (wordGroup, i) {
     var line = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(container, 'qazana-text-line qazana-text-line-' + i);
 
@@ -160,8 +161,9 @@ var qazanaLines = {
 _splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"].add(qazanaLines);
 var defaults = {
   target: '',
-  type: 'words' // "words", "chars", "lines".
-
+  type: 'words',
+  // "words", "chars", "lines".
+  exclude: '.qazana-text-rotate-keywords'
 };
 
 var SplitText =
@@ -204,8 +206,9 @@ function () {
       jQuery.each(this.options, function (_i, target) {
         var instance = new _splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"]({
           target: self.$element.find(target.target).get(),
-          by: 'qazanaLines' //target.type,
-
+          by: 'qazanaLines',
+          //target.type,
+          exclude: '.qazana-text-rotate-keywords'
         });
         splitTextInstance.push(instance);
       });
@@ -544,8 +547,9 @@ _utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
 /*key: */
 'word',
 /*split: */
-function (el) {
-  return Object(_utils_split_text__WEBPACK_IMPORTED_MODULE_1__["splitText"])(el, 'word', /\s+/, 0, 1);
+function (el, opt) {
+  console.log(opt);
+  return Object(_utils_split_text__WEBPACK_IMPORTED_MODULE_1__["splitText"])(el, 'word', /\s+/, 0, 1, opt.exclude);
 });
 
 /***/ }),
@@ -744,7 +748,7 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {HTMLElement[]}
  */
 
-function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
+function splitText(el, key, splitOn, includePrevious, preserveWhitespace, exclude) {
   // Combine any strange text nodes or empty whitespace.
   el.normalize(); // Use fragment to prevent unnecessary DOM thrashing.
 
@@ -755,34 +759,37 @@ function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
     elements.push(el.previousSibling);
   }
 
-  var allElements = [];
-  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["$"])(el.childNodes).some(function (next) {
-    if (next.tagName && !next.hasChildNodes()) {
+  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["$"])(el.childNodes).some(function (node) {
+    if (node.tagName && !node.hasChildNodes()) {
       // keep elements without child nodes (no text and no children)
-      allElements.push(next);
       return;
-    } // Recursively run through child nodes
+    }
 
+    if ('SPAN' === node.tagName && node.hasChildNodes()) {
+      // keep elements without child nodes (no text and no children)
+      key && (node.className = node.className + ' ' + key);
+      elements.push(node);
+      return;
+    }
 
-    if (next.childNodes && next.childNodes.length) {
-      allElements.push(next);
-      elements.push.apply(elements, splitText(next, key, splitOn, includePrevious, preserveWhitespace));
+    console.log(exclude);
+    console.log(node.classList);
+    console.log(elements); // Recursively run through child nodes
+
+    if (node.childNodes && node.childNodes.length) {
+      console.log(node.childNodes);
+      elements.push.apply(elements, splitText(node, key, splitOn, includePrevious, preserveWhitespace, exclude));
       return;
     } // Get the text to split, trimming out the whitespace
 
     /** @type {string} */
 
 
-    var wholeText = next.wholeText || '';
+    var wholeText = node.wholeText || '';
     var contents = wholeText.trim(); // If there's no text left after trimming whitespace, continue the loop
 
     if (contents.length) {
-      // insert leading space if there was one
-      if (wholeText[0] === ' ') {
-        allElements.push(Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createText"])(' '));
-      } // Concatenate the split text children back into the full array
-
-
+      // Concatenate the split text children back into the full array
       Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(contents.split(splitOn), function (splitText, i) {
         var whitespace = '';
 
@@ -792,16 +799,8 @@ function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
 
         var splitEl = Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])(F, key, splitText + whitespace);
         elements.push(splitEl);
-        allElements.push(splitEl);
-      }); // insert trailing space if there was one
-
-      if (wholeText[wholeText.length - 1] === ' ') {
-        allElements.push(Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createText"])(' '));
-      }
+      });
     }
-  });
-  Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(allElements, function (el) {
-    Object(_dom__WEBPACK_IMPORTED_MODULE_0__["appendChild"])(F, el);
   }); // Clear out the existing element
 
   el.innerHTML = "";

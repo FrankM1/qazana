@@ -239,7 +239,7 @@ function SplitText( identifier, vars ) {
 
         //split the words
         if ( this.vars.type.indexOf( 'words' ) != -1 ) {
-            function splitWords( parent, st ) {
+            function splitWords( parent, instance ) {
                 var startTag = "<div style='display:inline-block;'>";
                 var endTag = '</div>';
                 parent.innerHTML = startTag + parent.innerHTML.replaceAll( ' ', ( endTag + ' ' + startTag ) ) + endTag;
@@ -247,18 +247,18 @@ function SplitText( identifier, vars ) {
                 var nodes = parent.querySelectorAll( 'div' );
 
                 for ( var j = 0; j < nodes.length; j++ ) {
-                    if ( st.vars.wordsClass !== undefined && st.vars.wordsClass != 'undefined' ) {
-                        addClass( nodes[ j ], st.vars.wordsClass.replaceAll( '++', j + 1 ) );
+                    if ( instance.vars.wordsClass !== undefined && instance.vars.wordsClass != 'undefined' ) {
+                        addClass( nodes[ j ], instance.vars.wordsClass.replaceAll( '++', j + 1 ) );
                     }
 
-                    if ( st.vars.position !== null ) {
-                        if ( 'absolute' == st.vars.position ) {
+                    if ( instance.vars.position !== null ) {
+                        if ( 'absolute' == instance.vars.position ) {
                             nodes[ j ].toBe = {
                                 top: nodes[ j ].offsetTop,
                                 left: nodes[ j ].offsetLeft,
                             };
                             nodes[ j ].style.position = 'relative';
-                        } else if ( 'fixed' == st.vars.position ) {
+                        } else if ( 'fixed' == instance.vars.position ) {
                             var pos = findPos( nodes[ j ] );
                             nodes[ j ].toBe = {
                                 top: pos[ 1 ],
@@ -266,7 +266,7 @@ function SplitText( identifier, vars ) {
                             };
                             nodes[ j ].style.position = 'relative';
                         } else {
-                            nodes[ j ].style.position = st.vars.position;
+                            nodes[ j ].style.position = instance.vars.position;
                         }
                     }
 
@@ -286,7 +286,7 @@ function SplitText( identifier, vars ) {
 
         //split the characters
         if ( this.vars.type.indexOf( 'chars' ) != -1 ) {
-            function splitChars( parent, st ) {
+            function splitChars( parent, instance ) {
                 var startTag = "<div style='display:inline-block;'>";
                 var endTag = '</div>';
                 var specials = ( parent.innerHTML.match( /(&\w+;)/g ) );
@@ -295,8 +295,8 @@ function SplitText( identifier, vars ) {
                 var nodes = parent.querySelectorAll( 'div' );
 
                 for ( var j = 0; j < nodes.length; j++ ) {
-                    if ( st.vars.charsClass !== undefined && st.vars.charsClass != 'undefined' ) {
-                        var newClass = st.vars.charsClass.replaceAll( '++', j + 1 );
+                    if ( instance.vars.charsClass !== undefined && instance.vars.charsClass != 'undefined' ) {
+                        var newClass = instance.vars.charsClass.replaceAll( '++', j + 1 );
                         if ( j != nodes.length - 1 ) {
                             newClass = newClass.replaceAll( '**', nodes[ j ].innerHTML + nodes[ j + 1 ].innerHTML );
                         } else {
@@ -305,14 +305,14 @@ function SplitText( identifier, vars ) {
                         addClass( nodes[ j ], newClass );
                     }
 
-                    if ( st.vars.position !== null ) {
-                        if ( 'absolute' == st.vars.position ) {
+                    if ( instance.vars.position !== null ) {
+                        if ( 'absolute' == instance.vars.position ) {
                             nodes[ j ].toBe = {
                                 top: nodes[ j ].offsetTop,
                                 left: nodes[ j ].offsetLeft,
                             };
                             nodes[ j ].style.position = 'relative';
-                        } else if ( 'fixed' == st.vars.position ) {
+                        } else if ( 'fixed' == instance.vars.position ) {
                             var pos = findPos( nodes[ j ] );
                             nodes[ j ].toBe = {
                                 top: pos[ 1 ],
@@ -320,7 +320,7 @@ function SplitText( identifier, vars ) {
                             };
                             nodes[ j ].style.position = 'relative';
                         } else {
-                            nodes[ j ].style.position = st.vars.position;
+                            nodes[ j ].style.position = instance.vars.position;
                         }
                     }
 

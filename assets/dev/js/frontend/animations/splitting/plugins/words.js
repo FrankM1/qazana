@@ -8,7 +8,9 @@ export var wordPlugin = createPlugin(
     /*by: */ WORDS,
     /*depends: */ _,
     /*key: */ 'word',
-    /*split: */ function(el) {
-        return splitText(el, 'word', /\s+/, 0, 1)
+    /*split: */ function(el, opt) {
+        console.log(opt);
+
+        return splitText(el, 'word', /\s+/, 0, 1, opt.exclude)
     }
 );
