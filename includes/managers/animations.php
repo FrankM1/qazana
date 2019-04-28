@@ -15,12 +15,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Animation_Manager {
 
+    private $groups = [
+        'entry-exit',
+        'parallax',
+        'hover',
+    ];
+
     /**
 	 * Default animation
 	 * @var array
 	 */
 	private $defaults = [
         'fadeIn' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
@@ -32,6 +39,7 @@ class Animation_Manager {
             ],
         ],
         'fadeInDown' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
@@ -45,6 +53,7 @@ class Animation_Manager {
             ],
         ],
         'fadeInLeft' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
@@ -58,6 +67,7 @@ class Animation_Manager {
             ],
         ],
         'fadeInRight' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
@@ -71,6 +81,7 @@ class Animation_Manager {
             ],
         ],
         'fadeInUp' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
@@ -84,6 +95,7 @@ class Animation_Manager {
             ],
         ],
         'fadeInPerspective' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
@@ -101,25 +113,18 @@ class Animation_Manager {
             ],
         ],
         'blindsLeft' => [
+            'group' => [ 'entry-exit' ],
             'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
-                    'translateY' => 45,
-                    'translateZ' => -146,
-                    'rotateX' => -66,
-                    'opacity' => 0,
+                    'translateX' => '-100%',
                 ],
                 'in' => [
-                    'translateY' => 0,
-                    'translateZ' => 0,
-                    'rotateX' => 0,
-                    'opacity' => 1,
+                    'translateX' => [ '0%', '100%' ],
                 ],
             ],
         ],
     ];
-
-
 
 	/**
 	 * Register new animation

@@ -6,11 +6,13 @@
     "author": "Qazana Team",
     "homepage": "https://qazana.net/",
     "devDependencies": {
-        "babel-core": "^6.26.3",
-        "babel-preset-env": "^1.7.0",
-        "babel-loader": "^7.1.5",
-        "babel-eslint": "^10.0.1",
+        "@babel/core": "^7.0.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+        "@babel/plugin-transform-runtime": "^7.4.4",
+        "@babel/preset-env": "^7.0.0",
         "autoprefixer": "~9.5.1",
+        "babel-eslint": "^10.0.1",
+        "babel-loader": "^8.0.0",
         "cssnano": "~4.1.10",
         "eslint": "^5.16.0",
         "eslint-config-wordpress": "^2.0.0",
@@ -42,6 +44,7 @@
         "webpack": "^4.30.0"
     },
     "dependencies": {
+        "@babel/runtime": "^7.4.4",
         "animejs": "^3.0.1",
         "fontfaceobserver": "^2.1.0",
         "splitting": "^1.0.6"

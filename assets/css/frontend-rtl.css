@@ -3350,6 +3350,8 @@ button.swiper-pagination-bullet {
   opacity: 0; }
   [data-custom-animations=true].qazana-animation-initialized {
     opacity: 1; }
+  [data-custom-animations=true] .qazana-widget-container {
+    position: relative; }
 
 .words .word {
   display: inline-block; }
@@ -3357,6 +3359,19 @@ button.swiper-pagination-bullet {
 .qazana-text-lines,
 .qazana-text-line {
   display: block; }
+
+.qazana-clipping-wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden; }
+  .qazana-clipping-wrapper .qazana-clipping-mask {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: red; }
 
 .qazana-shape {
   overflow: hidden;

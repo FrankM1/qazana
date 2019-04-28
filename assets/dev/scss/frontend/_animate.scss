@@ -22,6 +22,9 @@
         //visibility: visible;
         opacity: 1;
     }
+    .qazana-widget-container {
+        position: relative;
+    }
 }
 
 .words .word {
@@ -31,4 +34,20 @@
 .qazana-text-lines,
 .qazana-text-line {
     display: block;
+}
+
+.qazana-clipping-wrapper {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+
+    .qazana-clipping-mask {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-color: red;
+    }
 }

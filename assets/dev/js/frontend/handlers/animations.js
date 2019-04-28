@@ -33,6 +33,52 @@ AnimationHandler = HandlerModule.extend( {
         // offTriggerHandler: 'blur',
     },
 
+    getElementSettings: function( setting ) {
+        var elementSettings = {},
+            skinName,
+            settings,
+			modelCID = this.getModelCID(),
+			self = this,
+            handHeldDevice = this.getDeviceName();
+
+		if ( qazanaFrontend.isEditMode() && modelCID ) {
+			settings = qazanaFrontend.config.elements.data[ modelCID ];
+
+            skinName = settings.attributes._skin;
+
+			jQuery.each( settings.getActiveControls(), function( controlKey ) {
+                var newControlKey = controlKey;
+                if ( skinName !== 'default' ) {
+                    newControlKey = controlKey.replace( skinName + '_', '' );
+                }
+                elementSettings[ newControlKey ] = settings.attributes[ controlKey ];
+			} );
+		} else {
+            skinName = self.getSkinName() ? self.getSkinName().replace( /-/g, '_' ) : 'default';
+                settings = this.$element.data( 'settings' ) || {};
+
+            elementSettings = settings;
+
+			if ( settings && skinName !== 'default' ) {
+				jQuery.each( settings, function( controlKey ) {
+					var newControlKey = controlKey;
+					newControlKey = controlKey.replace( skinName + '_', '' );
+					elementSettings[ newControlKey ] = self.getItems( settings, controlKey );
+				} );
+			}
+        }
+
+        if ( handHeldDevice ) {
+            jQuery.each( elementSettings, function( controlKey ) {
+                if ( typeof elementSettings[ controlKey + '_' + handHeldDevice ] !== 'undefined' ) {
+                   elementSettings[ controlKey ] = elementSettings[ controlKey + '_' + handHeldDevice ]; // rewrite main value with mobile version
+                }
+            } );
+        }
+
+		return this.getItems( elementSettings, setting );
+    },
+
     getAnimationSettings: function() {
         return this.$element.data( 'animations' );
     },
@@ -81,7 +127,16 @@ AnimationHandler = HandlerModule.extend( {
     resetElement: function( $targets, animationGroup ) {
         var self = this;
 
-        self.$element.css( 'transition', 'none' );
+        self.$element.addClass( 'qazana-animation-initialized' ).css( 'transition', 'none' );
+
+        if ( self.needPerspective( animationGroup ) ) {
+            self.$element.addClass( 'qazana-perspective' );
+        }
+
+        if ( 'blindsLeft' === this.settings._animation_inView_type ) {
+            this.$element.find( '.qazana-widget-container' ).append( '<div class="qazana-clipping-wrapper"><div class="qazana-clipping-mask"></div></div>' );
+            $targets = this.$element.find( '.qazana-clipping-mask' );
+        }
 
         $targets.addClass( 'qazana-will-change' );
 
@@ -98,22 +153,17 @@ AnimationHandler = HandlerModule.extend( {
         );
 
         anime( animations );
-
-        self.$element.addClass( 'qazana-animation-initialized' );
-
-        if ( self.needPerspective( animationGroup ) ) {
-            self.$element.addClass( 'qazana-perspective' );
-        }
-
-        self.$element.addClass( 'qazana-perspective' );
     },
 
     animateElement: function( $targets, animationGroup ) {
         var self = this;
 
+        if ( 'blindsLeft' === this.settings._animation_inView_type ) {
+            $targets = this.$element.find( '.qazana-clipping-mask' );
+        }
+
         $targets.addClass( 'qazana-will-change' );
 
-        /** Default animation value */
         var defaultValues = {
             targets: $targets.get(),
             duration: animationGroup.duration,
@@ -122,7 +172,7 @@ AnimationHandler = HandlerModule.extend( {
                 start: animationGroup.startDelay,
             } ),
             complete: function complete( anime ) {
-               self.onAnimationsComplete( anime, animationGroup );
+                self.onAnimationsComplete( anime, animationGroup );
             },
         };
 
@@ -226,14 +276,15 @@ AnimationHandler = HandlerModule.extend( {
     _runAnimations: function() {
         var self = this;
 
-        var settings = this.getAnimationSettings();
+        var animationSettings = this.getAnimationSettings();
+        this.settings = this.getElementSettings();
 
         if ( self.getElementSettings()._animation_enable && -1 !== self.getElementSettings()._animation_trigger.indexOf( 'inView' ) ) {
             if ( ! this.$element.is( '.qazana-widget' ) ) {
-                self.animateInBulk( settings );
+                self.animateInBulk( animationSettings );
             } else {
-                self.splitText( settings );
-                self.animate( settings );
+                self.splitText( animationSettings );
+                self.animate( animationSettings );
             }
         }
     },
@@ -246,10 +297,10 @@ AnimationHandler = HandlerModule.extend( {
     },
 
     onElementChange: function( propertyName ) {
-        var settings = this.getAnimationSettings();
+        var animationSettings = this.getAnimationSettings();
 
         if ( /^_?animation/.test( propertyName ) ) {
-            this.animate( settings );
+            this.animate( animationSettings );
         }
     },
 

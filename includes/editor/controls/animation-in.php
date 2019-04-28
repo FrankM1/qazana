@@ -30,6 +30,13 @@ class Control_Animation_In extends Base_Data_Control {
 					'fadeInRight' => 'Fade In Right',
 					'fadeInUp' => 'Fade In Up',
                 ],
+                'Blinds' => [
+                    'blindsLeft' => 'Blinds Left',
+                ],
+                'Text' => [
+                    'textType' => 'Type',
+                    'textFadeInPerspective' => 'Fade in Perspective',
+                ],
 				'Zooming' => [
 					'zoomIn' => 'Zoom In',
 					'zoomInDown' => 'Zoom In Down',

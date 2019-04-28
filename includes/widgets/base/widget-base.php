@@ -133,6 +133,9 @@ abstract class Widget_Base extends Element_Base {
                     ],
                 ],
             ],
+            'parallax' => [
+                '.qazana-inner-wrapper',
+            ],
         ];
     }
 

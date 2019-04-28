@@ -103,6 +103,7 @@ class Group_Control_Animations extends Group_Control_Base {
             $fields[$type . '_type'] = [
                 'label' => __( 'Type', 'qazana' ),
                 'type' => Controls_Manager::ANIMATION_IN,
+                'frontend_available' => true,
                 'condition' => [
                     'trigger' => $type,
                     'enable!' => '',
