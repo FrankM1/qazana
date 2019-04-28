@@ -9,12 +9,12 @@ module.exports = Marionette.CompositeView.extend( {
 
 	ui: {
 		discard: '.qazana-panel-scheme-discard .qazana-button',
-		apply: '.qazana-panel-scheme-save .qazana-button'
+		apply: '.qazana-panel-scheme-save .qazana-button',
 	},
 
 	events: {
 		'click @ui.discard': 'onDiscardClick',
-		'click @ui.apply': 'onApplyClick'
+		'click @ui.apply': 'onApplyClick',
 	},
 
 	isRevisionApplied: false,
@@ -35,7 +35,7 @@ module.exports = Marionette.CompositeView.extend( {
 
 		self.jqueryXhr = qazana.ajax.send( 'get_revision_data', {
 			data: {
-				id: revisionID
+				id: revisionID,
 			},
 			success: function( data ) {
 				self.setEditorData( data );
@@ -48,7 +48,7 @@ module.exports = Marionette.CompositeView.extend( {
 
 				self.enterReviewMode();
 			},
-			error: function( data ) {
+			error: function() {
 				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				if ( 'abort' === self.jqueryXhr.statusText ) {
@@ -60,7 +60,7 @@ module.exports = Marionette.CompositeView.extend( {
 				self.currentPreviewId = null;
 
 				alert( 'An error occurred' );
-			}
+			},
 		} );
 	},
 
@@ -87,11 +87,11 @@ module.exports = Marionette.CompositeView.extend( {
 
 				self.currentPreviewId = null;
 			},
-			error: function( data ) {
+			error: function() {
 				revisionView.$el.removeClass( 'qazana-revision-item-loading' );
 
 				alert( 'An error occurred' );
-			}
+			},
 		} );
 	},
 
@@ -161,7 +161,7 @@ module.exports = Marionette.CompositeView.extend( {
 			return;
 		}
 
-		var currentPreviewModel = this.collection.findWhere({ id: this.currentPreviewId });
+		var currentPreviewModel = this.collection.findWhere( { id: this.currentPreviewId } );
 
 		this.currentPreviewItem = this.children.findByModelCid( currentPreviewModel.cid );
 
@@ -192,7 +192,7 @@ module.exports = Marionette.CompositeView.extend( {
 				save_state: 'save',
 				onSuccess: function() {
 					self.getRevisionViewData( childView );
-				}
+				},
 			} );
 		} else {
 			self.getRevisionViewData( childView );
@@ -205,22 +205,21 @@ module.exports = Marionette.CompositeView.extend( {
 
 	onChildviewDeleteClick: function( childView ) {
 		var self = this,
-			type = childView.model.get( 'type' ),
-			id = childView.model.get( 'id' );
+			type = childView.model.get( 'type' );
 
 		var removeDialog = qazana.dialogsManager.createWidget( 'confirm', {
 			message: qazana.translate( 'dialog_confirm_delete', [ type ] ),
 			headerMessage: qazana.translate( 'delete_element', [ type ] ),
 			strings: {
 				confirm: qazana.translate( 'delete' ),
-				cancel: qazana.translate( 'cancel' )
+				cancel: qazana.translate( 'cancel' ),
 			},
 			defaultOption: 'confirm',
 			onConfirm: function() {
 				self.deleteRevision( childView );
-			}
+			},
 		} );
 
 		removeDialog.show();
-	}
+	},
 } );

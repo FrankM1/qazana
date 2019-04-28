@@ -93,31 +93,41 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 var BaseModalLayout = __webpack_require__(/*! qazana-templates/views/base-modal-layout */ "../assets/dev/js/editor/components/template-library/views/base-modal-layout.js"),
     NewTemplateView = __webpack_require__(/*! qazana-admin/new-template/view */ "../assets/dev/js/admin/new-template/view.js");
 
 module.exports = BaseModalLayout.extend({
-  getModalOptions: function getModalOptions() {
-    return {
-      id: 'qazana-new-template-modal'
-    };
-  },
-  getLogoOptions: function getLogoOptions() {
-    return {
-      title: qazanaAdmin.config.i18n.new_template
-    };
-  },
-  initialize: function initialize() {
-    BaseModalLayout.prototype.initialize.apply(this, arguments);
-    this.showLogo();
-    this.showContentView();
-  },
-  getDialogsManager: function getDialogsManager() {
-    return qazanaAdmin.getDialogsManager();
-  },
-  showContentView: function showContentView() {
-    this.modalContent.show(new NewTemplateView());
-  }
+
+	getModalOptions: function getModalOptions() {
+		return {
+			id: 'qazana-new-template-modal'
+		};
+	},
+
+	getLogoOptions: function getLogoOptions() {
+		return {
+			title: qazanaAdmin.config.i18n.new_template
+		};
+	},
+
+	initialize: function initialize() {
+		BaseModalLayout.prototype.initialize.apply(this, arguments);
+
+		this.showLogo();
+
+		this.showContentView();
+	},
+
+	getDialogsManager: function getDialogsManager() {
+		return qazanaAdmin.getDialogsManager();
+	},
+
+	showContentView: function showContentView() {
+		this.modalContent.show(new NewTemplateView());
+	}
 });
 
 /***/ }),
@@ -129,41 +139,53 @@ module.exports = BaseModalLayout.extend({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js"),
     NewTemplateLayout = __webpack_require__(/*! qazana-admin/new-template/layout */ "../assets/dev/js/admin/new-template/layout.js");
 
 var NewTemplateModule = ViewModule.extend({
-  getDefaultSettings: function getDefaultSettings() {
-    return {
-      selectors: {
-        addButton: '.page-title-action:first, #qazana-template-library-add-new'
-      }
-    };
-  },
-  getDefaultElements: function getDefaultElements() {
-    var selectors = this.getSettings('selectors');
-    return {
-      $addButton: jQuery(selectors.addButton)
-    };
-  },
-  bindEvents: function bindEvents() {
-    this.elements.$addButton.on('click', this.onAddButtonClick);
-  },
-  onInit: function onInit() {
-    ViewModule.prototype.onInit.apply(this, arguments);
-    this.layout = new NewTemplateLayout();
 
-    if ('#add_new' === location.hash) {
-      this.layout.showModal();
-    }
-  },
-  onAddButtonClick: function onAddButtonClick(event) {
-    event.preventDefault();
-    this.layout.showModal();
-  }
+	getDefaultSettings: function getDefaultSettings() {
+		return {
+			selectors: {
+				addButton: '.page-title-action:first, #qazana-template-library-add-new'
+			}
+		};
+	},
+
+	getDefaultElements: function getDefaultElements() {
+		var selectors = this.getSettings('selectors');
+
+		return {
+			$addButton: jQuery(selectors.addButton)
+		};
+	},
+
+	bindEvents: function bindEvents() {
+		this.elements.$addButton.on('click', this.onAddButtonClick);
+	},
+
+	onInit: function onInit() {
+		ViewModule.prototype.onInit.apply(this, arguments);
+
+		this.layout = new NewTemplateLayout();
+
+		if ('#add_new' === location.hash) {
+			this.layout.showModal();
+		}
+	},
+
+	onAddButtonClick: function onAddButtonClick(event) {
+		event.preventDefault();
+
+		this.layout.showModal();
+	}
 });
+
 jQuery(function () {
-  window.qazanaNewTemplate = new NewTemplateModule();
+	window.qazanaNewTemplate = new NewTemplateModule();
 });
 
 /***/ }),
@@ -173,14 +195,22 @@ jQuery(function () {
   !*** ../assets/dev/js/admin/new-template/view.js ***!
   \***************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 module.exports = Marionette.ItemView.extend({
-  id: 'qazana-new-template-dialog-content',
-  template: '#tmpl-qazana-new-template',
-  ui: {},
-  events: {},
-  onRender: function onRender() {}
+
+	id: 'qazana-new-template-dialog-content',
+
+	template: '#tmpl-qazana-new-template',
+
+	ui: {},
+
+	events: {},
+
+	onRender: function onRender() {}
 });
 
 /***/ }),
@@ -192,74 +222,99 @@ module.exports = Marionette.ItemView.extend({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 var TemplateLibraryHeaderView = __webpack_require__(/*! qazana-templates/views/parts/header */ "../assets/dev/js/editor/components/template-library/views/parts/header.js"),
     TemplateLibraryHeaderLogoView = __webpack_require__(/*! qazana-templates/views/parts/header-parts/logo */ "../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js"),
     TemplateLibraryLoadingView = __webpack_require__(/*! qazana-templates/views/parts/loading */ "../assets/dev/js/editor/components/template-library/views/parts/loading.js");
 
 module.exports = Marionette.LayoutView.extend({
-  el: function el() {
-    return this.modal.getElements('widget');
-  },
-  modal: null,
-  regions: function regions() {
-    return {
-      modalHeader: '.dialog-header',
-      modalContent: '.dialog-lightbox-content',
-      modalLoading: '.dialog-lightbox-loading'
-    };
-  },
-  constructor: function constructor() {
-    this.initModal();
-    Marionette.LayoutView.prototype.constructor.apply(this, arguments);
-  },
-  initialize: function initialize() {
-    this.modalHeader.show(new TemplateLibraryHeaderView(this.getHeaderOptions()));
-  },
-  initModal: function initModal() {
-    var modalOptions = {
-      className: 'qazana-templates-modal',
-      closeButton: false,
-      hide: {
-        onOutsideClick: false
-      }
-    };
-    jQuery.extend(true, modalOptions, this.getModalOptions());
-    this.modal = this.getDialogsManager().createWidget('lightbox', modalOptions);
-    this.modal.getElements('message').append(this.modal.addElement('content'), this.modal.addElement('loading'));
-  },
-  getDialogsManager: function getDialogsManager() {
-    return qazana.dialogsManager;
-  },
-  showModal: function showModal() {
-    this.modal.show();
-  },
-  hideModal: function hideModal() {
-    this.modal.hide();
-  },
-  getModalOptions: function getModalOptions() {
-    return {};
-  },
-  getLogoOptions: function getLogoOptions() {
-    return {};
-  },
-  getHeaderOptions: function getHeaderOptions() {
-    return {};
-  },
-  getHeaderView: function getHeaderView() {
-    return this.modalHeader.currentView;
-  },
-  showLoadingView: function showLoadingView() {
-    this.modalLoading.show(new TemplateLibraryLoadingView());
-    this.modalLoading.$el.show();
-    this.modalContent.$el.hide();
-  },
-  hideLoadingView: function hideLoadingView() {
-    this.modalContent.$el.show();
-    this.modalLoading.$el.hide();
-  },
-  showLogo: function showLogo() {
-    this.getHeaderView().logoArea.show(new TemplateLibraryHeaderLogoView(this.getLogoOptions()));
-  }
+	el: function el() {
+		return this.modal.getElements('widget');
+	},
+
+	modal: null,
+
+	regions: function regions() {
+		return {
+			modalHeader: '.dialog-header',
+			modalContent: '.dialog-lightbox-content',
+			modalLoading: '.dialog-lightbox-loading'
+		};
+	},
+
+	constructor: function constructor() {
+		this.initModal();
+
+		Marionette.LayoutView.prototype.constructor.apply(this, arguments);
+	},
+
+	initialize: function initialize() {
+		this.modalHeader.show(new TemplateLibraryHeaderView(this.getHeaderOptions()));
+	},
+
+	initModal: function initModal() {
+		var modalOptions = {
+			className: 'qazana-templates-modal',
+			closeButton: false,
+			hide: {
+				onOutsideClick: false
+			}
+		};
+
+		jQuery.extend(true, modalOptions, this.getModalOptions());
+
+		this.modal = this.getDialogsManager().createWidget('lightbox', modalOptions);
+
+		this.modal.getElements('message').append(this.modal.addElement('content'), this.modal.addElement('loading'));
+	},
+
+	getDialogsManager: function getDialogsManager() {
+		return qazana.dialogsManager;
+	},
+
+	showModal: function showModal() {
+		this.modal.show();
+	},
+
+	hideModal: function hideModal() {
+		this.modal.hide();
+	},
+
+	getModalOptions: function getModalOptions() {
+		return {};
+	},
+
+	getLogoOptions: function getLogoOptions() {
+		return {};
+	},
+
+	getHeaderOptions: function getHeaderOptions() {
+		return {};
+	},
+
+	getHeaderView: function getHeaderView() {
+		return this.modalHeader.currentView;
+	},
+
+	showLoadingView: function showLoadingView() {
+		this.modalLoading.show(new TemplateLibraryLoadingView());
+
+		this.modalLoading.$el.show();
+
+		this.modalContent.$el.hide();
+	},
+
+	hideLoadingView: function hideLoadingView() {
+		this.modalContent.$el.show();
+
+		this.modalLoading.$el.hide();
+	},
+
+	showLogo: function showLogo() {
+		this.getHeaderView().logoArea.show(new TemplateLibraryHeaderLogoView(this.getLogoOptions()));
+	}
 });
 
 /***/ }),
@@ -269,26 +324,33 @@ module.exports = Marionette.LayoutView.extend({
   !*** ../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js ***!
   \********************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 module.exports = Marionette.ItemView.extend({
-  template: '#tmpl-qazana-templates-modal__header__logo',
-  className: 'qazana-templates-modal__header__logo',
-  events: {
-    click: 'onClick'
-  },
-  templateHelpers: function templateHelpers() {
-    return {
-      title: this.getOption('title')
-    };
-  },
-  onClick: function onClick() {
-    var clickCallback = this.getOption('click');
+	template: '#tmpl-qazana-templates-modal__header__logo',
 
-    if (clickCallback) {
-      clickCallback();
-    }
-  }
+	className: 'qazana-templates-modal__header__logo',
+
+	events: {
+		click: 'onClick'
+	},
+
+	templateHelpers: function templateHelpers() {
+		return {
+			title: this.getOption('title')
+		};
+	},
+
+	onClick: function onClick() {
+		var clickCallback = this.getOption('click');
+
+		if (clickCallback) {
+			clickCallback();
+		}
+	}
 });
 
 /***/ }),
@@ -298,32 +360,44 @@ module.exports = Marionette.ItemView.extend({
   !*** ../assets/dev/js/editor/components/template-library/views/parts/header.js ***!
   \*********************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var TemplateLibraryHeaderView;
+
 TemplateLibraryHeaderView = Marionette.LayoutView.extend({
-  className: 'qazana-templates-modal__header',
-  template: '#tmpl-qazana-templates-modal__header',
-  regions: {
-    logoArea: '.qazana-templates-modal__header__logo-area',
-    tools: '#qazana-template-library-header-tools',
-    menuArea: '.qazana-templates-modal__header__menu-area'
-  },
-  ui: {
-    closeModal: '.qazana-templates-modal__header__close'
-  },
-  events: {
-    'click @ui.closeModal': 'onCloseModalClick'
-  },
-  templateHelpers: function templateHelpers() {
-    return {
-      closeType: this.getOption('closeType')
-    };
-  },
-  onCloseModalClick: function onCloseModalClick() {
-    this._parent._parent._parent.hideModal();
-  }
+
+	className: 'qazana-templates-modal__header',
+
+	template: '#tmpl-qazana-templates-modal__header',
+
+	regions: {
+		logoArea: '.qazana-templates-modal__header__logo-area',
+		tools: '#qazana-template-library-header-tools',
+		menuArea: '.qazana-templates-modal__header__menu-area'
+	},
+
+	ui: {
+		closeModal: '.qazana-templates-modal__header__close'
+	},
+
+	events: {
+		'click @ui.closeModal': 'onCloseModalClick'
+	},
+
+	templateHelpers: function templateHelpers() {
+		return {
+			closeType: this.getOption('closeType')
+		};
+	},
+
+	onCloseModalClick: function onCloseModalClick() {
+		this._parent._parent._parent.hideModal();
+	}
 });
+
 module.exports = TemplateLibraryHeaderView;
 
 /***/ }),
@@ -333,13 +407,19 @@ module.exports = TemplateLibraryHeaderView;
   !*** ../assets/dev/js/editor/components/template-library/views/parts/loading.js ***!
   \**********************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var TemplateLibraryLoadingView;
+
 TemplateLibraryLoadingView = Marionette.ItemView.extend({
-  id: 'qazana-template-library-loading',
-  template: '#tmpl-qazana-template-library-loading'
+	id: 'qazana-template-library-loading',
+
+	template: '#tmpl-qazana-template-library-loading'
 });
+
 module.exports = TemplateLibraryLoadingView;
 
 /***/ }),
@@ -349,201 +429,218 @@ module.exports = TemplateLibraryLoadingView;
   !*** ../assets/dev/js/utils/module.js ***!
   \****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var Module = function Module() {
-  var $ = jQuery,
-      instanceParams = arguments,
-      self = this,
-      settings,
-      events = {};
+	var $ = jQuery,
+	    instanceParams = arguments,
+	    self = this,
+	    settings,
+	    events = {};
 
-  var ensureClosureMethods = function ensureClosureMethods() {
-    $.each(self, function (methodName) {
-      var oldMethod = self[methodName];
+	var ensureClosureMethods = function ensureClosureMethods() {
+		$.each(self, function (methodName) {
+			var oldMethod = self[methodName];
 
-      if ('function' !== typeof oldMethod) {
-        return;
-      }
+			if ('function' !== typeof oldMethod) {
+				return;
+			}
 
-      self[methodName] = function () {
-        return oldMethod.apply(self, arguments);
-      };
-    });
-  };
+			self[methodName] = function () {
+				return oldMethod.apply(self, arguments);
+			};
+		});
+	};
 
-  var initSettings = function initSettings() {
-    settings = self.getDefaultSettings();
-    var instanceSettings = instanceParams[0];
+	var initSettings = function initSettings() {
+		settings = self.getDefaultSettings();
 
-    if (instanceSettings) {
-      $.extend(settings, instanceSettings);
-    }
-  };
+		var instanceSettings = instanceParams[0];
 
-  var init = function init() {
-    self.__construct.apply(self, instanceParams);
+		if (instanceSettings) {
+			$.extend(settings, instanceSettings);
+		}
+	};
 
-    ensureClosureMethods();
-    initSettings();
-    self.trigger('init');
-  };
+	var init = function init() {
+		self.__construct.apply(self, instanceParams);
 
-  this.getItems = function (items, itemKey) {
-    if (itemKey) {
-      var keyStack = itemKey.split('.'),
-          currentKey = keyStack.splice(0, 1);
+		ensureClosureMethods();
 
-      if (!keyStack.length) {
-        return items[currentKey];
-      }
+		initSettings();
 
-      if (!items[currentKey]) {
-        return;
-      }
+		self.trigger('init');
+	};
 
-      return this.getItems(items[currentKey], keyStack.join('.'));
-    }
+	this.getItems = function (items, itemKey) {
+		if (itemKey) {
+			var keyStack = itemKey.split('.'),
+			    currentKey = keyStack.splice(0, 1);
 
-    return items;
-  };
+			if (!keyStack.length) {
+				return items[currentKey];
+			}
 
-  this.getSettings = function (setting) {
-    return this.getItems(settings, setting);
-  };
+			if (!items[currentKey]) {
+				return;
+			}
 
-  this.setSettings = function (settingKey, value, settingsContainer) {
-    if (!settingsContainer) {
-      settingsContainer = settings;
-    }
+			return this.getItems(items[currentKey], keyStack.join('.'));
+		}
 
-    if ('object' === _typeof(settingKey)) {
-      $.extend(settingsContainer, settingKey);
-      return self;
-    }
+		return items;
+	};
 
-    var keyStack = settingKey.split('.'),
-        currentKey = keyStack.splice(0, 1);
+	this.getSettings = function (setting) {
+		return this.getItems(settings, setting);
+	};
 
-    if (!keyStack.length) {
-      settingsContainer[currentKey] = value;
-      return self;
-    }
+	this.setSettings = function (settingKey, value, settingsContainer) {
+		if (!settingsContainer) {
+			settingsContainer = settings;
+		}
 
-    if (!settingsContainer[currentKey]) {
-      settingsContainer[currentKey] = {};
-    }
+		if ('object' === (typeof settingKey === 'undefined' ? 'undefined' : _typeof(settingKey))) {
+			$.extend(settingsContainer, settingKey);
 
-    return self.setSettings(keyStack.join('.'), value, settingsContainer[currentKey]);
-  };
+			return self;
+		}
 
-  this.forceMethodImplementation = function (methodArguments) {
-    var functionName = methodArguments.callee.name;
-    throw new ReferenceError('The method ' + functionName + ' must to be implemented in the inheritor child.');
-  };
+		var keyStack = settingKey.split('.'),
+		    currentKey = keyStack.splice(0, 1);
 
-  this.on = function (eventName, callback) {
-    if ('object' === _typeof(eventName)) {
-      $.each(eventName, function (singleEventName) {
-        self.on(singleEventName, this);
-      });
-      return self;
-    }
+		if (!keyStack.length) {
+			settingsContainer[currentKey] = value;
 
-    var eventNames = eventName.split(' ');
-    eventNames.forEach(function (singleEventName) {
-      if (!events[singleEventName]) {
-        events[singleEventName] = [];
-      }
+			return self;
+		}
 
-      events[singleEventName].push(callback);
-    });
-    return self;
-  };
+		if (!settingsContainer[currentKey]) {
+			settingsContainer[currentKey] = {};
+		}
 
-  this.off = function (eventName, callback) {
-    if (!events[eventName]) {
-      return self;
-    }
+		return self.setSettings(keyStack.join('.'), value, settingsContainer[currentKey]);
+	};
 
-    if (!callback) {
-      delete events[eventName];
-      return self;
-    }
+	this.forceMethodImplementation = function (methodArguments) {
+		var functionName = methodArguments.callee.name;
 
-    var callbackIndex = events[eventName].indexOf(callback);
+		throw new ReferenceError('The method ' + functionName + ' must to be implemented in the inheritor child.');
+	};
 
-    if (-1 !== callbackIndex) {
-      delete events[eventName][callbackIndex];
-    }
+	this.on = function (eventName, callback) {
+		if ('object' === (typeof eventName === 'undefined' ? 'undefined' : _typeof(eventName))) {
+			$.each(eventName, function (singleEventName) {
+				self.on(singleEventName, this);
+			});
 
-    return self;
-  };
+			return self;
+		}
 
-  this.trigger = function (eventName) {
-    var methodName = 'on' + eventName[0].toUpperCase() + eventName.slice(1),
-        params = Array.prototype.slice.call(arguments, 1);
+		var eventNames = eventName.split(' ');
 
-    if (self[methodName]) {
-      self[methodName].apply(self, params);
-    }
+		eventNames.forEach(function (singleEventName) {
+			if (!events[singleEventName]) {
+				events[singleEventName] = [];
+			}
 
-    var callbacks = events[eventName];
+			events[singleEventName].push(callback);
+		});
 
-    if (!callbacks) {
-      return self;
-    }
+		return self;
+	};
 
-    $.each(callbacks, function (index, callback) {
-      callback.apply(self, params);
-    });
-    return self;
-  };
+	this.off = function (eventName, callback) {
+		if (!events[eventName]) {
+			return self;
+		}
 
-  this.getDeviceName = function () {
-    return jQuery('body').data('qazana-device-mode');
-  };
+		if (!callback) {
+			delete events[eventName];
 
-  init();
+			return self;
+		}
+
+		var callbackIndex = events[eventName].indexOf(callback);
+
+		if (-1 !== callbackIndex) {
+			delete events[eventName][callbackIndex];
+		}
+
+		return self;
+	};
+
+	this.trigger = function (eventName) {
+		var methodName = 'on' + eventName[0].toUpperCase() + eventName.slice(1),
+		    params = Array.prototype.slice.call(arguments, 1);
+
+		if (self[methodName]) {
+			self[methodName].apply(self, params);
+		}
+
+		var callbacks = events[eventName];
+
+		if (!callbacks) {
+			return self;
+		}
+
+		$.each(callbacks, function (index, callback) {
+			callback.apply(self, params);
+		});
+
+		return self;
+	};
+
+	this.getDeviceName = function () {
+		return jQuery('body').data('qazana-device-mode');
+	};
+
+	init();
 };
 
 Module.prototype.__construct = function () {};
 
 Module.prototype.getDefaultSettings = function () {
-  return {};
+	return {};
 };
 
 Module.extendsCount = 0;
 
 Module.extend = function (properties) {
-  var $ = jQuery,
-      parent = this;
+	var $ = jQuery,
+	    parent = this;
 
-  var child = function child() {
-    return parent.apply(this, arguments);
-  };
+	var child = function child() {
+		return parent.apply(this, arguments);
+	};
 
-  $.extend(child, parent);
-  child.prototype = Object.create($.extend({}, parent.prototype, properties));
-  child.prototype.constructor = child;
-  /*
-   * Constructor ID is used to set an unique ID
-      * to every extend of the Module.
-      *
-   * It's useful in some cases such as unique
-   * listener for frontend handlers.
-   */
+	$.extend(child, parent);
 
-  var constructorID = ++Module.extendsCount;
+	child.prototype = Object.create($.extend({}, parent.prototype, properties));
 
-  child.prototype.getConstructorID = function () {
-    return constructorID;
-  };
+	child.prototype.constructor = child;
 
-  child.__super__ = parent.prototype;
-  return child;
+	/*
+  * Constructor ID is used to set an unique ID
+     * to every extend of the Module.
+     *
+  * It's useful in some cases such as unique
+  * listener for frontend handlers.
+  */
+	var constructorID = ++Module.extendsCount;
+
+	child.prototype.getConstructorID = function () {
+		return constructorID;
+	};
+
+	child.__super__ = parent.prototype;
+
+	return child;
 };
 
 module.exports = Module;
@@ -557,23 +654,32 @@ module.exports = Module;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
     ViewModule;
 
 ViewModule = Module.extend({
-  elements: null,
-  getDefaultElements: function getDefaultElements() {
-    return {};
-  },
-  bindEvents: function bindEvents() {},
-  onInit: function onInit() {
-    this.initElements();
-    this.bindEvents();
-  },
-  initElements: function initElements() {
-    this.elements = this.getDefaultElements();
-  }
+	elements: null,
+
+	getDefaultElements: function getDefaultElements() {
+		return {};
+	},
+
+	bindEvents: function bindEvents() {},
+
+	onInit: function onInit() {
+		this.initElements();
+
+		this.bindEvents();
+	},
+
+	initElements: function initElements() {
+		this.elements = this.getDefaultElements();
+	}
 });
+
 module.exports = ViewModule;
 
 /***/ })

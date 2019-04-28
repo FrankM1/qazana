@@ -9,7 +9,7 @@ module.exports = ControlsStack.extend( {
 
 	childViewOptions: function() {
 		return {
-			elementSettingsModel: this.model
+			elementSettingsModel: this.model,
 		};
 	},
 
@@ -17,5 +17,5 @@ module.exports = ControlsStack.extend( {
 		this.model = qazana.settings.page.model;
 
 		this.collection = new Backbone.Collection( _.values( this.model.controls ) );
-	}
+	},
 } );

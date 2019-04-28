@@ -48,7 +48,7 @@ const moduleRules = {
 				{
 					loader: 'babel-loader',
 					query: {
-                        presets: [['@babel/preset-env', { modules: false }]],
+						presets: ['env'],
 					},
 				},
 			],

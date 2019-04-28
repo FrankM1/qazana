@@ -1017,4 +1017,10 @@ var App = Marionette.Application.extend( {
 	},
 } );
 
-module.exports = ( window.qazana = new App() ).start();
+window.qazana = new App();
+
+if ( -1 === location.href.search( 'QAZANA_TESTS=1' ) ) {
+	qazana.start();
+}
+
+export default qazana;

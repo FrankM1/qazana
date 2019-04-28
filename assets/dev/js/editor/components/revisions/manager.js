@@ -17,8 +17,8 @@ RevisionsManager = function() {
 			},
 			title: qazana.translate( 'revision_history' ),
 			options: {
-				collection: revisions
-			}
+				collection: revisions,
+			},
 		} );
 	};
 
@@ -57,7 +57,7 @@ RevisionsManager = function() {
 			},
 			handle: function( event ) {
 				qazana.getPanelView().getCurrentPageView().navigate( UP_ARROW_KEY === event.which );
-			}
+			},
 		};
 
 		qazana.hotKeys.addHotKeyHandler( UP_ARROW_KEY, 'revisionNavigation', navigationHandler );
@@ -70,7 +70,7 @@ RevisionsManager = function() {
 			},
 			handle: function() {
 				qazana.getPanelView().setPage( 'revisionsPage' );
-			}
+			},
 		} );
 	};
 
@@ -87,7 +87,7 @@ RevisionsManager = function() {
 	this.deleteRevision = function( revisionModel, options ) {
 		var params = {
 			data: {
-				id: revisionModel.get( 'id' )
+				id: revisionModel.get( 'id' ),
 			},
 			success: function() {
 				if ( options.success ) {
@@ -99,7 +99,7 @@ RevisionsManager = function() {
 				if ( ! revisions.length ) {
 					qazana.getPanelView().setPage( 'revisionsPage' );
 				}
-			}
+			},
 		};
 
 		if ( options.error ) {

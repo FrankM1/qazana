@@ -6,7 +6,7 @@ TemplateLibraryTemplateThemeView = TemplateLibraryTemplateView.extend( {
 
     onPreviewButtonClick: function() {
         qazana.templates.getLayout().showPreviewView( this.model );
-    }
+    },
 } );
 
 module.exports = TemplateLibraryTemplateThemeView;
