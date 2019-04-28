@@ -1,59 +1,62 @@
 import { QazanaRotateText } from './textRotator';
-//var Splitting = require( '../utils/splitText' );
-import Splitting from './splitting/all';
-import { $, createElement, appendChild } from './splitting/utils/dom';
-import { WORDS } from './splitting/plugins/words';
-import { selectFrom, each } from './splitting/utils/arrays';
+import Splitting from 'splitting';
+// import { $, createElement, appendChild } from './splitting/utils/dom';
+// import { WORDS } from './splitting/plugins/words';
+// import { selectFrom, each } from './splitting/utils/arrays';
 
-function detectGrid( el, options, side ) {
-    var items = $( options.matching || el.children, el );
-    var c = {};
+// function detectLines( el, options, side ) {
+//     var items = $( options.matching || el.children, el );
+//     var c = {};
 
-    each( items, function( w ) {
-        var val = Math.round( w[ side ] );
-        ( c[ val ] || ( c[ val ] = [] ) ).push( w );
-    } );
+//     each( items, function( w ) {
+//         if ( w.classList.contains( 'qazana-text-rotate-keywords' ) ) {
+//             var val = -7;
+//             w.innerHTML = w.innerHTML + ' ';
+//         } else {
+//             var val = Math.round( w[ side ] );
+//         }
 
-    return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
-}
+//         ( c[ val ] || ( c[ val ] = [] ) ).push( w );
+//     } );
 
-function byNumber( a, b ) {
-    return a - b;
-}
+//     return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
+// }
 
-var LinesSplit = function( el, opts, ctx ) {
-    var lines = [];
-    var words = detectGrid( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
-    var container = createElement( false, 'qazana-text-lines' );
+// function byNumber( a, b ) {
+//     return a - b;
+// }
 
-    var lines = SplitLines( el );
+// var LinesSplit = function( el, opts, ctx ) {
+//     var lines = [];
+//     var words = detectLines( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
+//     var container = createElement( false, 'qazana-text-lines' );
 
-    each( words, function( wordGroup, i ) {
-        var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
+//     each( words, function( wordGroup, i ) {
+//         var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
 
-        for ( var i = 0; i < wordGroup.length; ++i ) {
-            line.appendChild( wordGroup[ i ] );
-        }
+//         for ( var i = 0; i < wordGroup.length; ++i ) {
+//             line.appendChild( wordGroup[ i ] );
+//         }
 
-        lines.push( line );
-    } );
+//         lines.push( line );
+//     } );
 
-    // Append lines back into the parent
-    appendChild( el, container );
+//     // Append lines back into the parent
+//     appendChild( el, container );
 
-    return lines;
-};
+//     return lines;
+// };
 
-var qazanaLines = {
-    by: 'qazanaLines',
-    depends: [ WORDS ],
-    key: 'ql',
-    split: function( el, options, ctx ) {
-        return LinesSplit( el, options, ctx );
-    },
-};
+// var qazanaLines = {
+//     by: 'qazanaLines',
+//     depends: [ WORDS ],
+//     key: 'ql',
+//     split: function( el, options, ctx ) {
+//         return LinesSplit( el, options, ctx );
+//     },
+// };
 
-Splitting.add( qazanaLines );
+// Splitting.add( qazanaLines );
 
 var defaults = {
     target: '',
@@ -94,13 +97,9 @@ export default class SplitText {
 
         var splitTextInstance = [];
 
-        jQuery.each( this.options, function( _i, target ) {
-            var instance = new Splitting( {
-                target: self.$element.find( target.target ).get(),
-                by: 'qazanaLines', //target.type,
-                exclude: '.qazana-text-rotate-keywords',
-            } );
-            splitTextInstance.push( instance );
+        jQuery.each( this.options, function( _i, options ) {
+            options.target = self.$element.find( options.target ).get();
+            splitTextInstance.push( new Splitting( options ) );
         } );
 
         this.$element.addClass( 'qazana-split-text-applied' );

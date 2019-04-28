@@ -36,13 +36,8 @@ export function splitText(el, key, splitOn, includePrevious, preserveWhitespace,
             return;
         }
 
-        console.log(exclude);
-        console.log( node.classList );
-        console.log( elements );
-
         // Recursively run through child nodes
         if ( node.childNodes && node.childNodes.length ) {
-            console.log(node.childNodes);
             elements.push.apply(elements, splitText(node, key, splitOn, includePrevious, preserveWhitespace, exclude));
             return;
         }

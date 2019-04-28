@@ -37,17 +37,13 @@ export function getData(el, key) {
 
 /**
  *
- * @param e {import('../types').Target}
+ * @param el {import('../types').Target}
  * @param parent {HTMLElement}
  * @returns {HTMLElement[]}
  */
-export function $(e, parent) {
-    return !e || e.length == 0
-        ? // null or empty string returns empty array
-          []
-        : e.nodeName
-            ? // a single element is wrapped in an array
-              [e]
-            : // selector and NodeList are converted to Element[]
-              [].slice.call(e[0].nodeName ? e : (parent || root).querySelectorAll(e));
+export function $(el, parent) {
+    return !el || el.length == 0 ? // null or empty string returns empty array
+        [] : el.nodeName ? // a single element is wrapped in an array
+        [el] : // selector and NodeList are converted to Element[]
+        [].slice.call(el[0].nodeName ? el : (parent || root).querySelectorAll(el));
 }

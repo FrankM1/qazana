@@ -98,67 +98,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SplitText; });
 /* harmony import */ var _textRotator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./textRotator */ "../assets/dev/js/frontend/animations/textRotator.js");
 /* harmony import */ var _textRotator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_textRotator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _splitting_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./splitting/all */ "../assets/dev/js/frontend/animations/splitting/all.js");
-/* harmony import */ var _splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./splitting/utils/dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./splitting/plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
-/* harmony import */ var _splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./splitting/utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
+/* harmony import */ var splitting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! splitting */ "../node_modules/splitting/dist/splitting.js");
+/* harmony import */ var splitting__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(splitting__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
- //var Splitting = require( '../utils/splitText' );
 
+ // import { $, createElement, appendChild } from './splitting/utils/dom';
+// import { WORDS } from './splitting/plugins/words';
+// import { selectFrom, each } from './splitting/utils/arrays';
+// function detectLines( el, options, side ) {
+//     var items = $( options.matching || el.children, el );
+//     var c = {};
+//     each( items, function( w ) {
+//         if ( w.classList.contains( 'qazana-text-rotate-keywords' ) ) {
+//             var val = -7;
+//             w.innerHTML = w.innerHTML + ' ';
+//         } else {
+//             var val = Math.round( w[ side ] );
+//         }
+//         ( c[ val ] || ( c[ val ] = [] ) ).push( w );
+//     } );
+//     return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
+// }
+// function byNumber( a, b ) {
+//     return a - b;
+// }
+// var LinesSplit = function( el, opts, ctx ) {
+//     var lines = [];
+//     var words = detectLines( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
+//     var container = createElement( false, 'qazana-text-lines' );
+//     each( words, function( wordGroup, i ) {
+//         var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
+//         for ( var i = 0; i < wordGroup.length; ++i ) {
+//             line.appendChild( wordGroup[ i ] );
+//         }
+//         lines.push( line );
+//     } );
+//     // Append lines back into the parent
+//     appendChild( el, container );
+//     return lines;
+// };
+// var qazanaLines = {
+//     by: 'qazanaLines',
+//     depends: [ WORDS ],
+//     key: 'ql',
+//     split: function( el, options, ctx ) {
+//         return LinesSplit( el, options, ctx );
+//     },
+// };
+// Splitting.add( qazanaLines );
 
-
-
-
-
-function detectGrid(el, options, side) {
-  var items = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["$"])(options.matching || el.children, el);
-  var c = {};
-  Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["each"])(items, function (w) {
-    var val = Math.round(w[side]);
-    (c[val] || (c[val] = [])).push(w);
-  });
-  return Object.keys(c).map(Number).sort(byNumber).map(Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["selectFrom"])(c));
-}
-
-function byNumber(a, b) {
-  return a - b;
-}
-
-var LinesSplit = function LinesSplit(el, opts, ctx) {
-  var lines = [];
-  var words = detectGrid(el, {
-    matching: ctx[_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]]
-  }, 'offsetTop');
-  var container = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(false, 'qazana-text-lines');
-  var lines = SplitLines(el);
-  Object(_splitting_utils_arrays__WEBPACK_IMPORTED_MODULE_4__["each"])(words, function (wordGroup, i) {
-    var line = Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["createElement"])(container, 'qazana-text-line qazana-text-line-' + i);
-
-    for (var i = 0; i < wordGroup.length; ++i) {
-      line.appendChild(wordGroup[i]);
-    }
-
-    lines.push(line);
-  }); // Append lines back into the parent
-
-  Object(_splitting_utils_dom__WEBPACK_IMPORTED_MODULE_2__["appendChild"])(el, container);
-  return lines;
-};
-
-var qazanaLines = {
-  by: 'qazanaLines',
-  depends: [_splitting_plugins_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]],
-  key: 'ql',
-  split: function split(el, options, ctx) {
-    return LinesSplit(el, options, ctx);
-  }
-};
-_splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"].add(qazanaLines);
 var defaults = {
   target: '',
   type: 'words',
@@ -203,14 +196,9 @@ function () {
       }
 
       var splitTextInstance = [];
-      jQuery.each(this.options, function (_i, target) {
-        var instance = new _splitting_all__WEBPACK_IMPORTED_MODULE_1__["default"]({
-          target: self.$element.find(target.target).get(),
-          by: 'qazanaLines',
-          //target.type,
-          exclude: '.qazana-text-rotate-keywords'
-        });
-        splitTextInstance.push(instance);
+      jQuery.each(this.options, function (_i, options) {
+        options.target = self.$element.find(options.target).get();
+        splitTextInstance.push(new splitting__WEBPACK_IMPORTED_MODULE_1___default.a(options));
       });
       this.$element.addClass('qazana-split-text-applied');
       return splitTextInstance;
@@ -273,540 +261,6 @@ function () {
 }();
 
 
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/all.js":
-/*!*************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/all.js ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _core_splitting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/splitting */ "../assets/dev/js/frontend/animations/splitting/core/splitting.js");
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _plugins_words__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./plugins/words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
-/* harmony import */ var _plugins_chars__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/chars */ "../assets/dev/js/frontend/animations/splitting/plugins/chars.js");
-
-
-
- //import { linePlugin } from "./plugins/lines";
-// import { itemPlugin } from "./plugins/items";
-// import { rowPlugin } from "./plugins/rows";
-// import { columnPlugin } from "./plugins/columns";
-// import { gridPlugin } from "./plugins/grid";
-// import { layoutPlugin } from "./plugins/layout";
-// import { cellRowPlugin } from "./plugins/cellRows";
-// import { cellColumnPlugin } from "./plugins/cellColumns";
-// import { cellPlugin } from "./plugins/cells";
-// install plugins
-// word/char plugins
-
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_words__WEBPACK_IMPORTED_MODULE_2__["wordPlugin"]);
-Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_1__["add"])(_plugins_chars__WEBPACK_IMPORTED_MODULE_3__["charPlugin"]); // add(linePlugin);
-// // grid plugins
-// add(itemPlugin);
-// add(rowPlugin);
-// add(columnPlugin);
-// add(gridPlugin);
-// // cell-layout plugins
-// add(layoutPlugin);
-// add(cellRowPlugin);
-// add(cellColumnPlugin);
-// add(cellPlugin);
-
-/* harmony default export */ __webpack_exports__["default"] = (_core_splitting__WEBPACK_IMPORTED_MODULE_0__["Splitting"]);
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js":
-/*!*****************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js ***!
-  \*****************************************************************************/
-/*! exports provided: createPlugin, resolve, add */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPlugin", function() { return createPlugin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolve", function() { return resolve; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
-/* harmony import */ var _utils_arrays__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-
-/**
- * @type {Record<string, import('./types').ISplittingPlugin>}
- */
-
-var plugins = {};
-/**
- * @param by {string}
- * @param parent {string}
- * @param deps {string[]}
- * @return {string[]}
- */
-
-function resolvePlugins(by, parent, deps) {
-  // skip if already visited this dependency
-  var index = deps.indexOf(by);
-
-  if (index == -1) {
-    // if new to dependency array, add to the beginning
-    deps.unshift(by); // recursively call this function for all dependencies
-
-    Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_0__["each"])(plugins[by].depends, function (p) {
-      resolvePlugins(p, by, deps);
-    });
-  } else {
-    // if this dependency was added already move to the left of
-    // the parent dependency so it gets loaded in order
-    var indexOfParent = deps.indexOf(parent);
-    deps.splice(index, 1);
-    deps.splice(indexOfParent, 0, by);
-  }
-
-  return deps;
-}
-/**
- * Internal utility for creating plugins... essentially to reduce
- * the size of the library
- * @param {string} by 
- * @param {string} key 
- * @param {string[]} depends 
- * @param {Function} split 
- * @returns {import('./types').ISplittingPlugin}
- */
-
-
-function createPlugin(by, depends, key, split) {
-  return {
-    by: by,
-    depends: depends,
-    key: key,
-    split: split
-  };
-}
-/**
- *
- * @param by {string}
- * @returns {import('./types').ISplittingPlugin[]}
- */
-
-function resolve(by) {
-  return resolvePlugins(by, 0, []).map(Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_0__["selectFrom"])(plugins));
-}
-/**
- * Adds a new plugin to splitting
- * @param opts {import('./types').ISplittingPlugin}
- */
-
-function add(opts) {
-  plugins[opts.by] = opts;
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/core/splitting.js":
-/*!************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/core/splitting.js ***!
-  \************************************************************************/
-/*! exports provided: Splitting */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Splitting", function() { return Splitting; });
-/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _utils_css_vars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/css-vars */ "../assets/dev/js/frontend/animations/splitting/utils/css-vars.js");
-/* harmony import */ var _utils_arrays__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-/* harmony import */ var _plugin_manager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _plugins_chars__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../plugins/chars */ "../assets/dev/js/frontend/animations/splitting/plugins/chars.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-
-
-
-/**
- * # Splitting
- * 
- * @param opts {import('./types').ISplittingOptions} 
- */
-
-function Splitting(opts) {
-  opts = opts || {};
-  var key = opts.key;
-  return Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["$"])(opts.target || '[data-splitting]').map(function (el) {
-    var ctx = el['🍌'];
-
-    if (!opts.force && ctx) {
-      return ctx;
-    }
-
-    ctx = el['🍌'] = {
-      el: el
-    };
-    var items = Object(_plugin_manager__WEBPACK_IMPORTED_MODULE_3__["resolve"])(opts.by || Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["getData"])(el, 'splitting') || _plugins_chars__WEBPACK_IMPORTED_MODULE_4__["CHARS"]);
-    var opts2 = Object(_utils_objects__WEBPACK_IMPORTED_MODULE_5__["copy"])({}, opts);
-    Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_2__["each"])(items, function (plugin) {
-      if (plugin.split) {
-        var pluginBy = plugin.by;
-        var key2 = (key ? '-' + key : '') + plugin.key;
-        var results = plugin.split(el, opts2, ctx);
-        key2 && Object(_utils_css_vars__WEBPACK_IMPORTED_MODULE_1__["index"])(el, key2, results);
-        ctx[pluginBy] = results;
-        el.classList.add(pluginBy);
-      }
-    });
-    el.classList.add('splitting');
-    return ctx;
-  });
-}
-/**
- * # Splitting.html
- * 
- * @param opts {import('./types').ISplittingOptions}
- */
-
-function html(opts) {
-  opts = opts || {};
-  var parent = opts.target = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])();
-  parent.innerHTML = opts.content;
-  Splitting(opts);
-  return parent.outerHTML;
-}
-
-Splitting.html = html;
-Splitting.add = _plugin_manager__WEBPACK_IMPORTED_MODULE_3__["add"];
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/chars.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/chars.js ***!
-  \***********************************************************************/
-/*! exports provided: CHARS, charPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHARS", function() { return CHARS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "charPlugin", function() { return charPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_split_text__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/split-text */ "../assets/dev/js/frontend/animations/splitting/utils/split-text.js");
-/* harmony import */ var _utils_arrays__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-/* harmony import */ var _words__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./words */ "../assets/dev/js/frontend/animations/splitting/plugins/words.js");
-
-
-
-
-var CHARS = "chars";
-var charPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-CHARS,
-/*depends: */
-[_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]],
-/*key: */
-"char",
-/*split: */
-function (el, options, ctx) {
-  var results = [];
-  Object(_utils_arrays__WEBPACK_IMPORTED_MODULE_2__["each"])(ctx[_words__WEBPACK_IMPORTED_MODULE_3__["WORDS"]], function (word, i) {
-    results.push.apply(results, Object(_utils_split_text__WEBPACK_IMPORTED_MODULE_1__["splitText"])(word, "char", "", options.whitespace && i));
-  });
-  return results;
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/plugins/words.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/plugins/words.js ***!
-  \***********************************************************************/
-/*! exports provided: WORDS, wordPlugin */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WORDS", function() { return WORDS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "wordPlugin", function() { return wordPlugin; });
-/* harmony import */ var _core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/plugin-manager */ "../assets/dev/js/frontend/animations/splitting/core/plugin-manager.js");
-/* harmony import */ var _utils_split_text__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/split-text */ "../assets/dev/js/frontend/animations/splitting/utils/split-text.js");
-/* harmony import */ var _utils_objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/objects */ "../assets/dev/js/frontend/animations/splitting/utils/objects.js");
-
-
-
-var WORDS = 'words';
-var wordPlugin = Object(_core_plugin_manager__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])(
-/*by: */
-WORDS,
-/*depends: */
-_utils_objects__WEBPACK_IMPORTED_MODULE_2__["_"],
-/*key: */
-'word',
-/*split: */
-function (el, opt) {
-  console.log(opt);
-  return Object(_utils_split_text__WEBPACK_IMPORTED_MODULE_1__["splitText"])(el, 'word', /\s+/, 0, 1, opt.exclude);
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js":
-/*!**********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/arrays.js ***!
-  \**********************************************************************/
-/*! exports provided: Array2D, each, selectFrom */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Array2D", function() { return Array2D; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "each", function() { return each; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectFrom", function() { return selectFrom; });
-/**
- * Creates and fills an array with the value provided
- * @template {T}
- * @param {number} len
- * @param {() => T} valueProvider
- * @return {T}
- */
-function Array2D(len) {
-  var a = [];
-
-  for (; len--;) {
-    a[len] = [];
-  }
-
-  return a;
-}
-function each(items, fn) {
-  items && items.some(fn);
-}
-function selectFrom(obj) {
-  return function (key) {
-    return obj[key];
-  };
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/css-vars.js":
-/*!************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/css-vars.js ***!
-  \************************************************************************/
-/*! exports provided: index */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "index", function() { return index; });
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _arrays__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-
-
-/**
- * # Splitting.index
- * Index split elements and add them to a Splitting instance.
- *
- * @param element {HTMLElement}
- * @param key {string}
- * @param items {HTMLElement[] | HTMLElement[][]}
- */
-
-function index(element, key, items) {
-  var prefix = '--' + key;
-  var cssVar = prefix + "-index";
-  Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(items, function (items, i) {
-    if (Array.isArray(items)) {
-      Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(items, function (item) {
-        Object(_dom__WEBPACK_IMPORTED_MODULE_0__["setProperty"])(item, cssVar, i);
-      });
-    } else {
-      Object(_dom__WEBPACK_IMPORTED_MODULE_0__["setProperty"])(items, cssVar, i);
-    }
-  });
-  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["setProperty"])(element, prefix + "-total", items.length);
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/dom.js":
-/*!*******************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/dom.js ***!
-  \*******************************************************************/
-/*! exports provided: root, createText, setProperty, appendChild, createElement, getData, $ */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "root", function() { return root; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createText", function() { return createText; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setProperty", function() { return setProperty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendChild", function() { return appendChild; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createElement", function() { return createElement; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getData", function() { return getData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "$", function() { return $; });
-var root = document;
-var createText = root.createTextNode.bind(root);
-/**
- * # setProperty
- * Apply a CSS var
- * @param el{HTMLElement}
- * @param varName {string}
- * @param value {string|number}
- */
-
-function setProperty(el, varName, value) {
-  el.style.setProperty(varName, value);
-}
-/**
- *
- * @param {Node} el
- * @param {Node} child
- */
-
-function appendChild(el, child) {
-  return el.appendChild(child);
-}
-function createElement(parent, key, text, whitespace) {
-  var el = root.createElement('span');
-  key && (el.className = key);
-
-  if (text) {
-    !whitespace && el.setAttribute("data-" + key, text);
-    el.textContent = text;
-  }
-
-  return parent && appendChild(parent, el) || el;
-}
-function getData(el, key) {
-  return el.getAttribute("data-" + key);
-}
-/**
- *
- * @param e {import('../types').Target}
- * @param parent {HTMLElement}
- * @returns {HTMLElement[]}
- */
-
-function $(e, parent) {
-  return !e || e.length == 0 ? // null or empty string returns empty array
-  [] : e.nodeName ? // a single element is wrapped in an array
-  [e] : // selector and NodeList are converted to Element[]
-  [].slice.call(e[0].nodeName ? e : (parent || root).querySelectorAll(e));
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/objects.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/objects.js ***!
-  \***********************************************************************/
-/*! exports provided: _, copy */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_", function() { return _; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copy", function() { return copy; });
-/** an empty value */
-var _ = 0;
-function copy(dest, src) {
-  for (var k in src) {
-    dest[k] = src[k];
-  }
-
-  return dest;
-}
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/animations/splitting/utils/split-text.js":
-/*!**************************************************************************!*\
-  !*** ../assets/dev/js/frontend/animations/splitting/utils/split-text.js ***!
-  \**************************************************************************/
-/*! exports provided: splitText */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "splitText", function() { return splitText; });
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "../assets/dev/js/frontend/animations/splitting/utils/dom.js");
-/* harmony import */ var _arrays__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./arrays */ "../assets/dev/js/frontend/animations/splitting/utils/arrays.js");
-
-
-/**
- * # Splitting.split
- * Split an element's textContent into individual elements
- * @param el {Node} Element to split
- * @param key {string}
- * @param splitOn {string}
- * @param includeSpace {boolean}
- * @returns {HTMLElement[]}
- */
-
-function splitText(el, key, splitOn, includePrevious, preserveWhitespace, exclude) {
-  // Combine any strange text nodes or empty whitespace.
-  el.normalize(); // Use fragment to prevent unnecessary DOM thrashing.
-
-  var elements = [];
-  var F = document.createDocumentFragment();
-
-  if (includePrevious) {
-    elements.push(el.previousSibling);
-  }
-
-  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["$"])(el.childNodes).some(function (node) {
-    if (node.tagName && !node.hasChildNodes()) {
-      // keep elements without child nodes (no text and no children)
-      return;
-    }
-
-    if ('SPAN' === node.tagName && node.hasChildNodes()) {
-      // keep elements without child nodes (no text and no children)
-      key && (node.className = node.className + ' ' + key);
-      elements.push(node);
-      return;
-    }
-
-    console.log(exclude);
-    console.log(node.classList);
-    console.log(elements); // Recursively run through child nodes
-
-    if (node.childNodes && node.childNodes.length) {
-      console.log(node.childNodes);
-      elements.push.apply(elements, splitText(node, key, splitOn, includePrevious, preserveWhitespace, exclude));
-      return;
-    } // Get the text to split, trimming out the whitespace
-
-    /** @type {string} */
-
-
-    var wholeText = node.wholeText || '';
-    var contents = wholeText.trim(); // If there's no text left after trimming whitespace, continue the loop
-
-    if (contents.length) {
-      // Concatenate the split text children back into the full array
-      Object(_arrays__WEBPACK_IMPORTED_MODULE_1__["each"])(contents.split(splitOn), function (splitText, i) {
-        var whitespace = '';
-
-        if (preserveWhitespace) {
-          whitespace = ' ';
-        }
-
-        var splitEl = Object(_dom__WEBPACK_IMPORTED_MODULE_0__["createElement"])(F, key, splitText + whitespace);
-        elements.push(splitEl);
-      });
-    }
-  }); // Clear out the existing element
-
-  el.innerHTML = "";
-  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["appendChild"])(el, F);
-  return elements;
-}
 
 /***/ }),
 
@@ -4501,6 +3955,512 @@ ViewModule = Module.extend({
   }
 });
 module.exports = ViewModule;
+
+/***/ }),
+
+/***/ "../node_modules/splitting/dist/splitting.js":
+/*!***************************************************!*\
+  !*** ../node_modules/splitting/dist/splitting.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	undefined;
+}(this, (function () { 'use strict';
+
+var root = document;
+var createText = root.createTextNode.bind(root);
+
+/**
+ * # setProperty
+ * Apply a CSS var
+ * @param el{HTMLElement}
+ * @param varName {string}
+ * @param value {string|number}
+ */
+function setProperty(el, varName, value) {
+    el.style.setProperty(varName, value);
+}
+
+/**
+ *
+ * @param {Node} el
+ * @param {Node} child
+ */
+function appendChild(el, child) {
+  return el.appendChild(child);
+}
+
+function createElement(parent, key, text, whitespace) {
+  var el = root.createElement('span');
+  key && (el.className = key);
+  if (text) {
+      !whitespace && el.setAttribute("data-" + key, text);
+      el.textContent = text;
+  }
+  return (parent && appendChild(parent, el)) || el;
+}
+
+function getData(el, key) {
+  return el.getAttribute("data-" + key)
+}
+
+/**
+ *
+ * @param e {import('../types').Target}
+ * @param parent {HTMLElement}
+ * @returns {HTMLElement[]}
+ */
+function $(e, parent) {
+    return !e || e.length == 0
+        ? // null or empty string returns empty array
+          []
+        : e.nodeName
+            ? // a single element is wrapped in an array
+              [e]
+            : // selector and NodeList are converted to Element[]
+              [].slice.call(e[0].nodeName ? e : (parent || root).querySelectorAll(e));
+}
+
+/**
+ * Creates and fills an array with the value provided
+ * @template {T}
+ * @param {number} len
+ * @param {() => T} valueProvider
+ * @return {T}
+ */
+function Array2D(len) {
+    var a = [];
+    for (; len--; ) {
+        a[len] = [];
+    }
+    return a;
+}
+
+function each(items, fn) {
+    items && items.some(fn);
+}
+
+function selectFrom(obj) {
+    return function (key) {
+        return obj[key];
+    }
+}
+
+/**
+ * # Splitting.index
+ * Index split elements and add them to a Splitting instance.
+ *
+ * @param element {HTMLElement}
+ * @param key {string}
+ * @param items {HTMLElement[] | HTMLElement[][]}
+ */
+function index(element, key, items) {
+    var prefix = '--' + key;
+    var cssVar = prefix + "-index";
+
+    each(items, function (items, i) {
+        if (Array.isArray(items)) {
+            each(items, function(item) {
+                setProperty(item, cssVar, i);
+            });
+        } else {
+            setProperty(items, cssVar, i);
+        }
+    });
+
+    setProperty(element, prefix + "-total", items.length);
+}
+
+/**
+ * @type {Record<string, import('./types').ISplittingPlugin>}
+ */
+var plugins = {};
+
+/**
+ * @param by {string}
+ * @param parent {string}
+ * @param deps {string[]}
+ * @return {string[]}
+ */
+function resolvePlugins(by, parent, deps) {
+    // skip if already visited this dependency
+    var index = deps.indexOf(by);
+    if (index == -1) {
+        // if new to dependency array, add to the beginning
+        deps.unshift(by);
+
+        // recursively call this function for all dependencies
+        each(plugins[by].depends, function(p) {
+            resolvePlugins(p, by, deps);
+        });
+    } else {
+        // if this dependency was added already move to the left of
+        // the parent dependency so it gets loaded in order
+        var indexOfParent = deps.indexOf(parent);
+        deps.splice(index, 1);
+        deps.splice(indexOfParent, 0, by);
+    }
+    return deps;
+}
+
+/**
+ * Internal utility for creating plugins... essentially to reduce
+ * the size of the library
+ * @param {string} by
+ * @param {string} key
+ * @param {string[]} depends
+ * @param {Function} split
+ * @returns {import('./types').ISplittingPlugin}
+ */
+function createPlugin(by, depends, key, split) {
+    return {
+        by: by,
+        depends: depends,
+        key: key,
+        split: split
+    }
+}
+
+/**
+ *
+ * @param by {string}
+ * @returns {import('./types').ISplittingPlugin[]}
+ */
+function resolve(by) {
+    return resolvePlugins(by, 0, []).map(selectFrom(plugins));
+}
+
+/**
+ * Adds a new plugin to splitting
+ * @param opts {import('./types').ISplittingPlugin}
+ */
+function add(opts) {
+    plugins[opts.by] = opts;
+}
+
+/**
+ * # Splitting.split
+ * Split an element's textContent into individual elements
+ * @param el {Node} Element to split
+ * @param key {string}
+ * @param splitOn {string}
+ * @param includeSpace {boolean}
+ * @returns {HTMLElement[]}
+ */
+function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
+    // Combine any strange text nodes or empty whitespace.
+    el.normalize();
+
+    // Use fragment to prevent unnecessary DOM thrashing.
+    var elements = [];
+    var F = document.createDocumentFragment();
+
+    if (includePrevious) {
+        elements.push(el.previousSibling);
+    }
+
+    var allElements = [];
+    $(el.childNodes).some(function(next) {
+        if (next.tagName && !next.hasChildNodes()) {
+            // keep elements without child nodes (no text and no children)
+            allElements.push(next);
+            return;
+        }
+        // Recursively run through child nodes
+        if (next.childNodes && next.childNodes.length) {
+            allElements.push(next);
+            elements.push.apply(elements, splitText(next, key, splitOn, includePrevious, preserveWhitespace));
+            return;
+        }
+
+        // Get the text to split, trimming out the whitespace
+        /** @type {string} */
+        var wholeText = next.wholeText || '';
+        var contents = wholeText.trim();
+
+        // If there's no text left after trimming whitespace, continue the loop
+        if (contents.length) {
+            // insert leading space if there was one
+            if (wholeText[0] === ' ') {
+                allElements.push(createText(' '));
+            }
+            // Concatenate the split text children back into the full array
+            each(contents.split(splitOn), function(splitText, i) {
+                if (i && preserveWhitespace) {
+                    allElements.push(createElement(F, "whitespace", " ", preserveWhitespace));
+                }
+                var splitEl = createElement(F, key, splitText);
+                elements.push(splitEl);
+                allElements.push(splitEl);
+            });
+            // insert trailing space if there was one
+            if (wholeText[wholeText.length - 1] === ' ') {
+                allElements.push(createText(' '));
+            }
+        }
+    });
+
+    each(allElements, function(el) {
+        appendChild(F, el);
+    });
+
+    // Clear out the existing element
+    el.innerHTML = "";
+    appendChild(el, F);
+    return elements;
+}
+
+/** an empty value */
+var _ = 0;
+
+function copy(dest, src) {
+    for (var k in src) {
+        dest[k] = src[k];
+    }
+    return dest;
+}
+
+var WORDS = 'words';
+
+var wordPlugin = createPlugin(
+    /*by: */ WORDS,
+    /*depends: */ _,
+    /*key: */ 'word',
+    /*split: */ function(el) {
+        return splitText(el, 'word', /\s+/, 0, 1)
+    }
+);
+
+var CHARS = "chars";
+
+var charPlugin = createPlugin(
+    /*by: */ CHARS,
+    /*depends: */ [WORDS],
+    /*key: */ "char",
+    /*split: */ function(el, options, ctx) {
+        var results = [];
+
+        each(ctx[WORDS], function(word, i) {
+            results.push.apply(results, splitText(word, "char", "", options.whitespace && i));
+        });
+
+        return results;
+    }
+);
+
+/**
+ * # Splitting
+ *
+ * @param opts {import('./types').ISplittingOptions}
+ */
+function Splitting (opts) {
+  opts = opts || {};
+  var key = opts.key;
+
+  return $(opts.target || '[data-splitting]').map(function(el) {
+    var ctx = el['🍌'];
+    if (!opts.force && ctx) {
+      return ctx;
+    }
+
+    ctx = el['🍌'] = { el: el };
+    var items = resolve(opts.by || getData(el, 'splitting') || CHARS);
+    var opts2 = copy({}, opts);
+    each(items, function(plugin) {
+      if (plugin.split) {
+        var pluginBy = plugin.by;
+        var key2 = (key ? '-' + key : '') + plugin.key;
+        var results = plugin.split(el, opts2, ctx);
+        key2 && index(el, key2, results);
+        ctx[pluginBy] = results;
+        el.classList.add(pluginBy);
+      }
+    });
+
+    el.classList.add('splitting');
+    return ctx;
+  })
+}
+
+/**
+ * # Splitting.html
+ *
+ * @param opts {import('./types').ISplittingOptions}
+ */
+function html(opts) {
+  opts = opts || {};
+  var parent = opts.target =  createElement();
+  parent.innerHTML = opts.content;
+  Splitting(opts);
+  return parent.outerHTML
+}
+
+Splitting.html = html;
+Splitting.add = add;
+
+function detectGrid(el, options, side) {
+    var items = $(options.matching || el.children, el);
+    var c = {};
+
+    each(items, function(w) {
+        var val = Math.round(w[side]);
+        (c[val] || (c[val] = [])).push(w);
+    });
+
+    return Object.keys(c).map(Number).sort(byNumber).map(selectFrom(c));
+}
+
+function byNumber(a, b) {
+    return a - b;
+}
+
+var linePlugin = createPlugin(
+    /*by: */ 'lines',
+    /*depends: */ [WORDS],
+    /*key: */ 'line',
+    /*split: */ function(el, options, ctx) {
+      return detectGrid(el, { matching: ctx[WORDS] }, 'offsetTop')
+    }
+);
+
+var itemPlugin = createPlugin(
+    /*by: */ 'items',
+    /*depends: */ _,
+    /*key: */ 'item',
+    /*split: */ function(el, options) {
+        return $(options.matching || el.children, el)
+    }
+);
+
+var rowPlugin = createPlugin(
+    /*by: */ 'rows',
+    /*depends: */ _,
+    /*key: */ 'row',
+    /*split: */ function(el, options) {
+        return detectGrid(el, options, "offsetTop");
+    }
+);
+
+var columnPlugin = createPlugin(
+    /*by: */ 'cols',
+    /*depends: */ _,
+    /*key: */ "col",
+    /*split: */ function(el, options) {
+        return detectGrid(el, options, "offsetLeft");
+    }
+);
+
+var gridPlugin = createPlugin(
+    /*by: */ 'grid',
+    /*depends: */ ['rows', 'cols']
+);
+
+var LAYOUT = "layout";
+
+var layoutPlugin = createPlugin(
+    /*by: */ LAYOUT,
+    /*depends: */ _,
+    /*key: */ _,
+    /*split: */ function(el, opts) {
+        // detect and set options
+        var rows =  opts.rows = +(opts.rows || getData(el, 'rows') || 1);
+        var columns = opts.columns = +(opts.columns || getData(el, 'columns') || 1);
+
+        // Seek out the first <img> if the value is true
+        opts.image = opts.image || getData(el, 'image') || el.currentSrc || el.src;
+        if (opts.image) {
+            var img = $("img", el)[0];
+            opts.image = img && (img.currentSrc || img.src);
+        }
+
+        // add optional image to background
+        if (opts.image) {
+            setProperty(el, "background-image", "url(" + opts.image + ")");
+        }
+
+        var totalCells = rows * columns;
+        var elements = [];
+
+        var container = createElement(_, "cell-grid");
+        while (totalCells--) {
+            // Create a span
+            var cell = createElement(container, "cell");
+            createElement(cell, "cell-inner");
+            elements.push(cell);
+        }
+
+        // Append elements back into the parent
+        appendChild(el, container);
+
+        return elements;
+    }
+);
+
+var cellRowPlugin = createPlugin(
+    /*by: */ "cellRows",
+    /*depends: */ [LAYOUT],
+    /*key: */ "row",
+    /*split: */ function(el, opts, ctx) {
+        var rowCount = opts.rows;
+        var result = Array2D(rowCount);
+
+        each(ctx[LAYOUT], function(cell, i, src) {
+            result[Math.floor(i / (src.length / rowCount))].push(cell);
+        });
+
+        return result;
+    }
+);
+
+var cellColumnPlugin = createPlugin(
+    /*by: */ "cellColumns",
+    /*depends: */ [LAYOUT],
+    /*key: */ "col",
+    /*split: */ function(el, opts, ctx) {
+        var columnCount = opts.columns;
+        var result = Array2D(columnCount);
+
+        each(ctx[LAYOUT], function(cell, i) {
+            result[i % columnCount].push(cell);
+        });
+
+        return result;
+    }
+);
+
+var cellPlugin = createPlugin(
+    /*by: */ "cells",
+    /*depends: */ ['cellRows', 'cellColumns'],
+    /*key: */ "cell",
+    /*split: */ function(el, opt, ctx) {
+        // re-index the layout as the cells
+        return ctx[LAYOUT];
+    }
+);
+
+// install plugins
+// word/char plugins
+add(wordPlugin);
+add(charPlugin);
+add(linePlugin);
+// grid plugins
+add(itemPlugin);
+add(rowPlugin);
+add(columnPlugin);
+add(gridPlugin);
+// cell-layout plugins
+add(layoutPlugin);
+add(cellRowPlugin);
+add(cellColumnPlugin);
+add(cellPlugin);
+
+return Splitting;
+
+})));
+
 
 /***/ })
 
