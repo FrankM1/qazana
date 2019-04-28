@@ -45,15 +45,6 @@ var Plugin = function( $element ) {
         } else {
             this.addColors( this.$element );
         }
-
-        // var args = {
-        //     triggerElement: this.$obj.get(),
-        //     offset: 10,
-        // };
-
-        // qazanaFrontendExt.inView( args, function() {
-        //    console.log( 'inview' );
-        // } );
     };
 
     this.animateIcon = function() {
@@ -62,9 +53,6 @@ var Plugin = function( $element ) {
         var vivusObj = new Vivus( self.$obj.get( 0 ), {
             type: self.options.type,
             duration: self.options.duration,
-           // pathTimingFunction: Vivus.EASE_OUT,
-           // animTimingFunction: Vivus.LINEAR,
-            //start: 'manual',
             onReady: function onReady( vivus ) {
                 self.addColors.call( self, vivus );
             },

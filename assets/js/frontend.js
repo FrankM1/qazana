@@ -107,50 +107,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
- // import { $, createElement, appendChild } from './splitting/utils/dom';
-// import { WORDS } from './splitting/plugins/words';
-// import { selectFrom, each } from './splitting/utils/arrays';
-// function detectLines( el, options, side ) {
-//     var items = $( options.matching || el.children, el );
-//     var c = {};
-//     each( items, function( w ) {
-//         if ( w.classList.contains( 'qazana-text-rotate-keywords' ) ) {
-//             var val = -7;
-//             w.innerHTML = w.innerHTML + ' ';
-//         } else {
-//             var val = Math.round( w[ side ] );
-//         }
-//         ( c[ val ] || ( c[ val ] = [] ) ).push( w );
-//     } );
-//     return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
-// }
-// function byNumber( a, b ) {
-//     return a - b;
-// }
-// var LinesSplit = function( el, opts, ctx ) {
-//     var lines = [];
-//     var words = detectLines( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
-//     var container = createElement( false, 'qazana-text-lines' );
-//     each( words, function( wordGroup, i ) {
-//         var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
-//         for ( var i = 0; i < wordGroup.length; ++i ) {
-//             line.appendChild( wordGroup[ i ] );
-//         }
-//         lines.push( line );
-//     } );
-//     // Append lines back into the parent
-//     appendChild( el, container );
-//     return lines;
-// };
-// var qazanaLines = {
-//     by: 'qazanaLines',
-//     depends: [ WORDS ],
-//     key: 'ql',
-//     split: function( el, options, ctx ) {
-//         return LinesSplit( el, options, ctx );
-//     },
-// };
-// Splitting.add( qazanaLines );
 
 var defaults = {
   target: '',
@@ -165,11 +121,13 @@ function () {
   function SplitText($element) {
     _classCallCheck(this, SplitText);
 
+    var self = this;
     this.element = $element[0];
     this.$element = $element;
     var targets = this.$element.data('animations') && this.$element.data('animations').splitText ? this.$element.data('animations').splitText : {};
     this.options = targets.map(function (target) {
       var item = jQuery.extend({}, defaults, target);
+      item.target = self.$element.find(item.target).get();
       return item;
     });
     this.splitTextInstance = null;
@@ -189,15 +147,12 @@ function () {
   }, {
     key: "_doSplit",
     value: function _doSplit() {
-      var self = this;
-
       if (this.$element.hasClass('qazana-split-text-applied')) {
         return false;
       }
 
       var splitTextInstance = [];
       jQuery.each(this.options, function (_i, options) {
-        options.target = self.$element.find(options.target).get();
         splitTextInstance.push(new splitting__WEBPACK_IMPORTED_MODULE_1___default.a(options));
       });
       this.$element.addClass('qazana-split-text-applied');
@@ -234,17 +189,6 @@ function () {
       });
     }
   }, {
-    key: "_windowResize",
-    value: function _windowResize() {
-      var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
-      jQuery(window).on('resize', onResize.bind(this));
-    }
-  }, {
-    key: "_onAfterWindowResize",
-    value: function _onAfterWindowResize() {
-      this.splitTextInstance = this._doSplit();
-    }
-  }, {
     key: "_onWindowResize",
     value: function _onWindowResize() {
       var self = this;
@@ -254,6 +198,17 @@ function () {
       }
 
       self._onAfterWindowResize();
+    }
+  }, {
+    key: "_windowResize",
+    value: function _windowResize() {
+      var onResize = qazanaFrontend.debounce(500, this._onWindowResize);
+      jQuery(window).on('resize', onResize.bind(this));
+    }
+  }, {
+    key: "_onAfterWindowResize",
+    value: function _onAfterWindowResize() {
+      this.splitTextInstance = this._doSplit();
     }
   }]);
 
@@ -316,14 +271,7 @@ var Plugin = function Plugin($element) {
       this.animateIcon();
     } else {
       this.addColors(this.$element);
-    } // var args = {
-    //     triggerElement: this.$obj.get(),
-    //     offset: 10,
-    // };
-    // qazanaFrontendExt.inView( args, function() {
-    //    console.log( 'inview' );
-    // } );
-
+    }
   };
 
   this.animateIcon = function () {
@@ -331,9 +279,6 @@ var Plugin = function Plugin($element) {
     var vivusObj = new Vivus(self.$obj.get(0), {
       type: self.options.type,
       duration: self.options.duration,
-      // pathTimingFunction: Vivus.EASE_OUT,
-      // animTimingFunction: Vivus.LINEAR,
-      //start: 'manual',
       onReady: function onReady(vivus) {
         self.addColors.call(self, vivus);
       }

@@ -3351,6 +3351,9 @@ button.swiper-pagination-bullet {
   [data-custom-animations=true].qazana-animation-initialized {
     opacity: 1; }
 
+.words .word {
+  display: inline-block; }
+
 .qazana-text-lines,
 .qazana-text-line {
   display: block; }

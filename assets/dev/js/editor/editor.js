@@ -12,7 +12,7 @@ Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, opti
 	return _.template( rawTemplate, options );
 };
 
-const App = Marionette.Application.extend( {
+var App = Marionette.Application.extend( {
 	previewLoadedOnce: false,
 
 	helpers: require( 'qazana-editor-utils/helpers' ),

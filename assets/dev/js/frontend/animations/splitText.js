@@ -1,62 +1,5 @@
 import { QazanaRotateText } from './textRotator';
 import Splitting from 'splitting';
-// import { $, createElement, appendChild } from './splitting/utils/dom';
-// import { WORDS } from './splitting/plugins/words';
-// import { selectFrom, each } from './splitting/utils/arrays';
-
-// function detectLines( el, options, side ) {
-//     var items = $( options.matching || el.children, el );
-//     var c = {};
-
-//     each( items, function( w ) {
-//         if ( w.classList.contains( 'qazana-text-rotate-keywords' ) ) {
-//             var val = -7;
-//             w.innerHTML = w.innerHTML + ' ';
-//         } else {
-//             var val = Math.round( w[ side ] );
-//         }
-
-//         ( c[ val ] || ( c[ val ] = [] ) ).push( w );
-//     } );
-
-//     return Object.keys( c ).map( Number ).sort( byNumber ).map( selectFrom( c ) );
-// }
-
-// function byNumber( a, b ) {
-//     return a - b;
-// }
-
-// var LinesSplit = function( el, opts, ctx ) {
-//     var lines = [];
-//     var words = detectLines( el, { matching: ctx[ WORDS ] }, 'offsetTop' );
-//     var container = createElement( false, 'qazana-text-lines' );
-
-//     each( words, function( wordGroup, i ) {
-//         var line = createElement( container, 'qazana-text-line qazana-text-line-' + i );
-
-//         for ( var i = 0; i < wordGroup.length; ++i ) {
-//             line.appendChild( wordGroup[ i ] );
-//         }
-
-//         lines.push( line );
-//     } );
-
-//     // Append lines back into the parent
-//     appendChild( el, container );
-
-//     return lines;
-// };
-
-// var qazanaLines = {
-//     by: 'qazanaLines',
-//     depends: [ WORDS ],
-//     key: 'ql',
-//     split: function( el, options, ctx ) {
-//         return LinesSplit( el, options, ctx );
-//     },
-// };
-
-// Splitting.add( qazanaLines );
 
 var defaults = {
     target: '',
@@ -66,6 +9,8 @@ var defaults = {
 
 export default class SplitText {
     constructor( $element ) {
+        var self = this;
+
         this.element = $element[ 0 ];
         this.$element = $element;
 
@@ -73,6 +18,7 @@ export default class SplitText {
 
         this.options = targets.map( function( target ) {
             var item = jQuery.extend( {}, defaults, target );
+            item.target = self.$element.find( item.target ).get();
             return item;
         } );
 
@@ -89,8 +35,6 @@ export default class SplitText {
     }
 
     _doSplit() {
-        var self = this;
-
         if ( this.$element.hasClass( 'qazana-split-text-applied' ) ) {
             return false;
         }
@@ -98,7 +42,6 @@ export default class SplitText {
         var splitTextInstance = [];
 
         jQuery.each( this.options, function( _i, options ) {
-            options.target = self.$element.find( options.target ).get();
             splitTextInstance.push( new Splitting( options ) );
         } );
 
@@ -143,16 +86,6 @@ export default class SplitText {
         } );
     }
 
-    _windowResize() {
-        var onResize = qazanaFrontend.debounce( 500, this._onWindowResize );
-
-        jQuery( window ).on( 'resize', onResize.bind( this ) );
-    }
-
-    _onAfterWindowResize() {
-        this.splitTextInstance = this._doSplit();
-    }
-
     _onWindowResize() {
         var self = this;
 
@@ -161,5 +94,15 @@ export default class SplitText {
         }
 
         self._onAfterWindowResize();
+    }
+
+    _windowResize() {
+        var onResize = qazanaFrontend.debounce( 500, this._onWindowResize );
+
+        jQuery( window ).on( 'resize', onResize.bind( this ) );
+    }
+
+    _onAfterWindowResize() {
+        this.splitTextInstance = this._doSplit();
     }
 }
