@@ -139,6 +139,18 @@ class Group_Control_Animations extends Group_Control_Base {
                     'enable!' => '',
                 ],
             ];
+
+            $fields[$type . '_blinds_color'] = [
+                'label' => __( 'Blinds Color', 'qazana' ),
+                'type' => Controls_Manager::COLOR,
+                'default' => 1000,
+                'condition' => [
+                    $type . '_type' => [ 'blindsLeft', 'blindsRight', 'blindsTop', 'blindsBottom' ],
+                ],
+                'selectors' => [
+					'{{SELECTOR}} .qazana-clipping-mask' => 'background-color: {{VALUE}}',
+				],
+            ];
         }
 
 		return $fields;

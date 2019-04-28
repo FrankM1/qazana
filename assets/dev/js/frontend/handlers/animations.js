@@ -102,23 +102,6 @@ AnimationHandler = HandlerModule.extend( {
             return;
         }
 
-       // var targets = $();
-
-        // $elements.each( function() {
-        //     var $el = jQuery( this );
-        //     var animations = $el.data( 'animations' );
-        //     if ( animations && 'spacer.default' !== $el.data( 'element_type' ) ) {
-        //         jQuery.each( animations.inView, function( _i, target ) {
-        //             if ( $el.find( target.target ).length > 0 ) {
-        //                 targets.add( $el.find( target.target ) );
-        //             } else if ( jQuery( target.target ).is( '.qazana-element' ) ) {
-        //                 targets.add( $el );
-        //             } else {
-        //             }
-        //         } );
-        //     }
-        // } );
-
         self.splitText( settings );
         self.resetElement( $elements.not( 'qazana-widget-spacer' ), settings.inView[ 0 ] );
         self.animateElement( $elements.not( 'qazana-widget-spacer' ), settings.inView[ 0 ] );
@@ -133,7 +116,7 @@ AnimationHandler = HandlerModule.extend( {
             self.$element.addClass( 'qazana-perspective' );
         }
 
-        if ( 'blindsLeft' === this.settings._animation_inView_type ) {
+        if ( this.settings._animation_inView_type.startsWith( 'blinds' ) ) {
             this.$element.find( '.qazana-widget-container' ).append( '<div class="qazana-clipping-wrapper"><div class="qazana-clipping-mask"></div></div>' );
             $targets = this.$element.find( '.qazana-clipping-mask' );
         }
@@ -158,7 +141,7 @@ AnimationHandler = HandlerModule.extend( {
     animateElement: function( $targets, animationGroup ) {
         var self = this;
 
-        if ( 'blindsLeft' === this.settings._animation_inView_type ) {
+        if ( this.settings._animation_inView_type.startsWith( 'blinds' ) ) {
             $targets = this.$element.find( '.qazana-clipping-mask' );
         }
 
@@ -207,6 +190,8 @@ AnimationHandler = HandlerModule.extend( {
                 transition: '',
             } ).removeClass( 'qazana-will-change' );
         } );
+
+        this.$element.find( '.qazana-clipping-wrapper' ).remove();
 
         /* calling textRotator if there's any text-rotator inside the element, or if the element itself is text-rotator */
         // if ( this.$element.find( '[data-text-rotator]' ).length > 0 ) {

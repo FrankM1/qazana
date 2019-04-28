@@ -712,7 +712,7 @@ class Widget_Icon_Box extends Widget_Base {
 			if ( $filetype['ext'] === 'svg' ) {
                 $this->add_render_attribute( 'image', 'class', 'svg-icon-holder svg-baseline' );
                 $this->add_render_attribute( 'image', 'data-animate-icon', 'true' );
-				$this->add_render_attribute( 'image', 'data-color', $settings['icon_color'] );
+				$this->add_render_attribute( 'image', 'data-color', $this->get_settings_for_display( 'icon_color' ) );
 				$this->add_render_attribute( 'image', 'data-icon', qazana_maybe_ssl_url( $settings['image']['url'] ) );
             }
 

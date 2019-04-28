@@ -32,57 +32,14 @@ class Control_Animation_In extends Base_Data_Control {
                 ],
                 'Blinds' => [
                     'blindsLeft' => 'Blinds Left',
+                    'blindsRight' => 'Blinds Right',
+                    'blindsTop' => 'Blinds Top',
+                    'blindsBottom' => 'Blinds Bottom',
                 ],
                 'Text' => [
                     'textType' => 'Type',
                     'textFadeInPerspective' => 'Fade in Perspective',
                 ],
-				'Zooming' => [
-					'zoomIn' => 'Zoom In',
-					'zoomInDown' => 'Zoom In Down',
-					'zoomInLeft' => 'Zoom In Left',
-					'zoomInRight' => 'Zoom In Right',
-					'zoomInUp' => 'Zoom In Up',
-				],
-				'Bouncing' => [
-					'bounceIn' => 'Bounce In',
-					'bounceInDown' => 'Bounce In Down',
-					'bounceInLeft' => 'Bounce In Left',
-					'bounceInRight' => 'Bounce In Right',
-					'bounceInUp' => 'Bounce In Up',
-				],
-				'Sliding' => [
-                    'slideInDown' => 'Slide In Down',
-					'slideInDown' => 'Slide In Down',
-					'slideInLeft' => 'Slide In Left',
-					'slideInRight' => 'Slide In Right',
-					'slideInUp' => 'Slide In Up',
-				],
-				'Rotating' => [
-					'rotateIn' => 'Rotate In',
-					'rotateInDownLeft' => 'Rotate In Down Left',
-					'rotateInDownRight' => 'Rotate In Down Right',
-					'rotateInUpLeft' => 'Rotate In Up Left',
-					'rotateInUpRight' => 'Rotate In Up Right',
-				],
-				'Attention Seekers' => [
-					'bounce' => 'Bounce',
-					'flash' => 'Flash',
-					'pulse' => 'Pulse',
-					'rubberBand' => 'Rubber Band',
-					'shake' => 'Shake',
-					'headShake' => 'Head Shake',
-					'swing' => 'Swing',
-					'tada' => 'Tada',
-					'wobble' => 'Wobble',
-					'jello' => 'Jello',
-				],
-				'Light Speed' => [
-					'lightSpeedIn' => 'Light Speed In',
-				],
-				'Specials' => [
-					'rollIn' => 'Roll In',
-				],
 			];
 		}
 

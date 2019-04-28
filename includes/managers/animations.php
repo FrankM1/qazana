@@ -99,8 +99,8 @@ class Animation_Manager {
             'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
-                    'translateY' => 45,
-                    'translateZ' => -146,
+                    'translateY' => '45px',
+                    'translateZ' => '-146px',
                     'rotateX' => -66,
                     'opacity' => 0,
                 ],
@@ -114,13 +114,49 @@ class Animation_Manager {
         ],
         'blindsLeft' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeOutQuint',
+            'easing' => 'easeInOutQuad',
+            'animation' => [
+                'out' => [
+                    'translateX' => '100%',
+                ],
+                'in' => [
+                    'translateX' => [ '0%', '-100%' ],
+                ],
+            ],
+        ],
+        'blindsRight' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeInOutQuad',
             'animation' => [
                 'out' => [
                     'translateX' => '-100%',
                 ],
                 'in' => [
                     'translateX' => [ '0%', '100%' ],
+                ],
+            ],
+        ],
+        'blindsTop' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeInOutQuad',
+            'animation' => [
+                'out' => [
+                    'translateY' => '-100%',
+                ],
+                'in' => [
+                    'translateY' => [ '0%', '100%' ],
+                ],
+            ],
+        ],
+        'blindsBottom' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeInOutQuad',
+            'animation' => [
+                'out' => [
+                    'translateY' => '100%',
+                ],
+                'in' => [
+                    'translateY' => [ '0%', '-100%' ],
                 ],
             ],
         ],
