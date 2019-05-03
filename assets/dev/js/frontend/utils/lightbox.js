@@ -98,7 +98,7 @@ LightboxModule = ViewModule.extend( {
 		modal.onHide = function() {
 			DialogsManager.getWidgetType( 'lightbox' ).prototype.onHide.apply( modal, arguments );
 
-			modal.getElements( 'widgetContent' ).removeClass( 'qazana-element-animated' );
+			modal.getElements( 'widgetContent' ).removeClass( 'animated' );
 		};
 
 		switch ( options.type ) {
@@ -318,7 +318,7 @@ LightboxModule = ViewModule.extend( {
 		this.oldAnimation = animation;
 
 		if ( animation ) {
-			$widgetMessage.addClass( 'qazana-element-animated ' + animation );
+			$widgetMessage.addClass( 'animated ' + animation );
 		}
 	},
 

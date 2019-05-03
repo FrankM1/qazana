@@ -1328,7 +1328,7 @@ var PieChart = HandlerModule.extend({
         this.elements.$number.circleProgress(args).on('circle-animation-progress', function (event, progress) {
             self.elements.$numberValue.html(parseInt(self.elements.$numberValue.data('value') * progress));
         }).on('circle-animation-end', function () {
-            self.elements.$chart.addClass('qazana-element-animated');
+            self.elements.$chart.addClass('qazana-element-animation-done');
         });
     },
 
@@ -1342,11 +1342,11 @@ var PieChart = HandlerModule.extend({
 
         if (!animation) {
             this.elements.$number.html(this.elements.$number.data('value'));
-            this.elements.$chart.addClass('qazana-element-animated');
+            this.elements.$chart.addClass('qazana-element-animation-done');
         }
 
         qazanaFrontend.waypoint(this.elements.$chart, function () {
-            if (!self.elements.$chart.hasClass('qazana-element-animated')) {
+            if (!self.elements.$chart.hasClass('qazana-element-animation-done')) {
                 self.drawCircle();
             }
         }, { offset: '90%' });
@@ -1604,70 +1604,72 @@ var HandlerModule = __webpack_require__(3),
 
 GlobalHandler = HandlerModule.extend({
 
-	getElementName: function getElementName() {
-		return 'global';
-	},
+    getElementName: function getElementName() {
+        return 'global';
+    },
 
-	animate: function animate() {
-		var animationDuration,
-		    self = this,
-		    $element = this.$element,
-		    animation = this.getAnimation(),
-		    elementSettings = this.getElementSettings(),
-		    duration = elementSettings._animation_duration || '',
-		    animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
+    animate: function animate() {
+        var animationDuration,
+            self = this,
+            $element = this.$element,
+            animation = this.getAnimation(),
+            elementSettings = this.getElementSettings(),
+            duration = elementSettings._animation_duration || '',
+            animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
 
-		if ('fast' === duration) {
-			animationDuration = '500';
-		} else if ('slow' === duration) {
-			animationDuration = '2000';
-		} else {
-			animationDuration = '1000';
-		}
+        if ('fast' === duration) {
+            animationDuration = '500';
+        } else if ('slow' === duration) {
+            animationDuration = '2000';
+        } else {
+            animationDuration = '1000';
+        }
 
-		$element.removeClass('qazana-element-animated').removeClass(self.prevAnimation);
+        $element.removeClass('qazana-element-animation-done').removeClass(self.prevAnimation);
 
-		$element.css({
-			'animation-duration': animationDuration + 'ms'
-		});
+        $element.css({
+            'animation-duration': animationDuration + 'ms'
+        });
 
-		setTimeout(function () {
-			self.prevAnimation = animation;
-			$element.addClass(animation).addClass('qazana-element-animated');
-		}, animationDelay);
-	},
+        qazanaFrontend.waypoint($element, function () {
+            setTimeout(function () {
+                self.prevAnimation = animation;
+                $element.addClass(animation).addClass('qazana-element-animation-done');
+            }, animationDelay);
+        }, { offset: '90%' });
+    },
 
-	getAnimation: function getAnimation() {
-		var elementSettings = this.getElementSettings();
+    getAnimation: function getAnimation() {
+        var elementSettings = this.getElementSettings();
 
-		return elementSettings._animation_animated && elementSettings._animation_in;
-	},
+        return elementSettings._animation_animated && elementSettings._animation_in;
+    },
 
-	removeLoader: function removeLoader() {
-		this.$element.find('.qazana-loading-indicator').remove();
-		this.$element.removeClass('qazana-has-loading-indicator');
-		jQuery(window).trigger('resize');
-	},
+    removeLoader: function removeLoader() {
+        this.$element.find('.qazana-loading-indicator').remove();
+        this.$element.removeClass('qazana-has-loading-indicator');
+        jQuery(window).trigger('resize');
+    },
 
-	onInit: function onInit() {
-		HandlerModule.prototype.onInit.apply(this, arguments);
-		this.removeLoader();
+    onInit: function onInit() {
+        HandlerModule.prototype.onInit.apply(this, arguments);
+        this.removeLoader();
 
-		if ('animated' === this.getElementSettings('_animation_animated')) {
-			this.animate();
-		}
-	},
+        if ('animated' === this.getElementSettings('_animation_animated')) {
+            this.animate();
+        }
+    },
 
-	onElementChange: function onElementChange(propertyName) {
-		if (/^_?animation/.test(propertyName)) {
-			this.animate();
-		}
-	}
+    onElementChange: function onElementChange(propertyName) {
+        if (/^_?animation/.test(propertyName)) {
+            this.animate();
+        }
+    }
 
 });
 
 module.exports = function ($scope) {
-	new GlobalHandler({ $element: $scope });
+    new GlobalHandler({ $element: $scope });
 };
 
 /***/ }),
@@ -1997,7 +1999,7 @@ LightboxModule = ViewModule.extend({
 		modal.onHide = function () {
 			DialogsManager.getWidgetType('lightbox').prototype.onHide.apply(modal, arguments);
 
-			modal.getElements('widgetContent').removeClass('qazana-element-animated');
+			modal.getElements('widgetContent').removeClass('animated');
 		};
 
 		switch (options.type) {
@@ -2213,7 +2215,7 @@ LightboxModule = ViewModule.extend({
 		this.oldAnimation = animation;
 
 		if (animation) {
-			$widgetMessage.addClass('qazana-element-animated ' + animation);
+			$widgetMessage.addClass('animated ' + animation);
 		}
 	},
 

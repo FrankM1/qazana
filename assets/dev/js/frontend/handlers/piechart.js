@@ -64,7 +64,7 @@ var PieChart = HandlerModule.extend( {
             .on( 'circle-animation-progress', function( event, progress ) {
                 self.elements.$numberValue.html( parseInt( self.elements.$numberValue.data( 'value' ) * progress ) );
             } ).on( 'circle-animation-end', function() {
-                self.elements.$chart.addClass( 'qazana-element-animated' );
+                self.elements.$chart.addClass( 'qazana-element-animation-done' );
             } );
     },
 
@@ -78,11 +78,11 @@ var PieChart = HandlerModule.extend( {
 
         if ( ! animation ) {
             this.elements.$number.html( this.elements.$number.data( 'value' ) );
-            this.elements.$chart.addClass( 'qazana-element-animated' );
+            this.elements.$chart.addClass( 'qazana-element-animation-done' );
         }
 
         qazanaFrontend.waypoint( this.elements.$chart, function() {
-            if ( ! self.elements.$chart.hasClass( 'qazana-element-animated' ) ) {
+            if ( ! self.elements.$chart.hasClass( 'qazana-element-animation-done' ) ) {
               self.drawCircle();
             }
         }, { offset: '90%' } );

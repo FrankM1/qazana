@@ -1,4 +1,11 @@
 // Global style for animate.css
+.qazana-element-animated {
+    visibility: hidden;
+}
+
+.qazana-element-animation-done {
+    visibility: visible;
+}
 
 .qazana-hover-animation-grow {
     transition-duration: 0.3s;

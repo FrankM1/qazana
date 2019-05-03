@@ -24,16 +24,19 @@ GlobalHandler = HandlerModule.extend( {
             animationDuration = '1000';
         }
 
-		$element.removeClass( 'qazana-element-animated' ).removeClass( self.prevAnimation );
+		$element.removeClass( 'qazana-element-animation-done' ).removeClass( self.prevAnimation );
 
         $element.css( {
             'animation-duration': animationDuration + 'ms',
         } );
 
-		setTimeout( function() {
-			self.prevAnimation = animation;
-			$element.addClass( animation ).addClass( 'qazana-element-animated' );
-		}, animationDelay );
+        qazanaFrontend.waypoint( $element, function() {
+            setTimeout( function() {
+                self.prevAnimation = animation;
+                $element.addClass( animation ).addClass( 'qazana-element-animation-done' );
+            }, animationDelay );
+        }, { offset: '90%' } );
+
 	},
 
 	getAnimation: function() {

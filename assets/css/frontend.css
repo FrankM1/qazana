@@ -4037,6 +4037,12 @@ button.swiper-pagination-bullet {
   .qazana-lightbox .qazana-swiper-button-next {
     right: 10px; } }
 
+.qazana-element-animated {
+  visibility: hidden; }
+
+.qazana-element-animation-done {
+  visibility: visible; }
+
 .qazana-hover-animation-grow {
   -webkit-transition-duration: 0.3s;
        -o-transition-duration: 0.3s;
