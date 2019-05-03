@@ -8,17 +8,31 @@ GlobalHandler = HandlerModule.extend( {
 	},
 
 	animate: function() {
-		var self = this,
+        var animationDuration,
+            self = this,
 			$element = this.$element,
 			animation = this.getAnimation(),
-			elementSettings = this.getElementSettings(),
+            elementSettings = this.getElementSettings(),
+            duration = elementSettings._animation_duration || '',
 			animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
 
-		$element.removeClass( 'animated' ).removeClass( self.prevAnimation );
+        if ( 'fast' === duration ) {
+            animationDuration = '500';
+        } else if ( 'slow' === duration ) {
+            animationDuration = '2000';
+        } else {
+            animationDuration = '1000';
+        }
+
+		$element.removeClass( 'qazana-element-animated' ).removeClass( self.prevAnimation );
+
+        $element.css( {
+            'animation-duration': animationDuration + 'ms',
+        } );
 
 		setTimeout( function() {
 			self.prevAnimation = animation;
-			$element.addClass( animation ).addClass( 'animated' );
+			$element.addClass( animation ).addClass( 'qazana-element-animated' );
 		}, animationDelay );
 	},
 
@@ -36,7 +50,11 @@ GlobalHandler = HandlerModule.extend( {
 
 	onInit: function() {
 		HandlerModule.prototype.onInit.apply( this, arguments );
-       this.removeLoader();
+        this.removeLoader();
+
+        if ( 'animated' === this.getElementSettings( '_animation_animated' ) ) {
+            this.animate();
+        }
 	},
 
 	onElementChange: function( propertyName ) {

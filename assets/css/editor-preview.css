@@ -1522,7 +1522,7 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element-overlay .qaza
 body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-section {
   overflow: visible; }
 
-#qazana .animated {
+#qazana .qazana-element-animated {
   animation-fill-mode: none !important; }
 
 #qazana ul.qazana-editor-element-settings {

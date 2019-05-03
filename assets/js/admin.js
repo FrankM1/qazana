@@ -81,57 +81,28 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 169);
+/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/admin.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Module = __webpack_require__(2),
-    ViewModule;
-
-ViewModule = Module.extend({
-	elements: null,
-
-	getDefaultElements: function getDefaultElements() {
-		return {};
-	},
-
-	bindEvents: function bindEvents() {},
-
-	onInit: function onInit() {
-		this.initElements();
-
-		this.bindEvents();
-	},
-
-	initElements: function initElements() {
-		this.elements = this.getDefaultElements();
-	}
-});
-
-module.exports = ViewModule;
-
-/***/ }),
-
-/***/ 169:
+/***/ "../assets/dev/js/admin/admin.js":
+/*!***************************************!*\
+  !*** ../assets/dev/js/admin/admin.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 (function ($) {
-	var ViewModule = __webpack_require__(0);
+	var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js");
 
 	var QazanaAdmin = ViewModule.extend({
 
 		modules: {
-			Module: __webpack_require__(2)
+			Module: __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js")
 		},
 
 		maintenanceMode: null,
@@ -388,7 +359,7 @@ module.exports = ViewModule;
 		},
 
 		initMaintenanceMode: function initMaintenanceMode() {
-			var MaintenanceMode = __webpack_require__(170);
+			var MaintenanceMode = __webpack_require__(/*! qazana-admin/maintenance-mode */ "../assets/dev/js/admin/maintenance-mode.js");
 
 			this.maintenanceMode = new MaintenanceMode();
 		},
@@ -578,13 +549,17 @@ module.exports = ViewModule;
 
 /***/ }),
 
-/***/ 170:
+/***/ "../assets/dev/js/admin/maintenance-mode.js":
+/*!**************************************************!*\
+  !*** ../assets/dev/js/admin/maintenance-mode.js ***!
+  \**************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(0),
+var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js"),
     MaintenanceModeModule;
 
 MaintenanceModeModule = ViewModule.extend({
@@ -657,7 +632,11 @@ module.exports = MaintenanceModeModule;
 
 /***/ }),
 
-/***/ 2:
+/***/ "../assets/dev/js/utils/module.js":
+/*!****************************************!*\
+  !*** ../assets/dev/js/utils/module.js ***!
+  \****************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -873,6 +852,43 @@ Module.extend = function (properties) {
 };
 
 module.exports = Module;
+
+/***/ }),
+
+/***/ "../assets/dev/js/utils/view-module.js":
+/*!*********************************************!*\
+  !*** ../assets/dev/js/utils/view-module.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
+    ViewModule;
+
+ViewModule = Module.extend({
+	elements: null,
+
+	getDefaultElements: function getDefaultElements() {
+		return {};
+	},
+
+	bindEvents: function bindEvents() {},
+
+	onInit: function onInit() {
+		this.initElements();
+
+		this.bindEvents();
+	},
+
+	initElements: function initElements() {
+		this.elements = this.getDefaultElements();
+	}
+});
+
+module.exports = ViewModule;
 
 /***/ })
 

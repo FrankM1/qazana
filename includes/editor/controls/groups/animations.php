@@ -37,7 +37,7 @@ class Group_Control_Animations extends Group_Control_Base {
         		'animated' => 'animated',
         	],
 		];
-		
+
 		$fields['delay'] = [
         	'label' => __( 'Animation Delay', 'qazana' ),
         	'type' => Controls_Manager::NUMBER,
@@ -66,7 +66,7 @@ class Group_Control_Animations extends Group_Control_Base {
 
 		return $fields;
     }
- 
+
     protected function get_default_options() {
 		return [
 			'popover' => [
