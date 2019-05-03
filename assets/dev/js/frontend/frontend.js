@@ -258,28 +258,52 @@
 			).content.replace( /"/g, '' );
 		};
 
-		this.waypoint = function( $element, callback, options ) {
-			var defaultOptions = {
+		// this.waypoint = function( $element, callback, options ) {
+		// 	var defaultOptions = {
+		// 		offset: '100%',
+		// 		triggerOnce: true,
+		// 	};
+
+		// 	options = $.extend( defaultOptions, options );
+
+		// 	var correctCallback = function() {
+		// 		var element = this.element || this,
+		// 			result = callback.apply( element, arguments );
+
+		// 		// If is WayPoint new API and is frontend
+		// 		if ( options.triggerOnce && this.destroy ) {
+		// 			this.destroy();
+		// 		}
+
+		// 		return result;
+		// 	};
+
+		// 	return $element.qazanaWaypoint( correctCallback, options );
+        // };
+
+        this.waypoint = function( $element, callback, options ) {
+            var defaultOptions = {
 				offset: '100%',
 				triggerOnce: true,
 			};
 
 			options = $.extend( defaultOptions, options );
 
-			var correctCallback = function() {
-				var element = this.element || this,
-					result = callback.apply( element, arguments );
+            var inViewCallback = function inViewCallback( entries, observer ) {
+                entries.forEach( function( entry ) {
+                    if ( entry.isIntersecting ) {
+                        callback.apply( element, arguments );
+                        if ( options.triggerOnce && this.destroy ) {
+                            observer.unobserve( entry.target );
+                        }
+                    }
+                } );
+            };
 
-				// If is WayPoint new API and is frontend
-				if ( options.triggerOnce && this.destroy ) {
-					this.destroy();
-				}
+            var observer = new IntersectionObserver( inViewCallback );
 
-				return result;
-			};
-
-			return $element.qazanaWaypoint( correctCallback, options );
-		};
+            observer.observe( this.element );
+        };
 	};
 
 	window.qazanaFrontend = new QazanaFrontend();

@@ -407,7 +407,7 @@ var Plugin = function Plugin($element, options) {
   this.$keywords = jQuery('.qazana-text-keyword', this.$keywordsContainer);
   this.keywordsLength = this.$keywords.length;
   this.$activeKeyword = this.$keywords.eq(this.options.activeKeyword);
-  this.isFirstItterate = true;
+  this.isFirstIterate = true;
 
   this.init = function () {
     this.setContainerWidth(this.$activeKeyword);
@@ -449,9 +449,9 @@ var Plugin = function Plugin($element, options) {
       round: 100,
       duration: this.options.duration,
       easing: this.options.easing,
-      delay: this.isFirstItterate ? this.options.delay / 2 : this.options.delay,
+      delay: this.isFirstIterate ? this.options.delay / 2 : this.options.delay,
       changeBegin: function changeBegin() {
-        self.isFirstItterate = false;
+        self.isFirstIterate = false;
         self.setContainerWidth($nextKeyword);
         self.slideOutAciveKeyword();
       },
@@ -860,7 +860,24 @@ module.exports = ElementsHandler;
 
     this.getCurrentDeviceMode = function () {
       return getComputedStyle(elements.$qazana[0], ':after').content.replace(/"/g, '');
-    };
+    }; // this.waypoint = function( $element, callback, options ) {
+    // 	var defaultOptions = {
+    // 		offset: '100%',
+    // 		triggerOnce: true,
+    // 	};
+    // 	options = $.extend( defaultOptions, options );
+    // 	var correctCallback = function() {
+    // 		var element = this.element || this,
+    // 			result = callback.apply( element, arguments );
+    // 		// If is WayPoint new API and is frontend
+    // 		if ( options.triggerOnce && this.destroy ) {
+    // 			this.destroy();
+    // 		}
+    // 		return result;
+    // 	};
+    // 	return $element.qazanaWaypoint( correctCallback, options );
+    // };
+
 
     this.waypoint = function ($element, callback, options) {
       var defaultOptions = {
@@ -869,18 +886,20 @@ module.exports = ElementsHandler;
       };
       options = $.extend(defaultOptions, options);
 
-      var correctCallback = function correctCallback() {
-        var element = this.element || this,
-            result = callback.apply(element, arguments); // If is WayPoint new API and is frontend
+      var inViewCallback = function inViewCallback(entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            callback.apply(element, arguments);
 
-        if (options.triggerOnce && this.destroy) {
-          this.destroy();
-        }
-
-        return result;
+            if (options.triggerOnce && this.destroy) {
+              observer.unobserve(entry.target);
+            }
+          }
+        });
       };
 
-      return $element.qazanaWaypoint(correctCallback, options);
+      var observer = new IntersectionObserver(inViewCallback);
+      observer.observe(this.element);
     };
   };
 

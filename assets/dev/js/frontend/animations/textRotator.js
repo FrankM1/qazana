@@ -14,14 +14,11 @@ var Plugin = function( $element, options ) {
 
 	this.options = jQuery.extend( {}, defaults, options );
 
-	this.$keywordsContainer = jQuery(
-		'.qazana-text-rotate-keywords',
-		this.element
-	);
+	this.$keywordsContainer = jQuery( '.qazana-text-rotate-keywords', this.element );
 	this.$keywords = jQuery( '.qazana-text-keyword', this.$keywordsContainer );
 	this.keywordsLength = this.$keywords.length;
 	this.$activeKeyword = this.$keywords.eq( this.options.activeKeyword );
-    this.isFirstItterate = true;
+    this.isFirstIterate = true;
 
 	this.init = function() {
 		this.setContainerWidth( this.$activeKeyword );
@@ -75,11 +72,11 @@ var Plugin = function( $element, options ) {
 			round: 100,
 			duration: this.options.duration,
 			easing: this.options.easing,
-			delay: this.isFirstItterate ?
+			delay: this.isFirstIterate ?
 				this.options.delay / 2 :
 				this.options.delay,
 			changeBegin: function changeBegin() {
-				self.isFirstItterate = false;
+				self.isFirstIterate = false;
 
 				self.setContainerWidth( $nextKeyword );
 				self.slideOutAciveKeyword();
