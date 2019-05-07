@@ -99,7 +99,7 @@ class Widget_Heading extends Widget_Base {
 	public function get_animation_config() {
 		return [
             'inView' => [
-                '.qazana-heading-title.words',
+                '.qazana-heading-title .word',
             ],
             'splitText' => [
                 '.qazana-heading-title' => [
