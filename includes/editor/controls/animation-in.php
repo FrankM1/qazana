@@ -23,18 +23,23 @@ class Control_Animation_In extends Base_Data_Control {
 		if ( is_null( self::$_animations ) ) {
 			self::$_animations = [
 				'Fading' => [
-                    'fadeInPerspective' => 'Fade In Perspective',
 					'fadeIn' => 'Fade In',
 					'fadeInDown' => 'Fade In Down',
 					'fadeInLeft' => 'Fade In Left',
 					'fadeInRight' => 'Fade In Right',
 					'fadeInUp' => 'Fade In Up',
                 ],
+                'Fadingerspective' => [
+                    'fadeInPerspective' => 'Fade Down Perspective',
+                    'fadeUpPerspective' => 'Fade Up Perspective',
+                    'fadeLeftPerspective' => 'Fade Left Perspective',
+                    'fadeRightPerspective' => 'Fade Right Perspective',
+                ],
                 'Blinds' => [
                     'blindsLeft' => 'Blinds Left',
                     'blindsRight' => 'Blinds Right',
-                    'blindsTop' => 'Blinds Top',
-                    'blindsBottom' => 'Blinds Bottom',
+                    'blindsTop' => 'Blinds Up',
+                    'blindsBottom' => 'Blinds Down',
                 ],
                 'Text' => [
                     'textType' => 'Type',

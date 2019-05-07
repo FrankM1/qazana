@@ -860,38 +860,22 @@ module.exports = ElementsHandler;
 
     this.getCurrentDeviceMode = function () {
       return getComputedStyle(elements.$qazana[0], ':after').content.replace(/"/g, '');
-    }; // this.waypoint = function( $element, callback, options ) {
-    // 	var defaultOptions = {
-    // 		offset: '100%',
-    // 		triggerOnce: true,
-    // 	};
-    // 	options = $.extend( defaultOptions, options );
-    // 	var correctCallback = function() {
-    // 		var element = this.element || this,
-    // 			result = callback.apply( element, arguments );
-    // 		// If is WayPoint new API and is frontend
-    // 		if ( options.triggerOnce && this.destroy ) {
-    // 			this.destroy();
-    // 		}
-    // 		return result;
-    // 	};
-    // 	return $element.qazanaWaypoint( correctCallback, options );
-    // };
-
+    };
 
     this.waypoint = function ($element, callback, options) {
       var defaultOptions = {
         offset: '100%',
-        triggerOnce: true
+        triggerOnce: true,
+        destroy: true
       };
       options = $.extend(defaultOptions, options);
 
       var inViewCallback = function inViewCallback(entries, observer) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            callback.apply(element, arguments);
+            callback.apply($element.get(0), arguments);
 
-            if (options.triggerOnce && this.destroy) {
+            if (options.triggerOnce && options.destroy) {
               observer.unobserve(entry.target);
             }
           }
@@ -899,7 +883,7 @@ module.exports = ElementsHandler;
       };
 
       var observer = new IntersectionObserver(inViewCallback);
-      observer.observe(this.element);
+      observer.observe($element.get(0));
     };
   };
 
@@ -909,24 +893,6 @@ module.exports = ElementsHandler;
 if (!qazanaFrontend.isEditMode()) {
   jQuery(qazanaFrontend.init);
 }
-/**
- * @param {number} y
- * @return {?}
- */
-
-
-jQuery.fn.inView = function (y) {
-  y = void 0 !== y ? y : 100;
-  var $win = jQuery(window);
-  var coord = {
-    top: $win.scrollTop(),
-    left: $win.scrollLeft()
-  };
-  coord.right = coord.left + $win.width() - y;
-  coord.bottom = coord.top + $win.height() - y;
-  var rect2 = this.offset();
-  return rect2.right = rect2.left + this.outerWidth(), rect2.bottom = rect2.top + this.outerHeight(), !(coord.right < rect2.left || coord.left > rect2.right || coord.bottom < rect2.top || coord.top > rect2.bottom);
-};
 
 /***/ }),
 
@@ -1406,7 +1372,7 @@ AnimationHandler = HandlerModule.extend({
     var inviewCallback = function inviewCallback(entries, observer) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          self._runAnimations(entry.target);
+          self._runAnimations();
 
           observer.unobserve(entry.target);
         }
@@ -1422,15 +1388,15 @@ AnimationHandler = HandlerModule.extend({
   },
   _runAnimations: function _runAnimations() {
     var self = this;
-    var animationSettings = this.getAnimationSettings();
+    this.animationSettings = this.getAnimationSettings();
     this.settings = this.getElementSettings();
 
-    if (self.getElementSettings()._animation_enable && -1 !== self.getElementSettings()._animation_trigger.indexOf('inView')) {
+    if (this.animationSettings && this.settings._animation_enable && -1 !== this.settings._animation_trigger.indexOf('inView')) {
       if (!this.$element.is('.qazana-widget')) {
-        self.animateInBulk(animationSettings);
+        self.animateInBulk(this.animationSettings);
       } else {
-        self.splitText(animationSettings);
-        self.animate(animationSettings);
+        self.splitText(this.animationSettings);
+        self.animate(this.animationSettings);
       }
     }
   },
@@ -1441,10 +1407,10 @@ AnimationHandler = HandlerModule.extend({
     this.targetsIO();
   },
   onElementChange: function onElementChange(propertyName) {
-    var animationSettings = this.getAnimationSettings();
-
     if (/^_?animation/.test(propertyName)) {
-      this.animate(animationSettings);
+      this.animationSettings = this.getAnimationSettings();
+
+      this._runAnimations();
     }
   }
 });
@@ -4170,18 +4136,18 @@ var createText = root.createTextNode.bind(root);
 /**
  * # setProperty
  * Apply a CSS var
- * @param el{HTMLElement}
- * @param varName {string}
- * @param value {string|number}
+ * @param el{HTMLElement} 
+ * @param varName {string} 
+ * @param value {string|number}  
  */
 function setProperty(el, varName, value) {
     el.style.setProperty(varName, value);
-}
+} 
 
 /**
- *
- * @param {Node} el
- * @param {Node} child
+ * 
+ * @param {Node} el 
+ * @param {Node} child 
  */
 function appendChild(el, child) {
   return el.appendChild(child);
@@ -4189,10 +4155,10 @@ function appendChild(el, child) {
 
 function createElement(parent, key, text, whitespace) {
   var el = root.createElement('span');
-  key && (el.className = key);
-  if (text) {
+  key && (el.className = key); 
+  if (text) { 
       !whitespace && el.setAttribute("data-" + key, text);
-      el.textContent = text;
+      el.textContent = text; 
   }
   return (parent && appendChild(parent, el)) || el;
 }
@@ -4202,8 +4168,8 @@ function getData(el, key) {
 }
 
 /**
- *
- * @param e {import('../types').Target}
+ * 
+ * @param e {import('../types').Target} 
  * @param parent {HTMLElement}
  * @returns {HTMLElement[]}
  */
@@ -4303,10 +4269,10 @@ function resolvePlugins(by, parent, deps) {
 /**
  * Internal utility for creating plugins... essentially to reduce
  * the size of the library
- * @param {string} by
- * @param {string} key
- * @param {string[]} depends
- * @param {Function} split
+ * @param {string} by 
+ * @param {string} key 
+ * @param {string[]} depends 
+ * @param {Function} split 
  * @returns {import('./types').ISplittingPlugin}
  */
 function createPlugin(by, depends, key, split) {
@@ -4389,7 +4355,7 @@ function splitText(el, key, splitOn, includePrevious, preserveWhitespace) {
                 var splitEl = createElement(F, key, splitText);
                 elements.push(splitEl);
                 allElements.push(splitEl);
-            });
+            }); 
             // insert trailing space if there was one
             if (wholeText[wholeText.length - 1] === ' ') {
                 allElements.push(createText(' '));
@@ -4422,7 +4388,7 @@ var WORDS = 'words';
 var wordPlugin = createPlugin(
     /*by: */ WORDS,
     /*depends: */ _,
-    /*key: */ 'word',
+    /*key: */ 'word', 
     /*split: */ function(el) {
         return splitText(el, 'word', /\s+/, 0, 1)
     }
@@ -4433,7 +4399,7 @@ var CHARS = "chars";
 var charPlugin = createPlugin(
     /*by: */ CHARS,
     /*depends: */ [WORDS],
-    /*key: */ "char",
+    /*key: */ "char", 
     /*split: */ function(el, options, ctx) {
         var results = [];
 
@@ -4447,15 +4413,15 @@ var charPlugin = createPlugin(
 
 /**
  * # Splitting
- *
- * @param opts {import('./types').ISplittingOptions}
+ * 
+ * @param opts {import('./types').ISplittingOptions} 
  */
 function Splitting (opts) {
   opts = opts || {};
   var key = opts.key;
 
   return $(opts.target || '[data-splitting]').map(function(el) {
-    var ctx = el['🍌'];
+    var ctx = el['🍌'];  
     if (!opts.force && ctx) {
       return ctx;
     }
@@ -4471,7 +4437,7 @@ function Splitting (opts) {
         key2 && index(el, key2, results);
         ctx[pluginBy] = results;
         el.classList.add(pluginBy);
-      }
+      } 
     });
 
     el.classList.add('splitting');
@@ -4481,7 +4447,7 @@ function Splitting (opts) {
 
 /**
  * # Splitting.html
- *
+ * 
  * @param opts {import('./types').ISplittingOptions}
  */
 function html(opts) {
@@ -4523,7 +4489,7 @@ var linePlugin = createPlugin(
 var itemPlugin = createPlugin(
     /*by: */ 'items',
     /*depends: */ _,
-    /*key: */ 'item',
+    /*key: */ 'item', 
     /*split: */ function(el, options) {
         return $(options.matching || el.children, el)
     }
@@ -4532,7 +4498,7 @@ var itemPlugin = createPlugin(
 var rowPlugin = createPlugin(
     /*by: */ 'rows',
     /*depends: */ _,
-    /*key: */ 'row',
+    /*key: */ 'row', 
     /*split: */ function(el, options) {
         return detectGrid(el, options, "offsetTop");
     }
@@ -4541,7 +4507,7 @@ var rowPlugin = createPlugin(
 var columnPlugin = createPlugin(
     /*by: */ 'cols',
     /*depends: */ _,
-    /*key: */ "col",
+    /*key: */ "col", 
     /*split: */ function(el, options) {
         return detectGrid(el, options, "offsetLeft");
     }
@@ -4563,7 +4529,7 @@ var layoutPlugin = createPlugin(
         var rows =  opts.rows = +(opts.rows || getData(el, 'rows') || 1);
         var columns = opts.columns = +(opts.columns || getData(el, 'columns') || 1);
 
-        // Seek out the first <img> if the value is true
+        // Seek out the first <img> if the value is true 
         opts.image = opts.image || getData(el, 'image') || el.currentSrc || el.src;
         if (opts.image) {
             var img = $("img", el)[0];
@@ -4628,8 +4594,8 @@ var cellColumnPlugin = createPlugin(
 var cellPlugin = createPlugin(
     /*by: */ "cells",
     /*depends: */ ['cellRows', 'cellColumns'],
-    /*key: */ "cell",
-    /*split: */ function(el, opt, ctx) {
+    /*key: */ "cell", 
+    /*split: */ function(el, opt, ctx) { 
         // re-index the layout as the cells
         return ctx[LAYOUT];
     }

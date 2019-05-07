@@ -340,17 +340,6 @@ class Editor {
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
-		// Hack for waypoint with editor mode.
-		wp_register_script(
-			'waypoints',
-			qazana()->core_assets_url . 'lib/waypoints/waypoints-for-editor.js',
-			[
-				'jquery',
-			],
-			'4.0.1',
-			true
-		);
-
 		wp_register_script(
 			'backbone-marionette',
 			qazana()->core_assets_url . 'lib/backbone/backbone.marionette' . $suffix . '.js',

@@ -243,7 +243,7 @@ AnimationHandler = HandlerModule.extend( {
         var inviewCallback = function inviewCallback( entries, observer ) {
             entries.forEach( function( entry ) {
                 if ( entry.isIntersecting ) {
-                    self._runAnimations( entry.target );
+                    self._runAnimations();
                     observer.unobserve( entry.target );
                 }
             } );
@@ -261,15 +261,15 @@ AnimationHandler = HandlerModule.extend( {
     _runAnimations: function() {
         var self = this;
 
-        var animationSettings = this.getAnimationSettings();
+        this.animationSettings = this.getAnimationSettings();
         this.settings = this.getElementSettings();
 
-        if ( self.getElementSettings()._animation_enable && -1 !== self.getElementSettings()._animation_trigger.indexOf( 'inView' ) ) {
+        if ( this.animationSettings && this.settings._animation_enable && -1 !== this.settings._animation_trigger.indexOf( 'inView' ) ) {
             if ( ! this.$element.is( '.qazana-widget' ) ) {
-                self.animateInBulk( animationSettings );
+                self.animateInBulk( this.animationSettings );
             } else {
-                self.splitText( animationSettings );
-                self.animate( animationSettings );
+                self.splitText( this.animationSettings );
+                self.animate( this.animationSettings );
             }
         }
     },
@@ -282,13 +282,11 @@ AnimationHandler = HandlerModule.extend( {
     },
 
     onElementChange: function( propertyName ) {
-        var animationSettings = this.getAnimationSettings();
-
         if ( /^_?animation/.test( propertyName ) ) {
-            this.animate( animationSettings );
+            this.animationSettings = this.getAnimationSettings();
+            this._runAnimations();
         }
     },
-
 } );
 
 module.exports = function( $scope ) {

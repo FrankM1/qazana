@@ -95,7 +95,7 @@ class Widget_Icon_Box extends Widget_Base {
 	public function get_animation_config() {
 		return [
             'inView' => [
-                '.qazana-widget-container'
+                '.qazana-icon-box-icon, .qazana-icon-box-title, .qazana-icon-box-description'
             ],
             'svg' => [
                 '.svg-icon-holder' => [

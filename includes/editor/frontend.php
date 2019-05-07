@@ -246,16 +246,6 @@ class Frontend {
 		);
 
 		wp_register_script(
-			'waypoints',
-			qazana()->core_assets_url . 'lib/waypoints/waypoints' . $suffix . '.js',
-			[
-				'jquery',
-			],
-			'2.0.2',
-			true
-		);
-
-		wp_register_script(
 			'jquery-slick',
 			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
 			[
@@ -305,7 +295,6 @@ class Frontend {
 			'qazana-frontend',
 			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
 			[   'anime',
-                'waypoints',
                 'vivus',
                 'fontfaceobserver',
 				'qazana-dialog',

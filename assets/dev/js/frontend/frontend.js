@@ -258,33 +258,11 @@
 			).content.replace( /"/g, '' );
 		};
 
-		// this.waypoint = function( $element, callback, options ) {
-		// 	var defaultOptions = {
-		// 		offset: '100%',
-		// 		triggerOnce: true,
-		// 	};
-
-		// 	options = $.extend( defaultOptions, options );
-
-		// 	var correctCallback = function() {
-		// 		var element = this.element || this,
-		// 			result = callback.apply( element, arguments );
-
-		// 		// If is WayPoint new API and is frontend
-		// 		if ( options.triggerOnce && this.destroy ) {
-		// 			this.destroy();
-		// 		}
-
-		// 		return result;
-		// 	};
-
-		// 	return $element.qazanaWaypoint( correctCallback, options );
-        // };
-
         this.waypoint = function( $element, callback, options ) {
             var defaultOptions = {
 				offset: '100%',
-				triggerOnce: true,
+                triggerOnce: true,
+                destroy: true,
 			};
 
 			options = $.extend( defaultOptions, options );
@@ -292,8 +270,8 @@
             var inViewCallback = function inViewCallback( entries, observer ) {
                 entries.forEach( function( entry ) {
                     if ( entry.isIntersecting ) {
-                        callback.apply( element, arguments );
-                        if ( options.triggerOnce && this.destroy ) {
+                        callback.apply( $element.get( 0 ), arguments );
+                        if ( options.triggerOnce && options.destroy ) {
                             observer.unobserve( entry.target );
                         }
                     }
@@ -302,7 +280,7 @@
 
             var observer = new IntersectionObserver( inViewCallback );
 
-            observer.observe( this.element );
+            observer.observe( $element.get( 0 ) );
         };
 	};
 
@@ -312,20 +290,3 @@
 if ( ! qazanaFrontend.isEditMode() ) {
 	jQuery( qazanaFrontend.init );
 }
-
-/**
- * @param {number} y
- * @return {?}
- */
-jQuery.fn.inView = function( y ) {
-    y = void 0 !== y ? y : 100;
-    var $win = jQuery( window );
-    var coord = {
-        top: $win.scrollTop(),
-        left: $win.scrollLeft(),
-    };
-    coord.right = coord.left + $win.width() - y;
-    coord.bottom = coord.top + $win.height() - y;
-    var rect2 = this.offset();
-    return rect2.right = rect2.left + this.outerWidth(), rect2.bottom = rect2.top + this.outerHeight(), ! ( coord.right < rect2.left || ( coord.left > rect2.right || ( coord.bottom < rect2.top || coord.top > rect2.bottom ) ) );
-};

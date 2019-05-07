@@ -671,6 +671,31 @@ class Widget_Testimonial extends Widget_Base {
 	}
 
     /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [
+                '.slick-current',
+            ],
+            'splitText' => [
+                'h1, h2, h3, h4, h5, h6, p' => [
+                    'options' => [
+                        'type' => 'words',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
 	 * Render testimonial widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.

@@ -19,6 +19,7 @@ class Animation_Manager {
         'entry-exit',
         'parallax',
         'hover',
+        'grid',
     ];
 
     /**
@@ -28,7 +29,7 @@ class Animation_Manager {
 	private $defaults = [
         'fadeIn' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeInOutQuad',
+            'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
                     'opacity' => 0,
@@ -40,7 +41,7 @@ class Animation_Manager {
         ],
         'fadeInDown' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeInOutQuad',
+            'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
                     'opacity' => 0,
@@ -54,7 +55,7 @@ class Animation_Manager {
         ],
         'fadeInLeft' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeInOutQuad',
+            'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
                     'opacity' => 0,
@@ -68,7 +69,7 @@ class Animation_Manager {
         ],
         'fadeInRight' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeInOutQuad',
+            'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
                     'opacity' => 0,
@@ -82,7 +83,7 @@ class Animation_Manager {
         ],
         'fadeInUp' => [
             'group' => [ 'entry-exit' ],
-            'easing' => 'easeInOutQuad',
+            'easing' => 'easeOutQuint',
             'animation' => [
                 'out' => [
                     'opacity' => 0,
@@ -109,6 +110,64 @@ class Animation_Manager {
                     'translateZ' => 0,
                     'rotateX' => 0,
                     'opacity' => 1,
+                ],
+            ],
+        ],
+        'fadeUpPerspective' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeOutQuint',
+            'animation' => [
+                'out' => [
+                    'translateY' => '-45px',
+                    'translateZ' => '-146px',
+                    'rotateX' => -66,
+                    'opacity' => 0,
+                ],
+                'in' => [
+                    'translateY' => 0,
+                    'translateZ' => 0,
+                    'rotateX' => 0,
+                    'opacity' => 1,
+                ],
+            ],
+        ],
+        'fadeLeftPerspective' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeOutQuint',
+            'animation' => [
+                'out' => [
+                    "translateX" => '144',
+                    "scaleX" =>' 0.75',
+                    "scaleY" => '0.75',
+                    "rotateY" => '-65',
+                    "opacity" => '0'
+                ],
+                'in' => [
+                    "translateX" => 0,
+                    "scaleX" => 1,
+                    "scaleY" => 1,
+                    "rotateY" => 0,
+                    "opacity" => 1
+                ],
+            ],
+        ],
+        'fadeRightPerspective' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeOutQuint',
+            'animation' => [
+                'out' => [
+                    "translateX" => '-144',
+                    "scaleX" =>' 0.75',
+                    "scaleY" => '0.75',
+                    "rotateY" => '-65',
+                    "opacity" => '0'
+                ],
+                'in' => [
+                    "translateX" => 0,
+                    "scaleX" => 1,
+                    "scaleY" => 1,
+                    "rotateY" => 0,
+                    "opacity" => 1
                 ],
             ],
         ],
@@ -160,6 +219,113 @@ class Animation_Manager {
                 ],
             ],
         ],
+
+        'move-up' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 200,
+            'animation' => [
+                'out' => [
+                    'translateY' => '40px',
+                ],
+                'in' => [
+                    'translateY' => '0',
+                ],
+            ],
+        ],
+
+        'bounce' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 0,
+            'animation' => [
+                'out' => [
+                    'scale' => '.001',
+                ],
+                'in' => [
+                    'scale' => '0',
+                ],
+            ],
+        ],
+
+        'scale' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 100,
+            'animation' => [
+                'out' => [
+                    'scale' => '.08',
+                ],
+                'in' => [
+                    'scale' => '0',
+                ],
+            ],
+        ],
+
+        'flip' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 100,
+            'animation' => [
+                'out' => [
+                    'rotate3d' => '1, 0, 0, -80deg',
+                ],
+                'in' => [
+                    'rotate3d' => '0',
+                ],
+            ],
+        ],
+
+        'fall-perspective' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 100,
+            'animation' => [
+                'out' => [
+                    'translateZ' => '100px',
+                    'translateY' => '75px',
+                    'rotate3d' => '-1, 1, 0, 30deg'
+                ],
+                'in' => [
+                    'rotate3d' => '0',
+                    'translateZ' => 0,
+                    'translateY' => 0,
+                    'rotate3d' => 0
+                ],
+            ],
+        ],
+        'slide-in-left' => [
+            'group' => [ 'grid' ],
+            'easing' => 'easeInOutQuad',
+            'duration' => 100,
+            'animation' => [
+                'out' => [
+                    'translateX' => '-30%',
+                ],
+                'in' => [
+                    'translateX' => 0
+                ],
+            ],
+        ],
+
+        'up-perspective' => [
+            'group' => [ 'grid' ],
+            'easing' => 'cubic-bezier(.1,.3,.27,1)',
+            'duration' => 100,
+            'animation' => [
+                'out' => [
+                    'translateZ' => '0',
+                    'translateY' => '100px',
+                    'rotateX' => '24deg'
+                ],
+                'in' => [
+                    'translateZ' => '0',
+                    'translateY' => '0',
+                    'rotateX' => '0'
+                ],
+            ],
+        ],
+
     ];
 
 	/**

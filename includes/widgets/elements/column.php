@@ -84,6 +84,22 @@ class Element_Column extends Element_Base {
 		return 'eicon-column';
 	}
 
+    /**
+	 * Get animation targets.
+	 *
+	 * Retrieve the animation targets.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_animation_config() {
+		return [
+            'inView' => [ '.qazana-widget' ],
+        ];
+    }
+
 	/**
 	 * Get default edit tools.
 	 *
@@ -127,6 +143,94 @@ class Element_Column extends Element_Base {
 
 		return $edit_tools;
 	}
+
+    public function parse_animation_attributes( $type, $args ) {
+        $animationType = $this->get_settings_for_display( "_animation_{$type}_type" );
+        $config = qazana()->animations_manager->get_animation( $animationType );
+
+        $defaults = [
+            'duration' => $this->get_settings_for_display( "_animation_{$type}_duration" ),
+            'startDelay' => $this->get_settings_for_display( "_animation_{$type}_start_delay" ),
+            'delay' => $this->get_settings_for_display( "_animation_{$type}_delay" ),
+            'direction' => 'forward',
+            'easing' => $config['easing'],
+            'initValues' => $config['animation']['out'],
+            'finalValues' => $config['animation']['in'],
+        ];
+
+        return wp_parse_args( $args, $defaults );
+    }
+
+    protected function _add_animation_attributes() {
+        if ( $this->get_settings_for_display( '_animation_enable' ) ) {
+
+            $this->add_render_attribute( '_wrapper', 'data-custom-animations', 'true' );
+
+            $options = [];
+
+            foreach ( $this->get_animation_config() as $type => $target ) {
+                if ( count( $target ) !== count( $target, COUNT_RECURSIVE ) ) {
+                    foreach ( $target as $selector => $selector_options ) {
+                        switch ( $type ) {
+                            case 'svg':
+                                $options[$type][] = [
+                                    'target' => $selector,
+                                ];
+                            break;
+
+                            case 'splitText':
+                                $options[$type][] = [
+                                    'target' => $selector,
+                                    'type' => $selector_options['options']['type'],
+                                ];
+                            break;
+
+                            case 'hover':
+                                $options[$type][] = $this->parse_animation_attributes( 'hover', [
+                                    'target' => $selector
+                                ] );
+                            break;
+                            case 'inView':
+                                $options[$type][] = $this->parse_animation_attributes( 'inView', [
+                                    'target' => $selector
+                                ] );
+                                break;
+                        }
+                    }
+                } else {
+                    foreach ( $target as $selector ) {
+                        switch ( $type ) {
+                            case 'svg':
+                                $options[$type][] = [
+                                    'target' => $selector,
+                                ];
+                            break;
+
+                            case 'splitText':
+                                $options[$type][] = [
+                                    'target' => $selector,
+                                ];
+                            break;
+
+                            case 'hover':
+                                $options[$type][] = $this->parse_animation_attributes( 'hover', [
+                                    'target' => $selector
+                                ] );
+                            break;
+                            case 'inView':
+                                $options[$type][] = $this->parse_animation_attributes( 'inView', [
+                                    'target' => $selector
+                                ] );
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+            $this->add_render_attribute( '_wrapper', 'data-animations', json_encode( $options ) );
+        }
+    }
 
 	/**
 	 * Register column controls.

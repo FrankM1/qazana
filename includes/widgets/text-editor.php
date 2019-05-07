@@ -100,15 +100,15 @@ class Widget_Text_Editor extends Widget_Base {
 	public function get_animation_config() {
 		return [
             'inView' => [
-                '.qazana-inner-wrapper .qazana-text-line',
+                '.qazana-inner-wrapper .words',
             ],
-            // 'splitText' => [
-            //     'h1, h2, h3, h4, h5, h6, p' => [
-            //         'options' => [
-            //             'type' => 'lines',
-            //         ],
-            //     ],
-            // ],
+            'splitText' => [
+                'h1, h2, h3, h4, h5, h6, p' => [
+                    'options' => [
+                        'type' => 'words',
+                    ],
+                ],
+            ],
         ];
     }
 

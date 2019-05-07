@@ -72,6 +72,7 @@ class Group_Control_Animations extends Group_Control_Base {
             'exit' => __( 'Exit', 'qazana' ),
             'hover' => __( 'Hover', 'qazana' ),
             'svg' => __( 'SVG Paths', 'qazana' ),
+            'parallax' => __( 'Parallax Scroll', 'qazana' ),
         ];
 
         $fields['trigger'] = [
@@ -89,6 +90,10 @@ class Group_Control_Animations extends Group_Control_Base {
         $options = [];
 
         foreach ( $animation_types as $type => $label ) {
+
+            if ( 'parallax' === $type || 'svg'  === $type ) {
+                continue;
+            }
 
             $fields[ $type . '_heading' ] = [
                 'label' => $label,
@@ -152,6 +157,87 @@ class Group_Control_Animations extends Group_Control_Base {
 				],
             ];
         }
+
+        $fields[ 'parallax_heading' ] = [
+            'label'        => esc_html__( 'Parallax Animation', 'qazana' ),
+            'type' => Controls_Manager::HEADING,
+            'separator' => 'before',
+            'condition' => [
+                'trigger' => 'parallax',
+                'enable!' => '',
+            ],
+        ];
+
+        $fields['parallax_axis'] = [
+                'type'               => \Qazana\Controls_Manager::SELECT,
+                'label'              => esc_html__( 'Movement Axis', 'qazana' ),
+                'default'            => 'y',
+                'frontend_available' => true,
+                'options'            => [
+                    'y' => esc_html__( 'Vertical | (Y axis)', 'qazana' ),
+                    'x' => esc_html__( 'Horizontal -- (X axis)', 'qazana' ),
+                ],
+                'condition' => [
+                    'trigger' => 'parallax',
+                    'enable!' => '',
+                ],
+            ];
+
+            $fields['parallax_speed'] = [
+                'label'              => esc_html__( 'Movement Acceleration', 'qazana' ),
+                'type'               => Controls_Manager::SLIDER,
+                'default'            => [
+                    'size' => 0.5,
+                ],
+                'range' => [
+                    'px' => [
+                        'min'  => -5,
+                        'max'  => 5,
+                        'step' => 0.1,
+                    ]
+                ],
+                'condition' => [
+                    'trigger' => 'parallax',
+                    'enable!' => '',
+                ],
+                'frontend_available' => true,
+            ];
+
+            $fields['parallax_invert'] = [
+                'label'        => esc_html__( 'Invert', 'qazana' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Yes', 'qazana' ),
+                'label_off'    => esc_html__( 'No', 'qazana' ),
+                'return_value' => 'true',
+                'default'      => 'false',
+                'condition' => array(
+                    'trigger' => 'parallax',
+                    'enable!' => '',
+                ),
+                'frontend_available' => true,
+            ];
+
+            $fields['parallax_on'] = [
+                'label'       => __( 'Sticky On', 'qazana' ),
+                'type'        => Controls_Manager::SELECT2,
+                'multiple'    => true,
+                'label_block' => 'true',
+                'default'     => array(
+                    'desktop',
+                    'tablet',
+                ),
+                'options'     => array(
+                    'desktop' => __( 'Desktop', 'qazana' ),
+                    'tablet'  => __( 'Tablet', 'qazana' ),
+                    'mobile'  => __( 'Mobile', 'qazana' ),
+                ),
+                'condition' => array(
+                    'trigger' => 'parallax',
+                    'enable!' => '',
+                ),
+                'render_type' => 'template',
+                'frontend_available' => true,
+            ];
 
 		return $fields;
     }
