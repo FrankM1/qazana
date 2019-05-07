@@ -45,11 +45,25 @@ class Animation_Manager {
             'animation' => [
                 'out' => [
                     'opacity' => 0,
-                    'translateY' => '40px',
+                    'translateY' => '-40px',
                 ],
                 'in' => [
                     'opacity' => 1,
                     'translateY' => '0',
+                ],
+            ],
+        ],
+        'fadeInUp' => [
+            'group' => [ 'entry-exit' ],
+            'easing' => 'easeOutQuint',
+            'animation' => [
+                'out' => [
+                    'opacity' => 0,
+                    'translateY' => '40px',
+                ],
+                'in' => [
+                    'opacity' => 1,
+                    'translateY' => 0,
                 ],
             ],
         ],
@@ -74,20 +88,6 @@ class Animation_Manager {
                 'out' => [
                     'opacity' => 0,
                     'translateX' => '40px',
-                ],
-                'in' => [
-                    'opacity' => 1,
-                    'translateX' => 0,
-                ],
-            ],
-        ],
-        'fadeInUp' => [
-            'group' => [ 'entry-exit' ],
-            'easing' => 'easeOutQuint',
-            'animation' => [
-                'out' => [
-                    'opacity' => 0,
-                    'translateX' => '-40px',
                 ],
                 'in' => [
                     'opacity' => 1,
