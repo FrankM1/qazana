@@ -105,7 +105,7 @@ class Widget_Text_Editor extends Widget_Base {
             'splitText' => [
                 'h1, h2, h3, h4, h5, h6, p' => [
                     'options' => [
-                        'type' => 'words',
+                        'type' => 'lines',
                     ],
                 ],
             ],

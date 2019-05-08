@@ -104,7 +104,7 @@ class Widget_Heading extends Widget_Base {
             'splitText' => [
                 '.qazana-heading-title' => [
                     'options' => [
-                        'type' => 'words',
+                        'type' => 'lines',
                     ],
                 ],
             ],

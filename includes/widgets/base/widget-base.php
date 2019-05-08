@@ -102,15 +102,10 @@ abstract class Widget_Base extends Element_Base {
 	public function get_animation_config() {
 		return [
             'inView' => [
-                '.qazana-inner-wrapper',
+                '.qazana-inner-wrapper, img',
             ],
             'splitText' => [
-                'h1, h2, h3, h4, h5, h6' => [
-                    'options' => [
-                        'type' => 'words',
-                    ],
-                ],
-                'p' => [
+                'h1, h2, h3, h4, h5, h6, p' => [
                     'options' => [
                         'type' => 'lines',
                     ],
