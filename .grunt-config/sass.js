@@ -1,10 +1,9 @@
-const nodesass = require('node-sass');
-const path = require("path");
+const sass = require('node-sass');
 
-const sass = {
+module.exports = {
 	dist: {
 		options: {
-            implementation: nodesass,
+            implementation: sass,
 			sourceMap: true,
             includePaths: [ 'assets/dev/scss', 'node_modules' ],
 		},
@@ -26,5 +25,3 @@ const sass = {
 		],
 	},
 };
-
-module.exports = sass;

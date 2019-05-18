@@ -81,16 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/gutenberg.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 183);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "../assets/dev/js/admin/gutenberg.js":
-/*!*******************************************!*\
-  !*** ../assets/dev/js/admin/gutenberg.js ***!
-  \*******************************************/
-/*! no static exports found */
+/***/ 183:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

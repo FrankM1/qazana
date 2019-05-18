@@ -81,132 +81,60 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/new-template/new-template.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 184);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "../assets/dev/js/admin/new-template/layout.js":
-/*!*****************************************************!*\
-  !*** ../assets/dev/js/admin/new-template/layout.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 0:
+/***/ (function(module, exports) {
 
-"use strict";
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
 
-
-var BaseModalLayout = __webpack_require__(/*! qazana-templates/views/base-modal-layout */ "../assets/dev/js/editor/components/template-library/views/base-modal-layout.js"),
-    NewTemplateView = __webpack_require__(/*! qazana-admin/new-template/view */ "../assets/dev/js/admin/new-template/view.js");
-
-module.exports = BaseModalLayout.extend({
-  getModalOptions: function getModalOptions() {
-    return {
-      id: 'qazana-new-template-modal'
-    };
-  },
-  getLogoOptions: function getLogoOptions() {
-    return {
-      title: qazanaAdmin.config.i18n.new_template
-    };
-  },
-  initialize: function initialize() {
-    BaseModalLayout.prototype.initialize.apply(this, arguments);
-    this.showLogo();
-    this.showContentView();
-  },
-  getDialogsManager: function getDialogsManager() {
-    return qazanaAdmin.getDialogsManager();
-  },
-  showContentView: function showContentView() {
-    this.modalContent.show(new NewTemplateView());
-  }
-});
+module.exports = _interopRequireDefault;
 
 /***/ }),
 
-/***/ "../assets/dev/js/admin/new-template/new-template.js":
-/*!***********************************************************!*\
-  !*** ../assets/dev/js/admin/new-template/new-template.js ***!
-  \***********************************************************/
-/*! no static exports found */
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js"),
-    NewTemplateLayout = __webpack_require__(/*! qazana-admin/new-template/layout */ "../assets/dev/js/admin/new-template/layout.js");
+var Module = __webpack_require__(3),
+    ViewModule;
 
-var NewTemplateModule = ViewModule.extend({
-  getDefaultSettings: function getDefaultSettings() {
-    return {
-      selectors: {
-        addButton: '.page-title-action:first, #qazana-template-library-add-new'
-      }
-    };
-  },
+ViewModule = Module.extend({
+  elements: null,
   getDefaultElements: function getDefaultElements() {
-    var selectors = this.getSettings('selectors');
-    return {
-      $addButton: jQuery(selectors.addButton)
-    };
+    return {};
   },
-  bindEvents: function bindEvents() {
-    this.elements.$addButton.on('click', this.onAddButtonClick);
-  },
+  bindEvents: function bindEvents() {},
   onInit: function onInit() {
-    ViewModule.prototype.onInit.apply(this, arguments);
-    this.layout = new NewTemplateLayout();
-
-    if ('#add_new' === location.hash) {
-      this.layout.showModal();
-    }
+    this.initElements();
+    this.bindEvents();
   },
-  onAddButtonClick: function onAddButtonClick(event) {
-    event.preventDefault();
-    this.layout.showModal();
+  initElements: function initElements() {
+    this.elements = this.getDefaultElements();
   }
 });
-jQuery(function () {
-  window.qazanaNewTemplate = new NewTemplateModule();
-});
+module.exports = ViewModule;
 
 /***/ }),
 
-/***/ "../assets/dev/js/admin/new-template/view.js":
-/*!***************************************************!*\
-  !*** ../assets/dev/js/admin/new-template/view.js ***!
-  \***************************************************/
-/*! no static exports found */
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = Marionette.ItemView.extend({
-  id: 'qazana-new-template-dialog-content',
-  template: '#tmpl-qazana-new-template',
-  ui: {},
-  events: {},
-  onRender: function onRender() {}
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/components/template-library/views/base-modal-layout.js":
-/*!**************************************************************************************!*\
-  !*** ../assets/dev/js/editor/components/template-library/views/base-modal-layout.js ***!
-  \**************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TemplateLibraryHeaderView = __webpack_require__(/*! qazana-templates/views/parts/header */ "../assets/dev/js/editor/components/template-library/views/parts/header.js"),
-    TemplateLibraryHeaderLogoView = __webpack_require__(/*! qazana-templates/views/parts/header-parts/logo */ "../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js"),
-    TemplateLibraryLoadingView = __webpack_require__(/*! qazana-templates/views/parts/loading */ "../assets/dev/js/editor/components/template-library/views/parts/loading.js");
+var TemplateLibraryHeaderView = __webpack_require__(21),
+    TemplateLibraryHeaderLogoView = __webpack_require__(16),
+    TemplateLibraryLoadingView = __webpack_require__(22);
 
 module.exports = Marionette.LayoutView.extend({
   el: function el() {
@@ -276,11 +204,7 @@ module.exports = Marionette.LayoutView.extend({
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js":
-/*!********************************************************************************************!*\
-  !*** ../assets/dev/js/editor/components/template-library/views/parts/header-parts/logo.js ***!
-  \********************************************************************************************/
-/*! no static exports found */
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -308,11 +232,103 @@ module.exports = Marionette.ItemView.extend({
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/components/template-library/views/parts/header.js":
-/*!*********************************************************************************!*\
-  !*** ../assets/dev/js/editor/components/template-library/views/parts/header.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
+/***/ 184:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ViewModule = __webpack_require__(1),
+    NewTemplateLayout = __webpack_require__(185);
+
+var NewTemplateModule = ViewModule.extend({
+  getDefaultSettings: function getDefaultSettings() {
+    return {
+      selectors: {
+        addButton: '.page-title-action:first, #qazana-template-library-add-new'
+      }
+    };
+  },
+  getDefaultElements: function getDefaultElements() {
+    var selectors = this.getSettings('selectors');
+    return {
+      $addButton: jQuery(selectors.addButton)
+    };
+  },
+  bindEvents: function bindEvents() {
+    this.elements.$addButton.on('click', this.onAddButtonClick);
+  },
+  onInit: function onInit() {
+    ViewModule.prototype.onInit.apply(this, arguments);
+    this.layout = new NewTemplateLayout();
+
+    if ('#add_new' === location.hash) {
+      this.layout.showModal();
+    }
+  },
+  onAddButtonClick: function onAddButtonClick(event) {
+    event.preventDefault();
+    this.layout.showModal();
+  }
+});
+jQuery(function () {
+  window.qazanaNewTemplate = new NewTemplateModule();
+});
+
+/***/ }),
+
+/***/ 185:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var BaseModalLayout = __webpack_require__(15),
+    NewTemplateView = __webpack_require__(186);
+
+module.exports = BaseModalLayout.extend({
+  getModalOptions: function getModalOptions() {
+    return {
+      id: 'qazana-new-template-modal'
+    };
+  },
+  getLogoOptions: function getLogoOptions() {
+    return {
+      title: qazanaAdmin.config.i18n.new_template
+    };
+  },
+  initialize: function initialize() {
+    BaseModalLayout.prototype.initialize.apply(this, arguments);
+    this.showLogo();
+    this.showContentView();
+  },
+  getDialogsManager: function getDialogsManager() {
+    return qazanaAdmin.getDialogsManager();
+  },
+  showContentView: function showContentView() {
+    this.modalContent.show(new NewTemplateView());
+  }
+});
+
+/***/ }),
+
+/***/ 186:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = Marionette.ItemView.extend({
+  id: 'qazana-new-template-dialog-content',
+  template: '#tmpl-qazana-new-template',
+  ui: {},
+  events: {},
+  onRender: function onRender() {}
+});
+
+/***/ }),
+
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -346,11 +362,7 @@ module.exports = TemplateLibraryHeaderView;
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/components/template-library/views/parts/loading.js":
-/*!**********************************************************************************!*\
-  !*** ../assets/dev/js/editor/components/template-library/views/parts/loading.js ***!
-  \**********************************************************************************/
-/*! no static exports found */
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -365,19 +377,15 @@ module.exports = TemplateLibraryLoadingView;
 
 /***/ }),
 
-/***/ "../assets/dev/js/utils/module.js":
-/*!****************************************!*\
-  !*** ../assets/dev/js/utils/module.js ***!
-  \****************************************/
-/*! no static exports found */
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
+var _typeof2 = _interopRequireDefault(__webpack_require__(4));
 
 var Module = function Module() {
   var $ = jQuery,
@@ -576,59 +584,7 @@ module.exports = Module;
 
 /***/ }),
 
-/***/ "../assets/dev/js/utils/view-module.js":
-/*!*********************************************!*\
-  !*** ../assets/dev/js/utils/view-module.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
-    ViewModule;
-
-ViewModule = Module.extend({
-  elements: null,
-  getDefaultElements: function getDefaultElements() {
-    return {};
-  },
-  bindEvents: function bindEvents() {},
-  onInit: function onInit() {
-    this.initElements();
-    this.bindEvents();
-  },
-  initElements: function initElements() {
-    this.elements = this.getDefaultElements();
-  }
-});
-module.exports = ViewModule;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js":
-/*!***********************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-
-module.exports = _interopRequireDefault;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/helpers/typeof.js":
-/*!********************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/typeof.js ***!
-  \********************************************************/
-/*! no static exports found */
+/***/ 4:
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }

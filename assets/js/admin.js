@@ -81,27 +81,63 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "../assets/dev/js/admin/admin.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 180);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "../assets/dev/js/admin/admin.js":
-/*!***************************************!*\
-  !*** ../assets/dev/js/admin/admin.js ***!
-  \***************************************/
-/*! no static exports found */
+/***/ 0:
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Module = __webpack_require__(3),
+    ViewModule;
+
+ViewModule = Module.extend({
+  elements: null,
+  getDefaultElements: function getDefaultElements() {
+    return {};
+  },
+  bindEvents: function bindEvents() {},
+  onInit: function onInit() {
+    this.initElements();
+    this.bindEvents();
+  },
+  initElements: function initElements() {
+    this.elements = this.getDefaultElements();
+  }
+});
+module.exports = ViewModule;
+
+/***/ }),
+
+/***/ 180:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 (function ($) {
-  var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js");
+  var ViewModule = __webpack_require__(1);
 
   var QazanaAdmin = ViewModule.extend({
     modules: {
-      Module: __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js")
+      Module: __webpack_require__(3)
     },
     maintenanceMode: null,
     config: QazanaAdminConfig,
@@ -303,7 +339,7 @@
       });
     },
     initMaintenanceMode: function initMaintenanceMode() {
-      var MaintenanceMode = __webpack_require__(/*! qazana-admin/maintenance-mode */ "../assets/dev/js/admin/maintenance-mode.js");
+      var MaintenanceMode = __webpack_require__(181);
 
       this.maintenanceMode = new MaintenanceMode();
     },
@@ -485,17 +521,13 @@
 
 /***/ }),
 
-/***/ "../assets/dev/js/admin/maintenance-mode.js":
-/*!**************************************************!*\
-  !*** ../assets/dev/js/admin/maintenance-mode.js ***!
-  \**************************************************/
-/*! no static exports found */
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(/*! qazana-utils/view-module */ "../assets/dev/js/utils/view-module.js"),
+var ViewModule = __webpack_require__(1),
     MaintenanceModeModule;
 
 MaintenanceModeModule = ViewModule.extend({
@@ -559,19 +591,15 @@ module.exports = MaintenanceModeModule;
 
 /***/ }),
 
-/***/ "../assets/dev/js/utils/module.js":
-/*!****************************************!*\
-  !*** ../assets/dev/js/utils/module.js ***!
-  \****************************************/
-/*! no static exports found */
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
+var _typeof2 = _interopRequireDefault(__webpack_require__(4));
 
 var Module = function Module() {
   var $ = jQuery,
@@ -770,59 +798,7 @@ module.exports = Module;
 
 /***/ }),
 
-/***/ "../assets/dev/js/utils/view-module.js":
-/*!*********************************************!*\
-  !*** ../assets/dev/js/utils/view-module.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Module = __webpack_require__(/*! qazana-utils/module */ "../assets/dev/js/utils/module.js"),
-    ViewModule;
-
-ViewModule = Module.extend({
-  elements: null,
-  getDefaultElements: function getDefaultElements() {
-    return {};
-  },
-  bindEvents: function bindEvents() {},
-  onInit: function onInit() {
-    this.initElements();
-    this.bindEvents();
-  },
-  initElements: function initElements() {
-    this.elements = this.getDefaultElements();
-  }
-});
-module.exports = ViewModule;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js":
-/*!***********************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-
-module.exports = _interopRequireDefault;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/helpers/typeof.js":
-/*!********************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/typeof.js ***!
-  \********************************************************/
-/*! no static exports found */
+/***/ 4:
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }

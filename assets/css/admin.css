@@ -22,8 +22,10 @@
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
-  border-radius: 3px;
-  box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  -webkit-box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
   overflow: hidden; }
 
 .dialog-message {
@@ -38,7 +40,10 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 100010;
-  user-select: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
   .dialog-type-lightbox .dialog-widget-content {
     margin: auto;
     width: 375px; }
@@ -128,9 +133,16 @@
   text-transform: uppercase;
   outline: none;
   border: none;
-  border-radius: 3px;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  -webkit-transition-property: background, color, opacity, -webkit-box-shadow;
+  transition-property: background, color, opacity, -webkit-box-shadow;
+  -o-transition-property: background, color, box-shadow, opacity;
   transition-property: background, color, box-shadow, opacity;
-  transition-duration: .3s; }
+  transition-property: background, color, box-shadow, opacity, -webkit-box-shadow;
+  -webkit-transition-duration: .3s;
+       -o-transition-duration: .3s;
+          transition-duration: .3s; }
   .qazana-button:hover {
     border: none; }
   .qazana-button:not([disabled]) {
@@ -145,9 +157,11 @@
       background-color: #39b54a; }
       .qazana-button.qazana-button-success:not([disabled]):hover {
         opacity: 0.85;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
+        -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
       .qazana-button.qazana-button-success:not([disabled]):active {
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
   .qazana-button.qazana-button-warning {
     background-color: #a0a5aa;
     color: #fff; }
@@ -156,9 +170,11 @@
     .qazana-button.qazana-button-warning:not([disabled]):hover {
       background-color: #b01b1b;
       opacity: 0.85;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
+      -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+              box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
     .qazana-button.qazana-button-warning:not([disabled]):active {
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
+      -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
+              box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
   .qazana-button.qazana-edit-template {
     display: inline-block;
     margin-top: 15px;
@@ -170,26 +186,31 @@
     padding: 6.5px 15px; }
     .qazana-button.qazana-button-default:hover {
       background-color: #444;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
+      -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+              box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2); }
     .qazana-button.qazana-button-default:active {
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
+      -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
+              box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1); }
     .qazana-button.qazana-button-default:visited {
       color: #fff; }
   .qazana-button.button-hero {
     font-size: 12px;
     background: #360061;
     border-color: #000000 #1a002e #1a002e;
-    box-shadow: 0 1px 0 #1a002e;
+    -webkit-box-shadow: 0 1px 0 #1a002e;
+            box-shadow: 0 1px 0 #1a002e;
     color: #fff;
     text-decoration: none;
     text-shadow: 0 -1px 1px #1a002e, 1px 0 1px #1a002e, 0 1px 1px #1a002e, -1px 0 1px #1a002e;
-    box-shadow: none !important; }
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important; }
     .qazana-button.button-hero.hover, .qazana-button.button-hero:hover, .qazana-button.button-hero.focus, .qazana-button.button-hero:focus {
       background: #000;
       border-color: #000;
       color: #fff; }
     .qazana-button.button-hero.focus, .qazana-button.button-hero:focus {
-      box-shadow: none !important; }
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
 
 .qazana-templates-modal .dialog-widget-content {
   background-color: #f1f3f5;
@@ -204,7 +225,8 @@
 .qazana-templates-modal .dialog-header {
   padding: 0;
   background-color: #fff;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1; }
 
@@ -224,9 +246,18 @@
   display: none; }
 
 .qazana-templates-modal__header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   height: 50px; }
   .qazana-templates-modal__header__logo {
     font-size: 15px;
@@ -239,27 +270,55 @@
       text-align: left;
       padding-left: 15px; }
       .qazana-templates-modal__header__logo-area > * {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
         display: flex;
-        align-items: center; }
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center; }
     .qazana-templates-modal__header__logo__icon-wrapper {
       padding: 4px 7px 6px;
+      background-image: -webkit-linear-gradient(225deg, #f2295b, #434363);
+      background-image: -o-linear-gradient(225deg, #f2295b, #434363);
       background-image: linear-gradient(-135deg, #f2295b, #434363);
-      border-radius: 2px;
+      -webkit-border-radius: 2px;
+              border-radius: 2px;
       margin-right: 10px; }
     .qazana-templates-modal__header__logo i {
       color: #fff;
       font-size: 10px; }
   .qazana-templates-modal__header__items-area {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row-reverse; }
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: row-reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse; }
   .qazana-templates-modal__header__item {
     position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: content-box; }
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box; }
     .qazana-templates-modal__header__item > i {
       font-size: 20px;
+      -webkit-transition: color .5s;
+      -o-transition: color .5s;
       transition: color .5s;
       cursor: pointer; }
       .qazana-templates-modal__header__item > i:not(:hover) {
@@ -279,7 +338,8 @@
     font-weight: normal;
     line-height: 1;
     text-transform: uppercase;
-    border-radius: 2px;
+    -webkit-border-radius: 2px;
+            border-radius: 2px;
     cursor: pointer; }
     .qazana-templates-modal__header__close--skip > i {
       font-size: inherit;
@@ -327,13 +387,17 @@ body.qazana-editor-active #qazana-switch-mode-button {
   background-color: #f7f7f7;
   color: #555;
   border-color: #ccc;
-  box-shadow: 0 1px 0 #ccc !important;
+  -webkit-box-shadow: 0 1px 0 #ccc !important;
+          box-shadow: 0 1px 0 #ccc !important;
   text-shadow: unset; }
   body.qazana-editor-active #qazana-switch-mode-button:hover {
     background-color: #e9e9e9; }
   body.qazana-editor-active #qazana-switch-mode-button:active {
-    box-shadow: inset 0 1px 0 #ccc;
-    transform: translateY(1px); }
+    -webkit-box-shadow: inset 0 1px 0 #ccc;
+            box-shadow: inset 0 1px 0 #ccc;
+    -webkit-transform: translateY(1px);
+        -ms-transform: translateY(1px);
+            transform: translateY(1px); }
 
 body.qazana-editor-active #qazana-editor {
   display: table; }
@@ -354,7 +418,9 @@ body.qazana-editor-active .editor-block-list__layout {
   display: none; }
 
 body.qazana-editor-active .edit-post-layout__content .edit-post-visual-editor {
-  flex-basis: auto; }
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto; }
 
 body.qazana-editor-active #qazana-editor {
   margin-bottom: 50px; }
@@ -381,50 +447,92 @@ body .gutenberg #qazana-switch-mode {
   border: 1px solid #DDD;
   height: 300px;
   width: 100%;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
   transition: all 0.5s ease; }
   #qazana-editor:hover {
     background-color: #ffffff; }
   #qazana-editor .qazana-loader .cubes {
     position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
-    flex-flow: row wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
     width: 5rem;
     height: 5rem;
+    -webkit-transition: all 300ms ease-in-out 0s;
+    -o-transition: all 300ms ease-in-out 0s;
     transition: all 300ms ease-in-out 0s;
     z-index: 1; }
     #qazana-editor .qazana-loader .cubes .cube {
       width: 33.3333%;
       height: 33.3333%;
       background-color: white;
-      animation: cubes 1.5s infinite ease-in-out; }
+      -webkit-animation: cubes 1.5s infinite ease-in-out;
+              animation: cubes 1.5s infinite ease-in-out; }
       #qazana-editor .qazana-loader .cubes .cube-1 {
-        animation-delay: 0.2s; }
+        -webkit-animation-delay: 0.2s;
+                animation-delay: 0.2s; }
       #qazana-editor .qazana-loader .cubes .cube-2 {
-        animation-delay: 0.3s; }
+        -webkit-animation-delay: 0.3s;
+                animation-delay: 0.3s; }
       #qazana-editor .qazana-loader .cubes .cube-3 {
-        animation-delay: 0.4s; }
+        -webkit-animation-delay: 0.4s;
+                animation-delay: 0.4s; }
       #qazana-editor .qazana-loader .cubes .cube-4 {
-        animation-delay: 0.1s; }
+        -webkit-animation-delay: 0.1s;
+                animation-delay: 0.1s; }
       #qazana-editor .qazana-loader .cubes .cube-5 {
-        animation-delay: 0.2s; }
+        -webkit-animation-delay: 0.2s;
+                animation-delay: 0.2s; }
       #qazana-editor .qazana-loader .cubes .cube-6 {
-        animation-delay: 0.3s; }
+        -webkit-animation-delay: 0.3s;
+                animation-delay: 0.3s; }
       #qazana-editor .qazana-loader .cubes .cube-7 {
-        animation-delay: 0s; }
+        -webkit-animation-delay: 0s;
+                animation-delay: 0s; }
       #qazana-editor .qazana-loader .cubes .cube-8 {
-        animation-delay: 0.1s; }
+        -webkit-animation-delay: 0.1s;
+                animation-delay: 0.1s; }
       #qazana-editor .qazana-loader .cubes .cube-9 {
-        animation-delay: 0.2s; }
+        -webkit-animation-delay: 0.2s;
+                animation-delay: 0.2s; }
+
+@-webkit-keyframes cubes {
+  0%,
+  100%,
+  70% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); }
+  35% {
+    -webkit-transform: scale3d(0, 0, 1);
+            transform: scale3d(0, 0, 1); } }
 
 @keyframes cubes {
   0%,
   100%,
   70% {
-    transform: scale3d(1, 1, 1); }
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); }
   35% {
-    transform: scale3d(0, 0, 1); } }
+    -webkit-transform: scale3d(0, 0, 1);
+            transform: scale3d(0, 0, 1); } }
   #qazana-editor .qazana-loading-title {
-    animation: load-title 1.5s linear infinite; }
+    -webkit-animation: load-title 1.5s linear infinite;
+            animation: load-title 1.5s linear infinite; }
+
+@-webkit-keyframes load-title {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.6; }
+  100% {
+    opacity: 1; } }
 
 @keyframes load-title {
   0% {
@@ -546,7 +654,8 @@ body .gutenberg #qazana-switch-mode {
       background-color: #0085ba;
       color: #fff;
       border-color: #7c1337;
-      box-shadow: 0 1px 0 #7c1337;
+      -webkit-box-shadow: 0 1px 0 #7c1337;
+              box-shadow: 0 1px 0 #7c1337;
       padding: 5px 30px;
       height: auto;
       line-height: 20px;
@@ -556,8 +665,11 @@ body .gutenberg #qazana-switch-mode {
       .notice.qazana-message .qazana-message-action .qazana-button:hover {
         background-color: #a0124a; }
       .notice.qazana-message .qazana-message-action .qazana-button:active {
-        box-shadow: inset 0 1px 0 #7c1337;
-        transform: translateY(1px); }
+        -webkit-box-shadow: inset 0 1px 0 #7c1337;
+                box-shadow: inset 0 1px 0 #7c1337;
+        -webkit-transform: translateY(1px);
+            -ms-transform: translateY(1px);
+                transform: translateY(1px); }
   .notice.qazana-message .qazana-message-actions {
     margin-top: 10px; }
     .notice.qazana-message .qazana-message-actions .button.button-primary {
@@ -623,11 +735,21 @@ body .gutenberg #qazana-switch-mode {
   #qazana-system-info .qazana-warning td:first-child {
     border-left: 3px solid #fcb92c; }
 
+@-webkit-keyframes qazana-rotation {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg); } }
+
 @keyframes qazana-rotation {
   0% {
-    transform: rotate(0deg); }
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
   100% {
-    transform: rotate(359deg); } }
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg); } }
 
 #qazana-deactivate-feedback-dialog-wrapper {
   display: none; }
@@ -636,11 +758,14 @@ body .gutenberg #qazana-switch-mode {
   width: 550px; }
 
 #qazana-deactivate-feedback-modal .dialog-close-button {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
   transition: all 0.5s; }
 
 #qazana-deactivate-feedback-modal .dialog-header {
   padding: 18px 15px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   text-align: left; }
 
 #qazana-deactivate-feedback-modal .dialog-message {
@@ -650,7 +775,8 @@ body .gutenberg #qazana-switch-mode {
 #qazana-deactivate-feedback-modal .qazana-deactivate-feedback-dialog-input {
   float: left;
   margin: 0 15px 0 0;
-  box-shadow: none; }
+  -webkit-box-shadow: none;
+          box-shadow: none; }
   #qazana-deactivate-feedback-modal .qazana-deactivate-feedback-dialog-input:not(:checked) ~ .qazana-feedback-text {
     display: none; }
 
@@ -663,7 +789,8 @@ body .gutenberg #qazana-switch-mode {
   margin: 10px 0 0 30px;
   padding: 5px;
   font-size: 13px;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   background-color: #fff;
   width: 92%; }
 
@@ -675,7 +802,8 @@ body .gutenberg #qazana-switch-mode {
 
 #qazana-deactivate-feedback-modal .dialog-submit {
   background-color: #0085ba;
-  border-radius: 3px;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
   color: #fff;
   line-height: 1;
   padding: 12px 20px;
@@ -686,7 +814,8 @@ body .gutenberg #qazana-switch-mode {
     display: inline-block;
     content: '\f463';
     font: 18px dashicons;
-    animation: qazana-rotation 2s infinite linear; }
+    -webkit-animation: qazana-rotation 2s infinite linear;
+            animation: qazana-rotation 2s infinite linear; }
 
 #qazana-deactivate-feedback-modal .dialog-skip {
   font-size: 12px;
@@ -763,7 +892,8 @@ body .gutenberg #qazana-switch-mode {
 #e-dashboard-overview .e-overview__header {
   display: table;
   width: 100%;
-  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
   margin: 0 -12px 8px;
   padding: 0 12px 12px; }
 
@@ -796,7 +926,8 @@ body .gutenberg #qazana-switch-mode {
   color: white;
   font-size: 0.75em;
   padding: 3px 6px;
-  border-radius: 3px;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
   text-transform: uppercase; }
 
 #e-dashboard-overview .e-overview__post-description {
@@ -822,6 +953,9 @@ body .gutenberg #qazana-switch-mode {
   padding: 12px;
   border-top: 1px solid #eee; }
   #e-dashboard-overview .e-overview__footer ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     list-style: none;
     margin: 0;
@@ -846,8 +980,14 @@ body .gutenberg #qazana-switch-mode {
   max-height: 70vh; }
 
 #qazana-new-template-dialog-content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 100%;
   text-align: left;
   padding: 0 120px;
@@ -867,8 +1007,14 @@ body .gutenberg #qazana-switch-mode {
     padding: 30px 0; }
 
 #qazana-new-template__take_a_tour {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 15px; }
   #qazana-new-template__take_a_tour i {
     color: #f2295b;
@@ -880,12 +1026,17 @@ body .gutenberg #qazana-switch-mode {
     font-weight: 500; }
 
 #qazana-new-template__form {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   max-width: 440px;
   padding: 55px;
   background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.08); }
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  -webkit-box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.08); }
   #qazana-new-template__form__title {
     font-size: 23px;
     color: #1a0316; }
@@ -900,8 +1051,10 @@ body .gutenberg #qazana-switch-mode {
     height: 50px;
     padding: 10px;
     font-size: 14px;
-    box-shadow: none;
-    border-radius: 3px;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
     background: none;
     color: #161616;
     border: 1px solid;
@@ -925,7 +1078,9 @@ body .gutenberg #qazana-switch-mode {
         position: absolute;
         top: 50%;
         right: 10px;
-        transform: translateY(-50%); }
+        -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+                transform: translateY(-50%); }
   #qazana-new-template__form__submit {
     width: 100%;
     height: 50px;
@@ -954,6 +1109,9 @@ body .gutenberg #qazana-switch-mode {
     color: #444;
     margin-bottom: 2px; }
     #qazana-role-manager .qazana-role-row .qazana-role-label {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
       display: flex;
       padding: 15px 20px;
       font-weight: 500;
@@ -962,7 +1120,10 @@ body .gutenberg #qazana-switch-mode {
         padding-right: 20px; }
       #qazana-role-manager .qazana-role-row .qazana-role-label span.qazana-role-toggle {
         text-align: right;
-        flex-grow: 1; }
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
+                flex-grow: 1; }
       #qazana-role-manager .qazana-role-row .qazana-role-label span.qazana-role-excluded-indicator {
         color: #a0a5aa; }
     #qazana-role-manager .qazana-role-row .qazana-role-controls {
@@ -985,6 +1146,9 @@ body .gutenberg #qazana-switch-mode {
     color: #444;
     margin-bottom: 2px; }
     #qazana-extensions-manager .qazana-extension-row .qazana-extension-label {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
       display: flex;
       padding: 15px 20px;
       font-weight: 500;
@@ -993,7 +1157,10 @@ body .gutenberg #qazana-switch-mode {
         padding-right: 20px; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label span.qazana-extension-toggle {
         text-align: right;
-        flex-grow: 1; }
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
+                flex-grow: 1; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label span.qazana-extension-active-indicator {
         color: #a0a5aa; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label > label {
@@ -1010,5 +1177,4 @@ body .gutenberg #qazana-switch-mode {
       padding: 20px 20px 5px; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-controls > div {
         margin-bottom: 15px; }
-
 /*# sourceMappingURL=admin.css.map */

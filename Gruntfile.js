@@ -6,6 +6,8 @@ module.exports = function( grunt ) {
 
 	require( 'load-grunt-tasks' )( grunt );
 
+    const sass = require('node-sass');
+
 	// Project configuration
 	grunt.initConfig( {
 		pkg: pkgInfo,
@@ -78,6 +80,9 @@ module.exports = function( grunt ) {
 		grunt.task.run( 'css_templates_proxy:templates' );
 
 		grunt.config( 'sass.dist', {
+            options: {
+                implementation: sass,
+            },
 			files: [ {
 				expand: true,
 				cwd: 'assets/dev/scss/direction',

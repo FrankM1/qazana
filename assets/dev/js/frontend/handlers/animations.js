@@ -27,7 +27,6 @@ AnimationHandler = HandlerModule.extend( {
         },
         animations: {},
         animateTargetsWhenVisible: true,
-
         // triggerTarget: 'input',
         // triggerRelation: 'siblings',
         // offTriggerHandler: 'blur',
