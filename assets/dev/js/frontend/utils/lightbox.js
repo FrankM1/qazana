@@ -33,7 +33,7 @@ LightboxModule = ViewModule.extend( {
 				},
 			},
 			selectors: {
-				links: 'a, [data-qazana-lightbox]',
+				links: 'a[data-qazana-lightbox]',
 				slideshow: {
 					activeSlide: '.swiper-slide-active',
 					prevSlide: '.swiper-slide-prev',

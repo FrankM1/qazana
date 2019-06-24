@@ -1,24 +1,50 @@
-version: '3.1'
+version: "2"
 
 services:
-
-  mysql:
-    image: mysql:5.7
-    ports:
-      - 3308:3306
+  wordpress:
+    image: "chriszarate/wordpress:4.8.0"
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wordpress_test
-
-  wordpress_phpunit:
-    image: pojome/phpunit-local
-    environment:
-      PHPUNIT_DB_HOST: mysql
-    volumes:
-      - .:/app
-      - testsuite:/tmp
+      PHPUNIT_TEST_DIR: "/var/www/html/wp-content/plugins/qazana"
+      VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
+      WORDPRESS_ACTIVATE_PLUGINS: "qazana" # plugin folder relative to /wp-content/plugins/
+      WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
+      WORDPRESS_SITE_TITLE: "Qazana"
+      WORDPRESS_SITE_URL: "http://${DOCKER_DEV_DOMAIN}"
+      XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug"
     depends_on:
-      - mysql
+      - "mysql"
+    networks:
+      - "front"
+      - "back"
+    volumes:
+      - ".:/var/www/html/wp-content/plugins/qazana"
+  mysql:
+    image: "mariadb"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - "back"
+  mysql_phpunit:
+    image: "mariadb"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress_phpunit"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - "back"
+  proxy:
+    image: "jwilder/nginx-proxy"
+    ports:
+      - "80:80"
+    networks:
+      front:
+        aliases:
+          - "${DOCKER_DEV_DOMAIN}"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
 
-volumes:
-  testsuite:
+networks:
+  front: {}
+  back: {}
