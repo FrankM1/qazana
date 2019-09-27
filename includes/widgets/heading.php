@@ -234,7 +234,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'responsive' => true,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-inner-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-heading-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
