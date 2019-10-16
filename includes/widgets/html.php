@@ -72,10 +72,20 @@ class Widget_Html extends Widget_Base {
 		return [ 'html', 'code' ];
 	}
 
+    /**
+	 * Retrieve the list of categories the alert widget belongs to.
+	 *
+	 * Used to determine where to display the widget in the editor.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget categories.
+	 */
 	public function get_categories() {
 		return [ 'general' ];
 	}
-	
+
 	/**
 	 * Register HTML widget controls.
 	 *

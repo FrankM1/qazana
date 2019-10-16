@@ -138,7 +138,7 @@ class Editor {
         wp_nonce_field( basename( __FILE__ ), '_qazana_edit_mode_nonce' );
         ?>
         <div id="qazana-switch-mode">
-            <input id="qazana-switch-mode-input" type="hidden" name="_qazana_post_mode" value="<?php echo qazana()->db->is_built_with_qazana( $post->ID ); ?>" />
+            <input id="qazana-switch-mode-input" type="hidden" name="_qazana_post_mode" value="<?php echo qazana()->get_db()->is_built_with_qazana( $post->ID ); ?>" />
             <button id="qazana-switch-mode-button" class="qazana-button button-hero">
                 <span class="qazana-switch-mode-on"><?php _e( '&#8592; Back to WordPress Editor', 'qazana' ); ?></span>
                 <span class="qazana-switch-mode-off"><i class="eicon-qazana"></i><?php _e( 'Edit with Qazana', 'qazana' ); ?></span>
@@ -173,7 +173,7 @@ class Editor {
             return;
         }
 
-        qazana()->db->set_is_qazana_page($post_id, !empty($_POST['_qazana_post_mode']));
+        qazana()->get_db()->set_is_qazana_page($post_id, !empty($_POST['_qazana_post_mode']));
     }
 
     /**
@@ -186,7 +186,7 @@ class Editor {
      * @return array
      */
     public function add_edit_in_dashboard( $actions, $post ) {
-		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->db->is_built_with_qazana( $post->ID ) ) {
+		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->get_db()->is_built_with_qazana( $post->ID ) ) {
             $actions['edit_with_qazana'] = sprintf(
                 '<a href="%s">%s</a>',
                 Utils::get_edit_link( $post->ID ),
@@ -217,7 +217,7 @@ class Editor {
 		if ( in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) && Utils::is_post_support() ) {
             $post = get_post();
 
-			$mode_class = qazana()->db->is_built_with_qazana( $post->ID ) ? 'qazana-editor-active' : 'qazana-editor-inactive';
+			$mode_class = qazana()->get_db()->is_built_with_qazana( $post->ID ) ? 'qazana-editor-active' : 'qazana-editor-inactive';
 
             $classes .= ' ' . $mode_class;
         }
@@ -236,7 +236,7 @@ class Editor {
 	 * @return array                A filtered array of post display states.
 	 */
 	public function add_qazana_post_state( $post_states, $post ) {
-		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->db->is_built_with_qazana( $post->ID ) ) {
+		if ( User::is_current_user_can_edit( $post->ID ) && qazana()->get_db()->is_built_with_qazana( $post->ID ) ) {
 			$post_states[] = '<span class="status-qazana">' . __( 'Qazana', 'qazana' ) . '</span>';
 		}
 		return $post_states;
@@ -288,7 +288,7 @@ class Editor {
 
 		$post_data['post_type'] = $post_type;
 
-		$document = qazana()->documents->create( $type, $post_data, $meta );
+		$document = qazana()->get_documents()->create( $type, $post_data, $meta );
 
 		wp_redirect( $document->get_edit_url() );
 		die;

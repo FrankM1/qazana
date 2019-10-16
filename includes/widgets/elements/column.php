@@ -183,6 +183,28 @@ class Element_Column extends Element_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'column_position',
+			[
+				'label' => __( 'Column Position', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'' => __( 'Default', 'qazana' ),
+					'top' => _( 'Top' ),
+					'center' => __( 'Middle', 'qazana' ),
+					'bottom' => __( 'Bottom', 'qazana' ),
+				],
+				'selectors_dictionary' => [
+					'top' => 'flex-start',
+					'bottom' => 'flex-end',
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => 'align-self: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_control(
 			'content_position',
 			[
@@ -194,13 +216,16 @@ class Element_Column extends Element_Base {
 					'top' => __( 'Top', 'qazana' ),
 					'center' => __( 'Middle', 'qazana' ),
 					'bottom' => __( 'Bottom', 'qazana' ),
+					'fill' => __( 'Full Height', 'qazana' ),
 				],
 				'selectors_dictionary' => [
 					'top' => 'flex-start',
+					'fill' => 'stretch',
 					'bottom' => 'flex-end',
 				],
 				'selectors' => [
-					'{{WRAPPER}}.qazana-column .qazana-column-wrap' => 'align-items: {{VALUE}}',
+                    '{{WRAPPER}} .qazana-column-wrap' => 'align-items: {{VALUE}}',
+                    '{{WRAPPER}}.qazana-widgets-inline > .qazana-column-wrap > .qazana-widget-wrap' => 'align-items: {{VALUE}}',
 				],
 			]
 		);
@@ -212,8 +237,9 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::NUMBER,
 				'placeholder' => 20,
 				'selectors' => [
-					'{{WRAPPER}} > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-bottom: {{VALUE}}px', //Need the full path for exclude the inner section
-				],
+                    '{{WRAPPER}}:not(.qazana-widgets-inline) > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget' => 'margin-bottom: {{VALUE}}px',  //Need the full path for exclude the inner section
+                    '{{WRAPPER}}.qazana-widgets-inline > .qazana-column-wrap > .qazana-widget-wrap > .qazana-widget:not(:last-child)' => 'margin-right: {{VALUE}}px',
+                ],
 			]
 		);
 
@@ -472,7 +498,7 @@ class Element_Column extends Element_Base {
 		$this->start_controls_section(
 			'section_border',
 			[
-				'label' => __( 'Border & Shadow', 'qazana' ),
+				'label' => __( 'Border', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -725,13 +751,6 @@ class Element_Column extends Element_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Animations::get_type(),
-			[
-				'name' => '_animation',
-			]
-		);
-
 		$this->add_control(
 			'_element_id',
 			[
@@ -776,7 +795,25 @@ class Element_Column extends Element_Base {
 		);
 		// END Backward comparability
 
-		$this->end_controls_section();
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'_section_effects',
+			[
+				'label' => __( 'Effects', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+        );
+
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
+			[
+				'name' => '_animation',
+			]
+        );
+
+        $this->end_controls_section();
+
 	}
 
 	protected function render_edit_tools() {
@@ -871,7 +908,7 @@ class Element_Column extends Element_Base {
 
 		$column_type = ! empty( $is_inner ) ? 'inner' : 'top';
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute(
 			'_wrapper', 'class', [
@@ -900,7 +937,7 @@ class Element_Column extends Element_Base {
 		if ( ! empty( $settings['hover_animation'] ) ) {
             $this->add_render_attribute( '_wrapper', 'class', 'qazana-hover-animation-' . $settings['hover_animation'] );
 		}
-	
+
 	}
 
 	/**
@@ -917,10 +954,10 @@ class Element_Column extends Element_Base {
 	 */
 	protected function _get_default_child_type( array $element_data ) {
 		if ( 'section' === $element_data['elType'] ) {
-			return qazana()->elements_manager->get_element_types( 'section' );
+			return $this->get_parent_document()->get_elements()->get_element_types( 'section' );
 		}
 
-		return qazana()->widgets_manager->get_widget_types( $element_data['widgetType'] );
+		return $this->get_parent_document()->get_widgets()->get_widget_types( $element_data['widgetType'] );
 	}
 
 	/**

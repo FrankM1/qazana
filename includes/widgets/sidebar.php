@@ -130,17 +130,7 @@ class Widget_Sidebar extends Widget_Base {
 
 		dynamic_sidebar( $sidebar );
 	}
-
-	/**
-	 * Render sidebar widget output in the editor.
-	 *
-	 * Written as a Backbone JavaScript template and used to generate the live preview.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 */
-	protected function _content_template() {}
-
+	
 	/**
 	 * Render sidebar widget as plain content.
 	 *

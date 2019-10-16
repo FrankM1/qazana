@@ -78,14 +78,14 @@ class Page_Templates extends Base {
 	 */
 	public function template_include( $template ) {
 		if ( is_singular() ) {
-			$document = qazana()->documents->get_doc_for_frontend( get_the_ID() );
+			$document = qazana()->get_documents()->get_doc_for_frontend( get_the_ID() );
 
 			if ( $document ) {
 				$template_path = $this->get_template_path( $document->get_meta( '_wp_page_template' ) );
 				if ( $template_path ) {
 					$template = $template_path;
 
-					qazana()->debugger->add_log( 'Page Template', qazana()->debugger->parse_template_path( $template ), $document->get_edit_url() );
+					qazana()->get_debugger()->add_log( 'Page Template', qazana()->get_debugger()->parse_template_path( $template ), $document->get_edit_url() );
 				}
 			}
         }
@@ -140,7 +140,7 @@ class Page_Templates extends Base {
 			// FIX ME: Gutenberg not send $post as WP_Post object, just the post ID.
 			$post_id = ! empty( $post->ID ) ? $post->ID : $post;
 
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 			if ( $document && ! $document::get_property( 'support_wp_page_templates' ) ) {
 				return $page_templates;
 			}
@@ -347,7 +347,7 @@ class Page_Templates extends Base {
 	 */
 	public function filter_update_meta( $check, $object_id, $meta_key ) {
 		if ( '_wp_page_template' === $meta_key ) {
-			$ajax_data = qazana()->ajax->get_current_action_data();
+			$ajax_data = qazana()->get_ajax()->get_current_action_data();
 
 			$is_autosave_action = $ajax_data && 'save_builder' === $ajax_data['action'] && DB::STATUS_AUTOSAVE === $ajax_data['data']['status'];
 

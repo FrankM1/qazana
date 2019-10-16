@@ -145,7 +145,7 @@ class Post extends Base {
 	 * @return array Post data.
 	 */
 	protected function get_data() {
-		return qazana()->db->get_plain_editor( $this->post_id );
+		return qazana()->get_db()->get_plain_editor( $this->post_id );
 	}
 
 	/**
@@ -161,7 +161,7 @@ class Post extends Base {
 
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $element_data ) {
-				$element = qazana()->elements_manager->create_element_instance( $element_data );
+				$element = qazana()->get_elements_manager()->create_element_instance( qazana()->get_documents()->get( $this->post_id ), $element_data );
 
 				if ( ! $element ) {
 					continue;
@@ -184,7 +184,7 @@ class Post extends Base {
 	 * @access public
 	 */
 	public function enqueue() {
-		if ( ! qazana()->db->is_built_with_qazana( $this->post_id ) ) {
+		if ( ! qazana()->get_db()->is_built_with_qazana( $this->post_id ) ) {
 			return;
 		}
 

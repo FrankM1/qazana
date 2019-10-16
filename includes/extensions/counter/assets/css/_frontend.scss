@@ -3,50 +3,113 @@ $direction: ltr;
 @import 'helpers/variables';
 @import "helpers/mixins";
 @import "helpers/direction";
+@import "editor/breakpoints";
+@import "frontend/breakpoints/breakpoints";
 
-//
-// Counter
-//
+.qazana-widget-counter {
+    .qazana-counter- {
+        &number- {
+            &prefix {
+                flex-grow: 1;
+                text-align: $end;
+            }
 
-.qazana-counter {
-	.qazana-counter- {
-		&number- {
-			&wrapper {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				color: #222;
-				text-align: center;
-				font-weight: 600;
-				font-size: 69px;
-				line-height: 1;
-			}
+            &suffix {
+                flex-grow: 1;
+                text-align: $start;
+            }
 
-			&prefix {
-				flex-grow: 1;
-				text-align: $end;
-			}
+            &value {
+                font-size: 5rem;
+                font-weight: bold;
+                line-height: 1em;
+            }
+        }
+    }
 
-			&suffix {
-				flex-grow: 1;
-				text-align: $start;
-			}
-		}
+    @media (min-width: $screen-md-min) {
+        &.qazana-position- {
 
-		&title {
-			color: #666666;
-			text-align: center;
-			font-weight: 400;
-			font-size: 19px;
-			line-height: 2.5;
-		}
-		&subtitle {
-			color: #666666;
-			text-align: center;
-			font-weight: 400;
-			font-size: 14px;
-			line-height: 1.5;
-		}
-	}
+            &left,
+            &right {
+                .qazana-counter {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            &right {
+                .qazana-counter {
+                    text-align: $end;
+                    flex-direction: getValueByDirection(row-reverse, row);
+                }
+            }
+
+            &left {
+                .qazana-counter {
+                    text-align: $start;
+                    flex-direction: getValueByDirection(row, row-reverse);
+                }
+            }
+
+            &top {
+                .qazana-counter-number {
+                    margin: auto;
+                    text-align: center;
+                }
+            }
+        }
+
+        &.qazana-vertical-align- {
+
+            &top {
+
+                .qazana-counter {
+                    align-items: flex-start;
+                }
+            }
+
+            &middle {
+
+                .qazana-counter {
+                    align-items: center;
+                }
+            }
+
+            &bottom {
+
+                .qazana-counter {
+                    align-items: flex-end;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $screen-sm-max) {
+        .qazana-counter-number {
+            margin-left: auto !important;
+            margin-right: auto !important;
+            margin-bottom: 15px;
+        }
+    }
+
+    .qazana-counter {
+        width: 100%; // Hack for Chrome in flex mode
+    }
+
+    .qazana-counter-number {
+        display: flex;
+    }
+
+    .qazana-counter-title a {
+        color: inherit;
+    }
+
+    .qazana-counter {
+        text-align: center;
+    }
+
+    .qazana-counter-description {
+        margin: 0;
+    }
 }
-

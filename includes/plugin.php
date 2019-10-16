@@ -53,42 +53,36 @@ class Plugin {
 	 */
 	private $data;
 
-	/** Not Magic *************************************************************/
-
 	/**
-	 * @var mixed False when not logged in; WP_User object when logged in
-	 */
-	public $current_user = false;
-
-	/**
-	 * @var obj Add-ons append to this (Akismet, BuddyPress, etc...)
+	 * @var obj Add-ons append to this (New Features, Controls, etc...)
 	 */
 	public $extend;
 
-	/**
-	 * @var obj Add-ons append to this (Akismet, BuddyPress, etc...)
-	 */
-	public $file_stack;
-
-	/**
-	 * @var array Video views
-	 */
-	public $views = [];
-
-	/**
-	 * @var array Overloads get_option()
-	 */
-	public $options = [];
-
-	public $widgets;
+	public $documents;
 
 	public $controls_manager;
 
 	public $templates_manager;
 
+	public $skins_manager;
+
+	public $elements_manager;
+
 	public $widgets_manager;
 
 	public $extensions_manager;
+
+	public $debugger;
+
+	public $db;
+
+	public $ajax;
+
+	public $editor;
+
+	public $preview;
+
+	public $frontend;
 
 	/**
 	 * Getter method for retrieving the object instance.
@@ -316,13 +310,6 @@ class Plugin {
 		}
 	}
 
-	/**
-	 * Register init function
-	 */
-	public function register_extensions() {
-		$this->extensions_manager = new Extensions\Manager();
-	}
-
 	private function includes() {
 		do_action( 'qazana/before/includes' );
 
@@ -340,6 +327,9 @@ class Plugin {
 		require_once $this->includes_dir . 'core/utils/exceptions.php';
 
 		require_once $this->includes_dir . 'core/debug/inspector.php';
+
+		require_once $this->includes_dir . 'core/document/elements.php';
+		require_once $this->includes_dir . 'core/document/widgets.php';
 
 		require_once $this->includes_dir . 'core/document-conditions/conditions/conditions.php';
 		require_once $this->includes_dir . 'core/document-conditions/conditions/controls.php';
@@ -443,6 +433,146 @@ class Plugin {
 	}
 
 	/**
+	 * Get widgets manager
+	 */
+	public function get_documents() {
+		return $this->documents;
+	}
+
+	/**
+	 * Get widgets manager
+	 */
+	public function get_widgets_manager() {
+		return $this->widgets_manager;
+	}
+
+	/**
+	 * Get elements manager
+	 */
+	public function get_elements_manager() {
+		return $this->elements_manager;
+	}
+
+	/**
+	 * Get skins manager
+	 */
+	public function get_skins_manager() {
+		return $this->skins_manager;
+	}
+
+	/**
+	 * Get controls manager
+	 */
+	public function get_controls_manager() {
+		return $this->controls_manager;
+	}
+
+	/**
+	 * Get controls manager
+	 */
+	public function get_schemes_manager() {
+		return $this->schemes_manager;
+	}
+
+	/**
+	 * Get role manager
+	 */
+	public function get_role_manager() {
+		return $this->role_manager;
+	}
+
+	/**
+	 * Get dynamic tags manager
+	 */
+	public function get_dynamic_tags() {
+		return $this->dynamic_tags;
+	}
+
+	/**
+	 * Get templates manager
+	 */
+	public function get_templates_manager() {
+		return $this->templates_manager;
+	}
+
+	/**
+	 * Get extensions manager
+	 */
+	public function get_extensions_manager() {
+		return $this->extensions_manager;
+	}
+
+	/**
+	 * Register init function
+	 */
+	public function register_extensions() {
+		$this->extensions_manager = new Extensions\Manager();
+	}
+
+	/**
+	 * Get debugger
+	 */
+	public function get_debugger() {
+		return $this->debugger;
+	}
+
+	/**
+	 * Get ajax
+	 */
+	public function get_ajax() {
+		return $this->ajax;
+	}
+
+	/**
+	 * Get document conditions
+	 */
+	public function get_document_conditions() {
+		return $this->document_conditions;
+	}
+
+	/**
+	 * Get db
+	 */
+	public function get_db() {
+		return $this->db;
+	}
+
+	/**
+	 * Get files manager
+	 */
+	public function get_files_manager() {
+		return $this->files_manager;
+	}
+
+	/**
+	 * Get icons manager
+	 */
+	public function get_icons_manager() {
+		return $this->icons_manager;
+	}
+
+	/**
+	 * Get editor
+	 */
+	public function get_editor() {
+		return $this->editor;
+	}
+
+	/**
+	 * Get preview
+	 */
+	public function get_preview() {
+		return $this->preview;
+	}
+
+	/**
+	 * Get frontend
+	 */
+	public function get_frontend() {
+		return $this->frontend;
+	}
+
+	/**
 	 * Loads the plugin classes.
 	 *
 	 * @since 1.0.0
@@ -473,13 +603,15 @@ class Plugin {
 		$this->templates_manager  = new Template_Library\Manager();
 
 		$this->custom_css         = new Custom_Css();
-		$this->heartbeat          = new Heartbeat();
 		$this->cron               = new Cron();
 		$this->editor             = new Editor();
 		$this->mobile_detect      = new MobileDetect();
 		$this->mobile_detect->setDetectionType( 'extended' );
 		$this->preview            = new Preview();
-		$this->frontend           = new Frontend();
+        $this->frontend           = new Frontend();
+
+        new Shared_Position_Controls();
+        new Shared_Carousel_Controls();
 
 		do_action( 'qazana/after/init_classes' );
 	}

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @var Editor $this
  */
-$document = qazana()->documents->get( $this->get_post_id() );
+$document = qazana()->get_documents()->get( $this->get_post_id() );
 
 ?>
 <script type="text/template" id="tmpl-qazana-panel">
@@ -182,24 +182,24 @@ $document = qazana()->documents->get( $this->get_post_id() );
 			</div>
 		</div>
 	</div>
-	<div id="qazana-panel-saver-button-preview" class="qazana-panel-footer-tool tooltip-target" data-tooltip="<?php esc_attr_e( 'Preview Changes', 'qazana' ); ?>">
-		<span id="qazana-panel-saver-button-preview-label">
+	<div id="qazana-panel-footer-saver-button-preview" class="qazana-panel-footer-tool tooltip-target" data-tooltip="<?php esc_attr_e( 'Preview Changes', 'qazana' ); ?>">
+		<span id="qazana-panel-footer-saver-button-preview-label">
 			<i class="fa fa-eye" aria-hidden="true"></i>
 			<span class="qazana-screen-only"><?php _e( 'Preview Changes', 'qazana' ); ?></span>
 		</span>
 	</div>
-	<div id="qazana-panel-saver-publish" class="qazana-panel-footer-tool">
-		<button id="qazana-panel-saver-button-publish" class="qazana-button qazana-button-success qazana-saver-disabled">
+	<div id="qazana-panel-footer-saver-publish" class="qazana-panel-footer-tool">
+		<button id="qazana-panel-footer-saver-button-publish" class="qazana-button qazana-button-success qazana-saver-disabled">
 			<span class="qazana-state-icon">
 				<i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
 			</span>
-			<span id="qazana-panel-saver-button-publish-label">
+			<span id="qazana-panel-footer-saver-button-publish-label">
 				<?php _e( 'Publish', 'qazana' ); ?>
 			</span>
 		</button>
 	</div>
-	<div id="qazana-panel-saver-save-options" class="qazana-panel-footer-tool" >
-		<button id="qazana-panel-saver-button-save-options" class="qazana-button qazana-button-success tooltip-target qazana-saver-disabled" data-tooltip="<?php esc_attr_e( 'Save Options', 'qazana' ); ?>">
+	<div id="qazana-panel-footer-saver-save-options" class="qazana-panel-footer-tool" >
+		<button id="qazana-panel-footer-saver-button-save-options" class="qazana-button qazana-button-success tooltip-target qazana-saver-disabled" data-tooltip="<?php esc_attr_e( 'Save Options', 'qazana' ); ?>">
 			<i class="fa fa-caret-up" aria-hidden="true"></i>
 			<span class="qazana-screen-only"><?php _e( 'Save Options', 'qazana' ); ?></span>
 		</button>
@@ -213,11 +213,11 @@ $document = qazana()->documents->get( $this->get_post_id() );
 				</span>
 			</p>
 			<div class="qazana-panel-footer-sub-menu">
-				<div id="qazana-panel-saver-menu-save-draft" class="qazana-panel-footer-sub-menu-item qazana-saver-disabled">
+				<div id="qazana-panel-footer-saver-menu-save-draft" class="qazana-panel-footer-sub-menu-item qazana-saver-disabled">
 					<i class="qazana-icon fa fa-save" aria-hidden="true"></i>
 					<span class="qazana-title"><?php _e( 'Save Draft', 'qazana' ); ?></span>
 				</div>
-				<div id="qazana-panel-saver-menu-save-template" class="qazana-panel-footer-sub-menu-item">
+				<div id="qazana-panel-footer-saver-menu-save-template" class="qazana-panel-footer-sub-menu-item">
 					<i class="qazana-icon fa fa-folder" aria-hidden="true"></i>
 					<span class="qazana-title"><?php _e( 'Save as Template', 'qazana' ); ?></span>
 				</div>
@@ -281,7 +281,7 @@ $document = qazana()->documents->get( $this->get_post_id() );
 		<?php
 		$scheme_fields_keys = Group_Control_Typography::get_scheme_fields_keys();
 
-		$typography_group = qazana()->controls_manager->get_control_groups( 'typography' );
+		$typography_group = qazana()->get_controls_manager()->get_control_groups( 'typography' );
 		$typography_fields = $typography_group->get_fields();
 
 		$scheme_fields = array_intersect_key( $typography_fields, array_flip( $scheme_fields_keys ) );

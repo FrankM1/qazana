@@ -30,7 +30,27 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend( {
 			mediaType = this.getMediaType();
 
 		if ( 'image' === mediaType ) {
-			this.ui.mediaImage.css( 'background-image', url ? 'url(' + url + ')' : '' );
+
+              // Fetch thumbnails instead of full size images in editor.
+              var thumbnailImage = {
+				id: this.getControlValue( 'id' ),
+				url: url,
+                size: 'custom',
+                dimension: {
+                    width: 245,
+                    height: 135,
+                },
+                preview: true,
+			};
+
+            var imageUrl = qazana.imagesManager.getImageUrl( thumbnailImage );
+
+            // There is a bug here whereby first load doesn't generate thumbs
+            if ( _.isEmpty( imageUrl ) ) {
+                imageUrl = url;
+            }
+
+			this.ui.mediaImage.css( 'background-image', imageUrl ? 'url(' + imageUrl + ')' : '' );
 		} else if ( 'video' === mediaType ) {
 			this.ui.mediaVideo.attr( 'src', url );
 		}

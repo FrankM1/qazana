@@ -12,7 +12,7 @@ class Qazana_Test_Manager_General extends Qazana_Test_Base {
 	private $fake_post_id = '123';
 
 	public static function setUpBeforeClass() {
-        self::$manager = self::qazana()->templates_manager;
+        self::$manager = self::qazana()->get_templates_manager();
        // fwrite( STDERR, print_r( self::$manager, true ) );
 	}
 

@@ -460,7 +460,7 @@ class Widget_Icon extends Widget_Base {
 
 	protected function get_render_icon() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( $settings['icon_type'] === 'image' ) {
 			$filetype = wp_check_filetype( $settings['image']['url'] );
@@ -528,15 +528,5 @@ class Widget_Icon extends Widget_Base {
 			</<?php echo $icon_tag; ?>>
 		</div><?php
 	}
-
-	/**
-	 * Render icon widget output in the editor.
-	 *
-	 * Written as a Backbone JavaScript template and used to generate the live preview.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 */
-	protected function _content_template() {}
 
 }

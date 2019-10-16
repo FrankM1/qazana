@@ -12,14 +12,14 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 	}
 
 	public function test_getInstance() {
-		$this->assertInstanceOf( '\Qazana\Editor', $this->qazana()->editor );
+		$this->assertInstanceOf( '\Qazana\Editor', $this->qazana()->get_editor() );
 	}
 
 	// public function test_enqueueScripts() {
 	// 	ini_set( 'memory_limit', '85M' );
 
 	// 	ob_start();
-	// 	$this->qazana()->editor->enqueue_scripts();
+	// 	$this->qazana()->get_editor()->enqueue_scripts();
 	// 	ob_end_clean();
 
 	// 	$scripts = [
@@ -49,7 +49,7 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 	// }
 
 	public function test_enqueueStyles() {
-		$this->qazana()->editor->enqueue_styles();
+		$this->qazana()->get_editor()->enqueue_styles();
 
 		$styles = [
 			'qazana-select2',
@@ -68,7 +68,7 @@ class Qazana_Test_Editor extends Qazana_Test_Base {
 
 	// public function test_renderFooter() {
 	// 	ob_start();
-	// 	$this->qazana()->editor->wp_footer();
+	// 	$this->qazana()->get_editor()->wp_footer();
 	// 	$buffer = ob_get_clean();
 
 	// 	$this->assertNotEmpty( $buffer );

@@ -53,7 +53,7 @@ class Widget_Image extends Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'eicon-insert-image';
+		return 'eicon-image';
 	}
 
 	/**
@@ -540,7 +540,7 @@ class Widget_Image extends Widget_Base {
 				'data-qazana-open-lightbox' => $settings['open_lightbox'],
 			] );
 
-			if ( qazana()->editor->is_edit_mode() ) {
+			if ( qazana()->get_editor()->is_edit_mode() ) {
 				$this->add_render_attribute( 'link', [
 					'class' => 'qazana-clickable',
 				] );
@@ -566,7 +566,7 @@ class Widget_Image extends Widget_Base {
 		echo Group_Control_Image_Size::get_attachment_image_html( $settings );
 
 		if ( $link ) : ?>
-				</a>
+			</a>
 		<?php endif;
 
 		if ( $has_caption ) : ?>

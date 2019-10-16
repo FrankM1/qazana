@@ -159,7 +159,7 @@ abstract class Base_Tag extends Controls_Stack {
 	 * @access protected
 	 */
 	final protected function init_controls() {
-		qazana()->controls_manager->open_stack( $this );
+		qazana()->get_controls_manager()->open_stack( $this );
 
 		$this->start_controls_section( 'settings', [
 			'label' => __( 'Settings', 'qazana' ),
@@ -170,8 +170,8 @@ abstract class Base_Tag extends Controls_Stack {
 		$this->end_controls_section();
 
 		// If in fact no controls were registered, empty the stack
-		if ( 1 === count( qazana()->controls_manager->get_stacks( $this->get_unique_name() )['controls'] ) ) {
-			qazana()->controls_manager->open_stack( $this );
+		if ( 1 === count( qazana()->get_controls_manager()->get_stacks( $this->get_unique_name() )['controls'] ) ) {
+			qazana()->get_controls_manager()->open_stack( $this );
 		}
 
 		$this->register_advanced_section();

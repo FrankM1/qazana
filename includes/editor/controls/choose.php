@@ -51,8 +51,9 @@ class Control_Choose extends Base_Data_Control {
 					<label class="qazana-choices-label tooltip-target" for="<?php echo $control_uid; ?>" data-tooltip="{{ options.title }}" title="{{ options.title }}">
 						<# if( options.icon ) { #>
 							<i class="{{ options.icon }}" aria-hidden="true"></i>
+                            <span class="qazana-choose-option-title qazana-screen-only">{{ options.title }}</span>
 						<# } else if( options.title ) { #>
-							<span class="qazana-choose-option-title qazana-screen-only">{{ options.title }}</span>
+							<span class="qazana-choose-option-title">{{ options.title }}</span>
 						<# } #>
 					</label>
 					<# } ); #>

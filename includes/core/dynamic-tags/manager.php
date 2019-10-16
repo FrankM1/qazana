@@ -334,7 +334,7 @@ class Manager {
 	 * @throws \Exception If current user don't have permissions to edit the post.
 	 */
 	public function ajax_render_tags() {
-		qazana()->editor->verify_ajax_nonce();
+		qazana()->get_editor()->verify_ajax_nonce();
 
 		$data = $_POST; // WPCS: CSRF OK.
 
@@ -346,7 +346,7 @@ class Manager {
 			throw new \Exception( 'Access denied.' );
 		}
 
-		qazana()->db->switch_to_post( $data['post_id'] );
+		qazana()->get_db()->switch_to_post( $data['post_id'] );
 
 		/**
 		 * Before dynamic tags rendered.
@@ -380,7 +380,7 @@ class Manager {
 		 */
 		do_action( 'qazana/dynamic_tags/after_render' );
 
-		return $tags_data;
+		wp_send_json( $tags_data );
 	}
 
 	/**

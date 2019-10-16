@@ -36,7 +36,7 @@ class DB {
 	}
 
 	public function on_untrash_post( $post_id ) {
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 		if ( $document ) {
 			$conditions = $document->get_meta( '_qazana_conditions' );
 			if ( $conditions ) {
@@ -83,7 +83,7 @@ class DB {
 			return;
 		}
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( ! $document || get_post_meta( $post_id, Document::TYPE_META_KEY, $document->get_name() ) !== 'site-hero' ) {
 			return;
@@ -207,7 +207,7 @@ class DB {
 		] );
 
 		foreach ( $query->posts as $post_id ) {
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 			$conditions = $document->get_meta( self::META_OPTION_NAME );
 			$this->add( $document, $conditions );
 		}
@@ -223,10 +223,8 @@ class DB {
 	 * @param Ajax_Manager $ajax_manager
 	 */
 	public function register_ajax_actions( $ajax_manager ) {
-		foreach ( qazana()->document_conditions->documents_support as $key ) {
-			$ajax_manager->register_ajax_action( str_replace( '-', '_', $key ) . '_save_conditions', [ $this, 'ajax_save_conditions' ] );
-			$ajax_manager->register_ajax_action( str_replace( '-', '_', $key ) . '_conditions_check_conflicts', [ $this, 'ajax_check_conditions_conflicts' ] );
-		}
+		$ajax_manager->register_ajax_action( 'document_save_conditions', [ $this, 'ajax_save_conditions' ] );
+		$ajax_manager->register_ajax_action( 'document_conditions_check_conflicts', [ $this, 'ajax_check_conditions_conflicts' ] );
 	}
 
 	public function save_conditions( $post_id, $conditions ) {
@@ -237,7 +235,7 @@ class DB {
 			$conditions_to_save[] = rtrim( implode( '/', $condition ), '/' );
 		}
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 		if ( empty( $conditions_to_save ) ) {
 			$document->delete_meta( self::META_OPTION_NAME );
 		} else {
@@ -255,7 +253,7 @@ class DB {
 
 		$conditions_to_check = rtrim( implode( '/', $condition ), '/' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		$conditions_groups = $this->get_by_location( $document->get_location() );
 
@@ -273,7 +271,7 @@ class DB {
 				}
 
 				if ( false !== array_search( $conditions_to_check, $conditions, true ) ) {
-					$edit_url = qazana()->documents->get( $template_id )->get_edit_url();
+					$edit_url = qazana()->get_documents()->get( $template_id )->get_edit_url();
 					$conflicted[] = sprintf( '<a href="%s" target="_blank">%s</a>', $edit_url, get_the_title( $template_id ) );
 				}
 			}

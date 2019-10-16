@@ -48,19 +48,47 @@ class Counter extends Widget_Base {
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'count' => [
-						'title' => __( 'Count', 'qazana' ),
+                        'icon' => false,
+                        'title' => __( 'Count', 'qazana' ),
 					],
 					'odometer' => [
-						'title' => __( 'Odometer', 'qazana' ),
+                        'icon' => false,
+                        'title' => __( 'Odometer', 'qazana' ),
 					],
 					'none' => [
-						'title' => __( 'No Animation', 'qazana' ),
+                        'icon' => false,
+                        'title' => __( 'No Animation', 'qazana' ),
 					],
 				],
 				'prefix_class' => 'qazana-counter-animation-type-',
 				'default' => 'odometer',
 			]
-		);
+        );
+
+        $this->add_control(
+			'position',
+			[
+				'label' => __( 'Counter Position', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => 'top',
+				'options' => [
+					'left' => [
+						'title' => __( 'Left', 'qazana' ),
+						'icon' => 'fa fa-align-left',
+					],
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon' => 'fa fa-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'qazana' ),
+						'icon' => 'fa fa-align-right',
+					],
+				],
+				'prefix_class' => 'qazana-position-',
+				'toggle' => false,
+			]
+        );
 
 		$this->add_control(
 			'starting_number',
@@ -81,6 +109,27 @@ class Counter extends Widget_Base {
 				'default' => 100,
 			]
 		);
+
+        $this->add_control(
+			'duration',
+			[
+				'label' => __( 'Animation Duration', 'qazana' ),
+				'label_block' => true,
+				'type' => Controls_Manager::NUMBER,
+				'default' => 2000,
+				'min' => 100,
+				'step' => 100,
+			]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+			'section_secondary',
+			[
+				'label' => __( 'Prefix & Suffix', 'qazana' ),
+			]
+        );
 
 		$this->add_control(
 			'prefix',
@@ -104,20 +153,37 @@ class Counter extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'duration',
+		$this->end_controls_section();
+
+        $this->start_controls_section(
+			'section_content',
 			[
-				'label' => __( 'Animation Duration', 'qazana' ),
-				'label_block' => true,
-				'type' => Controls_Manager::NUMBER,
-				'default' => 2000,
-				'min' => 100,
-				'step' => 100,
+				'label' => __( 'Content', 'qazana' ),
 			]
-		);
+        );
+
+        $this->add_control(
+			'title_size',
+			[
+				'label' => __( 'Title HTML Tag', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'h1' => 'H1',
+					'h2' => 'H2',
+					'h3' => 'H3',
+					'h4' => 'H4',
+					'h5' => 'H5',
+					'h6' => 'H6',
+					'div' => 'div',
+					'span' => 'span',
+					'p' => 'p',
+				],
+				'default' => 'h3',
+			]
+        );
 
 		$this->add_control(
-			'title',
+			'title_text',
 			[
 				'label' => __( 'Title', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -128,23 +194,59 @@ class Counter extends Widget_Base {
 		);
 
 		$this->add_control(
-			'subtitle',
+			'description_text',
 			[
-				'label' => __( 'Sub Title', 'qazana' ),
+				'label' => __( 'Description', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-				'default' => __( 'Cool number subtitle', 'qazana' ),
-				'placeholder' => __( 'Cool number subtitle', 'qazana' ),
+				'default' => __( 'Cool number description', 'qazana' ),
+				'placeholder' => __( 'Cool number description', 'qazana' ),
+			]
+        );
+
+        $this->add_control(
+			'link',
+			[
+				'label' => __( 'Link to', 'qazana' ),
+				'type' => Controls_Manager::URL,
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
+				'separator' => 'before',
 			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_number',
+			'section_style_number',
 			[
 				'label' => __( 'Number', 'qazana' ),
 				'tab' => Controls_Manager::TAB_STYLE,
+			]
+        );
+
+        $this->add_responsive_control(
+			'counter_space',
+			[
+				'label' => __( 'Counter Box Spacing', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 15,
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}.qazana-position-right .qazana-counter-number' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-left .qazana-counter-number' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.qazana-position-top .qazana-counter-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}} .qazana-counter-number' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
 			]
 		);
 
@@ -158,7 +260,7 @@ class Counter extends Widget_Base {
 					'value' => Scheme_Color::COLOR_1,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-counter-number-value' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -168,14 +270,14 @@ class Counter extends Widget_Base {
 			[
 				'name' => 'typography_number',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .qazana-counter-number-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-counter-number-value',
 			]
 		);
 
 		$this->add_control(
 			'number_spacing',
 			[
-				'label' => __( 'Spacing', 'qazana' ),
+				'label' => __( 'Counter Bottom Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -184,7 +286,7 @@ class Counter extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-number-wrapper' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-counter-number-value' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -192,32 +294,79 @@ class Counter extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_title',
+			'section_style_content',
 			[
-				'label' => __( 'Title', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label' => __( 'Content', 'qazana' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->add_control(
-			'title_color',
+		$this->add_responsive_control(
+			'text_align',
 			[
-				'label' => __( 'Title Color', 'qazana' ),
-				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_2,
+				'label' => __( 'Alignment', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => __( 'Left', 'qazana' ),
+						'icon' => 'fa fa-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'qazana' ),
+						'icon' => 'fa fa-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'qazana' ),
+						'icon' => 'fa fa-align-right',
+					],
+					'justify' => [
+						'title' => __( 'Justified', 'qazana' ),
+						'icon' => 'fa fa-align-justify',
+					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-counter' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'title_spacing',
+			'content_vertical_alignment',
 			[
-				'label' => __( 'Title Spacing', 'qazana' ),
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+				'default' => 'top',
+				'prefix_class' => 'qazana-vertical-align-',
+			]
+		);
+
+		$this->add_control(
+			'heading_title',
+			[
+				'label' => __( 'Title', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'title_bottom_space',
+			[
+				'label' => __( 'Spacing', 'qazana' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -231,75 +380,108 @@ class Counter extends Widget_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+		$this->add_control(
+			'title_color',
 			[
-				'name' => 'typography_title',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-title',
+				'label' => __( 'Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-content .qazana-counter-title' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_1,
+				],
 			]
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_subtitle',
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			[
-				'label' => __( 'Sub Title', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'name' => 'title_typography',
+				'selector' => '{{WRAPPER}} .qazana-counter-content .qazana-counter-title',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
 		);
 
 		$this->add_control(
-			'subtitle_color',
+			'heading_description',
 			[
-				'label' => __( 'Sub Title Color', 'qazana' ),
+				'label' => __( 'Description', 'qazana' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'description_color',
+			[
+				'label' => __( 'Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-counter-content .qazana-counter-description' => 'color: {{VALUE}};',
+				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
 					'value' => Scheme_Color::COLOR_3,
 				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-subtitle' => 'color: {{VALUE}};',
-				],
 			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'name' => 'typography_subtitle',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .qazana-counter-subtitle',
+				'name' => 'description_typography',
+				'selector' => '{{WRAPPER}} .qazana-counter-content .qazana-counter-description',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
 
-		$this->add_control(
-			'subtitle_spacing',
-			[
-				'label' => __( 'Sub Title Spacing', 'qazana' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .qazana-counter-subtitle' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->end_controls_section();
+        $this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_prefix_style',
+			'section_style_prefix',
 			[
 				'label' => __( 'Prefix Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+                'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+					'prefix!' => '',
+				],
 			]
 		);
+
+        $this->add_control(
+			'prefix_vertical_alignment',
+			[
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+                'default' => 'middle',
+                'selectors' => [
+					'{{WRAPPER}} .qazana-counter-number-prefix' => 'align-self: {{VALUE}}',
+                ],
+                'selectors_dictionary' => [
+					'top'    => 'flex-start',
+					'middle' => 'center',
+					'bottom' => 'flex-end',
+				],
+			]
+        );
 
 		$this->add_control(
 			'prefix_color',
@@ -328,12 +510,46 @@ class Counter extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'section_suffix_style',
+			'section_style_suffix',
 			[
 				'label' => __( 'Suffix Style', 'qazana' ),
-				'tab' => Controls_Manager::TAB_STYLE,
+                'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+					'suffix!' => '',
+				],
 			]
-		);
+        );
+
+        $this->add_control(
+			'suffix_vertical_alignment',
+			[
+				'label' => __( 'Vertical Alignment', 'qazana' ),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'top' => [
+						'title' => __( 'Top', 'qazana' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle' => [
+						'title' => __( 'Middle', 'qazana' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'qazana' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+                'default' => 'middle',
+                'selectors' => [
+					'{{WRAPPER}} .qazana-counter-number-suffix' => 'align-self: {{VALUE}}',
+                ],
+                'selectors_dictionary' => [
+					'top'    => 'flex-start',
+					'middle' => 'center',
+					'bottom' => 'flex-end',
+				],
+			]
+        );
 
 		$this->add_control(
 			'suffix_color',
@@ -363,58 +579,125 @@ class Counter extends Widget_Base {
 
 	}
 
-	public function style_1() {
-
-		$settings = $this->get_settings();
-
-		?>
-		<div class="qazana-counter">
-			<div class="qazana-counter-number-wrapper">
-				<span class="qazana-counter-number-prefix"><?php echo $settings['prefix']; ?></span>
-				<span <?php $this->render_attribute_string( 'counter' ); ?>><?php echo $settings['starting_number']; ?></span>
-				<span class="qazana-counter-number-suffix"><?php echo $settings['suffix']; ?></span>
-			</div>
-			<?php if ( $settings['title'] ) : ?>
-				<div class="qazana-counter-title"><?php echo $settings['title']; ?></div>
-			<?php endif; ?>
-
-			<?php if ( $settings['subtitle'] ) : ?>
-				<div class="qazana-counter-subtitle"><?php echo $settings['subtitle']; ?></div>
-			<?php endif; ?>
-		</div>
-		<?php
-
-	}
-
-	public function render() {
+    public function render() {
 		$settings = $this->get_settings();
 
 		$this->add_render_attribute( 'counter', [
-			'class' => 'qazana-counter-number',
+			'class' => 'qazana-counter-number-value',
 			'data-animation-type' => $settings['animation_type'],
 			'data-duration' => $settings['duration'],
 			'data-to-value' => $settings['ending_number'],
 		] );
 
-		$this->style_1();
+		$has_content = ! empty( $settings['title_text'] ) || ! empty( $settings['description_text'] );
 
+        if ( ! empty( $settings['link']['url'] ) ) {
+			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
+
+			if ( $settings['link']['is_external'] ) {
+				$this->add_render_attribute( 'link', 'target', '_blank' );
+			}
+
+			if ( ! empty( $settings['link']['nofollow'] ) ) {
+				$this->add_render_attribute( 'link', 'rel', 'nofollow' );
+			}
+        }
+
+		$html = '<div class="qazana-counter">';
+
+            if ( $this->get_settings_for_display('hover_animation') ) {
+                $this->add_render_attribute( 'counter', 'class', 'qazana-animation-' . $this->get_settings_for_display('hover_animation') );
+            }
+
+            $counter_html = '<span class="qazana-counter-number-prefix">'. $settings['prefix'] . '</span>';
+            $counter_html .= '<span ' . $this->get_render_attribute_string( 'counter' ) . '>' . $settings['starting_number'] . '</span>';
+            $counter_html .= '<span class="qazana-counter-number-suffix">'. $settings['suffix'] .'</span>';
+
+            if ( ! empty( $settings['link']['url'] ) ) {
+                $counter_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $counter_html . '</a>';
+            }
+
+            $html .= '<div class="qazana-counter-number">' . $counter_html . '</div>';
+
+            if ( $has_content ) {
+			    $html .= '<div class="qazana-counter-content">';
+
+                if ( ! empty( $settings['title_text'] ) ) {
+                    $this->add_render_attribute( 'title_text', 'class', 'qazana-counter-title' );
+
+                    $this->add_inline_editing_attributes( 'title_text', 'none' );
+
+                    $title_html = $settings['title_text'];
+
+                    if ( ! empty( $settings['link']['url'] ) ) {
+                        $title_html = '<a ' . $this->get_render_attribute_string( 'link' ) . '>' . $title_html . '</a>';
+                    }
+
+                    $html .= sprintf( '<%1$s %2$s>%3$s</%1$s>', $settings['title_size'], $this->get_render_attribute_string( 'title_text' ), $title_html );
+                }
+
+                if ( ! empty( $settings['description_text'] ) ) {
+                    $this->add_render_attribute( 'description_text', 'class', 'qazana-counter-description' );
+
+                    $this->add_inline_editing_attributes( 'description_text' );
+
+                    $html .= sprintf( '<p %1$s>%2$s</p>', $this->get_render_attribute_string( 'description_text' ), $settings['description_text'] );
+                }
+                $html .= '</div>';
+
+            } ?>
+        <?php
+
+        $html .= '</div>';
+
+        echo $html;
 	}
 
 	protected function _content_template() {
 		?>
-		<div class="qazana-counter">
-			<div class="qazana-counter-number-wrapper">
-				<span class="qazana-counter-number-prefix">{{{ settings.prefix }}}</span>
-				<span class="qazana-counter-number" data-animation-type="{{ settings.animation_type }}" data-duration="{{ settings.duration }}" data-to-value="{{ settings.ending_number }}">{{{ settings.starting_number }}}</span>
-				<span class="qazana-counter-number-suffix">{{{ settings.suffix }}}</span>
-			</div>
-			<# if ( settings.title ) {
-				#><div class="qazana-counter-title">{{{ settings.title }}}</div><#
-			} #>
-			<# if ( settings.subtitle ) {
-				#><div class="qazana-counter-subtitle">{{{ settings.subtitle }}}</div><#
-			} #>
-		</div>
+		<#
+		var html = '<div class="qazana-counter">';
+
+        html += '<div class="qazana-counter-number">';
+            html += '<span class="qazana-counter-number-prefix">' + settings.prefix  + '</span>';
+            html += '<span class="qazana-counter-number-value" data-animation-type="' + settings.animation_type  + '" data-duration="' + settings.duration  + '" data-to-value="' + settings.ending_number  + '">' + settings.starting_number  + '</span>';
+            html += '<span class="qazana-counter-number-suffix">' + settings.suffix  + '</span>';
+        html += '</div>';
+
+        var hasContent = !! ( settings.title_text || settings.description_text );
+
+        if ( hasContent ) {
+            html += '<div class="qazana-counter-content">';
+
+            if ( settings.title_text ) {
+				var title_html = settings.title_text;
+
+				if ( settings.link.url ) {
+					title_html = '<a href="' + settings.link.url + '">' + title_html + '</a>';
+				}
+
+				view.addRenderAttribute( 'title_text', 'class', 'qazana-counter-title' );
+
+				view.addInlineEditingAttributes( 'title_text' );
+
+				html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
+			}
+
+			if ( settings.description_text ) {
+				view.addRenderAttribute( 'description_text', 'class', 'qazana-counter-description' );
+
+				view.addInlineEditingAttributes( 'description_text' );
+
+				html += '<p ' + view.getRenderAttributeString( 'description_text' ) + '>' + settings.description_text + '</p>';
+            }
+
+            html += '</div>';
+		}
+
+		html += '</div>';
+
+		print( html );
+		#>
 		<?php
 	}
 

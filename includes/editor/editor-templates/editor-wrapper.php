@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wp_version;
 
-$document = qazana()->documents->get( $this->_post_id );
+$document = qazana()->get_documents()->get( $this->_post_id );
 
 $body_classes = [
 	'qazana-editor-active',
@@ -17,7 +17,7 @@ $body_classes = [
 if ( is_rtl() ) {
 	$body_classes[] = 'rtl';
 }
-if ( ! qazana()->role_manager->user_can( 'design' ) ) {
+if ( ! qazana()->get_role_manager()->user_can( 'design' ) ) {
 	$body_classes[] = 'qazana-editor-content-only';
 }
 ?>

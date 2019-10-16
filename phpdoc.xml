@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Qazana API Documentation</title>
+
+    <parser>
+        <default-package-name>Qazana</default-package-name>
+        <target>docs/api</target>
+    </parser>
+
+    <extensions>
+      <extension>php</extension>
+   </extensions>
+
+  <transformer>
+    <target>docs/api</target>
+  </transformer>
+
+  <files>
+    <directory>.</directory>
+    <ignore>includes/vendor/*</ignore>
+    <ignore>node_modules/*</ignore>
+    <ignore>tests/*</ignore>
+  </files>
+
+</phpdoc>

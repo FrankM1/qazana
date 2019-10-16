@@ -26,7 +26,7 @@
 	color: $editor-light;
 	transition: $transition-hover;
 
-	#qazana-panel-saver-button-update {
+	#qazana-panel-footer-saver-button-update {
 		@include border-end(1px solid #2d8739);
 		border-radius: getValueByDirection(3px 0 0 3px, 0 3px 3px 0);
 
@@ -35,7 +35,7 @@
 		}
 	}
 
-	#qazana-panel-saver-button-save-options {
+	#qazana-panel-footer-saver-button-save-options {
 		float: $start;
 		border-radius: getValueByDirection(0 3px 3px 0, 3px 0 0 3px);
 
@@ -142,7 +142,7 @@
 	}
 }
 
-#qazana-panel-saver-publish {
+#qazana-panel-footer-saver-publish {
 	width: 80px;
 
 	.qazana-button-state {
@@ -151,13 +151,13 @@
 			@include margin-end(0);
 		}
 
-		#qazana-panel-saver-button-publish-label {
+		#qazana-panel-footer-saver-button-publish-label {
 			display: none;
 		}
 	}
 }
 
-#qazana-panel-saver-save-options {
+#qazana-panel-footer-saver-save-options {
 	width: 35px;
 	@include border-start(1px solid $editor-darkest);
 
@@ -190,7 +190,7 @@
 	cursor: default;
 }
 
-#qazana-panel-saver- {
+#qazana-panel-footer-saver- {
 	&button-{
 		&preview {
 			a {

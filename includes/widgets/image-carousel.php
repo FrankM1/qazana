@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Widget_Image_Carousel extends Widget_Base {
 
-	public $carousel = true;
+    public $carousel = true;
 
 	/**
 	 * Get widget name.
@@ -73,17 +73,37 @@ class Widget_Image_Carousel extends Widget_Base {
 		return [ 'image', 'photo', 'visual', 'carousel', 'slider' ];
 	}
 
+    public function get_categories() {
+		return [ 'general' ];
+    }
+
     /**
-	 * Retrieve widget categories.
+	 * Show loading indicator.
+	 *
+	 * Whether to show the widget's loading indicator or not. By default returns false.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @return array Widget categories.
+	 * @return bool Whether to show the widget's loading indicator or not.
 	 */
-	public function get_categories() {
-		return [ 'general' ];
+	public function show_loading_indicator() {
+		return true;
     }
+
+	/**
+	 * Retrieve the list of scripts the image carousel widget depended on.
+	 *
+	 * Used to set scripts dependencies required to run the widget.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return array Widget scripts dependencies.
+	 */
+	public function add_element_dependencies() {
+        $this->add_frontend_script( 'jquery-slick' );
+	}
 
 	/**
 	 * Register image carousel widget controls.
@@ -117,7 +137,8 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Image_Size::get_type(),
 			[
-				'name' => 'thumbnail',
+				'name' => 'thumbnail', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `thumbnail_size` and `thumbnail_custom_dimension`.
+				'separator' => 'none',
 			]
 		);
 
@@ -137,7 +158,7 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'link_to',
 			[
-				'label' => __( 'Link to', 'qazana' ),
+				'label' => __( 'Link', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'none',
 				'options' => [
@@ -151,13 +172,45 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->add_control(
 			'link',
 			[
-				'label' => 'Link to',
+				'label' => __( 'Link', 'qazana' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => __( 'http://your-link.com', 'qazana' ),
+				'placeholder' => __( 'https://your-link.com', 'qazana' ),
 				'condition' => [
 					'link_to' => 'custom',
 				],
 				'show_label' => false,
+			]
+		);
+
+		$this->add_control(
+			'open_lightbox',
+			[
+				'label' => __( 'Lightbox', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'default',
+				'options' => [
+					'default' => __( 'Default', 'qazana' ),
+					'yes' => __( 'Yes', 'qazana' ),
+					'no' => __( 'No', 'qazana' ),
+				],
+				'condition' => [
+					'link_to' => 'file',
+				],
+			]
+		);
+
+		$this->add_control(
+			'caption_type',
+			[
+				'label' => __( 'Caption', 'qazana' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'' => __( 'None', 'qazana' ),
+					'title' => __( 'Title', 'qazana' ),
+					'caption' => __( 'Caption', 'qazana' ),
+					'description' => __( 'Description', 'qazana' ),
+				],
 			]
 		);
 
@@ -166,9 +219,9 @@ class Widget_Image_Carousel extends Widget_Base {
 		$this->start_controls_section(
 			'section_carousel_settings',
 			[
-				'label' => __( 'Carousel Settings', 'qazana' ),
+				'label' => __( 'Additional Options', 'qazana' ),
 			]
-		);
+        );
 
 		$this->end_controls_section();
 
@@ -225,7 +278,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'image_border',
-				'selector' => '{{WRAPPER}} .qazana-image-carousel .slick-slide-image',
+				'selector' => '{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image',
 				'separator' => 'before',
 			]
 		);
@@ -237,120 +290,162 @@ class Widget_Image_Carousel extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-image-carousel-wrapper .qazana-image-carousel .slick-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_caption',
+			[
+				'label' => __( 'Caption', 'qazana' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'caption_type!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'caption_align',
+			[
+				'label' => __( 'Alignment', 'qazana' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => __( 'Left', 'qazana' ),
+						'icon' => 'fa fa-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'qazana' ),
+						'icon' => 'fa fa-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'qazana' ),
+						'icon' => 'fa fa-align-right',
+					],
+					'justify' => [
+						'title' => __( 'Justified', 'qazana' ),
+						'icon' => 'fa fa-align-justify',
+					],
+				],
+				'default' => 'center',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image-carousel-caption' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'caption_text_color',
+			[
+				'label' => __( 'Text Color', 'qazana' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image-carousel-caption' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'caption_typography',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
+				'selector' => '{{WRAPPER}} .qazana-image-carousel-caption',
+			]
+		);
+
+		$this->end_controls_section();
+
 	}
 
-	public function render() {
+	/**
+	 * Render image carousel widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function render() {
 		$settings = $this->get_settings_for_display();
 
-		if ( empty( $settings['carousel'] ) )
+		if ( empty( $settings['carousel'] ) ) {
 			return;
+		}
 
 		$slides = [];
 
-		$count = 0;
-
-		foreach ( $settings['carousel'] as $attachment ) {
+		foreach ( $settings['carousel'] as $index => $attachment ) {
 			$image_url = Group_Control_Image_Size::get_attachment_image_src( $attachment['id'], 'thumbnail', $settings );
+
 			$image_html = '<img class="slick-slide-image" src="' . esc_attr( $image_url ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $attachment ) ) . '" />';
 
 			$link = $this->get_link_url( $attachment, $settings );
+
 			if ( $link ) {
-				$target = '';
-				if ( ! empty( $link['is_external'] ) ) {
-					$target = ' target="_blank"';
+				$link_key = 'link_' . $index;
+
+				$this->add_render_attribute( $link_key, [
+					'href' => $link['url'],
+					'data-qazana-open-lightbox' => $settings['open_lightbox'],
+					'data-qazana-lightbox-slideshow' => $this->get_id(),
+					'data-qazana-lightbox-index' => $index,
+				] );
+
+				if ( Plugin::$instance->editor->is_edit_mode() ) {
+					$this->add_render_attribute( $link_key, [
+						'class' => 'qazana-clickable',
+					] );
 				}
 
-				$image_html = sprintf( '<a href="%s"%s>%s</a>', $link['url'], $target, $image_html );
+				if ( ! empty( $link['is_external'] ) ) {
+					$this->add_render_attribute( $link_key, 'target', '_blank' );
+				}
+
+				if ( ! empty( $link['nofollow'] ) ) {
+					$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
+				}
+
+				$image_html = '<a ' . $this->get_render_attribute_string( $link_key ) . '>' . $image_html . '</a>';
 			}
 
-			$slides[] = '<div class="slick-slide" data-index="'. esc_attr( $count ) .'" data-slide-id="'. esc_attr( $count ) .'"><div class="slick-slide-inner">' . $image_html . '</div></div>';
+			$image_caption = $this->get_image_caption( $attachment );
 
-			$count++;
+			$slide_html = '<div class="slick-slide"><figure class="slick-slide-inner">' . $image_html;
+
+			if ( ! empty( $image_caption ) ) {
+				$slide_html .= '<figcaption class="qazana-image-carousel-caption">' . $image_caption . '</figcaption>';
+			}
+
+			$slide_html .= '</figure></div>';
+
+			$slides[] = $slide_html;
+
 		}
 
 		if ( empty( $slides ) ) {
 			return;
 		}
 
-		$show_thumbs = ( in_array( $settings['navigation'], [ 'thumbnails' ] ) );
+		$this->add_render_attribute( 'carousel', 'class', 'qazana-image-carousel' );
 
-		if ( $show_thumbs ) {
+		if ( 'yes' === $settings['image_stretch'] ) {
+			$this->add_render_attribute( 'carousel', 'class', 'slick-image-stretch' );
+        }
 
-			$thumbs = [];
-
-			$count = 0;
-
-			foreach ( $settings['carousel'] as $attachment ) {
-
-				$image_url = Group_Control_Image_Size::get_attachment_image_src( $attachment['id'], 'thumbnail', $settings );
-
-				$params = array( 'width' => 138, 'height' => 80 );
-
-				$image_url = bfi_thumb( $image_url, $params );
-
-				$image_html = '<span><img class="slick-slide-image" src="' . esc_attr( $image_url ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $attachment ) ) . '" /></span>';
-
-				$link = $this->get_link_url( $attachment, $settings );
-				if ( $link ) {
-					$link_key = 'link_' . $index;
-
-					$this->add_render_attribute( $link_key, 'href', $link );
-
-					if ( ! empty( $link['is_external'] ) ) {
-						$this->add_render_attribute( $link_key, 'target', '_blank' );
-					}
-
-					if ( ! empty( $link['nofollow'] ) ) {
-						$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
-					}
-
-					$image_html = '<a ' . $this->get_render_attribute_string( $link_key ) . '>' . $image_html . '</a>';
-				}
-
-				$thumbs[] = '<div class="slick-slide" data-index="'. esc_attr( $count ) .'" data-slide-id="'. esc_attr( $count ) .'"><div class="slick-slide-inner">' . $image_html . '</div></div>';
-
-				$count++;
-			}
-		}
-
-		$is_rtl = ( 'rtl' ===  $this->get_settings_for_display('direction') );
-		$direction = $is_rtl ? 'rtl' : 'ltr';
-
-		$carousel_classes = [ 'qazana-grid-wrapper', 'slick-slides-biggie', 'slick-slider' ];
-
-		$this->add_render_attribute( 'slides', [
-			'class' => $carousel_classes
-		] );
-		
-		?><div class="qazana-slides-wrapper qazana-slick-slider" dir="<?php echo $direction; ?>">
-			<div <?php $this->render_attribute_string( 'slides' ); ?>>
-				
-				<div class="slick-slideshow-large-container-biggie">
-					<div class="slick-slides slick-slides-biggie">
-						<?php echo implode( '', $slides ); ?>
-					</div>
-				</div>
-
-				<?php if ( $show_thumbs ) { ?>
-					<div class="slick-slideshow-large-container-smalls">
-						<div class="slick-slides slick-slides-smalls">
-							<?php echo implode( '', $thumbs ); ?>
-						</div>
-					</div>
-				<?php } ?>
-
+		?>
+		<div class="qazana-image-carousel-wrapper qazana-slick-slider" dir="<?php echo $settings['direction']; ?>">
+			<div <?php echo $this->get_render_attribute_string( 'carousel' ); ?>>
+				<?php echo implode( '', $slides ); ?>
 			</div>
-		</div><?php
-
+		</div>
+		<?php
 	}
-
-	protected function _content_template() {}
 
 	/**
 	 * Retrieve image carousel link URL.
@@ -372,11 +467,42 @@ class Widget_Image_Carousel extends Widget_Base {
 			if ( empty( $instance['link']['url'] ) ) {
 				return false;
 			}
+
 			return $instance['link'];
 		}
 
 		return [
 			'url' => wp_get_attachment_url( $attachment['id'] ),
 		];
+	}
+
+	/**
+	 * Retrieve image carousel caption.
+	 *
+	 * @since 1.2.0
+	 * @access private
+	 *
+	 * @param array $attachment
+	 *
+	 * @return string The caption of the image.
+	 */
+	private function get_image_caption( $attachment ) {
+		$caption_type = $this->get_settings_for_display( 'caption_type' );
+
+		if ( empty( $caption_type ) ) {
+			return '';
+		}
+
+		$attachment_post = get_post( $attachment['id'] );
+
+		if ( 'caption' === $caption_type ) {
+			return $attachment_post->post_excerpt;
+		}
+
+		if ( 'title' === $caption_type ) {
+			return $attachment_post->post_title;
+		}
+
+		return $attachment_post->post_content;
 	}
 }

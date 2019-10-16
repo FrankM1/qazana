@@ -125,21 +125,20 @@ class Frontend {
 	 * @access public
 	 */
 	public function init() {
-		if ( qazana()->editor->is_edit_mode() ) {
+		if ( qazana()->get_editor()->is_edit_mode() ) {
 			return;
 		}
 
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 
-		if ( qazana()->preview->is_preview_mode() ) {
+		if ( qazana()->get_preview()->is_preview_mode() ) {
 			return;
 		}
 
 		$this->post_id = get_the_ID();
 
-		if ( is_singular() && qazana()->db->is_built_with_qazana( $this->post_id ) ) {
+		if ( is_singular() && qazana()->get_db()->is_built_with_qazana( $this->post_id ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_dependencies' ] );
 		}
 
 		// Priority 7 to allow google fonts in header template to load in <head> tag
@@ -162,17 +161,6 @@ class Frontend {
 	}
 
 	/**
-	 * Generate dependencies for elements
-	 *
-	 * @since 2.1.0
-	 */
-	public function enqueue_dependencies() {
-		$document = qazana()->documents->get_doc_for_frontend( $this->post_id );
-		$document->get_dependencies();
-		$document->enqueue_dependencies();
-	}
-
-	/**
 	 * Body tag classes.
 	 *
 	 * Add new qazana classes to the body tag.
@@ -192,7 +180,7 @@ class Frontend {
 
 		$id = get_the_ID();
 
-		if ( is_singular() && qazana()->db->is_built_with_qazana( $id ) ) {
+		if ( is_singular() && qazana()->get_db()->is_built_with_qazana( $id ) ) {
 			$classes[] = 'qazana-page qazana-page-' . $id;
 		}
 
@@ -268,13 +256,23 @@ class Frontend {
 		);
 
 		wp_register_script(
+			'jquery-slick',
+			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.8.1',
+			true
+		);
+
+		wp_register_script(
 			'qazana-dialog',
 			qazana()->core_assets_url . 'lib/dialog/dialog' . $suffix . '.js',
 			[
 				'jquery',
 				'jquery-ui-position',
 			],
-			'3.2.5',
+			'4.7.1',
 			true
 		);
 
@@ -283,7 +281,8 @@ class Frontend {
 			qazana()->core_assets_url . 'js/frontend' . $suffix . '.js',
 			[
 				'waypoints',
-				//'jquery-swiper',
+				'qazana-dialog',
+				'jquery-swiper',
 			],
 			qazana_get_version(),
 			true
@@ -402,7 +401,7 @@ class Frontend {
 
 		wp_enqueue_script( 'qazana-frontend' );
 
-		$is_preview_mode = qazana()->preview->is_preview_mode( qazana()->preview->get_post_id() );
+		$is_preview_mode = qazana()->get_preview()->is_preview_mode( qazana()->get_preview()->get_post_id() );
 
 		$qazana_frontend_config = [
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
@@ -435,14 +434,13 @@ class Frontend {
 		}
 
 		if ( $is_preview_mode ) {
-			$elements_manager = qazana()->elements_manager;
-
+			$document = qazana()->get_documents()->get( qazana()->get_preview()->get_post_id() );
 			$elements_frontend_keys = [
-				'section' => $elements_manager->get_element_types( 'section' )->get_frontend_settings_keys(),
-				'column' => $elements_manager->get_element_types( 'column' )->get_frontend_settings_keys(),
+				'section' => $document->get_elements()->get_element_types( 'section' )->get_frontend_settings_keys(),
+				'column' => $document->get_elements()->get_element_types( 'column' )->get_frontend_settings_keys(),
 			];
 
-			$elements_frontend_keys += qazana()->widgets_manager->get_widgets_frontend_settings_keys();
+			$elements_frontend_keys += $document->get_widgets()->get_widgets_frontend_settings_keys();
 
 			$qazana_frontend_config['elements'] = [
 				'data'         => (object) [],
@@ -463,26 +461,6 @@ class Frontend {
 		 * @since 1.0.0
 		 */
 		do_action( 'qazana/frontend/after_enqueue_scripts' );
-	}
-
-	public function register_widget_scripts() {
-
-		do_action( 'qazana/frontend/before_register_widget_scripts' );
-
-		$suffix = Utils::is_script_debug() ? '' : '.min';
-
-		wp_register_script(
-			'jquery-slick',
-			qazana()->core_assets_url . 'lib/slick/slick' . $suffix . '.js',
-			[
-				'jquery',
-			],
-			'1.6.0',
-			true
-		);
-
-		do_action( 'qazana/frontend/after_register_widget_scripts' );
-
 	}
 
 	/**
@@ -516,11 +494,8 @@ class Frontend {
 		 */
 		do_action( 'qazana/frontend/after_enqueue_styles' );
 
-		if ( ! qazana()->preview->is_preview_mode() ) {
+		if ( ! qazana()->get_preview()->is_preview_mode() ) {
 			$this->parse_global_css_code();
-
-			$css_file = new Post_CSS( get_the_ID() );
-			$css_file->enqueue();
 		}
 	}
 
@@ -715,7 +690,7 @@ class Frontend {
 	public function apply_builder_in_content( $content ) {
 		$this->restore_content_filters();
 
-		if ( qazana()->preview->is_preview_mode() || $this->_is_excerpt ) {
+		if ( qazana()->get_preview()->is_preview_mode() || $this->_is_excerpt ) {
 			return $content;
 		}
 
@@ -757,14 +732,14 @@ class Frontend {
 			return '';
 		}
 
-		if ( ! qazana()->db->is_built_with_qazana( $post_id ) ) {
+		if ( ! qazana()->get_db()->is_built_with_qazana( $post_id ) ) {
 			return '';
 		}
 
-		$document = qazana()->documents->get_doc_for_frontend( $post_id );
+		$document = qazana()->get_documents()->get_doc_for_frontend( $post_id );
 
 		// Change the current post, so widgets can use `documents->get_current`.
-		qazana()->documents->switch_to_document( $document );
+		qazana()->get_documents()->switch_to_document( $document );
 
 		if ( $document->is_editable_by_current_user() ) {
 			$this->admin_bar_edit_documents[ $document->get_main_id() ] = $document;
@@ -809,6 +784,7 @@ class Frontend {
 			$css_file->print_css();
 		}
 
+		$document->enqueue();
 		$document->print_elements_with_wrapper( $data );
 
 		$content = ob_get_clean();
@@ -828,7 +804,7 @@ class Frontend {
 			$this->_has_qazana_in_page = true;
 		}
 
-		qazana()->documents->restore_document();
+		qazana()->get_documents()->restore_document();
 
 		return $content;
 	}
@@ -897,7 +873,7 @@ class Frontend {
 			return '';
 		}
 
-		$editor = qazana()->editor;
+		$editor = qazana()->get_editor();
 
 		// Avoid recursion
 		if ( get_the_ID() === (int) $post_id ) {
@@ -918,7 +894,7 @@ class Frontend {
 		$content = $this->get_builder_content( $post_id, $with_css );
 
 		// Restore edit mode state
-		qazana()->editor->set_edit_mode( $is_edit_mode );
+		qazana()->get_editor()->set_edit_mode( $is_edit_mode );
 
 		return $content;
 	}

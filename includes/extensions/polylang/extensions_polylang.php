@@ -46,7 +46,7 @@ class Polylang extends Base {
 	public static function save_polylang_meta( $keys, $sync, $from, $to ) {
 		// Copy only for a new post.
 		if ( ! $sync ) {
-			qazana()->db->copy_qazana_meta( $from, $to );
+			qazana()->get_db()->copy_qazana_meta( $from, $to );
 		}
 
 		return $keys;

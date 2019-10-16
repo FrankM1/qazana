@@ -76,6 +76,7 @@ const App = Marionette.Application.extend( {
 			Media: require( 'qazana-controls/media' ),
 			Number: require( 'qazana-controls/number' ),
 			Order: require( 'qazana-controls/order' ),
+			Query: require( 'qazana-controls/query' ),
 			Popover_toggle: require( 'qazana-controls/popover-toggle' ),
 			Repeater: require( 'qazana-controls/repeater' ),
 			RepeaterRow: require( 'qazana-controls/repeater-row' ),
@@ -129,31 +130,6 @@ const App = Marionette.Application.extend( {
 			element: '.qazana-tags-list',
 			ignore: '.qazana-control-dynamic-switcher',
 		},
-	},
-
-	// TODO: Temp modules bc method since 2.0.0
-	initModulesBC: function() {
-		var bcModules = {
-			ControlsStack: this.modules.views.ControlsStack,
-			element: {
-				Model: this.modules.elements.models.Element,
-			},
-			RepeaterRowView: this.modules.controls.RepeaterRow,
-			WidgetView: this.modules.elements.views.Widget,
-			panel: {
-				Menu: this.modules.layouts.panel.pages.menu.Menu,
-			},
-			saver: {
-				headerBehavior: this.modules.components.saver.behaviors.HeaderSaver,
-				footerBehavior: this.modules.components.saver.behaviors.FooterSaver,
-			},
-			SettingsModel: this.modules.elements.models.BaseSettings,
-			templateLibrary: {
-				ElementsCollectionView: this.modules.layouts.panel.pages.elements.views.Elements,
-			},
-		};
-
-		jQuery.extend( this.modules, bcModules );
 	},
 
 	userCan: function( capability ) {
@@ -852,8 +828,6 @@ const App = Marionette.Application.extend( {
 
 		Backbone.Radio.DEBUG = false;
 		Backbone.Radio.tuneIn( 'QAZANA' );
-
-		this.initModulesBC();
 
 		this.initComponents();
 

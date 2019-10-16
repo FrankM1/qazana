@@ -24,7 +24,7 @@ class Bwp_Minify extends Base {
 
 		// Disable minifier files in Editor from Better Wordpress Minifier plugin
         add_filter( 'bwp_minify_is_loadable', function( $retval ) {
-            if ( qazana()->editor->is_edit_mode() ) {
+            if ( qazana()->get_editor()->is_edit_mode() ) {
                 return false;
             }
             return $retval;

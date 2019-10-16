@@ -77,24 +77,24 @@ class Wordpress_Importer extends Base {
 		}
 
 		foreach ( $post_ids as $post_id ) {
-			$data = qazana()->db->get_plain_editor( $post_id );
+			$data = qazana()->get_db()->get_plain_editor( $post_id );
 			if ( empty( $data ) ) {
 				continue;
 			}
 
-			$data = qazana()->db->iterate_data( $data, function( $element ) {
+			$data = qazana()->get_db()->iterate_data( $data, function( $element ) {
                 if ( ! empty( $element['settings']['background_image']['id'] ) ) {
-                    $element['settings']['background_image'] = qazana()->templates_manager->get_import_images_instance()->import( $element['settings']['background_image'] );
+                    $element['settings']['background_image'] = qazana()->get_templates_manager()->get_import_images_instance()->import( $element['settings']['background_image'] );
                 }
 
                 if ( ! empty( $element['settings']['image']['id'] ) ) {
-                    $element['settings']['image'] = qazana()->templates_manager->get_import_images_instance()->import( $element['settings']['image'] );
+                    $element['settings']['image'] = qazana()->get_templates_manager()->get_import_images_instance()->import( $element['settings']['image'] );
                 }
 
 				return $element;
 			} );
 
-			qazana()->db->save_editor( $post_id, $data );
+			qazana()->get_db()->save_editor( $post_id, $data );
 		}
 
         qazana()->files_manager->clear_cache();

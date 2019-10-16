@@ -3,86 +3,141 @@ $direction: ltr;
 @import 'helpers/variables';
 @import "helpers/mixins";
 @import "helpers/direction";
+@import "editor/breakpoints";
+@import "frontend/breakpoints/breakpoints";
 
 //
-// Counter
+// Piechart
 //
-.qazana-piechart {
-    position: relative;
-    text-align: center;
-  
+.qazana-widget-piechart {
+
     canvas {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      z-index: 1;
-      margin-bottom: 13px;
-      max-width: 100%;
-      transform: rotateY(180deg) translateX(50%);
-    }
-  
-    &-counterclockwise-yes {
-      canvas {
-        transform: rotateY(0) translateX(-50%);
-      }
-    }
-  
-    &-title {
-      color: #666666;
-      text-align: center;
-      font-weight: 400;
-      font-size: 19px;
-      line-height: 2.5;
-    }
-    &-subtitle {
-      color: #666666;
-      text-align: center;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-  
-    &-number-progress {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      letter-spacing: -2px;
-      font-size: 35px;
-      &-prefix {
-        flex-grow: 1;
-        text-align: $end;
-      }
-  
-      &-suffix {
-        flex-grow: 1;
-        text-align: $start;
-        font-size: 70%;
-      }
-    }
-  
-    .piechart-number {
-      position: relative;
-      overflow: hidden;
-      margin: 0 auto;
-      margin-bottom: 22px;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      line-height: 160px;
-      &:before {
         position: absolute;
         top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        border: 1px solid grey;
-        border-radius: inherit;
-        content: '';
-      }
-  
-       > * {
-        line-height: inherit;
-      }
+        left: 50%;
+        z-index: 1;
+        max-width: 100%;
+        transform: rotateY(180deg) translateX(50%);
     }
-  }
-    
+
+    .qazana-piechart {
+        width: 100%; // Hack for Chrome in flex mode
+        position: relative;
+        text-align: center;
+
+        &-clockwise-yes {
+            canvas {
+                transform: rotateY(0) translateX(-50%);
+            }
+        }
+
+        &-number {
+            position: relative;
+            margin: 0 auto;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            line-height: 160px;
+            display: flex;
+            justify-content: center;
+
+            &:before {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border: 1px solid grey;
+                border-radius: inherit;
+                content: '';
+            }
+
+            &-prefix {
+                flex-grow: 1;
+                text-align: $end;
+            }
+
+            &-suffix {
+                flex-grow: 1;
+                text-align: $start;
+                font-size: 70%;
+            }
+
+            &-progress {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                letter-spacing: -2px;
+                font-size: 35px;
+            }
+
+        }
+
+        &-title a {
+            color: inherit;
+        }
+
+        &-description {
+            margin: 0;
+        }
+    }
+
+    @media (min-width: $screen-md-min) {
+        &.qazana-position- {
+
+            &left,
+            &right {
+                .qazana-piechart {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            &right {
+                .qazana-piechart {
+                    text-align: $end;
+                    flex-direction: getValueByDirection(row-reverse, row);
+                }
+            }
+
+            &left {
+                .qazana-piechart {
+                    text-align: $start;
+                    flex-direction: getValueByDirection(row, row-reverse);
+                }
+            }
+
+            &top {
+                .qazana-piechart-number {
+                    margin: auto;
+                    text-align: center;
+                }
+            }
+        }
+
+        &.qazana-vertical-align- {
+
+            &top {
+
+                .qazana-piechart {
+                    align-items: flex-start;
+                }
+            }
+
+            &middle {
+
+                .qazana-piechart {
+                    align-items: center;
+                }
+            }
+
+            &bottom {
+
+                .qazana-piechart {
+                    align-items: flex-end;
+                }
+            }
+        }
+    }
+
+}

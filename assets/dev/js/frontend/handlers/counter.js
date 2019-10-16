@@ -1,5 +1,5 @@
 module.exports = function( $scope, $ ) {
-	var $counter = $scope.find( '.qazana-counter-number' );
+	var $counter = $scope.find( '.qazana-counter-number-value' );
     var animation = $counter.data( 'animation-type' );
     var odometer;
 
@@ -13,7 +13,7 @@ module.exports = function( $scope, $ ) {
 		odometer = new Odometer( { el: $counter[ 0 ] } );
 	}
 
-	qazanaFrontend.waypoint( $scope.find( '.qazana-counter-number' ), function() {
+	qazanaFrontend.waypoint( $counter, function() {
 		odometer.update( $( this ).data( 'to-value' ) );
 	}, { offset: '90%' } );
 };

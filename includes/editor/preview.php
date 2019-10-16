@@ -47,12 +47,6 @@ class Preview {
 		// Don't redirect to permalink.
 		remove_action( 'template_redirect', 'redirect_canonical' );
 
-		// Compatibility with Yoast SEO plugin when 'Removes unneeded query variables from the URL' enabled.
-		// TODO: Move this code to `includes/compatibility.php`.
-		if ( class_exists( 'WPSEO_Frontend' ) ) {
-			remove_action( 'template_redirect', [ \WPSEO_Frontend::get_instance(), 'clean_permalink' ], 1 );
-		}
-
 		// Disable the WP admin bar in preview mode.
 		add_filter( 'show_admin_bar', '__return_false' );
 
@@ -143,7 +137,7 @@ class Preview {
 		if ( get_the_ID() === $this->post_id ) {
 			$classes = 'qazana-edit-mode';
 
-			$document = qazana()->documents->get( $this->post_id );
+			$document = qazana()->get_documents()->get( $this->post_id );
 
 			if ( $document ) {
 				$classes .= ' ' . $document->get_container_classes();
@@ -169,7 +163,7 @@ class Preview {
 		// Hold-on all jQuery plugins after all HTML markup render.
 		wp_add_inline_script( 'jquery-migrate', 'jQuery.holdReady( true );' );
 
-		qazana()->frontend->enqueue_styles();
+		qazana()->get_frontend()->enqueue_styles();
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -212,7 +206,7 @@ class Preview {
 	 * @access private
 	 */
 	private function enqueue_scripts() {
-		qazana()->frontend->register_scripts();
+		qazana()->get_frontend()->register_scripts();
 
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
@@ -245,7 +239,7 @@ class Preview {
 	 * @access public
 	 */
 	public function wp_footer() {
-		$frontend = qazana()->frontend;
+		$frontend = qazana()->get_frontend();
 		if ( $frontend->has_qazana_in_page() ) {
 			// Has header/footer/widget-template - enqueue all style/scripts/fonts.
 			$frontend->wp_footer();
@@ -253,6 +247,41 @@ class Preview {
 			// Enqueue only scripts.
 			$frontend->enqueue_scripts();
 		}
+	}
+
+	public function filter_post_terms_taxonomy_arg( $taxonomy_args ) {
+		$current_post_id = get_the_ID();
+		$document = qazana()->get_documents()->get( $current_post_id );
+
+		if ( $document ) {
+			// Show all taxonomies
+			unset( $taxonomy_args['object_type'] );
+		}
+
+		return $taxonomy_args;
+	}
+
+	/**
+	 * @access public
+	 */
+	public function switch_to_preview_query() {
+		$current_post_id = get_the_ID();
+		$document = qazana()->get_documents()->get_doc_or_auto_save( $current_post_id );
+
+		if ( ! $document ) {
+			return;
+		}
+
+		$new_query_vars = $document->get_preview_as_query_args();
+
+		qazana()->get_db()->switch_to_query( $new_query_vars );
+	}
+
+	/**
+	 * @access public
+	 */
+	public function restore_current_query() {
+		qazana()->get_db()->restore_current_query();
 	}
 
 	/**
@@ -265,5 +294,9 @@ class Preview {
 	 */
 	public function __construct() {
 		add_action( 'template_redirect', [ $this, 'init' ], 0 );
+		add_filter( 'qazana/dynamic_tags/post_terms/taxonomy_args', [ $this, 'filter_post_terms_taxonomy_arg' ] );
+		add_action( 'qazana/template-library/before_get_source_data', [ $this, 'switch_to_preview_query' ] );
+		add_action( 'qazana/dynamic_tags/before_render', [ $this, 'switch_to_preview_query' ] );
+		add_action( 'qazana/dynamic_tags/after_render', [ $this, 'restore_current_query' ] );
 	}
 }

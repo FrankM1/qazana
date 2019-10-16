@@ -3,6 +3,10 @@
 
 	var QazanaAdmin = ViewModule.extend( {
 
+        modules: {
+            Module: require( 'qazana-utils/module' ),
+        },
+
 		maintenanceMode: null,
 
 		config: QazanaAdminConfig,

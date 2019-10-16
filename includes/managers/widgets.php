@@ -89,12 +89,14 @@ class Widgets_Manager {
 			'image-carousel',
 			'image-gallery',
 			'image',
-			'menu-anchor',
+            'menu-anchor',
+            'menu-nav',
 			'progress',
 			'shortcode',
 			'sidebar',
 			'social-icons',
-			'spacer',
+            'spacer',
+            'star-rating',
 			'testimonial',
 			'text-editor',
 			'tooltip',
@@ -299,26 +301,6 @@ class Widgets_Manager {
 	}
 
 	/**
-	 * Get widget types config.
-	 *
-	 * Retrieve all the registered widgets with config for each widgets.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return array Registered widget types with each widget config.
-	*/
-	public function get_widget_types_config() {
-		$config = [];
-
-		foreach ( $this->get_widget_types() as $widget_key => $widget ) {
-			$config[ $widget_key ] = $widget->get_config();
-		}
-
-		return $config;
-	}
-
-	/**
 	 * Ajax render widget.
 	 *
 	 * Ajax handler for Qazana render_widget.
@@ -339,7 +321,7 @@ class Widgets_Manager {
 	 * }
 	 */
 	public function ajax_render_widget( $request ) {
-		$document = qazana()->documents->get( $request['editor_post_id'] );
+		$document = qazana()->get_documents()->get( $request['editor_post_id'] );
 
 		if ( ! $document->is_editable_by_current_user() ) {
 			throw new \Exception( 'Access denied.', Exceptions::FORBIDDEN );
@@ -353,11 +335,11 @@ class Widgets_Manager {
 			]
 		);
 
-		$editor = qazana()->editor;
+		$editor = qazana()->get_editor();
 		$is_edit_mode = $editor->is_edit_mode();
 		$editor->set_edit_mode( true );
 
-		qazana()->documents->switch_to_document( $document );
+		qazana()->get_documents()->switch_to_document( $document );
 
 		$render_html = $document->render_element( $request['data'] );
 
@@ -391,6 +373,8 @@ class Widgets_Manager {
 			$request['data'] = [];
 		}
 
+		$document = qazana()->get_documents()->get( $request['editor_post_id'] );
+
 		$element_data = [
 			'id' => $request['id'],
 			'elType' => 'widget',
@@ -401,53 +385,13 @@ class Widgets_Manager {
 		/**
 		 * @var $widget_obj Widget_WordPress
 		 */
-		$widget_obj = qazana()->elements_manager->create_element_instance( $element_data );
+		$widget_obj = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
 
 		if ( ! $widget_obj ) {
 			return false;
 		}
 
 		return $widget_obj->get_form();
-	}
-
-	/**
-	 * Render widgets content.
-	 *
-	 * Used to generate the widget templates on the editor using Underscore JS
-	 * template, for all the registered widget types.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	*/
-	public function render_widgets_content() {
-		foreach ( $this->get_widget_types() as $widget ) {
-			$widget->print_template();
-		}
-	}
-
-	/**
-	 * Get widgets frontend settings keys.
-	 *
-	 * Retrieve frontend controls settings keys for all the registered widget
-	 * types.
-	 *
-	 * @since 1.3.0
-	 * @access public
-	 *
-	 * @return array Registered widget types with settings keys for each widget.
-	*/
-	public function get_widgets_frontend_settings_keys() {
-		$keys = [];
-
-		foreach ( $this->get_widget_types() as $widget_type_name => $widget_type ) {
-			$widget_type_keys = $widget_type->get_frontend_settings_keys();
-
-			if ( $widget_type_keys ) {
-				$keys[ $widget_type_name ] = $widget_type_keys;
-			}
-		}
-
-		return $keys;
 	}
 
 	/**

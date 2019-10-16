@@ -74,7 +74,8 @@ class Images_Manager {
 				preg_match( '/custom_(\d*)x(\d*)/', $size, $matches );
 
 				$instance = [
-					'image_size' => 'custom',
+                    'image_size' => 'custom',
+                    'image_resize' => true,
 					'image_custom_dimension' => [
 						'width' => $matches[1],
 						'height' => $matches[2],

@@ -50,7 +50,7 @@ class Control_Gallery extends Base_Data_Control {
 				continue;
 			}
 
-			$attachment = qazana()->templates_manager->get_import_images_instance()->import( $attachment );
+			$attachment = qazana()->get_templates_manager()->get_import_images_instance()->import( $attachment );
 		}
 
 		// Filter out attachments that don't exist

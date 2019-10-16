@@ -145,7 +145,7 @@ None
  ```php
 // Add a custom category for panel widgets
 add_action( 'qazana/init', function() {
-	qazana()->elements_manager->add_category( 
+	qazana()->get_elements_manager()->add_category( 
 		'theme-elements',
 		[
 			'title' => __( 'Theme Elements', 'theme-domain' ),

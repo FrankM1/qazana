@@ -70,7 +70,7 @@ class Gutenberg extends Base {
 						return false;
 					}
 
-					qazana()->db->set_is_qazana_page( $object->ID, false );
+					qazana()->get_db()->set_is_qazana_page( $object->ID, false );
 
 					return true;
 				},
@@ -92,7 +92,7 @@ class Gutenberg extends Base {
 		wp_enqueue_script( 'qazana-gutenberg', qazana()->core_assets_url . 'js/gutenberg' . $suffix . '.js', [ 'jquery' ], qazana_get_version(), true );
 
 		$qazana_settings = [
-			'isQazanaMode' => qazana()->db->is_built_with_qazana( $post_id ),
+			'isQazanaMode' => qazana()->get_db()->is_built_with_qazana( $post_id ),
 			'editLink' => Utils::get_edit_link( $post_id ),
 		];
 
@@ -129,11 +129,21 @@ class Gutenberg extends Base {
 		<?php
 	}
 
+	function remove_gutenblocks_css() {
+		$post_id = get_the_ID();
+
+		if ( qazana()->get_db()->is_built_with_qazana( $post_id )) {
+			wp_dequeue_style( 'wp-block-library' );
+		}
+	}
+
 	public function __construct() {
 		add_action( 'rest_api_init', [ $this, 'register_qazana_rest_field' ] );
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_assets' ] );
-        add_action( 'admin_footer', [ $this, 'print_admin_js_template' ] );
-        // Gutenberg
+		add_action( 'admin_footer', [ $this, 'print_admin_js_template' ] );
+		add_action( 'wp_print_styles', [ $this, 'remove_gutenblocks_css' ], 100 );
+		
+		// Gutenberg
 		if ( self::gutenberg_is_active() ) {
 			add_action( 'admin_print_scripts-edit.php', [ $this, 'add_new_button_to_gutenberg' ], 11 );
 		}

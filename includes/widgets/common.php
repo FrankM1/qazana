@@ -91,23 +91,14 @@ class Widget_Common extends Widget_Base {
 					'{{WRAPPER}} > .qazana-widget-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Animations::get_type(),
-			[
-				'name' => '_animation',
-			]
-		);
+        );
 
 		$this->add_control(
 			'_element_id',
 			[
 				'label' => __( 'CSS ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => '',
 				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'qazana' ),
-				'label_block' => false,
 				'style_transfer' => false,
 			]
 		);
@@ -117,14 +108,28 @@ class Widget_Common extends Widget_Base {
 			[
 				'label' => __( 'CSS Classes', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => '',
-				'prefix_class' => '',
 				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'qazana' ),
-				'label_block' => false,
 			]
 		);
 
 		$this->end_controls_section();
+
+        $this->start_controls_section(
+			'_section_effects',
+			[
+				'label' => __( 'Effects', 'qazana' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+        );
+
+		$this->add_group_control(
+			Group_Control_Animations::get_type(),
+			[
+				'name' => '_animation',
+			]
+		);
+
+        $this->end_controls_section();
 
 		$this->start_controls_section(
 			'_section_background',

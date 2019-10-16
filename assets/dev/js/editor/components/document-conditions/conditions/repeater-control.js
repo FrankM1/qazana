@@ -11,7 +11,7 @@ module.exports = qazana.modules.controls.Repeater.extend( {
 
 		this.config = qazana.config.documentConditions;
 
-		this.updateConditionsOptions( this.config.settings.template_type );
+		this.updateConditionsOptions();
 	},
 
 	checkConflicts: function( model ) {
@@ -25,7 +25,7 @@ module.exports = qazana.modules.controls.Repeater.extend( {
 
 		$error.remove();
 
-		qazana.ajax.addRequest( 'site_archive_conditions_check_conflicts', {
+		qazana.ajax.addRequest( 'document_conditions_check_conflicts', {
 			unique_id: rowId,
 			data: {
 				condition: model.toJSON( { removeDefaults: true } ),
@@ -40,9 +40,9 @@ module.exports = qazana.modules.controls.Repeater.extend( {
 		} );
 	},
 
-	updateConditionsOptions: function( templateType ) {
+	updateConditionsOptions: function() {
 		var self = this,
-			conditionType = self.config.types[ templateType ].condition_type,
+			conditionType = qazana.config.documentProperties.condition_type,
 			options = {};
 
 		_( [ conditionType ] ).each( function( conditionId, conditionIndex ) {

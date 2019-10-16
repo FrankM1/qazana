@@ -16,7 +16,7 @@ class Library extends Base {
         require( 'shortcodes/shortcode.php' );
 		require( 'wp-widgets/qazana-library.php' );
 
-        qazana()->documents
+        qazana()->get_documents()
 			->register_document_type( 'page', Page::get_class_full_name() )
 			->register_document_type( 'section', Section::get_class_full_name() )
 			->register_group( 'blocks', [
@@ -53,7 +53,7 @@ class Library extends Base {
 	}
 
 	public function localize_settings() {
-		qazana()->editor->add_localize_settings( 'i18n', [
+		qazana()->get_editor()->add_localize_settings( 'i18n', [
 			'home_url'      => home_url(),
 			'edit_template' => __( 'Edit Template', 'qazana' ),
 		] );
@@ -75,7 +75,7 @@ class Library extends Base {
 	}
 
 	public static function get_templates() {
-		$source = qazana()->templates_manager->get_source( 'local' );
+		$source = qazana()->get_templates_manager()->get_source( 'local' );
 
 		return $source->get_items();
 	}

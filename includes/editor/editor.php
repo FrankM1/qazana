@@ -103,7 +103,7 @@ class Editor {
 			'post_type' => get_post_type( $this->get_post_id() ),
 		] );
 
-		qazana()->db->switch_to_post( $this->get_post_id() );
+		qazana()->get_db()->switch_to_post( $this->get_post_id() );
 
 		add_filter( 'show_admin_bar', '__return_false' );
 
@@ -135,7 +135,7 @@ class Editor {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 999999 );
 
 		// Change mode to Builder
-		qazana()->db->set_is_qazana_page( $this->get_post_id() );
+		qazana()->get_db()->set_is_qazana_page( $this->get_post_id() );
 
 		// Post Lock
 		if ( ! $this->get_locked_user( $this->get_post_id() ) ) {
@@ -194,7 +194,7 @@ class Editor {
 
 		$post_id = get_the_ID();
 
-		if ( ! User::is_current_user_can_edit( $post_id ) || ! qazana()->db->is_built_with_qazana( $post_id ) ) {
+		if ( ! User::is_current_user_can_edit( $post_id ) || ! qazana()->get_db()->is_built_with_qazana( $post_id ) ) {
 			return;
 		}
 
@@ -513,7 +513,7 @@ class Editor {
 		 */
 		do_action( 'qazana/editor/before_enqueue_scripts' );
 
-		$document = qazana()->documents->get_doc_or_auto_save( $this->get_post_id() );
+		$document = qazana()->get_documents()->get_doc_or_auto_save( $this->get_post_id() );
 
 		// Get document data *after* the scripts hook - so plugins can run compatibility before get data, but *before* enqueue the editor script - so elements can enqueue their own scripts that depended in editor script.
 		$editor_data = $document->get_elements_raw_data( null, true );
@@ -553,23 +553,24 @@ class Editor {
 			'qazana_site'            => 'https://qazana.net/plugins/qazana',
 			'help_the_content_url'   => 'https://qazana.net/plugins/qazana/the-content-missing/',
 			'assets_url'             => qazana()->core_assets_url,
-			'document'               => $document->get_config(),
-			'controls'               => qazana()->controls_manager->get_controls_data(),
-			'elements'               => qazana()->elements_manager->get_element_types_config(),
-			'widgets'                => qazana()->widgets_manager->get_widget_types_config(),
-			'default_schemes'        => qazana()->schemes_manager->get_schemes_defaults(),
-			'system_schemes'         => qazana()->schemes_manager->get_system_schemes(),
+            'document'               => $document->get_config(),
+            'documentProperties'     => $document::get_properties(),
+			'controls'               => qazana()->get_controls_manager()->get_controls_data(),
+			'elements'               => $document->get_elements()->get_element_types_config(),
+			'widgets'                => $document->get_widgets()->get_widget_types_config(),
+			'default_schemes'        => qazana()->get_schemes_manager()->get_schemes_defaults(),
+			'system_schemes'         => qazana()->get_schemes_manager()->get_system_schemes(),
 			'wp_editor'              => $this->get_wp_editor_config(),
 			'settings'               => SettingsManager::get_settings_managers_config(),
-			'inlineEditing'          => qazana()->widgets_manager->get_inline_editing_config(),
-			'dynamicTags'            => qazana()->dynamic_tags->get_config(),
+			'inlineEditing'          => qazana()->get_widgets_manager()->get_inline_editing_config(),
+			'dynamicTags'            => qazana()->get_dynamic_tags()->get_config(),
 			'schemes'                => [
-				'items'              => qazana()->schemes_manager->get_registered_schemes_data(),
+				'items'              => qazana()->get_schemes_manager()->get_registered_schemes_data(),
 				'enabled_schemes'    => Schemes_Manager::get_enabled_schemes(),
 			],
 			'locked_user'            => $locked_user,
 			'user' => [
-				'restrictions'       => qazana()->role_manager->get_user_restrictions_array(),
+				'restrictions'       => qazana()->get_role_manager()->get_user_restrictions_array(),
 				'is_administrator'   => current_user_can( 'manage_options' ),
 			],
 			'is_rtl'                 => is_rtl() ? true : false,
@@ -734,7 +735,7 @@ class Editor {
 	    // Very important that this be loaded before 'qazana-editor' - for use by extensions
         wp_localize_script( 'backbone-marionette', 'QazanaConfig', $this->get_localize_settings() );
 
-        qazana()->controls_manager->enqueue_control_scripts();
+        qazana()->get_controls_manager()->enqueue_control_scripts();
 
 		/**
 		 * After editor enqueue scripts.
@@ -767,14 +768,14 @@ class Editor {
 		$suffix = Utils::is_script_debug() ? '' : '.min';
 
 		$direction_suffix = is_rtl() ? '-rtl' : '';
-     
+
         wp_register_style(
 			'qazana-select2',
 			qazana()->core_assets_url . 'lib/e-select2/css/e-select2' . $suffix . '.css',
 			[],
 			'4.0.6-rc.1'
         );
-        
+
         wp_register_style(
 			'flatpickr',
 			qazana()->core_assets_url . 'lib/flatpickr/flatpickr' . $suffix . '.css',
@@ -947,11 +948,13 @@ class Editor {
 	 * @access public
 	 */
 	public function wp_footer() {
-		qazana()->controls_manager->render_controls();
-		qazana()->widgets_manager->render_widgets_content();
-		qazana()->elements_manager->render_elements_content();
-		qazana()->schemes_manager->print_schemes_templates();
-		qazana()->dynamic_tags->print_templates();
+		$document = qazana()->get_documents()->get_doc_or_auto_save( $this->get_post_id() );
+
+		qazana()->get_controls_manager()->render_controls();
+		$document->get_widgets()->render_widgets_content();
+		$document->get_elements()->render_elements_content();
+		qazana()->get_schemes_manager()->print_schemes_templates();
+		qazana()->get_dynamic_tags()->print_templates();
 
 		$this->init_editor_templates();
 

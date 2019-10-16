@@ -99,7 +99,7 @@ class Model extends Base {
 	 * @return string CSS wrapper selector.
 	 */
 	public function get_css_wrapper_selector() {
-		$document = qazana()->documents->get( $this->post_parent->ID );
+		$document = qazana()->get_documents()->get( $this->post_parent->ID );
 		return $document->get_css_wrapper_selector();
 	}
 
@@ -118,7 +118,7 @@ class Model extends Base {
 	 * }
 	 */
 	public function get_panel_page_settings() {
-		$document = qazana()->documents->get( $this->post->ID );
+		$document = qazana()->get_documents()->get( $this->post->ID );
 
 		return [
 			/* translators: %s: Document title */
@@ -144,7 +144,7 @@ class Model extends Base {
 			/**
 			 * @var \Qazana\Modules\PageTemplates\Module $page_templates_module
 			 */
-			$page_templates_extension = qazana()->extensions_manager->get_extension( 'page_templates' );
+			$page_templates_extension = qazana()->get_extensions_manager()->get_extension( 'page_templates' );
 			$is_qazana_template = ! !$page_templates_extension->get_template_path( $element_data['settings']['template'] );
 
 			if ( ! $is_qazana_template ) {
@@ -166,7 +166,7 @@ class Model extends Base {
 	protected function _register_controls() {
 		// Check if it's a real model, or abstract (for example - on import )
 		if ( $this->post->ID ) {
-			$document = qazana()->documents->get_doc_or_auto_save( $this->post->ID );
+			$document = qazana()->get_documents()->get_doc_or_auto_save( $this->post->ID );
 
 			if ( $document ) {
 				$controls = $document->get_controls();

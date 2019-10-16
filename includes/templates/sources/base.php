@@ -272,7 +272,7 @@ abstract class Source_Base {
 	 * @return mixed Iterated data.
 	 */
 	protected function replace_elements_ids( $content ) {
-		return qazana()->db->iterate_data( $content, function( $element ) {
+		return qazana()->get_db()->iterate_data( $content, function( $element ) {
 			$element['id'] = Utils::generate_random_string();
 
 			return $element;
@@ -308,10 +308,14 @@ abstract class Source_Base {
 	 *
 	 * @return mixed Processed content data.
 	 */
-	protected function process_export_import_content( $content, $method ) {
-		return qazana()->db->iterate_data(
-			$content, function( $element_data ) use ( $method ) {
-				$element = qazana()->elements_manager->create_element_instance( $element_data );
+	protected function process_export_import_content( $type, $content, $method ) {
+
+		$document_class = qazana()->get_documents()->get_document_type( $type );
+		$document = new $document_class();
+
+		return qazana()->get_db()->iterate_data(
+			$content, function( $element_data ) use ( $method, $document ) {
+				$element = qazana()->get_elements_manager()->create_element_instance( $document, $element_data );
 
 				// If the widget/element isn't exist, like a plugin that creates a widget but deactivated
 				if ( ! $element ) {
@@ -373,7 +377,7 @@ abstract class Source_Base {
 		}
 
 		foreach ( $element->get_controls() as $control ) {
-			$control_class = qazana()->controls_manager->get_control( $control['type'] );
+			$control_class = qazana()->get_controls_manager()->get_control( $control['type'] );
 
 			// If the control isn't exist, like a plugin that creates the control but deactivated.
 			if ( ! $control_class ) {

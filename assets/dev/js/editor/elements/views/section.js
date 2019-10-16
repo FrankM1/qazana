@@ -103,7 +103,7 @@ SectionView = BaseElementView.extend( {
 	},
 
 	setStructure: function( structure ) {
-		var parsedStructure = qazana.presetsFactory.getParsedStructure( structure );
+		const parsedStructure = qazana.presetsFactory.getParsedStructure( structure );
 
 		if ( +parsedStructure.columnsCount !== this.collection.length ) {
 			throw new TypeError( 'The provided structure doesn\'t match the columns count.' );

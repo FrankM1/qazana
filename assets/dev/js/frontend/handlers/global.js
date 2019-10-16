@@ -1,44 +1,71 @@
-var HandlerModule = require('qazana-frontend/handler-module'),
+var HandlerModule = require( 'qazana-frontend/handler-module' ),
 	GlobalHandler;
 
-GlobalHandler = HandlerModule.extend({
-	getElementName: function () {
+GlobalHandler = HandlerModule.extend( {
+
+	getElementName: function() {
 		return 'global';
 	},
-	animate: function () {
-		var self = this,
+
+	animate: function() {
+        var animationDuration,
+            self = this,
 			$element = this.$element,
 			animation = this.getAnimation(),
-			elementSettings = this.getElementSettings(),
+            elementSettings = this.getElementSettings(),
+            duration = elementSettings._animation_duration || '',
 			animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
 
-		$element.removeClass('animated').removeClass(self.prevAnimation);
-		
-		setTimeout(function () {
-			self.prevAnimation = animation;
-			$element.addClass(animation).addClass('animated');
-		}, animationDelay);
+        if ( 'fast' === duration ) {
+            animationDuration = '500';
+        } else if ( 'slow' === duration ) {
+            animationDuration = '2000';
+        } else {
+            animationDuration = '1000';
+        }
+
+		$element.removeClass( 'qazana-element-animation-done' ).removeClass( self.prevAnimation );
+
+        $element.css( {
+            'animation-duration': animationDuration + 'ms',
+        } );
+
+        qazanaFrontend.waypoint( $element, function() {
+            setTimeout( function() {
+                self.prevAnimation = animation;
+                $element.addClass( animation ).addClass( 'qazana-element-animation-done' );
+            }, animationDelay );
+        }, { offset: '90%' } );
+
 	},
-	getAnimation: function () {
+
+	getAnimation: function() {
 		var elementSettings = this.getElementSettings();
 
 		return elementSettings._animation_animated && elementSettings._animation_in;
 	},
-	onInit: function () {
-		var self = this;
 
-		HandlerModule.prototype.onInit.apply(self, arguments);
+    removeLoader: function() {
+        this.$element.find( '.qazana-loading-indicator' ).remove();
+        this.$element.removeClass( 'qazana-has-loading-indicator' );
+        jQuery( window ).trigger( 'resize' );
+    },
 
-		if ( ! self.getAnimation()) {
-			return;
-		}
-		
+	onInit: function() {
+		HandlerModule.prototype.onInit.apply( this, arguments );
+        this.removeLoader();
+
+        if ( 'animated' === this.getElementSettings( '_animation_animated' ) ) {
+            this.animate();
+        }
 	},
+
 	onElementChange: function( propertyName ) {
 		if ( /^_?animation/.test( propertyName ) ) {
 			this.animate();
 		}
-	}
+	},
+
 } );
 
 module.exports = function( $scope ) {

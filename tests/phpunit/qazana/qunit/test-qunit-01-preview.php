@@ -29,7 +29,7 @@ class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 
 		$_GET['qazana-preview'] = $GLOBALS['post']->ID;
 
-		$this->qazana()->preview->init();
+		$this->qazana()->get_preview()->init();
 
 		// Load the theme template.
 		$template = get_index_template();
@@ -38,7 +38,7 @@ class Qazana_Test_Qunit_Preview extends Qazana_Test_Base {
 		$template = apply_filters( 'template_include', $template );
 
 		// Recreate the frontend instance because it's scripts hooks are removed in previous test
-		$this->qazana()->frontend = new \Qazana\Frontend();
+		$this->qazana()->get_frontend() = new \Qazana\Frontend();
 
 		ob_start();
 

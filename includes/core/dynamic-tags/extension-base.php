@@ -147,7 +147,7 @@ class DynamicTags extends Base {
 	 */
 	private function register_groups() {
 		foreach ( $this->get_groups() as $group_name => $group_settings ) {
-			qazana()->dynamic_tags->register_group( $group_name, $group_settings );
+			qazana()->get_dynamic_tags()->register_group( $group_name, $group_settings );
 		}
 	}
 

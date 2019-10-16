@@ -70,7 +70,7 @@ class Extensions extends Panel {
 
 						submit_button();
 
-						$extensions = qazana()->extensions_manager->get_extensions();
+						$extensions = qazana()->get_extensions_manager()->get_extensions();
 
 						usort( $extensions, array( $this, 'sort' ) );
 

@@ -31,6 +31,7 @@
 
 // Animate
 @import "animate";
+@import 'animations';
 
 // Shapes
 @import "shapes";
@@ -40,6 +41,9 @@
 
 // Compatibility
 @import "compatibility";
+
+// Loaders
+@import "loader";
 
 // Visibility (for preview mode or front-end)
 .qazana:not(.qazana-edit-area-active) {

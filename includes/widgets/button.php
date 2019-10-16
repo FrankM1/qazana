@@ -96,7 +96,7 @@ class Widget_Button extends Widget_Base {
 	 *
 	 * @return array An array containing button sizes.
 	 */
-	public static function get_button_sizes() {
+	public static function get_sizes() {
 		return [
 			'xs' => __( 'Extra Small', 'qazana' ),
 			'sm' => __( 'Small', 'qazana' ),
@@ -123,7 +123,7 @@ class Widget_Button extends Widget_Base {
 		);
 
 		$this->add_control(
-			'button_type',
+			'type',
 			[
 				'label' => __( 'Type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
@@ -140,7 +140,7 @@ class Widget_Button extends Widget_Base {
 		);
 
 		$this->add_control(
-            'button_weight',
+            'weight',
             [
                 'label' => __( 'Weight', 'qazana' ),
                 'type' => Controls_Manager::SELECT,
@@ -205,7 +205,7 @@ class Widget_Button extends Widget_Base {
 					],
 				],
 				'prefix_class' => 'qazana%s-align-',
-				'default' => '',
+                'default' => '',
 			]
 		);
 
@@ -215,7 +215,7 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Size', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'sm',
-				'options' => self::get_button_sizes(),
+				'options' => self::get_sizes(),
 				'style_transfer' => true,
 			]
 		);
@@ -260,8 +260,8 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-button .qazana-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-content-right .qazana-inline-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-content-left .qazana-inline-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -283,13 +283,13 @@ class Widget_Button extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-inline-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'button_css_id',
+			'css_id',
 			[
 				'label' => __( 'Button ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -299,6 +299,17 @@ class Widget_Button extends Widget_Base {
 				'description' => __( 'Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'qazana' ),
 				'separator' => 'before',
 
+			]
+		);
+
+		$this->add_control(
+			'attributes',
+			[
+				'label' => __( 'Button Attributes', 'qazana' ),
+				'type' => Controls_Manager::TEXTAREA,
+				'placeholder' => __( 'key=value', 'qazana' ),
+				'description' => sprintf( __( 'Set custom attributes for the button link. Each attribute in a separate line. Separate attribute key from the value using %s character.', 'qazana' ), '<code>=</code>' ),
+				'classes' => 'qazana-control-direction-ltr',
 			]
 		);
 
@@ -313,13 +324,13 @@ class Widget_Button extends Widget_Base {
 		);
 
 		$this->add_control(
-			'button_text_color',
+			'text_color',
 			[
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -330,7 +341,7 @@ class Widget_Button extends Widget_Base {
 				'name' => 'typography',
 				'label' => __( 'Typography', 'qazana' ),
 				'scheme' => Scheme_Typography::TYPOGRAPHY_4,
-				'selector' => '{{WRAPPER}} .qazana-button .qazana-button-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-button .qazana-inline-content',
 			]
 		);
 
@@ -344,7 +355,7 @@ class Widget_Button extends Widget_Base {
 					'value' => Scheme_Color::COLOR_4,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -356,7 +367,7 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Border', 'qazana' ),
 				'placeholder' => '1px',
 				'default' => '1px',
-				'selector' => '{{WRAPPER}} .qazana-button .qazana-button-content-wrapper',
+				'selector' => '{{WRAPPER}} .qazana-button .qazana-inline-content',
 			]
 		);
 
@@ -367,7 +378,7 @@ class Widget_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'border_border!' => ''
@@ -382,7 +393,7 @@ class Widget_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button .qazana-button-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-button .qazana-inline-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -404,24 +415,24 @@ class Widget_Button extends Widget_Base {
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'color: {{VALUE}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'button_background_hover_color',
+			'background_hover_color',
 			[
 				'label' => __( 'Background Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
 
 		$this->add_control(
-			'button_hover_border_color',
+			'hover_border_color',
 			[
 				'label' => __( 'Border Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
@@ -429,7 +440,7 @@ class Widget_Button extends Widget_Base {
 					'border_border!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-button:hover .qazana-button-content-wrapper' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .qazana-button:hover .qazana-inline-content' => 'border-color: {{VALUE}};',
 				],
 			]
 		);
@@ -445,7 +456,7 @@ class Widget_Button extends Widget_Base {
 	 * @since 1.0.0
 	 * @access protected
 	 */
-	public function render() {
+	public function add_button_render_attribute() {
 		$settings = $this->get_settings_for_display();
 
 		$this->add_render_attribute( 'wrapper', 'class', 'qazana-button-wrapper qazana-inner-wrapper' );
@@ -463,38 +474,70 @@ class Widget_Button extends Widget_Base {
 			}
 		}
 
+		if ( ! empty( $settings['attributes'] ) ) {
+			$attributes = explode( "\n", $settings['attributes'] );
+			foreach ( $attributes as $attribute ) {
+				if ( ! empty( $attribute ) ) {
+					$attr = explode( '=', $attribute, 2 );
+					if ( ! isset( $attr[1] ) ) {
+						$attr[1] = '';
+					}
+					$this->add_render_attribute( 'button', trim( $attr[0] ), trim( $attr[1] ) );
+				}
+			}
+		}
+
 		$this->add_render_attribute( 'button', 'class', 'qazana-button' );
 		$this->add_render_attribute( 'button', 'role', 'button' );
 
-		if ( ! empty( $settings['button_css_id'] ) ) {
-			$this->add_render_attribute( 'button', 'id', $settings['button_css_id'] );
+		if ( ! empty( $settings['css_id'] ) ) {
+			$this->add_render_attribute( 'button', 'id', $settings['css_id'] );
+		}
+
+        if ( ! empty( $settings['css_class'] ) ) {
+			$this->add_render_attribute( 'button', 'class', $settings['css_class'] );
 		}
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'button', 'class', 'qazana-size-' . $settings['size'] );
 		}
 
-        if ( ! empty( $settings['button_weight'] ) ) {
-            $this->add_render_attribute( 'button', 'class', 'qazana-weight-' . $settings['button_weight'] );
+        if ( ! empty( $settings['weight'] ) ) {
+            $this->add_render_attribute( 'button', 'class', 'qazana-weight-' . $settings['weight'] );
         }
 
-        if ( ! empty( $settings['button_type'] ) ) {
-            $this->add_render_attribute( 'button', 'class', 'qazana-button-' . $settings['button_type'] );
+        if ( ! empty( $settings['type'] ) ) {
+            $this->add_render_attribute( 'button', 'class', 'qazana-button-' . $settings['type'] );
         }
 
-        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-button-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-button-icon' );
+		$this->add_render_attribute( 'button', 'class', 'qazana-inline-content-' . $this->get_responsive_settings('icon_align') );
+
+        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-inline-content' );
+        $this->add_render_attribute( 'button-icon', 'class', 'qazana-inline-icon' );
+    }
+
+    /**
+	 * Render button widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+    public function render() {
+        $this->add_button_render_attribute();
 
         ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
             <a <?php $this->render_attribute_string( 'button' ); ?>>
                 <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
                     <?php if ( $this->get_settings_for_display('icon') ) : ?>
-                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
+                        <span <?php $this->render_attribute_string( 'button-icon' ); ?>>
                             <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
                         </span>
                     <?php endif; ?>
-                    <span class="qazana-button-text"><?php echo $settings['text']; ?></span>
+                    <?php if ( $this->get_settings_for_display('text') ) : ?>
+                        <span class="qazana-button-text"><?php echo $this->get_settings_for_display('text'); ?></span>
+                    <?php endif; ?>
                 </span>
             </a>
         </div><?php
@@ -515,11 +558,11 @@ class Widget_Button extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-button-wrapper qazana-inner-wrapper">
-            <a id="{{ settings.button_css_id }}" class="qazana-button qazana-button-{{ settings.button_type }} qazana-weight-{{ settings.button_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
-                <span class="qazana-button-content-wrapper">
+        <div class="qazana-button-wrapper qazana-inner-wrapper qazana-inline-content-{{ settings.icon_align }}">
+            <a id="{{ settings.css_id }}" class="qazana-button qazana-button-{{ settings.type }} qazana-weight-{{ settings.weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="button">
+                <span class="qazana-inline-content">
                     <# if ( settings.icon ) { #>
-                    <span class="qazana-button-icon qazana-align-icon-{{ settings.icon_align }}">
+                    <span class="qazana-inline-icon">
                         <i class="{{ settings.icon }}" aria-hidden="true"></i>
                     </span>
                     <# } #>

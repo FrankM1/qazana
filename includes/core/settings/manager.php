@@ -118,7 +118,7 @@ class Manager {
 	public static function get_settings_managers_config() {
 		$config = [];
 
-		$user_can = qazana()->role_manager->user_can( 'design' );
+		$user_can = qazana()->get_role_manager()->user_can( 'design' );
 
 		foreach ( self::$settings_managers as $name => $manager ) {
 			$settings_model = $manager->get_model_for_config();

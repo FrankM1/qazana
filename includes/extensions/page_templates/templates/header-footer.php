@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-qazana()->frontend->add_body_class( 'qazana-template-full-width' );
+qazana()->get_frontend()->add_body_class( 'qazana-template-full-width' );
 
 get_header();
 /**
@@ -16,7 +16,7 @@ get_header();
  */
 do_action( 'qazana/page_templates/header-footer/before_content' );
 
-qazana()->extensions_manager->get_extension( 'page_templates' )->print_content();
+qazana()->get_extensions_manager()->get_extension( 'page_templates' )->print_content();
 
 /**
  * After Header-Footer page template content.

@@ -1,0 +1,37 @@
+.qazana-inline-content {
+    display: flex;
+    align-items: center;
+}
+
+.qazana-align-justify {
+    .qazana-inline-content {
+        justify-content: center;
+    }
+}
+
+.qazana-inline-content-right {
+
+    .qazana-inline-content {
+        flex-direction: row-reverse;
+    }
+}
+
+.qazana-inline-content- {
+    &right .qazana-inline-icon {
+        margin-left: 5px;
+    }
+
+    &left .qazana-inline-icon {
+        margin-right: 5px;
+    }
+}
+
+.qazana-icon-hover-reveal-yes {
+    &.qazana-inline-content-right .qazana-inline-icon {
+        margin-left: 0;
+    }
+
+    &.qazana-inline-content-left .qazana-inline-icon {
+        margin-right: 0;
+    }
+}

@@ -1,210 +1,119 @@
 // Button
 
-// Alignment Classes
-.qazana-align- {
-  &center {
+.qazana-align-justify {
     .qazana-button {
-      width: auto;
-      margin: 0 auto;
+        display: block;
     }
-  }
-
-  &right {
-    .qazana-button {
-      width: auto;
-          margin-left: auto;
-    }
-  }
-
-  &left {
-    .qazana-button {
-      width: auto;
-      margin-right: auto;
-    }
-  }
-
-  &justify {
-    .qazana-button {
-      width: 100%;
-    }
-  }
-}
-
-// Alignment for Tablet
-
-@media (max-width: $screen-md-max) {
-  .qazana-tablet-align- {
-    &center {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &right {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &left {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &justify {
-      .qazana-button {
-        width: 100%;
-      }
-    }
-  }
-}
-
-
-@media (max-width: $screen-sm-max) {
-  .qazana-mobile-align- {
-    &center {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &right {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &left {
-      .qazana-button {
-        width: auto;
-      }
-    }
-
-    &justify {
-      .qazana-button {
-        width: 100%;
-      }
-    }
-  }
 }
 
 .qazana-button {
-  display: inline-block;
 
-  .qazana-button-content-wrapper {
-    border: none;
-    background-color: $gray;
-    color: #ffffff;
-    text-align: center;
-    line-height: 1;
-    transition: $transition-hover;
-  }
-
-  &.qazana-size- {
-    &xs .qazana-button-content-wrapper {
-      padding: 10px 20px;
-      font-size: 13px;
+    &,
+    &:focus,
+    &:hover {
+        display: inline-block;
+        border-radius: 0;
+        border: none;
+        border-color: transparent;
+        background-color: transparent;
+        box-shadow: none;
+        text-shadow: none;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
     }
 
-    &sm .qazana-button-content-wrapper {
-      padding: 12px 24px;
-      font-size: 15px;
+    .qazana-inline-content {
+        border: none;
+        background-color: $gray;
+        color: #ffffff;
+        text-align: center;
+        line-height: 1;
+        transition: $transition-hover;
     }
 
-    &md .qazana-button-content-wrapper {
-      padding: 15px 30px;
-      font-size: 16px;
+    &.qazana-size- {
+        &xs .qazana-inline-content {
+            padding: 10px 20px;
+            font-size: 13px;
+        }
+
+        &sm .qazana-inline-content {
+            padding: 12px 24px;
+            font-size: 15px;
+        }
+
+        &md .qazana-inline-content {
+            padding: 15px 30px;
+            font-size: 16px;
+        }
+
+        &lg .qazana-inline-content {
+            padding: 20px 40px;
+            font-size: 18px;
+        }
+
+        &xl .qazana-inline-content {
+            padding: 25px 50px;
+            font-size: 20px;
+        }
     }
 
-    &lg .qazana-button-content-wrapper {
-      padding: 20px 40px;
-      font-size: 18px;
-    }
-
-    &xl .qazana-button-content-wrapper {
-      padding: 25px 50px;
-      font-size: 20px;
-    }
-  }
-
-  .qazana-align-icon- {
-    &right {
-      margin-left: 5px;
-    }
-
-    &left {
-      margin-right: 5px;
-    }
-  }
 }
 
 .qazana-widget {
     &.qazana-button- {
-      &info .qazana-button-content-wrapper {
-        border-color: $info;
-        background-color: $info;
-      }
+        &info .qazana-inline-content {
+            border-color: $info;
+            background-color: $info;
+        }
 
-      &success .qazana-button-content-wrapper {
-        border-color: $success;
-        background-color: $success;
-      }
+        &success .qazana-inline-content {
+            border-color: $success;
+            background-color: $success;
+        }
 
-      &warning .qazana-button-content-wrapper {
-        border-color: $warning;
-        background-color: $warning;
-      }
+        &warning .qazana-inline-content {
+            border-color: $warning;
+            background-color: $warning;
+        }
 
-      &danger .qazana-button-content-wrapper {
-        border-color: $danger;
-        background-color: $danger;
-      }
+        &danger .qazana-inline-content {
+            border-color: $danger;
+            background-color: $danger;
+        }
 
-      &clear .qazana-button-content-wrapper {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        color: inherit;
-        opacity: 1;
-      }
+        &clear .qazana-inline-content {
+            padding: 0;
+            border: none;
+            background-color: transparent;
+            color: inherit;
+            opacity: 1;
+        }
     }
 }
 
 // Icon Hover
 .qazana-icon-hover-reveal-yes {
-  .qazana-button {
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
-  }
-
-  .qazana-align-icon-right .qazana-button-content-wrapper {
-    flex-direction: row-reverse;
-  }
-
-  .qazana-button-icon {
-    overflow: hidden;
-    max-width: 0;
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
-
-    &.qazana-align-icon-right {
-      margin-left: 0;
+    .qazana-button {
+        transition: all .5s cubic-bezier(.3, .95, .3, .95);
     }
 
-    &.qazana-align-icon-left {
-      margin-right: 0;
-    }
-  }
-
-  .qazana-button:hover .qazana-button-icon,
-  button:hover .qazana-button-icon {
-    max-width: 100px;
-
-    &.qazana-align-icon-right {
-      margin-left: 10px;
+    .qazana-inline-icon {
+        overflow: hidden;
+        max-width: 0;
+        transition: all .5s cubic-bezier(.3, .95, .3, .95);
     }
 
-    &.qazana-align-icon-left {
-      margin-right: 10px;
+    .qazana-button:hover,
+    button:hover {
+
+        &.qazana-inline-content-right .qazana-inline-icon {
+            margin-left: 10px;
+        }
+
+        &.qazana-inline-content-left .qazana-inline-icon {
+            margin-right: 10px;
+        }
     }
-  }
 }

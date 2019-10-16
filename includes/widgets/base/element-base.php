@@ -102,7 +102,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * @return array Element edit tools.
 	 */
 	final public static function get_edit_tools() {
-		if ( ! qazana()->role_manager->user_can( 'design' ) ) {
+		if ( ! qazana()->get_role_manager()->user_can( 'design' ) ) {
 			return [];
 		}
 
@@ -149,6 +149,13 @@ abstract class Element_Base extends Controls_Stack {
 		}
 	}
 
+    /**
+	 * Check whether edit buttons are enabled in Qazana settings.
+     *
+	 * @since 2.2.0
+	 * @access public
+	 * @static
+	 */
 	final public static function is_edit_buttons_enabled() {
 		return get_option( 'qazana_edit_buttons' );
 	}
@@ -314,6 +321,23 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	/**
+	 * Get parent document.
+	 *
+	 * Retrieve the document parent. Used to check which document the element it belongs to.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @deprecated
+	 *
+	 * @return Element_Base Parent document.
+	 */
+	public function get_parent_document() {
+		$document = qazana()->get_documents()->get_document_type( $this->get_data( 'documentType' ) );
+		return new $document;
+	}
+
+	/**
 	 * Get parent element.
 	 *
 	 * Retrieve the element parent. Used to check which element it belongs to.
@@ -354,7 +378,7 @@ abstract class Element_Base extends Controls_Stack {
 			return false;
 		}
 
-		$child = qazana()->elements_manager->create_element_instance( $child_data, $child_args, $child_type );
+		$child = qazana()->get_elements_manager()->create_element_instance( $this->get_parent_document(), $child_data, $child_args, $child_type );
 
 		if ( $child ) {
 			$this->_children[] = $child;
@@ -440,6 +464,21 @@ abstract class Element_Base extends Controls_Stack {
 		return $this->add_render_attribute( $element, $key, $value, true );
 	}
 
+    /**
+	 * Unset render attribute.
+	 *
+	 * Used to remove the value of the HTML element render attribute of
+	 * an existing render attribute.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param array|string $element The HTML element.
+	 * @param array|string $key     Optional. Attribute key. Default is null.
+	 * @param array|string $value   Optional. Attribute value. Default is null.
+	 *
+	 * @return Element_Base Current instance of the element.
+	 */
 	public function unset_render_attribute( $element, $key = null, $value = null ) {
 		unset( $this->_render_attributes[ $element ][ $key ] );
 	}
@@ -523,7 +562,7 @@ abstract class Element_Base extends Controls_Stack {
 		 *
 		 * Fires before Qazana element is rendered in the frontend.
 		 *
-		 * @since 2.2.0
+		 * @since 2.0.0
 		 *
 		 * @param Element_Base $this The element.
 		 */
@@ -544,8 +583,34 @@ abstract class Element_Base extends Controls_Stack {
 
 		$this->_add_render_attributes();
 
-		$this->before_render();
-		$this->_print_content();
+        $this->before_render();
+
+		/**
+		 * Before frontend element content.
+		 *
+		 * Fires before Qazana element content is rendered in the frontend.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param Element_Base $this The element.
+		 */
+		do_action( 'qazana/frontend/print_content', $this );
+
+		/**
+		 * Before frontend element content.
+		 *
+		 * Fires before Qazana element content is rendered in the frontend.
+		 *
+		 * The dynamic portion of the hook name, `$element_type`, refers to the element type.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param Element_Base $this The element.
+		 */
+		do_action( "qazana/frontend/{$element_type}/print_content", $this );
+
+        $this->_print_content();
+
 		$this->after_render();
 
 		/**
@@ -849,16 +914,31 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	/**
-	 * Add elements scripts
+	 * Add element dependencies
 	 *
 	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @param return $id  array of script tags.
 	 */
 	public function add_element_dependencies() {}
 
+    /**
+	 * Add frontend stylesheets
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_stylesheet( $args ) {
 		$this->_element_stylesheets[] = $args;
 	}
 
+    /**
+	 * Add frontend scripts
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
 	public function add_frontend_script( $args ) {
 		$this->_element_scripts[] = $args;
 	}

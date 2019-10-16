@@ -20,13 +20,21 @@ class Custom_Css {
 	 * @param $section_id string
 	 * @param $args       array
 	 */
-	public function register_controls( $element, $section_id, $args ) {
-		if ( Controls_Manager::TAB_ADVANCED !== $args['tab'] || ( '_section_responsive' !== $section_id /* Section/Widget */ && 'section_responsive' !== $section_id /* Column */ ) ) {
+	public function register_controls( Controls_Stack $element, $section_id, $args ) {
+		$required_section_id = '';
+
+		if ( $element instanceof Element_Section || $element instanceof Widget_Base ) {
+			$required_section_id = '_section_responsive';
+		} elseif ( $element instanceof Element_Column ) {
+			$required_section_id = 'section_advanced';
+		}
+
+		if ( $required_section_id !== $section_id ) {
 			return;
 		}
 
 		$element->start_controls_section(
-			'_section_custom_css',
+			'section_custom_css',
 			[
 				'label' => __( 'Custom CSS', 'qazana' ),
 				'tab'   => Controls_Manager::TAB_ADVANCED,
@@ -46,7 +54,7 @@ class Custom_Css {
 		);
 
 		$element->add_control(
-			'_custom_css_description',
+			'custom_css_description',
 			[
 				'raw'     => __( 'Use "selector" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector', 'qazana' ),
 				'type'    => Controls_Manager::RAW_HTML,
@@ -97,7 +105,7 @@ class Custom_Css {
 	}
 
 	protected function add_actions() {
-		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 10, 3 );
+		add_action( 'qazana/element/after_section_end', [ $this, 'register_controls' ], 99, 3 );
 		add_action( 'qazana/element/parse_css', [ $this, 'add_post_css' ], 10, 2 );
 	}
 }

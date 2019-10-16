@@ -332,7 +332,7 @@ class Manager {
 		}
 
 		if ( isset( $args['edit_mode'] ) ) {
-			qazana()->editor->set_edit_mode( $args['edit_mode'] );
+			qazana()->get_editor()->set_edit_mode( $args['edit_mode'] );
 		}
 
 		$source = $this->get_source( $args['source'] );
@@ -533,7 +533,7 @@ class Manager {
 	 * @param string $ajax_request Ajax request.
 	 */
 	private function handle_ajax_request( $ajax_request ) {
-		qazana()->editor->verify_ajax_nonce();
+		qazana()->get_editor()->verify_ajax_nonce();
 
 		if ( ! empty( $_REQUEST['editor_post_id'] ) ) {
 			$editor_post_id = absint( $_REQUEST['editor_post_id'] );
@@ -542,7 +542,7 @@ class Manager {
 				wp_send_json_error( __( 'Post not found.', 'qazana' ) );
 			}
 
-			qazana()->db->switch_to_post( $editor_post_id );
+			qazana()->get_db()->switch_to_post( $editor_post_id );
 		}
 
 		$result = call_user_func( [ $this, $ajax_request ], $_REQUEST );

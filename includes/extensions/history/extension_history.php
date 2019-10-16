@@ -17,8 +17,8 @@ class History extends Base {
 
 	public function add_actions() {
 		add_filter( 'qazana/editor/localize_settings', [ $this, 'localize_settings' ] );
-		qazana()->editor->add_editor_template( __DIR__ . '/views/history-panel-template.php' );
-		qazana()->editor->add_editor_template( __DIR__ . '/views/revisions-panel-template.php' );
+		qazana()->get_editor()->add_editor_template( __DIR__ . '/views/history-panel-template.php' );
+		qazana()->get_editor()->add_editor_template( __DIR__ . '/views/revisions-panel-template.php' );
 	}	
 
 	public function include_files() {

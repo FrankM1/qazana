@@ -65,12 +65,12 @@ class Control_Box_Shadow extends Control_Base_Multiple {
 	public function get_sliders() {
 		return [
 			'horizontal' => [
-				'label' => __( 'Horizontal', 'qazana' ),
+				'label' => __( 'Horizontal (X)', 'qazana' ),
 				'min' => -100,
 				'max' => 100,
 			],
 			'vertical' => [
-				'label' => __( 'Vertical', 'qazana' ),
+				'label' => __( 'Vertical (Y)', 'qazana' ),
 				'min' => -100,
 				'max' => 100,
 			],

@@ -30,7 +30,7 @@ abstract class Widget_Base extends Element_Base {
 	 *
 	 * @var bool
 	 */
-	protected $_has_template_content = true;
+    protected $_has_template_content = true;
 
 	/**
 	 * Retrieve element type.
@@ -87,6 +87,20 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function get_categories() {
 		return [ 'general' ];
+	}
+
+	/**
+	 * Get widget supported documents.
+	 *
+	 * Retrieve the widget documents.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 *
+	 * @return array Widget documents.
+	 */
+	public function get_documents() {
+		return [ 'post' ];
 	}
 
 	/**
@@ -151,7 +165,7 @@ abstract class Widget_Base extends Element_Base {
 
 		if ( $with_common_controls && 'common' !== $this->get_unique_name() ) {
 			/** @var Widget_Common $common_widget */
-			$common_widget = qazana()->widgets_manager->get_widget_types( 'common' );
+			$common_widget = qazana()->get_widgets_manager()->get_widget_types( 'common' );
 
 			$stack['controls'] = array_merge( $stack['controls'], $common_widget->get_controls() );
 
@@ -200,6 +214,20 @@ abstract class Widget_Base extends Element_Base {
 		return true;
 	}
 
+    /**
+	 * Show loading indicator.
+	 *
+	 * Whether to show the widget's loading indicator or not. By default returns false.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return bool Whether to show the widget's loading indicator or not.
+	 */
+	public function show_loading_indicator() {
+		return false;
+    }
+
 	/**
 	 * Start widget controls section.
 	 *
@@ -245,13 +273,21 @@ abstract class Widget_Base extends Element_Base {
 				$skin_options[''] = __( 'Default', 'qazana' );
 			}
 
+            $skin_control = Controls_Manager::SELECT;
+
 			foreach ( $skins as $skin_id => $skin ) {
-				$skin_options[ $skin_id ] = $skin->get_title();
+                if ( method_exists( $skin, 'get_icon' ) && $skin->get_icon() ) {
+                    $skin_control = Controls_Manager::CHOOSE;
+                    $skin_options[ $skin_id ]['label'] = $skin->get_title();
+                    $skin_options[ $skin_id ]['icon'] = $skin->get_icon();
+                } else {
+                    $skin_options[ $skin_id ] = $skin->get_title();
+                }
 			}
 
-			// Get the first item for default value
-			$default_value = array_keys( $skin_options );
-			$default_value = array_shift( $default_value );
+            // Get the first item for default value
+            $default_value = array_keys( $skin_options );
+            $default_value = array_shift( $default_value );
 
 			if ( 1 >= count( $skin_options ) ) {
 				$this->add_control(
@@ -263,18 +299,17 @@ abstract class Widget_Base extends Element_Base {
 					]
 				);
 			} else {
-				$this->add_control(
-					'_skin',
-					[
-						'label' => __( 'Skin', 'qazana' ),
-						'type' => Controls_Manager::SELECT,
-						'default' => $default_value,
-						'options' => $skin_options,
-					]
-				);
+                $args = [
+                    'label' => __( 'Skin', 'qazana' ),
+                    'type' => $skin_control,
+                    'default' => $default_value,
+                    'options' => $skin_options,
+                ];
+
+				$this->add_control( '_skin', $args );
 			}
 		}
-	}
+    }
 
 	/**
 	 * Get default edit tools.
@@ -314,6 +349,22 @@ abstract class Widget_Base extends Element_Base {
 		}
 
 		return $edit_tools;
+    }
+
+    /**
+	 * Get loading indicator.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @return array Default edit tools.
+	 */
+	protected function get_default_loading_indicator() {
+        $html = '<div class="qazana-loading-indicator">';
+            $html .= '<span class="qazana-loading-indicator__color-spinner"><span class="qazana-loading-indicator__spinner"></span></span>';
+        $html .= '</div>';
+
+		return $html;
 	}
 
 	/**
@@ -352,6 +403,7 @@ abstract class Widget_Base extends Element_Base {
 			'widget_type' => $this->get_name(),
 			'keywords' => $this->get_keywords(),
 			'categories' => $this->get_categories(),
+			'documents' => $this->get_documents(),
 			'html_wrapper_class' => $this->get_html_wrapper_class(),
 			'show_in_panel' => $this->show_in_panel(),
 		];
@@ -445,7 +497,7 @@ abstract class Widget_Base extends Element_Base {
 		 */
 		do_action( 'qazana/widget/before_render_content', $this );
 
-		if ( qazana()->editor->is_edit_mode() ) {
+		if ( qazana()->get_editor()->is_edit_mode() ) {
 			$this->render_edit_tools();
 		}
 
@@ -532,7 +584,7 @@ abstract class Widget_Base extends Element_Base {
 			]
 		);
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		foreach ( self::get_class_controls() as $control ) {
 			if ( empty( $settings[ $control['name'] ] ) ) {
@@ -553,7 +605,12 @@ abstract class Widget_Base extends Element_Base {
 		$skin_type = ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default';
 
 		$this->add_render_attribute( '_wrapper', 'class', $this->get_name() . '-skin-' . $skin_type );
-		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
+        $this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . $skin_type );
+
+
+        if ( $this->show_loading_indicator() ) {
+			$this->add_render_attribute( '_wrapper', 'class', 'qazana-has-loading-indicator' );
+		}
 
 		$skin = $this->get_current_skin();
 		if ( $skin ) {
@@ -572,8 +629,14 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
-		$this->_add_render_attributes();
-		?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
+
+        $this->_add_render_attributes();
+
+        ?><div <?php $this->render_attribute_string( '_wrapper' ); ?>><?php
+
+        if ( $this->show_loading_indicator() ) {
+            echo $this->get_default_loading_indicator();
+        }
 	}
 
 	/**
@@ -668,7 +731,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array|false Child type or false if it's not a valid widget.
 	 */
 	protected function _get_default_child_type( array $element_data ) {
-		return qazana()->elements_manager->get_element_types( 'section' );
+		return $this->get_parent_document()->get_elements()->get_element_types( 'section' );
 	}
 
 	/**
@@ -722,7 +785,7 @@ abstract class Widget_Base extends Element_Base {
 	 *                        `basic`.
 	 */
 	protected function add_inline_editing_attributes( $key, $toolbar = 'basic' ) {
-		if ( ! qazana()->editor->is_edit_mode() ) {
+		if ( ! qazana()->get_editor()->is_edit_mode() ) {
 			return;
 		}
 
@@ -756,7 +819,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @param Skin_Base $skin Skin instance.
 	 */
 	public function add_skin( Skin_Base $skin ) {
-		qazana()->skins_manager->add_skin( $this, $skin );
+		qazana()->get_skins_manager()->add_skin( $this, $skin );
 	}
 
 	/**
@@ -823,7 +886,7 @@ abstract class Widget_Base extends Element_Base {
 	 * @return \WP_Error|true Whether the skin was removed successfully from the widget.
 	 */
 	public function remove_skin( $skin_id ) {
-		return qazana()->skins_manager->remove_skin( $this, $skin_id );
+		return qazana()->get_skins_manager()->remove_skin( $this, $skin_id );
 	}
 
 	/**
@@ -837,6 +900,6 @@ abstract class Widget_Base extends Element_Base {
 	 * @return Skin_Base[]
 	 */
 	public function get_skins() {
-		return qazana()->skins_manager->get_skins( $this );
+		return qazana()->get_skins_manager()->get_skins( $this );
 	}
 }

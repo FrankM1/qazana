@@ -23,7 +23,6 @@ html.qazana-html {
 }
 
 .qazana-editor-active {
-
 	.qazana.qazana-edit-area-active {
 
 		.qazana-top-section {
@@ -38,7 +37,7 @@ html.qazana-html {
 
 		.qazana-inner-section {
 
-			&:first-child {
+			&:first-child:not(.qazana-section-content-middle):not(.qazana-section-content-bottom) {
 				margin-top: 15px;
 			}
 
@@ -81,10 +80,10 @@ html.qazana-html {
 
 		&.qazana-element-editable, &.qazana-element-edit-mode:hover {
 			outline: 1px solid $editor-info;
+			position: relative;
 		}
 
 		&:not(:hover) {
-
 			.qazana-editor-element-settings {
 				display: none;
 			}
@@ -720,7 +719,7 @@ html.qazana-html {
         padding: 0 10px;
 		transition: all .3s;
         cursor: pointer;
-        
+
         i {
             margin-right: 10px;
         }
@@ -757,8 +756,8 @@ html.qazana-html {
 
 .qazana-add-section-close {
 	position: absolute;
-	right: 20px;
-	top: 20px;
+	right: 35px;
+	top: 15px;
 	font-size: 20px;
 	cursor: pointer;
 	line-height: 1;

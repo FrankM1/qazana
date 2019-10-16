@@ -21,7 +21,7 @@ class Controls extends Controls_Stack {
 			'conditions',
 			[
 				'section' => 'settings',
-                'type' => 'conditions_repeater',
+                'type' => Controls_Manager::CONDITIONS_REPEATER,
                 'features' => [],
                 'is_repeater' => true,
 			    'render_type' => 'none',

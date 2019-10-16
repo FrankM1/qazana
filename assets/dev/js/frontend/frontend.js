@@ -7,8 +7,8 @@
         YouTubeModule = require( 'qazana-frontend/utils/youtube' ),
         VimeoModule = require( 'qazana-frontend/utils/vimeo' ),
 		AnchorsModule = require( 'qazana-frontend/utils/anchors' ),
-		LightboxModule = require( 'qazana-frontend/utils/lightbox' );
-		// CarouselModule = require( 'qazana-frontend/utils/carousel' );
+		LightboxModule = require( 'qazana-frontend/utils/lightbox' ),
+		CarouselModule = require( 'qazana-frontend/utils/carousel' );
 
 	var QazanaFrontend = function() {
 		var self = this,
@@ -45,13 +45,14 @@
                 youtube: new YouTubeModule(),
                 vimeo: new VimeoModule(),
 				anchors: new AnchorsModule(),
-				lightbox: new LightboxModule()
-				// carousel: new CarouselModule()
+				lightbox: new LightboxModule(),
+                carousel: new CarouselModule(),
+                // loadingIndicator: new LoadingIndicatorModule(),
 			};
 
 			self.modules = {
-				StretchElement: require( 'qazana-frontend/modules/stretch-element' ),
-				Masonry: require( 'qazana-utils/masonry' )
+				StretchElement: require( 'qazana-frontend/tools/stretch-element' ),
+				Masonry: require( 'qazana-utils/masonry' ),
 			};
 
 			self.elementsHandler = new ElementsHandler( $ );
@@ -181,6 +182,23 @@
 			};
 		};
 
+		this.debounce = function( threshold, callback ) {
+			var timeout;
+
+			return function debounced( $event ) {
+				function delayed() {
+					callback.call( this, $event );
+					timeout = null;
+				}
+
+				if ( timeout ) {
+					clearTimeout( timeout );
+				}
+
+				timeout = setTimeout( delayed, threshold );
+			};
+		};
+
 		this.addListenerOnce = function( listenerID, event, callback, to ) {
 			if ( ! to ) {
 				to = self.getElements( '$window' );
@@ -233,7 +251,7 @@
 				var element = this.element || this,
 					result = callback.apply( element, arguments );
 
-				// If is Waypoint new API and is frontend
+				// If is WayPoint new API and is frontend
 				if ( options.triggerOnce && this.destroy ) {
 					this.destroy();
 				}

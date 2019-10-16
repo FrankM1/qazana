@@ -208,7 +208,7 @@ abstract class Base extends Base_File {
 		// Handle fonts.
 		if ( ! empty( $meta['fonts'] ) ) {
 			foreach ( $meta['fonts'] as $font ) {
-				qazana()->frontend->enqueue_font( $font );
+				qazana()->get_frontend()->enqueue_font( $font );
 			}
 		}
 
@@ -254,7 +254,7 @@ abstract class Base extends Base_File {
 	 */
 	public function print_css() {
 		echo '<style>' . $this->get_content() . '</style>'; // XSS ok.
-		qazana()->frontend->print_fonts_links();
+		qazana()->get_frontend()->print_fonts_links();
 	}
 
 	/**
@@ -301,7 +301,7 @@ abstract class Base extends Base_File {
 						}
 
 						/** @var Base_Data_Control $control_obj */
-						$control_obj = qazana()->controls_manager->get_control( $parser_control['type'] );
+						$control_obj = qazana()->get_controls_manager()->get_control( $parser_control['type'] );
 						$parsed_value = $control_obj->get_style_value( strtolower( $matches[2] ), $value_to_insert );
 
 						if ( '' === $parsed_value ) {
@@ -674,8 +674,8 @@ abstract class Base extends Base_File {
 	 * @param string $value   The value.
 	 */
 	protected function add_dynamic_control_style_rules( array $control, $value ) {
-		qazana()->dynamic_tags->parse_tags_text( $value, $control, function( $id, $name, $settings ) {
-			$tag = qazana()->dynamic_tags->create_tag( $id, $name, $settings );
+		qazana()->get_dynamic_tags()->parse_tags_text( $value, $control, function( $id, $name, $settings ) {
+			$tag = qazana()->get_dynamic_tags()->create_tag( $id, $name, $settings );
 
 			if ( ! $tag instanceof Tag ) {
 				return;

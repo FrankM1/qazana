@@ -38,7 +38,7 @@ body.qazana-editor-active {
 #qazana {
 
 	// Prevent external animate.css embed which causing elements overlay issue
-	.animated {
+	.qazana-element-animated {
 		animation-fill-mode: none !important;
 	}
 

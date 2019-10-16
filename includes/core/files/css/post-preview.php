@@ -58,7 +58,7 @@ class Post_Preview extends Post {
 	 * @return array Post data.
 	 */
 	protected function get_data() {
-		return qazana()->db->get_plain_editor( $this->preview_id );
+		return qazana()->get_db()->get_plain_editor( $this->preview_id );
 	}
 
 	/**

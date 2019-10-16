@@ -53,6 +53,17 @@ class Post extends Document {
 	}
 
 	/**
+	 * Get widget group to use
+	 * 
+	 * Use this to specify widgets by document types.
+	 * 
+	 * @return array
+	 */
+	public function get_widget_groups() {
+		return [ 'post' ];
+	}
+	
+	/**
 	 * @since 2.0.0
 	 * @access public
 	 */

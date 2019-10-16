@@ -392,7 +392,7 @@ abstract class Controls_Stack extends Base_Object {
 				if ( null !== $target_tab ) {
 					$args = array_merge( $args, $target_tab );
 				}
-			} elseif ( empty( $args['section'] ) && ( ! $options['overwrite'] || is_wp_error( qazana()->controls_manager->get_control_from_stack( $this->get_unique_name(), $id ) ) ) ) {
+			} elseif ( empty( $args['section'] ) && ( ! $options['overwrite'] || is_wp_error( qazana()->get_controls_manager()->get_control_from_stack( $this->get_unique_name(), $id ) ) ) ) {
 				wp_die( get_called_class() . '::' . __FUNCTION__ . ': Cannot add a control outside a section (use `start_controls_section`). Control id - `' . $id . '`.' );
 			}
 		}
@@ -414,7 +414,7 @@ abstract class Controls_Stack extends Base_Object {
 			_doing_it_wrong( get_called_class() . '::' . __FUNCTION__, 'A Dash in not allowed in a control id when conditions are defined, use an underscore instead. Control id - `' . esc_html( $id ) . '`.', '2.0.0' );
 		}
 
-		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
+		return qazana()->get_controls_manager()->add_control_to_stack( $this, $id, $args, $options );
 	}
 
 	/**
@@ -429,7 +429,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @return bool|\WP_Error
 	 */
 	public function remove_control( $control_id ) {
-		return qazana()->controls_manager->remove_control_from_stack( $this->get_unique_name(), $control_id );
+		return qazana()->get_controls_manager()->remove_control_from_stack( $this->get_unique_name(), $control_id );
 	}
 
 	/**
@@ -450,7 +450,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @return bool
 	 */
 	public function update_control( $control_id, array $args, array $options = [] ) {
-		$is_updated = qazana()->controls_manager->update_control_in_stack( $this, $control_id, $args, $options );
+		$is_updated = qazana()->get_controls_manager()->update_control_in_stack( $this, $control_id, $args, $options );
 
 		if ( ! $is_updated ) {
 			return false;
@@ -482,7 +482,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @return array Stack of controls.
 	 */
 	public function get_stack() {
-		$stack = qazana()->controls_manager->get_element_stack( $this );
+		$stack = qazana()->get_controls_manager()->get_element_stack( $this );
 
 		if ( null === $stack ) {
 			$this->init_controls();
@@ -689,7 +689,7 @@ abstract class Controls_Stack extends Base_Object {
 	 *                           empty array.
 	 */
 	final public function add_group_control( $group_name, array $args = [], array $options = [] ) {
-		$group = qazana()->controls_manager->get_control_groups( $group_name );
+		$group = qazana()->get_controls_manager()->get_control_groups( $group_name );
 
 		if ( ! $group ) {
 			wp_die( sprintf( '%s::%s: Group "%s" not found.', get_called_class(), __FUNCTION__, $group_name ) );
@@ -699,7 +699,7 @@ abstract class Controls_Stack extends Base_Object {
 	}
 
 	final public function remove_group_control( $group_name, $control_id ) {
-		$group = qazana()->controls_manager->get_control_groups( $group_name );
+		$group = qazana()->get_controls_manager()->get_control_groups( $group_name );
 
 		if ( ! $group ) {
 			wp_die( __CLASS__ . '::' . __FUNCTION__ . ': Group `' . $group_name . '` not found.' );
@@ -748,7 +748,7 @@ abstract class Controls_Stack extends Base_Object {
 		$style_controls = [];
 
 		foreach ( $controls as $control_name => $control ) {
-			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+			$control_obj = qazana()->get_controls_manager()->get_control( $control['type'] );
 
 			if ( ! $control_obj instanceof Base_Data_Control ) {
 				continue;
@@ -1160,7 +1160,7 @@ abstract class Controls_Stack extends Base_Object {
 
 		foreach ( $controls as $control ) {
 			$control_name = $control['name'];
-			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+			$control_obj = qazana()->get_controls_manager()->get_control( $control['type'] );
 
 			if ( ! $control_obj instanceof Base_Data_Control ) {
 				continue;
@@ -1698,7 +1698,7 @@ abstract class Controls_Stack extends Base_Object {
 	 *                        Default is `control`.
 	 *     @type string $at   Where to inject. If `$type` is `control` accepts
 	 *                        `before` and `after`. If `$type` is `section`
-	 *                        accepts `start` and `end`. Dafault values based on
+	 *                        accepts `start` and `end`. Default values based on
 	 *                        the `type`.
 	 *     @type string $of   Control/Section ID.
 	 * }
@@ -1770,7 +1770,7 @@ abstract class Controls_Stack extends Base_Object {
 		$settings = $this->get_data( 'settings' );
 
 		foreach ( $this->get_controls() as $control ) {
-			$control_obj = qazana()->controls_manager->get_control( $control['type'] );
+			$control_obj = qazana()->get_controls_manager()->get_control( $control['type'] );
 
 			if ( ! $control_obj instanceof Base_Data_Control ) {
 				continue;
@@ -1912,7 +1912,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @access protected
 	 */
 	protected function init_controls() {
-		qazana()->controls_manager->open_stack( $this );
+		qazana()->get_controls_manager()->open_stack( $this );
 
 		$this->_register_controls();
 	}
@@ -1974,9 +1974,9 @@ abstract class Controls_Stack extends Base_Object {
 
 			$value_to_check = $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ];
 
-			$tag_text_data = qazana()->dynamic_tags->tag_text_to_tag_data( $value_to_check );
+			$tag_text_data = qazana()->get_dynamic_tags()->tag_text_to_tag_data( $value_to_check );
 
-			if ( ! qazana()->dynamic_tags->get_tag_info( $tag_text_data['name'] ) ) {
+			if ( ! qazana()->get_dynamic_tags()->get_tag_info( $tag_text_data['name'] ) ) {
 				unset( $settings[ Manager::DYNAMIC_SETTING_KEY ][ $control['name'] ] );
 			}
 		}
@@ -2019,7 +2019,7 @@ abstract class Controls_Stack extends Base_Object {
 	 * @return boolean
 	 */
 	public function is_edit_mode() {
-		return qazana()->editor->is_edit_mode();
+		return qazana()->get_editor()->is_edit_mode();
 	}
 
 	public function get_responsive_settings( $setting_key = null ) {

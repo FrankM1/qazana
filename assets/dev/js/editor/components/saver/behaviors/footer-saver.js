@@ -3,11 +3,11 @@ module.exports = Marionette.Behavior.extend( {
 
 	ui: function() {
 		return {
-			buttonPreview: '#qazana-panel-saver-button-preview',
-			buttonPublish: '#qazana-panel-saver-button-publish',
-			buttonSaveOptions: '#qazana-panel-saver-button-save-options',
-			buttonPublishLabel: '#qazana-panel-saver-button-publish-label',
-			menuSaveDraft: '#qazana-panel-saver-menu-save-draft',
+			buttonPreview: '#qazana-panel-footer-saver-button-preview',
+			buttonPublish: '#qazana-panel-footer-saver-button-publish',
+			buttonSaveOptions: '#qazana-panel-footer-saver-button-save-options',
+			buttonPublishLabel: '#qazana-panel-footer-saver-button-publish-label',
+			menuSaveDraft: '#qazana-panel-footer-saver-menu-save-draft',
 			lastEditedWrapper: '.qazana-last-edited-wrapper',
 		};
 	},

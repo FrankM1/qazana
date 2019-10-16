@@ -52,7 +52,7 @@ class Utils {
 	 * Retrieve Qazana edit link.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get( $post_id )->get_edit_url()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get( $post_id )->get_edit_url()` method instead.
 	 *
 	 * @access public
 	 * @static
@@ -62,14 +62,14 @@ class Utils {
 	 * @return string Post edit link.
 	 */
 	public static function get_edit_link( $post_id = 0 ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get( $post_id )->get_edit_url()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_edit_url()' );
 
 		if ( ! $post_id ) {
 			$post_id = get_the_ID();
 		}
 
 		$edit_link = '';
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		if ( $document ) {
 			$edit_link = $document->get_edit_url();
@@ -97,7 +97,7 @@ class Utils {
 	 * Retrieve the post preview URL.
 	 *
 	 * @since 1.6.4
-	 * @deprecated 2.0.0 Use `qazana()->documents->get( $post_id )->get_preview_url()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get( $post_id )->get_preview_url()` method instead.
 	 *
 	 * @access public
 	 * @static
@@ -107,9 +107,9 @@ class Utils {
 	 * @return string Post preview URL.
 	 */
 	public static function get_preview_url( $post_id ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get( $post_id )->get_preview_url()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_preview_url()' );
 
-		$url = qazana()->documents->get( $post_id )->get_preview_url();
+		$url = qazana()->get_documents()->get( $post_id )->get_preview_url();
 
 		/**
 		 * Preview URL.
@@ -133,7 +133,7 @@ class Utils {
 	 * Retrieve WordPress preview URL for any given post ID.
 	 *
 	 * @since 1.9.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get( $post_id )->get_wp_preview_url()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get( $post_id )->get_wp_preview_url()` method instead.
 	 *
 	 * @access public
 	 * @static
@@ -143,9 +143,9 @@ class Utils {
 	 * @return string WordPress preview URL.
 	 */
 	public static function get_wp_preview_url( $post_id ) {
-	    //TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get( $post_id )->get_wp_preview_url()' );
+	    _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_wp_preview_url()' );
 
-		$wp_preview_url = qazana()->documents->get( $post_id )->get_wp_preview_url();
+		$wp_preview_url = qazana()->get_documents()->get( $post_id )->get_wp_preview_url();
 
 		/**
 		 * WordPress preview URL.
@@ -218,7 +218,7 @@ class Utils {
 	 * Retrieve WordPress preview URL for any given post ID.
 	 *
 	 * @since 1.9.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get( $post_id )->get_exit_to_dashboard_url()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get( $post_id )->get_exit_to_dashboard_url()` method instead.
 	 *
 	 * @access public
 	 * @static
@@ -228,9 +228,9 @@ class Utils {
 	 * @return string Exit to dashboard URL.
 	 */
 	public static function get_exit_to_dashboard_url( $post_id ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get( $post_id )->get_exit_to_dashboard_url()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get( $post_id )->get_exit_to_dashboard_url()' );
 
-		return qazana()->documents->get( $post_id )->get_exit_to_dashboard_url();
+		return qazana()->get_documents()->get( $post_id )->get_exit_to_dashboard_url();
 	}
 
 	/**
@@ -460,7 +460,7 @@ class Utils {
 	 * Retrieve a string saying when the post was saved or the last time it was edited.
 	 *
 	 * @since 1.9.0
-	 * @deprecated 2.0.0 Use `qazana()->documents->get()` method instead.
+	 * @deprecated 2.0.0 Use `qazana()->get_documents()->get()` method instead.
 	 *
 	 * @access public
 	 * @static
@@ -470,9 +470,9 @@ class Utils {
 	 * @return string Last edited string.
 	 */
 	public static function get_last_edited( $post_id ) {
-		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->documents->get()' );
+		//TODO _deprecated_function( __METHOD__, '2.0.0', 'qazana()->get_documents()->get()' );
 
-		$document = qazana()->documents->get( $post_id );
+		$document = qazana()->get_documents()->get( $post_id );
 
 		return $document->get_last_edited();
 	}
@@ -586,7 +586,7 @@ class Utils {
 	public static function get_site_domain() {
 		return str_ireplace( 'www.', '', parse_url( home_url(), PHP_URL_HOST ) );
     }
-    
+
     /**
 	 * Used to overcome core bug when taxonomy is in more then one post type
 	 *
@@ -836,5 +836,28 @@ class Utils {
 		}
 
 		return $post_types;
+    }
+
+	/**
+	 * Render html attributes
+	 *
+	 * @access public
+	 * @static
+	 * @param array $attributes
+	 *
+	 * @return string
+	 */
+	public static function render_html_attributes( array $attributes ) {
+		$rendered_attributes = [];
+
+		foreach ( $attributes as $attribute_key => $attribute_values ) {
+			if ( is_array( $attribute_values ) ) {
+				$attribute_values = implode( ' ', $attribute_values );
+			}
+
+			$rendered_attributes[] = sprintf( '%1$s="%2$s"', $attribute_key, esc_attr( $attribute_values ) );
+		}
+
+		return implode( ' ', $rendered_attributes );
 	}
 }

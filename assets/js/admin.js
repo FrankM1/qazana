@@ -81,12 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 168);
+/******/ 	return __webpack_require__(__webpack_require__.s = 169);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 1:
+/***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119,16 +119,20 @@ module.exports = ViewModule;
 
 /***/ }),
 
-/***/ 168:
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 (function ($) {
-	var ViewModule = __webpack_require__(1);
+	var ViewModule = __webpack_require__(0);
 
 	var QazanaAdmin = ViewModule.extend({
+
+		modules: {
+			Module: __webpack_require__(2)
+		},
 
 		maintenanceMode: null,
 
@@ -384,7 +388,7 @@ module.exports = ViewModule;
 		},
 
 		initMaintenanceMode: function initMaintenanceMode() {
-			var MaintenanceMode = __webpack_require__(169);
+			var MaintenanceMode = __webpack_require__(170);
 
 			this.maintenanceMode = new MaintenanceMode();
 		},
@@ -574,13 +578,13 @@ module.exports = ViewModule;
 
 /***/ }),
 
-/***/ 169:
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ViewModule = __webpack_require__(1),
+var ViewModule = __webpack_require__(0),
     MaintenanceModeModule;
 
 MaintenanceModeModule = ViewModule.extend({

@@ -243,7 +243,7 @@ class Manager {
 		// like http://domain.com/any-post/?preview=1&template_id=6453
 		if ( ! empty( $_GET['template_id'] ) ) {
 			$force_template_id = $_GET['template_id'];
-			$document = qazana()->documents->get( $force_template_id );
+			$document = qazana()->get_documents()->get( $force_template_id );
 			// e.g. header / header
 			if ( $document && $location === $document->get_location() ) {
 				return [

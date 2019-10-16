@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-$document_types = qazana()->documents->get_document_types();
+$document_types = qazana()->get_documents()->get_document_types();
 
 $types = [];
 

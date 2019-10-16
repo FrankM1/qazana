@@ -4,6 +4,7 @@ namespace Qazana\Extensions\Widgets;
 use Qazana\Controls_Manager;
 use Qazana\Widget_Base as Widget_Base;
 use Qazana\Extensions\Library;
+use Qazana\User;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -84,9 +85,9 @@ class Template extends Widget_Base {
 		$template_id = $this->get_settings( 'template_id' );
 
 		?><div class="qazana-template">
-            <?php 
+            <?php
 
-            echo qazana()->frontend->get_builder_content_for_display( $template_id );
+            echo qazana()->get_frontend()->get_builder_content_for_display( $template_id );
 
             if ( User::is_current_user_can_edit() ) {
                 echo '<a target="_blank" class="qazana-edit-template" href="'. add_query_arg( 'qazana', '', get_permalink( $template_id ) ) .'"><i class="fa fa-pencil"></i> '. __( 'Edit Template', 'qazana' ) .'</a>';

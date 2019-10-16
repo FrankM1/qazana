@@ -10,6 +10,8 @@ use Qazana\User;
 use Qazana\Core\Settings\Manager as SettingsManager;
 use Qazana\Utils;
 use Qazana\Widget_Base;
+use Qazana\Document\Widgets;
+use Qazana\Document\Elements;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -27,6 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Document extends Controls_Stack {
 
 	/**
+	 * Document location.
+	 */
+	const LOCATION_META_KEY = '_qazana_location';
+
+	/**
 	 * Document type meta key.
 	 */
 	const TYPE_META_KEY = '_qazana_template_type';
@@ -36,6 +43,16 @@ abstract class Document extends Controls_Stack {
 	 */
 	const SUB_TYPE_META_KEY = '_qazana_template_sub_type';
 
+	/**
+	 * The taxonomy type slug for the library document.
+	 */
+    const TAXONOMY_TYPE_SLUG = 'qazana_library_type';
+
+	/**
+	 * Document properties
+	 *
+	 * @var array
+	 */
 	private static $properties = [];
 
 	/**
@@ -65,7 +82,7 @@ abstract class Document extends Controls_Stack {
 	protected $post;
 
 	protected static function get_editor_panel_categories() {
-		return qazana()->elements_manager->get_categories();
+		return qazana()->get_elements_manager()->get_categories();
 	}
 
 	/**
@@ -87,11 +104,10 @@ abstract class Document extends Controls_Stack {
 
 	public static function get_editor_panel_config() {
 		return [
-			'widgets_settings' => [],
 			'elements_categories' => static::get_editor_panel_categories(),
 			'messages' => [
 				/* translators: %s: the document title. */
-				'publish_notification' => sprintf( __( 'Hurray! Your %s is live.', 'qazana' ), self::get_title() ),
+				'publish_notification' => sprintf( __( 'Your %s is now live.', 'qazana' ), self::get_title() ),
 			],
 		];
 	}
@@ -189,7 +205,7 @@ abstract class Document extends Controls_Stack {
 		ob_start();
 
 		/** @var Widget_Base $widget */
-		$widget = qazana()->elements_manager->create_element_instance( $data );
+		$widget = qazana()->get_elements_manager()->create_element_instance( $this, $data );
 
 		if ( ! $widget ) {
 			throw new \Exception( 'Widget not found.' );
@@ -223,13 +239,74 @@ abstract class Document extends Controls_Stack {
 	 * @access public
 	 */
 	public function get_wp_preview_url() {
-		$main_post_id = $this->get_main_id();
-		$url = get_preview_post_link(
-			$main_post_id,
-			[
-				'preview_nonce' => wp_create_nonce( 'post_preview_' . $main_post_id ),
-			]
-		);
+		$preview_id = (int) $this->get_settings( 'preview_id' );
+		$post_id = $this->get_main_id();
+
+		list( $preview_category, $preview_object_type ) = array_pad( explode( '/',  $this->get_settings( 'preview_type' ) ), 2,'' );
+
+		switch ( $preview_category ) {
+			case 'archive':
+				switch ( $preview_object_type ) {
+					case 'author':
+						if ( empty( $preview_id ) ) {
+							$preview_id = get_current_user_id();
+						}
+						$preview_url = get_author_posts_url( $preview_id );
+						break;
+					case 'date':
+						$preview_url = add_query_arg( 'year', date( 'Y' ), home_url() );
+						break;
+				}
+				break;
+			case 'search':
+				$preview_url = add_query_arg( 's', $this->get_settings( 'preview_search_term' ), home_url() );
+				break;
+			case 'taxonomy':
+				$term = get_term( $preview_id );
+
+				if ( $term && ! is_wp_error( $term ) ) {
+					$preview_url = get_term_link( $preview_id );
+				}
+
+				break;
+			case 'page':
+				switch ( $preview_object_type ) {
+					case 'home':
+						$preview_url = get_post_type_archive_link( 'post' );
+						break;
+					case 'front':
+						$preview_url = home_url();
+						break;
+					case '404':
+						$preview_url = add_query_arg( 'p', '0', home_url() );
+						break;
+				}
+				break;
+			case 'post_type_archive':
+				$post_type = $preview_object_type;
+				if ( post_type_exists( $post_type ) ) {
+					$preview_url = get_post_type_archive_link( $post_type );
+				}
+				break;
+			case 'single':
+				$post = get_post( $preview_id );
+				if ( $post ) {
+					$preview_url = get_permalink( $post );
+				}
+				break;
+		} // End switch().
+
+		if ( empty( $preview_url ) ) {
+			$preview_url = $this->get_permalink();
+		}
+
+		$query_args = [
+			'preview' => true,
+			'preview_nonce' => wp_create_nonce( 'post_preview_' . $post_id ),
+			'template_id' => $post_id,
+		];
+
+		$preview_url = set_url_scheme( add_query_arg( $query_args, $preview_url ) );
 
 		/**
 		 * Document "WordPress preview" URL.
@@ -238,12 +315,108 @@ abstract class Document extends Controls_Stack {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param string   $url  WordPress preview URL.
-		 * @param Document $this The document instance.
+		 * @param Document $this An instance of the theme document.
 		 */
-		$url = apply_filters( 'qazana/document/urls/wp_preview', $url, $this );
+		$preview_url = apply_filters( 'qazana/document/wp_preview_url', $preview_url, $this );
 
-		return $url;
+		return $preview_url;
+	}
+
+	public function get_preview_as_query_args() {
+		$preview_id = (int) $this->get_settings( 'preview_id' );
+
+		list( $preview_category, $preview_object_type ) = array_pad( explode( '/', $this->get_settings( 'preview_type' ) ), 2, '' );
+
+		switch ( $preview_category ) {
+			case 'singular':
+				switch ( $preview_object_type ) {
+					case 'author':
+						if ( empty( $preview_id ) ) {
+							$preview_id = get_current_user_id();
+						}
+
+						$query_args = [
+							'author' => $preview_id,
+						];
+						break;
+					case 'date':
+						$query_args = [
+							'year' => date( 'Y' ),
+						];
+						break;
+					case 'recent_posts':
+						$query_args = [
+							'post_type' => 'post',
+						];
+						break;
+				}
+				break;
+			case 'search':
+				$query_args = [
+					's' => $this->get_settings( 'preview_search_term' ),
+				];
+				break;
+			case 'taxonomy':
+				$term = get_term( $preview_id );
+
+				if ( $term && ! is_wp_error( $term ) ) {
+					$query_args = [
+						'tax_query' => [
+							[
+								'taxonomy' => $term->taxonomy,
+								'terms' => [ $preview_id ],
+								'field' => 'id',
+							],
+						],
+					];
+				}
+				break;
+			case 'page':
+				switch ( $preview_object_type ) {
+					case 'home':
+						$query_args = [];
+						break;
+					case 'front':
+						$query_args = [
+							'p' => get_option( 'page_on_front' ),
+							'post_type' => 'page',
+						];
+						break;
+					case '404':
+						$query_args = [
+							'p' => 0,
+						];
+						break;
+				}
+				break;
+			case 'post_type_singular':
+				$post_type = $preview_object_type;
+				if ( post_type_exists( $post_type ) ) {
+					$query_args = [
+						'post_type' => $post_type,
+					];
+				}
+				break;
+			case 'single':
+				$post = get_post( $preview_id );
+				if ( ! $post ) {
+					break;
+				}
+
+				$query_args = [
+					'p' => $post->ID,
+					'post_type' => $post->post_type,
+				];
+		} // End switch().
+
+		if ( empty( $query_args ) ) {
+			$query_args = [
+				'p' => $this->get_main_id(),
+				'post_type' => $this->get_main_post()->post_type,
+			];
+		}
+
+		return $query_args;
 	}
 
 	/**
@@ -316,7 +489,7 @@ abstract class Document extends Controls_Stack {
 		$autosave_id = $this->get_autosave_id( $user_id );
 
 		if ( $autosave_id ) {
-			$document = qazana()->documents->get( $autosave_id );
+			$document = qazana()->get_documents()->get( $autosave_id );
 		} elseif ( $create ) {
 			$autosave_id = wp_create_post_autosave(
 				[
@@ -330,9 +503,9 @@ abstract class Document extends Controls_Stack {
 				]
 			);
 
-			qazana()->db->copy_qazana_meta( $this->post->ID, $autosave_id );
+			qazana()->get_db()->copy_qazana_meta( $this->post->ID, $autosave_id );
 
-			$document = qazana()->documents->get( $autosave_id );
+			$document = qazana()->get_documents()->get( $autosave_id );
 			$document->save_type();
 		} else {
 			$document = false;
@@ -399,7 +572,7 @@ abstract class Document extends Controls_Stack {
 		$can_publish = $post_type_object && current_user_can( $post_type_object->cap->publish_posts );
 		$is_published = DB::STATUS_PUBLISH === $this->post->post_status || DB::STATUS_PRIVATE === $this->post->post_status;
 
-		if ( $is_published || $can_publish || ! qazana()->editor->is_edit_mode() ) {
+		if ( $is_published || $can_publish || ! qazana()->get_editor()->is_edit_mode() ) {
 
 			$this->add_control(
 				'post_status',
@@ -587,12 +760,12 @@ abstract class Document extends Controls_Stack {
 		}
 
 		// Change the current documents, so widgets can use `documents->get_current` and other post data
-		qazana()->documents->switch_to_document( $this );
+		qazana()->get_documents()->switch_to_document( $this );
 
 		$editor_data = [];
 
 		foreach ( $data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $this, $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -601,7 +774,7 @@ abstract class Document extends Controls_Stack {
 			$editor_data[] = $element->get_raw_data( $with_html_content );
 		} // End foreach().
 
-		qazana()->documents->restore_document();
+		qazana()->get_documents()->restore_document();
 
 		return $editor_data;
 	}
@@ -621,18 +794,18 @@ abstract class Document extends Controls_Stack {
 			$autosave = $this->get_newer_autosave();
 
 			if ( is_object( $autosave ) ) {
-				$autosave_elements = qazana()->documents
+				$autosave_elements = qazana()->get_documents()
 					->get( $autosave->get_post()->ID )
 					->get_json_meta( '_qazana_data' );
 			}
 		}
 
-		if ( qazana()->editor->is_edit_mode() ) {
+		if ( qazana()->get_editor()->is_edit_mode() ) {
 			if ( empty( $elements ) && empty( $autosave_elements ) ) {
 				// Convert to Qazana.
-				$elements = qazana()->db->get_new_editor_from_wp_editor( $this->post->ID );
+				$elements = qazana()->get_db()->get_new_editor_from_wp_editor( $this->post->ID );
 				if ( $this->is_autosave() ) {
-					qazana()->db->copy_qazana_meta( $this->post->post_parent, $this->post->ID );
+					qazana()->get_db()->copy_qazana_meta( $this->post->post_parent, $this->post->ID );
 				}
 			}
 		}
@@ -648,8 +821,9 @@ abstract class Document extends Controls_Stack {
 		if ( ! $elements_data ) {
 			$elements_data = $this->get_elements_data();
 		}
+
 		?>
-		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>" data-document-id="<?php echo esc_attr( $this->post->ID ); ?>">
+		<div class="<?php echo esc_attr( $this->get_container_classes() ); ?>" data-id="<?php echo esc_attr( $this->post->ID ); ?>" data-settings='<?php echo wp_json_encode( $this->get_frontend_settings() ); ?>'>
 			<div class="qazana-inner">
 				<div class="qazana-section-wrap">
 					<?php $this->print_elements( $elements_data ); ?>
@@ -695,7 +869,7 @@ abstract class Document extends Controls_Stack {
 	}
 
 	public function get_content( $with_css = false ) {
-		return qazana()->frontend->get_builder_content( $this->post->ID, $with_css );
+		return qazana()->get_frontend()->get_builder_content( $this->post->ID, $with_css );
 	}
 
 	/**
@@ -725,7 +899,7 @@ abstract class Document extends Controls_Stack {
 	protected function save_elements( $elements ) {
 		$editor_data = $this->get_elements_raw_data( $elements );
 
-		// We need the `wp_slash` in order to avoid the unslashing during the `update_post_meta`
+		// We need the `wp_slash` in order to avoid the un-slashing during the `update_post_meta`
 		$json_value = wp_slash( wp_json_encode( $editor_data ) );
 
 		// Don't use `update_post_meta` that can't handle `revision` post type
@@ -743,7 +917,7 @@ abstract class Document extends Controls_Stack {
 		 */
 		do_action( 'qazana/db/before_save', $this->post->post_status, $is_meta_updated );
 
-		qazana()->db->save_plain_text( $this->post->ID );
+		qazana()->get_db()->save_plain_text( $this->post->ID );
 
 		update_metadata( 'post', $this->post->ID, '_qazana_version', DB::DB_VERSION );
 
@@ -894,6 +1068,88 @@ abstract class Document extends Controls_Stack {
 	}
 
 	/**
+	 * Get widgets
+	 *
+	 * @return object
+	 */
+	public function get_widgets() {
+		return new Widgets( $this );
+	}
+
+	/**
+	 * Get elements
+	 *
+	 * @return object
+	 */
+	public function get_elements() {
+		return new Elements( $this );
+	}
+
+	/**
+	 * Get widget group to use
+	 *
+	 * Use this to specify widgets by document types.
+	 *
+	 * @return array
+	 */
+	public function get_widget_groups() {
+		return [ 'post' ];
+	}
+
+	/**
+	 * Get document location manager
+	 *
+	 * Use this to get the document location
+	 *
+ 	 * @return Locations/Manager
+	 */
+	public function get_locations_manager() {
+		return false;
+	}
+
+	/**
+	 * Get document location
+	 */
+	public function get_location() {
+		$value = self::get_property( 'location' );
+		if ( ! $value ) {
+			$value = $this->get_main_meta( self::LOCATION_META_KEY );
+		}
+
+		return $value;
+	}
+
+	public function get_location_label() {
+		$location = $this->get_location();
+		$locations_settings = $this->get_locations_manager()->get_locations( $location );
+		$label = '';
+		$is_section_doc_type = 'section' === $this->get_name();
+
+		if ( $location ) {
+			if ( $is_section_doc_type ) {
+				$label .= isset( $locations_settings['label'] ) ? $locations_settings['label'] : $location;
+			}
+		}
+
+		$supported = true;
+
+		if ( $is_section_doc_type ) {
+			if ( $location && ! $locations_settings ) {
+				$supported = false;
+			}
+		} elseif ( ! $location || ! $locations_settings ) {
+			$supported = false;
+		}
+
+		if ( ! $supported ) {
+			$label .= ' (' . __( 'Unsupported', 'qazana' ) . ')';
+		}
+
+		return $label;
+	}
+
+
+	/**
 	 * @since 2.0.0
 	 * @access public
 	 *
@@ -943,7 +1199,7 @@ abstract class Document extends Controls_Stack {
 
 	protected function print_elements( $elements_data ) {
 		foreach ( $elements_data as $element_data ) {
-			$element = qazana()->elements_manager->create_element_instance( $element_data );
+			$element = qazana()->get_elements_manager()->create_element_instance( $this, $element_data );
 
 			if ( ! $element ) {
 				continue;
@@ -954,10 +1210,19 @@ abstract class Document extends Controls_Stack {
 	}
 
 	/**
-	 * @param array $data a set of elements
-	 * @param string $method (on_export|on_import)
+	 * Load the document element scripts
 	 *
-	 * @return mixed
+	 * @param array $data a set of elements
+	 */
+	public function enqueue() {
+		$this->get_dependencies();
+		$this->enqueue_dependencies();
+	}
+
+	/**
+	 * Get all registered element scripts and stylesheets
+	 *
+	 * @param array $data a set of elements
 	 */
 	public function get_dependencies( $elements_data = null ) {
 
@@ -965,11 +1230,11 @@ abstract class Document extends Controls_Stack {
 			$elements_data = $this->get_elements_data();
 		}
 
-		qazana()->db->iterate_data(
+		qazana()->get_db()->iterate_data(
 			$elements_data,
 			function( $element ) {
 
-				$element_instance = qazana()->elements_manager->create_element_instance( $element );
+				$element_instance = qazana()->get_elements_manager()->create_element_instance( $this, $element );
 
 				// Exit if the element doesn't exist
 				if ( ! $element_instance ) {
@@ -1017,6 +1282,11 @@ abstract class Document extends Controls_Stack {
 		);
 	}
 
+	/**
+	 * Enqueue scripts and stylesheets
+	 *
+	 * @param array $data a set of elements
+	 */
 	public function enqueue_dependencies() {
 
 		if ( ! empty( $this->element_scripts ) && is_array( $this->element_scripts ) ) {
@@ -1099,7 +1369,17 @@ abstract class Document extends Controls_Stack {
 		];
 	}
 
-	public function register_preview_controls() {
+	public static function get_preview_as_options() {
+		return array_merge(
+			[
+				'' => __( 'Select...', 'qazana' ),
+			],
+			self::get_archive_preview_as_options(),
+			self::get_single_preview_as_options()
+		);
+	}
+
+	public function _register_preview_controls() {
 
 		$this->start_controls_section(
 			'preview_settings',
@@ -1189,4 +1469,5 @@ abstract class Document extends Controls_Stack {
 		}
 
 	}
+
 }

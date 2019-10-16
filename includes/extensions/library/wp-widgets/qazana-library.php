@@ -35,7 +35,7 @@ class Qazana_Library extends \WP_Widget {
 		}
 
 		if ( ! empty( $instance['template_id'] ) ) {
-			echo qazana()->frontend->get_builder_content_for_display( $instance['template_id'] );
+			echo qazana()->get_frontend()->get_builder_content_for_display( $instance['template_id'] );
 		}
 
 		if ( User::is_current_user_can_edit() ) {

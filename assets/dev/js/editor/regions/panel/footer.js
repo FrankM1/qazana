@@ -8,12 +8,12 @@ module.exports = Marionette.ItemView.extend( {
 	possibleRotateModes: [ 'portrait', 'landscape' ],
 
 	ui: {
-		buttonSave: '#qazana-panel-saver-button-publish, #qazana-panel-saver-menu-save-draft', // TODO: remove. Compatibility for Pro <= 1.9.5
+		buttonSave: '#qazana-panel-footer-saver-button-publish, #qazana-panel-footer-saver-menu-save-draft', // TODO: remove. Compatibility for Pro <= 1.9.5
 		menuButtons: '.qazana-panel-footer-tool',
 		settings: '#qazana-panel-footer-settings',
 		deviceModeIcon: '#qazana-panel-footer-responsive > i',
 		deviceModeButtons: '#qazana-panel-footer-responsive .qazana-panel-footer-sub-menu-item',
-		saveTemplate: '#qazana-panel-saver-menu-save-template',
+		saveTemplate: '#qazana-panel-footer-saver-menu-save-template',
 		history: '#qazana-panel-footer-history',
 		navigator: '#qazana-panel-footer-navigator',
 	},

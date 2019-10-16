@@ -136,7 +136,10 @@ class Widget_Icon_List extends Widget_Base {
 			'link',
 			[
 				'label' => __( 'Link', 'qazana' ),
-				'type' => Controls_Manager::URL,
+                'type' => Controls_Manager::URL,
+                'dynamic' => [
+					'active' => true,
+				],
 				'label_block' => true,
 				'placeholder' => __( 'https://your-link.com', 'qazana' ),
 			]
@@ -287,7 +290,7 @@ class Widget_Icon_List extends Widget_Base {
 			]
 		);
 
-		
+
 
 		$this->add_control(
 			'divider_width',

@@ -143,7 +143,8 @@ class Widget_Heading extends Widget_Base {
 					'large' => __( 'Large', 'qazana' ),
 					'xl' => __( 'XL', 'qazana' ),
 					'xxl' => __( 'XXL', 'qazana' ),
-				],
+                ],
+                'style_transfer' => true
 			]
 		);
 
@@ -190,7 +191,6 @@ class Widget_Heading extends Widget_Base {
 						'icon' => 'fa fa-align-justify',
 					],
 				],
-				'default' => '',
 				'prefix_class' => 'qazana%s-align-',
 			]
 		);
@@ -213,6 +213,23 @@ class Widget_Heading extends Widget_Base {
 				],
 			]
 		);
+
+		$this->add_responsive_control(
+            'bottom_space',
+            [
+                'label' => __( 'Bottom Spacing', 'qazana' ),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .qazana-heading' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
 
 		$this->end_controls_section();
 

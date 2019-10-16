@@ -135,10 +135,11 @@ class AddSectionBase extends Marionette.ItemView {
 	onPresetSelected( event ) {
 		this.closeSelectPresets();
 
-		var selectedStructure = event.currentTarget.dataset.structure,
+		const selectedStructure = event.currentTarget.dataset.structure,
 			parsedStructure = qazana.presetsFactory.getParsedStructure( selectedStructure ),
-			elements = [],
-			loopIndex;
+            elements = [];
+
+		let loopIndex;
 
 		for ( loopIndex = 0; loopIndex < parsedStructure.columnsCount; loopIndex++ ) {
 			elements.push( {
@@ -153,9 +154,11 @@ class AddSectionBase extends Marionette.ItemView {
 			elType: 'section',
 		} );
 
-		var newSection = this.addSection( { elements: elements } );
+		const newSection = this.addSection( { elements: elements } );
 
 		newSection.setStructure( selectedStructure );
+
+        newSection.getEditModel().trigger( 'request:edit' );
 
 		qazana.channels.data.trigger( 'element:after:add' );
 	}

@@ -132,16 +132,16 @@ class Manager extends BaseManager {
 	 * @return BaseModel The model object.
 	 */
 	public function get_model_for_config() {
-		if ( ! is_singular() && ! qazana()->editor->is_edit_mode() ) {
+		if ( ! is_singular() && ! qazana()->get_editor()->is_edit_mode() ) {
 			return null;
 		}
 
-		if ( qazana()->editor->is_edit_mode() ) {
-			$post_id = qazana()->editor->get_post_id();
-			$document = qazana()->documents->get_doc_or_auto_save( $post_id );
+		if ( qazana()->get_editor()->is_edit_mode() ) {
+			$post_id = qazana()->get_editor()->get_post_id();
+			$document = qazana()->get_documents()->get_doc_or_auto_save( $post_id );
 		} else {
 			$post_id = get_the_ID();
-			$document = qazana()->documents->get_doc_for_frontend( $post_id );
+			$document = qazana()->get_documents()->get_doc_for_frontend( $post_id );
 		}
 
 		if ( ! $document ) {
@@ -403,7 +403,7 @@ class Manager extends BaseManager {
 	 * @param $post_css Post_CSS_File
 	 */
 	public function add_page_settings_css( $post_css ) {
-		$document = qazana()->documents->get( $post_css->get_post_id() );
+		$document = qazana()->get_documents()->get( $post_css->get_post_id() );
 		$custom_css = $document->get_settings( 'custom_css' );
 
 		$custom_css = trim( $custom_css );

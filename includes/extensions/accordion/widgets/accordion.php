@@ -67,7 +67,7 @@ class Accordion extends Widget_Base {
 	public function get_categories() {
 		return [ 'general' ];
     }
-    
+
     /**
 	 * Retrieve the scripts and stylesheets needed by this widget.
 	 *
@@ -93,7 +93,7 @@ class Accordion extends Widget_Base {
 		$this->_register_accordion_icons_controls();
 		$this->_register_style_controls();
 	}
-	
+
 	protected function _register_accordion_controls() {
 		$this->start_controls_section(
 			'section_title',
@@ -156,8 +156,8 @@ class Accordion extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'default' => is_rtl() ? 'right' : 'left',
 				'options' => [
-					'left' => __( 'Left', 'qazana' ),
-					'right' => __( 'Right', 'qazana' ),
+					'left' => __( 'Before', 'qazana' ),
+					'right' => __( 'After', 'qazana' ),
 				],
 			]
 		);
@@ -228,7 +228,7 @@ class Accordion extends Widget_Base {
 				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-accordion-item',
 			]
         );
-                
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -246,7 +246,7 @@ class Accordion extends Widget_Base {
 				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-tab-title',
 			]
         );
-        
+
         $this->add_responsive_control(
 			'title_padding',
 			[
@@ -285,7 +285,7 @@ class Accordion extends Widget_Base {
 				],
 			]
 		);
-   
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -318,9 +318,9 @@ class Accordion extends Widget_Base {
 				],
 			]
         );
-        
+
 		$this->end_controls_section();
-        
+
         $this->start_controls_section(
 			'section_content_style',
 			[
@@ -336,7 +336,7 @@ class Accordion extends Widget_Base {
 				'selector' => '{{WRAPPER}} .qazana-accordion .qazana-tab-content',
 			]
         );
-        
+
         $this->add_responsive_control(
 			'content_padding',
 			[
@@ -383,13 +383,13 @@ class Accordion extends Widget_Base {
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
-        
+
         $this->end_controls_section();
-        
+
     }
-    
+
     protected function get_render_icon() {
-        
+
         $settings = $this->get_settings();
 
         if ( ! empty( $settings['icon'] ) ) {
@@ -415,9 +415,9 @@ class Accordion extends Widget_Base {
 		} else {
 			$output = '<i '. $this->get_render_attribute_string( 'i' ) .'></i>';
         }
-        
+
 		return $output;
-        
+
     }
 
 	/**

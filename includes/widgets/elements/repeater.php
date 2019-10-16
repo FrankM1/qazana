@@ -98,7 +98,7 @@ class Repeater extends Element_Base {
 			$args = array_merge( $args, $current_tab );
 		}
 
-		return qazana()->controls_manager->add_control_to_stack( $this, $id, $args, $options );
+		return qazana()->get_controls_manager()->add_control_to_stack( $this, $id, $args, $options );
 	}
 
 	/**

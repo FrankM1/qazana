@@ -1501,7 +1501,7 @@
     overflow: hidden;
     -webkit-border-radius: 3px;
             border-radius: 3px;
-    z-index: 10001; }
+    z-index: 100010; }
     .pen-menu:after {
       top: 100%;
       content: '';
@@ -1801,7 +1801,7 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element-overlay .qaza
 body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-section {
   overflow: visible; }
 
-#qazana .animated {
+#qazana .qazana-element-animated {
   -webkit-animation-fill-mode: none !important;
           animation-fill-mode: none !important; }
 
@@ -1812,17 +1812,15 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-sectio
 #qazana .gallery {
   opacity: 1; }
 
-.qazana-spacer {
+.qazana-edit-mode .qazana-spacer {
   background: -webkit-linear-gradient(315deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
   background: -o-linear-gradient(315deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
   background: linear-gradient(135deg, rgba(30, 87, 153, 0) 47%, rgba(30, 87, 153, 0) 48%, rgba(141, 210, 255, 0.53) 49%, rgba(141, 210, 255, 0.53) 51%, rgba(30, 87, 153, 0) 52%, rgba(30, 87, 153, 0) 53%);
   -webkit-background-size: 6px 6px;
           background-size: 6px 6px;
   text-align: center; }
-  body.qazana-editor-preview .qazana-spacer {
-    background: transparent; }
 
-span.qazana-space-resize-value {
+.qazana-edit-mode span.qazana-space-resize-value {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1845,7 +1843,10 @@ span.qazana-space-resize-value {
       -ms-flex-line-pack: center;
           align-content: center; }
 
-body.qazana-editor-preview .qazana-space-resize-value {
+.qazana-edit-mode.qazana-edit-area-preview .qazana-spacer {
+  background: transparent; }
+
+.qazana-edit-mode.qazana-edit-area-preview .qazana-space-resize-value {
   display: none; }
 
 html.qazana-html {
@@ -1857,7 +1858,7 @@ html.qazana-html {
 .qazana-editor-active .qazana.qazana-edit-area-active .qazana-top-section > .qazana-container > .qazana-row {
   min-height: 40px; }
 
-.qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section:first-child {
+.qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section:first-child:not(.qazana-section-content-middle):not(.qazana-section-content-bottom) {
   margin-top: 15px; }
 
 .qazana-editor-active .qazana.qazana-edit-area-active .qazana-inner-section > .qazana-container > .qazana-row {
@@ -1881,7 +1882,8 @@ html.qazana-html {
   transition: all .1s; }
 
 .qazana-editor-active .qazana-widget.qazana-element-editable, .qazana-editor-active .qazana-widget.qazana-element-edit-mode:hover {
-  outline: 1px solid #008EFF; }
+  outline: 1px solid #008EFF;
+  position: relative; }
 
 .qazana-editor-active .qazana-widget:not(:hover) .qazana-editor-element-settings {
   display: none; }
@@ -2351,8 +2353,8 @@ html.qazana-html {
 
 .qazana-add-section-close {
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 35px;
+  top: 15px;
   font-size: 20px;
   cursor: pointer;
   line-height: 1;

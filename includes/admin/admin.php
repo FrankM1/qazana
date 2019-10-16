@@ -389,7 +389,7 @@ class Run {
 			'qazana-admin-app',
 			qazana()->core_assets_url . 'js/admin' . $suffix . '.js',
 			[
-				'jquery',
+				'jquery', 'backbone-marionette', 'qazana-dialog',
 			],
 			qazana_get_version(),
 			true
@@ -409,7 +409,7 @@ class Run {
 				],
 			]
         );
-        
+
         wp_enqueue_script( 'qazana-admin-app' );
     }
 
@@ -428,7 +428,7 @@ class Run {
             qazana_get_version()
         );
 
-        wp_enqueue_style( 
+        wp_enqueue_style(
             'qazana-admin-app',
             $this->css_url . 'admin'. $suffix .'.css',
             array( 'dashicons', 'qazana-icons' ),

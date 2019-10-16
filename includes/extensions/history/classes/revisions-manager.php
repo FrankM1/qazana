@@ -70,7 +70,7 @@ class Revisions_Manager {
 	public static function avoid_delete_auto_save( $post_content, $post_id ) {
 		// Add a temporary string in order the $post will not be equal to the $autosave
 		// in edit-form-advanced.php:210
-		if ( $post_id && qazana()->db->is_built_with_qazana( $post_id ) ) {
+		if ( $post_id && qazana()->get_db()->is_built_with_qazana( $post_id ) ) {
 			$post_content .= '<!-- Created with Qazana -->';
 		}
 
@@ -85,7 +85,7 @@ class Revisions_Manager {
 	public static function remove_temp_post_content() {
 		global $post;
 
-		if ( qazana()->db->is_built_with_qazana( $post->ID ) ) {
+		if ( qazana()->get_db()->is_built_with_qazana( $post->ID ) ) {
 			$post->post_content = str_replace( '<!-- Created with Qazana -->', '', $post->post_content );
 		}
 	}
@@ -196,7 +196,7 @@ class Revisions_Manager {
 		$parent_id = wp_is_post_revision( $revision_id );
 
 		if ( $parent_id ) {
-			qazana()->db->safe_copy_qazana_meta( $parent_id, $revision_id );
+			qazana()->get_db()->safe_copy_qazana_meta( $parent_id, $revision_id );
 		}
 	}
 
@@ -206,15 +206,15 @@ class Revisions_Manager {
 	 * @static
 	 */
 	public static function restore_revision( $parent_id, $revision_id ) {
-		$is_built_with_qazana = qazana()->db->is_built_with_qazana( $revision_id );
+		$is_built_with_qazana = qazana()->get_db()->is_built_with_qazana( $revision_id );
 
-		qazana()->db->set_is_qazana_page( $parent_id, $is_built_with_qazana );
+		qazana()->get_db()->set_is_qazana_page( $parent_id, $is_built_with_qazana );
 
 		if ( ! $is_built_with_qazana ) {
 			return;
 		}
 
-		qazana()->db->copy_qazana_meta( $revision_id, $parent_id );
+		qazana()->get_db()->copy_qazana_meta( $revision_id, $parent_id );
 
 		$post_css = new Post_CSS( $parent_id );
 
@@ -227,7 +227,7 @@ class Revisions_Manager {
 	 * @static
 	 */
 	public static function on_revision_data_request() {
-		qazana()->editor->verify_ajax_nonce();
+		qazana()->get_editor()->verify_ajax_nonce();
 
 		if ( ! isset( $_POST['id'] ) ) {
 			wp_send_json_error( 'You must set the revision ID.' );
@@ -245,7 +245,7 @@ class Revisions_Manager {
 
 		$revision_data = [
 			'settings' => Manager::get_settings_managers( 'page' )->get_model( $revision->ID )->get_settings(),
-			'elements' => qazana()->db->get_plain_editor( $revision->ID ),
+			'elements' => qazana()->get_db()->get_plain_editor( $revision->ID ),
 		];
 
 		wp_send_json_success( $revision_data );
@@ -257,7 +257,7 @@ class Revisions_Manager {
 	 * @static
 	 */
 	public static function on_delete_revision_request() {
-		qazana()->editor->verify_ajax_nonce();
+		qazana()->get_editor()->verify_ajax_nonce();
 
 		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( 'You must set the revision ID.' );

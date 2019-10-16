@@ -82,6 +82,6 @@ abstract class Control_Base_Multiple extends Base_Data_Control {
 	 * @return array Control style value.
 	 */
 	public function get_style_value( $css_property, $control_value ) {
-		return $control_value[ $css_property ];
+		return isset( $control_value[ $css_property ] ) ? $control_value[ $css_property ] : '';
 	}
 }

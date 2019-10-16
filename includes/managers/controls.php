@@ -183,6 +183,11 @@ class Controls_Manager {
 	const REPEATER = 'repeater';
 
 	/**
+	 * Condition Repeater control.
+	 */
+	const CONDITIONS_REPEATER = 'conditions_repeater';
+
+	/**
 	 * Icon control.
 	 */
 	const ICON = 'icon';
@@ -358,6 +363,7 @@ class Controls_Manager {
 		require( qazana()->includes_dir  . 'editor/controls/groups/typography.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/image-size.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/box-shadow.php' );
+		require( qazana()->includes_dir  . 'editor/controls/groups/box-styles.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/animations.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/hover-animations.php' );
 		require( qazana()->includes_dir  . 'editor/controls/groups/icon.php' );
@@ -418,6 +424,7 @@ class Controls_Manager {
 
 			self::URL,
 			self::REPEATER,
+			self::CONDITIONS_REPEATER,
 			self::ICON,
 			self::GALLERY,
 			self::STRUCTURE,
@@ -447,6 +454,7 @@ class Controls_Manager {
 		$this->control_groups['typography'] 		= new Group_Control_Typography();
 		$this->control_groups['image-size'] 		= new Group_Control_Image_Size();
 		$this->control_groups['box-shadow'] 		= new Group_Control_Box_Shadow();
+		$this->control_groups['box-styles'] 		= new Group_Control_Box_Styles();
 		$this->control_groups['css-filter']         = new Group_Control_Css_Filter();
 		$this->control_groups['text-shadow'] 		= new Group_Control_Text_Shadow();
 		$this->control_groups['animations'] 		= new Group_Control_Animations();

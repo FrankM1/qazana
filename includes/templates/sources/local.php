@@ -199,7 +199,7 @@ class Source_Local extends Source_Base {
 	 * @access public
 	 */
 	public function print_new_template_dialog() {
-		$document_types = qazana()->documents->get_document_types();
+		$document_types = qazana()->get_documents()->get_document_types();
 		$types = [];
 		$selected = get_query_var( 'qazana_library_type' );
 
@@ -490,9 +490,9 @@ class Source_Local extends Source_Base {
 			return $template_id;
 		}
 
-		qazana()->db->set_is_qazana_page( $template_id );
+		qazana()->get_db()->set_is_qazana_page( $template_id );
 
-		qazana()->db->save_editor( $template_id, $template_data['content'] );
+		qazana()->get_db()->save_editor( $template_id, $template_data['content'] );
 
 		$this->save_item_type( $template_id, $template_data['type'] );
 
@@ -544,7 +544,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'save_error', __( 'Access denied.', 'qazana' ) );
 		}
 
-		qazana()->db->save_editor( $new_data['id'], $new_data['content'] );
+		qazana()->get_db()->save_editor( $new_data['id'], $new_data['content'] );
 
 		/**
 		 * After template library update.
@@ -629,7 +629,7 @@ class Source_Local extends Source_Base {
 	 * @return array Local template data.
 	 */
 	public function get_data( array $args ) {
-		$db = qazana()->db;
+		$db = qazana()->get_db();
 
 		$template_id = $args['template_id'];
 
@@ -645,6 +645,7 @@ class Source_Local extends Source_Base {
 		}
 
 		$data = [
+			'type' => qazana()->get_documents()->get( $template_id ),
 			'content' => $content,
 		];
 
@@ -809,7 +810,7 @@ class Source_Local extends Source_Base {
 
 	    return $data;
 	}
-	
+
 	/**
 	 * Import local template.
 	 *
@@ -837,7 +838,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'zip_error', 'PHP Zip extension not loaded.' );
 		}
 
-	
+
 		if ( empty( $import_file ) ) {
 			return new \WP_Error( 'file_error', 'Please upload a file to import' );
 		}
@@ -923,7 +924,7 @@ class Source_Local extends Source_Base {
 				<div id="qazana-import-template-title"><?php _e( 'Choose an Qazana template JSON file or a .zip archive of Qazana templates, and add them to the list of templates available in your library.', 'qazana' ); ?></div>
 				<form id="qazana-import-template-form" method="post" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="qazana_import_template">
-					<input type="hidden" name="_nonce" value="<?php echo qazana()->editor->create_nonce( self::CPT ); ?>">
+					<input type="hidden" name="_nonce" value="<?php echo qazana()->get_editor()->create_nonce( self::CPT ); ?>">
 					<fieldset id="qazana-import-template-form-inputs">
 						<input type="file" name="file" accept=".json,application/json,.zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" required>
 						<input type="submit" class="button" value="<?php echo esc_attr__( 'Import Now', 'qazana' ); ?>">
@@ -1028,7 +1029,7 @@ class Source_Local extends Source_Base {
 			[
 				'action' => 'qazana_export_template',
 				'source' => $this->get_id(),
-				'_nonce' => qazana()->editor->create_nonce( self::CPT ),
+				'_nonce' => qazana()->get_editor()->create_nonce( self::CPT ),
 				'template_id' => $template_id,
 			],
 			admin_url( 'admin-ajax.php' )
@@ -1308,7 +1309,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( 'file_error', 'Invalid File' );
 		}
 
-		$content = $this->process_export_import_content( $data['content'], 'on_import' );
+		$content = $this->process_export_import_content( $data['type'], $data['content'], 'on_import' );
 
 		$page_settings = [];
 
@@ -1360,7 +1361,7 @@ class Source_Local extends Source_Base {
 			return new \WP_Error( '404', 'The template does not exist.' );
 		}
 
-		$template_data['content'] = $this->process_export_import_content( $template_data['content'], 'on_export' );
+		$template_data['content'] = $this->process_export_import_content( $template_data['type'], $template_data['content'], 'on_export' );
 
 		if ( get_post_meta( $template_id, '_qazana_page_settings', true ) ) {
 			$page = SettingsManager::get_settings_managers( 'page' )->get_model( $template_id );
@@ -1419,7 +1420,7 @@ class Source_Local extends Source_Base {
 	 * @return string Template label.
 	 */
 	private function get_template_label_by_type( $template_type ) {
-		$document_types = qazana()->documents->get_document_types();
+		$document_types = qazana()->get_documents()->get_document_types();
 
 		if ( isset( $document_types[ $template_type ] ) ) {
 			$template_label = call_user_func( [ $document_types[ $template_type ], 'get_title' ] );
@@ -1485,7 +1486,7 @@ class Source_Local extends Source_Base {
 	public function admin_columns_content( $column_name, $post_id ) {
 		if ( 'qazana_library_type' === $column_name ) {
 			/** @var Document $document */
-			$document = qazana()->documents->get( $post_id );
+			$document = qazana()->get_documents()->get( $post_id );
 
 			if ( $document ) {
 				$admin_filter_url = admin_url( '/edit.php?post_type=qazana_library&qazana_library_type=' . $document->get_name() );

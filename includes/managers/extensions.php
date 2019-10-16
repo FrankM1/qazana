@@ -284,8 +284,10 @@ final class Manager {
 		$extensions = $this->get_extensions();
 		foreach ( $extensions as $extension_id => $extension_instance ) {
 			$dependencies = $this->get_extension_data( $extension_id )['dependencies'];
-			foreach ( $dependencies as $extension_id ) {
-				$this->locate_dependency( $extension_id );
+			if ( ! empty( $dependencies ) ) {
+				foreach ( $dependencies as $extension_id ) {
+					$this->locate_dependency( $extension_id );
+				}
 			}
 		}
 	}
@@ -420,21 +422,17 @@ final class Manager {
 
 		foreach ( $skins as $skin ) {
 
-			$filename = strtolower(
-				preg_replace(
-					[ '/^' . __NAMESPACE__ . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
-					[ '', '$1-$2', '-', DIRECTORY_SEPARATOR ],
-					$skin
-				)
-			);
+            $skin_path = $skin;
+            $parts = explode( '/', $skin );
+            $skin_name = end( $parts );
 
-			$class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . $this->dashes_to_camelcase( $skin );
+			$class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . ucfirst( $extension ) . '\Skins\Skin_' . $this->dashes_to_camelcase( $skin_name );
 
 			if ( class_exists( $class_name ) ) {
 				continue;
 			}
 
-			if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$filename}.php", false ) ) {
+			if ( $file = $this->loader->locate_widget( "{$extension}/skins/{$skin_path}.php", false ) ) {
 				require_once $file;
 			}
 		}
@@ -489,14 +487,14 @@ final class Manager {
 				$class_name = $this->reflection->getNamespaceName() . '\Widgets\\' . $this->dashes_to_camelcase( $widget );
 
 				if ( ! class_exists( $class_name ) ) {
-					return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget class not found in `' . $this->get_name( $extension_id ) );
+					return new \WP_Error( __CLASS__ . '::' . $class_name, 'Widget Class not found in `' . $this->get_name( $extension_id ) );
 				}
 
 				if ( in_array( $widget, $this->get_widgets_blacklist() ) ) {
 					continue;
 				}
 
-				qazana()->widgets_manager->register_widget_type( new $class_name() );
+				qazana()->get_widgets_manager()->register_widget_type( new $class_name() );
 			}
 		}
 
@@ -570,7 +568,7 @@ final class Manager {
 
 		$extensions = $this->get_extensions();
 
-		if ( isset( $extensions[ $extension_id ] ) && ! is_object( $extensions[ $extension_id ] ) ) { 
+		if ( isset( $extensions[ $extension_id ] ) && ! is_object( $extensions[ $extension_id ] ) ) {
 			wp_die( get_called_class() . '::' . __FUNCTION__ . ': Extension is not loaded or does not exist. Extension id - `' . $extension_id .'`.' );
 		}
 

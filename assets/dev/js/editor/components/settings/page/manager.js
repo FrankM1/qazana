@@ -21,24 +21,23 @@ module.exports = BaseSettings.extend( {
 					} );
 				},
 			} );
-
 		},
 
 		custom_css: function( newValue ) {
 			this.custom_css( newValue );
-		}
+		},
     },
 
     custom_css: function( newValue ) {
 		var controlsCSS = this.getControlsCSS();
 
         if ( ! newValue ) {
-            newValue = this.model.get('custom_css');
-        } 
+            newValue = this.model.get( 'custom_css' );
+        }
 
         if ( newValue ) {
             newValue = newValue.replace( /selector/g, this.getSettings( 'cssWrapperSelector' ) );
-            controlsCSS.stylesheet.addRawCSS('page-settings-custom-css', newValue);
+            controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', newValue );
         }
     },
 
@@ -48,18 +47,18 @@ module.exports = BaseSettings.extend( {
 		if ( ! keepOldEntries ) {
 			controlsCSS.stylesheet.empty();
         }
-        
-		controlsCSS.addStyleRules(this.model.getStyleControls(), this.model.attributes, this.model.controls, [/{{WRAPPER}}/g], [this.getSettings('cssWrapperSelector')]);
-        
+
+		controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /{{WRAPPER}}/g ], [ this.getSettings( 'cssWrapperSelector' ) ] );
+
         this.custom_css();
-        
+
 		controlsCSS.addStyleToDocument();
 	},
-    
+
 	renderStyles: function() {
         var controlsCSS = this.getControlsCSS();
-		controlsCSS.addStyleRules(this.model.getStyleControls(), this.model.attributes, this.model.controls, [/\{\{WRAPPER}}/g], ['body.qazana-page-' + qazana.config.post_id]);
-		controlsCSS.stylesheet.addRawCSS('page-settings-custom-css', this.model.get('custom_css').replace(/selector/g, 'body.qazana-page-' + qazana.config.post_id));
+		controlsCSS.addStyleRules( this.model.getStyleControls(), this.model.attributes, this.model.controls, [ /\{\{WRAPPER}}/g ], [ 'body.qazana-page-' + qazana.config.post_id ] );
+		controlsCSS.stylesheet.addRawCSS( 'page-settings-custom-css', this.model.get( 'custom_css' ).replace( /selector/g, 'body.qazana-page-' + qazana.config.post_id ) );
 	},
 
 	onModelChange: function() {

@@ -256,6 +256,24 @@ class Widget_Image_Box extends Widget_Base {
 					'{{WRAPPER}} .qazana-image-box-wrapper .qazana-image-box-img' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
+        );
+
+        $this->add_responsive_control(
+			'image_radius',
+			[
+				'label' => __( 'Border Radius', 'qazana' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ '%', 'px' ],
+				'range' => [
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .qazana-image-box-wrapper .qazana-image-box-img img' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->start_controls_tabs( 'image_effects' );
@@ -624,7 +642,7 @@ class Widget_Image_Box extends Widget_Base {
 
 				view.addRenderAttribute( 'title_text', 'class', 'qazana-image-box-title' );
 
-				view.addInlineEditingAttributes( 'title_text', 'none' );
+				view.addInlineEditingAttributes( 'title_text' );
 
 				html += '<' + settings.title_size  + ' ' + view.getRenderAttributeString( 'title_text' ) + '>' + title_html + '</' + settings.title_size  + '>';
 			}

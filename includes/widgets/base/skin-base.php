@@ -452,8 +452,8 @@ abstract class Skin_Base {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function add_frontend_style( $value ) {
-		$this->get_parent()->add_frontend_style( $value );
+	public function add_frontend_stylesheet( $value ) {
+		$this->get_parent()->add_frontend_stylesheet( $value );
 	}
 
 	/**
@@ -493,7 +493,7 @@ abstract class Skin_Base {
 	 * be injected to a specific position in the stack, until you stop the
 	 * injection using `end_injection()` method.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @param array $position {
@@ -503,19 +503,13 @@ abstract class Skin_Base {
 	 *                        Default is `control`.
 	 *     @type string $at   Where to inject. If `$type` is `control` accepts
 	 *                        `before` and `after`. If `$type` is `section`
-	 *                        accepts `start` and `end`. Dafault values based on
+	 *                        accepts `start` and `end`. Default values based on
 	 *                        the `type`.
 	 *     @type string $of   Control/Section ID.
 	 * }
 	 */
 	final public function start_injection( array $position ) {
-		if ( $this->get_parent()->injection_point ) {
-			wp_die( 'A controls injection is already opened. Please close current injection before starting a new one (use `end_injection`). Element name - `' . $this->get_parent()->get_name() . ' Skin name - `' . $this->get_id() . '`.' );
-		}
-
-		$position['of'] = $this->get_id();
-
-		$this->get_parent()->injection_point = $this->get_parent()->get_position_info( $position );
+		$this->get_parent()->start_injection( $position );
 	}
 
 	/**
@@ -525,11 +519,11 @@ abstract class Skin_Base {
 	 * it stops adding new controls to this point and continue to add controls
 	 * to the regular position in the stack.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 * @access public
 	 */
 	final public function end_injection() {
-		$this->get_parent()->injection_point = null;
+		$this->get_parent()->end_injection();
 	}
 
 	/**
@@ -542,6 +536,35 @@ abstract class Skin_Base {
 	 */
 	public function is_bool( $value ) {
 		return $this->get_parent()->is_bool( $value );
+	}
+
+	/**
+	 * Parse text editor.
+	 *
+	 * Parses the content from rich text editor with shortcodes, oEmbed and
+	 * filtered data.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 *
+	 * @param string $content Text editor content.
+	 *
+	 * @return string Parsed content.
+	 */
+	protected function parse_text_editor( $content ) {
+
+		/** This filter is documented in wp-includes/widgets/class-wp-widget-text.php */
+		$content = apply_filters( 'widget_text', $content, $this->get_parent()->get_settings() );
+
+		$content = shortcode_unautop( $content );
+		$content = do_shortcode( $content );
+		$content = wptexturize( $content );
+
+		if ( $GLOBALS['wp_embed'] instanceof \WP_Embed ) {
+			$content = $GLOBALS['wp_embed']->autoembed( $content );
+		}
+
+		return $content;
 	}
 
 	/**
@@ -567,7 +590,7 @@ abstract class Skin_Base {
 	 *                        `basic`.
 	 */
 	protected function add_inline_editing_attributes( $key, $toolbar = 'basic' ) {
-		if ( ! qazana()->editor->is_edit_mode() ) {
+		if ( ! qazana()->get_editor()->is_edit_mode() ) {
 			return;
 		}
 

@@ -1,75 +1,31 @@
 .qazana-link {
-  transition: $transition-hover;
-
-  .qazana-link-wrapper {
-    display: flex;
+    transition: $transition-hover;
     position: relative;
     align-items: center;
-  }
-
-  &.qazana-align-icon-right .qazana-link-wrapper {
-    flex-direction: row-reverse;
-  }
-
-  .qazana-align-icon- {
-    &right {
-      margin-left: 5px;
-    }
-
-    &left {
-      margin-right: 5px;
-    }
-  }
-}
-
-.qazana-align- {
-    &right .qazana-link-wrapper{
-        justify-content: flex-end;
-    }
-
-    &left .qazana-link-wrapper{
-        justify-content: flex-start;
-    }
-
-    &center .qazana-link-wrapper{
-        justify-content: center;
-    }
-
-    &justify .qazana-link-wrapper {
-        justify-content: space-between;
-    }
 }
 
 // Icon Hover
 .qazana-icon-hover-reveal-yes {
-  .qazana-link {
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
-  }
-
-  .qazana-link-icon {
-    overflow: hidden;
-    max-width: 0;
-    transition: all .5s cubic-bezier(.3,.95,.3,.95);
-
-    &.qazana-align-icon-right {
-      margin-left: 0;
+    .qazana-link {
+        transition: all .5s cubic-bezier(.3, .95, .3, .95);
     }
 
-    &.qazana-align-icon-left {
-      margin-right: 0;
-    }
-  }
-
-  .qazana-link:hover .qazana-link-icon,
-  .link:hover .qazana-link-icon {
-    max-width: 100px;
-
-    &.qazana-align-icon-right {
-      margin-left: 10px;
+    .qazana-link-icon {
+        overflow: hidden;
+        max-width: 0;
+        transition: all .5s cubic-bezier(.3, .95, .3, .95);
     }
 
-    &.qazana-align-icon-left {
-      margin-right: 10px;
+    .qazana-link:hover .qazana-link-icon,
+    .link:hover .qazana-link-icon {
+        max-width: 100px;
+
+        &.qazana-inline-content-right {
+            margin-left: 10px;
+        }
+
+        &.qazana-inline-content-left {
+            margin-right: 10px;
+        }
     }
-  }
 }

@@ -102,7 +102,7 @@ class Widget_Link extends Widget_Base {
 		);
 
 		$this->add_control(
-			'link_type',
+			'type',
 			[
 				'label' => __( 'Type', 'qazana' ),
 				'type' => Controls_Manager::SELECT,
@@ -117,20 +117,6 @@ class Widget_Link extends Widget_Base {
 				'prefix_class' => 'qazana-link-',
 			]
 		);
-
-		$this->add_control(
-            'link_weight',
-            [
-                'label' => __( 'Weight', 'qazana' ),
-                'type' => Controls_Manager::SELECT,
-                'default' => '',
-                'options' => [
-                    '' => __( 'Default', 'qazana' ),
-                    'transparent' => __( 'Transparent', 'qazana' ),
-                    'solid' => __( 'Solid', 'qazana' ),
-                ],
-            ]
-        );
 
 		$this->add_control(
 			'text',
@@ -228,8 +214,8 @@ class Widget_Link extends Widget_Base {
 					'icon!' => '',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .qazana-link .qazana-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .qazana-link .qazana-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-link .qazana-inline-content-right' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .qazana-link .qazana-inline-content-left' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -257,7 +243,7 @@ class Widget_Link extends Widget_Base {
 		);
 
 		$this->add_control(
-			'link_css_id',
+			'css_id',
 			[
 				'label' => __( 'Link ID', 'qazana' ),
 				'type' => Controls_Manager::TEXT,
@@ -267,6 +253,17 @@ class Widget_Link extends Widget_Base {
 				'description' => __( 'Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'qazana' ),
 				'separator' => 'before',
 
+			]
+		);
+
+		$this->add_control(
+			'css_class',
+			[
+				'label' => __( 'Link Classes', 'qazana' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'title' => __( 'Add your custom classes', 'qazana' ),
+				'label_block' => false,
 			]
 		);
 
@@ -280,15 +277,15 @@ class Widget_Link extends Widget_Base {
 			]
         );
 
-        $this->start_controls_tabs( 'tabs_link_style' );
+        $this->start_controls_tabs( 'tabs_style' );
 
 		$this->start_controls_tab(
-			'tab_link_normal',
+			'tab_normal',
 			[
 				'label' => __( 'Normal', 'qazana' ),
 			]
 		);
-        
+
         $this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -300,7 +297,7 @@ class Widget_Link extends Widget_Base {
 		);
 
 		$this->add_control(
-			'link_text_color',
+			'text_color',
 			[
 				'label' => __( 'Text Color', 'qazana' ),
 				'type' => Controls_Manager::COLOR,
@@ -314,7 +311,7 @@ class Widget_Link extends Widget_Base {
 		$this->end_controls_tab();
 
         $this->start_controls_tab(
-            'tab_link_hover',
+            'tab_hover',
             [
                 'label' => __( 'Hover', 'qazana' ),
             ]
@@ -330,7 +327,7 @@ class Widget_Link extends Widget_Base {
 				],
 			]
         );
-        
+
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
@@ -353,7 +350,6 @@ class Widget_Link extends Widget_Base {
 
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_render_attribute( 'link', 'href', $settings['link']['url'] );
-			$this->add_render_attribute( 'link', 'class', 'qazana-link-link' );
 
 			if ( ! empty( $settings['link']['is_external'] ) ) {
 				$this->add_render_attribute( 'link', 'target', '_blank' );
@@ -364,39 +360,36 @@ class Widget_Link extends Widget_Base {
 			}
 		}
 
-		$this->add_render_attribute( 'link', 'class', 'qazana-link' );
+		$this->add_render_attribute( 'link', 'class', [ 'qazana-link', 'qazana-inline-content' ] );
 		$this->add_render_attribute( 'link', 'role', 'link' );
 
-		if ( ! empty( $settings['link_css_id'] ) ) {
-			$this->add_render_attribute( 'link', 'id', $settings['link_css_id'] );
+		if ( ! empty( $settings['css_id'] ) ) {
+			$this->add_render_attribute( 'link', 'id', $settings['css_id'] );
+		}
+
+		if ( ! empty( $settings['css_class'] ) ) {
+			$this->add_render_attribute( 'link', 'class', $settings['css_class'] );
 		}
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'link', 'class', 'qazana-size-' . $settings['size'] );
 		}
 
-        if ( ! empty( $settings['link_weight'] ) ) {
-            $this->add_render_attribute( 'link', 'class', 'qazana-weight-' . $settings['link_weight'] );
+        if ( ! empty( $settings['type'] ) ) {
+            $this->add_render_attribute( 'link', 'class', 'qazana-link-' . $settings['type'] );
         }
 
-        if ( ! empty( $settings['link_type'] ) ) {
-            $this->add_render_attribute( 'link', 'class', 'qazana-link-' . $settings['link_type'] );
-        }
-
-        $this->add_render_attribute( 'content-wrapper', 'class', 'qazana-link-content-wrapper' );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-align-icon-' . $this->get_responsive_settings('icon_align') );
-        $this->add_render_attribute( 'icon-align', 'class', 'qazana-link-icon' );
+        $this->add_render_attribute( 'wrapper', 'class', 'qazana-inline-content-' . $this->get_responsive_settings('icon_align') );
+        $this->add_render_attribute( 'icon', 'class', [ 'qazana-inline-icon', 'qazana-link-icon' ] );
 
         ?><div <?php $this->render_attribute_string( 'wrapper' ); ?>>
             <a <?php $this->render_attribute_string( 'link' ); ?>>
-                <span <?php $this->render_attribute_string( 'content-wrapper' ); ?>>
-                    <?php if ( $this->get_settings_for_display('icon') ) : ?>
-                        <span <?php $this->render_attribute_string( 'icon-align' ); ?>>
-                            <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
-                        </span>
-                    <?php endif; ?>
-                    <span class="qazana-link-text"><?php echo $settings['text']; ?></span>
-                </span>
+                <?php if ( $this->get_settings_for_display('icon') ) : ?>
+                    <span <?php $this->render_attribute_string( 'icon' ); ?>>
+                        <i class="<?php echo esc_attr( $this->get_settings_for_display('icon') ); ?>"></i>
+                    </span>
+                <?php endif; ?>
+                <span class="qazana-link-text"><?php echo $settings['text']; ?></span>
             </a>
         </div><?php
 
@@ -416,16 +409,14 @@ class Widget_Link extends Widget_Base {
 
 		view.addInlineEditingAttributes( 'text', 'none' );
 		#>
-        <div class="qazana-link-wrapper qazana-inner-wrapper">
-            <a id="{{ settings.link_css_id }}" class="qazana-link qazana-link-{{ settings.link_type }} qazana-weight-{{ settings.link_weight }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="link">
-                <span class="qazana-link-content-wrapper">
-                    <# if ( settings.icon ) { #>
-                    <span class="qazana-link-icon qazana-align-icon-{{ settings.icon_align }}">
-                        <i class="{{ settings.icon }}" aria-hidden="true"></i>
-                    </span>
-                    <# } #>
-                    <span {{{ view.getRenderAttributeString( 'text' ) }}}>{{{ settings.text }}}</span>
+        <div class="qazana-link-wrapper qazana-inner-wrapper qazana-inline-content-{{ settings.icon_align }}">
+            <a id="{{ settings.css_id }}" class="qazana-link {{ settings.css_class }} qazana-link-{{ settings.type }} qazana-size-{{ settings.size }} qazana-hover-animation-{{ settings.hover_animation }}" href="{{ settings.link.url }}" role="link">
+                <# if ( settings.icon ) { #>
+                <span class="qazana-link-icon">
+                    <i class="{{ settings.icon }}" aria-hidden="true"></i>
                 </span>
+                <# } #>
+                <span {{{ view.getRenderAttributeString( 'text' ) }}}>{{{ settings.text }}}</span>
             </a>
         </div>
         <?php

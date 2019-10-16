@@ -6,9 +6,9 @@ module.exports = ViewModule.extend( {
 	model: null,
 
 	hasChange: false,
-	
+
 	reloadPreviewFlag: false,
-	
+
 	changeCallbacks: {},
 
 	addChangeCallback: function( attribute, callback ) {
@@ -156,10 +156,9 @@ module.exports = ViewModule.extend( {
 				self.changeCallbacks[ key ].call( self, value );
 			}
 
-			if ( self.model.controls[ key ].render_type === 'preview' ) {
+			if ( self.model.controls[ key ] && 'preview' === self.model.controls[ key ].render_type ) {
 				self.reloadPreviewFlag = true;
 			}
-
 		} );
 
 		self.updateStylesheet( true );
