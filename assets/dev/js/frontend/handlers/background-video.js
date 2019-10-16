@@ -133,7 +133,8 @@ module.exports = HandlerModule.extend( {
 				}, 1 );
 			} );
 		} else {
-			self.elements.$backgroundVideoHosted.attr( 'src', videoLink ).one( 'canplay', self.changeVideoSize );
+            self.elements.$backgroundVideoHosted.attr( 'src', videoLink ).one( 'canplay', self.changeVideoSize );
+            jQuery( window ).on( 'resize', self.changeVideoSize );
 		}
 	},
 
