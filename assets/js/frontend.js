@@ -988,6 +988,7 @@ module.exports = HandlerModule.extend({
 			});
 		} else {
 			self.elements.$backgroundVideoHosted.attr('src', videoLink).one('canplay', self.changeVideoSize);
+			jQuery(window).on('resize', self.changeVideoSize);
 		}
 	},
 
