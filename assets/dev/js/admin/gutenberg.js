@@ -1,4 +1,4 @@
-/* global jQuery, QazanaGutenbergSettings */
+/* global QazanaGutenbergSettings */
 ( function( $ ) {
 	'use strict';
 
@@ -89,7 +89,7 @@
 		},
 
 		toggleStatus: function() {
-			jQuery( 'body' )
+			$( 'body' )
 				.toggleClass( 'qazana-editor-active', this.isQazanaMode )
 				.toggleClass( 'qazana-editor-inactive', ! this.isQazanaMode );
 		},

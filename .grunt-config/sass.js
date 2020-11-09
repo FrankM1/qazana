@@ -3,8 +3,8 @@ const sass = {
 		options: {
 			sourceMap: true,
 			includePaths: [
-            	"assets/dev/scss"
-        	],
+				"assets/dev/scss"
+			],
 		},
 		
 		files: [ {

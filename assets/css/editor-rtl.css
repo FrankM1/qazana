@@ -224,12 +224,10 @@ body {
   .qazana-loader-wrapper .qazana-loader .cubes {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     width: 5rem;
@@ -321,15 +319,12 @@ body {
 
 #qazana-preview-loading {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   position: absolute;
@@ -1284,23 +1279,18 @@ select {
     overflow: hidden;
     padding: 0 5px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
     -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
             justify-content: flex-start;
     -webkit-box-align: stretch;
-    -webkit-align-items: stretch;
         -ms-flex-align: stretch;
             align-items: stretch; }
   .qazana-panel .qazana-element-wrapper {
@@ -1340,18 +1330,15 @@ select {
       font-size: 12px;
       color: #1a0316;
       display: -webkit-box;
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
       height: 40px;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-      -webkit-flex-direction: column;
           -ms-flex-direction: column;
               flex-direction: column;
       padding: 0 8px;
       -webkit-box-pack: center;
-      -webkit-justify-content: center;
           -ms-flex-pack: center;
               justify-content: center; }
   .qazana-panel #qazana-panel-elements-search-wrapper {
@@ -1392,7 +1379,7 @@ select {
         left: 15px; }
     .qazana-panel #qazana-panel-elements-search-input::-webkit-input-placeholder {
       color: #a0a5aa; }
-    .qazana-panel #qazana-panel-elements-search-input:-ms-input-placeholder {
+    .qazana-panel #qazana-panel-elements-search-input::-moz-placeholder {
       color: #a0a5aa; }
     .qazana-panel #qazana-panel-elements-search-input::-ms-input-placeholder {
       color: #a0a5aa; }
@@ -1531,7 +1518,6 @@ select {
       margin-top: 5px; }
   .qazana-panel .qazana-panel-scheme-color-system-items {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-transition: border .5s;
@@ -1548,7 +1534,6 @@ select {
   .qazana-panel .qazana-panel-scheme-color-system-item {
     height: 20px;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
   .qazana-panel #qazana-panel-schemes-disabled a:hover {
@@ -1608,15 +1593,12 @@ select {
     background-color: transparent; }
     .qazana-panel .qazana-control.qazana-control-clear_page .qazana-control-raw-html {
       display: -webkit-box;
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
       -webkit-box-align: center;
-      -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center;
       -webkit-box-pack: justify;
-      -webkit-justify-content: space-between;
           -ms-flex-pack: justify;
               justify-content: space-between; }
   .qazana-panel .qazana-panel-navigation {
@@ -1885,11 +1867,9 @@ select {
     color: #495157; }
   #qazana-document-conditions .qazana-document-conditions-repeater-row-controls {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
     margin-right: 10px;
@@ -1901,7 +1881,6 @@ select {
             border-radius: 3px; }
   #qazana-document-conditions .qazana-document-conditions-repeater-row-controls .qazana-control:not(:first-child) {
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1; }
   #qazana-document-conditions .qazana-document-conditions-repeater-row-controls .qazana-control:not(:first-child) select {
@@ -1915,15 +1894,12 @@ select {
     margin: auto; }
   #qazana-document-conditions .qazana-repeater-fields {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
     -ms-flex-pack: center;
     justify-content: center;
     margin-top: 10px; }
@@ -1992,7 +1968,6 @@ select {
 
 #qazana-panel-footer-document-conditions-button-preview-wrapper .qazana-panel-footer-sub-menu {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -2032,12 +2007,10 @@ select {
       border-bottom-color: inherit; }
   .qazana-control .qazana-control-content {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
   .qazana-control.qazana-control-type-divider {
@@ -2117,9 +2090,8 @@ select {
       text-transform: inherit;
       letter-spacing: inherit;
       line-height: inherit;
-      -webkit-flex-basis: 100%;
-          -ms-flex-preferred-size: 100%;
-              flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+          flex-basis: 100%;
       padding-right: 5px;
       padding-left: 20px;
       cursor: pointer; }
@@ -2200,18 +2172,15 @@ select {
 
 .qazana-control-field {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 .qazana-label-block > .qazana-control-content > .qazana-control-field {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
   .qazana-label-block > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
     width: 100%;
     margin-top: 10px; }
@@ -2221,9 +2190,8 @@ select {
 
 .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-title {
   width: 45%;
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0; }
+  -ms-flex-negative: 0;
+      flex-shrink: 0; }
 
 .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
   width: 55%; }
@@ -2303,7 +2271,6 @@ select {
 
 .qazana-units-choices {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left; }
@@ -2326,7 +2293,6 @@ select {
 
 .qazana-control-responsive-switchers {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   margin: 0 5px; }
@@ -2376,17 +2342,14 @@ select {
   margin: 15px 15px 0;
   background-color: #EBEBEB;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 .qazana-update-preview-button-wrapper {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left; }
@@ -2566,15 +2529,12 @@ select {
   -webkit-border-radius: 0 3px 3px 0;
           border-radius: 0 3px 3px 0;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
   .qazana-control-type-url .qazana-control-url-more i {
@@ -2628,16 +2588,13 @@ select {
   z-index: 1; }
   .qazana-autocomplete-menu .ui-menu-item {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    -webkit-align-self: baseline;
-        -ms-flex-item-align: baseline;
-            align-self: baseline;
+    -ms-flex-item-align: baseline;
+        align-self: baseline;
     padding: 5px 8px;
     font-size: 12px;
     width: 100%;
@@ -2836,14 +2793,11 @@ select {
 
 .qazana-control-type-structure .qazana-control-structure-more-presets {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
   .qazana-control-type-structure .qazana-control-structure-more-presets input {
@@ -2909,7 +2863,6 @@ select {
   color: #a0a5aa;
   text-transform: uppercase;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -3115,7 +3068,6 @@ select {
 
 .qazana-control-type-order .qazana-control-oreder-wrapper {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -3179,15 +3131,12 @@ select {
   width: 50px;
   height: 27px;
   display: -webkit-inline-box;
-  display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-border-radius: 3px;
@@ -3296,9 +3245,7 @@ select {
           box-sizing: content-box; }
 
 .wp-picker-container .color-alpha {
-  width: -webkit-calc( 100% - 2px * 2);
   width: calc( 100% - 2px * 2);
-  height: -webkit-calc( 100% - 2px * 2);
   height: calc( 100% - 2px * 2);
   margin: 2px;
   position: absolute;
@@ -3331,8 +3278,7 @@ select {
   -webkit-border-radius: 0 3px 3px 0;
           border-radius: 0 3px 3px 0;
   font-size: 11px;
-  line-height: 12px;
-  padding: 7px 3px; }
+  line-height: 12px; }
 
 .wp-color-result {
   margin: 0;
@@ -3594,15 +3540,12 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 .qazana-templates-modal__header {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
   height: 50px; }
@@ -3618,11 +3561,9 @@ body.qazana-editor-preview #qazana-mode-switcher {
       padding-right: 15px; }
       .qazana-templates-modal__header__logo-area > * {
         display: -webkit-box;
-        display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-        -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center; }
     .qazana-templates-modal__header__logo__icon-wrapper {
@@ -3638,26 +3579,21 @@ body.qazana-editor-preview #qazana-mode-switcher {
       font-size: 10px; }
   .qazana-templates-modal__header__items-area {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
         -ms-flex-direction: row-reverse;
             flex-direction: row-reverse; }
   .qazana-templates-modal__header__item {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-sizing: content-box;
@@ -3722,7 +3658,6 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 #qazana-template-library-header-actions {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
   #qazana-template-library-header-actions > div {
@@ -3789,14 +3724,11 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 #qazana-template-library-templates-container {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-align: start;
-  -webkit-align-items: flex-start;
       -ms-flex-align: start;
           align-items: flex-start; }
   #qazana-template-library-templates-container .qazana-template-library-template-local .qazana-template-library-template-insert {
@@ -3805,25 +3737,20 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 #qazana-template-library-toolbar {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 .qazana-template-library-filter-toolbar {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
@@ -3832,7 +3759,6 @@ body.qazana-editor-preview #qazana-mode-switcher {
 
 #qazana-template-library-order {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   border-left: 1px solid #ddd; }
@@ -3863,7 +3789,6 @@ label.qazana-template-library-order-label {
 
 #qazana-template-library-my-favorites {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: right;
@@ -3919,7 +3844,7 @@ label.qazana-template-library-order-label {
   #qazana-template-library-filter-text::-webkit-input-placeholder {
     font-weight: 300;
     color: #A7A7AA; }
-  #qazana-template-library-filter-text:-ms-input-placeholder {
+  #qazana-template-library-filter-text::-moz-placeholder {
     font-weight: 300;
     color: #A7A7AA; }
   #qazana-template-library-filter-text::-ms-input-placeholder {
@@ -3932,7 +3857,7 @@ label.qazana-template-library-order-label {
     border-color: #A7A7AA; }
     #qazana-template-library-filter-text:focus::-webkit-input-placeholder {
       color: #a0a5aa; }
-    #qazana-template-library-filter-text:focus:-ms-input-placeholder {
+    #qazana-template-library-filter-text:focus::-moz-placeholder {
       color: #a0a5aa; }
     #qazana-template-library-filter-text:focus::-ms-input-placeholder {
       color: #a0a5aa; }
@@ -4009,11 +3934,9 @@ label.qazana-template-library-order-label {
     color: #fcb92c; }
   .qazana-template-library-template-remote .qazana-template-library-template-footer {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     margin-top: 10px;
@@ -4023,7 +3946,6 @@ label.qazana-template-library-order-label {
     text-align: right;
     color: #444;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     white-space: nowrap;
@@ -4043,17 +3965,14 @@ label.qazana-template-library-order-label {
 
 @media (max-width: 1439px) {
   .qazana-template-library-template-page {
-    width: -webkit-calc(25% - 30px);
     width: calc(25% - 30px); } }
 
 @media (min-width: 1440px) {
   .qazana-template-library-template-page {
-    width: -webkit-calc(20% - 30px);
     width: calc(20% - 30px); } }
 
 @media (max-width: 1025px) {
   .qazana-template-library-template-page {
-    width: -webkit-calc(33.333% - 30px);
     width: calc(33.333% - 30px); } }
 
 .qazana-template-library-template-page .qazana-template-library-template-body {
@@ -4061,7 +3980,6 @@ label.qazana-template-library-order-label {
 
 .qazana-template-library-template-block {
   position: relative;
-  width: -webkit-calc(33.333% - 30px);
   width: calc(33.333% - 30px);
   overflow: hidden; }
   .qazana-template-library-template-block img {
@@ -4089,11 +4007,9 @@ label.qazana-template-library-order-label {
 #qazana-template-library-order-toolbar-local,
 .qazana-template-library-template-local {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   padding: 0 25px;
@@ -4145,11 +4061,9 @@ label.qazana-template-library-order-label {
   .qazana-template-library-template-local .qazana-template-library-template-controls {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
     .qazana-template-library-template-local .qazana-template-library-template-controls > div {
@@ -4199,7 +4113,6 @@ label.qazana-template-library-order-label {
       font-size: 11px; }
   .qazana-template-library-template-local .qazana-template-library-template-more-toggle {
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     text-align: left; }
@@ -4240,15 +4153,12 @@ label.qazana-template-library-order-label {
 #qazana-template-library-save-template-form {
   margin-top: 40px;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
   #qazana-template-library-save-template-form > * {
@@ -4266,7 +4176,7 @@ label.qazana-template-library-order-label {
   border: none; }
   #qazana-template-library-save-template-name::-webkit-input-placeholder {
     color: #a0a5aa; }
-  #qazana-template-library-save-template-name:-ms-input-placeholder {
+  #qazana-template-library-save-template-name::-moz-placeholder {
     color: #a0a5aa; }
   #qazana-template-library-save-template-name::-ms-input-placeholder {
     color: #a0a5aa; }
@@ -4394,12 +4304,10 @@ label.qazana-template-library-order-label {
 .qazana-global-widget-locked-tool {
   display: -ms-flexbox;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   padding: 20px 0;
   -ms-flex-align: center;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center; }
 
 .qazana-global-widget-locked-tool .qazana-button {
@@ -4412,7 +4320,6 @@ label.qazana-template-library-order-label {
 .qazana-global-widget-locked-tool-description {
   -ms-flex-positive: 1;
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
           flex-grow: 1; }
 
 #qazana-global-widget-locked-unlink {
@@ -4444,17 +4351,14 @@ label.qazana-template-library-order-label {
   width: 100%;
   -ms-flex-align: center;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   -ms-flex-pack: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
           justify-content: center; }
 
 #qazana-global-widget-loading:not(.qazana-hidden) {
   display: -ms-flexbox;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex; }
 
 #qazana-global-widget-loading i {
@@ -4514,11 +4418,9 @@ label.qazana-template-library-order-label {
 
 .qazana-dynamic-cover {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
@@ -4532,7 +4434,6 @@ label.qazana-template-library-order-label {
   .qazana-dynamic-cover__title {
     padding: 0 8px;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     overflow: hidden;
@@ -4569,9 +4470,8 @@ label.qazana-template-library-order-label {
   text-align: center; }
 
 .qazana-control-dynamic.qazana-label-inline .qazana-control-field {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
 
 .qazana-control-dynamic-switcher {
   cursor: pointer;
@@ -4580,15 +4480,12 @@ label.qazana-template-library-order-label {
     padding-right: 5px; }
   .qazana-control-dynamic-switcher-wrapper {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
     .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-dynamic-switcher-wrapper {
@@ -4614,11 +4511,9 @@ label.qazana-template-library-order-label {
     font-size: 13px; }
   #qazana-toast .dialog-buttons-wrapper {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     margin-top: 15px; }
@@ -4652,7 +4547,6 @@ label.qazana-template-library-order-label {
     padding: 5px 10px;
     padding-left: 20px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     cursor: pointer; }
@@ -4668,7 +4562,6 @@ label.qazana-template-library-order-label {
       color: #A7A7AA; }
     .qazana-context-menu-list__item__title {
       -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
     .qazana-context-menu-list__item__shortcut {
@@ -4706,15 +4599,12 @@ label.qazana-template-library-order-label {
     background-color: #EBEBEB; }
   #qazana-navigator__header {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     padding: 12px 10px;
@@ -4733,12 +4623,10 @@ label.qazana-template-library-order-label {
   #qazana-navigator__close {
     font-size: 11px; }
   #qazana-navigator__elements {
-    height: -webkit-calc(100% - 49px);
     height: calc(100% - 49px);
     overflow: auto;
     position: relative; }
     .qazana-navigator-docked #qazana-navigator__elements {
-      height: -webkit-calc(100% - 35px);
       height: calc(100% - 35px); }
   #qazana-navigator__footer {
     position: absolute;
@@ -4754,7 +4642,6 @@ label.qazana-template-library-order-label {
 
 .qazana-navigator__item {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 32px;
@@ -4768,11 +4655,9 @@ label.qazana-template-library-order-label {
             transform: rotate(90deg); }
   .qazana-navigator__item > * {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
   .qazana-navigator__item + .qazana-navigator__elements {
@@ -4835,7 +4720,6 @@ label.qazana-template-library-order-label {
 
 .qazana-navigator__element__title {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   overflow: hidden; }
@@ -4873,11 +4757,9 @@ label.qazana-template-library-order-label {
 
 .qazana-revision-item__wrapper {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   border: 1px solid #ddd;
@@ -4914,7 +4796,6 @@ label.qazana-template-library-order-label {
 .qazana-revision-item__details {
   padding-right: 15px;
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   cursor: pointer; }
@@ -4935,11 +4816,9 @@ label.qazana-template-library-order-label {
 
 .qazana-history-item {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   border: 1px solid #ddd;

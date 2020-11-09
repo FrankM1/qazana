@@ -160,7 +160,7 @@ HandlerModule = ViewModule.extend( {
 			return qazana.settings.page.getSettings().settings;
 		}
 
-		return jQuery( this.$element ).closest( '.qazana' ).data( 'settings' ); 
+		return jQuery( this.$element ).closest( '.qazana' ).data( 'settings' );
 	},
 
     getElementSettings: function( setting ) {

@@ -1,8 +1,7 @@
 .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs-wrapper {
   width: 25%;
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0; }
+  -ms-flex-negative: 0;
+      flex-shrink: 0; }
 
 .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tab-desktop-title.qazana-active {
   border-right-style: none; }
@@ -114,12 +113,10 @@
 @media (min-width: 768px) {
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
   .qazana-widget-tabs.qazana-tabs-view-vertical .qazana-tabs-content-wrapper {
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     border-style: solid;

@@ -247,15 +247,12 @@
 
 .qazana-templates-modal__header {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
   height: 50px; }
@@ -271,11 +268,9 @@
       padding-right: 15px; }
       .qazana-templates-modal__header__logo-area > * {
         display: -webkit-box;
-        display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-        -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center; }
     .qazana-templates-modal__header__logo__icon-wrapper {
@@ -291,26 +286,21 @@
       font-size: 10px; }
   .qazana-templates-modal__header__items-area {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
         -ms-flex-direction: row-reverse;
             flex-direction: row-reverse; }
   .qazana-templates-modal__header__item {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-sizing: content-box;
@@ -418,9 +408,8 @@ body.qazana-editor-active .editor-block-list__layout {
   display: none; }
 
 body.qazana-editor-active .edit-post-layout__content .edit-post-visual-editor {
-  -webkit-flex-basis: auto;
-      -ms-flex-preferred-size: auto;
-          flex-basis: auto; }
+  -ms-flex-preferred-size: auto;
+      flex-basis: auto; }
 
 body.qazana-editor-active #qazana-editor {
   margin-bottom: 50px; }
@@ -455,12 +444,10 @@ body .gutenberg #qazana-switch-mode {
   #qazana-editor .qazana-loader .cubes {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     width: 5rem;
@@ -954,7 +941,6 @@ body .gutenberg #qazana-switch-mode {
   border-top: 1px solid #eee; }
   #e-dashboard-overview .e-overview__footer ul {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     list-style: none;
@@ -981,11 +967,9 @@ body .gutenberg #qazana-switch-mode {
 
 #qazana-new-template-dialog-content {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   height: 100%;
@@ -1008,11 +992,9 @@ body .gutenberg #qazana-switch-mode {
 
 #qazana-new-template__take_a_tour {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   font-size: 15px; }
@@ -1027,7 +1009,6 @@ body .gutenberg #qazana-switch-mode {
 
 #qazana-new-template__form {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   max-width: 440px;
@@ -1110,7 +1091,6 @@ body .gutenberg #qazana-switch-mode {
     margin-bottom: 2px; }
     #qazana-role-manager .qazana-role-row .qazana-role-label {
       display: -webkit-box;
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
       padding: 15px 20px;
@@ -1121,7 +1101,6 @@ body .gutenberg #qazana-switch-mode {
       #qazana-role-manager .qazana-role-row .qazana-role-label span.qazana-role-toggle {
         text-align: left;
         -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
             -ms-flex-positive: 1;
                 flex-grow: 1; }
       #qazana-role-manager .qazana-role-row .qazana-role-label span.qazana-role-excluded-indicator {
@@ -1147,7 +1126,6 @@ body .gutenberg #qazana-switch-mode {
     margin-bottom: 2px; }
     #qazana-extensions-manager .qazana-extension-row .qazana-extension-label {
       display: -webkit-box;
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
       padding: 15px 20px;
@@ -1158,7 +1136,6 @@ body .gutenberg #qazana-switch-mode {
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label span.qazana-extension-toggle {
         text-align: left;
         -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
             -ms-flex-positive: 1;
                 flex-grow: 1; }
       #qazana-extensions-manager .qazana-extension-row .qazana-extension-label span.qazana-extension-active-indicator {

@@ -141,12 +141,10 @@
       border-bottom-color: inherit; }
   .qazana-control .qazana-control-content {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
   .qazana-control.qazana-control-type-divider {
@@ -226,9 +224,8 @@
       text-transform: inherit;
       letter-spacing: inherit;
       line-height: inherit;
-      -webkit-flex-basis: 100%;
-          -ms-flex-preferred-size: 100%;
-              flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+          flex-basis: 100%;
       padding-right: 5px;
       padding-left: 20px;
       cursor: pointer; }
@@ -309,18 +306,15 @@
 
 .qazana-control-field {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 .qazana-label-block > .qazana-control-content > .qazana-control-field {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
   .qazana-label-block > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
     width: 100%;
     margin-top: 10px; }
@@ -330,9 +324,8 @@
 
 .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-title {
   width: 45%;
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0; }
+  -ms-flex-negative: 0;
+      flex-shrink: 0; }
 
 .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-input-wrapper {
   width: 55%; }
@@ -412,7 +405,6 @@
 
 .qazana-units-choices {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left; }
@@ -435,7 +427,6 @@
 
 .qazana-control-responsive-switchers {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   margin: 0 5px; }
@@ -485,17 +476,14 @@
   margin: 15px 15px 0;
   background-color: #EBEBEB;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 .qazana-update-preview-button-wrapper {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left; }
@@ -675,15 +663,12 @@
   -webkit-border-radius: 0 3px 3px 0;
           border-radius: 0 3px 3px 0;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
   .qazana-control-type-url .qazana-control-url-more i {
@@ -737,16 +722,13 @@
   z-index: 1; }
   .qazana-autocomplete-menu .ui-menu-item {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    -webkit-align-self: baseline;
-        -ms-flex-item-align: baseline;
-            align-self: baseline;
+    -ms-flex-item-align: baseline;
+        align-self: baseline;
     padding: 5px 8px;
     font-size: 12px;
     width: 100%;
@@ -945,14 +927,11 @@
 
 .qazana-control-type-structure .qazana-control-structure-more-presets {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
   .qazana-control-type-structure .qazana-control-structure-more-presets input {
@@ -1018,7 +997,6 @@
   color: #a0a5aa;
   text-transform: uppercase;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -1224,7 +1202,6 @@
 
 .qazana-control-type-order .qazana-control-oreder-wrapper {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -1288,15 +1265,12 @@
   width: 50px;
   height: 27px;
   display: -webkit-inline-box;
-  display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-border-radius: 3px;
@@ -1405,9 +1379,7 @@
           box-sizing: content-box; }
 
 .wp-picker-container .color-alpha {
-  width: -webkit-calc( 100% - 2px * 2);
   width: calc( 100% - 2px * 2);
-  height: -webkit-calc( 100% - 2px * 2);
   height: calc( 100% - 2px * 2);
   margin: 2px;
   position: absolute;
@@ -1440,8 +1412,7 @@
   -webkit-border-radius: 0 3px 3px 0;
           border-radius: 0 3px 3px 0;
   font-size: 11px;
-  line-height: 12px;
-  padding: 7px 3px; }
+  line-height: 12px; }
 
 .wp-color-result {
   margin: 0;
@@ -1520,15 +1491,12 @@
   .pen-icon {
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     height: 35px;
@@ -1563,7 +1531,6 @@
     color: #008EFF; }
   .pen-input-wrapper {
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
     .pen-input-wrapper .pen-url-input {
@@ -1583,7 +1550,7 @@
         color: #fff; }
       .pen-input-wrapper .pen-url-input::-webkit-input-placeholder {
         color: #ddd; }
-      .pen-input-wrapper .pen-url-input:-ms-input-placeholder {
+      .pen-input-wrapper .pen-url-input::-moz-placeholder {
         color: #ddd; }
       .pen-input-wrapper .pen-url-input::-ms-input-placeholder {
         color: #ddd; }
@@ -1642,11 +1609,9 @@
 
 .qazana-dynamic-cover {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
@@ -1660,7 +1625,6 @@
   .qazana-dynamic-cover__title {
     padding: 0 8px;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     overflow: hidden;
@@ -1697,9 +1661,8 @@
   text-align: center; }
 
 .qazana-control-dynamic.qazana-label-inline .qazana-control-field {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
 
 .qazana-control-dynamic-switcher {
   cursor: pointer;
@@ -1708,15 +1671,12 @@
     padding-right: 5px; }
   .qazana-control-dynamic-switcher-wrapper {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
     .qazana-label-inline > .qazana-control-content > .qazana-control-field > .qazana-control-dynamic-switcher-wrapper {
@@ -1823,7 +1783,6 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-sectio
 .qazana-edit-mode span.qazana-space-resize-value {
   height: 100%;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   white-space: nowrap;
@@ -1832,16 +1791,13 @@ body.qazana-editor-active .qazana.qazana-edit-mode .qazana-element.qazana-sectio
   font-size: 11px;
   text-align: center;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-align-content: center;
-      -ms-flex-line-pack: center;
-          align-content: center; }
+  -ms-flex-line-pack: center;
+      align-content: center; }
 
 .qazana-edit-mode.qazana-edit-area-preview .qazana-spacer {
   background: transparent; }
@@ -1891,15 +1847,12 @@ html.qazana-html {
 .qazana-editor-active .qazana-editor-element-setting {
   cursor: pointer;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   padding: 0;
@@ -2032,7 +1985,6 @@ html.qazana-html {
 .qazana-editor-element-settings {
   position: absolute;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 26px;
@@ -2080,7 +2032,6 @@ html.qazana-html {
       top: 2px;
       border-left-color: #008EFF;
       border-width: 22px 0 0 12px;
-      left: -webkit-calc(100% - 1px);
       left: calc(100% - 1px); }
     .qazana-editor-section-settings .qazana-editor-element-setting:first-child:hover:before {
       border-left-color: #005599; }
@@ -2094,7 +2045,6 @@ html.qazana-html {
       top: 2px;
       border-right-color: #008EFF;
       border-width: 22px 12px 0 0;
-      right: -webkit-calc(100% - 1px);
       right: calc(100% - 1px); }
     .qazana-editor-section-settings .qazana-editor-element-setting:last-child:hover:after {
       border-right-color: #005599; }
@@ -2138,7 +2088,6 @@ html.qazana-html {
   left: -1px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: reverse;
-  -webkit-flex-direction: row-reverse;
       -ms-flex-direction: row-reverse;
           flex-direction: row-reverse;
   -webkit-border-radius: 0 0 3px 0;
@@ -2164,16 +2113,13 @@ html.qazana-html {
   text-align: center;
   border: 1px dashed #ddd;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 100%;
   -webkit-box-align: center;
-  -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
   .qazana-first-add .qazana-icon {
@@ -2305,15 +2251,12 @@ html.qazana-html {
   display: inline-block; }
   .qazana-add-new-section .qazana-add-section-area-button {
     display: -webkit-inline-box;
-    display: -webkit-inline-flex;
     display: -ms-inline-flexbox;
     display: inline-flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     height: 40px;

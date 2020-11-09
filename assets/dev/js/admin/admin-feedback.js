@@ -1,4 +1,4 @@
-/* global jQuery, QazanaAdminFeedbackArgs */
+/* global QazanaAdminFeedbackArgs */
 ( function( $ ) {
 	'use strict';
 
