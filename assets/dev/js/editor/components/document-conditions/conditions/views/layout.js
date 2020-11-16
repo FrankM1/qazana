@@ -10,7 +10,7 @@ module.exports = BaseModalLayout.extend( {
 
 	getLogoOptions: function() {
 		return {
-			title: qazana.translate( 'display_conditions' )
+			title: qazana.translate( 'display_conditions' ),
 		};
 	},
 
@@ -18,5 +18,5 @@ module.exports = BaseModalLayout.extend( {
 		BaseModalLayout.prototype.initialize.apply( this, arguments );
 
 		this.showLogo();
-	}
+	},
 } );

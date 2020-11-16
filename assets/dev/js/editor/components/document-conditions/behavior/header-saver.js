@@ -1,6 +1,6 @@
 var SaverBehavior = qazana.modules.components.saver.behaviors.HeaderSaver;
 
-module.exports = SaverBehavior.extend({
+module.exports = SaverBehavior.extend( {
 	ui: function() {
 		var ui = SaverBehavior.prototype.ui.apply( this, arguments );
 
@@ -11,7 +11,7 @@ module.exports = SaverBehavior.extend({
 
 		return ui;
     },
- 
+
 	events: function() {
 		var events = SaverBehavior.prototype.events.apply( this, arguments );
 
@@ -35,8 +35,8 @@ module.exports = SaverBehavior.extend({
 		var $menuConditions = jQuery( '<div />', {
 			id: 'qazana-panel-footer-saver-conditions',
 			class: 'qazana-panel-header-sub-menu-item',
-			html: '<i class="qazana-icon fa fa-paper-plane"></i>' + '<span class="qazana-title">' + qazana.translate( 'display_conditions' ) + '</span>'
-		});
+			html: '<i class="qazana-icon fa fa-paper-plane"></i>' + '<span class="qazana-title">' + qazana.translate( 'display_conditions' ) + '</span>',
+		} );
 
 		this.ui.menuConditions = $menuConditions;
 
@@ -96,5 +96,5 @@ module.exports = SaverBehavior.extend({
 		panel.setPage( 'page_settings' );
 		panel.getCurrentPageView().activateSection( 'preview_settings' );
 		panel.getCurrentPageView()._renderChildren();
-	}
-});
+	},
+} );

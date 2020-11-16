@@ -1434,6 +1434,11 @@ abstract class Controls_Stack extends Base_Object {
 
 		// Save the current section for the action.
 		$current_section = $this->current_section;
+
+		if ( !$current_section  ) {
+			return;
+		}
+
 		$section_id = $current_section['section'];
 		$args = [
 			'tab' => $current_section['tab'],

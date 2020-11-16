@@ -36,7 +36,6 @@ GlobalHandler = HandlerModule.extend( {
                 $element.addClass( animation ).addClass( 'qazana-element-animation-done' );
             }, animationDelay );
         }, { offset: '90%' } );
-
 	},
 
 	getAnimation: function() {

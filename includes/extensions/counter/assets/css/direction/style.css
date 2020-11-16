@@ -1,13 +1,11 @@
 .qazana-widget-counter .qazana-counter-number-prefix {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: right; }
 
 .qazana-widget-counter .qazana-counter-number-suffix {
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left; }
@@ -20,25 +18,21 @@
 @media (min-width: 768px) {
   .qazana-widget-counter.qazana-position-left .qazana-counter, .qazana-widget-counter.qazana-position-right .qazana-counter {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
   .qazana-widget-counter.qazana-position-right .qazana-counter {
     text-align: right;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
         -ms-flex-direction: row-reverse;
             flex-direction: row-reverse; }
   .qazana-widget-counter.qazana-position-left .qazana-counter {
     text-align: left;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
   .qazana-widget-counter.qazana-position-top .qazana-counter-number {
@@ -46,17 +40,14 @@
     text-align: center; }
   .qazana-widget-counter.qazana-vertical-align-top .qazana-counter {
     -webkit-box-align: start;
-    -webkit-align-items: flex-start;
         -ms-flex-align: start;
             align-items: flex-start; }
   .qazana-widget-counter.qazana-vertical-align-middle .qazana-counter {
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
   .qazana-widget-counter.qazana-vertical-align-bottom .qazana-counter {
     -webkit-box-align: end;
-    -webkit-align-items: flex-end;
         -ms-flex-align: end;
             align-items: flex-end; } }
 
@@ -71,7 +62,6 @@
 
 .qazana-widget-counter .qazana-counter-number {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 

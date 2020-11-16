@@ -167,7 +167,7 @@ WidgetView = BaseElementView.extend( {
             while ( patt.test( cn ) ) {
                 cn = cn.replace( patt, ' ' );
             }
-            it.className = $.trim( cn );
+            it.className = cn.trim();
         } );
 
         return ! additions ? self : self.addClass( additions );

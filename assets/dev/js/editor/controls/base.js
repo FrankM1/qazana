@@ -78,7 +78,7 @@ ControlBaseView = Marionette.CompositeView.extend( {
 		if ( ! showLabel ) {
 			elClasses += ' qazana-control-hidden-label';
         }
-        
+
         if ( elCustomClass ) {
             elClasses += ' qazana-control-custom-class-' + elCustomClass;
 		}

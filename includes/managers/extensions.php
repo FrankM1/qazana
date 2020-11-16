@@ -628,7 +628,7 @@ final class Manager {
 
 		$extension_data = $this->get_extension_data( $extension_id );
 
-		if ( true === $extension_data['required'] ) {
+		if ( isset($extension_data['required']) && $extension_data['required'] ) {
 			return true;
 		}
 

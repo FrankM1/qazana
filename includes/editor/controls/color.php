@@ -54,6 +54,18 @@ class Control_Color extends Base_Data_Control {
 		);
 
 		wp_enqueue_style( 'wp-color-picker' );
+
+		$color_picker_strings = array(
+			'clear'            => __( 'Clear', 'qazana' ),
+			'clearAriaLabel'   => __( 'Clear color', 'qazana' ),
+			'defaultString'    => __( 'Default', 'qazana' ),
+			'defaultAriaLabel' => __( 'Select default color', 'qazana' ),
+			'pick'             => __( 'Select Color', 'qazana' ),
+			'defaultLabel'     => __( 'Color value', 'qazana' ),
+		);
+
+		wp_localize_script( 'wp-color-picker-alpha', 'wpColorPickerL10n', $color_picker_strings );
+
 		wp_enqueue_script( 'wp-color-picker-alpha' );
 	}
 
